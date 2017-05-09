@@ -1,6 +1,6 @@
-<library   name="testAnalyzermultilep_plugins" file="*.cc">
+<library   name="heavyNeutrinomultilep_plugins" file="*.cc">
 	<flags   EDM_PLUGIN="1"/>
-	<use   name="testAnalyzer/multilep"/>
+	<use   name="heavyNeutrino/multilep"/>
 </library>
 
 
