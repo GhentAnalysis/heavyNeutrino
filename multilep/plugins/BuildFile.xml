@@ -1,0 +1,9 @@
+<library   name="testAnalyzermultilep_plugins" file="*.cc">
+	<flags   EDM_PLUGIN="1"/>
+	<use   name="testAnalyzer/multilep"/>
+</library>
+
+
+
+
+
