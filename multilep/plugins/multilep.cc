@@ -113,20 +113,20 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     //loop over muons
     for(const pat::Muon& mu : *muons){
-        if(_nL == nL_max) continue;
+        if(_nL == nL_max)            continue;
         if(mu.innerTrack().isNull()) continue;
-        if(mu.pt() < 5) continue;
-        if(fabs(mu.eta()) > 2.4) continue;
+        if(mu.pt() < 5)              continue;
+        if(fabs(mu.eta()) > 2.4)     continue;
         fillLeptonKinVars(mu);
         fillLeptonGenVars(mu.genParticle());
-        _flavor[_nL] = 1;
+        _flavor[_nL]  = 1;
         //Vertex variables
-        _dxy[_nL] = mu.innerTrack()->dxy();
-        _dz[_nL] = mu.innerTrack()->dz();
-        _3dIP[_nL] = mu.dB(pat::Muon::PV3D);
+        _dxy[_nL]     = mu.innerTrack()->dxy();
+        _dz[_nL]      = mu.innerTrack()->dz();
+        _3dIP[_nL]    = mu.dB(pat::Muon::PV3D);
         _3dIPSig[_nL] = mu.dB(pat::Muon::PV3D)/mu.edB(pat::Muon::PV3D);
         //Isolation variables
-        _relIso[_nL] = Tools::getRelIso03(mu, *rhoJets);
+        _relIso[_nL]  = Tools::getRelIso03(mu, *rhoJets);
         _miniIso[_nL] = Tools::getMiniIso(mu, *packedCands, 0.2, *rhoJets);
         ++_nMu;
         ++_nL;
@@ -134,20 +134,20 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     //loop over electrons
     for(const pat::Electron& ele : *electrons){
-        if(_nL == nL_max) continue;
+        if(_nL == nL_max)           continue;
         if(ele.gsfTrack().isNull()) continue;
-        if(ele.pt() < 10) continue;
-        if(fabs(ele.eta()) > 2.5) continue;
+        if(ele.pt() < 10)           continue;
+        if(fabs(ele.eta()) > 2.5)   continue;
         fillLeptonKinVars(ele);
         fillLeptonGenVars(ele.genParticle());
-        _flavor[_nL] = 0;
+        _flavor[_nL]  = 0;
         //Vertex varitables
-        _dxy[_nL] = ele.gsfTrack()->dxy();
-        _dz[_nL] = ele.gsfTrack()->dz();
-        _3dIP[_nL] = ele.dB(pat::Electron::PV3D);
+        _dxy[_nL]     = ele.gsfTrack()->dxy();
+        _dz[_nL]      = ele.gsfTrack()->dz();
+        _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
         _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
         //isolation variables
-        _relIso[_nL] = Tools::getRelIso03(ele, *rhoJets);
+        _relIso[_nL]  = Tools::getRelIso03(ele, *rhoJets);
         _miniIso[_nL] = Tools::getMiniIso(ele, *packedCands, 0.2, *rhoJets);
         ++_nEle;
         ++_nL;
@@ -156,15 +156,15 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     //loop over taus
     for(const pat::Tau& tau : *taus){
-        if(_nL == nL_max) continue;
-        if(tau.pt() < 20) continue; //investigate up to what Pt threshold taus can be properly reconstructed
+        if(_nL == nL_max)         continue;
+        if(tau.pt() < 20)         continue; //investigate up to what Pt threshold taus can be properly reconstructed
         if(fabs(tau.eta()) > 2.3) continue;
         fillLeptonKinVars(tau);
-        _flavor[_nL] = 2;
-        _dxy[_nL] = tau.dxy();
-        //_dz[_nL] = tau.dz();
-        _3dIP[_nL] = tau.ip3d();
-        _3dIPSig[_nL] = tau.ip3d_Sig ();
+        _flavor[_nL]  = 2;
+        _dxy[_nL]     = tau.dxy();
+        //_dz[_nL]    = tau.dz();
+        _3dIP[_nL]    = tau.ip3d();
+        _3dIPSig[_nL] = tau.ip3d_Sig();
         ++_nTau;
         ++_nL;
     }

@@ -2,6 +2,8 @@
 #include <cmath>
 #include <algorithm>
 
+// Eventually move to code which takes the usual effArea config file, as is done in the Majorana code or through the EffectiveAreas class
+// Code below is simply horrible
 double Tools::getEffArea(const unsigned flavor, const double eta){
 		double effA[2][7] = {{0.1752, 0.1862, 0.1411, 0.1534, 0.1903, 0.2243, 0.2687}, {0.0735, 0.0619, 0.0465, 0.0433, 0.0577, 0, 0}};
 		double etaBins[2][6] = { {1, 1.479, 2.0, 2.2, 2.3, 2.4}, {0.8, 1.3, 2.0, 2.2, 0, 0}};
@@ -30,6 +32,7 @@ double Tools::getRelIso03(const pat::Electron& ele, const double rho){
 	return absIso/ele.pt();
 }
 
+// This is used for the misolation below
 double Tools::getRelIso(const reco::RecoCandidate& ptcl, const std::vector<pat::PackedCandidate>& pfcands, const double coneSize, const double rho){
 	if(ptcl.pt() < 5) return 99999.;
 	if(!ptcl.isMuon() && !ptcl.isElectron()){
