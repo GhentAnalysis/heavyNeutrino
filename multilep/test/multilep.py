@@ -1,6 +1,7 @@
 import sys
 import FWCore.ParameterSet.Config as cms
 
+# Default arguments
 isData          = False
 treeForFakeRate = False # To be implemented
 isDiLep         = False # To be implemented (for 1l+2l trigger efficiencies in MET, 3l trigger efficiencies could be done with trilep samples in DoubleEG and DoubleMu)
@@ -11,7 +12,7 @@ outputFile      = None
 def getVal(arg):
     return arg.split('=')[-1]
 
-## loop over arguments
+# Loop over arguments
 for i in range(1,len(sys.argv)):
     print "[arg "+str(i)+"] : ", sys.argv[i]
     if   "isData"          in sys.argv[i]: isData          = (getVal(sys.argv[i]) == "True")
@@ -27,7 +28,6 @@ process = cms.Process("BlackJackAndHookers")
 # initialize MessageLogger and output report
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.threshold = 'INFO' # Options: INFO, WARNING, ERROR
-process.load("FWCore.MessageService.MessageLogger_cfi")
 
 #allow unscheduled mode  # aargh I hate this unscheduled mode, it is evil! Why do we need it?
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
@@ -58,7 +58,7 @@ updateJetCollection(
 
 if not outputFile:
   if treeForFakeRate: outputFile = 'fakeRate.root'
-  elif singleLep:     outputFile = 'singleLep.root'
+  elif isDiLep:       outputFile = 'dilepton.root'
   else:               outputFile = 'trilepton.root'
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
@@ -73,19 +73,19 @@ process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
 process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
-	vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
-	muons = cms.InputTag("slimmedMuons"),
-	electrons = cms.InputTag("slimmedElectrons"),
-	taus = cms.InputTag("slimmedTaus"),
-	packedCandidates = cms.InputTag("packedPFCandidates"),
-	rhoCentralNeutral = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
-	rhoAll = cms.InputTag("fixedGridRhoFastjetAll"),
-	met = cms.InputTag("slimmedMETs"),
-	#jets = cms.InputTag("slimmedJets")
-	jets = cms.InputTag("updatedPatJetsUpdatedJEC"),
-	triggers = cms.InputTag("TriggerResults","","HLT"),
-	recoResults = cms.InputTag("TriggerResults", "", "RECO"),
-	badPFMuonFilter = cms.InputTag("BadPFMuonFilter"),
+	vertices             = cms.InputTag("offlineSlimmedPrimaryVertices"),
+	muons                = cms.InputTag("slimmedMuons"),
+	electrons            = cms.InputTag("slimmedElectrons"),
+	taus                 = cms.InputTag("slimmedTaus"),
+	packedCandidates     = cms.InputTag("packedPFCandidates"),
+	rhoCentralNeutral    = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
+	rhoAll               = cms.InputTag("fixedGridRhoFastjetAll"),
+	met                  = cms.InputTag("slimmedMETs"),
+  jets                 = cms.InputTag("slimmedJets"),
+ #jets                 = cms.InputTag("updatedPatJetsUpdatedJEC"),
+	triggers             = cms.InputTag("TriggerResults","","HLT"),
+	recoResults          = cms.InputTag("TriggerResults", "", "RECO"),
+	badPFMuonFilter      = cms.InputTag("BadPFMuonFilter"),
 	badChargedCandFilter = cms.InputTag("BadChargedCandidateFilter")
 )
 
