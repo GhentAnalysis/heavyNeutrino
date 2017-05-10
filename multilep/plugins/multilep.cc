@@ -136,7 +136,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         //Isolation variables
         _relIso[_nL]  = Tools::getRelIso03(mu, *rhoJets);
         _miniIso[_nL] = Tools::getMiniIso(mu, *packedCands, 0.2, *rhoJets);
-        fillLeptonIdVars(mu);
+//        fillLeptonIdVars(mu);
         ++_nMu;
         ++_nL;
     }
@@ -162,7 +162,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         _miniIso[_nL] = Tools::getMiniIso(ele, *packedCands, 0.2, *rhoJets);
 
         //id variables TODO: how does this work with references instead of pointers?
-//        edm::RefToBase<pat::Electron> electronRef(edm::Ref<edm::View<pat::Electron>>(electrons, (*electron - electrons->begin())));
+        edm::RefToBase<pat::Electron> electronRef(edm::Ref<edm::View<pat::Electron>>(ele));
 /*        _mvaValue[leptonCounter]               = (*electronMvaIdMap)[electronRef];
         _passedCutBasedIdTight[leptonCounter]  = (*electronCutBasedIdMapT)[electronRef];
         _passedCutBasedIdMedium[leptonCounter] = (*electronCutBasedIdMapM)[electronRef];
@@ -171,7 +171,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         _passedMVA_SUSY[leptonCounter][1] = tools::passed_medium_MVA_FR_slidingCut(&*electron, _mvaValue[leptonCounter]);
         _passedMVA_SUSY[leptonCounter][2] = tools::passed_tight_MVA_FR_slidingCut( &*electron, _mvaValue[leptonCounter]);
 */
-        fillLeptonIdVars(ele);
+//        fillLeptonIdVars(ele);
 
         ++_nEle;
         ++_nL;

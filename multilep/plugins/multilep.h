@@ -137,12 +137,12 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     void fillMetFilterVars(const edm::Event&);                                     //Make MET filter decision
     bool metFiltersFlagged(const edm::Event&);                                     //Fill MET filter variables
 
-
     /*
      * Everything below is specific to the heavyNeutrino analysis, makes the tuples unusable for other analyses
      * Can't put it in a separate namespace because it accesses member variables of this class
      * Maybe better to rewrite some parts here
      */
+    /*
     template <class leptonType> void fillLeptonIdVars(const leptonType& lepton){
       _lLoose[_nL] = isLoose(lepton);
       _lFO[_nL]    = isFO(lepton);
@@ -197,7 +197,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       }
       return false;	
     }
-
+*/
 };
 #endif
 
