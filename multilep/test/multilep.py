@@ -52,6 +52,18 @@ updateJetCollection(
 
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
+# Set up electron ID (VID framework)
+process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
+from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
+switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
+                 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
+                 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
+for idmod in my_id_modules:
+    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+
+
+
 
 #Read additional MET filters not stored in miniAOD
 #Bad muon filter
@@ -64,22 +76,26 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
-# fakeRateTree         = cms.untracked.bool(outputFile.count('fakeRate')), # TO BE IMPLEMENTED
-# dileptonTree         = cms.untracked.bool(outputFile.count('dilepton')), # TO BE IMPLEMENTED
-  vertices             = cms.InputTag("offlineSlimmedPrimaryVertices"),
-  muons                = cms.InputTag("slimmedMuons"),
-  electrons            = cms.InputTag("slimmedElectrons"),
-  taus                 = cms.InputTag("slimmedTaus"),
-  packedCandidates     = cms.InputTag("packedPFCandidates"),
-  rhoCentralNeutral    = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
-  rhoAll               = cms.InputTag("fixedGridRhoFastjetAll"),
-  met                  = cms.InputTag("slimmedMETs"),
-  jets                 = cms.InputTag("slimmedJets"),
- #jets                 = cms.InputTag("updatedPatJetsUpdatedJEC"),
-  triggers             = cms.InputTag("TriggerResults","","HLT"),
-  recoResults          = cms.InputTag("TriggerResults", "", "RECO"),
-  badPFMuonFilter      = cms.InputTag("BadPFMuonFilter"),
-  badChargedCandFilter = cms.InputTag("BadChargedCandidateFilter")
+# fakeRateTree                 = cms.untracked.bool(outputFile.count('fakeRate')), # TO BE IMPLEMENTED
+# dileptonTree                 = cms.untracked.bool(outputFile.count('dilepton')), # TO BE IMPLEMENTED
+  vertices                     = cms.InputTag("offlineSlimmedPrimaryVertices"),
+  muons                        = cms.InputTag("slimmedMuons"),
+  electrons                    = cms.InputTag("slimmedElectrons"),
+  electronsMva                 = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
+  electronsMvaHZZ              = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
+  electronsCutBasedTight       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
+  electronsCutBasedMedium      = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
+  taus                         = cms.InputTag("slimmedTaus"),
+  packedCandidates             = cms.InputTag("packedPFCandidates"),
+  rhoCentralNeutral            = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
+  rhoAll                       = cms.InputTag("fixedGridRhoFastjetAll"),
+  met                          = cms.InputTag("slimmedMETs"),
+  jets                         = cms.InputTag("slimmedJets"),
+ #jets                         = cms.InputTag("updatedPatJetsUpdatedJEC"),
+  triggers                     = cms.InputTag("TriggerResults","","HLT"),
+  recoResults                  = cms.InputTag("TriggerResults", "", "RECO"),
+  badPFMuonFilter              = cms.InputTag("BadPFMuonFilter"),
+  badChargedCandFilter         = cms.InputTag("BadChargedCandidateFilter")
 )
 
 
@@ -90,6 +106,7 @@ if isData:
 
 process.p = cms.Path(process.BadPFMuonFilter * 
                      process.BadChargedCandidateFilter *
+                     process.egmGsfElectronIDSequence *
                      process.ak4PFCHSL1FastL2L3CorrectorChain *
                      process.blackJackAndHookers)
 

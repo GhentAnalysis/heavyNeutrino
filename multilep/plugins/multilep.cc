@@ -3,21 +3,25 @@
 #include "multilep.h" // Seems lots of includes are getting imported through this one
 
 multilep::multilep(const edm::ParameterSet& iConfig):
-    vtxToken(             consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
-    muonToken(            consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
-    eleToken(             consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
-    tauToken(             consumes<std::vector<pat::Tau>>(            iConfig.getParameter<edm::InputTag>("taus"))),
-    packedCandidatesToken(consumes<std::vector<pat::PackedCandidate>>(iConfig.getParameter<edm::InputTag>("packedCandidates"))),
-    rhoToken(             consumes<double>(                           iConfig.getParameter<edm::InputTag>("rhoCentralNeutral"))),
-    rhoTokenAll(          consumes<double>(                           iConfig.getParameter<edm::InputTag>("rhoAll"))),
-    metToken(             consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
-    jetToken(             consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
-  //jecToken(             consumes<reco::JetCorrector>(edm::InputTag("ak4PFCHSL1FastL2L3Corrector")))
-  //jecToken(             consumes<reco::JetCorrector>(edm::InputTag("ak4PFCHSL3Absolute")))
-    triggerToken(         consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
-    recoResultsToken(     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
-    badPFMuonFilterToken( consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
-    badChCandFilterToken( consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter")))
+    vtxToken(              consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
+    muonToken(             consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
+    eleToken(              consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
+    eleMvaToken(           consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
+    eleMvaHZZToken(        consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMvaHZZ"))),
+    eleCutBasedTightToken( consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedTight"))),
+    eleCutBasedMediumToken(consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedMedium"))),
+    tauToken(              consumes<std::vector<pat::Tau>>(            iConfig.getParameter<edm::InputTag>("taus"))),
+    packedCandidatesToken( consumes<std::vector<pat::PackedCandidate>>(iConfig.getParameter<edm::InputTag>("packedCandidates"))),
+    rhoToken(              consumes<double>(                           iConfig.getParameter<edm::InputTag>("rhoCentralNeutral"))),
+    rhoTokenAll(           consumes<double>(                           iConfig.getParameter<edm::InputTag>("rhoAll"))),
+    metToken(              consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
+    jetToken(              consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
+  //jecToken(              consumes<reco::JetCorrector>(edm::InputTag("ak4PFCHSL1FastL2L3Corrector")))
+  //jecToken(              consumes<reco::JetCorrector>(edm::InputTag("ak4PFCHSL3Absolute")))
+    triggerToken(          consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
+    recoResultsToken(      consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
+    badPFMuonFilterToken(  consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
+    badChCandFilterToken(  consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter")))
 {
     //usesResource("TFileService");
 }
@@ -79,16 +83,20 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     _eventNb   = (unsigned long) iEvent.id().event();
 
     //Get all objects
-    edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,              vertices);
-    edm::Handle<double> rhoJets;                                     iEvent.getByToken(rhoToken,              rhoJets);    // For JEC
-    edm::Handle<double> rhoJetsAll;                                  iEvent.getByToken(rhoTokenAll,           rhoJetsAll); // For PUC
-    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(jetToken,              jets);
-  //edm::Handle<reco::JetCorrector> jec;                             iEvent.getByToken(jecToken,              jec);
-    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(packedCandidatesToken, packedCands);
-    edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(muonToken,             muons);
-    edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(eleToken,              electrons);
-    edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(tauToken,              taus);
-    edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,              mets);
+    edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,               vertices);
+    edm::Handle<double> rhoJets;                                     iEvent.getByToken(rhoToken,               rhoJets);    // For JEC
+    edm::Handle<double> rhoJetsAll;                                  iEvent.getByToken(rhoTokenAll,            rhoJetsAll); // For PUC
+    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(jetToken,               jets);
+  //edm::Handle<reco::JetCorrector> jec;                             iEvent.getByToken(jecToken,               jec);
+    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(packedCandidatesToken,  packedCands);
+    edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(muonToken,              muons);
+    edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(eleToken,               electrons);
+    edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(eleMvaToken,            electronsMva);
+    edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(eleMvaHZZToken,         electronsMvaHZZ);
+    edm::Handle<edm::ValueMap<bool>> electronsCutBasedTight;         iEvent.getByToken(eleCutBasedTightToken,  electronsCutBasedTight);
+    edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(eleCutBasedMediumToken, electronsCutBasedMedium);
+    edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(tauToken,               taus);
+    edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,               mets);
 
     //loop over jets
     _nJets = 0;
@@ -149,6 +157,18 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         //isolation variables
         _relIso[_nL]  = Tools::getRelIso03(ele, *rhoJets);
         _miniIso[_nL] = Tools::getMiniIso(ele, *packedCands, 0.2, *rhoJets);
+/*
+        //id variables TODO
+        edm::RefToBase<pat::Electron> electronRef(edm::Ref<edm::View<pat::Electron>>(electrons, (electron - electrons->begin())));
+        _mvaValue[leptonCounter]               = (*electronMvaIdMap)[electronRef];
+        _passedCutBasedIdTight[leptonCounter]  = (*electronCutBasedIdMapT)[electronRef];
+        _passedCutBasedIdMedium[leptonCounter] = (*electronCutBasedIdMapM)[electronRef];
+
+        _passedMVA_SUSY[leptonCounter][0] = tools::passed_loose_MVA_FR_slidingCut( &*electron, _mvaValue[leptonCounter], _mvaValue_HZZ[leptonCounter]);
+        _passedMVA_SUSY[leptonCounter][1] = tools::passed_medium_MVA_FR_slidingCut(&*electron, _mvaValue[leptonCounter]);
+        _passedMVA_SUSY[leptonCounter][2] = tools::passed_tight_MVA_FR_slidingCut( &*electron, _mvaValue[leptonCounter]);
+*/
+
         ++_nEle;
         ++_nL;
     }
