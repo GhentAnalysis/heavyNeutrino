@@ -105,7 +105,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         //if(jet.pt()< 25) continue;
         if(jet.pt() < 25) continue;
         if(fabs(jet.eta()) > 2.4) continue;
-        std::cout << "jet pt: " << jet.pt() << "        " << "jet eta: " << jet.eta() << std::endl;
+        edm::LogInfo("multilep") << "jet pt: " << jet.pt() << "        " << "jet eta: " << jet.eta();
         _jetPt[_nJets] = jet.pt();
         _jetEta[_nJets] = jet.eta();
         _jetPhi[_nJets] = jet.phi();
@@ -114,8 +114,8 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     }
 
     //lepton selection
-    _nL = 0;
-    _nMu = 0;
+    _nL   = 0;
+    _nMu  = 0;
     _nEle = 0;
     _nTau = 0;
 
@@ -128,7 +128,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         fillLeptonKinVars(mu);
         fillLeptonGenVars(mu.genParticle());
         _flavor[_nL]  = 1;
-        //Vertex variables
+        //Vertex variables // better move this too in fillLeptonIdVars
         _dxy[_nL]     = mu.innerTrack()->dxy();
         _dz[_nL]      = mu.innerTrack()->dz();
         _3dIP[_nL]    = mu.dB(pat::Muon::PV3D);
@@ -136,13 +136,14 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         //Isolation variables
         _relIso[_nL]  = Tools::getRelIso03(mu, *rhoJets);
         _miniIso[_nL] = Tools::getMiniIso(mu, *packedCands, 0.2, *rhoJets);
+        fillLeptonIdVars(mu);
         ++_nMu;
         ++_nL;
     }
 
     //loop over electrons
     for(const pat::Electron& ele : *electrons){
-        if(_nL == nL_max)           continue;
+        if(_nL == nL_max)           continue; // Was the same in the old code, still don't like this way of doing things
         if(ele.gsfTrack().isNull()) continue;
         if(ele.pt() < 10)           continue;
         if(fabs(ele.eta()) > 2.5)   continue;
@@ -154,13 +155,15 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         _dz[_nL]      = ele.gsfTrack()->dz();
         _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
         _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
+
+
         //isolation variables
         _relIso[_nL]  = Tools::getRelIso03(ele, *rhoJets);
         _miniIso[_nL] = Tools::getMiniIso(ele, *packedCands, 0.2, *rhoJets);
-/*
-        //id variables TODO
-        edm::RefToBase<pat::Electron> electronRef(edm::Ref<edm::View<pat::Electron>>(electrons, (electron - electrons->begin())));
-        _mvaValue[leptonCounter]               = (*electronMvaIdMap)[electronRef];
+
+        //id variables TODO: how does this work with references instead of pointers?
+//        edm::RefToBase<pat::Electron> electronRef(edm::Ref<edm::View<pat::Electron>>(electrons, (*electron - electrons->begin())));
+/*        _mvaValue[leptonCounter]               = (*electronMvaIdMap)[electronRef];
         _passedCutBasedIdTight[leptonCounter]  = (*electronCutBasedIdMapT)[electronRef];
         _passedCutBasedIdMedium[leptonCounter] = (*electronCutBasedIdMapM)[electronRef];
 
@@ -168,6 +171,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         _passedMVA_SUSY[leptonCounter][1] = tools::passed_medium_MVA_FR_slidingCut(&*electron, _mvaValue[leptonCounter]);
         _passedMVA_SUSY[leptonCounter][2] = tools::passed_tight_MVA_FR_slidingCut( &*electron, _mvaValue[leptonCounter]);
 */
+        fillLeptonIdVars(ele);
 
         ++_nEle;
         ++_nL;
@@ -198,8 +202,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     const pat::MET& met = (*mets).front();
     _met = met.pt();
     _metPhi = met.phi();
-    std::cout << "met  : " << _met << "                " << "met phi : " << _metPhi << std::endl;
-    //std::cout << "##################################################" << std::endl;
+    edm::LogInfo("multilep") << "met  : " << _met << "                " << "met phi : " << _metPhi;
     //store calculated event info in root tree
     outputTree->Fill();
 
