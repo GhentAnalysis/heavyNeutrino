@@ -35,7 +35,7 @@ process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 #define globaltag for JEC
 #process.load('Configuration.StandardSequences.Services_cff') # do we need this? I don't think so
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = '' if isData else '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
+process.GlobalTag.globaltag = '80X_dataRun2_2016LegacyRepro_v3' if isData else '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
 #load JEC
 process.load('JetMETCorrections.Configuration.JetCorrectors_cff')
