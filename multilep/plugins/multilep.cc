@@ -105,7 +105,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         //if(jet.pt()< 25) continue;
         if(jet.pt() < 25) continue;
         if(fabs(jet.eta()) > 2.4) continue;
-        edm::LogInfo("multilep") << "jet pt: " << jet.pt() << "        " << "jet eta: " << jet.eta();
         _jetPt[_nJets] = jet.pt();
         _jetEta[_nJets] = jet.eta();
         _jetPhi[_nJets] = jet.phi();
@@ -142,31 +141,33 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     }
 
     //loop over electrons
-    for(const pat::Electron& ele : *electrons){
-        if(_nL == nL_max)           continue; // Was the same in the old code, still don't like this way of doing things
-        if(ele.gsfTrack().isNull()) continue;
-        if(ele.pt() < 10)           continue;
-        if(fabs(ele.eta()) > 2.5)   continue;
-        fillLeptonKinVars(ele);
-        fillLeptonGenVars(ele.genParticle());
+    for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
+        if(_nL == nL_max)            continue; // Was the same in the old code, still don't like this way of doing things
+        if(ele->gsfTrack().isNull()) continue;
+        if(ele->pt() < 10)           continue;
+        if(fabs(ele->eta()) > 2.5)   continue;
+        fillLeptonKinVars(*ele);
+        fillLeptonGenVars(ele->genParticle());
         _flavor[_nL]  = 0;
         //Vertex varitables
-        _dxy[_nL]     = ele.gsfTrack()->dxy();
-        _dz[_nL]      = ele.gsfTrack()->dz();
-        _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
-        _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
+        _dxy[_nL]     = ele->gsfTrack()->dxy();
+        _dz[_nL]      = ele->gsfTrack()->dz();
+        _3dIP[_nL]    = ele->dB(pat::Electron::PV3D);
+        _3dIPSig[_nL] = ele->dB(pat::Electron::PV3D)/ele->edB(pat::Electron::PV3D);
 
 
         //isolation variables
-        _relIso[_nL]  = Tools::getRelIso03(ele, *rhoJets);
-        _miniIso[_nL] = Tools::getMiniIso(ele, *packedCands, 0.2, *rhoJets);
+        _relIso[_nL]  = Tools::getRelIso03(*ele, *rhoJets);
+        _miniIso[_nL] = Tools::getMiniIso(*ele, *packedCands, 0.2, *rhoJets);
 
-        //id variables TODO: how does this work with references instead of pointers?
-        edm::RefToBase<pat::Electron> electronRef(edm::Ref<edm::View<pat::Electron>>(ele));
-/*        _mvaValue[leptonCounter]               = (*electronMvaIdMap)[electronRef];
-        _passedCutBasedIdTight[leptonCounter]  = (*electronCutBasedIdMapT)[electronRef];
-        _passedCutBasedIdMedium[leptonCounter] = (*electronCutBasedIdMapM)[electronRef];
-
+        //id variables TODO: put those in the tree
+        edm::RefToBase<pat::Electron> electronRef(edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin())));
+        float _mvaValue              = (*electronsMva)[electronRef];
+/*        float _mvaValue_HZZ          = (*electronsMva)[electronRef];
+        bool _passedCutBasedIdTight  = (*electronsCutBasedTight)[electronRef];
+        bool _passedCutBasedIdMedium = (*electronsCutBasedMedium)[electronRef];*/
+        std::cout << _mvaValue << std::endl;
+/*
         _passedMVA_SUSY[leptonCounter][0] = tools::passed_loose_MVA_FR_slidingCut( &*electron, _mvaValue[leptonCounter], _mvaValue_HZZ[leptonCounter]);
         _passedMVA_SUSY[leptonCounter][1] = tools::passed_medium_MVA_FR_slidingCut(&*electron, _mvaValue[leptonCounter]);
         _passedMVA_SUSY[leptonCounter][2] = tools::passed_tight_MVA_FR_slidingCut( &*electron, _mvaValue[leptonCounter]);
@@ -202,7 +203,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     const pat::MET& met = (*mets).front();
     _met = met.pt();
     _metPhi = met.phi();
-    edm::LogInfo("multilep") << "met  : " << _met << "                " << "met phi : " << _metPhi;
     //store calculated event info in root tree
     outputTree->Fill();
 

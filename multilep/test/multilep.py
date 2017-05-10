@@ -21,9 +21,8 @@ for i in range(1,len(sys.argv)):
 
 process = cms.Process("BlackJackAndHookers")
 
-# initialize MessageLogger and output report
+# initialize MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.MessageLogger.cerr.threshold = 'INFO' # Options: INFO, WARNING, ERROR
 
 #allow unscheduled mode  # aargh I hate this unscheduled mode, it is evil! Why do we need it?
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
@@ -63,8 +62,6 @@ for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
 
-
-
 #Read additional MET filters not stored in miniAOD
 #Bad muon filter
 process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
@@ -72,6 +69,7 @@ process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
 for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
+
 
 
 # Main Process
