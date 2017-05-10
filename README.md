@@ -17,7 +17,7 @@ cd heavyNeutrino/multilep/test
 cmsRun multilep.py
 ```
 
-# Mass prodution of tuples
+# Mass production of tuples
 ```
 cd heavyNeutrino/multilep/test
 ./submitAll.py <datasetsFile>
