@@ -52,15 +52,18 @@ process.jecSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process
 
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
-# Set up electron ID (VID framework)
+# Set up electron and photon identifications
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
-for idmod in my_id_modules:
-    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+switchOnVIDPhotonIdProducer(  process, DataFormat.MiniAOD)
+electronModules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
+                   'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff',
+                   'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
+photonModules   = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff',
+                   'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff']
+for idmod in electronModules: setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+for idmod in photonModules:   setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
 
 #Read additional MET filters not stored in miniAOD
@@ -72,29 +75,36 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
 
-
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
-# fakeRateTree                 = cms.untracked.bool(outputFile.count('fakeRate')), # TO BE IMPLEMENTED
-# dileptonTree                 = cms.untracked.bool(outputFile.count('dilepton')), # TO BE IMPLEMENTED
-  vertices                     = cms.InputTag("offlineSlimmedPrimaryVertices"),
-  muons                        = cms.InputTag("slimmedMuons"),
-  electrons                    = cms.InputTag("slimmedElectrons"),
-  electronsMva                 = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
-  electronsMvaHZZ              = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
-  electronsCutBasedTight       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
-  electronsCutBasedMedium      = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
-  taus                         = cms.InputTag("slimmedTaus"),
-  packedCandidates             = cms.InputTag("packedPFCandidates"),
-  rhoCentralNeutral            = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
-  rhoAll                       = cms.InputTag("fixedGridRhoFastjetAll"),
-  met                          = cms.InputTag("slimmedMETs"),
- #jets                         = cms.InputTag("slimmedJets"),
-  jets                         = cms.InputTag("updatedPatJetsUpdatedJEC"),
-  triggers                     = cms.InputTag("TriggerResults","","HLT"),
-  recoResults                  = cms.InputTag("TriggerResults", "", "RECO"),
-  badPFMuonFilter              = cms.InputTag("BadPFMuonFilter"),
-  badChargedCandFilter         = cms.InputTag("BadChargedCandidateFilter")
+# fakeRateTree                  = cms.untracked.bool(outputFile.count('fakeRate')), # TO BE IMPLEMENTED
+# dileptonTree                  = cms.untracked.bool(outputFile.count('dilepton')), # TO BE IMPLEMENTED
+  vertices                      = cms.InputTag("offlineSlimmedPrimaryVertices"),
+  muons                         = cms.InputTag("slimmedMuons"),
+  electrons                     = cms.InputTag("slimmedElectrons"),
+  electronsMva                  = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
+  electronsMvaHZZ               = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
+  electronsCutBasedTight        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
+  electronsCutBasedMedium       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
+  photons                       = cms.InputTag("slimmedPhotons"),
+  photonsCutBasedLoose          = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-loose"),
+  photonsCutBasedMedium         = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-medium"),
+  photonsCutBasedTight          = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-tight"),
+  photonsMva                    = cms.InputTag("photonMVAValueMapProducer:PhotonMVAEstimatorRun2Spring16NonTrigV1Values"),
+  photonsChargedIsolation       = cms.InputTag("photonIDValueMapProducer:phoChargedIsolation"),
+  photonsNeutralHadronIsolation = cms.InputTag("photonIDValueMapProducer:phoNeutralHadronIsolation"),
+  photonsPhotonIsolation        = cms.InputTag("photonIDValueMapProducer:phoPhotonIsolation"),
+  taus                          = cms.InputTag("slimmedTaus"),
+  packedCandidates              = cms.InputTag("packedPFCandidates"),
+  rhoCentralNeutral             = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
+  rhoAll                        = cms.InputTag("fixedGridRhoFastjetAll"),
+  met                           = cms.InputTag("slimmedMETs"),
+ #jets                          = cms.InputTag("slimmedJets"),
+  jets                          = cms.InputTag("updatedPatJetsUpdatedJEC"),
+  triggers                      = cms.InputTag("TriggerResults","","HLT"),
+  recoResults                   = cms.InputTag("TriggerResults", "", "RECO"),
+  badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
+  badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter")
 )
 
 
@@ -106,6 +116,8 @@ if isData:
 process.p = cms.Path(process.BadPFMuonFilter * 
                      process.BadChargedCandidateFilter *
                      process.egmGsfElectronIDSequence *
+                     process.egmPhotonIDSequence *
+#                     process.photonIDValueMapProducer *
                      process.jecSequence *
                      process.blackJackAndHookers)
 
