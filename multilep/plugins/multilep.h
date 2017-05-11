@@ -153,7 +153,10 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     float    _photonChargedIsolation[nPhoton_max];
     float    _photonNeutralHadronIsolation[nPhoton_max];
     float    _photonPhotonIsolation[nPhoton_max];
-
+    float    _photonSigmaIetaIeta[nPhoton_max];
+    float    _photonHadronicOverEm[nPhoton_max];
+    bool     _photonPassElectronVeto[nPhoton_max];
+    bool     _photonHasPixelSeed[nPhoton_max];
 
     //Additional class functions
     void fillTriggerVars(const edm::Event&);

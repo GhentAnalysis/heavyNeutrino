@@ -63,7 +63,10 @@ void multilep::beginJob(){
         outputTree->Branch("_photonMva",                    &_photonMva,                    "_photonMva[_nPhoton]/F");
         outputTree->Branch("_photonChargedIsolation",       &_photonChargedIsolation,       "_photonChargedIsolation[_nPhoton]/F");
         outputTree->Branch("_photonNeutralHadronIsolation", &_photonNeutralHadronIsolation, "_photonNeutralHadronIsolation[_nPhoton]/F");
-        outputTree->Branch("_photonPhotonIsolation",        &_photonPhotonIsolation,        "_photonPhotonIsolation[_nPhoton]/F");
+        outputTree->Branch("_photonSigmaIetaIeta",          &_photonSigmaIetaIeta,          "_photonSigmaIetaIeta[_nPhoton]/F");
+        outputTree->Branch("_photonHadronicOverEm",         &_photonHadronicOverEm,         "_photonHadronicOverEm[_nPhoton]/F");
+        outputTree->Branch("_photonPassElectronVeto",       &_photonPassElectronVeto,       "_photonPassElectronVeto[_nPhoton]/O");
+        outputTree->Branch("_photonHasPixelSeed",           &_photonHasPixelSeed,           "_photonHasPixelSeed[_nPhoton]/O");
 
         //lepton variables
         //number of leptons
@@ -158,6 +161,11 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       _photonChargedIsolation[_nPhoton]        = (*photonsChargedIsolation)[photonRef];
       _photonNeutralHadronIsolation[_nPhoton]  = (*photonsNeutralHadronIsolation)[photonRef];
       _photonPhotonIsolation[_nPhoton]         = (*photonsPhotonIsolation)[photonRef];
+      _photonSigmaIetaIeta[_nPhoton]           = photon->full5x5_sigmaIetaIeta();
+      _photonHadronicOverEm[_nPhoton]          = photon->hadronicOverEm();
+      _photonPassElectronVeto[_nPhoton]        = photon->passElectronVeto();
+      _photonHasPixelSeed[_nPhoton]            = photon->hasPixelSeed();
+
       ++_nPhoton;
     }
 
