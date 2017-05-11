@@ -4,7 +4,7 @@ import FWCore.ParameterSet.Config as cms
 # Default arguments
 inputFile       = '/store/mc/RunIISummer16MiniAODv2/ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/120000/50D92A94-D1D0-E611-BEA6-D4AE526A023A.root'
 isData          = False
-nEvents         = -1
+nEvents         = 100
 outputFile      = 'trilepton.root'
 
 def getVal(arg):
@@ -24,15 +24,15 @@ process = cms.Process("BlackJackAndHookers")
 # initialize MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
-#allow unscheduled mode  # aargh I hate this unscheduled mode, it is evil! Why do we need it?
-process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
+# Unscheduled mode makes no difference for us
+#process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
 process.source    = cms.Source("PoolSource", fileNames = cms.untracked.vstring(inputFile.split(",")))
 process.options   = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 
 #define globaltag for JEC
-#process.load('Configuration.StandardSequences.Services_cff') # do we need this? I don't think so
+process.load('Configuration.StandardSequences.Services_cff') # do we need this? I don't think so
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = '80X_dataRun2_2016LegacyRepro_v3' if isData else '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
@@ -48,6 +48,7 @@ updateJetCollection(
    labelName = 'UpdatedJEC',
    jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None')  # Do not forget 'L2L3Residual' on data!
 )
+process.jecSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC * process.ak4PFCHSL1FastL2L3CorrectorChain)
 
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
@@ -88,8 +89,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   rhoCentralNeutral            = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
   rhoAll                       = cms.InputTag("fixedGridRhoFastjetAll"),
   met                          = cms.InputTag("slimmedMETs"),
-  jets                         = cms.InputTag("slimmedJets"),
- #jets                         = cms.InputTag("updatedPatJetsUpdatedJEC"),
+ #jets                         = cms.InputTag("slimmedJets"),
+  jets                         = cms.InputTag("updatedPatJetsUpdatedJEC"),
   triggers                     = cms.InputTag("TriggerResults","","HLT"),
   recoResults                  = cms.InputTag("TriggerResults", "", "RECO"),
   badPFMuonFilter              = cms.InputTag("BadPFMuonFilter"),
@@ -105,6 +106,6 @@ if isData:
 process.p = cms.Path(process.BadPFMuonFilter * 
                      process.BadChargedCandidateFilter *
                      process.egmGsfElectronIDSequence *
-                     process.ak4PFCHSL1FastL2L3CorrectorChain *
+                     process.jecSequence *
                      process.blackJackAndHookers)
 
