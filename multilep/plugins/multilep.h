@@ -41,9 +41,9 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
-
-// Include for leptonId functions
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
+
 #include "TLorentzVector.h"
 
 
@@ -52,6 +52,7 @@
 // class declaration
 //
 class LeptonAnalyzer;
+class PhotonAnalyzer;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
@@ -96,13 +97,12 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     virtual void endJob() override;
 
     LeptonAnalyzer* leptonAnalyzer;
+    PhotonAnalyzer* photonAnalyzer;
 
     edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
     //FILE* outFile;
     TTree* outputTree;
-    static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
     static const unsigned nJets_max   = 20;
-    static const unsigned nPhoton_max = 5;
 
     unsigned long _runNb;                                                                            //event labels
     unsigned long _lumiBlock;
@@ -119,24 +119,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     bool _passHnlTrigger[4];                                                                         //0 = eee, 1 = eem, 2 = emm, 3 = mmm
     bool _badMuonFlagged;
     bool _badCloneMuonFlagged;
-
-    unsigned _nPhoton;                                                                               // photon variables
-    float    _photonPt[nPhoton_max];
-    float    _photonEta[nPhoton_max];
-    float    _photonPhi[nPhoton_max];
-    float    _photonE[nPhoton_max];
-    bool     _photonCutBasedLoose[nPhoton_max];
-    bool     _photonCutBasedMedium[nPhoton_max];
-    bool     _photonCutBasedTight[nPhoton_max];
-    float    _photonMva[nPhoton_max];
-    float    _photonChargedIsolation[nPhoton_max];
-    float    _photonNeutralHadronIsolation[nPhoton_max];
-    float    _photonPhotonIsolation[nPhoton_max];
-    float    _photonSigmaIetaIeta[nPhoton_max];
-    float    _photonHadronicOverEm[nPhoton_max];
-    bool     _photonPassElectronVeto[nPhoton_max];
-    bool     _photonHasPixelSeed[nPhoton_max];
-
     //Additional class functions
     void fillTriggerVars(const edm::Event&);
     bool trigPass(unsigned, edm::Handle<edm::TriggerResults>&, const edm::Event&);
