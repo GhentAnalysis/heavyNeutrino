@@ -81,7 +81,9 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 # dileptonTree                  = cms.untracked.bool(outputFile.count('dilepton')), # TO BE IMPLEMENTED
   vertices                      = cms.InputTag("offlineSlimmedPrimaryVertices"),
   muons                         = cms.InputTag("slimmedMuons"),
+  muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
   electrons                     = cms.InputTag("slimmedElectrons"),
+  electronsEffectiveAreas       = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'), # WARNING this is spring 15, following SUSY-standard, i.e. not the most up-to-date values
   electronsMva                  = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
   electronsMvaHZZ               = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
   electronsCutBasedTight        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
@@ -104,7 +106,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   triggers                      = cms.InputTag("TriggerResults","","HLT"),
   recoResults                   = cms.InputTag("TriggerResults", "", "RECO"),
   badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
-  badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter")
+  badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
 )
 
 

@@ -3,8 +3,9 @@
 <use name="DataFormats/VertexReco"/>
 <use name="DataFormats/MuonReco"/>
 <use name="DataFormats/EgammaReco"/>
-<use name="CommonTools/UtilAlgos"/>
 <use name="DataFormats/PatCandidates"/>
+<use name="CommonTools/UtilAlgos"/>
+<use name="RecoEgamma/EgammaTools"/>
 <export>
   <lib   name="1"/>
 </export>

@@ -1,45 +1,35 @@
-#include "heavyNeutrino/multilep/interface/Tools.h"
-#include <cmath>
-#include <algorithm>
+#include "../interface/LeptonAnalyzer.h"
+#include "FWCore/ParameterSet/interface/FileInPath.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-// Eventually move to code which takes the usual effArea config file, as is done in the Majorana code or through the EffectiveAreas class
-// Code below is simply horrible
-double Tools::getEffArea(const unsigned flavor, const double eta){
-		double effA[2][7] = {{0.1752, 0.1862, 0.1411, 0.1534, 0.1903, 0.2243, 0.2687}, {0.0735, 0.0619, 0.0465, 0.0433, 0.0577, 0, 0}};
-		double etaBins[2][6] = { {1, 1.479, 2.0, 2.2, 2.3, 2.4}, {0.8, 1.3, 2.0, 2.2, 0, 0}};
-		unsigned nEtaBins[2] = {7, 5};
-		for(unsigned e = 0; e < nEtaBins[flavor]; ++e){
-			if(fabs(eta) < etaBins[flavor][e]) return effA[flavor][e];
-		}
-		return effA[flavor][nEtaBins[flavor]];
-}
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-double Tools::getRelIso03(const pat::Muon& mu, const double rho){ //Note: effective area correction is used instead of delta-beta correction
-	double puCorr = rho*getEffArea(1, mu.eta());
+#include "TTree.h"
+
+
+double LeptonAnalyzer::getRelIso03(const pat::Muon& mu, const double rho){ //Note: effective area correction is used instead of delta-beta correction
+	double puCorr = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
 	double absIso = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - puCorr);
 	return absIso/mu.pt();
 }
 
-//double Tools::getIsoAlt(const pat::Muon& mu, double rho){
-	//double puCorr = rho*getEffArea(1, mu.eta());
-	//double absIso = mu.chargedHadronIso() + std::max(0., mu.neutralHadronIso() + mu.photonIso() - puCorr);
-	//return absIso/mu.pt();
-//}
-
-double Tools::getRelIso03(const pat::Electron& ele, const double rho){
-	double puCorr = rho*getEffArea(0, ele.eta());
+double LeptonAnalyzer::getRelIso03(const pat::Electron& ele, const double rho){
+	double puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
 	double absIso = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - puCorr);
 	return absIso/ele.pt();
 }
 
 // This is used for the misolation below
-double Tools::getRelIso(const reco::RecoCandidate& ptcl, const std::vector<pat::PackedCandidate>& pfcands, const double coneSize, const double rho){
+double LeptonAnalyzer::getRelIso(const reco::RecoCandidate& ptcl, const std::vector<pat::PackedCandidate>& pfcands, const double coneSize, const double rho){
 	if(ptcl.pt() < 5) return 99999.;
 	if(!ptcl.isMuon() && !ptcl.isElectron()){
 		std::cerr << "ERROR in getRelIso: function only defined for muons and electrons" << std::endl;
 		return 99999.;
 	}
-	double puCorr = rho*getEffArea(ptcl.isMuon(), ptcl.eta());
+	double puCorr;
+  if(ptcl.isMuon()) puCorr = rho*muonsEffectiveAreas.getEffectiveArea(ptcl.eta());
+  else              puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
 	double deadCone_nHadr = 0, deadCone_chHadr = 0, deadCone_ph = 0;
 	//determine dead cone around particle
 	if(ptcl.isElectron()){
@@ -88,9 +78,9 @@ double Tools::getRelIso(const reco::RecoCandidate& ptcl, const std::vector<pat::
 	return (chHadrIso + std::max(0., nHadrIso + phIso - puCorr))/(ptcl.pt());
 }
 				
-double Tools::getMiniIso(const reco::RecoCandidate& ptcl, const std::vector<pat::PackedCandidate>& pfcands, const double maxCone, const double rho){
+double LeptonAnalyzer::getMiniIso(const reco::RecoCandidate& ptcl, const std::vector<pat::PackedCandidate>& pfcands, const double maxCone, const double rho){
 	double coneSize = std::max(0.05, std::min(maxCone, 10./ptcl.pt()));
-	return Tools::getRelIso(ptcl, pfcands, coneSize, rho);
+	return LeptonAnalyzer::getRelIso(ptcl, pfcands, coneSize, rho);
 }
 
 

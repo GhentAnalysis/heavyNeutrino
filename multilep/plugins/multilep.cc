@@ -1,6 +1,7 @@
 //include gen particles for matching
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "multilep.h" // Seems lots of includes are getting imported through this one
+#include "../interface/LeptonAnalyzer.h"
 
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
@@ -31,7 +32,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
     badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter")))
 {
-    //usesResource("TFileService");
+    leptonAnalyzer = new LeptonAnalyzer(iConfig, this);
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -68,8 +69,9 @@ void multilep::beginJob(){
         outputTree->Branch("_photonPassElectronVeto",       &_photonPassElectronVeto,       "_photonPassElectronVeto[_nPhoton]/O");
         outputTree->Branch("_photonHasPixelSeed",           &_photonHasPixelSeed,           "_photonHasPixelSeed[_nPhoton]/O");
 
-        //lepton variables
-        //number of leptons
+        //lepton variables are added by the leptonAnalyzer class
+        leptonAnalyzer->beginJob(outputTree);
+/*        //number of leptons
         outputTree->Branch("_nL",                           &_nL,                           "_nL/b");
         outputTree->Branch("_nMu",                          &_nMu,                          "_nMu/b");
         outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/b");
@@ -88,7 +90,7 @@ void multilep::beginJob(){
         //other lepton variables
         outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
         outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
-        //MET
+*/        //MET
         outputTree->Branch("_met",                          &_met,                          "_met/D");
         outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
         //Trigger and MET filter decisions
@@ -113,14 +115,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<double> rhoJetsAll;                                  iEvent.getByToken(rhoTokenAll,                       rhoJetsAll); // For PUC
     edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(jetToken,                          jets);
   //edm::Handle<reco::JetCorrector> jec;                             iEvent.getByToken(jecToken,                          jec);
-    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(packedCandidatesToken,             packedCands);
-    edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(muonToken,                         muons);
-    edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(eleToken,                          electrons);
-    edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(eleMvaToken,                       electronsMva);
-    edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(eleMvaHZZToken,                    electronsMvaHZZ);
-    edm::Handle<edm::ValueMap<bool>> electronsCutBasedTight;         iEvent.getByToken(eleCutBasedTightToken,             electronsCutBasedTight);
-    edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(eleCutBasedMediumToken,            electronsCutBasedMedium);
-    edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(tauToken,                          taus);
     edm::Handle<std::vector<pat::Photon>> photons;                   iEvent.getByToken(photonToken,                       photons);
     edm::Handle<edm::ValueMap<bool>> photonsCutBasedLoose;           iEvent.getByToken(photonCutBasedLooseToken,          photonsCutBasedLoose);
     edm::Handle<edm::ValueMap<bool>> photonsCutBasedMedium;          iEvent.getByToken(photonCutBasedMediumToken,         photonsCutBasedMedium);
@@ -130,6 +124,8 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<edm::ValueMap<float>> photonsNeutralHadronIsolation; iEvent.getByToken(photonNeutralHadronIsolationToken, photonsNeutralHadronIsolation);
     edm::Handle<edm::ValueMap<float>> photonsPhotonIsolation;        iEvent.getByToken(photonPhotonIsolationToken,        photonsPhotonIsolation);
     edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
+
+    leptonAnalyzer->analyze(iEvent);
 
     //loop over jets
     _nJets = 0;
@@ -169,87 +165,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       ++_nPhoton;
     }
 
-
-    //lepton selection
-    _nL   = 0;
-    _nMu  = 0;
-    _nEle = 0;
-    _nTau = 0;
-    //loop over muons
-    for(const pat::Muon& mu : *muons){
-        if(_nL == nL_max)            continue;
-        if(mu.innerTrack().isNull()) continue;
-        if(mu.pt() < 5)              continue;
-        if(fabs(mu.eta()) > 2.4)     continue;
-        fillLeptonKinVars(mu);
-        fillLeptonGenVars(mu.genParticle());
-        _flavor[_nL]  = 1;
-        //Vertex variables // better move this too in fillLeptonIdVars
-        _dxy[_nL]     = mu.innerTrack()->dxy();
-        _dz[_nL]      = mu.innerTrack()->dz();
-        _3dIP[_nL]    = mu.dB(pat::Muon::PV3D);
-        _3dIPSig[_nL] = mu.dB(pat::Muon::PV3D)/mu.edB(pat::Muon::PV3D);
-        //Isolation variables
-        _relIso[_nL]  = Tools::getRelIso03(mu, *rhoJets);
-        _miniIso[_nL] = Tools::getMiniIso(mu, *packedCands, 0.2, *rhoJets);
-//        fillLeptonIdVars(mu);
-        ++_nMu;
-        ++_nL;
-    }
-
-    // Loop over electrons (note: using iterator we can easily get the ref too)
-    for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
-      auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
-      if(_nL == nL_max)            continue;
-      if(ele->gsfTrack().isNull()) continue;
-      if(ele->pt() < 10)           continue;
-      if(fabs(ele->eta()) > 2.5)   continue;
-      fillLeptonKinVars(*ele);
-      fillLeptonGenVars(ele->genParticle());
-      _flavor[_nL]  = 0;
-      //Vertex varitables
-      _dxy[_nL]     = ele->gsfTrack()->dxy();
-      _dz[_nL]      = ele->gsfTrack()->dz();
-      _3dIP[_nL]    = ele->dB(pat::Electron::PV3D);
-      _3dIPSig[_nL] = ele->dB(pat::Electron::PV3D)/ele->edB(pat::Electron::PV3D);
-
-
-      //isolation variables
-      _relIso[_nL]  = Tools::getRelIso03(*ele, *rhoJets);
-      _miniIso[_nL] = Tools::getMiniIso(*ele, *packedCands, 0.2, *rhoJets);
-
-      //id variables TODO: put those in the tree
-      float _mvaValue              = (*electronsMva)[electronRef];
-/*      float _mvaValue_HZZ          = (*electronsMva)[electronRef];
-      bool _passedCutBasedIdTight  = (*electronsCutBasedTight)[electronRef];
-      bool _passedCutBasedIdMedium = (*electronsCutBasedMedium)[electronRef];*/
-      std::cout << _mvaValue << std::endl;
-/*
-      _passedMVA_SUSY[leptonCounter][0] = tools::passed_loose_MVA_FR_slidingCut( &*electron, _mvaValue[leptonCounter], _mvaValue_HZZ[leptonCounter]);
-      _passedMVA_SUSY[leptonCounter][1] = tools::passed_medium_MVA_FR_slidingCut(&*electron, _mvaValue[leptonCounter]);
-      _passedMVA_SUSY[leptonCounter][2] = tools::passed_tight_MVA_FR_slidingCut( &*electron, _mvaValue[leptonCounter]);
-*/
-//        fillLeptonIdVars(ele);
-
-      ++_nEle;
-      ++_nL;
-    }
-    _nLight = _nEle + _nMu;
-
-    //loop over taus
-    for(const pat::Tau& tau : *taus){
-        if(_nL == nL_max)         continue;
-        if(tau.pt() < 20)         continue; //investigate up to what Pt threshold taus can be properly reconstructed
-        if(fabs(tau.eta()) > 2.3) continue;
-        fillLeptonKinVars(tau);
-        _flavor[_nL]  = 2;
-        _dxy[_nL]     = tau.dxy();
-        //_dz[_nL]    = tau.dz();
-        _3dIP[_nL]    = tau.ip3d();
-        _3dIPSig[_nL] = tau.ip3d_Sig();
-        ++_nTau;
-        ++_nL;
-    }
     //Preselect number of leptons here for code efficiency
 
     //Fill trigger and MET filter decisions
@@ -279,25 +194,6 @@ void multilep::fillDescriptions(edm::ConfigurationDescriptions& descriptions){
     desc.setUnknown();
     descriptions.addDefault(desc);
 }
-
-
-//------------- Fill reconstructed lepton variables ---------------------
-void multilep::fillLeptonKinVars(const reco::Candidate& lepton){
-    //kinematics
-    _lPt[_nL]    = lepton.pt();
-    _lEta[_nL]   = lepton.eta();
-    _lPhi[_nL]   = lepton.phi();
-    _lE[_nL]     = lepton.energy();
-    _charge[_nL] = lepton.charge();
-}
-
-
-//------------- Fill MC-truth lepton variables -------------------
-void multilep::fillLeptonGenVars(const reco::GenParticle* genParticle){
-    if(genParticle != nullptr) _isPrompt[_nL] = (genParticle)->isPromptFinalState();
-    else                       _isPrompt[_nL] = false;
-}
-//----------------------------------------------------------
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(multilep);
