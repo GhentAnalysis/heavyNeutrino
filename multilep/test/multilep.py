@@ -74,12 +74,17 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
+process.load('CommonTools.ParticleFlow.goodOfflinePrimaryVertices_cfi')
+process.goodOfflinePrimaryVertices.src    = cms.InputTag('offlineSlimmedPrimaryVertices')
+process.goodOfflinePrimaryVertices.filter = cms.bool(True) # This was false in the old Majorana code, why?
+
+
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 # fakeRateTree                  = cms.untracked.bool(outputFile.count('fakeRate')), # TO BE IMPLEMENTED
 # dileptonTree                  = cms.untracked.bool(outputFile.count('dilepton')), # TO BE IMPLEMENTED
-  vertices                      = cms.InputTag("offlineSlimmedPrimaryVertices"),
+  vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
   muons                         = cms.InputTag("slimmedMuons"),
   muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
   electrons                     = cms.InputTag("slimmedElectrons"),
@@ -115,7 +120,8 @@ if isData:
   process.source.lumisToProcess = LumiList.LumiList(filename = 'TO_BE_ADDED').getVLuminosityBlockRange()
 
 
-process.p = cms.Path(process.BadPFMuonFilter * 
+process.p = cms.Path(process.goodOfflinePrimaryVertices *
+                     process.BadPFMuonFilter *
                      process.BadChargedCandidateFilter *
                      process.egmGsfElectronIDSequence *
                      process.egmPhotonIDSequence *

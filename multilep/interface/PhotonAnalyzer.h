@@ -1,27 +1,21 @@
 #ifndef PHOTON_ANALYZER_H
 #define PHOTON_ANALYZER_H
-#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Photon.h"
+
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "FWCore/ParameterSet/interface/FileInPath.h"
-#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 #include "FWCore/Framework/interface/Event.h"
-#include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 
+#include "heavyNeutrino/multilep/plugins/multilep.h"
 
-#include "../plugins/multilep.h"
 #include "TTree.h"
 
-/*
- * Functions for electron identification
- */
 class multilep;
 
 class PhotonAnalyzer {
   private:
     static const unsigned nPhoton_max = 5;
 
-    unsigned _nPhoton;                                                                               // photon variables
+    unsigned _nPhoton;
     float    _photonPt[nPhoton_max];
     float    _photonEta[nPhoton_max];
     float    _photonPhi[nPhoton_max];

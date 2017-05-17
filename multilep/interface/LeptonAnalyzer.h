@@ -1,15 +1,16 @@
 #ifndef LEPTON_ANALYZER_H
 #define LEPTON_ANALYZER_H
 #include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "FWCore/ParameterSet/interface/FileInPath.h"
-#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 #include "FWCore/Framework/interface/Event.h"
-#include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/one/EDAnalyzer.h"
+#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
+#include "heavyNeutrino/multilep/plugins/multilep.h"
 
-#include "../plugins/multilep.h"
 #include "TTree.h"
 
 /*
@@ -56,7 +57,7 @@ class LeptonAnalyzer {
     ~LeptonAnalyzer();
 
     void beginJob(TTree* outputTree);
-    void analyze(const edm::Event&);
+    void analyze(const edm::Event&, reco::Vertex::Point&);
 
     float dEtaInSeed(const pat::Electron*);
     bool isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
@@ -68,8 +69,11 @@ class LeptonAnalyzer {
     bool passingElectronMvaMediumSusy(const pat::Electron*, double);
     bool passingElectronMvaTightSusy(const pat::Electron*, double);
     bool passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
-    void fillLeptonGenVars(const reco::GenParticle* genParticle);                                    //Fill MC-truth lepton variables
-    void fillLeptonKinVars(const reco::Candidate&);                                                  //Fill reconstructed lepton kinematics
+    void fillLeptonGenVars(const reco::GenParticle*);
+    void fillLeptonKinVars(const reco::Candidate&);
+    void fillLeptonImpactParameters(const pat::Electron&, reco::Vertex::Point&);
+    void fillLeptonImpactParameters(const pat::Muon&, reco::Vertex::Point&);
+    void fillLeptonImpactParameters(const pat::Tau&);
 
     double getRelIso03(const pat::Muon&, const double);
     //double getIsoAlt(const pat::Muon&, double);

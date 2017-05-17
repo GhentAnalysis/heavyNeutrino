@@ -1,39 +1,24 @@
 #ifndef MULTILEP_H
 #define MULTILEP_H
-// system include files
-
-#include <memory>
-#include <typeinfo> //To check lepton types
+//#include <memory>
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/one/EDAnalyzer.h"
 
+
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
-
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-//new include statements
-#include "DataFormats/TrackReco/interface/Track.h"
-#include "DataFormats/TrackReco/interface/TrackFwd.h"
-#include "FWCore/MessageLogger/interface/MessageLogger.h"
-
-
-//Dataformats
-//#include "DataFormats/RecoCandidate/interface/RecoCandidate.h"
-
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
-#include "DataFormats/VertexReco/interface/Vertex.h"
-#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
-//#include "DataFormats/EgammaCandidates/interface/Photon.h"
-//#include "DataFormats/EgammaCandidates/interface/PhotonFwd.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
-#include "JetMETCorrections/JetCorrector/interface/JetCorrector.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 
 #include "TTree.h"
@@ -44,7 +29,6 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 
-#include "TLorentzVector.h"
 
 
 
@@ -83,10 +67,9 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     edm::EDGetTokenT<std::vector<pat::PackedCandidate>> packedCandidatesToken;                       //particle collection used to calculate isolation variables
     edm::EDGetTokenT<double>                            rhoToken;                                    //neutal energy density in terms of deltaR used for pileup corrections
     edm::EDGetTokenT<double>                            rhoTokenAll;                                 //energy density used for JEC
-    edm::EDGetTokenT<std::vector<pat::MET>>             metToken;                                    //missing transverse energy
-    edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;                                    //jet collection
-  //edm::EDGetTokenT<reco::JetCorrector>                jecToken;                                    //JEC
-    edm::EDGetTokenT<edm::TriggerResults>               triggerToken;                                //Trigger information
+    edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
+    edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
+    edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
     edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
     edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
     edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD

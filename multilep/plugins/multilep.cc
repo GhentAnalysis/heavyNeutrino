@@ -1,7 +1,6 @@
-//include gen particles for matching
+#include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
-#include "multilep.h" // Seems lots of includes are getting imported through this one
-#include "../interface/LeptonAnalyzer.h"
+
 
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
@@ -47,6 +46,7 @@ void multilep::beginJob(){
         outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
         outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
         outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
+        outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
         //jet variables
         outputTree->Branch("_nJets",                        &_nJets,                        "_nJets/b");
         outputTree->Branch("_jetPt",                        &_jetPt,                        "_jetPt[_nJets]/D");
@@ -85,7 +85,18 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   //edm::Handle<reco::JetCorrector> jec;                             iEvent.getByToken(jecToken,                          jec);
     edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
 
-    leptonAnalyzer->analyze(iEvent);
+
+    _nVertex = vertices->size();
+
+    reco::Vertex::Point PV = vertices->begin()->position();
+/*    //std::cout<<PV.x()<<" "<<PV.y()<<" "<<PV.z()<<std::endl;
+    const Vertex* PVtx = &((*theVertices)[0]);
+    _PVchi2 = PVtx->chi2();
+    _PVerr[0] = PVtx->xError();
+    _PVerr[1] = PVtx->yError();
+    _PVerr[2] = PVtx->zError();*/
+
+    leptonAnalyzer->analyze(iEvent, PV);
     photonAnalyzer->analyze(iEvent);
 
     //loop over jets

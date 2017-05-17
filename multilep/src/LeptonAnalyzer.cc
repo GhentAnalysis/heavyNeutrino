@@ -1,12 +1,7 @@
-#include "../interface/LeptonAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
+
 #include "FWCore/ParameterSet/interface/FileInPath.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-
-#include "TTree.h"
-
+#include "TLorentzVector.h"
 /*
  * Calculating all lepton-related variables
  * I know, code is still messy here, but it will improve
@@ -46,7 +41,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
 }
 
-void LeptonAnalyzer::analyze(const edm::Event& iEvent){
+void LeptonAnalyzer::analyze(const edm::Event& iEvent, reco::Vertex::Point& PV){
   edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
   edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
   edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
@@ -56,6 +51,7 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
   edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
   edm::Handle<double> rhoJets;                                     iEvent.getByToken(multilepAnalyzer->rhoToken,                          rhoJets);
+  edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(multilepAnalyzer->vtxToken,                          vertices) ;
 
   _nL     = 0;
   _nLight = 0;
@@ -71,12 +67,8 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent){
     if(fabs(mu.eta()) > 2.4)     continue;
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
+    fillLeptonImpactParameters(mu, PV);
     _lFlavor[_nL] = 1;
-    //Vertex variables // better move this too in fillLeptonIdVars
-    _dxy[_nL]     = mu.innerTrack()->dxy(); // Still need to provide PV !!!!!!!!!!!!
-    _dz[_nL]      = mu.innerTrack()->dz();
-    _3dIP[_nL]    = mu.dB(pat::Muon::PV3D);
-    _3dIPSig[_nL] = mu.dB(pat::Muon::PV3D)/mu.edB(pat::Muon::PV3D);
     //Isolation variables
     _relIso[_nL]  = getRelIso03(mu, *rhoJets);
     _miniIso[_nL] = getMiniIso(mu, *packedCands, 0.2, *rhoJets);
@@ -99,18 +91,11 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent){
     if(fabs(ele->eta()) > 2.5)   continue;
     fillLeptonKinVars(*ele);
     fillLeptonGenVars(ele->genParticle());
+    fillLeptonImpactParameters(*ele, PV);
     _lFlavor[_nL]  = 0;
-    //Vertex varitables
-    _dxy[_nL]           = ele->gsfTrack()->dxy();
-    _dz[_nL]            = ele->gsfTrack()->dz();
-    _3dIP[_nL]          = ele->dB(pat::Electron::PV3D);
-    _3dIPSig[_nL]       = ele->dB(pat::Electron::PV3D)/ele->edB(pat::Electron::PV3D);
-
-    //isolation variables
     _relIso[_nL]        = getRelIso03(*ele, *rhoJets);
     _miniIso[_nL]       = getMiniIso(*ele, *packedCands, 0.2, *rhoJets);
 
-  //float_mvaValue_HZZ = (*electronsMva)[electronRef];
     _lElectronMva[_nL] = (*electronsMvaHZZ)[electronRef];
     _lHNLoose[_nL]     = isHNLoose(*ele);
     _lHNFO[_nL]        = isHNFO(*ele);
@@ -124,16 +109,12 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent){
   //loop over taus
   for(const pat::Tau& tau : *taus){
     if(_nL == nL_max)         continue;
-    if(tau.pt() < 20)         continue; //investigate up to what Pt threshold taus can be properly reconstructed
+    if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
     if(fabs(tau.eta()) > 2.3) continue;
     fillLeptonKinVars(tau);
+    fillLeptonImpactParameters(tau);
     _lFlavor[_nL]  = 2;
-    _dxy[_nL]      = tau.dxy();
-  //_dz[_nL]       = tau.dz();
-    _dz[_nL]       = 0;
-    _3dIP[_nL]     = tau.ip3d();
-    _3dIPSig[_nL]  = tau.ip3d_Sig();
-    _lHNLoose[_nL] = false; // TO BE IMPLEMENTED
+    _lHNLoose[_nL] = false;                      // TO BE IMPLEMENTED
     _lHNFO[_nL]    = false;
     _lHNTight[_nL] = false;
     ++_nTau;
@@ -142,18 +123,45 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent){
 }
 
 void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
-    //kinematics
-    _lPt[_nL]     = lepton.pt();
-    _lEta[_nL]    = lepton.eta();
-    _lPhi[_nL]    = lepton.phi();
-    _lE[_nL]      = lepton.energy();
-    _lCharge[_nL] = lepton.charge();
+  _lPt[_nL]     = lepton.pt();
+  _lEta[_nL]    = lepton.eta();
+  _lPhi[_nL]    = lepton.phi();
+  _lE[_nL]      = lepton.energy();
+  _lCharge[_nL] = lepton.charge();
 }
 
 void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
-    if(genParticle != nullptr) _isPrompt[_nL] = (genParticle)->isPromptFinalState();
-    else                       _isPrompt[_nL] = false;
+  if(genParticle != nullptr) _isPrompt[_nL] = (genParticle)->isPromptFinalState();
+  else                       _isPrompt[_nL] = false;
 }
+
+
+/*
+ * Impact parameters:
+ * Provide PV to dxy/dz otherwise you get dxy/dz to the beamspot instead of the primary vertex
+ * For taus: dxy is pre-computed with PV it was constructed with
+ */
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, reco::Vertex::Point& PV){
+  _dxy[_nL]     = ele.gsfTrack()->dxy(PV);
+  _dz[_nL]      = ele.gsfTrack()->dz(PV);
+  _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
+  _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
+}
+
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, reco::Vertex::Point& PV){
+  _dxy[_nL]     = muon.innerTrack()->dxy(PV);
+  _dz[_nL]      = muon.innerTrack()->dz(PV);
+  _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
+  _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
+}
+
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau){
+  _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
+  _dz[_nL]      = 0;                                                       // no dz function, might add computation like is done in heppy
+  _3dIP[_nL]    = tau.ip3d();
+  _3dIPSig[_nL] = tau.ip3d_Sig(); 
+}
+
 
 
 //Check if electron overlaps with loose muon
