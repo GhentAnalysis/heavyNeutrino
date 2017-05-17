@@ -24,8 +24,6 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     rhoTokenAll(                      consumes<double>(                           iConfig.getParameter<edm::InputTag>("rhoAll"))),
     metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
     jetToken(                         consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
-  //jecToken(                         consumes<reco::JetCorrector>(               edm::InputTag("ak4PFCHSL1FastL2L3Corrector")))
-  //jecToken(                         consumes<reco::JetCorrector>(               edm::InputTag("ak4PFCHSL3Absolute")))
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     recoResultsToken(                 consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
@@ -33,99 +31,68 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 {
     leptonAnalyzer = new LeptonAnalyzer(iConfig, this);
     photonAnalyzer = new PhotonAnalyzer(iConfig, this);
+    jetAnalyzer    = new JetAnalyzer(iConfig, this);
 }
 
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
-        //Initialize tree with event info
-        //outputTree = new TTree("multiLepTree", "high level event info");
-        outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
+  //Initialize tree with event info
+  outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
 
-        //Set all branches of the outputTree
-        //event labels
-        outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
-        outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
-        outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
-        outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
-        //jet variables
-        outputTree->Branch("_nJets",                        &_nJets,                        "_nJets/b");
-        outputTree->Branch("_jetPt",                        &_jetPt,                        "_jetPt[_nJets]/D");
-        outputTree->Branch("_jetEta",                       &_jetEta,                       "_jetEta[_nJets]/D");
-        outputTree->Branch("_jetPhi",                       &_jetPhi,                       "_jetPhi[_nJets]/D");
-        outputTree->Branch("_jetE",                         &_jetE,                         "_jetE[_nJets]/D");
+  //Set all branches of the outputTree
+  outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
+  outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
+  outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
+  outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
-        //lepton and photon branches
-        leptonAnalyzer->beginJob(outputTree);
-        photonAnalyzer->beginJob(outputTree);
+  leptonAnalyzer->beginJob(outputTree);
+  photonAnalyzer->beginJob(outputTree);
+  jetAnalyzer->beginJob(outputTree);
 
-        //MET
-        outputTree->Branch("_met",                          &_met,                          "_met/D");
-        outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
-        //Trigger and MET filter decisions
-        outputTree->Branch("_passHnlTrigger",               &_passHnlTrigger,               "_passHnlTrigger[4]/O");
-        outputTree->Branch("_metFiltersFlagged",            &_metFiltersFlagged,            "_metFiltersFlagged/O");
-        outputTree->Branch("_badMuonFlagged",               &_badMuonFlagged,               "_badMuonFlagged/O");
-        outputTree->Branch("_badCloneMuonFlagged",          &_badCloneMuonFlagged,          "_badCloneMuonFlagged/O");
+  outputTree->Branch("_met",                          &_met,                          "_met/D");
+  outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
+
+  outputTree->Branch("_passHnlTrigger",               &_passHnlTrigger,               "_passHnlTrigger[4]/O");
+  outputTree->Branch("_metFiltersFlagged",            &_metFiltersFlagged,            "_metFiltersFlagged/O");
+  outputTree->Branch("_badMuonFlagged",               &_badMuonFlagged,               "_badMuonFlagged/O");
+  outputTree->Branch("_badCloneMuonFlagged",          &_badCloneMuonFlagged,          "_badCloneMuonFlagged/O");
 }
 
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
-    //determine event number run number and luminosity block
-    _runNb     = (unsigned long) iEvent.id().run();
-    _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
-    _eventNb   = (unsigned long) iEvent.id().event();
+  //determine event number run number and luminosity block
+  _runNb     = (unsigned long) iEvent.id().run();
+  _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
+  _eventNb   = (unsigned long) iEvent.id().event();
 
-    //Get all objects
-    edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,                          vertices);
-    edm::Handle<double> rhoJets;                                     iEvent.getByToken(rhoToken,                          rhoJets);    // For JEC
-    edm::Handle<double> rhoJetsAll;                                  iEvent.getByToken(rhoTokenAll,                       rhoJetsAll); // For PUC
-    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(jetToken,                          jets);
-  //edm::Handle<reco::JetCorrector> jec;                             iEvent.getByToken(jecToken,                          jec);
-    edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
+  //Get all objects
+  edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,                          vertices);
+//  edm::Handle<double> rhoJets;                                     iEvent.getByToken(rhoToken,                          rhoJets);    // For JEC
+//  edm::Handle<double> rhoJetsAll;                                  iEvent.getByToken(rhoTokenAll,                       rhoJetsAll); // For PUC
+  edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
 
 
-    _nVertex = vertices->size();
+  _nVertex = vertices->size();
+  reco::Vertex::Point PV = vertices->begin()->position();
 
-    reco::Vertex::Point PV = vertices->begin()->position();
-/*    //std::cout<<PV.x()<<" "<<PV.y()<<" "<<PV.z()<<std::endl;
-    const Vertex* PVtx = &((*theVertices)[0]);
-    _PVchi2 = PVtx->chi2();
-    _PVerr[0] = PVtx->xError();
-    _PVerr[1] = PVtx->yError();
-    _PVerr[2] = PVtx->zError();*/
+  leptonAnalyzer->analyze(iEvent, PV);
+  photonAnalyzer->analyze(iEvent);
 
-    leptonAnalyzer->analyze(iEvent, PV);
-    photonAnalyzer->analyze(iEvent);
+  //Preselect number of leptons here for code efficiency
+  // TODO: boolean function in leptonAnalyzer class for the skim
 
-    //loop over jets
-    _nJets = 0;
-    for(const pat::Jet& jet: *jets){
-        //double corr = jec->correction(jet);
-        //if(jet.pt()< 25) continue;
-        if(jet.pt() < 25) continue;
-        if(fabs(jet.eta()) > 2.4) continue;
-        _jetPt[_nJets] = jet.pt();
-        _jetEta[_nJets] = jet.eta();
-        _jetPhi[_nJets] = jet.phi();
-        _jetE[_nJets] = jet.energy();
-        ++_nJets;
-    }
-    //Preselect number of leptons here for code efficiency
-    // TODO: boolean function in leptonAnalyzer class for the skim
+  //Fill trigger and MET filter decisions
+  fillTriggerVars(iEvent);
+  fillMetFilterVars(iEvent);
 
-    //Fill trigger and MET filter decisions
-    fillTriggerVars(iEvent);
-    fillMetFilterVars(iEvent);
-
-    //determine the met of the event
-    const pat::MET& met = (*mets).front();
-    _met = met.pt();
-    _metPhi = met.phi();
-    //store calculated event info in root tree
-    outputTree->Fill();
-
+  //determine the met of the event
+  const pat::MET& met = (*mets).front();
+  _met    = met.pt();
+  _metPhi = met.phi();
+  //store calculated event info in root tree
+  outputTree->Fill();
 }
 
 

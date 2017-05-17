@@ -28,6 +28,7 @@
 
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
 
 
 
@@ -37,6 +38,7 @@
 //
 class LeptonAnalyzer;
 class PhotonAnalyzer;
+class JetAnalyzer;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
@@ -81,20 +83,14 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
     LeptonAnalyzer* leptonAnalyzer;
     PhotonAnalyzer* photonAnalyzer;
+    JetAnalyzer*    jetAnalyzer;
 
     edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
-    //FILE* outFile;
     TTree* outputTree;
-    static const unsigned nJets_max   = 20;
 
     unsigned long _runNb;                                                                            //event labels
     unsigned long _lumiBlock;
     unsigned long _eventNb;
-    unsigned _nJets;                                                                                 //jet variables
-    double _jetPt[nJets_max];
-    double _jetEta[nJets_max];
-    double _jetPhi[nJets_max];
-    double _jetE[nJets_max];
     double _met;                                                                                     //met kinematics
     double _metPhi;
     unsigned _nVertex;                                                                               //Event variables
