@@ -36,22 +36,25 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nL]/O");
   outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nL]/O");
   outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nL]/O");
+  outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
+  outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
+  outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
 
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
 }
 
-void LeptonAnalyzer::analyze(const edm::Event& iEvent, reco::Vertex::Point& PV){
+void LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
   edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
   edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
-  edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
-  edm::Handle<edm::ValueMap<bool>> electronsCutBasedTight;         iEvent.getByToken(multilepAnalyzer->eleCutBasedTightToken,             electronsCutBasedTight);
+//edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
+  edm::Handle<edm::ValueMap<bool>> electronsCutBasedLoose;         iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBasedLoose);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBasedMedium);
+  edm::Handle<edm::ValueMap<bool>> electronsCutBasedTight;         iEvent.getByToken(multilepAnalyzer->eleCutBasedTightToken,             electronsCutBasedTight);
   edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
   edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
   edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
   edm::Handle<double> rhoJets;                                     iEvent.getByToken(multilepAnalyzer->rhoToken,                          rhoJets);
-  edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(multilepAnalyzer->vtxToken,                          vertices) ;
 
   _nL     = 0;
   _nLight = 0;
@@ -67,15 +70,18 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent, reco::Vertex::Point& PV){
     if(fabs(mu.eta()) > 2.4)     continue;
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
-    fillLeptonImpactParameters(mu, PV);
+    fillLeptonImpactParameters(mu, primaryVertex);
     _lFlavor[_nL] = 1;
     //Isolation variables
     _relIso[_nL]  = getRelIso03(mu, *rhoJets);
     _miniIso[_nL] = getMiniIso(mu, *packedCands, 0.2, *rhoJets);
 
-    _lHNLoose[_nL] = isHNLoose(mu);
-    _lHNFO[_nL]    = isHNFO(mu);    // don't change order, they rely on above variables
-    _lHNTight[_nL] = isHNTight(mu);
+    _lHNLoose[_nL]   = isHNLoose(mu);
+    _lHNFO[_nL]      = isHNFO(mu);    // don't change order, they rely on above variables
+    _lHNTight[_nL]   = isHNTight(mu);
+    _lPOGLoose[_nL]  = mu.isLooseMuon();
+    _lPOGMedium[_nL] = mu.isMediumMuon();
+    _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
 
     ++_nMu;
     ++_nL;
@@ -91,15 +97,18 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent, reco::Vertex::Point& PV){
     if(fabs(ele->eta()) > 2.5)   continue;
     fillLeptonKinVars(*ele);
     fillLeptonGenVars(ele->genParticle());
-    fillLeptonImpactParameters(*ele, PV);
+    fillLeptonImpactParameters(*ele, primaryVertex);
     _lFlavor[_nL]  = 0;
     _relIso[_nL]        = getRelIso03(*ele, *rhoJets);
     _miniIso[_nL]       = getMiniIso(*ele, *packedCands, 0.2, *rhoJets);
 
-    _lElectronMva[_nL] = (*electronsMvaHZZ)[electronRef];
+    _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lHNLoose[_nL]     = isHNLoose(*ele);
     _lHNFO[_nL]        = isHNFO(*ele);
     _lHNTight[_nL]     = isHNTight(*ele);
+    _lPOGLoose[_nL]    = (*electronsCutBasedLoose)[electronRef];
+    _lPOGMedium[_nL]   = (*electronsCutBasedMedium)[electronRef];
+    _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];
 
     ++_nEle;
     ++_nL;
@@ -141,16 +150,16 @@ void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
  * Provide PV to dxy/dz otherwise you get dxy/dz to the beamspot instead of the primary vertex
  * For taus: dxy is pre-computed with PV it was constructed with
  */
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, reco::Vertex::Point& PV){
-  _dxy[_nL]     = ele.gsfTrack()->dxy(PV);
-  _dz[_nL]      = ele.gsfTrack()->dz(PV);
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const reco::Vertex& vertex){
+  _dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
+  _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
   _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
   _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
 }
 
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, reco::Vertex::Point& PV){
-  _dxy[_nL]     = muon.innerTrack()->dxy(PV);
-  _dz[_nL]      = muon.innerTrack()->dz(PV);
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
+  _dxy[_nL]     = muon.innerTrack()->dxy(vertex.position());                              // Change innerTrack to muonBestTrack? Both are in use in CMS
+  _dz[_nL]      = muon.innerTrack()->dz(vertex.position());
   _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
 }
@@ -165,10 +174,8 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau){
 
 
 //Check if electron overlaps with loose muon
-//There's a better way to do this
 bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
-  TLorentzVector eleV, muV;
-  eleV.SetPtEtaPhiE(ele.pt(), ele.eta(), ele.phi(), ele.energy());
+  TLorentzVector eleV(ele.pt(), ele.eta(), ele.phi(), ele.energy());
   for(unsigned m = 0; m < _nMu; ++m){
     if(_lHNLoose[m]){
       TLorentzVector muV(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);

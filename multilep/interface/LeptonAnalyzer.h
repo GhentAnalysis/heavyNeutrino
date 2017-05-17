@@ -45,6 +45,9 @@ class LeptonAnalyzer {
     bool _lHNLoose[nL_max];                                                                          //lepton selection decisions
     bool _lHNFO[nL_max];
     bool _lHNTight[nL_max];
+    bool _lPOGLoose[nL_max];
+    bool _lPOGMedium[nL_max];
+    bool _lPOGTight[nL_max];
     bool _isPrompt[nL_max];                                                                          //generator lepton variables
     bool _truthPdg[nL_max];
     bool _truthMomPdg[nL_max];
@@ -57,7 +60,7 @@ class LeptonAnalyzer {
     ~LeptonAnalyzer();
 
     void beginJob(TTree* outputTree);
-    void analyze(const edm::Event&, reco::Vertex::Point&);
+    void analyze(const edm::Event&, const reco::Vertex&);
 
     float dEtaInSeed(const pat::Electron*);
     bool isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
@@ -71,8 +74,8 @@ class LeptonAnalyzer {
     bool passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
     void fillLeptonGenVars(const reco::GenParticle*);
     void fillLeptonKinVars(const reco::Candidate&);
-    void fillLeptonImpactParameters(const pat::Electron&, reco::Vertex::Point&);
-    void fillLeptonImpactParameters(const pat::Muon&, reco::Vertex::Point&);
+    void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
+    void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Tau&);
 
     double getRelIso03(const pat::Muon&, const double);

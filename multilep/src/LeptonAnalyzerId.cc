@@ -109,7 +109,6 @@ bool LeptonAnalyzer::passingElectronMvaHeavyNeutrinoFO(const pat::Electron* ele,
 bool LeptonAnalyzer::isHNLoose(const pat::Muon& lepton){
   if(fabs(_dxy[_nL]) > 0.05 || fabs(_dz[_nL]) > 0.1) return false;
   if(_relIso[_nL] > 0.6)                             return false;
-//return (lepton.isPFMuon() && (lepton.isTrackerMuon() || lepton.isGlobalMuon()) && (lepton.pt > 5); // I'm pretty sure the line below is the same
   return (lepton.isLooseMuon() && lepton.pt() > 5); // Don't we apply pt cuts already in multilepton.cc? Should remove these
 }
     

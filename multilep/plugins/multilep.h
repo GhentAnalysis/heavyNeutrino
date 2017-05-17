@@ -55,8 +55,9 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
     edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;
     edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaHZZToken;
-    edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedTightToken;
+    edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedLooseToken;
     edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedMediumToken;
+    edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedTightToken;
     edm::EDGetTokenT<std::vector<pat::Tau>>             tauToken;
     edm::EDGetTokenT<std::vector<pat::Photon>>          photonToken;
     edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedLooseToken;
