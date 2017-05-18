@@ -1,7 +1,6 @@
 #ifndef MULTILEP_H
 #define MULTILEP_H
 //#include <memory>
-
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/one/EDAnalyzer.h"
@@ -72,6 +71,9 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     edm::EDGetTokenT<double>                            rhoTokenAll;                                 //energy density used for JEC
     edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
     edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
+    edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
+    edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedUpToken;
+    edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedDownToken;
     edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
     edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
     edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD

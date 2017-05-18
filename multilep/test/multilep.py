@@ -4,7 +4,7 @@ import FWCore.ParameterSet.Config as cms
 # Default arguments
 inputFile       = '/store/mc/RunIISummer16MiniAODv2/ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/120000/50D92A94-D1D0-E611-BEA6-D4AE526A023A.root'
 isData          = False
-nEvents         = 10000
+nEvents         = 1000
 outputFile      = 'trilepton.root'
 
 def getVal(arg):
@@ -28,19 +28,33 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 100
 # Unscheduled mode makes no difference for us
 #process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
-process.source    = cms.Source("PoolSource", fileNames = cms.untracked.vstring(inputFile.split(",")))
-process.options   = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
+process.source       = cms.Source("PoolSource", fileNames = cms.untracked.vstring(inputFile.split(",")))
+process.options      = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
+process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
+process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
-#define globaltag for JEC
+#
+# Vertex collection
+#
+process.load('CommonTools.ParticleFlow.goodOfflinePrimaryVertices_cfi')
+process.goodOfflinePrimaryVertices.src    = cms.InputTag('offlineSlimmedPrimaryVertices')
+process.goodOfflinePrimaryVertices.filter = cms.bool(True) # This was false in the old Majorana code, why?
+
+
+#
+# Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
+# Has currently no effect (Moriond2017 miniAOD contains latest JEC)
+#
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = '80X_dataRun2_2016LegacyRepro_v3' if isData else '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
-
-#load JEC
 process.load('JetMETCorrections.Configuration.JetCorrectors_cff')
+process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7' if isData else '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
+if isData:
+  jetCorrectorLevels          = ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']
+  process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
+else:
+  jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
+  process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
-jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
-if isData: jetCorrectorLevels += ['L2L3Residual']
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 updateJetCollection(
    process,
@@ -48,11 +62,33 @@ updateJetCollection(
    labelName = 'UpdatedJEC',
    jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
 )
-process.jecSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC * process.ak4PFCHSL1FastL2L3CorrectorChain)
+process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC * process.ak4PFCHSL1FastL2L3CorrectorChain)
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
+
+#
+# JER, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
+#
+for (i, j) in [(0, ''), (-1, 'Down'), (1, 'Up')]:
+  jetSmearing = cms.EDProducer('SmearedPATJetProducer',
+        src          = cms.InputTag('updatedPatJetsUpdatedJEC'),
+        enabled      = cms.bool(True),
+        rho          = cms.InputTag("fixedGridRhoFastjetAll"),
+        algo         = cms.string('AK4PFchs'),
+        algopt       = cms.string('AK4PFchs_pt'),
+        genJets      = cms.InputTag('slimmedGenJets'),
+        dRMax        = cms.double(0.2),
+        dPtMaxFactor = cms.double(3),
+        debug        = cms.untracked.bool(False),
+        variation    = cms.int32(i),
+  )
+  setattr(process, 'jetSmearing'+j, jetSmearing)
+  process.jetSequence *= jetSmearing
+
+
+#
 # Set up electron and photon identifications
+#
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
@@ -66,17 +102,15 @@ for idmod in electronModules: setupAllVIDIdsInModule(process,idmod,setupVIDElect
 for idmod in photonModules:   setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
 
-#Read additional MET filters not stored in miniAOD
-#Bad muon filter
+
+#
+# Read additional MET filters not stored in miniAOD
+#
 process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
 for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
-
-process.load('CommonTools.ParticleFlow.goodOfflinePrimaryVertices_cfi')
-process.goodOfflinePrimaryVertices.src    = cms.InputTag('offlineSlimmedPrimaryVertices')
-process.goodOfflinePrimaryVertices.filter = cms.bool(True) # This was false in the old Majorana code, why?
 
 
 
@@ -108,6 +142,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   rhoAll                        = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
   jets                          = cms.InputTag("updatedPatJetsUpdatedJEC"),
+  jetsSmeared                   = cms.InputTag("jetSmearing"),
+  jetsSmearedUp                 = cms.InputTag("jetSmearingUp"),
+  jetsSmearedDown               = cms.InputTag("jetSmearingDown"),
+  jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt"),
   triggers                      = cms.InputTag("TriggerResults","","HLT"),
   recoResults                   = cms.InputTag("TriggerResults", "", "RECO"),
   badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
@@ -125,7 +163,6 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadChargedCandidateFilter *
                      process.egmGsfElectronIDSequence *
                      process.egmPhotonIDSequence *
-#                     process.photonIDValueMapProducer *
-                     process.jecSequence *
+                     process.jetSequence *
                      process.blackJackAndHookers)
 

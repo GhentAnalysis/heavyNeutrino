@@ -25,6 +25,9 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     rhoTokenAll(                      consumes<double>(                           iConfig.getParameter<edm::InputTag>("rhoAll"))),
     metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
     jetToken(                         consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
+    jetSmearedToken(                  consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
+    jetSmearedUpToken(                consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
+    jetSmearedDownToken(              consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     recoResultsToken(                 consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
@@ -79,6 +82,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
   leptonAnalyzer->analyze(iEvent, *(vertices->begin()));
   photonAnalyzer->analyze(iEvent);
+  jetAnalyzer->analyze(iEvent);
 
   //Preselect number of leptons here for code efficiency
   // TODO: boolean function in leptonAnalyzer class for the skim

@@ -6,6 +6,7 @@
 <use name="DataFormats/PatCandidates"/>
 <use name="CommonTools/UtilAlgos"/>
 <use name="RecoEgamma/EgammaTools"/>
+<use name="CondFormats/JetMETObjects"/>
 <export>
   <lib   name="1"/>
 </export>
