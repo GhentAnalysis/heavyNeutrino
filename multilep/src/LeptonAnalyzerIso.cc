@@ -20,67 +20,47 @@ double LeptonAnalyzer::getRelIso03(const pat::Electron& ele, const double rho){
 	return absIso/ele.pt();
 }
 
-// This is used for the misolation below
-double LeptonAnalyzer::getRelIso(const reco::RecoCandidate& ptcl, const std::vector<pat::PackedCandidate>& pfcands, const double coneSize, const double rho){
-	if(ptcl.pt() < 5) return 99999.;
-	if(!ptcl.isMuon() && !ptcl.isElectron()){
-		std::cerr << "ERROR in getRelIso: function only defined for muons and electrons" << std::endl;
-		return 99999.;
-	}
-	double puCorr;
-  if(ptcl.isMuon()) puCorr = rho*muonsEffectiveAreas.getEffectiveArea(ptcl.eta());
-  else              puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
-	double deadCone_nHadr = 0, deadCone_chHadr = 0, deadCone_ph = 0;
-	//determine dead cone around particle
-	if(ptcl.isElectron()){
-		if(fabs(ptcl.eta()) > 1.479){
-			deadCone_chHadr = 0.015;
-			deadCone_ph = 0.08;
-		}
-	} else if(ptcl.isMuon()){
-		deadCone_chHadr = 0.0001;
-		deadCone_nHadr = 0.01;
-		deadCone_ph = 0.01;
-	} else{
-		;
-	}
-	//pt threshold for isolation objects
-	double ptThres = ptcl.isElectron() ? 0. : 0.5;
-	//Calculate the different isolation components
-	double phIso = 0, nHadrIso = 0, chHadrIso = 0;
-	for(const pat::PackedCandidate& cand: pfcands){
-		if(abs(cand.pdgId())<7) continue;
-		double deltaR = reco::deltaR(ptcl, cand);
-		if(deltaR < coneSize){
-			if(cand.charge() == 0){
-				if(cand.pt() > ptThres){
-					if(cand.pdgId() == 130){
-						if(deltaR > deadCone_nHadr){
-							nHadrIso += cand.pt();
-						}
-					} else if(cand.pdgId() == 22){
-						if(deltaR > deadCone_ph){
-							phIso += cand.pt();
-						}
-					}
-				}
-			} else{
-				if(cand.fromPV() > 1){//1 is recommended by miniAOD workbook
-					if(fabs(cand.pdgId()) == 211){
-						if(deltaR > deadCone_chHadr){
-							chHadrIso += cand.pt();
-						}
-					}
-				}
-			}
-		}
-	}
-	return (chHadrIso + std::max(0., nHadrIso + phIso - puCorr))/(ptcl.pt());
-}
-				
-double LeptonAnalyzer::getMiniIso(const reco::RecoCandidate& ptcl, const std::vector<pat::PackedCandidate>& pfcands, const double maxCone, const double rho){
-	double coneSize = std::max(0.05, std::min(maxCone, 10./ptcl.pt()));
-	return LeptonAnalyzer::getRelIso(ptcl, pfcands, coneSize, rho);
-}
+double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Handle<pat::PackedCandidateCollection> pfcands, 
+                                        double r_iso_min, double r_iso_max, double kt_scale, double rho){
+    bool chargedOnly = false;
+    bool deltaBeta   = false;
 
+    double deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);
+    if(ptcl.isElectron() and fabs(ptcl.superCluster()->eta() >1.479)){ deadcone_ch = 0.015;  deadcone_pu = 0.015; deadcone_ph = 0.08; deadcone_nh = 0;}
+    else if(ptcl.isMuon())                                           { deadcone_ch = 0.0001; deadcone_pu = 0.01;  deadcone_ph = 0.01; deadcone_nh = 0.01;}
 
+    double iso_nh(0.); double iso_ch(0.);
+    double iso_ph(0.); double iso_pu(0.);
+    double ptThresh = ptcl.isElectron()? 0. : 0.5;
+
+    double max_pt = kt_scale/r_iso_min;
+    double min_pt = kt_scale/r_iso_max;
+    double r_iso  = kt_scale/std::max(std::min(ptcl.pt(), max_pt), min_pt);
+
+    for(const pat::PackedCandidate &pfc : *pfcands){
+      if(fabs(pfc.pdgId()) < 7) continue;
+
+      double dr = deltaR(pfc, ptcl);
+      if(dr > r_iso) continue;
+
+      if(pfc.charge()==0){		                                          						// Neutral
+        if(pfc.pt()>ptThresh){
+          if(fabs(pfc.pdgId())==22 and dr > deadcone_ph)        iso_ph += pfc.pt();	// Photons
+          else if (fabs(pfc.pdgId())==130 and dr > deadcone_nh) iso_nh += pfc.pt();	// Neutral hadrons
+        }
+      } else if (pfc.fromPV()>1){
+        if(fabs(pfc.pdgId())==211 and dr > deadcone_ch) iso_ch += pfc.pt();		      // Charged from PV
+      } else if(pfc.pt()>ptThresh and dr > deadcone_pu) iso_pu += pfc.pt();		      // Charged from PU
+    }
+
+    double puCorr = 0;
+    if(ptcl.isMuon()) puCorr = rho*muonsEffectiveAreas.getEffectiveArea(ptcl.eta());
+    else              puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
+
+    double iso;
+    if(chargedOnly)    iso = iso_ch;
+    else if(deltaBeta) iso = iso_ch + std::max(0., iso_ph + iso_nh - 0.5*iso_pu);
+    else               iso = iso_ch + std::max(0., iso_ph + iso_nh - puCorr*(r_iso*r_iso)/(0.3*0.3));
+
+    return iso/ptcl.pt();
+}

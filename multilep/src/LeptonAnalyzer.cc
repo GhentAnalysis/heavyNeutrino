@@ -74,7 +74,7 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lFlavor[_nL] = 1;
     //Isolation variables
     _relIso[_nL]  = getRelIso03(mu, *rhoJets);
-    _miniIso[_nL] = getMiniIso(mu, *packedCands, 0.2, *rhoJets);
+    _miniIso[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rhoJets);
 
     _lHNLoose[_nL]   = isHNLoose(mu);
     _lHNFO[_nL]      = isHNFO(mu);    // don't change order, they rely on above variables
@@ -100,7 +100,7 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonImpactParameters(*ele, primaryVertex);
     _lFlavor[_nL]  = 0;
     _relIso[_nL]        = getRelIso03(*ele, *rhoJets);
-    _miniIso[_nL]       = getMiniIso(*ele, *packedCands, 0.2, *rhoJets);
+    _miniIso[_nL]       = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rhoJets);
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lHNLoose[_nL]     = isHNLoose(*ele);

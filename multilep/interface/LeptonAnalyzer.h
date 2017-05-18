@@ -61,36 +61,36 @@ class LeptonAnalyzer {
 
     void beginJob(TTree* outputTree);
     void analyze(const edm::Event&, const reco::Vertex&);
-
-    float dEtaInSeed(const pat::Electron*);
-    bool isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool isTightCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool passTriggerEmulationDoubleEG(const pat::Electron*);
-    float slidingCut(float, float, float);
-    bool passingElectronMvaHZZ(const pat::Electron*, double);
-    bool passingElectronMvaLooseSusy(const pat::Electron*, double, double);
-    bool passingElectronMvaMediumSusy(const pat::Electron*, double);
-    bool passingElectronMvaTightSusy(const pat::Electron*, double);
-    bool passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
     void fillLeptonGenVars(const reco::GenParticle*);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Tau&);
-
-    double getRelIso03(const pat::Muon&, const double);
-    //double getIsoAlt(const pat::Muon&, double);
-    double getRelIso03(const pat::Electron&, const double);
-    double getRelIso(const reco::RecoCandidate&, const std::vector<pat::PackedCandidate>& , const double, const double);
-    double getMiniIso(const reco::RecoCandidate&, const std::vector<pat::PackedCandidate>&, const double, const double);
-
     bool eleMuOverlap(const pat::Electron& ele);
-    bool isHNLoose(const pat::Electron& lepton);
-    bool isHNLoose(const pat::Muon& lepton);
-    bool isHNFO(const pat::Electron& lepton);
-    bool isHNFO(const pat::Muon& lepton);
-    bool isHNTight(const pat::Electron& lepton);
-    bool isHNTight(const pat::Muon& lepton);
+
+    // In leptonAnalyzerIso,cc
+    double getRelIso03(const pat::Muon&, const double);
+    double getRelIso03(const pat::Electron&, const double);
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double);
+
+    // In LeptonAnalyzerId.cc
+    float dEtaInSeed(const pat::Electron*);
+    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
+    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*);
+    bool  passTriggerEmulationDoubleEG(const pat::Electron*);
+    float slidingCut(float, float, float);
+    bool  passingElectronMvaHZZ(const pat::Electron*, double);
+    bool  passingElectronMvaLooseSusy(const pat::Electron*, double, double);
+    bool  passingElectronMvaMediumSusy(const pat::Electron*, double);
+    bool  passingElectronMvaTightSusy(const pat::Electron*, double);
+    bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
+  
+    bool  isHNLoose(const pat::Electron& lepton);
+    bool  isHNLoose(const pat::Muon& lepton);
+    bool  isHNFO(const pat::Electron& lepton);
+    bool  isHNFO(const pat::Muon& lepton);
+    bool  isHNTight(const pat::Electron& lepton);
+    bool  isHNTight(const pat::Muon& lepton);
 };
 
 #endif
