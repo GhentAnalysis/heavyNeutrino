@@ -33,6 +33,11 @@ process.options      = cms.untracked.PSet(wantSummary = cms.untracked.bool(True)
 process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+if isData: process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
+else:      process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
+
+
 #
 # Vertex collection
 #
@@ -42,64 +47,12 @@ process.goodOfflinePrimaryVertices.filter = cms.bool(True) # This was false in t
 
 
 #
-# Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
-# Has currently no effect (Moriond2017 miniAOD contains latest JEC)
+# Import some objectsequences sequence (details in cff files)
 #
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-process.load('JetMETCorrections.Configuration.JetCorrectors_cff')
-process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7' if isData else '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
-if isData:
-  jetCorrectorLevels          = ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']
-  process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
-else:
-  jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
-  process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
-
-from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
-updateJetCollection(
-   process,
-   jetSource = cms.InputTag('slimmedJets'),
-   labelName = 'UpdatedJEC',
-   jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
-)
-process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC * process.ak4PFCHSL1FastL2L3CorrectorChain)
-
-
-
-#
-# JER, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
-#
-for (i, j) in [(0, ''), (-1, 'Down'), (1, 'Up')]:
-  jetSmearing = cms.EDProducer('SmearedPATJetProducer',
-        src          = cms.InputTag('updatedPatJetsUpdatedJEC'),
-        enabled      = cms.bool(True),
-        rho          = cms.InputTag("fixedGridRhoFastjetAll"),
-        algo         = cms.string('AK4PFchs'),
-        algopt       = cms.string('AK4PFchs_pt'),
-        genJets      = cms.InputTag('slimmedGenJets'),
-        dRMax        = cms.double(0.2),
-        dPtMaxFactor = cms.double(3),
-        debug        = cms.untracked.bool(False),
-        variation    = cms.int32(i),
-  )
-  setattr(process, 'jetSmearing'+j, jetSmearing)
-  process.jetSequence *= jetSmearing
-
-
-#
-# Set up electron and photon identifications
-#
-process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
-from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
-switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-switchOnVIDPhotonIdProducer(  process, DataFormat.MiniAOD)
-electronModules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
-                   'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff',
-                   'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
-photonModules   = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff',
-                   'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff']
-for idmod in electronModules: setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-for idmod in photonModules:   setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
+from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
+from heavyNeutrino.multilep.egmSequence_cff import addElectronAndPhotonSequence
+addJetSequence(process, isData)
+addElectronAndPhotonSequence(process)
 
 
 
@@ -142,9 +95,9 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   rhoAll                        = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
   jets                          = cms.InputTag("updatedPatJetsUpdatedJEC"),
-  jetsSmeared                   = cms.InputTag("jetSmearing"),
-  jetsSmearedUp                 = cms.InputTag("jetSmearingUp"),
-  jetsSmearedDown               = cms.InputTag("jetSmearingDown"),
+  jetsSmeared                   = cms.InputTag("slimmedJetsCorrectedAndSmeared"),
+  jetsSmearedUp                 = cms.InputTag("slimmedJetsCorrectedAndSmearedUp"),
+  jetsSmearedDown               = cms.InputTag("slimmedJetsCorrectedAndSmearedDown"),
   jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt"),
   triggers                      = cms.InputTag("TriggerResults","","HLT"),
   recoResults                   = cms.InputTag("TriggerResults", "", "RECO"),
@@ -161,8 +114,7 @@ if isData:
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadPFMuonFilter *
                      process.BadChargedCandidateFilter *
-                     process.egmGsfElectronIDSequence *
-                     process.egmPhotonIDSequence *
+                     process.egmSequence *
                      process.jetSequence *
                      process.blackJackAndHookers)
 
