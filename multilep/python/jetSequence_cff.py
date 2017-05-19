@@ -23,18 +23,19 @@ def addJetSequence(process, isData):
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
   # Run three times the SmeredPATJetProducer for nominal, up and down variations
   #
-  for (i, j) in [(0, ''), (-1, 'Down'), (1, 'Up')]:
-    jetSmearing = cms.EDProducer('SmearedPATJetProducer',
-          src          = cms.InputTag('updatedPatJetsUpdatedJEC'),
-          enabled      = cms.bool(True),
-          rho          = cms.InputTag("fixedGridRhoFastjetAll"),
-          algo         = cms.string('AK4PFchs'),
-          algopt       = cms.string('AK4PFchs_pt'),
-          genJets      = cms.InputTag('slimmedGenJets'),
-          dRMax        = cms.double(0.2),
-          dPtMaxFactor = cms.double(3),
-          debug        = cms.untracked.bool(False),
-          variation    = cms.int32(i),
-    )
-    setattr(process, 'slimmedJetsCorrectedAndSmeared'+j, jetSmearing)
-    process.jetSequence *= jetSmearing
+  if not isData:
+    for (i, j) in [(0, ''), (-1, 'Down'), (1, 'Up')]:
+      jetSmearing = cms.EDProducer('SmearedPATJetProducer',
+            src          = cms.InputTag('updatedPatJetsUpdatedJEC'),
+            enabled      = cms.bool(True),
+            rho          = cms.InputTag("fixedGridRhoFastjetAll"),
+            algo         = cms.string('AK4PFchs'),
+            algopt       = cms.string('AK4PFchs_pt'),
+            genJets      = cms.InputTag('slimmedGenJets'),
+            dRMax        = cms.double(0.2),
+            dPtMaxFactor = cms.double(3),
+            debug        = cms.untracked.bool(False),
+            variation    = cms.int32(i),
+      )
+      setattr(process, 'slimmedJetsCorrectedAndSmeared'+j, jetSmearing)
+      process.jetSequence *= jetSmearing
