@@ -36,6 +36,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nL]/O");
   outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nL]/O");
   outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nL]/O");
+  outputTree->Branch("_lPOGVeto",                     &_lPOGVeto,                     "_lPOGVeto[_nL]/O");
   outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
@@ -48,7 +49,8 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
   edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
 //edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
-  edm::Handle<edm::ValueMap<bool>> electronsCutBasedLoose;         iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBasedLoose);
+  edm::Handle<edm::ValueMap<bool>> electronsCutBasedVeto;          iEvent.getByToken(multilepAnalyzer->eleCutBasedVetoToken,              electronsCutBasedVeto);
+  edm::Handle<edm::ValueMap<bool>> electronsCutBasedLoose;         iEvent.getByToken(multilepAnalyzer->eleCutBasedLooseToken,             electronsCutBasedLoose);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBasedMedium);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedTight;         iEvent.getByToken(multilepAnalyzer->eleCutBasedTightToken,             electronsCutBasedTight);
   edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
@@ -79,6 +81,7 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lHNLoose[_nL]   = isHNLoose(mu);
     _lHNFO[_nL]      = isHNFO(mu);    // don't change order, they rely on above variables
     _lHNTight[_nL]   = isHNTight(mu);
+    _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     _lPOGMedium[_nL] = mu.isMediumMuon();
     _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
@@ -106,9 +109,10 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lHNLoose[_nL]     = isHNLoose(*ele);
     _lHNFO[_nL]        = isHNFO(*ele);
     _lHNTight[_nL]     = isHNTight(*ele);
+    _lPOGVeto[_nL]     = (*electronsCutBasedVeto)[electronRef];
     _lPOGLoose[_nL]    = (*electronsCutBasedLoose)[electronRef];
     _lPOGMedium[_nL]   = (*electronsCutBasedMedium)[electronRef];
-    _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];
+    _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
 
     ++_nEle;
     ++_nL;

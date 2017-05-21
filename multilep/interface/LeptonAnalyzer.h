@@ -45,6 +45,7 @@ class LeptonAnalyzer {
     bool _lHNLoose[nL_max];                                                                          //lepton selection decisions
     bool _lHNFO[nL_max];
     bool _lHNTight[nL_max];
+    bool _lPOGVeto[nL_max];
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
