@@ -1,10 +1,8 @@
 #ifndef MULTILEP_H
 #define MULTILEP_H
-//#include <memory>
-// user include files
+
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/one/EDAnalyzer.h"
-
 
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -18,13 +16,15 @@
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
-#include "FWCore/Common/interface/TriggerNames.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 
 #include "TTree.h"
 
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
+#include "heavyNeutrino/multilep/interface/TriggerAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
@@ -35,6 +35,7 @@
 //
 // class declaration
 //
+class TriggerAnalyzer;
 class LeptonAnalyzer;
 class PhotonAnalyzer;
 class JetAnalyzer;
@@ -74,8 +75,9 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
     edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedUpToken;
     edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedDownToken;
-    edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
     edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
+    edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
+    edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
     edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
     edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
 
@@ -84,9 +86,10 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
     virtual void endJob() override;
 
-    LeptonAnalyzer* leptonAnalyzer;
-    PhotonAnalyzer* photonAnalyzer;
-    JetAnalyzer*    jetAnalyzer;
+    TriggerAnalyzer* triggerAnalyzer;
+    LeptonAnalyzer*  leptonAnalyzer;
+    PhotonAnalyzer*  photonAnalyzer;
+    JetAnalyzer*     jetAnalyzer;
 
     edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
     TTree* outputTree;
@@ -94,19 +97,9 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     unsigned long _runNb;                                                                            //event labels
     unsigned long _lumiBlock;
     unsigned long _eventNb;
-    double _met;                                                                                     //met kinematics
-    double _metPhi;
-    unsigned _nVertex;                                                                               //Event variables
-    bool _metFiltersFlagged;
-    bool _passHnlTrigger[4];                                                                         //0 = eee, 1 = eem, 2 = emm, 3 = mmm
-    bool _badMuonFlagged;
-    bool _badCloneMuonFlagged;
-    //Additional class functions
-    void fillTriggerVars(const edm::Event&);
-    bool trigPass(unsigned, edm::Handle<edm::TriggerResults>&, const edm::Event&);
-    bool metFilterFlagged();                                                                         //Events flagged by a met filter should not be used
-    void fillMetFilterVars(const edm::Event&);                                                       //Make MET filter decision
-    bool metFiltersFlagged(const edm::Event&);                                                       //Fill MET filter variables
+    unsigned      _nVertex;                                                                          //Event variables
+    double        _met;                                                                              //met kinematics
+    double        _metPhi;
 };
 #endif
 

@@ -28,14 +28,16 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     jetSmearedToken(                  consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
     jetSmearedUpToken(                consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
     jetSmearedDownToken(              consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
-    triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     recoResultsToken(                 consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
+    triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
+    prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
     badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter")))
 {
-    leptonAnalyzer = new LeptonAnalyzer(iConfig, this);
-    photonAnalyzer = new PhotonAnalyzer(iConfig, this);
-    jetAnalyzer    = new JetAnalyzer(iConfig, this);
+    triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
+    leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
+    photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
+    jetAnalyzer     = new JetAnalyzer(iConfig, this);
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -49,17 +51,13 @@ void multilep::beginJob(){
   outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
   outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
+  triggerAnalyzer->beginJob(outputTree);
   leptonAnalyzer->beginJob(outputTree);
   photonAnalyzer->beginJob(outputTree);
   jetAnalyzer->beginJob(outputTree);
 
   outputTree->Branch("_met",                          &_met,                          "_met/D");
   outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
-
-  outputTree->Branch("_passHnlTrigger",               &_passHnlTrigger,               "_passHnlTrigger[4]/O");
-  outputTree->Branch("_metFiltersFlagged",            &_metFiltersFlagged,            "_metFiltersFlagged/O");
-  outputTree->Branch("_badMuonFlagged",               &_badMuonFlagged,               "_badMuonFlagged/O");
-  outputTree->Branch("_badCloneMuonFlagged",          &_badCloneMuonFlagged,          "_badCloneMuonFlagged/O");
 }
 
 
@@ -73,23 +71,17 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
   //Get all objects
   edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,                          vertices);
-//  edm::Handle<double> rhoJets;                                     iEvent.getByToken(rhoToken,                          rhoJets);    // For JEC
-//  edm::Handle<double> rhoJetsAll;                                  iEvent.getByToken(rhoTokenAll,                       rhoJetsAll); // For PUC
   edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
-
 
   _nVertex = vertices->size();
 
+  triggerAnalyzer->analyze(iEvent);
   leptonAnalyzer->analyze(iEvent, *(vertices->begin()));
   photonAnalyzer->analyze(iEvent);
   jetAnalyzer->analyze(iEvent);
 
   //Preselect number of leptons here for code efficiency
   // TODO: boolean function in leptonAnalyzer class for the skim
-
-  //Fill trigger and MET filter decisions
-  fillTriggerVars(iEvent);
-  fillMetFilterVars(iEvent);
 
   //determine the met of the event
   const pat::MET& met = (*mets).front();
