@@ -4,6 +4,7 @@
 
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
+    genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
     muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
     eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
@@ -51,6 +52,7 @@ void multilep::beginJob(){
   outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
   outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
   outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
+  outputTree->Branch("_weight",                       &_weight,                       "_weight/D");
 
   triggerAnalyzer->beginJob(outputTree);
   leptonAnalyzer->beginJob(outputTree);
@@ -73,8 +75,11 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   //Get all objects
   edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,                          vertices);
   edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
+  edm::Handle<GenEventInfoProduct> genEventInfo;                   iEvent.getByToken(genEventInfoToken,                 genEventInfo);
 
   _nVertex = vertices->size();
+  _weight  = genEventInfo->weight();
+
 
   triggerAnalyzer->analyze(iEvent);
   leptonAnalyzer->analyze(iEvent, *(vertices->begin()));

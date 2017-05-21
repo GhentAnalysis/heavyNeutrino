@@ -18,6 +18,7 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
 #include "TTree.h"
 
@@ -51,6 +52,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     // Define EDgetTokens to read data from events
     // Public such that we can easily access them in the individual object analyzers)
     edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
+    edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
     edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
     edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
     edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;
@@ -99,6 +101,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     unsigned long _lumiBlock;
     unsigned long _eventNb;
     unsigned      _nVertex;                                                                          //Event variables
+    double        _weight;
     double        _met;                                                                              //met kinematics
     double        _metPhi;
 };

@@ -72,6 +72,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 # fakeRateTree                  = cms.untracked.bool(outputFile.count('fakeRate')), # TO BE IMPLEMENTED
 # dileptonTree                  = cms.untracked.bool(outputFile.count('dilepton')), # TO BE IMPLEMENTED
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
+  genEventInfo                  = cms.InputTag("generator"),
   muons                         = cms.InputTag("slimmedMuons"),
   muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
   electrons                     = cms.InputTag("slimmedElectrons"),
