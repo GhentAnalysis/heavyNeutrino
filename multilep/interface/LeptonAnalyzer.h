@@ -30,7 +30,7 @@ class LeptonAnalyzer {
     unsigned _nLight;
     unsigned _nTau;
     double _lPt[nL_max];                                                                             //lepton kinematics
-    double _lEta[nL_max];                                                                            //QUESTION: what was the reason again to use arrays instead of vectors?
+    double _lEta[nL_max];
     double _lPhi[nL_max];
     double _lE[nL_max];
     unsigned _lFlavor[nL_max];                                                                       //other lepton variables
@@ -55,12 +55,6 @@ class LeptonAnalyzer {
 
     multilep* multilepAnalyzer;
 
-  public:
-    LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~LeptonAnalyzer();
-
-    void beginJob(TTree* outputTree);
-    void analyze(const edm::Event&, const reco::Vertex&);
     void fillLeptonGenVars(const reco::GenParticle*);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
@@ -91,6 +85,14 @@ class LeptonAnalyzer {
     bool  isHNFO(const pat::Muon& lepton);
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
+
+
+  public:
+    LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
+    ~LeptonAnalyzer();
+
+    void beginJob(TTree* outputTree);
+    void analyze(const edm::Event&, const reco::Vertex&);
 };
 
 #endif
