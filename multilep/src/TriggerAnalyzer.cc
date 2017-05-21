@@ -124,7 +124,8 @@ void TriggerAnalyzer::indexFlags(const edm::Event& iEvent, edm::Handle<edm::Trig
   for (unsigned int i = 0; i < results->size(); ++i){
     std::cout << "  " << triggerNames.triggerName(i);
     for(TString t : toSave){
-      if(TString(triggerNames.triggerName(i)).Contains(t + "_v")){
+      TString tt = (t.Contains("HLT") ? t + "_v" : t);
+      if(TString(triggerNames.triggerName(i)).Contains(tt)){
         index[t] = i;
         std::cout << "     --> saving to tree";
       }

@@ -5,6 +5,7 @@
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
     genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
+    pileUpToken(                      consumes<std::vector<PileupSummaryInfo>>(   iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
     muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
     eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
@@ -51,8 +52,9 @@ void multilep::beginJob(){
   outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
   outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
   outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
-  outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
   outputTree->Branch("_weight",                       &_weight,                       "_weight/D");
+  outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
+  outputTree->Branch("_nTrueInt",                     &_nTrueInt,                     "_nTrueInt/F");
 
   triggerAnalyzer->beginJob(outputTree);
   leptonAnalyzer->beginJob(outputTree);
@@ -76,10 +78,13 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,                          vertices);
   edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
   edm::Handle<GenEventInfoProduct> genEventInfo;                   iEvent.getByToken(genEventInfoToken,                 genEventInfo);
+  edm::Handle<std::vector<PileupSummaryInfo>>  pileUpInfo;         iEvent.getByToken(pileUpToken,                       pileUpInfo);
 
-  _nVertex = vertices->size();
   _weight  = genEventInfo->weight();
-
+  _nVertex = vertices->size();
+  for(auto puI = pileUpInfo->begin(); puI != pileUpInfo->end(); ++puI){
+    if(puI->getBunchCrossing() == 0) _nTrueInt = puI->getTrueNumInteractions(); // getTrueNumInteractions should be the same for all bunch crosssings
+  }
 
   triggerAnalyzer->analyze(iEvent);
   leptonAnalyzer->analyze(iEvent, *(vertices->begin()));

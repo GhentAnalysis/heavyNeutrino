@@ -19,6 +19,7 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
 #include "TTree.h"
 
@@ -53,6 +54,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     // Public such that we can easily access them in the individual object analyzers)
     edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
     edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
+    edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken; 
     edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
     edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
     edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;
@@ -101,6 +103,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     unsigned long _lumiBlock;
     unsigned long _eventNb;
     unsigned      _nVertex;                                                                          //Event variables
+    float         _nTrueInt;
     double        _weight;
     double        _met;                                                                              //met kinematics
     double        _metPhi;
