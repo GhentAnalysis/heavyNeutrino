@@ -12,8 +12,8 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   multilepAnalyzer(multilepAnalyzer){
   
   allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
-                                "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",
-                                "flag_badPFMuonFilter","flag_badChCandFilter"};
+                                "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",                                 // Not sure if eeBadScFilter is still needed
+                                "flag_badPFMuonFilter","flag_badChCandFilter"};                                                              // TODO: Check if those are in the miniAOD, and where is the duplicateMuons one?
 
   allFlags["passHN_1l"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoTkMu24"};                                                    // HN 1l triggers
   allFlags["passHN_eee"]     = {"passHN_1l","HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};           // HN eee
