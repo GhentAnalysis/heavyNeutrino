@@ -3,6 +3,7 @@
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -37,6 +38,8 @@ class LeptonAnalyzer {
     int _lCharge[nL_max];
     double _relIso[nL_max];
     double _miniIso[nL_max];
+    double _ptRel[nL_max];
+    double _ptRatio[nL_max];
     double _dxy[nL_max];
     double _dz[nL_max];
     double _3dIP[nL_max];
@@ -49,10 +52,8 @@ class LeptonAnalyzer {
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
-    bool _isPrompt[nL_max];                                                                          //generator lepton variables
-    bool _truthPdg[nL_max];
-    bool _truthMomPdg[nL_max];
-    unsigned _origin[nL_max];
+    bool _isPrompt[nL_max];
+
 
     multilep* multilepAnalyzer;
 
@@ -62,6 +63,7 @@ class LeptonAnalyzer {
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Tau&);
     bool eleMuOverlap(const pat::Electron& ele);
+    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&);
 
     // In leptonAnalyzerIso,cc
     double getRelIso03(const pat::Muon&, const double);

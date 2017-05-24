@@ -40,9 +40,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
+  outputTree->Branch("_lIsPrompt",                    &_isPrompt,                     "_lIsPrompt[_nL]/O");
 
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
+  outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
+  outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
@@ -56,7 +59,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
   edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
   edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
-  edm::Handle<double> rhoJets;                                     iEvent.getByToken(multilepAnalyzer->rhoToken,                          rhoJets);
+  edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
+  edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
 
   _nL     = 0;
   _nLight = 0;
@@ -73,10 +77,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
     fillLeptonImpactParameters(mu, primaryVertex);
+    fillLeptonJetVariables(mu, jets);
     _lFlavor[_nL] = 1;
     //Isolation variables
-    _relIso[_nL]  = getRelIso03(mu, *rhoJets);
-    _miniIso[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rhoJets);
+    _relIso[_nL]  = getRelIso03(mu, *rho);
+    _miniIso[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
 
     _lHNLoose[_nL]   = isHNLoose(mu);
     _lHNFO[_nL]      = isHNFO(mu);    // don't change order, they rely on above variables
@@ -101,9 +106,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonKinVars(*ele);
     fillLeptonGenVars(ele->genParticle());
     fillLeptonImpactParameters(*ele, primaryVertex);
-    _lFlavor[_nL]  = 0;
-    _relIso[_nL]        = getRelIso03(*ele, *rhoJets);
-    _miniIso[_nL]       = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rhoJets);
+    fillLeptonJetVariables(*ele, jets);
+    _lFlavor[_nL]      = 0;
+    _relIso[_nL]       = getRelIso03(*ele, *rho);
+    _miniIso[_nL]      = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho);
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lHNLoose[_nL]     = isHNLoose(*ele);
@@ -194,3 +200,27 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
   }
   return false;	
 }
+
+
+void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets){
+  // Find closest jet
+  float dR = 9999;
+  auto jet          = jets->begin();
+  for(; jet != jets->end(); ++jet){
+    if(reco::deltaR(*jet, lepton) > dR) continue;
+    dR = reco::deltaR(*jet, lepton);
+  }
+
+//auto  l1Jet       = jet->correctedP4("L1FastJet"); // can't get this to work, annoying, please correct when you can solve it
+  auto  l1Jet       = jet->p4();
+  float JEC         = jet->p4().E()/l1Jet.E();
+  auto  l           = lepton.p4();
+  auto  lepAwareJet = (l1Jet - l)*JEC + l;
+
+  auto lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
+  auto jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
+
+  _ptRatio[_nL] = dR > 0.4 ? 1 : l.pt()/lepAwareJet.pt();
+  _ptRel[_nL]   = dR > 0.4 ? 0 : lV.Perp((jV - lV).Vect());
+}
+
