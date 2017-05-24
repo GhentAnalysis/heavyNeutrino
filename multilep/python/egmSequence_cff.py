@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
 def addElectronAndPhotonSequence(process):
 
@@ -6,7 +7,6 @@ def addElectronAndPhotonSequence(process):
   # Set up electron and photon identifications
   #
   process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
-  from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
   switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
   switchOnVIDPhotonIdProducer(  process, DataFormat.MiniAOD)
   electronModules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
