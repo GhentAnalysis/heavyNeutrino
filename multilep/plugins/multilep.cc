@@ -1,11 +1,11 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
-#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
 
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
     genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
     pileUpToken(                      consumes<std::vector<PileupSummaryInfo>>(   iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
+    genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
     muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
     eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
@@ -41,6 +41,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
     photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
+    genAnalyzer     = new GenAnalyzer(iConfig, this);
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -56,6 +57,7 @@ void multilep::beginJob(){
   outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
   outputTree->Branch("_nTrueInt",                     &_nTrueInt,                     "_nTrueInt/F");
 
+  genAnalyzer->beginJob(outputTree);
   triggerAnalyzer->beginJob(outputTree);
   leptonAnalyzer->beginJob(outputTree);
   photonAnalyzer->beginJob(outputTree);
@@ -86,6 +88,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(puI->getBunchCrossing() == 0) _nTrueInt = puI->getTrueNumInteractions(); // getTrueNumInteractions should be the same for all bunch crosssings
   }
 
+  genAnalyzer->analyze(iEvent);
   triggerAnalyzer->analyze(iEvent);
   leptonAnalyzer->analyze(iEvent, *(vertices->begin()));
   photonAnalyzer->analyze(iEvent);

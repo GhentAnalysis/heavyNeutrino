@@ -9,6 +9,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
@@ -30,6 +31,7 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 
 
 
@@ -41,6 +43,7 @@ class TriggerAnalyzer;
 class LeptonAnalyzer;
 class PhotonAnalyzer;
 class JetAnalyzer;
+class GenAnalyzer;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
@@ -54,7 +57,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     // Public such that we can easily access them in the individual object analyzers)
     edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
     edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
-    edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken; 
+    edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken;
+    edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 
     edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
     edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
     edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;
@@ -95,6 +99,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     LeptonAnalyzer*  leptonAnalyzer;
     PhotonAnalyzer*  photonAnalyzer;
     JetAnalyzer*     jetAnalyzer;
+    GenAnalyzer*     genAnalyzer;
 
     edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
     TTree* outputTree;
