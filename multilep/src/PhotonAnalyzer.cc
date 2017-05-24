@@ -29,7 +29,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_photonHasPixelSeed",           &_photonHasPixelSeed,           "_photonHasPixelSeed[_nPhoton]/O");
 }
 
-void PhotonAnalyzer::analyze(const edm::Event& iEvent){
+bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<pat::Photon>> photons;                   iEvent.getByToken(multilepAnalyzer->photonToken,                       photons);
   edm::Handle<edm::ValueMap<bool>> photonsCutBasedLoose;           iEvent.getByToken(multilepAnalyzer->photonCutBasedLooseToken,          photonsCutBasedLoose);
   edm::Handle<edm::ValueMap<bool>> photonsCutBasedMedium;          iEvent.getByToken(multilepAnalyzer->photonCutBasedMediumToken,         photonsCutBasedMedium);
@@ -43,6 +43,9 @@ void PhotonAnalyzer::analyze(const edm::Event& iEvent){
   _nPhoton = 0;
   for(auto photon = photons->begin(); photon != photons->end(); ++photon){
     auto photonRef = edm::Ref<std::vector<pat::Photon>>(photons, (photon - photons->begin()));
+
+    if(photon->pt()  < 10)  continue;
+    if(photon->eta() > 2.5) continue;
 
     _photonPt[_nPhoton]                      = photon->pt();
     _photonEta[_nPhoton]                     = photon->eta();
@@ -62,4 +65,7 @@ void PhotonAnalyzer::analyze(const edm::Event& iEvent){
 
     ++_nPhoton;
   }
+
+  if(multilepAnalyzer->skim == "ttg" and _nPhoton < 1) return false;
+  return true;
 }

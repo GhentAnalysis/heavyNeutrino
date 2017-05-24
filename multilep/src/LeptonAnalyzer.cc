@@ -45,7 +45,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
 }
 
-void LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
+bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
   edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
   edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
 //edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
@@ -133,6 +133,12 @@ void LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     ++_nTau;
     ++_nL;
   }
+
+  if(multilepAnalyzer->skim == "trilep"    and _nL < 3) return false;
+  if(multilepAnalyzer->skim == "dilep"     and _nL < 2) return false;
+  if(multilepAnalyzer->skim == "ttg"       and _nL < 2) return false;
+  if(multilepAnalyzer->skim == "singlelep" and _nL < 1) return false;
+  return true;
 }
 
 void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){

@@ -35,7 +35,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
-    badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter")))
+    badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
+    skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim"))
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -88,14 +89,12 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(puI->getBunchCrossing() == 0) _nTrueInt = puI->getTrueNumInteractions(); // getTrueNumInteractions should be the same for all bunch crosssings
   }
 
+  
+  if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
+  if(!photonAnalyzer->analyze(iEvent)) return;
   genAnalyzer->analyze(iEvent);
   triggerAnalyzer->analyze(iEvent);
-  leptonAnalyzer->analyze(iEvent, *(vertices->begin()));
-  photonAnalyzer->analyze(iEvent);
   jetAnalyzer->analyze(iEvent);
-
-  //Preselect number of leptons here for code efficiency
-  // TODO: boolean function in leptonAnalyzer class for the skim
 
   //determine the met of the event
   const pat::MET& met = (*mets).front();

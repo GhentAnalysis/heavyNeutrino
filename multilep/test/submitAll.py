@@ -10,9 +10,12 @@ groupFiles      = 1                                                             
 
 
 for dataset in datasets:
-  if dataset.startswith('FAKERATE:'):   outputName = 'fakeRate'
-  elif dataset.startswith('DILEPTON:'): outputName = 'dilepton'
-  else:                                 outputName = 'trilepton'
+  if dataset.startswith('FAKERATE:'):    outputName = 'fakeRate'
+  elif dataset.startswith('SIGNLELEP:'): outputName = 'singleLep'
+  elif dataset.startswith('DILEP:'):     outputName = 'diLep'
+  elif dataset.startswith('TRILEP:'):    outputName = 'triLep'
+  elif dataset.startswith('TTG:'):       outputName = 'ttg'
+  else:                                  outputName = 'diLep' # default
   dataset = dataset.split(':')[-1]
 
   if 'pnfs' in dataset or 'user' in dataset:

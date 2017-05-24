@@ -5,7 +5,11 @@ import FWCore.ParameterSet.Config as cms
 inputFile       = '/store/mc/RunIISummer16MiniAODv2/ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/120000/50D92A94-D1D0-E611-BEA6-D4AE526A023A.root'
 isData          = False
 nEvents         = 1000
-outputFile      = 'trilepton.root'
+outputFile      = 'trilep.root'  # trilep    --> skim three leptons (basic pt/eta criteria)
+                                 # dilep     --> skim two leptons
+                                 # singlelep --> skim one lepton
+                                 # ttg       --> skim two leptons + one photon
+                                 # fakerate  --> not implemented
 
 def getVal(arg):
     return arg.split('=')[-1]
@@ -69,8 +73,6 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
-# fakeRateTree                  = cms.untracked.bool(outputFile.count('fakeRate')), # TO BE IMPLEMENTED
-# dileptonTree                  = cms.untracked.bool(outputFile.count('dilepton')), # TO BE IMPLEMENTED
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
   genEventInfo                  = cms.InputTag("generator"),
   pileUpInfo                    = cms.InputTag("slimmedAddPileupInfo"),
@@ -108,6 +110,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   recoResults                   = cms.InputTag("TriggerResults::RECO"),
   badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
   badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
+  skim                          = cms.untracked.string(outputFile.split('.')[0])
 )
 
 

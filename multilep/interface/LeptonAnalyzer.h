@@ -93,7 +93,7 @@ class LeptonAnalyzer {
     ~LeptonAnalyzer();
 
     void beginJob(TTree* outputTree);
-    void analyze(const edm::Event&, const reco::Vertex&);
+    bool analyze(const edm::Event&, const reco::Vertex&);
 };
 
 #endif
