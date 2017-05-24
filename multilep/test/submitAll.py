@@ -2,7 +2,7 @@
 import os, glob, sys
 
 datasetsFile    = sys.argv[1]                                                                             # Input file with datasets
-productionLabel = os.path.basename(datasetsFile)                                                          # Label to keep track of the tuple versio
+productionLabel = os.path.basename(datasetsFile.split('.')[0])                                            # Label to keep track of the tuple version (is taken from the name of the above input file)
 outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'                                 # Output directory in case of local submission
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
@@ -42,7 +42,7 @@ for dataset in datasets:
         except: pass
       
       print 'Submitting ' + inputFile + ' to cream02:'
-      args  = 'inputFile=\"' + inputFile + '\",outputFile=' + outputFile + ',events=-1'
+      args  = 'dir=' + dir + ',inputFile=\"' + inputFile + '\",outputFile=' + outputFile + ',events=-1'
       args += ',isData='+ ('False' if 'SIM' in dataset else 'True')
       os.system('qsub -v ' + args + ' -q localgrid@cream02 -o ' + logFile + ' -e ' + logFile + ' -l walltime=' + wallTime + ' runOnCream02.sh')
       i += 1

@@ -17,7 +17,7 @@ def getVal(arg):
 # Loop over arguments
 for i in range(1,len(sys.argv)):
     print "[arg "+str(i)+"] : ", sys.argv[i]
-    if "isData"            in sys.argv[i]: isData          = getVal(sys.argv[i])
+    if "isData"            in sys.argv[i]: isData          = (getVal(sys.argv[i]) == "True")
     elif "outputFile"      in sys.argv[i]: outputFile      = getVal(sys.argv[i])
     elif "inputFile"       in sys.argv[i]: inputFile       = getVal(sys.argv[i])
     elif "events"          in sys.argv[i]: nEvents         = int(getVal(sys.argv[i]))
