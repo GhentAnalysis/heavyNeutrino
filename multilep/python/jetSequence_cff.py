@@ -17,7 +17,8 @@ def addJetSequence(process, isData):
      labelName = 'UpdatedJEC',
      jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
   )
-  process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC * process.ak4PFCHSL1FastL2L3CorrectorChain)
+  process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC)
+
 
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
