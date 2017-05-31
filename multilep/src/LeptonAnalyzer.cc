@@ -99,7 +99,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   // Loop over electrons (note: using iterator we can easily get the ref too)
   for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
     auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
-    if(_nL == nL_max)            continue;
+    if(_nL == nL_max)            break;
     if(ele->gsfTrack().isNull()) continue;
     if(ele->pt() < 10)           continue;
     if(fabs(ele->eta()) > 2.5)   continue;

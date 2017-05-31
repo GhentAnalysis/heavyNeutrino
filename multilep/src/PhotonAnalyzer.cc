@@ -42,6 +42,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
   // Loop over photons
   _nPhoton = 0;
   for(auto photon = photons->begin(); photon != photons->end(); ++photon){
+    if(_nPhoton == nPhoton_max) break;
     auto photonRef = edm::Ref<std::vector<pat::Photon>>(photons, (photon - photons->begin()));
 
     if(photon->pt()  < 10)  continue;

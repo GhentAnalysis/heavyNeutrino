@@ -44,6 +44,7 @@ void JetAnalyzer::analyze(const edm::Event& iEvent){
   auto jetSmearedUp   = jetsSmearedUp->begin();
   auto jetSmearedDown = jetsSmearedDown->begin();
   for(; jet != jets->end(); ++jet, ++jetSmeared, ++jetSmearedUp, ++jetSmearedDown){
+    if(_nJets == nJets_max) break;
     jecUnc.setJetEta(jetSmeared->eta());
     jecUnc.setJetPt(jetSmeared->pt());
     double unc = jecUnc.getUncertainty(true);
