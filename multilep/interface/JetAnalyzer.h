@@ -19,26 +19,21 @@ class JetAnalyzer {
     static const unsigned nJets_max = 20;
 
     unsigned _nJets;
-    double _jetPt[nJets_max];
-    double _jetPt_JECUp[nJets_max];
-    double _jetPt_JECDown[nJets_max];
-    double _jetPt_JERUp[nJets_max];
-    double _jetPt_JERDown[nJets_max];
-    double _jetEta[nJets_max];
-    double _jetPhi[nJets_max];
-    double _jetE[nJets_max];
-    double _jetBTaggingCSV[nJets_max];
-    double _jetHadronFlavour[nJets_max];
-
-    double _jetNeutralHadronFraction[nJets_max];
-    double _jetNeutralEmFraction[nJets_max];
-    double _jetChargedHadronFraction[nJets_max];
-    double _jetMuonFraction[nJets_max];
-    double _jetChargedEmFraction[nJets_max];
-    double _jetNeutralMult[nJets_max];
-    double _jetChargedMult[nJets_max];
+    double   _jetPt[nJets_max];
+    double   _jetPt_JECUp[nJets_max];
+    double   _jetPt_JECDown[nJets_max];
+    double   _jetPt_JERUp[nJets_max];
+    double   _jetPt_JERDown[nJets_max];
+    double   _jetEta[nJets_max];
+    double   _jetPhi[nJets_max];
+    double   _jetE[nJets_max];
+    double   _jetBTaggingCSV[nJets_max];
+    double   _jetHadronFlavour[nJets_max];
+    unsigned _jetId[nJets_max];
 
     multilep* multilepAnalyzer;
+
+    bool jetId(const pat::Jet& j, bool tight);
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

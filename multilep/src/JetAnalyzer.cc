@@ -22,13 +22,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_jetE",                      &_jetE,                     "_jetE[_nJets]/D");
   outputTree->Branch("_jetBTaggingCSV",            &_jetBTaggingCSV,           "_jetBTaggingCSV[_nJets]/D");
   outputTree->Branch("_jetHadronFlavour",          &_jetHadronFlavour,         "_jetHadronFlavour[_nJets]/D");
-  outputTree->Branch("_jetNeutralHadronFraction",  &_jetNeutralHadronFraction, "_jetNeutralHadronFraction[_nJets]/D");
-  outputTree->Branch("_jetNeutralEmFraction",      &_jetNeutralEmFraction,     "_jetNeutralEmFraction[_nJets]/D");
-  outputTree->Branch("_jetChargedHadronFraction",  &_jetChargedHadronFraction, "_jetChargedHadronFraction[_nJets]/D");
-  outputTree->Branch("_jetMuonFraction",           &_jetMuonFraction,          "_jetMuonFraction[_nJets]/D");
-  outputTree->Branch("_jetChargedEmFraction",      &_jetChargedEmFraction,     "_jetChargedEmFraction[_nJets]/D");
-  outputTree->Branch("_jetNeutralMult",            &_jetNeutralMult,           "_jetNeutralMult[_nJets]/D");
-  outputTree->Branch("_jetChargedMult",            &_jetChargedMult,           "_jetChargedMult[_nJets]/D");
+  outputTree->Branch("_jetId",                     &_jetId,                    "_jetId[_nJets]/b");
 }
 
 void JetAnalyzer::analyze(const edm::Event& iEvent){
@@ -61,15 +55,31 @@ void JetAnalyzer::analyze(const edm::Event& iEvent){
     _jetPhi[_nJets]                   = jet->phi();
     _jetE[_nJets]                     = jet->energy();
     _jetBTaggingCSV[_nJets]           = jet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
-    _jetHadronFlavour[_nJets]         = jet->hadronFlavour();                                                                     // Note: these variables need to come from the original collection, not the smeared one
-    _jetNeutralHadronFraction[_nJets] = jet->neutralHadronEnergyFraction();
-    _jetNeutralEmFraction[_nJets]     = jet->neutralEmEnergyFraction();
-    _jetChargedHadronFraction[_nJets] = jet->chargedHadronEnergyFraction();
-    _jetMuonFraction[_nJets]          = jet->muonEnergyFraction();
-    _jetChargedEmFraction[_nJets]     = jet->chargedEmEnergyFraction();
-    _jetNeutralMult[_nJets]           = jet->neutralMultiplicity();
-    _jetChargedMult[_nJets]           = jet->chargedMultiplicity();
+    _jetHadronFlavour[_nJets]         = jet->hadronFlavour();
+    _jetId[_nJets]                    = jetId(*jet, false) + jetId(*jet, true); // 1: loose, 2: tight
 
     ++_nJets;
   }
+}
+
+// Jet Id (https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016)
+bool JetAnalyzer::jetId(const pat::Jet& j, bool tight){
+  if(fabs(j.eta()) < 2.7){
+    if(j.neutralHadronEnergyFraction() >= (tight? 0.90 : 0.99)) return false;
+    if(j.neutralEmEnergyFraction() >= (tight? 0.90 : 0.99))     return false;
+    if(j.chargedMultiplicity()+j.neutralMultiplicity() <= 1)    return false;
+    if(fabs(j.eta()) < 2.4){
+      if(j.chargedHadronEnergyFraction() <= 0)                  return false;
+      if(j.chargedMultiplicity() <= 0)                          return false;
+      if(j.chargedEmEnergyFraction() >= 0.99)                   return false;
+    }
+  } else if(fabs(j.eta()) < 3.0){
+    if(j.neutralHadronEnergyFraction() >= 0.98)                 return false;
+    if(j.neutralEmEnergyFraction() <= 0.01)                     return false;
+    if(j.neutralMultiplicity() <= 2)                            return false;
+  } else {
+    if(j.neutralEmEnergyFraction() >= 0.90)                     return false;
+    if(j.neutralMultiplicity() <= 10)                           return false;
+  }
+  return true;
 }
