@@ -69,7 +69,9 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
-
+#Proagate JEC to MET
+from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+runMetCorAndUncFromMiniAOD(process, isData=isData)
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
