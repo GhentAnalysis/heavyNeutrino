@@ -5,7 +5,6 @@ import os
 productionLabel = os.environ['CRAB_PRODUCTIONLABEL']
 dataset         = os.environ['CRAB_DATASET']
 outputFile      = os.environ['CRAB_OUTPUTFILE']
-cfgOptions      = os.environ['CRAB_CFGOPTIONS']
 
 # Crab configuration
 config = Configuration()
@@ -15,7 +14,7 @@ config.General.requestName             = dataset.split('/')[2].replace('80X_mcRu
 config.General.workArea                = os.path.join('crab', productionLabel, dataset.split('/')[1] + dataset.split('/')[2])
 
 config.section_('JobType')
-config.JobType.psetName                = 'trilepton.py'
+config.JobType.psetName                = 'multilep.py'
 config.JobType.pyCfgParams             = ['events=-1', 'outputFile='+outputFile, 'isData='+('False' if 'SIM' in dataset else 'True')]
 config.JobType.pluginName              = 'analysis'
 config.JobType.outputFiles             = [outputFile]
