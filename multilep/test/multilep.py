@@ -75,6 +75,7 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
   genEventInfo                  = cms.InputTag("generator"),
+  lheEventInfo                  = cms.InputTag("externalLHEProducer"),
   pileUpInfo                    = cms.InputTag("slimmedAddPileupInfo"),
   genParticles                  = cms.InputTag("prunedGenParticles"),
   muons                         = cms.InputTag("slimmedMuons"),

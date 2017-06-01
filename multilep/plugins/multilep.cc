@@ -4,6 +4,7 @@
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
     genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
+    lheEventInfoToken(                consumes<LHEEventProduct>(                  iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
     pileUpToken(                      consumes<std::vector<PileupSummaryInfo>>(   iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
     genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
     muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
@@ -43,6 +44,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
     genAnalyzer     = new GenAnalyzer(iConfig, this);
+    lheAnalyzer     = new LheAnalyzer(iConfig, this);
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -60,6 +62,7 @@ void multilep::beginJob(){
   outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
   outputTree->Branch("_nTrueInt",                     &_nTrueInt,                     "_nTrueInt/F");
 
+  lheAnalyzer->beginJob(outputTree);
   genAnalyzer->beginJob(outputTree);
   triggerAnalyzer->beginJob(outputTree);
   leptonAnalyzer->beginJob(outputTree);
@@ -96,6 +99,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
   if(!photonAnalyzer->analyze(iEvent)) return;
   genAnalyzer->analyze(iEvent);
+  lheAnalyzer->analyze(iEvent);
   triggerAnalyzer->analyze(iEvent);
   jetAnalyzer->analyze(iEvent);
 
