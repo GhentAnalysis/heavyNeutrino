@@ -104,6 +104,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
     edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
     TTree* outputTree;
+    TH1D*  hCounter;
 
     unsigned long _runNb;                                                                            //event labels
     unsigned long _lumiBlock;
