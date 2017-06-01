@@ -11,23 +11,33 @@ class multilep;
 
 class GenAnalyzer {
   private:
-    static const unsigned nGen_max = 200;
-
-    unsigned _nGen;
-
-    double _genPt[nGen_max];
-    double _genEta[nGen_max];
-    double _genPhi[nGen_max];
-    double _genMass[nGen_max];
-    int    _genCharge[nGen_max];
-    int    _genPdgId[nGen_max];
-    int    _genStatus[nGen_max];
-    bool   _genFromHardProcess[nGen_max];
-    bool   _genIsPrompt[nGen_max];
-    int    _genMotherIndex1[nGen_max];
-    int    _genMotherIndex2[nGen_max];
-    int    _genDaughterIndex1[nGen_max];
-    int    _genDaughterIndex2[nGen_max];
+    static const unsigned gen_nL_max = 20;
+    static const unsigned gen_nPh_max = 10;
+    
+    //generator level MET
+    double _gen_met;
+    double _gen_metPhi;
+    //Generator photons
+    unsigned _gen_nPh;
+    double _gen_phPt[gen_nPh_max];
+    double _gen_phEta[gen_nPh_max];
+    double _gen_phPhi[gen_nPh_max];
+    double _gen_phE[gen_nPh_max];
+    int _gen_phMomPdg[gen_nPh_max];
+    bool _gen_phIsPrompt[gen_nPh_max];
+    //Generator leptons
+    unsigned _gen_nL;
+    double _gen_lPt[gen_nL_max];
+    double _gen_lEta[gen_nL_max];
+    double _gen_lPhi[gen_nL_max];
+    double _gen_lE[gen_nL_max];
+    unsigned _gen_lFlavor[gen_nL_max];
+    int _gen_lCharge[gen_nL_max];
+    int _gen_lMomPdg[gen_nL_max];
+    bool _gen_lIsPrompt[gen_nL_max];
+    //Functions to find the mother of a gen particle
+    const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    const int getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 
     multilep* multilepAnalyzer;
 
