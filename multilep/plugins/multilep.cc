@@ -47,7 +47,9 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
+  hCounter = fs->make<TH1D>("hCounter", "Events counter", 1,0,1);
   //Initialize tree with event info
+
   outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
 
   //Set all branches of the outputTree
@@ -89,6 +91,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(puI->getBunchCrossing() == 0) _nTrueInt = puI->getTrueNumInteractions(); // getTrueNumInteractions should be the same for all bunch crosssings
   }
 
+  hCounter->Fill(0.5, _weight);
   
   if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
   if(!photonAnalyzer->analyze(iEvent)) return;
