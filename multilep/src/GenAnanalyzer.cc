@@ -64,33 +64,33 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
           }
       }
       //store generator level lepton info
-      if( (p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15) ){
+      if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
           if(_gen_nL == gen_nL_max) break;
-          _gen_lPt[_gen_nL] = p.pt();
-          _gen_lEta[_gen_nL] = p.eta();
-          _gen_lPhi[_gen_nL] = p.phi();
-          _gen_lE[_gen_nL] = p.energy();
-          if(abs(p.pdgId()) == 11) _gen_lFlavor[_gen_nL] = 0;
-          else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
-          else _gen_lFlavor[_gen_nL] = 2;
-          _gen_lCharge[_gen_nL] = p.charge();
+          _gen_lPt[_gen_nL]       = p.pt();
+          _gen_lEta[_gen_nL]      = p.eta();
+          _gen_lPhi[_gen_nL]      = p.phi();
+          _gen_lE[_gen_nL]        = p.energy();
+          _gen_lCharge[_gen_nL]   = p.charge();
           _gen_lIsPrompt[_gen_nL] = (p.isPromptDecayed() || p.isPromptFinalState());
-          _gen_lMomPdg[_gen_nL] = getMotherPdgId(p, *genParticles);
+          _gen_lMomPdg[_gen_nL]   = getMotherPdgId(p, *genParticles);
+          if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
+          else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
+          else                          _gen_lFlavor[_gen_nL] = 2;
           ++_gen_nL;
       } 
       //store generator level photon info
       else if( p.status() == 1 && abs(p.pdgId()) == 22){
           if(_gen_nPh == gen_nPh_max) break;
-          _gen_phPt[_gen_nPh] = p.pt();
-          _gen_phEta[_gen_nPh] = p.eta();
-          _gen_phPhi[_gen_nPh] = p.phi();
-          _gen_phE[_gen_nPh] = p.energy();
+          _gen_phPt[_gen_nPh]       = p.pt();
+          _gen_phEta[_gen_nPh]      = p.eta();
+          _gen_phPhi[_gen_nPh]      = p.phi();
+          _gen_phE[_gen_nPh]        = p.energy();
           _gen_phIsPrompt[_gen_nPh] = p.isPromptFinalState();
-          _gen_phMomPdg[_gen_nPh] = getMotherPdgId(p, *genParticles);
+          _gen_phMomPdg[_gen_nPh]   = getMotherPdgId(p, *genParticles);
           ++_gen_nPh;
       }
   }
-  _gen_met = genMetVector.Pt();
+  _gen_met    = genMetVector.Pt();
   _gen_metPhi = genMetVector.Phi();
 }
 
@@ -123,10 +123,10 @@ bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
 int GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles){
   int type = 0;
   for(auto p = genParticles.begin(); p != genParticles.end(); ++p){
-    if(p->status()<0) continue;
-    if(p->pdgId()!=22) continue;
+    if(p->status()<0)      continue;
+    if(p->pdgId()!=22)     continue;
     type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles
-    if(p->pt()<10) continue;
+    if(p->pt()<10)         continue;
     if(fabs(p->eta())>2.6) continue;
     type = std::max(type, 2);                                                            // Type 2: photon with generator level cuts
 
