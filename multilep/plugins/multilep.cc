@@ -37,7 +37,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
     badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
-    skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim"))
+    skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
+    isData(                                                                       iConfig.getUntrackedParameter<bool>("isData"))
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -62,8 +63,10 @@ void multilep::beginJob(){
   outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
   outputTree->Branch("_nTrueInt",                     &_nTrueInt,                     "_nTrueInt/F");
 
-  lheAnalyzer->beginJob(outputTree);
-  genAnalyzer->beginJob(outputTree);
+  if(!isData){
+    lheAnalyzer->beginJob(outputTree);
+    genAnalyzer->beginJob(outputTree);
+  }
   triggerAnalyzer->beginJob(outputTree);
   leptonAnalyzer->beginJob(outputTree);
   photonAnalyzer->beginJob(outputTree);
@@ -93,21 +96,29 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   //Get all objects
   edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,                          vertices);
   edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
-  edm::Handle<GenEventInfoProduct> genEventInfo;                   iEvent.getByToken(genEventInfoToken,                 genEventInfo);
-  edm::Handle<std::vector<PileupSummaryInfo>>  pileUpInfo;         iEvent.getByToken(pileUpToken,                       pileUpInfo);
 
-  _weight  = genEventInfo->weight();
   _nVertex = vertices->size();
-  for(auto puI = pileUpInfo->begin(); puI != pileUpInfo->end(); ++puI){
-    if(puI->getBunchCrossing() == 0) _nTrueInt = puI->getTrueNumInteractions(); // getTrueNumInteractions should be the same for all bunch crosssings
-  }
-
   hCounter->Fill(0.5, _weight);
   
   if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
   if(!photonAnalyzer->analyze(iEvent)) return;
-  genAnalyzer->analyze(iEvent);
-  lheAnalyzer->analyze(iEvent);
+
+  if(!isData){
+    edm::Handle<GenEventInfoProduct> genEventInfo;                   iEvent.getByToken(genEventInfoToken,                 genEventInfo);
+    edm::Handle<std::vector<PileupSummaryInfo>>  pileUpInfo;         iEvent.getByToken(pileUpToken,                       pileUpInfo);
+    
+    _weight  = genEventInfo->weight();
+    for(auto puI = pileUpInfo->begin(); puI != pileUpInfo->end(); ++puI){
+      if(puI->getBunchCrossing() == 0) _nTrueInt = puI->getTrueNumInteractions(); // getTrueNumInteractions should be the same for all bunch crosssings
+    }
+
+    genAnalyzer->analyze(iEvent);
+    lheAnalyzer->analyze(iEvent);
+  } else {
+    _weight   = 1;
+    _nTrueInt = 0;
+  }
+
   triggerAnalyzer->analyze(iEvent);
   jetAnalyzer->analyze(iEvent);
 

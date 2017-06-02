@@ -69,9 +69,10 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
-#Proagate JEC to MET
-from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-runMetCorAndUncFromMiniAOD(process, isData=isData)
+#Propagate JEC to MET (does not work for data)
+if not isData:
+  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+  runMetCorAndUncFromMiniAOD(process, isData=isData)
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -113,13 +114,14 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   recoResults                   = cms.InputTag("TriggerResults::RECO"),
   badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
   badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
-  skim                          = cms.untracked.string(outputFile.split('.')[0])
+  skim                          = cms.untracked.string(outputFile.split('.')[0]),
+  isData                        = cms.untracked.bool(isData)
 )
 
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  process.source.lumisToProcess = LumiList.LumiList(filename = 'TO_BE_ADDED').getVLuminosityBlockRange()
+  process.source.lumisToProcess = LumiList.LumiList(filename = '../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt').getVLuminosityBlockRange()
 
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
