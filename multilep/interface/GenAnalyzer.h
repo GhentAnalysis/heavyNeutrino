@@ -14,7 +14,8 @@ class GenAnalyzer {
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
    
-    int _ttgEventType;
+    int    _ttgEventType;
+    float  _nTrueInt;
 
     //generator level MET
     double _gen_met;

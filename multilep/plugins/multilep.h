@@ -116,7 +116,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     unsigned long _lumiBlock;
     unsigned long _eventNb;
     unsigned      _nVertex;                                                                          //Event variables
-    float         _nTrueInt;
     double        _weight;
     double        _met;                                                                              //met kinematics
     double        _metPhi;

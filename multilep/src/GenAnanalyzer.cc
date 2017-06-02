@@ -18,6 +18,8 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 
 
 void GenAnalyzer::beginJob(TTree* outputTree){
+  outputTree->Branch("_nTrueInt",                   &_nTrueInt,                 "_nTrueInt/F");
+
   outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/I");
   outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
   outputTree->Branch("_gen_metPhi",                &_gen_metPhi,                "_gen_metPhi/D");
@@ -41,6 +43,9 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
+  edm::Handle<std::vector<PileupSummaryInfo>>  pileUpInfo;  iEvent.getByToken(multilepAnalyzer->pileUpToken,      pileUpInfo);
+
+  _nTrueInt = pileUpInfo->begin()->getTrueNumInteractions(); // getTrueNumInteractions should be the same for all bunch crosssings
 
   if(!genParticles.isValid()) return;
 

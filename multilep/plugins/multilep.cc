@@ -61,7 +61,6 @@ void multilep::beginJob(){
   outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
   outputTree->Branch("_weight",                       &_weight,                       "_weight/D");
   outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
-  outputTree->Branch("_nTrueInt",                     &_nTrueInt,                     "_nTrueInt/F");
 
   if(!isData){
     lheAnalyzer->beginJob(outputTree);
@@ -95,28 +94,19 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
   //Get all objects
   edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,                          vertices);
+  edm::Handle<GenEventInfoProduct> genEventInfo;                   iEvent.getByToken(genEventInfoToken,                 genEventInfo);
   edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
 
   _nVertex = vertices->size();
+  _weight  = isData ? 1. : genEventInfo->weight();
   hCounter->Fill(0.5, _weight);
   
   if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
   if(!photonAnalyzer->analyze(iEvent)) return;
 
   if(!isData){
-    edm::Handle<GenEventInfoProduct> genEventInfo;                   iEvent.getByToken(genEventInfoToken,                 genEventInfo);
-    edm::Handle<std::vector<PileupSummaryInfo>>  pileUpInfo;         iEvent.getByToken(pileUpToken,                       pileUpInfo);
-    
-    _weight  = genEventInfo->weight();
-    for(auto puI = pileUpInfo->begin(); puI != pileUpInfo->end(); ++puI){
-      if(puI->getBunchCrossing() == 0) _nTrueInt = puI->getTrueNumInteractions(); // getTrueNumInteractions should be the same for all bunch crosssings
-    }
-
     genAnalyzer->analyze(iEvent);
     lheAnalyzer->analyze(iEvent);
-  } else {
-    _weight   = 1;
-    _nTrueInt = 0;
   }
 
   triggerAnalyzer->analyze(iEvent);
