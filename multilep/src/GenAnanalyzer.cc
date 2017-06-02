@@ -18,6 +18,7 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 
 
 void GenAnalyzer::beginJob(TTree* outputTree){
+  outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/I");
   outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
   outputTree->Branch("_gen_metPhi",                &_gen_metPhi,                "_gen_metPhi/D");
   outputTree->Branch("_gen_nPh",                   &_gen_nPh,                   "_gen_nPh/b");
@@ -41,7 +42,10 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 void GenAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
 
-  if(!genParticles.isValid()) return; 
+  if(!genParticles.isValid()) return;
+
+  _ttgEventType = ttgEventType(*genParticles);
+
   _gen_nL = 0;
   _gen_nPh = 0;
   TLorentzVector genMetVector;
@@ -91,12 +95,53 @@ const reco::GenParticle* GenAnalyzer::getMother(const reco::GenParticle& p, cons
 
 const int GenAnalyzer::getMotherPdgId(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* mom = getMother(p, genParticles);
-    if(mom != nullptr){
-        while(getMother(*mom, genParticles) && mom->pdgId() == getMother(*mom, genParticles)->pdgId()){
-            mom = getMother(*mom, genParticles);
-        }
-        return mom->pdgId();
-    } else{
-        return 0;
+    if(!mom)                         return 0;
+    else if(mom->pdgId()==p.pdgId()) return getMotherPdgId(*mom, genParticles);
+    else                             return mom->pdgId();
+}
+
+// Make a (recursive) list of ancestors of a particle, taking out copies and protons
+void GenAnalyzer::getMotherList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<int>& list){
+  if((list.empty() or p.pdgId() != list.back()) and p.pdgId() != 2212) list.push_back(p.pdgId());
+  if(p.numberOfMothers() > 1) getMotherList(genParticles[p.motherRef(1).key()], genParticles, list);
+  if(p.numberOfMothers() > 0) getMotherList(genParticles[p.motherRef(0).key()], genParticles, list);
+}
+
+
+bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
+  return (std::find(list.begin(), list.end(), i) != list.end());
+}
+
+/*
+ * Some event categorization in order to understand/debug/apply overlap removal for TTG <--> TTJets
+ */
+int GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles){
+  int type = 0;
+  for(auto p = genParticles.begin(); p != genParticles.end(); ++p){
+    if(p->status()<0) continue;
+    if(p->pdgId()!=22) continue;
+    type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles
+    if(p->pt()<10) continue;
+    if(fabs(p->eta())>2.6) continue;
+    type = std::max(type, 2);                                                            // Type 2: photon with generator level cuts
+
+    std::vector<int> motherList = {};
+    getMotherList(*p, genParticles, motherList);
+
+    if(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37)  continue;
+    if(*(std::min_element(std::begin(motherList), std::end(motherList))) < -37) continue;
+    type = std::max(type, 3);                                                            // Type 3: photon probably from pion (or other meson)
+
+    if(inMotherList(motherList, 24) or inMotherList(motherList, -24)){                   // If a W-boson in ancestry
+      if(abs(getMotherPdgId(*p, genParticles)) == 24)     type =std::max(type, 6);       // Type 6: photon directly from W
+      else if(abs(getMotherPdgId(*p, genParticles)) <= 6) type =std::max(type, 4);       // Type 4: photon from quark from W
+      else                                                type =std::max(type, 5);       // Type 5: photon from lepton from W
+     
+      continue;
     }
+
+    if(abs(getMotherPdgId(*p, genParticles)) == 6) type = std::max(type, 7);             // Type 7: photon from top
+    else                                           type = std::max(type, 8);             // Type 8: photon from other quark or gluon or top not recorded (like in the TTGJets sample)
+  }
+  return type;
 }

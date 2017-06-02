@@ -13,7 +13,9 @@ class GenAnalyzer {
   private:
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
-    
+   
+    int _ttgEventType;
+
     //generator level MET
     double _gen_met;
     double _gen_metPhi;
@@ -38,6 +40,11 @@ class GenAnalyzer {
     //Functions to find the mother of a gen particle
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const int getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+
+    void getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
+    bool inMotherList(std::vector<int>& list, int i);
+    int  ttgEventType(const std::vector<reco::GenParticle>& genParticles);
+
 
     multilep* multilepAnalyzer;
 
