@@ -119,6 +119,14 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     double        _weight;
     double        _met;                                                                              //met kinematics
     double        _metPhi;
+    double        _metJECDown;
+    double        _metPhiJECDown;
+    double        _metJECUp;
+    double        _metPhiJECUp;
+    double        _metUnclDown;
+    double        _metPhiUnclDown;
+    double        _metUnclUp;
+    double        _metPhiUnclUp;
 };
 #endif
 

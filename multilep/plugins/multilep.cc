@@ -71,6 +71,14 @@ void multilep::beginJob(){
 
   outputTree->Branch("_met",                          &_met,                          "_met/D");
   outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
+  outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
+  outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
+  outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
+  outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
+  outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
+  outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
+  outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
+  outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
 }
 
 
@@ -103,10 +111,19 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   triggerAnalyzer->analyze(iEvent);
   jetAnalyzer->analyze(iEvent);
 
-  //determine the met of the event
+  //determine the met of the event and its uncertainties
+  //nominal MET value
   const pat::MET& met = (*mets).front();
   _met    = met.pt();
   _metPhi = met.phi();
+  _metJECDown = met.shiftedPt(pat::MET::JetEnDown);
+  _metPhiJECDown = met.shiftedPhi(pat::MET::JetEnDown);
+  _metJECUp = met.shiftedPt(pat::MET::JetEnUp);
+  _metPhiJECUp = met.shiftedPhi(pat::MET::JetEnDown);
+  _metUnclDown = met.shiftedPt(pat::MET::UnclusteredEnDown);
+  _metPhiUnclDown = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+  _metUnclUp = met.shiftedPt(pat::MET::UnclusteredEnUp);
+  _metPhiUnclDown = met.shiftedPhi(pat::MET::UnclusteredEnUp);
   //store calculated event info in root tree
   outputTree->Fill();
 }
