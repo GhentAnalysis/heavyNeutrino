@@ -3,7 +3,6 @@ import FWCore.ParameterSet.Config as cms
 
 # Default arguments
 inputFile       = '/store/mc/RunIISummer16MiniAODv2/ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/120000/50D92A94-D1D0-E611-BEA6-D4AE526A023A.root'
-inputFile       = '/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/022FEC03-9AED-E611-9AE9-0025905A60B2.root'
 isData          = False
 nEvents         = 1000
 outputFile      = 'trilep.root'  # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -70,13 +69,11 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
-# Propagate JEC to MET
-# Broken for data in CMSSW_8_0_X releases, seems a fix is sheduled for CMSSW_8_1_X
-# Not yet added to the path?
-# Need to find documentation on this
-if not isData:
-  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-  runMetCorAndUncFromMiniAOD(process, isData=isData)
+# Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
+# from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
+from heavyNeutrino.multilep.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+runMetCorAndUncFromMiniAOD(process, isData=isData)
+
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -133,5 +130,6 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadChargedCandidateFilter *
                      process.egmSequence *
                      process.jetSequence *
+                     process.fullPatMetSequence *
                      process.blackJackAndHookers)
 
