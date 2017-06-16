@@ -1,6 +1,5 @@
 # heavyNeutrino
-New repository for the heavyNeutrino analysis
-
+New repository for Ghent CMS analysis ntupler framework. (Initially created for heavy neutrino analysis)
 # Set-up instructions
 ```
 cmsrel CMSSW_8_0_28_patch1
