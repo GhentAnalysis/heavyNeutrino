@@ -25,7 +25,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
   outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
   outputTree->Branch("_lPhi",                         &_lPhi,                         "_lPhi[_nL]/D");
-  outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
+  outputTree->Branch("_lE",                           &_lE,                           "_lE[_nL]/D");
   outputTree->Branch("_lFlavor",                      &_lFlavor,                      "_lFlavor[_nL]/b");
   outputTree->Branch("_lCharge",                      &_lCharge,                      "_lCharge[_nL]/I");
   outputTree->Branch("_dxy",                          &_dxy,                          "_dxy[_nL]/D");
