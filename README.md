@@ -3,8 +3,8 @@ New repository for the heavyNeutrino analysis
 
 # Set-up instructions
 ```
-cmsrel CMSSW_8_0_27
-cd CMSSW_8_0_27/src
+cmsrel CMSSW_8_0_28
+cd CMSSW_8_0_28/src
 cmsenv
 git cms-init
 git clone https://github.com/GhentAnalysis/heavyNeutrino
