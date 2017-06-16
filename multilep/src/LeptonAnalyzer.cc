@@ -40,7 +40,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
-  outputTree->Branch("_lIsPrompt",                    &_isPrompt,                     "_lIsPrompt[_nL]/O");
+  outputTree->Branch("_lIsPrompt",                    &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
 
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
@@ -156,8 +156,8 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 }
 
 void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
-  if(genParticle != nullptr) _isPrompt[_nL] = (genParticle)->isPromptFinalState();
-  else                       _isPrompt[_nL] = false;
+  if(genParticle != nullptr) _lIsPrompt[_nL] = (genParticle)->isPromptFinalState();
+  else                       _lIsPrompt[_nL] = false;
 }
 
 
