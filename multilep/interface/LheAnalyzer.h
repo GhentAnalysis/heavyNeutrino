@@ -14,6 +14,7 @@ class LheAnalyzer {
     double _lheHTIncoming;
     double _ctauHN;
     double _lheWeight[110];
+    TH1D* lheCounter;
 
     multilep* multilepAnalyzer;
 
@@ -21,7 +22,7 @@ class LheAnalyzer {
     LheAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
     ~LheAnalyzer();
 
-    void beginJob(TTree* outputTree);
+    void beginJob(TTree* outputTree, edm::Service<TFileService>& fs);
     void analyze(const edm::Event&);
 };
 
