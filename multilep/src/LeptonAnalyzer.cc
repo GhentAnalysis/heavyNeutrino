@@ -191,10 +191,12 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau){
 
 //Check if electron overlaps with loose muon
 bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
-  TLorentzVector eleV(ele.pt(), ele.eta(), ele.phi(), ele.energy());
+  TLorentzVector eleV;
+  eleV.SetPtEtaPhiE(ele.pt(), ele.eta(), ele.phi(), ele.energy());
   for(unsigned m = 0; m < _nMu; ++m){
     if(_lHNLoose[m]){
-      TLorentzVector muV(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
+      TLorentzVector muV;
+      muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
       if(eleV.DeltaR(muV) < 0.05) return true;
     }
   }
