@@ -16,7 +16,7 @@ for dataset in datasets:
   elif dataset.startswith('TRILEP:'):    outputName = 'triLep'
   elif dataset.startswith('TTG:'):       outputName = 'ttg'
   elif dataset.startswith('SINGLEPHOT:'):outputName = 'singlephoton'
-  elif dataset.startswith('DIPHOT:')     outputName = 'diphoton'
+  elif dataset.startswith('DIPHOT:'):    outputName = 'diphoton'
   else:                                  outputName = 'diLep' # default
   dataset = dataset.split(':')[-1]
 
