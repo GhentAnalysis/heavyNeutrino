@@ -52,7 +52,7 @@ class LeptonAnalyzer {
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
-    bool _isPrompt[nL_max];
+    bool _lIsPrompt[nL_max];
 
 
     multilep* multilepAnalyzer;
