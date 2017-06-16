@@ -131,6 +131,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
     if(fabs(tau.eta()) > 2.3) continue;
     fillLeptonKinVars(tau);
+    fillLeptonGenVars(tau.genParticle());
     fillLeptonImpactParameters(tau, primaryVertex);
     _lFlavor[_nL]  = 2;
     _lHNLoose[_nL] = false;                      // TO BE IMPLEMENTED
