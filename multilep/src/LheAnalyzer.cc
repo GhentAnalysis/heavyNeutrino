@@ -42,5 +42,10 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 
     if(hasIncomingMother and status==1 and quarkOrGluon) _lheHTIncoming += pt;
     if(pdgId==9900012)                                   _ctauHN         = lheEventInfo->hepeup().VTIMUP[i];
+  } 
+  //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
+  for(int i = 0; i < 110; ++i){
+    _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
   }
+
 }
