@@ -14,7 +14,9 @@ LheAnalyzer::LheAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 {};
 
 
-void LheAnalyzer::beginJob(TTree* outputTree){
+void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
+  //Counter to determine effect of pdf and scale uncertainties on the MC cross section
+  lheCounter = fs->make<TH1D>("hCounter", "Events counter", 110,0,110);
   outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
   outputTree->Branch("_ctauHN",        &_ctauHN,        "_ctauHN/D");
 }
@@ -46,6 +48,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
   //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
   for(int i = 0; i < 110; ++i){
     _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
+    lheCounter->Fill(i + 0.5,_lheWeight[i]);
   }
 
 }
