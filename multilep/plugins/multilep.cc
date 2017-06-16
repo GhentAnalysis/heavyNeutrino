@@ -63,7 +63,7 @@ void multilep::beginJob(){
   outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
   if(!isData){
-    lheAnalyzer->beginJob(outputTree);
+    lheAnalyzer->beginJob(outputTree, fs);
     genAnalyzer->beginJob(outputTree);
   }
   triggerAnalyzer->beginJob(outputTree);
@@ -101,14 +101,11 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   _nVertex = vertices->size();
   _weight  = isData ? 1. : genEventInfo->weight();
   hCounter->Fill(0.5, _weight);
-  
+  if(!isData) lheAnalyzer->analyze(iEvent); //needs to be run before selection to get correct uncertainties on MC xsection  
   if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
   if(!photonAnalyzer->analyze(iEvent)) return;
 
-  if(!isData){
-    genAnalyzer->analyze(iEvent);
-    lheAnalyzer->analyze(iEvent);
-  }
+  if(!isData) genAnalyzer->analyze(iEvent);
 
   triggerAnalyzer->analyze(iEvent);
   jetAnalyzer->analyze(iEvent);
