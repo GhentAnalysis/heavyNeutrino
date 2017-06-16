@@ -63,6 +63,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     _phHadronicOverEm[_nPh]          = photon->hadronicOverEm();
     _phPassElectronVeto[_nPh]        = photon->passElectronVeto();
     _phHasPixelSeed[_nPh]            = photon->hasPixelSeed();
+    fillPhotonGenVars(photon->genParticle());
 
     ++_nPh;
   }
@@ -71,4 +72,9 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
   if(multilepAnalyzer->skim == "singlephoton" and _nPh < 1) return false;
   if(multilepAnalyzer->skim == "diphoton" and _nph < 2) return false;
   return true;
+}
+
+void PhotonAnalyzer::fillPhotonGenVars(const reco::Genparticle* genParticle){
+    if(genParticle != nullptr) _phIsPrompt[_nL] = (genParticle)->isPromptFinalState();
+    else                       _phIsPrompt[_nL] = false;
 }
