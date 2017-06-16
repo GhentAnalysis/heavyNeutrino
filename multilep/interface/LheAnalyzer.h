@@ -13,7 +13,7 @@ class LheAnalyzer {
   private:
     double _lheHTIncoming;
     double _ctauHN;
-    double _lheWeight[111];
+    double _lheWeight[110];
 
     multilep* multilepAnalyzer;
 
