@@ -27,7 +27,12 @@ class JetAnalyzer {
     double   _jetEta[nJets_max];
     double   _jetPhi[nJets_max];
     double   _jetE[nJets_max];
-    double   _jetBTaggingCSV[nJets_max];
+    double   _jetCsvV2[nJets_max];
+    double   _jetDeepCsv_udsg[nJets_max];
+    double   _jetDeepCsv_b[nJets_max];
+    double   _jetDeepCsv_c[nJets_max];
+    double   _jetDeepCsv_bb[nJets_max];
+    double   _jetDeepCsv_cc[nJets_max];
     double   _jetHadronFlavour[nJets_max];
     unsigned _jetId[nJets_max];
 
