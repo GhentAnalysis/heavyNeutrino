@@ -70,11 +70,11 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
 
   if(multilepAnalyzer->skim == "ttg" and _nPh < 1) return false;
   if(multilepAnalyzer->skim == "singlephoton" and _nPh < 1) return false;
-  if(multilepAnalyzer->skim == "diphoton" and _nph < 2) return false;
+  if(multilepAnalyzer->skim == "diphoton" and _nPh < 2) return false;
   return true;
 }
 
-void PhotonAnalyzer::fillPhotonGenVars(const reco::Genparticle* genParticle){
-    if(genParticle != nullptr) _phIsPrompt[_nL] = (genParticle)->isPromptFinalState();
-    else                       _phIsPrompt[_nL] = false;
+void PhotonAnalyzer::fillPhotonGenVars(const reco::GenParticle* genParticle){
+    if(genParticle != nullptr) _phIsPrompt[_nPh] = (genParticle)->isPromptFinalState();
+    else                       _phIsPrompt[_nPh] = false;
 }
