@@ -31,8 +31,9 @@ class PhotonAnalyzer {
     double   _phHadronicOverEm[nPhoton_max];
     bool     _phPassElectronVeto[nPhoton_max];
     bool     _phHasPixelSeed[nPhoton_max];
+    bool     _phIsPrompt[nPhoton_max];
 
-    void fillPhotonGenVars(const reco::Genparticle*);
+    void fillPhotonGenVars(const reco::GenParticle*);
     multilep* multilepAnalyzer;
 
   public:
