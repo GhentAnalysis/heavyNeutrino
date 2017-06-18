@@ -28,6 +28,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_phPassElectronVeto",       &_phPassElectronVeto,       "_phPassElectronVeto[_nPh]/O");
   outputTree->Branch("_phHasPixelSeed",           &_phHasPixelSeed,           "_phHasPixelSeed[_nPh]/O");
   outputTree->Branch("_phIsPrompt",               &_phIsPrompt,               "_phIsPrompt[_nPh]/O");
+  outputTree->Branch("_phMatchPdgId",             &_phMatchPdgId,             "_phMatchPdgId[_nPh]/I");
 }
 
 bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
@@ -76,6 +77,11 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
 }
 
 void PhotonAnalyzer::fillPhotonGenVars(const reco::GenParticle* genParticle){
-    if(genParticle != nullptr) _phIsPrompt[_nPh] = (genParticle)->isPromptFinalState();
-    else                       _phIsPrompt[_nPh] = false;
+    if(genParticle != nullptr){
+        _phIsPrompt[_nPh] = (genParticle)->isPromptFinalState();
+        _phMatchPdgId[_nPh] = (genParticle)->pdgId();
+    } else{
+        _phIsPrompt[_nPh] = false;
+        _phMatchPdgId[_nPh] = (genParticle)->pdgId();
+    }
 }
