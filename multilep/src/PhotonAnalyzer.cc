@@ -27,6 +27,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_phHadronicOverEm",         &_phHadronicOverEm,         "_phHadronicOverEm[_nPh]/D");
   outputTree->Branch("_phPassElectronVeto",       &_phPassElectronVeto,       "_phPassElectronVeto[_nPh]/O");
   outputTree->Branch("_phHasPixelSeed",           &_phHasPixelSeed,           "_phHasPixelSeed[_nPh]/O");
+  outputTree->Branch("_phIsPrompt",               &_phIsPrompt,               "_phIsPrompt[_nPh]/O");
 }
 
 bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
