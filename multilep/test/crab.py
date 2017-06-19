@@ -30,6 +30,3 @@ config.Data.publication                = False
 
 config.section_('Site')
 config.Site.storageSite                = 'T2_BE_IIHE'
-
-config.section_('User')
-config.User.voGroup                    = 'becms'
