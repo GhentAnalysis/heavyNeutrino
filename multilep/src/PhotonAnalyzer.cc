@@ -12,21 +12,23 @@ PhotonAnalyzer::PhotonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
 
 
 void PhotonAnalyzer::beginJob(TTree* outputTree){
-  outputTree->Branch("_nPhoton",                      &_nPhoton,                      "_nPhoton/b");
-  outputTree->Branch("_photonPt",                     &_photonPt,                     "_photonPt[_nPhoton]/D");
-  outputTree->Branch("_photonEta",                    &_photonEta,                    "_photonEta[_nPhoton]/D");
-  outputTree->Branch("_photonPhi",                    &_photonPhi,                    "_photonPhi[_nPhoton]/D");
-  outputTree->Branch("_photonE",                      &_photonE,                      "_photonE[_nPhoton]/D");
-  outputTree->Branch("_photonCutBasedLoose",          &_photonCutBasedLoose,          "_photonCutBasedLoose[_nPhoton]/O");
-  outputTree->Branch("_photonCutBasedMedium",         &_photonCutBasedMedium,         "_photonCutBasedMedium[_nPhoton]/O");
-  outputTree->Branch("_photonCutBasedLoose",          &_photonCutBasedLoose,          "_photonCutBasedLoose[_nPhoton]/O");
-  outputTree->Branch("_photonMva",                    &_photonMva,                    "_photonMva[_nPhoton]/D");
-  outputTree->Branch("_photonChargedIsolation",       &_photonChargedIsolation,       "_photonChargedIsolation[_nPhoton]/D");
-  outputTree->Branch("_photonNeutralHadronIsolation", &_photonNeutralHadronIsolation, "_photonNeutralHadronIsolation[_nPhoton]/D");
-  outputTree->Branch("_photonSigmaIetaIeta",          &_photonSigmaIetaIeta,          "_photonSigmaIetaIeta[_nPhoton]/D");
-  outputTree->Branch("_photonHadronicOverEm",         &_photonHadronicOverEm,         "_photonHadronicOverEm[_nPhoton]/D");
-  outputTree->Branch("_photonPassElectronVeto",       &_photonPassElectronVeto,       "_photonPassElectronVeto[_nPhoton]/O");
-  outputTree->Branch("_photonHasPixelSeed",           &_photonHasPixelSeed,           "_photonHasPixelSeed[_nPhoton]/O");
+  outputTree->Branch("_nPh",                      &_nPh,                      "_nPh/b");
+  outputTree->Branch("_phPt",                     &_phPt,                     "_phPt[_nPh]/D");
+  outputTree->Branch("_phEta",                    &_phEta,                    "_phEta[_nPh]/D");
+  outputTree->Branch("_phPhi",                    &_phPhi,                    "_phPhi[_nPh]/D");
+  outputTree->Branch("_phE",                      &_phE,                      "_phE[_nPh]/D");
+  outputTree->Branch("_phCutBasedLoose",          &_phCutBasedLoose,          "_phCutBasedLoose[_nPh]/O");
+  outputTree->Branch("_phCutBasedMedium",         &_phCutBasedMedium,         "_phCutBasedMedium[_nPh]/O");
+  outputTree->Branch("_phCutBasedLoose",          &_phCutBasedLoose,          "_phCutBasedLoose[_nPh]/O");
+  outputTree->Branch("_phMva",                    &_phMva,                    "_phMva[_nPh]/D");
+  outputTree->Branch("_phChargedIsolation",       &_phChargedIsolation,       "_phChargedIsolation[_nPh]/D");
+  outputTree->Branch("_phNeutralHadronIsolation", &_phNeutralHadronIsolation, "_phNeutralHadronIsolation[_nPh]/D");
+  outputTree->Branch("_phSigmaIetaIeta",          &_phSigmaIetaIeta,          "_phSigmaIetaIeta[_nPh]/D");
+  outputTree->Branch("_phHadronicOverEm",         &_phHadronicOverEm,         "_phHadronicOverEm[_nPh]/D");
+  outputTree->Branch("_phPassElectronVeto",       &_phPassElectronVeto,       "_phPassElectronVeto[_nPh]/O");
+  outputTree->Branch("_phHasPixelSeed",           &_phHasPixelSeed,           "_phHasPixelSeed[_nPh]/O");
+  outputTree->Branch("_phIsPrompt",               &_phIsPrompt,               "_phIsPrompt[_nPh]/O");
+  outputTree->Branch("_phMatchPdgId",             &_phMatchPdgId,             "_phMatchPdgId[_nPh]/I");
 }
 
 bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
@@ -40,33 +42,46 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<edm::ValueMap<float>> photonsPhotonIsolation;        iEvent.getByToken(multilepAnalyzer->photonPhotonIsolationToken,        photonsPhotonIsolation);
 
   // Loop over photons
-  _nPhoton = 0;
+  _nPh = 0;
   for(auto photon = photons->begin(); photon != photons->end(); ++photon){
-    if(_nPhoton == nPhoton_max) break;
-    auto photonRef = edm::Ref<std::vector<pat::Photon>>(photons, (photon - photons->begin()));
+    if(_nPh == nPhoton_max) break;
+    const auto photonRef = edm::Ref<std::vector<pat::Photon>>(photons, (photon - photons->begin()));
 
     if(photon->pt()  < 10)  continue;
     if(photon->eta() > 2.5) continue;
 
-    _photonPt[_nPhoton]                      = photon->pt();
-    _photonEta[_nPhoton]                     = photon->eta();
-    _photonPhi[_nPhoton]                     = photon->phi();
-    _photonE[_nPhoton]                       = photon->energy();
-    _photonCutBasedLoose[_nPhoton]           = (*photonsCutBasedLoose)[photonRef];
-    _photonCutBasedMedium[_nPhoton]          = (*photonsCutBasedMedium)[photonRef];
-    _photonCutBasedTight[_nPhoton]           = (*photonsCutBasedTight)[photonRef];
-    _photonMva[_nPhoton]                     = (*photonsMva)[photonRef];
-    _photonChargedIsolation[_nPhoton]        = (*photonsChargedIsolation)[photonRef];
-    _photonNeutralHadronIsolation[_nPhoton]  = (*photonsNeutralHadronIsolation)[photonRef];
-    _photonPhotonIsolation[_nPhoton]         = (*photonsPhotonIsolation)[photonRef];
-    _photonSigmaIetaIeta[_nPhoton]           = photon->full5x5_sigmaIetaIeta();
-    _photonHadronicOverEm[_nPhoton]          = photon->hadronicOverEm();
-    _photonPassElectronVeto[_nPhoton]        = photon->passElectronVeto();
-    _photonHasPixelSeed[_nPhoton]            = photon->hasPixelSeed();
+    _phPt[_nPh]                      = photon->pt();
+    _phEta[_nPh]                     = photon->eta();
+    _phPhi[_nPh]                     = photon->phi();
+    _phE[_nPh]                       = photon->energy();
+    _phCutBasedLoose[_nPh]           = (*photonsCutBasedLoose)[photonRef];
+    _phCutBasedMedium[_nPh]          = (*photonsCutBasedMedium)[photonRef];
+    _phCutBasedTight[_nPh]           = (*photonsCutBasedTight)[photonRef];
+    _phMva[_nPh]                     = (*photonsMva)[photonRef];
+    _phChargedIsolation[_nPh]        = (*photonsChargedIsolation)[photonRef];
+    _phNeutralHadronIsolation[_nPh]  = (*photonsNeutralHadronIsolation)[photonRef];
+    _phPhotonIsolation[_nPh]         = (*photonsPhotonIsolation)[photonRef];
+    _phSigmaIetaIeta[_nPh]           = photon->full5x5_sigmaIetaIeta();
+    _phHadronicOverEm[_nPh]          = photon->hadronicOverEm();
+    _phPassElectronVeto[_nPh]        = photon->passElectronVeto();
+    _phHasPixelSeed[_nPh]            = photon->hasPixelSeed();
+    fillPhotonGenVars(photon->genParticle());
 
-    ++_nPhoton;
+    ++_nPh;
   }
 
-  if(multilepAnalyzer->skim == "ttg" and _nPhoton < 1) return false;
+  if(multilepAnalyzer->skim == "ttg" and _nPh < 1) return false;
+  if(multilepAnalyzer->skim == "singlephoton" and _nPh < 1) return false;
+  if(multilepAnalyzer->skim == "diphoton" and _nPh < 2) return false;
   return true;
+}
+
+void PhotonAnalyzer::fillPhotonGenVars(const reco::GenParticle* genParticle){
+    if(genParticle != nullptr){
+        _phIsPrompt[_nPh] = (genParticle)->isPromptFinalState();
+        _phMatchPdgId[_nPh] = (genParticle)->pdgId();
+    } else{
+        _phIsPrompt[_nPh] = false;
+        _phMatchPdgId[_nPh] = (genParticle)->pdgId();
+    }
 }

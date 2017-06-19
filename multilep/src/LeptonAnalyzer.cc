@@ -40,7 +40,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
-  outputTree->Branch("_lIsPrompt",                    &_isPrompt,                     "_lIsPrompt[_nL]/O");
+  outputTree->Branch("_lIsPrompt",                    &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
+  outputTree->Branch("_lMatchPdgId",                 &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
 
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
@@ -131,7 +132,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
     if(fabs(tau.eta()) > 2.3) continue;
     fillLeptonKinVars(tau);
-    fillLeptonImpactParameters(tau);
+    fillLeptonGenVars(tau.genParticle());
+    fillLeptonImpactParameters(tau, primaryVertex);
     _lFlavor[_nL]  = 2;
     _lHNLoose[_nL] = false;                      // TO BE IMPLEMENTED
     _lHNFO[_nL]    = false;
@@ -156,8 +158,13 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 }
 
 void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
-  if(genParticle != nullptr) _isPrompt[_nL] = (genParticle)->isPromptFinalState();
-  else                       _isPrompt[_nL] = false;
+  if(genParticle != nullptr){
+     _lIsPrompt[_nL] = (genParticle)->isPromptFinalState();
+     _lMatchPdgId[_nL] = (genParticle)->pdgId();
+  } else{
+    _lIsPrompt[_nL] = false;
+    _lMatchPdgId[_nL] = 0;
+  }
 }
 
 
@@ -180,14 +187,18 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const rec
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
 }
 
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau){
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
   _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
-  _dz[_nL]      = 0;                                                       // no dz function, might add computation like is done in heppy
+  _dz[_nL]      =  tau_dz(tau, vertex.position());
   _3dIP[_nL]    = tau.ip3d();
   _3dIPSig[_nL] = tau.ip3d_Sig(); 
 }
 
-
+//Function returning tau dz
+double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex){
+    const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
+    return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
+}
 
 //Check if electron overlaps with loose muon
 bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){

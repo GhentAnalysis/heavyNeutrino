@@ -15,23 +15,26 @@ class PhotonAnalyzer {
   private:
     static const unsigned nPhoton_max = 5;
 
-    unsigned _nPhoton;
-    double   _photonPt[nPhoton_max];
-    double   _photonEta[nPhoton_max];
-    double   _photonPhi[nPhoton_max];
-    double   _photonE[nPhoton_max];
-    bool     _photonCutBasedLoose[nPhoton_max];
-    bool     _photonCutBasedMedium[nPhoton_max];
-    bool     _photonCutBasedTight[nPhoton_max];
-    double   _photonMva[nPhoton_max];
-    double   _photonChargedIsolation[nPhoton_max];
-    double   _photonNeutralHadronIsolation[nPhoton_max];
-    double   _photonPhotonIsolation[nPhoton_max];
-    double   _photonSigmaIetaIeta[nPhoton_max];
-    double   _photonHadronicOverEm[nPhoton_max];
-    bool     _photonPassElectronVeto[nPhoton_max];
-    bool     _photonHasPixelSeed[nPhoton_max];
+    unsigned _nPh;
+    double   _phPt[nPhoton_max];
+    double   _phEta[nPhoton_max];
+    double   _phPhi[nPhoton_max];
+    double   _phE[nPhoton_max];
+    bool     _phCutBasedLoose[nPhoton_max];
+    bool     _phCutBasedMedium[nPhoton_max];
+    bool     _phCutBasedTight[nPhoton_max];
+    double   _phMva[nPhoton_max];
+    double   _phChargedIsolation[nPhoton_max];
+    double   _phNeutralHadronIsolation[nPhoton_max];
+    double   _phPhotonIsolation[nPhoton_max];
+    double   _phSigmaIetaIeta[nPhoton_max];
+    double   _phHadronicOverEm[nPhoton_max];
+    bool     _phPassElectronVeto[nPhoton_max];
+    bool     _phHasPixelSeed[nPhoton_max];
+    bool     _phIsPrompt[nPhoton_max];
+    int      _phMatchPdgId[nPhoton_max];
 
+    void fillPhotonGenVars(const reco::GenParticle*);
     multilep* multilepAnalyzer;
 
   public:
