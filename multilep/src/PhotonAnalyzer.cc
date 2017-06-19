@@ -19,7 +19,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_phE",                      &_phE,                      "_phE[_nPh]/D");
   outputTree->Branch("_phCutBasedLoose",          &_phCutBasedLoose,          "_phCutBasedLoose[_nPh]/O");
   outputTree->Branch("_phCutBasedMedium",         &_phCutBasedMedium,         "_phCutBasedMedium[_nPh]/O");
-  outputTree->Branch("_phCutBasedLoose",          &_phCutBasedLoose,          "_phCutBasedLoose[_nPh]/O");
+  outputTree->Branch("_phCutBasedTight",          &_phCutBasedTight,          "_phCutBasedTight[_nPh]/O");
   outputTree->Branch("_phMva",                    &_phMva,                    "_phMva[_nPh]/D");
   outputTree->Branch("_phChargedIsolation",       &_phChargedIsolation,       "_phChargedIsolation[_nPh]/D");
   outputTree->Branch("_phNeutralHadronIsolation", &_phNeutralHadronIsolation, "_phNeutralHadronIsolation[_nPh]/D");
