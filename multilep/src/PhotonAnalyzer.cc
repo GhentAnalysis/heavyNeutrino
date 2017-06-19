@@ -78,10 +78,10 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
 
 void PhotonAnalyzer::fillPhotonGenVars(const reco::GenParticle* genParticle){
     if(genParticle != nullptr){
-        _phIsPrompt[_nPh] = (genParticle)->isPromptFinalState();
+        _phIsPrompt[_nPh]   = (genParticle)->isPromptFinalState();
         _phMatchPdgId[_nPh] = (genParticle)->pdgId();
     } else{
-        _phIsPrompt[_nPh] = false;
-        _phMatchPdgId[_nPh] = (genParticle)->pdgId();
+        _phIsPrompt[_nPh]   = false;
+        _phMatchPdgId[_nPh] = 0;
     }
 }
