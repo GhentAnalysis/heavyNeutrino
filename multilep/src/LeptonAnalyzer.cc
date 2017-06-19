@@ -218,22 +218,27 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets){
   // Find closest jet
   float dR = 9999;
-  auto jet          = jets->begin();
+  auto jet = jets->begin();
   for(; jet != jets->end(); ++jet){
     if(reco::deltaR(*jet, lepton) > dR) continue;
     dR = reco::deltaR(*jet, lepton);
   }
 
-//auto  l1Jet       = jet->correctedP4("L1FastJet"); // can't get this to work, annoying, please correct when you can solve it
-  auto  l1Jet       = jet->p4();
-  float JEC         = jet->p4().E()/l1Jet.E();
-  auto  l           = lepton.p4();
-  auto  lepAwareJet = (l1Jet - l)*JEC + l;
+  if(dR > 0.4){
+    _ptRatio[_nL] = 1;
+    _ptRel[_nL]   = 0;
+  } else {
+    auto  l1Jet       = jet->correctedP4("L1FastJet"); // can't get this to work, annoying, please correct when you can solve it
+  //auto  l1Jet       = jet->p4();
+    float JEC         = jet->p4().E()/l1Jet.E();
+    auto  l           = lepton.p4();
+    auto  lepAwareJet = (l1Jet - l)*JEC + l;
 
-  auto lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
-  auto jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
+    auto lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
+    auto jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
 
-  _ptRatio[_nL] = dR > 0.4 ? 1 : l.pt()/lepAwareJet.pt();
-  _ptRel[_nL]   = dR > 0.4 ? 0 : lV.Perp((jV - lV).Vect());
+    _ptRatio[_nL] = l.pt()/lepAwareJet.pt();
+    _ptRel[_nL]   = lV.Perp((jV - lV).Vect());
+  }
 }
 
