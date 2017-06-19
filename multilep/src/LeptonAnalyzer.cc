@@ -24,6 +24,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
 
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
   outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
+  outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
   outputTree->Branch("_lPhi",                         &_lPhi,                         "_lPhi[_nL]/D");
   outputTree->Branch("_lE",                           &_lE,                           "_lE[_nL]/D");
   outputTree->Branch("_lFlavor",                      &_lFlavor,                      "_lFlavor[_nL]/b");
@@ -109,6 +110,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonImpactParameters(*ele, primaryVertex);
     fillLeptonJetVariables(*ele, jets);
     _lFlavor[_nL]      = 0;
+    _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
     _miniIso[_nL]      = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho);
 

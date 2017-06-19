@@ -32,6 +32,7 @@ class LeptonAnalyzer {
     unsigned _nTau;
     double _lPt[nL_max];                                                                             //lepton kinematics
     double _lEta[nL_max];
+    double _lEtaSC[nL_max];
     double _lPhi[nL_max];
     double _lE[nL_max];
     unsigned _lFlavor[nL_max];                                                                       //other lepton variables
