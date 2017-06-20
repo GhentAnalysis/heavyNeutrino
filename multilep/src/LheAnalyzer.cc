@@ -16,13 +16,28 @@ LheAnalyzer::LheAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 
 void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
   //Counter to determine effect of pdf and scale uncertainties on the MC cross section
-  lheCounter = fs->make<TH1D>("hCounter", "Events counter", 110,0,110);
+  hCounter   = fs->make<TH1D>("hCounter",   "Events counter", 1,0,1);
+  if(multilepAnalyzer->isData) return;
+
+  lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights", 300,0,300);
+  outputTree->Branch("_weight",        &_weight,        "_weight/D");
   outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
   outputTree->Branch("_ctauHN",        &_ctauHN,        "_ctauHN/D");
+  outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/I");
+  outputTree->Branch("_lheWeight",     &_lheWeight,     "_lheWeight[_nLheWeights]/D");
 }
 
 void LheAnalyzer::analyze(const edm::Event& iEvent){
-  edm::Handle<LHEEventProduct> lheEventInfo; iEvent.getByToken(multilepAnalyzer->lheEventInfoToken, lheEventInfo); 
+  if(multilepAnalyzer->isData){
+    hCounter->Fill(0.5, 1.);
+    return;
+  }
+
+  edm::Handle<GenEventInfoProduct> genEventInfo; iEvent.getByToken(multilepAnalyzer->genEventInfoToken, genEventInfo);
+  edm::Handle<LHEEventProduct> lheEventInfo;     iEvent.getByToken(multilepAnalyzer->lheEventInfoToken, lheEventInfo); 
+
+  _weight = genEventInfo->weight();
+  hCounter->Fill(0.5, _weight);
 
   if(!lheEventInfo.isValid()) return;
   
@@ -44,11 +59,12 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 
     if(hasIncomingMother and status==1 and quarkOrGluon) _lheHTIncoming += pt;
     if(pdgId==9900012)                                   _ctauHN         = lheEventInfo->hepeup().VTIMUP[i];
-  } 
-  //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
-  for(int i = 0; i < 110; ++i){
-    _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
-    lheCounter->Fill(i + 0.5,_lheWeight[i]);
   }
 
+  //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
+  _nLheWeights = lheEventInfo->weights().size(); // 110 for MC@NLO, 254 for powheg, 0 for some old samples,... 
+  for(unsigned int i = 0; i < lheEventInfo->weights().size(); ++i){
+    _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
+    lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
+  }
 }

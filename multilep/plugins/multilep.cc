@@ -50,7 +50,6 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
-  hCounter = fs->make<TH1D>("hCounter", "Events counter", 1,0,1);
   //Initialize tree with event info
 
   outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
@@ -59,13 +58,10 @@ void multilep::beginJob(){
   outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
   outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
   outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
-  outputTree->Branch("_weight",                       &_weight,                       "_weight/D");
   outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
-  if(!isData){
-    lheAnalyzer->beginJob(outputTree, fs);
-    genAnalyzer->beginJob(outputTree);
-  }
+  lheAnalyzer->beginJob(outputTree, fs);
+  if(!isData) genAnalyzer->beginJob(outputTree);
   triggerAnalyzer->beginJob(outputTree);
   leptonAnalyzer->beginJob(outputTree);
   photonAnalyzer->beginJob(outputTree);
@@ -87,28 +83,21 @@ void multilep::beginJob(){
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
+  edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
+  edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
+
+  lheAnalyzer->analyze(iEvent); //needs to be run before selection to get correct uncertainties on MC xsection  
+  if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
+  if(!photonAnalyzer->analyze(iEvent)) return;
+  if(!isData) genAnalyzer->analyze(iEvent);
+  triggerAnalyzer->analyze(iEvent);
+  jetAnalyzer->analyze(iEvent);
 
   //determine event number run number and luminosity block
   _runNb     = (unsigned long) iEvent.id().run();
   _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
   _eventNb   = (unsigned long) iEvent.id().event();
-
-  //Get all objects
-  edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(vtxToken,                          vertices);
-  edm::Handle<GenEventInfoProduct> genEventInfo;                   iEvent.getByToken(genEventInfoToken,                 genEventInfo);
-  edm::Handle<std::vector<pat::MET>> mets;                         iEvent.getByToken(metToken,                          mets);
-
-  _nVertex = vertices->size();
-  _weight  = isData ? 1. : genEventInfo->weight();
-  hCounter->Fill(0.5, _weight);
-  if(!isData) lheAnalyzer->analyze(iEvent); //needs to be run before selection to get correct uncertainties on MC xsection  
-  if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
-  if(!photonAnalyzer->analyze(iEvent)) return;
-
-  if(!isData) genAnalyzer->analyze(iEvent);
-
-  triggerAnalyzer->analyze(iEvent);
-  jetAnalyzer->analyze(iEvent);
+  _nVertex   = vertices->size();
 
   //determine the met of the event and its uncertainties
   //nominal MET value

@@ -11,10 +11,15 @@ class multilep;
 
 class LheAnalyzer {
   private:
+    double _weight;
     double _lheHTIncoming;
     double _ctauHN;
-    double _lheWeight[110];
-    TH1D* lheCounter;
+
+    TH1D*  hCounter;
+    TH1D*  lheCounter;
+
+    int    _nLheWeights;
+    double _lheWeight[300];
 
     multilep* multilepAnalyzer;
 
