@@ -19,7 +19,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
   hCounter   = fs->make<TH1D>("hCounter",   "Events counter", 1,0,1);
   if(multilepAnalyzer->isData) return;
 
-  lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights", 300,0,300);
+  lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights", 500,0,500);
   outputTree->Branch("_weight",        &_weight,        "_weight/D");
   outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
   outputTree->Branch("_ctauHN",        &_ctauHN,        "_ctauHN/D");
@@ -40,7 +40,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
   hCounter->Fill(0.5, _weight);
 
   if(!lheEventInfo.isValid()) return;
-  
+
   // See http://home.thep.lu.se/~leif/LHEF/classLHEF_1_1HEPEUP.html for more detailes
   int nParticles = lheEventInfo->hepeup().NUP;
 
@@ -62,8 +62,8 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
   }
 
   //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
-  _nLheWeights = lheEventInfo->weights().size(); // 110 for MC@NLO, 254 for powheg, 0 for some old samples,... 
-  for(unsigned int i = 0; i < lheEventInfo->weights().size(); ++i){
+  _nLheWeights = lheEventInfo->weights().size(); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,... 
+  for(unsigned int i = 0; i < lheEventInfo->weights().size() && i < 500; ++i){
     _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
     lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
   }
