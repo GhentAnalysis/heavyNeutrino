@@ -27,7 +27,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_jetDeepCsv_bb",             &_jetDeepCsv_bb,            "_jetDeepCsv_bb[_nJets]/D");
   outputTree->Branch("_jetDeepCsv_cc",             &_jetDeepCsv_cc,            "_jetDeepCsv_cc[_nJets]/D");
   outputTree->Branch("_jetHadronFlavour",          &_jetHadronFlavour,         "_jetHadronFlavour[_nJets]/D");
-  outputTree->Branch("_jetId",                     &_jetId,                    "_jetId[_nJets]/b");
+  outputTree->Branch("_jetId",                     &_jetId,                    "_jetId[_nJets]/I");
 }
 
 void JetAnalyzer::analyze(const edm::Event& iEvent){
