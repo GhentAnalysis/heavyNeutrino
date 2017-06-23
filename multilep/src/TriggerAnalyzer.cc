@@ -46,7 +46,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
 };
 
 void TriggerAnalyzer::beginJob(TTree* outputTree){
-  firstEvent = true;
+  reIndex = true;
   initList(triggersToSave, "HLT");
   initList(filtersToSave, "Flag");
 
@@ -108,8 +108,6 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   flag["passBadChCandFilter"] = *badChCandFilter;
 
   for(auto& combinedFlag : allFlags) flag[combinedFlag.first] = passCombinedFlag(combinedFlag.first);
-
-  firstEvent = false;
 }
 
 /*
@@ -136,6 +134,7 @@ void TriggerAnalyzer::indexFlags(const edm::Event& iEvent, edm::Handle<edm::Trig
   for(TString t : toSave){
     if(index[t] == -1) std::cout << "WARNING: " << t << " not found in triggerresult, please check!" << std::endl;
   }
+  reIndex = false;
 }
 
 
@@ -145,7 +144,7 @@ void TriggerAnalyzer::indexFlags(const edm::Event& iEvent, edm::Handle<edm::Trig
 void TriggerAnalyzer::getResults(const edm::Event& iEvent, edm::Handle<edm::TriggerResults>& results, std::vector<TString>& toSave, bool savePrescales){
   if(results.failedToGet()) return;
 
-  if(firstEvent) indexFlags(iEvent, results, toSave);
+  if(reIndex) indexFlags(iEvent, results, toSave);
 
   for(TString t : toSave){
     if(index[t] == -1) flag[t] = false;

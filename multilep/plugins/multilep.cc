@@ -78,6 +78,8 @@ void multilep::beginJob(){
   outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
   outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
   outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
+
+  _runNb = 0;
 }
 
 
@@ -85,6 +87,8 @@ void multilep::beginJob(){
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
   edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
+
+  if(_runNb != iEvent.id().run()) triggerAnalyzer->reIndex = true; // HLT results could have different size/order in new run, so look up again de index positions
 
   lheAnalyzer->analyze(iEvent); //needs to be run before selection to get correct uncertainties on MC xsection  
   if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case

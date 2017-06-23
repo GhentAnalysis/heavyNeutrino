@@ -14,7 +14,6 @@ class multilep;
 
 class TriggerAnalyzer {
   private:
-    bool firstEvent;
 
     std::map<TString, std::vector<TString>> allFlags;
     std::vector<TString> triggersToSave;
@@ -38,6 +37,7 @@ class TriggerAnalyzer {
     TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
     ~TriggerAnalyzer();
 
+    bool reIndex;
     void beginJob(TTree* outputTree);
     void analyze(const edm::Event&);
 };
