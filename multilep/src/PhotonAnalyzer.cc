@@ -47,8 +47,8 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     if(_nPh == nPhoton_max) break;
     const auto photonRef = edm::Ref<std::vector<pat::Photon>>(photons, (photon - photons->begin()));
 
-    if(photon->pt()  < 10)  continue;
-    if(photon->eta() > 2.5) continue;
+    if(photon->pt()  < 10)        continue;
+    if(fabs(photon->eta()) > 2.5) continue;
 
     _phPt[_nPh]                      = photon->pt();
     _phEta[_nPh]                     = photon->eta();
