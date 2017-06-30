@@ -4,6 +4,7 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/Event.h"
+#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 
@@ -13,11 +14,16 @@ class multilep;
 
 class PhotonAnalyzer {
   private:
+    EffectiveAreas chargedEffectiveAreas;
+    EffectiveAreas neutralEffectiveAreas;
+    EffectiveAreas photonsEffectiveAreas;
+
     static const unsigned nPhoton_max = 5;
 
     unsigned _nPh;
     double   _phPt[nPhoton_max];
     double   _phEta[nPhoton_max];
+    double   _phEtaSC[nPhoton_max];
     double   _phPhi[nPhoton_max];
     double   _phE[nPhoton_max];
     bool     _phCutBasedLoose[nPhoton_max];

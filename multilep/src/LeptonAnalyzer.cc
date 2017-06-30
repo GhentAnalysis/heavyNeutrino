@@ -42,7 +42,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
   outputTree->Branch("_lIsPrompt",                    &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
-  outputTree->Branch("_lMatchPdgId",                 &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
+  outputTree->Branch("_lMatchPdgId",                  &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
 
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
