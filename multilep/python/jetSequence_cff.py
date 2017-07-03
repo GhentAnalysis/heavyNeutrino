@@ -17,8 +17,9 @@ def addJetSequence(process, isData):
      labelName = 'UpdatedJEC',
      jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
   )
-  process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC)
 
+  # TODO: try add deepCSV, though no twiki existing for it?
+  process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC)
 
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
