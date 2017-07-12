@@ -76,9 +76,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(mu.innerTrack().isNull()) continue;
     if(mu.pt() < 5)              continue;
     if(fabs(mu.eta()) > 2.4)     continue;
+    fillLeptonImpactParameters(mu, primaryVertex);
     if(fabs(_dxy[_nL]) > 0.05) continue;
     if(fabs(_dz[_nL]) > 0.1) continue;
-    fillLeptonImpactParameters(mu, primaryVertex);
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
     fillLeptonJetVariables(mu, jets);
