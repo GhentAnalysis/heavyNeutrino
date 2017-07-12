@@ -76,9 +76,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(mu.innerTrack().isNull()) continue;
     if(mu.pt() < 5)              continue;
     if(fabs(mu.eta()) > 2.4)     continue;
+    if(!mu.isPFMuon()) continue;
+    if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue;
+    fillLeptonImpactParameters(mu, primaryVertex);
+    if(fabs(_dxy[_nL]) > 0.05) continue;
+    if(fabs(_dz[_nL]) > 0.1) continue;
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
-    fillLeptonImpactParameters(mu, primaryVertex);
     fillLeptonJetVariables(mu, jets);
     _lFlavor[_nL] = 1;
     //Isolation variables
@@ -105,9 +109,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(ele->gsfTrack().isNull()) continue;
     if(ele->pt() < 10)           continue;
     if(fabs(ele->eta()) > 2.5)   continue;
+    if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
+    if(!ele->passConversionVeto()) continue;
+    fillLeptonImpactParameters(*ele, primaryVertex);
+    if(fabs(_dxy[_nL]) > 0.05) continue;
+    if(fabs(_dz[_nL]) > 0.1) continue;
     fillLeptonKinVars(*ele);
     fillLeptonGenVars(ele->genParticle());
-    fillLeptonImpactParameters(*ele, primaryVertex);
     fillLeptonJetVariables(*ele, jets);
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
@@ -144,10 +152,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     ++_nL;
   }
 
-  if(multilepAnalyzer->skim == "trilep"    and _nL < 3) return false;
-  if(multilepAnalyzer->skim == "dilep"     and _nL < 2) return false;
-  if(multilepAnalyzer->skim == "ttg"       and _nL < 2) return false;
-  if(multilepAnalyzer->skim == "singlelep" and _nL < 1) return false;
+  if(multilepAnalyzer->skim == "trilep"    and _nLight < 3) return false;
+  if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
+  if(multilepAnalyzer->skim == "ttg"       and _nLight < 2) return false;
+  if(multilepAnalyzer->skim == "singlelep" and _nLight < 1) return false;
   return true;
 }
 
