@@ -76,9 +76,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(mu.innerTrack().isNull()) continue;
     if(mu.pt() < 5)              continue;
     if(fabs(mu.eta()) > 2.4)     continue;
+    if(fabs(_dxy[_nL]) > 0.05) continue;
+    if(fabs(_dz[_nL]) > 0.1) continue;
+    fillLeptonImpactParameters(mu, primaryVertex);
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
-    fillLeptonImpactParameters(mu, primaryVertex);
     fillLeptonJetVariables(mu, jets);
     _lFlavor[_nL] = 1;
     //Isolation variables
@@ -105,9 +107,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(ele->gsfTrack().isNull()) continue;
     if(ele->pt() < 10)           continue;
     if(fabs(ele->eta()) > 2.5)   continue;
+    fillLeptonImpactParameters(*ele, primaryVertex);
+    if(fabs(_dxy[_nL]) > 0.05) continue;
+    if(fabs(_dz[_nL]) > 0.1) continue;
     fillLeptonKinVars(*ele);
     fillLeptonGenVars(ele->genParticle());
-    fillLeptonImpactParameters(*ele, primaryVertex);
     fillLeptonJetVariables(*ele, jets);
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
