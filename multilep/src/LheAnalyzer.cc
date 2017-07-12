@@ -63,7 +63,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 
   //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
   _nLheWeights = lheEventInfo->weights().size(); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,... 
-  for(unsigned int i = 0; i < 110; ++i){
+  for(unsigned i = 0; i < 110 && i < _nLheWeights; ++i){
     _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
     lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
   }
