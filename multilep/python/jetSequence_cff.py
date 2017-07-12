@@ -15,10 +15,18 @@ def addJetSequence(process, isData):
      process,
      jetSource = cms.InputTag('slimmedJets'),
      labelName = 'UpdatedJEC',
-     jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
+     jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
+     # DeepCSV twiki: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
+     btagDiscriminators = [
+       'pfCombinedSecondaryVertexV2BJetTags',
+       'pfDeepCSVJetTags:probudsg',
+       'pfDeepCSVJetTags:probb',
+       'pfDeepCSVJetTags:probc',
+       'pfDeepCSVJetTags:probbb',
+       'pfDeepCSVJetTags:probcc',
+     ]
   )
 
-  # TODO: try add deepCSV, though no twiki existing for it?
   process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC)
 
   #
