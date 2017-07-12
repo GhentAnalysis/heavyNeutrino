@@ -2,8 +2,9 @@ import sys
 import FWCore.ParameterSet.Config as cms
 
 # Default arguments
-inputFile       = '/store/mc/RunIISummer16MiniAODv2/tZq_W_lept_Z_hadron_4f_ckm_NLO_13TeV_amcatnlo_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/0CAF6064-664E-E711-ADA0-1CB72C1B63C2.root'
-inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-madgraph-fsrup-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/02748F9D-F640-E711-BF1F-D067E5F91695.root'
+#inputFile       = '/store/mc/RunIISummer16MiniAODv2/tZq_W_lept_Z_hadron_4f_ckm_NLO_13TeV_amcatnlo_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/0CAF6064-664E-E711-ADA0-1CB72C1B63C2.root'
+#inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-madgraph-fsrup-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/02748F9D-F640-E711-BF1F-D067E5F91695.root'
+inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/120000/A27FACBE-7659-E711-9ABB-14DDA90900BB.root'
 isData          = not 'SIM' in inputFile
 nEvents         = 1000
 outputFile      = 'ttg.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -109,10 +110,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   rhoCentralNeutral             = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
   rhoAll                        = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
-  jets                          = cms.InputTag("updatedPatJetsUpdatedJEC"),
-  jetsSmeared                   = cms.InputTag("updatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
-  jetsSmearedUp                 = cms.InputTag("updatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
-  jetsSmearedDown               = cms.InputTag("updatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
+  jets                          = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
+  jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
+  jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
+  jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
   jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt"),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),

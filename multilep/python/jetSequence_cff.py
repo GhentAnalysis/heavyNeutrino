@@ -7,6 +7,7 @@ def addJetSequence(process, isData):
   # Has (at time of writing) no effect (Moriond2017 miniAOD contains latest JEC)
   #
   process.load('JetMETCorrections.Configuration.JetCorrectors_cff')
+  process.load('Configuration.StandardSequences.MagneticField_cff')  # needed for pfImpactParameterTagInfos
   if isData: jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
@@ -27,7 +28,21 @@ def addJetSequence(process, isData):
      ]
   )
 
-  process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC)
+  process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
+                                     process.pfImpactParameterTagInfosUpdatedJEC *
+                                     process.pfSecondaryVertexTagInfosUpdatedJEC *
+                                     process.pfCombinedSecondaryVertexV2BJetTagsUpdatedJEC *
+                                     process.patJetCorrFactorsTransientCorrectedUpdatedJEC *
+                                     process.pfInclusiveSecondaryVertexFinderTagInfosUpdatedJEC *
+                                     process.pfDeepCSVTagInfosUpdatedJEC *
+                                     process.pfDeepCSVJetTagsUpdatedJEC *
+                                     process.updatedPatJetsTransientCorrectedUpdatedJEC *
+                                     process.selectedUpdatedPatJetsUpdatedJEC)
+
+  #
+  # TODO find some way to access L1FastJet
+  #
+
 
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
@@ -36,7 +51,7 @@ def addJetSequence(process, isData):
   if not isData:
     for (i, j) in [(0, ''), (-1, 'Down'), (1, 'Up')]:
       jetSmearing = cms.EDProducer('SmearedPATJetProducer',
-            src          = cms.InputTag('updatedPatJetsUpdatedJEC'),
+            src          = cms.InputTag('selectedUpdatedPatJetsUpdatedJEC'),
             enabled      = cms.bool(True),
             rho          = cms.InputTag("fixedGridRhoFastjetAll"),
             algo         = cms.string('AK4PFchs'),
