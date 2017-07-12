@@ -18,7 +18,7 @@ class LheAnalyzer {
     TH1D*  hCounter;
     TH1D*  lheCounter;
 
-    int    _nLheWeights;
+    unsigned _nLheWeights;
     double _lheWeight[110];
 
     multilep* multilepAnalyzer;
