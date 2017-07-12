@@ -76,6 +76,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(mu.innerTrack().isNull()) continue;
     if(mu.pt() < 5)              continue;
     if(fabs(mu.eta()) > 2.4)     continue;
+    if(!mu.isPFMuon()) continue;
+    if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue;
     fillLeptonImpactParameters(mu, primaryVertex);
     if(fabs(_dxy[_nL]) > 0.05) continue;
     if(fabs(_dz[_nL]) > 0.1) continue;
@@ -107,6 +109,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(ele->gsfTrack().isNull()) continue;
     if(ele->pt() < 10)           continue;
     if(fabs(ele->eta()) > 2.5)   continue;
+    if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
+    if(!ele->passConversionVeto()) continue;
     fillLeptonImpactParameters(*ele, primaryVertex);
     if(fabs(_dxy[_nL]) > 0.05) continue;
     if(fabs(_dz[_nL]) > 0.1) continue;
