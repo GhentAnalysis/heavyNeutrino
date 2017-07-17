@@ -30,6 +30,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_phNeutralHadronIsolation", &_phNeutralHadronIsolation, "_phNeutralHadronIsolation[_nPh]/D");
   outputTree->Branch("_phPhotonIsolation",        &_phPhotonIsolation,        "_phPhoton[_nPh]/D");
   outputTree->Branch("_phSigmaIetaIeta",          &_phSigmaIetaIeta,          "_phSigmaIetaIeta[_nPh]/D");
+  outputTree->Branch("_phSigmaIetaIphi",          &_phSigmaIetaIphi,          "_phSigmaIetaIphi[_nPh]/D");
   outputTree->Branch("_phHadronicOverEm",         &_phHadronicOverEm,         "_phHadronicOverEm[_nPh]/D");
   outputTree->Branch("_phPassElectronVeto",       &_phPassElectronVeto,       "_phPassElectronVeto[_nPh]/O");
   outputTree->Branch("_phHasPixelSeed",           &_phHasPixelSeed,           "_phHasPixelSeed[_nPh]/O");
@@ -47,6 +48,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<edm::ValueMap<float>> photonsChargedIsolation;       iEvent.getByToken(multilepAnalyzer->photonChargedIsolationToken,       photonsChargedIsolation);
   edm::Handle<edm::ValueMap<float>> photonsNeutralHadronIsolation; iEvent.getByToken(multilepAnalyzer->photonNeutralHadronIsolationToken, photonsNeutralHadronIsolation);
   edm::Handle<edm::ValueMap<float>> photonsPhotonIsolation;        iEvent.getByToken(multilepAnalyzer->photonPhotonIsolationToken,        photonsPhotonIsolation);
+  edm::Handle<edm::ValueMap<float>> photonsFull5x5SigmaIEtaIPhi;   iEvent.getByToken(multilepAnalyzer->photonFull5x5SigmaIEtaIPhiToken,   photonsFull5x5SigmaIEtaIPhi);
   edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
 
   // Loop over photons
@@ -76,6 +78,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     _phNeutralHadronIsolation[_nPh]  = std::max(0., (*photonsNeutralHadronIsolation)[photonRef] - rhoCorrNeutral);
     _phPhotonIsolation[_nPh]         = std::max(0., (*photonsPhotonIsolation)[photonRef] - rhoCorrPhotons);
     _phSigmaIetaIeta[_nPh]           = photon->full5x5_sigmaIetaIeta();
+    _phSigmaIetaIphi[_nPh]           = (*photonsFull5x5SigmaIEtaIPhi)[photonRef];
     _phHadronicOverEm[_nPh]          = photon->hadronicOverEm();
     _phPassElectronVeto[_nPh]        = photon->passElectronVeto();
     _phHasPixelSeed[_nPh]            = photon->hasPixelSeed();
