@@ -39,7 +39,12 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
   _weight = genEventInfo->weight();
   hCounter->Fill(0.5, _weight);
 
-  if(!lheEventInfo.isValid()) return;
+  if(!lheEventInfo.isValid()){
+    _lheHTIncoming = 0;
+    _ctauHN = 0;
+    _nLheWeights = 0;
+    return;
+  }
 
   // See http://home.thep.lu.se/~leif/LHEF/classLHEF_1_1HEPEUP.html for more detailes
   int nParticles = lheEventInfo->hepeup().NUP;
