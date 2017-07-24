@@ -30,6 +30,7 @@ class PhotonAnalyzer {
     bool     _phCutBasedMedium[nPhoton_max];
     bool     _phCutBasedTight[nPhoton_max];
     double   _phMva[nPhoton_max];
+    double   _phRandomConeChargedIsolation[nPhoton_max];
     double   _phChargedIsolation[nPhoton_max];
     double   _phNeutralHadronIsolation[nPhoton_max];
     double   _phPhotonIsolation[nPhoton_max];
@@ -42,6 +43,9 @@ class PhotonAnalyzer {
     int      _phMatchPdgId[nPhoton_max];
 
     void fillPhotonGenVars(const reco::GenParticle*);
+    double randomConeIso(double, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&,
+                         edm::Handle<std::vector<pat::Electron>>&, edm::Handle<std::vector<pat::Muon>>&,
+                         edm::Handle<std::vector<pat::Jet>>&, edm::Handle<std::vector<pat::Photon>>&);
     multilep* multilepAnalyzer;
 
   public:

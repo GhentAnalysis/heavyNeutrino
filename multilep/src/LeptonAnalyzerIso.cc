@@ -20,7 +20,7 @@ double LeptonAnalyzer::getRelIso03(const pat::Electron& ele, const double rho){
 	return absIso/ele.pt();
 }
 
-double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Handle<pat::PackedCandidateCollection> pfcands, 
+double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Handle<pat::PackedCandidateCollection> pfcands,
                                         double r_iso_min, double r_iso_max, double kt_scale, double rho){
     bool chargedOnly = false;
     bool deltaBeta   = false;
