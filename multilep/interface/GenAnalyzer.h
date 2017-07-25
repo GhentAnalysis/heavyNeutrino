@@ -21,19 +21,15 @@ class GenAnalyzer {
     //generator level MET
     double   _gen_met;
     double   _gen_metPhi;
+
     //Generator photons
-    unsigned _gen_nPh;
-    double   _gen_phPt[gen_nPh_max];
-    double   _gen_phEta[gen_nPh_max];
-    double   _gen_phPhi[gen_nPh_max];
     double   _gen_phE[gen_nPh_max];
     int      _gen_phMomPdg[gen_nPh_max];
     bool     _gen_phIsPrompt[gen_nPh_max];
+    bool     _gen_phPassParentage[gen_nPh_max];
+    double   _gen_phMinDeltaR[gen_nPh_max];
+
     //Generator leptons
-    unsigned _gen_nL;
-    double   _gen_lPt[gen_nL_max];
-    double   _gen_lEta[gen_nL_max];
-    double   _gen_lPhi[gen_nL_max];
     double   _gen_lE[gen_nL_max];
     unsigned _gen_lFlavor[gen_nL_max];
     int      _gen_lCharge[gen_nL_max];
@@ -45,7 +41,9 @@ class GenAnalyzer {
     const int                getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
     bool                     inMotherList(std::vector<int>& list, int i);
+
     int                      ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
+    double                   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
 
     multilep* multilepAnalyzer;
 
@@ -55,6 +53,17 @@ class GenAnalyzer {
 
     void beginJob(TTree* outputTree);
     void analyze(const edm::Event&);
+
+    unsigned _gen_nL;
+    double   _gen_lPt[gen_nL_max];
+    double   _gen_lEta[gen_nL_max];
+    double   _gen_lPhi[gen_nL_max];
+
+    unsigned _gen_nPh;
+    double   _gen_phPt[gen_nPh_max];
+    double   _gen_phEta[gen_nPh_max];
+    double   _gen_phPhi[gen_nPh_max];
+
 };
 
 #endif
