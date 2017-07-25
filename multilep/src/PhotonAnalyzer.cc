@@ -35,8 +35,12 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_phHadronicOverEm",                   &_phHadronicOverEm,               "_phHadronicOverEm[_nPh]/D");
   outputTree->Branch("_phPassElectronVeto",                 &_phPassElectronVeto,             "_phPassElectronVeto[_nPh]/O");
   outputTree->Branch("_phHasPixelSeed",                     &_phHasPixelSeed,                 "_phHasPixelSeed[_nPh]/O");
-  outputTree->Branch("_phIsPrompt",                         &_phIsPrompt,                     "_phIsPrompt[_nPh]/O");
-  outputTree->Branch("_phMatchPdgId",                       &_phMatchPdgId,                   "_phMatchPdgId[_nPh]/I");
+  if(!multilepAnalyzer->isData){
+    outputTree->Branch("_phIsPrompt",                       &_phIsPrompt,                     "_phIsPrompt[_nPh]/O");
+    outputTree->Branch("_phMatchMCPhotonAN15165",           &_phMatchMCPhotonAN15165,         "_phMatchMCPhotonAN15165[_nPh]/I");
+    outputTree->Branch("_phMatchMCLeptonAN15165",           &_phMatchMCLeptonAN15165,         "_phMatchMCLeptonAN15165[_nPh]/I");
+    outputTree->Branch("_phMatchPdgId",                     &_phMatchPdgId,                   "_phMatchPdgId[_nPh]/I");
+  }
 }
 
 
@@ -55,6 +59,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
   edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
   edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
+  edm::Handle<std::vector<reco::GenParticle>> genParticles;        iEvent.getByToken(multilepAnalyzer->genParticleToken,                  genParticles);
   edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
 
   // Loop over photons
@@ -89,7 +94,11 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     _phHadronicOverEm[_nPh]             = photon->hadronicOverEm();
     _phPassElectronVeto[_nPh]           = photon->passElectronVeto();
     _phHasPixelSeed[_nPh]               = photon->hasPixelSeed();
-    fillPhotonGenVars(photon->genParticle());
+
+    if(!multilepAnalyzer->isData){
+      fillPhotonGenVars(photon->genParticle());
+      matchAN15165(*photon, genParticles);
+    }
 
     ++_nPh;
   }
@@ -148,4 +157,33 @@ double PhotonAnalyzer::randomConeIso(double eta, edm::Handle<std::vector<pat::Pa
     chargedIsoSum += iCand.pt();
   }
   return chargedIsoSum;
+}
+
+// First stage of matching definition as used in AN-15-165
+// Further selection in the matching can be applied on tuple-level
+// See also makeAnalysisNtuple::findPhotonCategory in the semiLeptonic TTG code:
+// https://github.com/dnoonan08/TTGammaSemiLep_13TeV/blob/master/AnalysisNtuple/makeAnalysisNtuple.C#L783
+// Note: accessing GenAnalyzer variables, which should run before the PhotonAnalyzer
+void PhotonAnalyzer::matchAN15165(const pat::Photon& photon, edm::Handle<std::vector<reco::GenParticle>>& genParticles){
+  _phMatchMCPhotonAN15165[_nPh] = -1;
+  for(unsigned i=0; i < multilepAnalyzer->genAnalyzer->_gen_nPh; ++i){
+    double pt  = multilepAnalyzer->genAnalyzer->_gen_phPt[i];
+    double eta = multilepAnalyzer->genAnalyzer->_gen_phEta[i];
+    double phi = multilepAnalyzer->genAnalyzer->_gen_phPhi[i];
+    if((pt-photon.pt())/pt > 1.) continue;
+    if(deltaR(eta, phi, photon.eta(), photon.phi()) > 0.2) continue;
+    _phMatchMCPhotonAN15165[_nPh] = (int)i;
+    break;
+  }
+
+  _phMatchMCLeptonAN15165[_nPh] = -1;
+  for(unsigned i=0; i < multilepAnalyzer->genAnalyzer->_gen_nL; ++i){
+    double pt  = multilepAnalyzer->genAnalyzer->_gen_lPt[i];
+    double eta = multilepAnalyzer->genAnalyzer->_gen_lEta[i];
+    double phi = multilepAnalyzer->genAnalyzer->_gen_lPhi[i];
+    if((pt-photon.pt())/pt > 1.) continue;
+    if(deltaR(eta, phi, photon.eta(), photon.phi()) > 0.2) continue;
+    _phMatchMCLeptonAN15165[_nPh] = (int)i;
+    break;
+  }
 }

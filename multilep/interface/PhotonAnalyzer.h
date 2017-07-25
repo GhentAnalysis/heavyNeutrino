@@ -40,12 +40,16 @@ class PhotonAnalyzer {
     bool     _phPassElectronVeto[nPhoton_max];
     bool     _phHasPixelSeed[nPhoton_max];
     bool     _phIsPrompt[nPhoton_max];
+    int      _phMatchMCPhotonAN15165[nPhoton_max];
+    int      _phMatchMCLeptonAN15165[nPhoton_max];
     int      _phMatchPdgId[nPhoton_max];
 
     void fillPhotonGenVars(const reco::GenParticle*);
     double randomConeIso(double, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&,
                          edm::Handle<std::vector<pat::Electron>>&, edm::Handle<std::vector<pat::Muon>>&,
                          edm::Handle<std::vector<pat::Jet>>&, edm::Handle<std::vector<pat::Photon>>&);
+    void matchAN15165(const pat::Photon&, edm::Handle<std::vector<reco::GenParticle>>&);
+
     multilep* multilepAnalyzer;
 
   public:
