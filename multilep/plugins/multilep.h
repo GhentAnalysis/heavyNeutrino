@@ -97,6 +97,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     std::string                                         skim;
     bool                                                isData;
 
+    GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
+
   private:
     virtual void beginJob() override;
     virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
@@ -106,7 +108,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     LeptonAnalyzer*  leptonAnalyzer;
     PhotonAnalyzer*  photonAnalyzer;
     JetAnalyzer*     jetAnalyzer;
-    GenAnalyzer*     genAnalyzer;
     LheAnalyzer*     lheAnalyzer;
 
     edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
