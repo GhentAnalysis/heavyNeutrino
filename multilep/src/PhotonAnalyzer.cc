@@ -1,7 +1,6 @@
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
-#include <TRandom3.h>
 /*
  * Calculating all photon-related variables
  */
@@ -41,6 +40,8 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_phMatchMCLeptonAN15165",           &_phMatchMCLeptonAN15165,         "_phMatchMCLeptonAN15165[_nPh]/I");
     outputTree->Branch("_phMatchPdgId",                     &_phMatchPdgId,                   "_phMatchPdgId[_nPh]/I");
   }
+
+  generator = TRandom3(0);
 }
 
 
@@ -126,12 +127,11 @@ double PhotonAnalyzer::randomConeIso(double eta, edm::Handle<std::vector<pat::Pa
                                      edm::Handle<std::vector<pat::Jet>>& jets, edm::Handle<std::vector<pat::Photon>>& photons){
 
   // First, find random phi direction which does not overlap with jets, photons or leptons
-  auto generator = new TRandom3(0);
   bool overlap   = true;
   int attempt    = 0;
   double randomPhi;
   while(overlap and attempt<20){
-    randomPhi = generator->Uniform(-TMath::Pi(),TMath::Pi());
+    randomPhi = generator.Uniform(-TMath::Pi(),TMath::Pi());
 
     overlap = false;
     for(auto& p : *electrons) if(p.pt() > 10 and deltaR(eta, randomPhi, p.eta(), p.phi()) < 0.6) overlap = true;

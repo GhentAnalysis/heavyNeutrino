@@ -9,6 +9,7 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 
 #include "TTree.h"
+#include <TRandom3.h>
 
 class multilep;
 
@@ -51,6 +52,7 @@ class PhotonAnalyzer {
     void matchAN15165(const pat::Photon&, edm::Handle<std::vector<reco::GenParticle>>&);
 
     multilep* multilepAnalyzer;
+    TRandom3  generator;
 
   public:
     PhotonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
