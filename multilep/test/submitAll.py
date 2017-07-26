@@ -10,15 +10,7 @@ groupFiles      = 1                                                             
 
 
 for dataset in datasets:
-  if dataset.startswith('FAKERATE:'):    outputName = 'fakeRate'
-  elif dataset.startswith('SIGNLELEP:'): outputName = 'singleLep'
-  elif dataset.startswith('DILEP:'):     outputName = 'diLep'
-  elif dataset.startswith('TRILEP:'):    outputName = 'triLep'
-  elif dataset.startswith('TTG:'):       outputName = 'ttg'
-  elif dataset.startswith('SINGLEPHOT:'):outputName = 'singlephoton'
-  elif dataset.startswith('DIPHOT:'):    outputName = 'diphoton'
-  else:                                  outputName = 'diLep' # default
-  dataset = dataset.split(':')[-1]
+  outputFileName, dataset = dataset.split(':')
 
   if 'pnfs' in dataset or 'user' in dataset:
     if 'pnfs' in dataset: datasetName = dataset.split('/MINIAOD')[0].split('/')[-1]
