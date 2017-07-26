@@ -10,7 +10,7 @@ groupFiles      = 1                                                             
 
 
 for dataset in datasets:
-  outputFileName, dataset = dataset.split(':')
+  outputName, dataset = dataset.split(':')
 
   if 'pnfs' in dataset or 'user' in dataset:
     if 'pnfs' in dataset: datasetName = dataset.split('/MINIAOD')[0].split('/')[-1]
