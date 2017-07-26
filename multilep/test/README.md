@@ -26,3 +26,5 @@ where <datasetsFile> is a file structures like test-v1.txt. The submitAll.py wil
 
 * When running on crab, jobs are submitted using the default crab.py in this directory, filling in the productionlabel, dataset and outputfile.
   The outputfiles will be found at /pnfs/iihe/cms/store/user/$USER/heavyNeutrino/\<datasetName\>/crab\_<campaign\>\_\<productionLabel\>/\*/\*/\<skim\>\_i.root
+
+* When jobs are submitted with crab, one can check the crab status on the subdirectories in the newly created ./crab/\<productionLabel\>/
