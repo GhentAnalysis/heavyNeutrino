@@ -2,6 +2,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include <math.h> 
+#include <algorithm>
 
 /*
  * Accessing LHE information
@@ -23,7 +24,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
   outputTree->Branch("_weight",        &_weight,        "_weight/D");
   outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
   outputTree->Branch("_ctauHN",        &_ctauHN,        "_ctauHN/D");
-  outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/I");
+  outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/b");
   outputTree->Branch("_lheWeight",     &_lheWeight,     "_lheWeight[_nLheWeights]/D");
 }
 
@@ -39,9 +40,10 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
   _weight = genEventInfo->weight();
   hCounter->Fill(0.5, _weight);
 
+  _lheHTIncoming = 0.;
+  _ctauHN = 0.;
+
   if(!lheEventInfo.isValid()){
-    _lheHTIncoming = 0;
-    _ctauHN = 0;
     _nLheWeights = 0;
     return;
   }
@@ -49,8 +51,6 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
   // See http://home.thep.lu.se/~leif/LHEF/classLHEF_1_1HEPEUP.html for more detailes
   int nParticles = lheEventInfo->hepeup().NUP;
 
-  _lheHTIncoming = 0;
-  _ctauHN = 0.;
   for(int i = 0; i < nParticles; ++i){
     int  status            = lheEventInfo->hepeup().ISTUP[i];
     long pdgId             = lheEventInfo->hepeup().IDUP[i];
@@ -67,8 +67,8 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
   }
 
   //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
-  _nLheWeights = lheEventInfo->weights().size(); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,... 
-  for(unsigned i = 0; i < 110 && i < _nLheWeights; ++i){
+  _nLheWeights = std::min(110, (int) lheEventInfo->weights().size()); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,... 
+  for(unsigned i = 0; i < _nLheWeights; ++i){
     _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
     lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
   }
