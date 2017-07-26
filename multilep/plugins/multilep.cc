@@ -92,8 +92,8 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   if(_runNb != iEvent.id().run()) triggerAnalyzer->reIndex = true; // HLT results could have different size/order in new run, so look up again de index positions
 
   lheAnalyzer->analyze(iEvent);                                      // needs to be run before selection to get correct uncertainties on MC xsection
-  if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
   if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
+  if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
   if(!photonAnalyzer->analyze(iEvent)) return;
   triggerAnalyzer->analyze(iEvent);
   jetAnalyzer->analyze(iEvent);
