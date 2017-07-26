@@ -64,3 +64,8 @@ def addJetSequence(process, isData):
       )
       setattr(process, 'slimmedJetsCorrectedAndSmeared'+j, jetSmearing)
       process.jetSequence *= jetSmearing
+
+  # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
+  # from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
+  from heavyNeutrino.multilep.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+  runMetCorAndUncFromMiniAOD(process, isData=isData)
