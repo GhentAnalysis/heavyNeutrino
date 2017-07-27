@@ -104,6 +104,7 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   // Get all flags
   getResults(iEvent, triggerResults, triggersToSave, true);
   getResults(iEvent, recoResults,    filtersToSave,  false);
+  reIndex = false;
   flag["passBadPFMuonFilter"] = *badPFMuonFilter;
   flag["passBadChCandFilter"] = *badChCandFilter;
 
@@ -134,7 +135,6 @@ void TriggerAnalyzer::indexFlags(const edm::Event& iEvent, edm::Handle<edm::Trig
   for(TString t : toSave){
     if(index[t] == -1) std::cout << "WARNING: " << t << " not found in triggerresult, please check!" << std::endl;
   }
-  reIndex = false;
 }
 
 
