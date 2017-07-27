@@ -16,7 +16,7 @@ requestName = requestName.replace('RunIISummer16MiniAODv2-80X_mcRun2_asymptotic_
 config = Configuration()
 config.section_('General')
 config.General.transferLogs            = True
-config.General.requestName             = requestName + '_' + productionLabel
+config.General.requestName             = requestName
 config.General.workArea                = os.path.join('crab', productionLabel, dataset.split('/')[1])
 
 config.section_('JobType')
