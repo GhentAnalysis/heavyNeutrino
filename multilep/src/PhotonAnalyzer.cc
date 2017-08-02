@@ -87,7 +87,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     _phCutBasedTight[_nPh]              = (*photonsCutBasedTight)[photonRef];
     _phMva[_nPh]                        = (*photonsMva)[photonRef];
     randomConeIsoUnCorr                 = randomConeIso(photon->superCluster()->eta(), packedCands, *(vertices->begin()), electrons, muons, jets, photons);
-    _phRandomConeChargedIsolation[_nPh] = randomConeIso > 0 ? std::max(0., randonConeIsoUnCorr - rhoCorrCharged) : -1; // keep -1 when randomConeIso algorithm failed
+    _phRandomConeChargedIsolation[_nPh] = randomConeIso < 0 ? -1 : std::max(0., randonConeIsoUnCorr - rhoCorrCharged); // keep -1 when randomConeIso algorithm failed
     _phChargedIsolation[_nPh]           = std::max(0., (*photonsChargedIsolation)[photonRef] - rhoCorrCharged);
     _phNeutralHadronIsolation[_nPh]     = std::max(0., (*photonsNeutralHadronIsolation)[photonRef] - rhoCorrNeutral);
     _phPhotonIsolation[_nPh]            = std::max(0., (*photonsPhotonIsolation)[photonRef] - rhoCorrPhotons);
