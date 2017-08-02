@@ -72,9 +72,10 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     if(photon->pt()  < 10)        continue;
     if(fabs(photon->eta()) > 2.5) continue;
 
-    double rhoCorrCharged = (*rho)*chargedEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
-    double rhoCorrNeutral = (*rho)*neutralEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
-    double rhoCorrPhotons = (*rho)*photonsEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
+    double rhoCorrCharged      = (*rho)*chargedEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
+    double rhoCorrNeutral      = (*rho)*neutralEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
+    double rhoCorrPhotons      = (*rho)*photonsEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
+    double randomConeIsoUnCorr = randomConeIso(photon->superCluster()->eta(), packedCands, *(vertices->begin()), electrons, muons, jets, photons);
 
 
     _phPt[_nPh]                         = photon->pt();
@@ -86,8 +87,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     _phCutBasedMedium[_nPh]             = (*photonsCutBasedMedium)[photonRef];
     _phCutBasedTight[_nPh]              = (*photonsCutBasedTight)[photonRef];
     _phMva[_nPh]                        = (*photonsMva)[photonRef];
-    randomConeIsoUnCorr                 = randomConeIso(photon->superCluster()->eta(), packedCands, *(vertices->begin()), electrons, muons, jets, photons);
-    _phRandomConeChargedIsolation[_nPh] = randomConeIsoUnCorr < 0 ? -1 : std::max(0., randonConeIsoUnCorr - rhoCorrCharged); // keep -1 when randomConeIso algorithm failed
+    _phRandomConeChargedIsolation[_nPh] = randomConeIsoUnCorr < 0 ? -1 : std::max(0., randomConeIsoUnCorr - rhoCorrCharged); // keep -1 when randomConeIso algorithm failed
     _phChargedIsolation[_nPh]           = std::max(0., (*photonsChargedIsolation)[photonRef] - rhoCorrCharged);
     _phNeutralHadronIsolation[_nPh]     = std::max(0., (*photonsNeutralHadronIsolation)[photonRef] - rhoCorrNeutral);
     _phPhotonIsolation[_nPh]            = std::max(0., (*photonsPhotonIsolation)[photonRef] - rhoCorrPhotons);
