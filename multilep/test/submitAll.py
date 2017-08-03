@@ -22,7 +22,7 @@ for dataset in datasets:
     inputFiles = []
     for file in glob.glob(dataset + ('/*.root' if 'user' in dataset else '/*/*.root')):
       j          += 1
-      inputFiles += [('dcap://maite.iihe.ac.be' if 'pnfs' in dataset else 'file://') + file]
+      inputFiles += [('dcap://maite.iihe.ac.be' if not 'user' in dataset else 'file://') + file]
       if j%groupFiles!=0: continue
 
       dir        = os.getcwd()
@@ -38,7 +38,8 @@ for dataset in datasets:
       print 'Submitting ' + inputFile + ' to cream02:'
       args  = 'dir=' + dir + ',inputFile=\"' + inputFile + '\",outputFile=' + outputFile + ',events=-1'
       args += ',isData='+ ('False' if 'SIM' in dataset else 'True')
-      os.system('qsub -v ' + args + ' -q localgrid@cream02 -o ' + logFile + ' -e ' + logFile + ' -l walltime=' + wallTime + ' runOnCream02.sh')
+#      os.system('qsub -v ' + args + ' -q localgrid@cream02 -o ' + logFile + ' -e ' + logFile + ' -l walltime=' + wallTime + ' runOnCream02.sh')
+      print ('qsub -v ' + args + ' -q localgrid@cream02 -o ' + logFile + ' -e ' + logFile + ' -l walltime=' + wallTime + ' runOnCream02.sh')
       i += 1
       inputFiles = []
 
