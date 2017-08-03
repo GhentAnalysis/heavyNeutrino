@@ -13,14 +13,14 @@ for dataset in datasets:
   outputName, dataset = dataset.split(':')
 
   if 'pnfs' in dataset or 'user' in dataset:
-    if 'pnfs' in dataset: datasetName = dataset.split('/MINIAOD')[0].split('/')[-1]
-    else:                 datasetName = dataset.split('/')[-1]
+    if 'user' in dataset: datasetName = dataset.split('/')[-1]
+    else:        datasetName = dataset.split('/MINIAOD')[0].split('/')[-1]
     print dataset
 
     i = 0
     j = 0
     inputFiles = []
-    for file in glob.glob(dataset + ('/*/*.root' if 'pnfs' in dataset else '/*.root')):
+    for file in glob.glob(dataset + ('/*.root' if 'user' in dataset else '/*/*.root')):
       j          += 1
       inputFiles += [('dcap://maite.iihe.ac.be' if 'pnfs' in dataset else 'file://') + file]
       if j%groupFiles!=0: continue
