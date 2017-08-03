@@ -22,7 +22,7 @@ for dataset in datasets:
     inputFiles = []
     for file in glob.glob(dataset + ('/*.root' if 'user' in dataset else '/*/*.root')):
       j          += 1
-      inputFiles += [('dcap://maite.iihe.ac.be' if not 'user' in dataset else 'file://') + file]
+      inputFiles += [('dcap://maite.iihe.ac.be' if 'pnfs' in dataset else 'file://') + file]
       if j%groupFiles!=0: continue
 
       dir        = os.getcwd()
