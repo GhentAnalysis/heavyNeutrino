@@ -37,7 +37,7 @@ for dataset in datasets:
       
       print 'Submitting ' + inputFile + ' to cream02:'
       args  = 'dir=' + dir + ',inputFile=\"' + inputFile + '\",outputFile=' + outputFile + ',events=-1'
-      args += ',isData='+ ('False' if 'SIM' in dataset else 'True')
+      args += ',isData='+ ('False' if ('SIM' in dataset or 'HeavyNeutrino' in dataset) else 'True')
       os.system('qsub -v ' + args + ' -q localgrid@cream02 -o ' + logFile + ' -e ' + logFile + ' -l walltime=' + wallTime + ' runOnCream02.sh')
       i += 1
       inputFiles = []
