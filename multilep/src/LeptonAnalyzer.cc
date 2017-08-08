@@ -34,6 +34,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_3dIP",                         &_3dIP,                         "_3dIP[_nL]/D");
   outputTree->Branch("_3dIPSig",                      &_3dIPSig,                      "_3dIPSig[_nL]/D");
   outputTree->Branch("_lElectronMva",                 &_lElectronMva,                 "_lElectronMva[_nLight]/F");
+  outputTree->Branch("_lElectronPassEmu",	      &_lElectronPassEmu,	      "_lElectronPassEmu[_nLight]/O");
   outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nL]/O");
   outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nL]/O");
   outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nL]/O");
@@ -123,6 +124,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _miniIso[_nL]      = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho);
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
+    _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);
     _lHNLoose[_nL]     = isHNLoose(*ele);
     _lHNFO[_nL]        = isHNFO(*ele);
     _lHNTight[_nL]     = isHNTight(*ele);
