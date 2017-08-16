@@ -30,7 +30,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_jetId",                     &_jetId,                    "_jetId[_nJets]/i");
 }
 
-void JetAnalyzer::analyze(const edm::Event& iEvent){
+bool JetAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
   edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
   edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
@@ -69,9 +69,10 @@ void JetAnalyzer::analyze(const edm::Event& iEvent){
     _jetDeepCsv_cc[_nJets]            = jet->bDiscriminator("pfDeepCSVJetTags:probcc");
     _jetHadronFlavour[_nJets]         = jet->hadronFlavour();
     _jetId[_nJets]                    = jetId(*jet, false) + jetId(*jet, true); // 1: loose, 2: tight
-
     ++_nJets;
   }
+  if(multileptAnalyzer->skim == "singlejet" and _nJets < 1) return false;
+  return true;
 }
 
 // Jet Id (https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016)
