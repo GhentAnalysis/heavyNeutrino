@@ -71,7 +71,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     _jetId[_nJets]                    = jetId(*jet, false) + jetId(*jet, true); // 1: loose, 2: tight
     ++_nJets;
   }
-  if(multileptAnalyzer->skim == "singlejet" and _nJets < 1) return false;
+  if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
   return true;
 }
 
