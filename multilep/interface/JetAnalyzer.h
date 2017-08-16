@@ -45,7 +45,7 @@ class JetAnalyzer {
     ~JetAnalyzer();
 
     void beginJob(TTree* outputTree);
-    void analyze(const edm::Event&);
+    bool analyze(const edm::Event&);
 };
 
 #endif
