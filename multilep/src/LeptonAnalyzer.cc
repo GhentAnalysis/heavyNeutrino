@@ -42,13 +42,15 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
-  outputTree->Branch("_lIsPrompt",                    &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
-  outputTree->Branch("_lMatchPdgId",                  &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
 
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
+  if(!multilepAnalyzer->isData){
+      outputTree->Branch("_lIsPrompt",                &_lIsPrompt,                    "_lIsPrompt[_nL]/D");
+      outputTree->Branch("_lMatchPdgId",              &_lMatchPdgId,                  "_lMatchPdgId[_nL]/D");
+  }
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
