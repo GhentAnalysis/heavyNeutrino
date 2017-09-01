@@ -20,8 +20,8 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nTrueInt",                   &_nTrueInt,                 "_nTrueInt/F");
 
-  outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/I");
-  outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/I");
+  outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/i");
+  outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/i");
   outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
   outputTree->Branch("_gen_metPhi",                &_gen_metPhi,                "_gen_metPhi/D");
   outputTree->Branch("_gen_nPh",                   &_gen_nPh,                   "_gen_nPh/b");
@@ -144,7 +144,7 @@ bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
 /*
  * Some event categorization in order to understand/debug/apply overlap removal for TTG <--> TTJets
  */
-int GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
+unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
   int type = 0;
   for(auto p = genParticles.begin(); p != genParticles.end(); ++p){
     if(p->status()<0)         continue;
