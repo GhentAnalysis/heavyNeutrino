@@ -14,8 +14,8 @@ class GenAnalyzer {
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
    
-    int    _ttgEventType;
-    int    _zgEventType;
+    unsigned    _ttgEventType;
+    unsigned    _zgEventType;
     float  _nTrueInt;
 
     //generator level MET
@@ -42,7 +42,7 @@ class GenAnalyzer {
     void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
     bool                     inMotherList(std::vector<int>& list, int i);
 
-    int                      ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
+    unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
     double                   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
 
     multilep* multilepAnalyzer;
