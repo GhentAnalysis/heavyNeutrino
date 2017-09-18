@@ -2,8 +2,12 @@
 
 #read command-line arguments
 input=$1
-output=$2
-jobsPerFile=$3
+output=$3
+filesPerJob=$2
+
+#check if output exists
+
+#if no output directory given, automatically initialize one
 
 #list all files present in sample in a txt file
 python ~/das_client.py --query="file dataset=$input" --limit=0 > fileNames.txt
@@ -28,7 +32,27 @@ while read f
     fi
 done < fileNames.txt
 
-cat fileNames.txt
+#loop over new list of files and submit jobs
+count=0
+submit=submit.sh
+while read f
+    do echo "$f"
+    #submit a job for every few files, as specified in the input
+    if (( $count % $filesPerJob == 0 ))
+        then if (( $count != 0)) 
+            #then qsub $submit -l walltime=40:00:00;
+            cat $submit
+        fi
+        #initialize temporary submission script
+        if [ -e $submit ]; then rm $submit; fi
+        touch $submit
+        #initialize CMSSW environment in submission script
+        echo "cd ${CMSSW_BASE}/src" >> $submit
+        echo "source /cvmfs/cms.cern.ch/cmsset_default.sh" >> $submit
+        echo "eval \`scram runtime -sh\`" >> $submit
+    fi
+    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py $f" >> $submit
+done < fileList.txt
 
 
 
