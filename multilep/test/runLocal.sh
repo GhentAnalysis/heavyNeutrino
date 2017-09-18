@@ -13,16 +13,22 @@ location=/pnfs/iihe/cms/ph/sc4
 dcap=dcap://maite.iihe.ac.be
 
 #xrootd redirector for files not present on local cluster
+redirector=root://cmsxrootd.fnal.gov//
 
 #make temporary txt file to store final list of files
+touch fileList.txt
 
-#loop over files in sample
-    
+while read f
     #check if file is locally available
+    do if [ -e ${location}${f} ]
+        then echo "${dcap}${location}${f}" >> fileList.txt
+    #if the file is not available add an xrootd redirector to a remote location
+    else 
+        echo "${redirector}${f}" >> fileList.txt
+    fi
+done < fileNames.txt
 
-    #if not available add xrootd redirector to remote location
-
-
+cat fileNames.txt
 
 
 
