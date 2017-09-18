@@ -41,7 +41,7 @@ while read f
     if (( $count % $filesPerJob == 0 ))
         then if (( $count != 0)) 
             #then qsub $submit -l walltime=40:00:00;
-            cat $submit
+            then cat $submit
         fi
         #initialize temporary submission script
         if [ -e $submit ]; then rm $submit; fi
@@ -51,7 +51,8 @@ while read f
         echo "source /cvmfs/cms.cern.ch/cmsset_default.sh" >> $submit
         echo "eval \`scram runtime -sh\`" >> $submit
     fi
-    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py $f" >> $submit
+    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py $f ${output}/Job_${count}.root > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
+    count=$((count + 1))
 done < fileList.txt
 
 
