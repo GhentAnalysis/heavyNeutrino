@@ -49,6 +49,16 @@ dilep:/MuonEG/Run2016G-03Feb2017-v1/MINIAOD
 dilep:/MuonEG/Run2016H-03Feb2017_ver2-v1/MINIAOD
 dilep:/MuonEG/Run2016H-03Feb2017_ver3-v1/MINIAOD
 
+# Data for trigger
+dilep:/MET/Run2016B-03Feb2017_ver1-v1/MINIAOD
+dilep:/MET/Run2016B-03Feb2017_ver2-v2/MINIAOD
+dilep:/MET/Run2016C-03Feb2017-v1/MINIAOD
+dilep:/MET/Run2016D-03Feb2017-v1/MINIAOD
+dilep:/MET/Run2016E-03Feb2017-v1/MINIAOD
+dilep:/MET/Run2016F-03Feb2017-v1/MINIAOD
+dilep:/MET/Run2016G-03Feb2017-v1/MINIAOD
+dilep:/MET/Run2016H-03Feb2017_ver2-v1/MINIAOD
+dilep:/MET/Run2016H-03Feb2017_ver3-v1/MINIAOD
 
 # Top 
 dilep:/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM
