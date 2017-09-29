@@ -61,7 +61,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
   edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
   edm::Handle<std::vector<reco::GenParticle>> genParticles;        iEvent.getByToken(multilepAnalyzer->genParticleToken,                  genParticles);
-  edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
+  edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoTokenAll,                       rho);
 
   // Loop over photons
   _nPh = 0;
