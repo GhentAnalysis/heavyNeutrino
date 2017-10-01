@@ -1,6 +1,8 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 
 #include "FWCore/ParameterSet/interface/FileInPath.h"
+//Track class is needed for closest jet variables
+#include "DataFormats/TrackReco/interface/Track.h"
 #include "TLorentzVector.h"
 /*
  * Calculating all lepton-related variables
@@ -197,9 +199,6 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const 
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
-   daughterTrack.charge() != 0 && daughter->fromPV() > 1 && daughterTrack.hitPattern().numberOfValidHits > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 &
-      & daughterTrack <daughterTrack.charge() != 0 && daughter->fromPV() > 1 && daughterTrack.hitPattern().numberOfValidHits > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 &
-     & daughterTrack < _dxy[_nL]     = muon.innerTrack()->dxy(vertex.position());                              // Change innerTrack to muonBestTrack? Both are in use in CMS
   _dz[_nL]      = muon.innerTrack()->dz(vertex.position());
   _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
@@ -244,7 +243,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
   // Find closest selected jet
   unsigned closestIndex = 0;
   for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
-      if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton){
+      if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)){
           closestIndex = j;
        }
    }
@@ -255,8 +254,8 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
    } else {
        //WARNING, these jets currently remain uncorrected!!
        // auto  l1Jet       = jet->correctedP4("L1FastJet"); // can't get this to work, annoying, please correct when you can solve it
-       auto  l1Jet       = jet->p4();
-       float JEC         = jet->p4().E()/l1Jet.E();
+       auto  l1Jet       = jet.p4();
+       float JEC         = jet.p4().E()/l1Jet.E();
        auto  l           = lepton.p4();
        auto  lepAwareJet = (l1Jet - l)*JEC + l;
 
@@ -265,15 +264,15 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
 
        _ptRatio[_nL] = l.pt()/lepAwareJet.pt();
        _ptRel[_nL]   = lV.Perp((jV - lV).Vect());
-       _closestJetCsv[_nL] = jet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+       _closestJetCsv[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
        //compute selected track multiplicity of closest jet
        _selectedTrackMult[_nL] = 0;
-       for(unsigned d = 0; d < jet->numberOfDaughters(); ++d){
-           const pat::PackedCandidate* daughter = (const PackedCandidate*) jet->daughter(d);
+       for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
+           const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
            const reco::Track& daughterTrack = daughter->pseudoTrack();
            TLorentzVector trackVec = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
            double daughterDeltaR = trackVec.DeltaR(jV);
-           bool goodTrack = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex)) < 17 && fabs(daughterTrack.dxy(vertex)) < 17; 
+           bool goodTrack = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex)) < 17 && fabs(daughterTrack.dxy(vertex)) < 17; 
            if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack){
                ++_selectedTrackMult[_nL];
            } 
