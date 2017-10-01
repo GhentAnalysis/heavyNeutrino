@@ -234,15 +234,14 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets){
   //Make skimmed "close jet" collection
   std::vector<pat::Jet> selectedJetsAll;
-  for(auto jet = jets->cbegin(); jet != jets->end(); ++jets){
-      if( (*jet)->pt() > 5 && fabs( (*jet)->eta() ) < 5){  
+  for(auto jet = (*jets)->cbegin(); jet != (*jets)->end(); ++jet){
+      if( jet->pt() > 5 && fabs( jet->eta() ) < 5){  
           selectedJetsAll->push_back(*jet);
       }
   }
   // Find closest selected jet
   float dR = 9999;
-  auto jet = jets->begin();
-  for(; jet != jets->end(); ++jet){
+  for(jet = selectedJetsAll.cbegin(); jet != selectedJetsAll->cend(); ++jet){
     if(reco::deltaR(*jet, lepton) > dR) continue;
     dR = reco::deltaR(*jet, lepton);
   }
