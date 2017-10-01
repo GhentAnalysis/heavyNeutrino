@@ -42,7 +42,7 @@ class LeptonAnalyzer {
     double _ptRel[nL_max];                                                                          //variables related to closest Jet
     double _ptRatio[nL_max];
     double _closestJetCsv[nL_max];
-    double _trackSelectionMult[nL_max];
+    double _selectedTrackMult[nL_max];
     double _dxy[nL_max];
     double _dz[nL_max];
     double _3dIP[nL_max];
