@@ -99,7 +99,19 @@ class LeptonAnalyzer {
     TMVA::Reader *readerEle;
     TMVA::Reader *readerMu;
     //Variables for booking electroweakino lepton MVA
-
+    float LepGood_pt, 
+    LepGood_eta, 
+    LepGood_jetNDauChargedMVASel,
+    LepGood_miniRelIsoCharged, 
+    LepGood_miniRelIsoNeutral,
+    LepGood_jetPtRelv2,
+    LepGood_jetPtRatio,
+    LepGood_jetBTagCSV,
+    LepGood_sip3d,
+    LepGood_dxy, 
+    LepGood_dz,
+    LepGood_segmentCompatibility,
+    LepGood_mvaIdSpring16GP;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
