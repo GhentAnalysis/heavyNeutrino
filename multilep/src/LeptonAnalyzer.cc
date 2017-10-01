@@ -2,7 +2,7 @@
 
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 //Track class is needed for closest jet variables
-#include "DataFormats/TrackReco/interface/Track.h"
+//#include "DataFormats/TrackReco/interface/Track.h"
 #include "TLorentzVector.h"
 /*
  * Calculating all lepton-related variables
@@ -272,7 +272,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
            const reco::Track& daughterTrack = daughter->pseudoTrack();
            TLorentzVector trackVec = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
            double daughterDeltaR = trackVec.DeltaR(jV);
-           bool goodTrack = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex)) < 17 && fabs(daughterTrack.dxy(vertex)) < 17; 
+           bool goodTrack = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17 && fabs(daughterTrack.dxy(vertex.position())) < 17; 
            if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack){
                ++_selectedTrackMult[_nL];
            } 
