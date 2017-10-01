@@ -21,10 +21,8 @@ double LeptonAnalyzer::getRelIso03(const pat::Electron& ele, const double rho){
 }
 
 double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Handle<pat::PackedCandidateCollection> pfcands,
-                                        double r_iso_min, double r_iso_max, double kt_scale, double rho){
-    bool chargedOnly = false;
+                                        double r_iso_min, double r_iso_max, double kt_scale, double rho, const bool onlyCharged){
     bool deltaBeta   = false;
-
     double deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);
     if(ptcl.isElectron() and fabs(ptcl.superCluster()->eta() >1.479)){ deadcone_ch = 0.015;  deadcone_pu = 0.015; deadcone_ph = 0.08; deadcone_nh = 0;}
     else if(ptcl.isMuon())                                           { deadcone_ch = 0.0001; deadcone_pu = 0.01;  deadcone_ph = 0.01; deadcone_nh = 0.01;}
@@ -58,7 +56,7 @@ double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Ha
     else              puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
 
     double iso;
-    if(chargedOnly)    iso = iso_ch;
+    if(onlyCharged)    iso = iso_ch;
     else if(deltaBeta) iso = iso_ch + std::max(0., iso_ph + iso_nh - 0.5*iso_pu);
     else               iso = iso_ch + std::max(0., iso_ph + iso_nh - puCorr*(r_iso*r_iso)/(0.3*0.3));
 
