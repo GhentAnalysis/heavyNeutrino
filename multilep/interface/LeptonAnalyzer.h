@@ -58,6 +58,7 @@ class LeptonAnalyzer {
     bool _lPOGTight[nL_max];
     bool _lIsPrompt[nL_max];
     int _lMatchPdgId[nL_max];
+    double _leptonMva[nL_max];
 
 
     multilep* multilepAnalyzer;
