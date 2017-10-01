@@ -48,7 +48,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
   outputTree->Branch("_closestJetCsv",                &_closestJetCsv,                "_closestJetCsv[_nLight]/D");
-  outputTree->Branch("_trackSelectionMult",           &_trackSelectionMult,           "_trackSelectionMult[_nLight]/D");
+  outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/D");
   if(!multilepAnalyzer->isData){
       outputTree->Branch("_lIsPrompt",                &_lIsPrompt,                    "_lIsPrompt[_nL]/D");
       outputTree->Branch("_lMatchPdgId",              &_lMatchPdgId,                  "_lMatchPdgId[_nL]/D");
@@ -262,6 +262,8 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _ptRatio[_nL] = l.pt()/lepAwareJet.pt();
         _ptRel[_nL]   = lV.Perp((jV - lV).Vect());
         _closestJetCsv[_nL] = jet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+        //compute selected track multiplicity of closest jet
+        _
     }
 }
 
