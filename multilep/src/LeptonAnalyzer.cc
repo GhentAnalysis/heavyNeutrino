@@ -88,7 +88,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(fabs(_dz[_nL]) > 0.1) continue;
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
-    fillLeptonJetVariables(mu, jets);
+    fillLeptonJetVariables(mu, jets, primaryVertex);
     _lFlavor[_nL] = 1;
     //Isolation variables
     _relIso[_nL]  = getRelIso03(mu, *rho);
@@ -121,7 +121,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(fabs(_dz[_nL]) > 0.1) continue;
     fillLeptonKinVars(*ele);
     fillLeptonGenVars(ele->genParticle());
-    fillLeptonJetVariables(*ele, jets);
+    fillLeptonJetVariables(*ele, jets, primaryVertex);
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
