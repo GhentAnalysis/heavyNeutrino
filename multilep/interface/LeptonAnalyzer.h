@@ -69,7 +69,7 @@ class LeptonAnalyzer {
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&);  
     bool eleMuOverlap(const pat::Electron& ele);
-    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&);
+    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
 
     // In leptonAnalyzerIso,cc
     double getRelIso03(const pat::Muon&, const double);
