@@ -95,6 +95,11 @@ class LeptonAnalyzer {
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
 
+    //Declare lepton MVA
+    TMVA::Reader *readerEle;
+    TMVA::Reader *readerMu;
+    //Variables for booking electroweakino lepton MVA
+
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
