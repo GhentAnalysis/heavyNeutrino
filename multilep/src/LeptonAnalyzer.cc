@@ -47,6 +47,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
+  outputTree->Branch("_closestJetCsv",                &_closestJetCsv,                "_closestJetCsv[_nLight]/D");
+  outputTree->Branch("_trackSelectionMult",           &_trackSelectionMult,           "_trackSelectionMult[_nLight]/D");
   if(!multilepAnalyzer->isData){
       outputTree->Branch("_lIsPrompt",                &_lIsPrompt,                    "_lIsPrompt[_nL]/D");
       outputTree->Branch("_lMatchPdgId",              &_lMatchPdgId,                  "_lMatchPdgId[_nL]/D");
@@ -230,7 +232,14 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
 
 
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets){
-  // Find closest jet
+  //Make skimmed "close jet" collection
+  std::vector<pat::Jet> selectedJetsAll;
+  for(auto jet = jets->cbegin(); jet != jets->end(); ++jets){
+      if( (*jet)->pt() > 5 && fabs( (*jet)->eta() ) < 5){  
+          selectedJetsAll->push_back(*jet);
+      }
+  }
+  // Find closest selected jet
   float dR = 9999;
   auto jet = jets->begin();
   for(; jet != jets->end(); ++jet){
