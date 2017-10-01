@@ -197,7 +197,9 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const 
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
-  _dxy[_nL]     = muon.innerTrack()->dxy(vertex.position());                              // Change innerTrack to muonBestTrack? Both are in use in CMS
+   daughterTrack.charge() != 0 && daughter->fromPV() > 1 && daughterTrack.hitPattern().numberOfValidHits > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 &
+      & daughterTrack <daughterTrack.charge() != 0 && daughter->fromPV() > 1 && daughterTrack.hitPattern().numberOfValidHits > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 &
+     & daughterTrack < _dxy[_nL]     = muon.innerTrack()->dxy(vertex.position());                              // Change innerTrack to muonBestTrack? Both are in use in CMS
   _dz[_nL]      = muon.innerTrack()->dz(vertex.position());
   _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
@@ -231,7 +233,7 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
 }
 
 
-void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets){
+void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex){
   //Make skimmed "close jet" collection
   std::vector<pat::Jet> selectedJetsAll;
   for(auto jet = (*jets)->cbegin(); jet != (*jets)->end(); ++jet){
@@ -256,14 +258,23 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         auto  l           = lepton.p4();
         auto  lepAwareJet = (l1Jet - l)*JEC + l;
 
-        auto lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
-        auto jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
+        TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
+        TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
 
         _ptRatio[_nL] = l.pt()/lepAwareJet.pt();
         _ptRel[_nL]   = lV.Perp((jV - lV).Vect());
         _closestJetCsv[_nL] = jet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
         //compute selected track multiplicity of closest jet
-        _
-    }
+        _selectedTrackMult[_nL] = 0;
+        for(unsigned d = 0; d < jet->numberOfDaughters(); ++d){
+            const pat::PackedCandidate* daughter = (const PackedCandidate*) jet->daughter(d);
+            const reco::Track& daughterTrack = daughter->pseudoTrack();
+            TLorentzVector trackVec = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
+            double daughterDeltaR = trackVec.DeltaR(jV);
+            bool goodTrack = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex)) < 17 && fabs(daughterTrack.dxy(vertex)) < 17; 
+            if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack){
+               ++_selectedTrackMult[_nL];
+            } 
+        }
 }
 
