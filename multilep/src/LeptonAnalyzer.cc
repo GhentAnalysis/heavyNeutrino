@@ -249,6 +249,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _ptRatio[_nL] = 1;
         _ptRel[_nL]   = 0;
     } else {
+        //WARNING, these jets currently remain uncorrected!!
         // auto  l1Jet       = jet->correctedP4("L1FastJet"); // can't get this to work, annoying, please correct when you can solve it
         auto  l1Jet       = jet->p4();
         float JEC         = jet->p4().E()/l1Jet.E();
@@ -260,6 +261,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
 
         _ptRatio[_nL] = l.pt()/lepAwareJet.pt();
         _ptRel[_nL]   = lV.Perp((jV - lV).Vect());
+        _closestJetCsv[_nL] = jet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
     }
 }
 
