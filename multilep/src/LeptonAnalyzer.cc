@@ -1,8 +1,6 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 
 #include "FWCore/ParameterSet/interface/FileInPath.h"
-//Track class is needed for closest jet variables
-//#include "DataFormats/TrackReco/interface/Track.h"
 #include "TLorentzVector.h"
 /*
  * Calculating all lepton-related variables
