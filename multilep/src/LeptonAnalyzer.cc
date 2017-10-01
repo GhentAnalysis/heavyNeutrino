@@ -236,45 +236,48 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex){
   //Make skimmed "close jet" collection
   std::vector<pat::Jet> selectedJetsAll;
-  for(auto jet = jets->cbegin(); jet != jets->end(); ++jet){
+  for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
       if( jet->pt() > 5 && fabs( jet->eta() ) < 5){  
-          selectedJetsAll->push_back(*jet);
+          selectedJetsAll.push_back(*jet);
       }
   }
   // Find closest selected jet
-  float dR = 9999;
-  for(auto jet = selectedJetsAll.cbegin(); jet != selectedJetsAll->cend(); ++jet){
-    if(reco::deltaR(*jet, lepton) > dR) continue;
-        dR = reco::deltaR(*jet, lepton);
-    }
-    if(dR > 0.4){
-        _ptRatio[_nL] = 1;
-        _ptRel[_nL]   = 0;
-    } else {
-        //WARNING, these jets currently remain uncorrected!!
-        // auto  l1Jet       = jet->correctedP4("L1FastJet"); // can't get this to work, annoying, please correct when you can solve it
-        auto  l1Jet       = jet->p4();
-        float JEC         = jet->p4().E()/l1Jet.E();
-        auto  l           = lepton.p4();
-        auto  lepAwareJet = (l1Jet - l)*JEC + l;
+  unsigned closestIndex = 0;
+  for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
+      if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton){
+          closestIndex = j;
+       }
+   }
+   const pat::Jet& jet = selectedJetsAll[closestIndex];
+   if(reco::deltaR(jet, lepton) > 0.4){
+       _ptRatio[_nL] = 1;
+       _ptRel[_nL]   = 0;
+   } else {
+       //WARNING, these jets currently remain uncorrected!!
+       // auto  l1Jet       = jet->correctedP4("L1FastJet"); // can't get this to work, annoying, please correct when you can solve it
+       auto  l1Jet       = jet->p4();
+       float JEC         = jet->p4().E()/l1Jet.E();
+       auto  l           = lepton.p4();
+       auto  lepAwareJet = (l1Jet - l)*JEC + l;
 
-        TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
-        TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
+       TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
+       TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
 
-        _ptRatio[_nL] = l.pt()/lepAwareJet.pt();
-        _ptRel[_nL]   = lV.Perp((jV - lV).Vect());
-        _closestJetCsv[_nL] = jet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
-        //compute selected track multiplicity of closest jet
-        _selectedTrackMult[_nL] = 0;
-        for(unsigned d = 0; d < jet->numberOfDaughters(); ++d){
-            const pat::PackedCandidate* daughter = (const PackedCandidate*) jet->daughter(d);
-            const reco::Track& daughterTrack = daughter->pseudoTrack();
-            TLorentzVector trackVec = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-            double daughterDeltaR = trackVec.DeltaR(jV);
-            bool goodTrack = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex)) < 17 && fabs(daughterTrack.dxy(vertex)) < 17; 
-            if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack){
+       _ptRatio[_nL] = l.pt()/lepAwareJet.pt();
+       _ptRel[_nL]   = lV.Perp((jV - lV).Vect());
+       _closestJetCsv[_nL] = jet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+       //compute selected track multiplicity of closest jet
+       _selectedTrackMult[_nL] = 0;
+       for(unsigned d = 0; d < jet->numberOfDaughters(); ++d){
+           const pat::PackedCandidate* daughter = (const PackedCandidate*) jet->daughter(d);
+           const reco::Track& daughterTrack = daughter->pseudoTrack();
+           TLorentzVector trackVec = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
+           double daughterDeltaR = trackVec.DeltaR(jV);
+           bool goodTrack = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits > 7 && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex)) < 17 && fabs(daughterTrack.dxy(vertex)) < 17; 
+           if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack){
                ++_selectedTrackMult[_nL];
-            } 
-        }
+           } 
+       }
+   }
 }
 
