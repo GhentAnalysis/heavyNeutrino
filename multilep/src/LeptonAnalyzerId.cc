@@ -153,10 +153,8 @@ void LeptonAnalyzer::setCommonMvaVars(const reco::Candidate& lepton){
     LepGood_pt = _lPt[_nL];
     LepGood_eta = _lEta[_nL];
     LepGood_jetNDauChargedMVASel = _selectedTrackMult[_nL];
-    double miniIsoCharged = getMiniIsolation(lepton, packedCands, 0.05, 0.2, 10, *rho, true);
-    double miniIsoNeutral = _miniIso[_nL] - miniIsoCharged;
-    LepGood_miniRelIsoCharged = miniIsoCharged;
-    LepGood_miniRelIsoNeutral = miniIsoNeutral;
+    LepGood_miniRelIsoCharged = _miniIsoCharged[_nL];
+    LepGood_miniRelIsoNeutral = _miniIso[_nL] - _miniIsoCharged[_nL];
     LepGood_jetPtRelv2 = _ptRel[_nL];
     LepGood_jetPtRatio = std::min(_ptRatio[_nL],1.5);
     LepGood_jetBTagCSV = std::max(_closestJetCsv[_nL],0.);
