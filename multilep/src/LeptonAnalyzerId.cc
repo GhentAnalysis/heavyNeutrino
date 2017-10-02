@@ -149,7 +149,7 @@ bool LeptonAnalyzer::isHNTight(const pat::Muon& lepton){
   return true;
 }
 
-double LeptonAnalyzer::setCommonMvaVars(const reco::Candidate& lepton){
+void LeptonAnalyzer::setCommonMvaVars(const reco::Candidate& lepton){
     LepGood_pt = _lPt[leptonCounter];
     LepGood_eta = _lEta[leptonCounter];
     LepGood_jetNDauChargedMVASel = _selectedTrackMult[leptonCounter];
