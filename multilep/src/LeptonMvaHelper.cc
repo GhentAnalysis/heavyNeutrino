@@ -1,6 +1,6 @@
 //implementation of LeptonMvaHelper class
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
-#include <math>
+#include <cmath>
 
 //Default constructor
 //This will set up both MVA readers and book the correct variables
