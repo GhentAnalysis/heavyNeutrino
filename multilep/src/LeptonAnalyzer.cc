@@ -54,42 +54,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_lIsPrompt",                &_lIsPrompt,                    "_lIsPrompt[_nL]/D");
       outputTree->Branch("_lMatchPdgId",              &_lMatchPdgId,                  "_lMatchPdgId[_nL]/D");
   }
-    
-
-  //Set up lepton MVA BDTG
-  readerEle = std::make_shared<TMVA::Reader>( "!Color:!Silent");
-  readerMu = std::make_shared<TMVA::Reader>("!Color:!Silent");
-
-  //Set up Muon MVA reader
-  readerMu->AddVariable( "LepGood_pt", &LepGood_pt );
-  readerMu->AddVariable( "LepGood_eta", &LepGood_eta );
-  readerMu->AddVariable( "LepGood_jetNDauChargedMVASel", &LepGood_jetNDauChargedMVASel );
-  readerMu->AddVariable( "LepGood_miniRelIsoCharged", &LepGood_miniRelIsoCharged );
-  readerMu->AddVariable( "LepGood_miniRelIsoNeutral", &LepGood_miniRelIsoNeutral );
-  readerMu->AddVariable( "LepGood_jetPtRelv2", &LepGood_jetPtRelv2 );
-  readerMu->AddVariable( "min(LepGood_jetPtRatiov2,1.5)", &LepGood_jetPtRatio );
-  readerMu->AddVariable( "max(LepGood_jetBTagCSV,0)", &LepGood_jetBTagCSV );
-  readerMu->AddVariable( "LepGood_sip3d", &LepGood_sip3d );
-  readerMu->AddVariable( "log(abs(LepGood_dxy))", &LepGood_dxy );
-  readerMu->AddVariable( "log(abs(LepGood_dz))", &LepGood_dz );
-  readerMu->AddVariable( "LepGood_segmentCompatibility", &LepGood_segmentCompatibility );
-  readerMu->BookMVA( "BDTG method", "heavyNeutrino/multilep/data/mvaWeights/mu_BDTG.weights.xml" );
- 
-  //Set up Electron MVA reader 
-  readerEle->AddVariable( "LepGood_pt", &LepGood_pt );
-  readerEle->AddVariable( "LepGood_eta", &LepGood_eta );
-  readerEle->AddVariable( "LepGood_jetNDauChargedMVASel", &LepGood_jetNDauChargedMVASel );
-  readerEle->AddVariable( "LepGood_miniRelIsoCharged", &LepGood_miniRelIsoCharged );
-  readerEle->AddVariable( "LepGood_miniRelIsoNeutral", &LepGood_miniRelIsoNeutral );
-  readerEle->AddVariable( "LepGood_jetPtRelv2", &LepGood_jetPtRelv2 );
-  readerEle->AddVariable( "min(LepGood_jetPtRatiov2,1.5)", &LepGood_jetPtRatio );
-  readerEle->AddVariable( "max(LepGood_jetBTagCSV,0)", &LepGood_jetBTagCSV );
-  readerEle->AddVariable( "LepGood_sip3d", &LepGood_sip3d );
-  readerEle->AddVariable( "log(abs(LepGood_dxy))", &LepGood_dxy );
-  readerEle->AddVariable( "log(abs(LepGood_dz))", &LepGood_dz );
-  readerEle->AddVariable( "LepGood_mvaIdSpring16GP", &LepGood_mvaIdSpring16GP); //LepGood_mvaIdSpring15
-  readerEle->BookMVA( "BDTG method", "heavyNeutrino/mutlitlep/data/mvaWeights/el_BDTG.weights.xml");
-  
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
