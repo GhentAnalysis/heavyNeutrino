@@ -7,10 +7,10 @@
 class LeptonMvaHelper{
     public:
         LeptonMvaHelper();
-        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double segComp);
-        double leptonMVaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double eleMva);
+        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double segComp);
+        double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double eleMva);
     private:
-        std::shared_ptr<TMVA:Reader> reader[2]; //First entry is for muons, second one for electrons 
+        std::shared_ptr<TMVA::Reader> reader[2]; //First entry is for muons, second one for electrons 
         float LepGood_pt,                       //Variables used in MVA computation
         LepGood_eta,
         LepGood_jetNDauChargedMVASel,
