@@ -44,6 +44,7 @@ class LeptonAnalyzer {
     int _lCharge[nL_max];
     double _relIso[nL_max];
     double _miniIso[nL_max];
+    double _miniIsoCharged[nL_max];                                                                 //Used for lepton MVA calculation, currently not stored in trees
     double _ptRel[nL_max];                                                                          //variables related to closest Jet
     double _ptRatio[nL_max];
     double _closestJetCsv[nL_max];
