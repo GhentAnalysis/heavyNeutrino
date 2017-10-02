@@ -1,5 +1,6 @@
 //implementation of LeptonMvaHelper class
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
+#include <math>
 
 //Default constructor
 //This will set up both MVA readers and book the correct variables
@@ -36,11 +37,11 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
     LepGood_miniRelIsoCharged = miniIsoCharged;
     LepGood_miniRelIsoNeutral = miniIsoNeutral;
     LepGood_jetPtRelv2 = ptRel;
-    LepGood_jetPtRatio = ptRatio;
-    LepGood_jetBTagCSV = closestJetCsv;
+    LepGood_jetPtRatio = std::min(ptRatio, 1.5);
+    LepGood_jetBTagCSV = std::max(closestJetCsv, 0.);
     LepGood_sip3d = sip3d;
-    LepGood_dxy = dxy;
-    LepGood_dz = dz;
+    LepGood_dxy = log(fabs(dxy));
+    LepGood_dz = log(fabs(dz));
 }
 
 double LeptonMvaHelper::leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double segComp){
