@@ -4,8 +4,10 @@
 //Default constructor
 //This will set up both MVA readers and book the correct variables
 LeptonMvaHelper::LeptonMvaHelper(){
-    //Book common variables
     for(unsigned i = 0; i < 2; ++i){
+        //Set up Mva reader 
+        reader[i] = std::make_shared<TMVA::Reader>( "!Color:!Silent");
+        //Book Common variables
         reader[i]->AddVariable( "LepGood_pt", &LepGood_pt );
         reader[i]->AddVariable( "LepGood_eta", &LepGood_eta );
         reader[i]->AddVariable( "LepGood_jetNDauChargedMVASel", &LepGood_jetNDauChargedMVASel );
