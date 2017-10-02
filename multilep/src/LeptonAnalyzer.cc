@@ -130,6 +130,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     //Isolation variables
     _relIso[_nL]  = getRelIso03(mu, *rho);
     _miniIso[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
+    _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
     _lHNLoose[_nL]   = isHNLoose(mu);
     _lHNFO[_nL]      = isHNFO(mu);    // don't change order, they rely on above variables
@@ -163,6 +164,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
     _miniIso[_nL]      = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho);
+    _miniIsoCharged[_nL] = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);
