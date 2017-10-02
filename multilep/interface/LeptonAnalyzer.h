@@ -101,6 +101,9 @@ class LeptonAnalyzer {
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
 
+    double leptonMvaVal(const pat::Muon&);
+    double leptonMvaVal(const pat::Electron&);
+
     //Declare lepton MVA
     std::shared_ptr<TMVA::Reader> readerEle;
     std::shared_ptr<TMVA::Reader> readerMu;
