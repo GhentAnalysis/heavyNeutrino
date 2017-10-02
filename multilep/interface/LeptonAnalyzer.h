@@ -15,6 +15,9 @@
 #include "TTree.h"
 #include "TMVA/Reader.h"
 
+//c++ library classes
+#include<memory>                                                                                    //for using std::shared_ptr
+
 
 /*
  * Functions for electron identification
@@ -99,8 +102,8 @@ class LeptonAnalyzer {
     bool  isHNTight(const pat::Muon& lepton);
 
     //Declare lepton MVA
-    TMVA::Reader *readerEle;
-    TMVA::Reader *readerMu;
+    std::shared_ptr<TMVA::Reader> readerEle;
+    std::shared_ptr<TMVA::Reader> readerMu;
     //Variables for booking electroweakino lepton MVA
     float LepGood_pt, 
     LepGood_eta, 
