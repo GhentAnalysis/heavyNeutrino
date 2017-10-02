@@ -101,6 +101,7 @@ class LeptonAnalyzer {
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
 
+    void   setCommonMvaVars(const reco::Candidate&);
     double leptonMvaVal(const pat::Muon&);
     double leptonMvaVal(const pat::Electron&);
 
