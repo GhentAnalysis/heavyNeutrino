@@ -1,12 +1,12 @@
 //Helper class for facilitating the computation of the lepton MVA.
-#ifndef lepton_mva_helper
-#define lepton_mva_helper
+#ifndef Lepton_Mva_Helper
+#define Lepton_Mva_Helper
 
 #include "TMVA/Reader.h"
 #include <memory>
-class leptonMvaHelper{
+class LeptonMvaHelper{
     public:
-        leptonMvaHelper();
+        LeptonMvaHelper();
         double leptonMvaMuon(const double segComp);
         double leptonMVaElectron(const double eleMva);
     private:
