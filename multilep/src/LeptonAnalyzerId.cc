@@ -165,7 +165,7 @@ void LeptonAnalyzer::setCommonMvaVars(const reco::Candidate& lepton){
 
 double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon){
     setCommonMvaVars(muon);
-    LepGood_segmentCompatibility = muon.segmentCompatibility()
+    LepGood_segmentCompatibility = muon.segmentCompatibility();
     return readerMu->EvaluateMVA("BDTG method");
 }
 
