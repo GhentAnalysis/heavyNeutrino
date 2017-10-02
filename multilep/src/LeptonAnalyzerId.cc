@@ -150,17 +150,17 @@ bool LeptonAnalyzer::isHNTight(const pat::Muon& lepton){
 }
 
 void LeptonAnalyzer::setCommonMvaVars(const reco::Candidate& lepton){
-    LepGood_pt = _lPt[leptonCounter];
-    LepGood_eta = _lEta[leptonCounter];
-    LepGood_jetNDauChargedMVASel = _selectedTrackMult[leptonCounter];
-    double miniIsoCharged = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
+    LepGood_pt = _lPt[_nL];
+    LepGood_eta = _lEta[_nL];
+    LepGood_jetNDauChargedMVASel = _selectedTrackMult[_nL];
+    double miniIsoCharged = getMiniIsolation(lepton, packedCands, 0.05, 0.2, 10, *rho, true);
     double miniIsoNeutral = _miniIso[_nL] - miniIsoCharged;
     LepGood_miniRelIsoCharged = miniIsoCharged;
     LepGood_miniRelIsoNeutral = miniIsoNeutral;
-    LepGood_jetPtRelv2 = _ptrel[leptonCounter];
+    LepGood_jetPtRelv2 = _ptRel[leptonCounter];
     LepGood_jetPtRatio = std::min(_ptRatio[_nL],1.5);
-    LepGood_jetBTagCSV = std::max(_closestJetCs[_nL],0.);
-    LepGood_sip3d = _3dIPsig[_nL];
+    LepGood_jetBTagCSV = std::max(_closestJetCsv[_nL],0.);
+    LepGood_sip3d = _sip3d[_nL];
     LepGood_dxy = log(fabs(_dxy[_nL]));
     LepGood_dz = log(fabs(_dz[_nL]));
 }
