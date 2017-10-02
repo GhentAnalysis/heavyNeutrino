@@ -157,10 +157,10 @@ void LeptonAnalyzer::setCommonMvaVars(const reco::Candidate& lepton){
     double miniIsoNeutral = _miniIso[_nL] - miniIsoCharged;
     LepGood_miniRelIsoCharged = miniIsoCharged;
     LepGood_miniRelIsoNeutral = miniIsoNeutral;
-    LepGood_jetPtRelv2 = _ptRel[leptonCounter];
+    LepGood_jetPtRelv2 = _ptRel[_nL];
     LepGood_jetPtRatio = std::min(_ptRatio[_nL],1.5);
     LepGood_jetBTagCSV = std::max(_closestJetCsv[_nL],0.);
-    LepGood_sip3d = _sip3d[_nL];
+    LepGood_sip3d = _3dIPSig[_nL];
     LepGood_dxy = log(fabs(_dxy[_nL]));
     LepGood_dz = log(fabs(_dz[_nL]));
 }
