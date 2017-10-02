@@ -1,5 +1,6 @@
 #ifndef LEPTON_ANALYZER_H
 #define LEPTON_ANALYZER_H
+//include other parts of CMSSW
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
@@ -10,12 +11,12 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
+//include other parts of the framework
 #include "heavyNeutrino/multilep/plugins/multilep.h"
-
+#include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
+//include ROOT classes
 #include "TTree.h"
-#include "TMVA/Reader.h"
-
-//c++ library classes
+//include c++ library classes
 #include<memory>                                                                                    //for using std::shared_ptr
 
 
@@ -102,27 +103,11 @@ class LeptonAnalyzer {
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
 
-    void   setCommonMvaVars(const reco::Candidate&);
     double leptonMvaVal(const pat::Muon&);
     double leptonMvaVal(const pat::Electron&);
-
-    //Declare lepton MVA
-    std::shared_ptr<TMVA::Reader> readerEle;
-    std::shared_ptr<TMVA::Reader> readerMu;
-    //Variables for booking electroweakino lepton MVA
-    float LepGood_pt, 
-    LepGood_eta, 
-    LepGood_jetNDauChargedMVASel,
-    LepGood_miniRelIsoCharged, 
-    LepGood_miniRelIsoNeutral,
-    LepGood_jetPtRelv2,
-    LepGood_jetPtRatio,
-    LepGood_jetBTagCSV,
-    LepGood_sip3d,
-    LepGood_dxy, 
-    LepGood_dz,
-    LepGood_segmentCompatibility,
-    LepGood_mvaIdSpring16GP;
+    
+    //for lepton MVA calculation
+    LeptonMvaHelper leptonMvaComputer;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
