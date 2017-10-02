@@ -27,3 +27,29 @@ LeptonMvaHelper::LeptonMvaHelper(){
     reader[0]->BookMVA("BDTG method", "heavyNeutrino/multilep/data/mvaWeights/mu_BDTG.weights.xml");
     reader[1]->BookMVA("BDTG method", "heavyNeutrino/mutlitlep/data/mvaWeights/el_BDTG.weights.xml");
 }
+
+void leptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz){
+    LepGood_pt = pt;
+    LepGood_eta = eta;
+    LepGood_jetNDauChargedMVASel = selectedTrackMult;
+    LepGood_miniRelIsoCharged = miniIsoCharged;
+    LepGood_miniRelIsoNeutral = miniIsoNeutral;
+    LepGood_jetPtRelv2 = ptRel;
+    LepGood_jetPtRatio = ptRatio;
+    LepGood_jetBTagCSV = closestJetCsv;
+    LepGood_sip3d = sip3d;
+    LepGood_dxy = dxy;
+    LepGood_dz = dz;
+}
+
+double leptonMvaHelper::leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double segComp){
+    bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz);
+    LepGood_segmentCompatibility = segComp;
+    return reader[0]->EvaluateMVA("BDTG method");
+}
+
+double leptonMvaHelper::leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double eleMva){
+    bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz);
+    LepGood_mvaIdSpring16GP = eleMva;
+    return reader[1]->EvaluateMVA("BDTG method");
+}
