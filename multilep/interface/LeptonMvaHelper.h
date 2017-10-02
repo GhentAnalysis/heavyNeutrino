@@ -7,8 +7,8 @@
 class LeptonMvaHelper{
     public:
         LeptonMvaHelper();
-        double leptonMvaMuon(double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double segComp);
-        double leptonMVaElectron(double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double eleMva);
+        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double segComp);
+        double leptonMVaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double eleMva);
     private:
         std::shared_ptr<TMVA:Reader> reader[2]; //First entry is for muons, second one for electrons 
         float LepGood_pt,                       //Variables used in MVA computation
@@ -24,6 +24,6 @@ class LeptonMvaHelper{
         LepGood_dz,
         LepGood_segmentCompatibility,
         LepGood_mvaIdSpring16GP;
-        void bookCommonVars(double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz); 
+        void bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz); 
 };
 #endif
