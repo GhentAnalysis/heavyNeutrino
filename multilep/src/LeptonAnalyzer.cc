@@ -139,6 +139,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     _lPOGMedium[_nL] = mu.isMediumMuon();
     _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
+    _leptonMva[_nL]  = leptonMvaVal(mu);
 
     ++_nMu;
     ++_nL;
@@ -175,6 +176,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGLoose[_nL]    = (*electronsCutBasedLoose)[electronRef];
     _lPOGMedium[_nL]   = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
+    _leptonMva[_nL]    = leptonMvaVal(*ele);
 
     ++_nEle;
     ++_nL;
