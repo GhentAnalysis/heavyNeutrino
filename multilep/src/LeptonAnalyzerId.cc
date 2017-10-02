@@ -148,3 +148,31 @@ bool LeptonAnalyzer::isHNTight(const pat::Muon& lepton){
   if(_relIso[_nL] > 0.1) return false;
   return true;
 }
+
+double LeptonAnalyzer::setCommonMvaVars(const reco::Candidate& lepton){
+    LepGood_pt = _lPt[leptonCounter];
+    LepGood_eta = _lEta[leptonCounter];
+    LepGood_jetNDauChargedMVASel = _selectedTrackMult[leptonCounter];
+    double miniIsoCharged = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
+    double miniIsoNeutral = _miniIso[_nL] - miniIsoCharged;
+    LepGood_miniRelIsoCharged = miniIsoCharged;
+    LepGood_miniRelIsoNeutral = miniIsoNeutral;
+    LepGood_jetPtRelv2 = _ptrel[leptonCounter];
+    LepGood_jetPtRatio = std::min(_ptRatio[_nL],1.5);
+    LepGood_jetBTagCSV = std::max(_closestJetCs[_nL],0.);
+    LepGood_sip3d = _3dIPsig[_nL];
+    LepGood_dxy = log(fabs(_dxy[_nL]));
+    LepGood_dz = log(fabs(_dz[_nL]));
+}
+
+double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon){
+    setCommonMvaVars(muon);
+    LepGood_segmentCompatibility = muon.segmentCompatibility()
+    return readerMu->EvaluateMVA("BDTG method");
+}
+
+double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron){
+    setCommonMvaVars(electron);
+    LepGood_mvaIdSpring16GP = _lElectronMva[_nL];
+    return readerEle->EvaluateMVA("BDTG method");
+}
