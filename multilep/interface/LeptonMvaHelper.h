@@ -7,8 +7,8 @@
 class LeptonMvaHelper{
     public:
         LeptonMvaHelper();
-        double leptonMvaMuon(const double segComp);
-        double leptonMVaElectron(const double eleMva);
+        double leptonMvaMuon(double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double segComp);
+        double leptonMVaElectron(double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, const double eleMva);
     private:
         std::shared_ptr<TMVA:Reader> reader[2]; //First entry is for muons, second one for electrons 
         float LepGood_pt,                       //Variables used in MVA computation
