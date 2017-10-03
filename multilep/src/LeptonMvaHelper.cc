@@ -28,7 +28,7 @@ LeptonMvaHelper::LeptonMvaHelper(){
 
     //Read Mva weights
     reader[0]->BookMVA("BDTG method", "heavyNeutrino/multilep/data/mvaWeights/mu_BDTG.weights.xml");
-    reader[1]->BookMVA("BDTG method", "heavyNeutrino/mutlitlep/data/mvaWeights/el_BDTG.weights.xml");
+    reader[1]->BookMVA("BDTG method", "heavyNeutrino/multilep/data/mvaWeights/el_BDTG.weights.xml");
 }
 void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz){
     LepGood_pt = pt;
