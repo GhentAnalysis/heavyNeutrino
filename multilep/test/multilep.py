@@ -3,9 +3,9 @@ import FWCore.ParameterSet.Config as cms
 
 # Default arguments
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/QCD_Pt-50to80_EMEnriched_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00A9113F-15D6-E611-9142-047D7B881D3A.root'
-inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/90000/003658EE-77E6-E611-ACB1-7CD30ABD295A.root'
+#inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/90000/003658EE-77E6-E611-ACB1-7CD30ABD295A.root'
 inputFile       = '/store/data/Run2016D/DoubleMuon/MINIAOD/03Feb2017-v1/100000/52779EE0-F4ED-E611-BF87-70106F49CD3C.root'
-inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
+#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 isData          = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
 nEvents         = 1000
 outputFile      = 'ttg.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -123,7 +123,14 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  process.source.lumisToProcess = LumiList.LumiList(filename = '../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt').getVLuminosityBlockRange()
+  data2017 = "Run2017" in inputFile
+  JSON = ""
+  if data2017:
+      JSON = "Cert_294927-302663_13TeV_PromptReco_Collisions17_JSON.txt"
+  else:
+      JSON = "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+  JSON = "../data/JSON/" + JSON
+  process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
 
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
