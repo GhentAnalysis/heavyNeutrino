@@ -18,25 +18,25 @@ def addJetSequence(process, isData):
      labelName = 'UpdatedJEC',
      jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
      # DeepCSV twiki: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
-     btagDiscriminators = [
-       'pfCombinedSecondaryVertexV2BJetTags',
-       'pfDeepCSVJetTags:probudsg',
-       'pfDeepCSVJetTags:probb',
-       'pfDeepCSVJetTags:probc',
-       'pfDeepCSVJetTags:probbb',
-       'pfDeepCSVJetTags:probcc',
-     ]
+     #btagDiscriminators = [
+     #  'pfCombinedSecondaryVertexV2BJetTags',
+     #  'pfDeepCSVJetTags:probudsg',
+     #  'pfDeepCSVJetTags:probb',
+     #  'pfDeepCSVJetTags:probc',
+     #  'pfDeepCSVJetTags:probbb',
+     #  'pfDeepCSVJetTags:probcc',
+     #]
   )
 
   process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
-                                     process.pfImpactParameterTagInfosUpdatedJEC *
-                                     process.pfSecondaryVertexTagInfosUpdatedJEC *
-                                     process.pfCombinedSecondaryVertexV2BJetTagsUpdatedJEC *
-                                     process.patJetCorrFactorsTransientCorrectedUpdatedJEC *
-                                     process.pfInclusiveSecondaryVertexFinderTagInfosUpdatedJEC *
-                                     process.pfDeepCSVTagInfosUpdatedJEC *
-                                     process.pfDeepCSVJetTagsUpdatedJEC *
-                                     process.updatedPatJetsTransientCorrectedUpdatedJEC *
+                                     #process.pfImpactParameterTagInfosUpdatedJEC *
+                                     #process.pfSecondaryVertexTagInfosUpdatedJEC *
+                                     #process.pfCombinedSecondaryVertexV2BJetTagsUpdatedJEC *
+                                     #process.patJetCorrFactorsTransientCorrectedUpdatedJEC *
+                                     #process.pfInclusiveSecondaryVertexFinderTagInfosUpdatedJEC *
+                                     #process.pfDeepCSVTagInfosUpdatedJEC *
+                                     #process.pfDeepCSVJetTagsUpdatedJEC *
+                                     #process.updatedPatJetsTransientCorrectedUpdatedJEC *
                                      process.selectedUpdatedPatJetsUpdatedJEC)
 
   #
