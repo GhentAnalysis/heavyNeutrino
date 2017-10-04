@@ -256,8 +256,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
        _ptRel[_nL]   = 0;
    } else {
        //WARNING, these jets currently remain uncorrected!!
-       // auto  l1Jet       = jet->correctedP4("L1FastJet"); // can't get this to work, annoying, please correct when you can solve it
-       auto  l1Jet       = jet.p4();
+       auto  l1Jet       = jet.correctedP4("L1FastJet");
        float JEC         = jet.p4().E()/l1Jet.E();
        auto  l           = lepton.p4();
        auto  lepAwareJet = (l1Jet - l)*JEC + l;
