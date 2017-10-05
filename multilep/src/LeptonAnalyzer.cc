@@ -218,7 +218,8 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
   TLorentzVector eleV;
   eleV.SetPtEtaPhiE(ele.pt(), ele.eta(), ele.phi(), ele.energy());
   for(unsigned m = 0; m < _nMu; ++m){
-    if(_lHNLoose[m]){
+      
+    if(_lPOGLoose[m]){                   // changed from HNL loose
       TLorentzVector muV;
       muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
       if(eleV.DeltaR(muV) < 0.05) return true;
