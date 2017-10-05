@@ -56,9 +56,6 @@ class LeptonAnalyzer {
     double _3dIPSig[nL_max];
     float _lElectronMva[nL_max];
     bool _lElectronPassEmu[nL_max];
-    bool _lHNLoose[nL_max];                                                                          //lepton selection decisions
-    bool _lHNFO[nL_max];
-    bool _lHNTight[nL_max];
     bool _lPOGVeto[nL_max];
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
