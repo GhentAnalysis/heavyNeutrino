@@ -15,7 +15,7 @@ cmsrel CMSSW_9_2_4 #Warning: CMSSW_9_2_3 and lower will not work due to bug in p
 cd CMSSW_9_2_4/src
 cmsenv
 git cms-init
-git clone https://github.com/GhentAnalysis/heavyNeutrino/tree/CMSSW_9_2_X
+git clone -b CMSSW_9_2_X https://github.com/GhentAnalysis/heavyNeutrino
 cd heavyNeutrino
 ./setup.sh
 ```
