@@ -92,7 +92,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _relIso[_nL]  = getRelIso03(mu, *rho);
     _miniIso[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
     _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
-    _number_inner_hits[_nL]=mu.globalTrack()->hitPattern().numberOfValidMuonHits() ;
+    _numberInnerHits[_nL]=mu.globalTrack()->hitPattern().numberOfValidMuonHits() ;
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     _lPOGMedium[_nL] = mu.isMediumMuon();
@@ -118,7 +118,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(*ele)) continue; // check the loooong name
     if(eleMuOverlap(ele))  continue;          // overlap muon-electron deltaR  ==  0.05
     
-    _number_inner_hits[_nL]=ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+    _numberInnerHits[_nL]=ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     fillLeptonImpactParameters(*ele, primaryVertex);
     //if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
