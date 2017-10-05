@@ -27,7 +27,7 @@ for i in range(1,len(sys.argv)):
     elif "events"          in sys.argv[i]: nEvents         = int(getVal(sys.argv[i]))
 
 
-is9X = os.environ['CMSSW_BASE'].count('CMSSW_9')
+is9X = "Run2017" in inputFile or "17MiniAOD" in inputFile
 
 process = cms.Process("BlackJackAndHookers")
 
