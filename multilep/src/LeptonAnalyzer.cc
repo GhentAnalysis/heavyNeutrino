@@ -109,13 +109,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
     if(_nL == nL_max)            break;
     if(ele->gsfTrack().isNull()) continue;
-    if(ele->pt() < 10)           continue;
+    if(ele->pt() < 5)           continue; // from 10 to 5
     if(fabs(ele->eta()) > 2.5)   continue;
     if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
     if(!ele->passConversionVeto()) continue;
     fillLeptonImpactParameters(*ele, primaryVertex);
-    if(fabs(_dxy[_nL]) > 0.05) continue;
-    if(fabs(_dz[_nL]) > 0.1) continue;
+    //if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
+    // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
     fillLeptonKinVars(*ele);
     fillLeptonGenVars(ele->genParticle());
     fillLeptonJetVariables(*ele, jets, primaryVertex);
@@ -127,11 +127,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);
-    _lHNLoose[_nL]     = isHNLoose(*ele);
-    _lHNFO[_nL]        = isHNFO(*ele);
-    _lHNTight[_nL]     = isHNTight(*ele);
+   
+   
     _lPOGVeto[_nL]     = (*electronsCutBasedVeto)[electronRef];
-    _lPOGLoose[_nL]    = (*electronsCutBasedLoose)[electronRef];
+    _lPOGLoose[_nL]    = (*electronsCutBasedLoose)[electronRef]; // cut-based cuts
     _lPOGMedium[_nL]   = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
     _leptonMva[_nL]    = leptonMvaVal(*ele);
