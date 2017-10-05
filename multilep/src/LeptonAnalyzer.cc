@@ -76,11 +76,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   //loop over muons
   for(const pat::Muon& mu : *muons){
     if(_nL == nL_max)            continue;
-    if(mu.innerTrack().isNull()) continue;
+   // ===>  if(mu.innerTrack().isNull()) continue;
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
-    if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
+    // ===>  if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
    // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
    // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
