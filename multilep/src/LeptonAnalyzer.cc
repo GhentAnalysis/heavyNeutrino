@@ -108,14 +108,17 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
     auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
     if(_nL == nL_max)            break;
-    if(ele->gsfTrack().isNull()) continue;
+    //if(ele->gsfTrack().isNull()) continue; // no track requirement
     if(ele->pt() < 6)           continue; // from 10 to 6
     if(fabs(ele->eta()) > 2.5)   continue;
     // ---->  loose requirements about number of hits and VetoConversion
     //if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
     //if(!ele->passConversionVeto()) continue;
-   
+    
+    if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(*ele)) continue; // check the loooong name
     if(eleMuOverlap(ele))  continue;          // overlap muon-electron deltaR  ==  0.05
+    
+    
     fillLeptonImpactParameters(*ele, primaryVertex);
     //if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
