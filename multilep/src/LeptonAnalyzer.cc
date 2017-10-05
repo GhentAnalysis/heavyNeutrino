@@ -86,6 +86,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
    // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
+    fillLeptonIsoVars(mu, *rho);	  
     fillLeptonJetVariables(mu, jets, primaryVertex);
     _lFlavor[_nL] = 1;
     //Isolation variables
@@ -122,6 +123,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] =-1;
     fillLeptonImpactParameters(*ele, primaryVertex);
+    fillLeptonIsoVars(*ele, *rho);	  
+
     //if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
     fillLeptonKinVars(*ele);
