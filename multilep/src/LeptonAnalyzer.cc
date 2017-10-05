@@ -77,13 +77,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   for(const pat::Muon& mu : *muons){
     if(_nL == nL_max)            continue;
     if(mu.innerTrack().isNull()) continue;
-    if(mu.pt() < 5)              continue;
+    if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
-    if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue;
+    if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
-    if(fabs(_dxy[_nL]) > 0.05) continue;
-    if(fabs(_dz[_nL]) > 0.1) continue;
+   // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
+   // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
     fillLeptonJetVariables(mu, jets, primaryVertex);
@@ -93,9 +93,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _miniIso[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
     _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
-    _lHNLoose[_nL]   = isHNLoose(mu);
-    _lHNFO[_nL]      = isHNFO(mu);    // don't change order, they rely on above variables
-    _lHNTight[_nL]   = isHNTight(mu);
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     _lPOGMedium[_nL] = mu.isMediumMuon();
