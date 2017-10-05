@@ -179,6 +179,32 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
   _lCharge[_nL] = lepton.charge();
 }
 
+void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
+  _puCorr[_nL] = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
+	_absIso03 [_nL] = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - puCorr);
+  _absIso04 [_nL] = mu.pfIsolationR04().sumChargedHadronPt + std::max(0., mu.pfIsolationR04().sumNeutralHadronEt + mu.pfIsolationR04().sumPhotonEt - puCorr);
+  _sumNeutralHadronEt04 [_nL] = mu.pfIsolationR04().sumNeutralHadronEt;
+  _sumChargedHadronPt04 [_nL] = mu.pfIsolationR04().sumChargedHadronPt;
+  _sumPhotonEt04[_nL]   = mu.pfIsolationR04().sumPhotonEt ;
+  _sumNeutralHadronEt03 [_nL] = mu.pfIsolationR03().sumNeutralHadronEt;
+  _sumChargedHadronPt03 [_nL] = mu.pfIsolationR03().sumChargedHadronPt;
+  _sumPhotonEt03[_nL]   = mu.pfIsolationR03().sumPhotonEt ;
+
+}
+
+
+void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rho){
+  _puCorr[_nL] = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
+	_absIso03 [_nL] = ele.pfIsolationR03().sumChargedHadronPt + std::max(0., ele.pfIsolationR03().sumNeutralHadronEt + ele.pfIsolationR03().sumPhotonEt - puCorr);
+  _absIso04 [_nL] = ele.pfIsolationR04().sumChargedHadronPt + std::max(0., ele.pfIsolationR04().sumNeutralHadronEt + ele.pfIsolationR04().sumPhotonEt - puCorr);
+  _sumNeutralHadronEt04 [_nL] = ele.pfIsolationR04().sumNeutralHadronEt;
+  _sumChargedHadronPt04 [_nL] = ele.pfIsolationR04().sumChargedHadronPt;
+  _sumPhotonEt04[_nL]   = ele.pfIsolationR04().sumPhotonEt ;
+  _sumNeutralHadronEt03 [_nL] = ele.pfIsolationR03().sumNeutralHadronEt;
+  _sumChargedHadronPt03 [_nL] = ele.pfIsolationR03().sumChargedHadronPt;
+  _sumPhotonEt03[_nL]   = ele.pfIsolationR03().sumPhotonEt ;
+}
+
 void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
   if(genParticle != nullptr){
      _lIsPrompt[_nL] = (genParticle)->isPromptFinalState();
