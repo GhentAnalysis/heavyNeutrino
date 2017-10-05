@@ -12,6 +12,9 @@ git cms-init
 git clone https://github.com/GhentAnalysis/heavyNeutrino
 cd heavyNeutrino
 ./setup.sh
+
+--> our branch:
+git checkout displaced
 ```
 
 # Running a test job
