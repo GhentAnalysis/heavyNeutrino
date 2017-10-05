@@ -26,7 +26,7 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerh
   if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.298   : 0.101  ))       return false;
   if(eInvMinusPInv                                 >= (ele->isEB() ? 0.241   : 0.14   ))       return false;
   //if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) >  1)    return false;
-  if(not ele->passConversionVeto())                                                            return false;
+  //if(not ele->passConversionVeto())                                                            return false;
   return true;
 }
   
