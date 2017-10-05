@@ -105,7 +105,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   photonsFull5x5SigmaIEtaIPhi   = cms.InputTag("photonIDValueMapProducer:phoFull5x5SigmaIEtaIPhi"),
   taus                          = cms.InputTag("slimmedTaus"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
-  rhoAll                        = cms.InputTag("fixedGridRhoFastjetAll"),
+  rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
   jets                          = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
   jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
@@ -125,12 +125,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
   data2017 = "Run2017" in inputFile
-  JSON = ""
-  if data2017:
-      JSON = "Cert_294927-302663_13TeV_PromptReco_Collisions17_JSON.txt"
-  else:
-      JSON = "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
-  JSON = "../data/JSON/" + JSON
+  if data2017: JSON = "../data/JSON/Cert_294927-302663_13TeV_PromptReco_Collisions17_JSON.txt"
+  else:        JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
   process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
 
 
