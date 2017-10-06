@@ -14,6 +14,8 @@
 //include other parts of the framework
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
+#include "heavyNeutrino/multilep/interface/LeptonIdHelper.h"
+
 //include ROOT classes
 #include "TTree.h"
 
@@ -24,6 +26,8 @@
 class multilep;
 
 class LeptonAnalyzer {
+  //Friend classes and functions
+  friend class LeptonIdHelper;
   private:
     EffectiveAreas electronsEffectiveAreas;
     EffectiveAreas muonsEffectiveAreas;
