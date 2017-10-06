@@ -1,12 +1,26 @@
 #ifndef LeptonIdHelper_H
 #define LeptonIdHelper_H
 
+#include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
+
 //Class designed to compute analysis specific ID decisions and store them
 class LeptonIdHelper{
     public:
-        
+        LeptonIdHelper();
+        LeptonIdHelper(const LeptonAnalyzer& lepAn, const unsigned index, const unsigned flav);
 
+        void setVars(const LeptonAnalyzer& lepAn, const unsigned index, const unsigned flav);
+
+        bool ewkLoose();           //return ewkino ID decisions
+        bool ewkFO();
+        bool ewkTight();
+
+        bool hnlLoose();           //return HNL ID decisions
+        bool hnlFO();
+        bool hnlTight();
     private:
+        unsigned flavor;            //lepton Flavor
+
         double miniIsoCharged;      //isolation variables
         double miniIso;
         double relIso;
@@ -23,5 +37,6 @@ class LeptonIdHelper{
         bool mediumMuon;            //Lepton specific id variables
         double eleMva;
         double eleTrigEmu;
+        bool eleMuOverlap;
 }
 #endif
