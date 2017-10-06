@@ -266,15 +266,15 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     _selectedTrackMult[_nL] = 0;
     for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
       const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-      if(daughter->hasTrackDetails()){
-        const reco::Track& daughterTrack = daughter->pseudoTrack();
+      try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
+        const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
         TLorentzVector trackVec          = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
         double daughterDeltaR            = trackVec.DeltaR(jV);
         bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
                                            && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
                                            && fabs(daughterTrack.dxy(vertex.position())) < 17;
         if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
-      }
+      } catch (...){}
     }
   }
 }

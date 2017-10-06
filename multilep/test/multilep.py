@@ -27,7 +27,7 @@ for i in range(1,len(sys.argv)):
     elif "events"          in sys.argv[i]: nEvents         = int(getVal(sys.argv[i]))
 
 
-is9X = "Run2017" in inputFile or "17MiniAOD" in inputFile
+is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -44,10 +44,10 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is9X: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'    # This is actually for CMSSW_9_2_11 or higher!
-elif is9X:            process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v7' # This is actually for CMSSW_9_2_7 or higher!
-elif isData:          process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
-else:                 process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
+if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'    # This is actually for CMSSW_9_2_11 or higher!
+elif is2017:            process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v7' # This is actually for CMSSW_9_2_7 or higher!
+elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
+else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
 
 #
@@ -128,8 +128,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  if is9X: JSON = "../data/JSON/Cert_294927-302663_13TeV_PromptReco_Collisions17_JSON.txt"
-  else:    JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+  if is2017: JSON = "../data/JSON/Cert_294927-302663_13TeV_PromptReco_Collisions17_JSON.txt"
+  else:      JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
   process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
 
 
