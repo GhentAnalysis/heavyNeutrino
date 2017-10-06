@@ -34,26 +34,40 @@ class LeptonAnalyzer {
     unsigned _nEle;
     unsigned _nLight;
     unsigned _nTau;
+
     double _lPt[nL_max];                                                                             //lepton kinematics
     double _lEta[nL_max];
     double _lEtaSC[nL_max];
     double _lPhi[nL_max];
     double _lE[nL_max];
-    unsigned _lFlavor[nL_max];                                                                       //other lepton variables
+
+    unsigned _lFlavor[nL_max];                                                                       //lepton flavor and charge
     int _lCharge[nL_max];
-    double _relIso[nL_max];
+
+    double _relIso[nL_max];                                                                          //lepton isolation variables
     double _miniIso[nL_max];
-    double _miniIsoCharged[nL_max];                                                                 //Used for lepton MVA calculation, currently not stored in trees
-    double _ptRel[nL_max];                                                                          //variables related to closest Jet
+    double _miniIsoCharged[nL_max];                                                              
+    
+    double _ptRel[nL_max];                                                                           //variables related to closest jet
     double _ptRatio[nL_max];
     double _closestJetCsv[nL_max];
     double _selectedTrackMult[nL_max];
-    double _dxy[nL_max];
+
+    double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];
     double _3dIP[nL_max];
     double _3dIPSig[nL_max];
-    float _lElectronMva[nL_max];
-    bool _lElectronPassEmu[nL_max];
+
+    float _lElectronMva[nL_max];                                                                     //electron specific variables
+    bool _lElectronPassEmu[nL_max];                                                                  
+
+    double _muonSegmentComp[nL_max];                                                                 //electron speficic variables
+    bool _mediumMuon[nL_max];
+
+                                                                                                     //tau specific variables
+
+    double _leptonMva[nL_max];                                                                       //lepton MVA used in ewkino analysis
+
     bool _lHNLoose[nL_max];                                                                          //lepton selection decisions
     bool _lHNFO[nL_max];
     bool _lHNTight[nL_max];
@@ -61,9 +75,10 @@ class LeptonAnalyzer {
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
-    bool _lIsPrompt[nL_max];
+
+    bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
-    double _leptonMva[nL_max];
+
 
 
     multilep* multilepAnalyzer;
@@ -94,18 +109,18 @@ class LeptonAnalyzer {
     bool  passingElectronMvaTightSusy(const pat::Electron*, double);
     bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
   
-    bool  isHNLoose(const pat::Electron& lepton);
+    bool  isHNLoose(const pat::Electron& lepton);                                                     //check HNL id definitions
     bool  isHNLoose(const pat::Muon& lepton);
     bool  isHNFO(const pat::Electron& lepton);
     bool  isHNFO(const pat::Muon& lepton);
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
 
-    double leptonMvaVal(const pat::Muon&);
+    double leptonMvaVal(const pat::Muon&);                                                            //compute ewkino lepton MVA
     double leptonMvaVal(const pat::Electron&);
     
     //for lepton MVA calculation
-    LeptonMvaHelper leptonMvaComputer;
+    LeptonMvaHelper leptonMvaComputer;                                                                 //helper object for lepton MVA computation
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
