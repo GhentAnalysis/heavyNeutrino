@@ -1,4 +1,4 @@
-#include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/LeptonIdHelper.h"
 
 LeptonIdHelper::LeptonIdHelper(const LeptonAnalyzer& lepAn, const unsigned index, const unsigned flav){
     flavor = flav;
@@ -8,9 +8,9 @@ LeptonIdHelper::LeptonIdHelper(const LeptonAnalyzer& lepAn, const unsigned index
     ptRel = lepAn._ptRel[index];
     ptRatio = lepAn._ptRatio[index];
     closestJetCsv = lepAn._closestJetCsv[index];
-    sip3d = _3dIPSix[index];
-    dxy = _dxy[index]
-    dz = _dz[index];
+    sip3d = lepAn._3dIPSig[index];
+    dxy = lepAn._dxy[index];
+    dz = lepAn._dz[index];
     if(flavor == 0){
         eleMva = lepAn._lElectronMva[index];
         eleTrigEmu = lepAn._lElectronPassEmu[index];
