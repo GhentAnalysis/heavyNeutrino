@@ -16,8 +16,6 @@
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
 //include ROOT classes
 #include "TTree.h"
-//include c++ library classes
-#include<memory>                                                                                    //for using std::shared_ptr
 
 
 /*
