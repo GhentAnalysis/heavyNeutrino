@@ -30,9 +30,9 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                 "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",  
                                 "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", 
                                 "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL"};
-  allFlags["passMET"]        = {"HLT_PFMET120_PFMHT120_IDTight", "HLT_PFMET110_PFMHT110_IDTight", "HLT_PFMET170_BeamHaloCleaned",            // To trigger in MET dataset for trigger efficiencies
-                                "HLT_PFMET170_HBHECleaned", "HLT_PFMET170_HBHE_BeamHaloCleaned", "HLT_PFMET170_NotCleaned",
-                                "HLT_MET200","HLT_MET250","HLT_MET300"};
+  allFlags["passMET"]        = {"HLT_MET300","HLT_HT350_MET100","HLT_AllMET300","HLT_AllMET170","HLT_jet","HLT_dijet",                       // To trigger for efficiencies
+                                "HLT_MET170_BeamHaloCleaned","HLT_MET170_BeamHaloCleaned","HLT_MET170_NotCleaned","HLT_HT800",
+                                "HLT_HT900","HLT_dijet55met110","HLT_dijet70met120","HLT_HT600","HLT_HT475","HLT_HT350"};
   allFlags["passTTG_ee"]     = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",                    // TTG e (same as in SUS-17-001)
                                 "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW"};
   allFlags["passTTG_e"]      = {"HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT"};                                           // TTG e
