@@ -2,11 +2,12 @@
 #ifndef Lepton_Mva_Helper
 #define Lepton_Mva_Helper
 
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "TMVA/Reader.h"
 #include <memory>
 class LeptonMvaHelper{
     public:
-        LeptonMvaHelper();
+        LeptonMvaHelper(const edm::ParameterSet& iConfig);
         double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double segComp);
         double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double eleMva);
     private:

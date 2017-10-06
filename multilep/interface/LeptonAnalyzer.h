@@ -107,7 +107,7 @@ class LeptonAnalyzer {
     double leptonMvaVal(const pat::Electron&);
     
     //for lepton MVA calculation
-    LeptonMvaHelper leptonMvaComputer;
+    LeptonMvaHelper* leptonMvaComputer;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

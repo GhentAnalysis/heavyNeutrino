@@ -150,7 +150,7 @@ bool LeptonAnalyzer::isHNTight(const pat::Muon& lepton){
 }
 
 double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon){
-    return leptonMvaComputer.leptonMvaMuon(_lPt[_nL],
+    return leptonMvaComputer->leptonMvaMuon(_lPt[_nL],
             _lEta[_nL],
             _selectedTrackMult[_nL],
             _miniIsoCharged[_nL],
@@ -166,7 +166,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon){
 }
 
 double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron){
-    return leptonMvaComputer.leptonMvaMuon(_lPt[_nL],
+    return leptonMvaComputer->leptonMvaMuon(_lPt[_nL],
             _lEta[_nL],
             _selectedTrackMult[_nL],
             _miniIsoCharged[_nL],

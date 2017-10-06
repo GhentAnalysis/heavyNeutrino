@@ -7,7 +7,9 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
   electronsEffectiveAreas((iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath()),
   muonsEffectiveAreas(    (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
   multilepAnalyzer(multilepAnalyzer)
-{};
+{
+  leptonMvaComputer = new LeptonMvaHelper(iConfig);
+};
 
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
