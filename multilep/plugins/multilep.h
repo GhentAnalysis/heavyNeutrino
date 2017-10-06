@@ -82,7 +82,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     edm::EDGetTokenT<edm::ValueMap<float>>              photonPhotonIsolationToken;
     edm::EDGetTokenT<edm::ValueMap<float>>              photonFull5x5SigmaIEtaIPhiToken;
     edm::EDGetTokenT<std::vector<pat::PackedCandidate>> packedCandidatesToken;                       //particle collection used to calculate isolation variables
-    edm::EDGetTokenT<double>                            rhoTokenAll;                                 //energy density used for JEC
+    edm::EDGetTokenT<double>                            rhoToken;
     edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
     edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
     edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
