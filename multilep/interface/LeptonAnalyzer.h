@@ -19,6 +19,9 @@
 //include ROOT classes
 #include "TTree.h"
 
+//include c++ library classes
+#include <memory>                                                                                   //for std::shared_ptr
+
 
 /*
  * Functions for electron identification
@@ -124,7 +127,7 @@ class LeptonAnalyzer {
     double leptonMvaVal(const pat::Electron&);
     
     //for lepton MVA calculation
-    LeptonMvaHelper* leptonMvaComputer;
+    std::shared_ptr<LeptonMvaHelper> leptonMvaComputer;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

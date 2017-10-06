@@ -8,7 +8,7 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
   muonsEffectiveAreas(    (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
   multilepAnalyzer(multilepAnalyzer)
 {
-  leptonMvaComputer = new LeptonMvaHelper(iConfig);
+  leptonMvaComputer = std::make_shared<LeptonMvaHelper>(iConfig);
 };
 
 
