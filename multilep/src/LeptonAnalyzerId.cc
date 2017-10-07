@@ -97,8 +97,8 @@ bool LeptonAnalyzer::passingElectronMvaTightSusy(const pat::Electron* ele, doubl
  */
 bool LeptonAnalyzer::passingElectronMvaHeavyNeutrinoFO(const pat::Electron* ele, double mvaValue){
   if(ele->pt() < 10)                 return false; 
-  if(fabs(ele->eta()) < 0.8)         return mvaValue > slidingCut(ele->pt(), -0.02, -0.52);
-  else                               return mvaValue > slidingCut(ele->pt(), -0.02, -0.52);
+  if(fabs(ele->eta()) < 0.8)         return mvaValue > -0.02;
+  else                               return mvaValue > -0.52;
 }
 
 
