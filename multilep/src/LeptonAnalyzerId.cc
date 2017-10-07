@@ -206,6 +206,13 @@ bool LeptonAnalyzer::isEwkLoose(const pat::Electron& lep){
     return passingElectronMvaLooseSusy(&lep, _lElectronMva[_nL], _lElectronMvaHZZ[_nL]);
 }
 
+bool LeptonAnalyzer::isEwkLoose(const pat::Tau& tau){
+    if( _lPt[_nL] < 20 || fabs(_lEta[_nL]) > 2.3) return false;
+    if(!_lPOGVeto[_nL]) return false;
+    if(!_tauEleVeto[_nL]) return false;
+    return tauLightOverlap(tau, _lEwkLoose);
+}
+
 bool LeptonAnalyzer::isEwkFO(const pat::Muon& lep){
     if(!_lEwkLoose[_nL]) return false;
     if(_lPt[_nL] < 10) return false;
@@ -226,6 +233,10 @@ bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep){
     return _leptonMva[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMva[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
 }
 
+bool LeptonAnalyzer::isEwkFO(const pat::Tau& tau){
+    return _lEwkLoose[_nL];
+}
+
 bool LeptonAnalyzer::isEwkTight(const pat::Muon& lep){
     if(!_lEwkFO[_nL]) return false;
     return _leptonMva[_nL] > -0.2;
@@ -236,5 +247,9 @@ bool LeptonAnalyzer::isEwkTight(const pat::Electron& lep){
     if(!passTriggerEmulationDoubleEG(&lep)) return false;
     if(!lep.passConversionVeto()) return false;
     return _leptonMva[_nL] > 0.5;
+}
+
+bool LeptonAnalyzer::isEwkTight(const pat::Tau& tau){
+    return _lEwkFO[_nL] && _lPOGTight[_nL];
 }
 
