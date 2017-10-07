@@ -26,7 +26,7 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron
   if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.298   : 0.101  ))       return false;
   if(eInvMinusPInv                                 >= (ele->isEB() ? 0.241   : 0.14   ))       return false;
   if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) >  1)    return false;
-  if(not ele->passConversionVeto())                                                            return false;
+  if(!ele->passConversionVeto())                                                            return false;
   return true;
 }
 
@@ -46,14 +46,14 @@ bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron
 
 // Trigger emulation for single electron triggers is available in VID
 // Trigger emulation for double electron triggers with CaloIdL_TrackIdL_IsoVL:
-bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele){    
+bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele, const bool hOverE){    
   float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
   if(ele->full5x5_sigmaIetaIeta()                >= (ele->isEB() ? 0.011 : 0.030)) return false;
   if(fabs(ele->deltaPhiSuperClusterTrackAtVtx()) >= (ele->isEB() ? 0.04  : 0.07))  return false;
   if(fabs(ele->deltaEtaSuperClusterTrackAtVtx()) >= (ele->isEB() ? 0.01  : 0.008)) return false;
-  if(ele->hadronicOverEm()                       >= (ele->isEB() ? 0.10  : 0.07))  return false;
   if(eInvMinusPInv                               <= -0.05)                         return false;
   if(eInvMinusPInv                               >= (ele->isEB() ? 0.01  : 0.005)) return false;
+  if(hOverE && (ele->hadronicOverEm()                       >= (ele->isEB() ? 0.10  : 0.07) ) )  return false;//Need to be able to check trigEmy without this cut for ewkino
   return true;
 }
 
@@ -99,6 +99,15 @@ bool LeptonAnalyzer::passingElectronMvaHeavyNeutrinoFO(const pat::Electron* ele,
   if(ele->pt() < 10)                 return false; 
   if(fabs(ele->eta()) < 0.8)         return mvaValue > -0.02;
   else                               return mvaValue > -0.52;
+}
+
+/*
+ * Ewkino FO tune
+ */
+bool LeptonAnalyzer::passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue){
+    if(ele->pt() < 10)               return false;
+    if(fabs(ele->eta()) < 1.479)     return mvaValue > 0.0;
+    else                             return mvaValue > 0.3;
 }
 
 
@@ -190,6 +199,35 @@ template<typename lepton> bool LeptonAnalyzer::isEwkLoose(const lepton& lep){
     } else if(lep.isElectron()){
         if(_lPt[_nL] < 7 || fabs(_lEta[_nL]) > 2.5) return false;
         if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1) return false;
-        return passingElectronMvaLooseSusy(lep, _lElectronMva[_nL], _lElectronMvaHZZ[_nL]);
+        return passingElectronMvaLooseSusy(&lep, _lElectronMva[_nL], _lElectronMvaHZZ[_nL]);
     }
+}
+
+template<typename lepton> bool LeptonAnalyzer::isEwkFO(const lepton& lep){
+    if(!_lEwkLoose[_nL]) return false;
+    if(_lPt[_nL] < 10) return false;
+    if(lep.isMuon()){
+        if(!lep.isMediumMuon()) return false;
+        return _leptonMva[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
+    } else if(lep.isElectron()){
+        if(passTriggerEmulationDoubleEG(lep, false)) return false;
+        if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) !=0) return false;
+        double ptCone = _lPt[_nL];
+        if(_leptonMva[_nL] < 0.5){
+            ptCone *= 0.85/_ptRatio[_nL];
+        }
+        if(ptCone > 30 && lep.hadronicOverEm() < (lep.isEB() ? 0.10  : 0.07) ) return false;
+        return _leptonMva[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMva[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
+    }
+}
+
+template<typename lepton> bool LeptonAnalyzer::isEwkTight(const lepton& lep){
+    if(!_lEwkFO[_nL]) return false;
+    if(lep.isMuon){
+        return _leptonMva[_nL] > -0.2;
+    } else if(lep.isElectron()){
+        if(!passTriggerEmulationDoubleEG(lep)) return false;
+        if(!lep.passConversionVeto()) return false;
+        return _leptonMva[_nL] > 0.5;
+    }        
 }

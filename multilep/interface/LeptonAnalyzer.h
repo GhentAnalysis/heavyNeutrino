@@ -68,6 +68,7 @@ class LeptonAnalyzer {
     float _lElectronMva[nL_max];                                                                     //electron specific variables
     float _lElectronMvaHZZ[nL_max];
     bool _lElectronPassEmu[nL_max];                                                                  
+    unsigned _lElectronMissingHits[nL_max];
 
     double _muonSegmentComp[nL_max];                                                                 //electron speficic variables
     bool _mediumMuon[nL_max];
@@ -112,13 +113,14 @@ class LeptonAnalyzer {
     float dEtaInSeed(const pat::Electron*);
     bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
     bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool  passTriggerEmulationDoubleEG(const pat::Electron*);
+    bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true);               //For ewkino id it needs to be possible to check hOverE separately
     float slidingCut(float, float, float);
     bool  passingElectronMvaHZZ(const pat::Electron*, double);
     bool  passingElectronMvaLooseSusy(const pat::Electron*, double, double);
     bool  passingElectronMvaMediumSusy(const pat::Electron*, double);
     bool  passingElectronMvaTightSusy(const pat::Electron*, double);
     bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
+    bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue);
   
     bool  isHNLoose(const pat::Electron& lepton);                                                     //check HNL id definitions
     bool  isHNLoose(const pat::Muon& lepton);
@@ -127,7 +129,9 @@ class LeptonAnalyzer {
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
     
-    template<typename lepton> bool isEwkLoose(const lepton& lep);
+    template<typename lepton> bool isEwkLoose(const lepton&);
+    template<typename lepton> bool isEwkFO(const lepton&);
+    template<typename lepton> bool isEwkTight(const lepton&);
 
     double leptonMvaVal(const pat::Muon&);                                                            //compute ewkino lepton MVA
     double leptonMvaVal(const pat::Electron&);
