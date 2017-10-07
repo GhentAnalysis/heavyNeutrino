@@ -194,6 +194,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _tauTightMvaNew[_nL] = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
     _tauVTightMvaNew[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
 
+    _lEwkLoose[_nL] = isEwkLoose(tau);
+    _lEwkFO[_nL]    = isEwkFO(tau);
+    _lEwkTight[_nL] = isEwkTight(tau);
     ++_nTau;
     ++_nL;
   }
