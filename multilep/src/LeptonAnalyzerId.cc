@@ -126,7 +126,7 @@ bool LeptonAnalyzer::isHNLoose(const pat::Electron& lepton){
   if(_relIso[_nL] > 0.6)                                                                     return false;
   if(lepton.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1) return false;
   if(not lepton.passConversionVeto())                                                        return false;
-  if(eleMuOverlap(lepton))                                                                   return false; // Always run electrons after muons because of this
+  if(eleMuOverlap(lepton, _lHNLoose))                                                        return false; // Always run electrons after muons because of this
   return (lepton.pt() > 10);
 }
 
@@ -202,6 +202,7 @@ bool LeptonAnalyzer::isEwkLoose(const pat::Electron& lep){
     if(_miniIso[_nL] > 0.4) return false;
     if(_lPt[_nL] < 7 || fabs(_lEta[_nL]) > 2.5) return false;
     if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1) return false;
+    if(eleMuOverlap(lep, _lEwkLoose)) return false;
     return passingElectronMvaLooseSusy(&lep, _lElectronMva[_nL], _lElectronMvaHZZ[_nL]);
 }
 

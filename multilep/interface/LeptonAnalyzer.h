@@ -70,7 +70,7 @@ class LeptonAnalyzer {
     bool _lElectronPassEmu[nL_max];                                                                  
     unsigned _lElectronMissingHits[nL_max];
 
-    double _muonSegmentComp[nL_max];                                                                 //muon speficic variables
+    double _muonSegComp[nL_max];                                                                 //muon speficic variables
 
                                                                                                      //tau specific variables
 
