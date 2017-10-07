@@ -47,10 +47,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lEwkTight",                    &_lEwkTight,                    "_lEwkTight[_nL]/O");
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
+  outputTree->Branch("_miniIsoCharged",               &_miniIsoCharged,               "_miniIsoCharged[_nLight]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
   outputTree->Branch("_closestJetCsv",                &_closestJetCsv,                "_closestJetCsv[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/D");
+  outputTree->Branch("_muonSegComp",                  &_muonSegComp,                  "_muonSegComp[_nMu]/O");
   if(!multilepAnalyzer->isData){
     outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/D");
     outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/D");
