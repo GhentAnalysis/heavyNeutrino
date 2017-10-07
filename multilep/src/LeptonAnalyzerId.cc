@@ -180,3 +180,16 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron){
             _lElectronMva[_nL]
             );
 }
+
+template<typename lepton> bool LeptonAnalyzer::isEwkLoose(const lepton& lep){
+    if(fabs(_dxy[_nL]) > 0.05 || fabs(_dz[_nL]) > 0.1 || _3dIPSig[_nL] > 4) return false;
+    if(_miniIso[_nL] > 0.4) return false;
+    if(lep.isMuon()){
+        if(_lPt[_nL] < 5 || fabs(_lEta[_nL]) > 2.4) return false;
+        return lep.isLooseMuon();
+    } else if(lep.isElectron()){
+        if(_lPt[_nL] < 7 || fabs(_lEta[_nL]) > 2.5) return false;
+        if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1) return false;
+        return passingElectronMvaLooseSusy(lep, _lElectronMva[_nL], _lElectronMvaHZZ[_nL]);
+    }
+}

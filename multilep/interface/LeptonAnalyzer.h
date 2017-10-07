@@ -66,6 +66,7 @@ class LeptonAnalyzer {
     double _3dIPSig[nL_max];
 
     float _lElectronMva[nL_max];                                                                     //electron specific variables
+    float _lElectronMvaHZZ[nL_max];
     bool _lElectronPassEmu[nL_max];                                                                  
 
     double _muonSegmentComp[nL_max];                                                                 //electron speficic variables
@@ -75,9 +76,12 @@ class LeptonAnalyzer {
 
     double _leptonMva[nL_max];                                                                       //lepton MVA used in ewkino analysis
 
-    bool _lHNLoose[nL_max];                                                                          //lepton selection decisions
+    bool _lHNLoose[nL_max];                                                                          //analysis specific lepton selection decisions
     bool _lHNFO[nL_max];
     bool _lHNTight[nL_max];
+    bool _lEwkLoose[nL_max];
+    bool _lEwkFO[nL_max];
+    bool _lEwkTight[nL_max];
     bool _lPOGVeto[nL_max];
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
@@ -122,6 +126,8 @@ class LeptonAnalyzer {
     bool  isHNFO(const pat::Muon& lepton);
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
+    
+    template<typename lepton> bool isEwkLoose(const lepton& lep);
 
     double leptonMvaVal(const pat::Muon&);                                                            //compute ewkino lepton MVA
     double leptonMvaVal(const pat::Electron&);
