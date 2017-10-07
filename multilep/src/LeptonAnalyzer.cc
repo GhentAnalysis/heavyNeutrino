@@ -232,11 +232,11 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
 }
 
 //Check if electron overlaps with loose muon
-bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele){
+bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
   TLorentzVector eleV;
   eleV.SetPtEtaPhiE(ele.pt(), ele.eta(), ele.phi(), ele.energy());
   for(unsigned m = 0; m < _nMu; ++m){
-    if(_lHNLoose[m]){
+    if(loose[m]){
       TLorentzVector muV;
       muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
       if(eleV.DeltaR(muV) < 0.05) return true;

@@ -70,8 +70,7 @@ class LeptonAnalyzer {
     bool _lElectronPassEmu[nL_max];                                                                  
     unsigned _lElectronMissingHits[nL_max];
 
-    double _muonSegmentComp[nL_max];                                                                 //electron speficic variables
-    bool _mediumMuon[nL_max];
+    double _muonSegmentComp[nL_max];                                                                 //muon speficic variables
 
                                                                                                      //tau specific variables
 
@@ -101,7 +100,7 @@ class LeptonAnalyzer {
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&);  
-    bool eleMuOverlap(const pat::Electron& ele);
+    bool eleMuOverlap(const pat::Electron& ele, const bool* loose);
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
 
     // In leptonAnalyzerIso,cc
