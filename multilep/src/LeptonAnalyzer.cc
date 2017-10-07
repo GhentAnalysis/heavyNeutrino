@@ -163,6 +163,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(_nL == nL_max)         continue;
     if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
     if(fabs(tau.eta()) > 2.3) continue;
+    if(!tau.tauID("decayModeFinding") continue;
     fillLeptonKinVars(tau);
     fillLeptonGenVars(tau.genParticle());
     fillLeptonImpactParameters(tau, primaryVertex);
@@ -244,6 +245,20 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
     }
   }
   return false;
+}
+
+//Check if tau overlaps with light lepton
+bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose){
+    TLorentzVector tauV;
+    tauV.SetPtEtaPhiE(tau.pt(), tau.eta(), tau.phi(), tau.energy());
+    for(unsigned l = 0; l < _nLight; ++l){
+        if(loose[l]){
+            TLorentzVector lightV;
+            lightV.SetPtEtaPhiE(_lPt[l], _lEta[l], _lPhi[l], _lE[l]);
+            if(tauV.DeltaR(lightV) < 0.4) return true;
+        }
+    }
+    return false;
 }
 
 
