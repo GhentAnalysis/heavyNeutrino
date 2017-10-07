@@ -18,7 +18,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/b");
   outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/b");
   outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
-
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
   outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
   outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
@@ -32,15 +31,20 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_3dIPSig",                      &_3dIPSig,                      "_3dIPSig[_nL]/D");
   outputTree->Branch("_lElectronMva",                 &_lElectronMva,                 "_lElectronMva[_nLight]/F");
   outputTree->Branch("_lElectronPassEmu",             &_lElectronPassEmu,             "_lElectronPassEmu[_nLight]/O");
+  outputTree->Branch("_leptonMva",                    &_leptonMva,                    "_leptonMva[_nL]/O");
   outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nL]/O");
   outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nL]/O");
   outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nL]/O");
+  outputTree->Branch("_lEwkLoose",                    &_lEwkLoose,                    "_lEwkLoose[_nL]/O");
+  outputTree->Branch("_lEwkFO",                       &_lEwkFO,                       "_lEwkFO[_nL]/O");
+  outputTree->Branch("_lEwkTight",                    &_lEwkTight,                    "_lEwkTight[_nL]/O");
   outputTree->Branch("_lPOGVeto",                     &_lPOGVeto,                     "_lPOGVeto[_nL]/O");
   outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
-  outputTree->Branch("_leptonMva",                    &_leptonMva,                    "_leptonMva[_nL]/O");
-
+  outputTree->Branch("_lEwkLoose",                    &_lEwkLoose,                    "_lEwkLoose[_nL]/O");
+  outputTree->Branch("_lEwkFO",                       &_lEwkFO,                       "_lEwkFO[_nL]/O");
+  outputTree->Branch("_lEwkTight",                    &_lEwkTight,                    "_lEwkTight[_nL]/O");
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
@@ -101,6 +105,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGMedium[_nL]     = mu.isMediumMuon();
     _lPOGTight[_nL]      = mu.isTightMuon(primaryVertex);
     _leptonMva[_nL]      = leptonMvaVal(mu);
+    _lEwkLoose[_nL]      = isEwkLoose(mu);
+    _lEwkFO[_nL]         = isEwkFO(mu);
+    _lEwkTight[_nL]      = isEwkTight(mu);
 
     ++_nMu;
     ++_nL;
@@ -140,6 +147,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGMedium[_nL]       = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]        = (*electronsCutBasedTight)[electronRef];
     _leptonMva[_nL]        = leptonMvaVal(*ele);
+    _lEwkLoose[_nL]        = isEwkLoose(*ele);
+    _lEwkFO[_nL]           = isEwkFO(*ele);
+    _lEwkTight[_nL]        = isEwkTight(*ele);
 
     ++_nEle;
     ++_nL;
@@ -280,4 +290,3 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     }
   }
 }
-
