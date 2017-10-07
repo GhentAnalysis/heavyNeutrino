@@ -190,44 +190,50 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron){
             );
 }
 
-template<typename lepton> bool LeptonAnalyzer::isEwkLoose(const lepton& lep){
+bool LeptonAnalyzer::isEwkLoose(const pat::Muon& lep){
+     if(fabs(_dxy[_nL]) > 0.05 || fabs(_dz[_nL]) > 0.1 || _3dIPSig[_nL] > 4) return false;
+     if(_miniIso[_nL] > 0.4) return false;
+     if(_lPt[_nL] < 5 || fabs(_lEta[_nL]) > 2.4) return false;
+     return lep.isLooseMuon();
+}
+
+bool LeptonAnalyzer::isEwkLoose(const pat::Electron& lep){
     if(fabs(_dxy[_nL]) > 0.05 || fabs(_dz[_nL]) > 0.1 || _3dIPSig[_nL] > 4) return false;
     if(_miniIso[_nL] > 0.4) return false;
-    if(lep.isMuon()){
-        if(_lPt[_nL] < 5 || fabs(_lEta[_nL]) > 2.4) return false;
-        return lep.isLooseMuon();
-    } else if(lep.isElectron()){
-        if(_lPt[_nL] < 7 || fabs(_lEta[_nL]) > 2.5) return false;
-        if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1) return false;
-        return passingElectronMvaLooseSusy(&lep, _lElectronMva[_nL], _lElectronMvaHZZ[_nL]);
-    }
+    if(_lPt[_nL] < 7 || fabs(_lEta[_nL]) > 2.5) return false;
+    if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1) return false;
+    return passingElectronMvaLooseSusy(&lep, _lElectronMva[_nL], _lElectronMvaHZZ[_nL]);
 }
 
-template<typename lepton> bool LeptonAnalyzer::isEwkFO(const lepton& lep){
+bool LeptonAnalyzer::isEwkFO(const pat::Muon& lep){
     if(!_lEwkLoose[_nL]) return false;
     if(_lPt[_nL] < 10) return false;
-    if(lep.isMuon()){
-        if(!lep.isMediumMuon()) return false;
-        return _leptonMva[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
-    } else if(lep.isElectron()){
-        if(passTriggerEmulationDoubleEG(lep, false)) return false;
-        if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) !=0) return false;
-        double ptCone = _lPt[_nL];
-        if(_leptonMva[_nL] < 0.5){
-            ptCone *= 0.85/_ptRatio[_nL];
-        }
-        if(ptCone > 30 && lep.hadronicOverEm() < (lep.isEB() ? 0.10  : 0.07) ) return false;
-        return _leptonMva[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMva[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
-    }
+    if(!lep.isMediumMuon()) return false;
+    return _leptonMva[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
 }
 
-template<typename lepton> bool LeptonAnalyzer::isEwkTight(const lepton& lep){
-    if(!_lEwkFO[_nL]) return false;
-    if(lep.isMuon){
-        return _leptonMva[_nL] > -0.2;
-    } else if(lep.isElectron()){
-        if(!passTriggerEmulationDoubleEG(lep)) return false;
-        if(!lep.passConversionVeto()) return false;
-        return _leptonMva[_nL] > 0.5;
-    }        
+bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep){
+    if(!_lEwkLoose[_nL]) return false;
+    if(_lPt[_nL] < 10) return false;
+    if(passTriggerEmulationDoubleEG(&lep, false)) return false;
+    if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) !=0) return false;
+    double ptCone = _lPt[_nL];
+    if(_leptonMva[_nL] < 0.5){
+        ptCone *= 0.85/_ptRatio[_nL];
+    }
+    if(ptCone > 30 && lep.hadronicOverEm() < (lep.isEB() ? 0.10  : 0.07) ) return false;
+    return _leptonMva[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMva[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
 }
+
+bool LeptonAnalyzer::isEwkTight(const pat::Muon& lep){
+    if(!_lEwkFO[_nL]) return false;
+    return _leptonMva[_nL] > -0.2;
+}
+
+bool LeptonAnalyzer::isEwkTight(const pat::Electron& lep){
+    if(!_lEwkFO[_nL]) return false;
+    if(!passTriggerEmulationDoubleEG(&lep)) return false;
+    if(!lep.passConversionVeto()) return false;
+    return _leptonMva[_nL] > 0.5;
+}
+

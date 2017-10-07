@@ -129,9 +129,12 @@ class LeptonAnalyzer {
     bool  isHNTight(const pat::Electron& lepton);
     bool  isHNTight(const pat::Muon& lepton);
     
-    template<typename lepton> bool isEwkLoose(const lepton&);
-    template<typename lepton> bool isEwkFO(const lepton&);
-    template<typename lepton> bool isEwkTight(const lepton&);
+    bool isEwkLoose(const pat::Muon&);
+    bool isEwkLoose(const pat::Electron&);
+    bool isEwkFO(const pat::Muon&);
+    bool isEwkFO(const pat::Electron&);
+    bool isEwkTight(const pat::Muon&);
+    bool isEwkTight(const pat::Electron&);
 
     double leptonMvaVal(const pat::Muon&);                                                            //compute ewkino lepton MVA
     double leptonMvaVal(const pat::Electron&);
