@@ -32,9 +32,9 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lElectronMva",                 &_lElectronMva,                 "_lElectronMva[_nLight]/F");
   outputTree->Branch("_lElectronPassEmu",             &_lElectronPassEmu,             "_lElectronPassEmu[_nLight]/O");
   outputTree->Branch("_leptonMva",                    &_leptonMva,                    "_leptonMva[_nL]/O");
-  outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nL]/O");
-  outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nL]/O");
-  outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nL]/O");
+  outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nLight]/O");
+  outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nLight]/O");
+  outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nLight]/O");
   outputTree->Branch("_lEwkLoose",                    &_lEwkLoose,                    "_lEwkLoose[_nL]/O");
   outputTree->Branch("_lEwkFO",                       &_lEwkFO,                       "_lEwkFO[_nL]/O");
   outputTree->Branch("_lEwkTight",                    &_lEwkTight,                    "_lEwkTight[_nL]/O");
@@ -166,6 +166,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonKinVars(tau);
     fillLeptonGenVars(tau.genParticle());
     fillLeptonImpactParameters(tau, primaryVertex);
+    if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
     _lFlavor[_nL]  = 2;
     _lHNLoose[_nL] = false;                      // TO BE IMPLEMENTED
     _lHNFO[_nL]    = false;
