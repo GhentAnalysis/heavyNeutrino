@@ -2,7 +2,7 @@
 #define LeptonIdHelper_H
 
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
-
+class LeptonAnalyzer;
 //Class designed to compute analysis specific ID decisions and store them
 class LeptonIdHelper{
     public:
@@ -21,6 +21,9 @@ class LeptonIdHelper{
     private:
         unsigned flavor;            //lepton Flavor
 
+        double pt;                  //lepton kinematics
+        double eta;
+
         double miniIsoCharged;      //isolation variables
         double miniIso;
         double relIso;
@@ -38,5 +41,5 @@ class LeptonIdHelper{
         double eleMva;
         double eleTrigEmu;
         bool eleMuOverlap;
-}
+};
 #endif

@@ -2,6 +2,8 @@
 
 LeptonIdHelper::LeptonIdHelper(const LeptonAnalyzer& lepAn, const unsigned index, const unsigned flav){
     flavor = flav;
+    pt = lepAn._lPt[index];
+    eta = lepAn._lEta[index];
     miniIsoCharged = lepAn._miniIsoCharged[index];
     miniIso = lepAn._miniIso[index];
     relIso = lepAn._relIso[index];
