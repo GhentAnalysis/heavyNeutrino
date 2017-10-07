@@ -163,15 +163,28 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(_nL == nL_max)         continue;
     if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
     if(fabs(tau.eta()) > 2.3) continue;
-    if(!tau.tauID("decayModeFinding") continue;
+    if(!tau.tauID("decayModeFinding")) continue;
     fillLeptonKinVars(tau);
     fillLeptonGenVars(tau.genParticle());
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
     _lFlavor[_nL]  = 2;
-    _lHNLoose[_nL] = false;                      // TO BE IMPLEMENTED
-    _lHNFO[_nL]    = false;
-    _lHNTight[_nL] = false;
+    _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
+    _tauEleVeto[_nL] = tau.tauID("againstElectronLooseMVA6");
+
+    _lPOGVeto[_nL] = tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT");                        //old tau ID
+    _lPOGLoose[_nL] = tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT");
+    _lPOGMedium[_nL] = tau.tauID("byMediumIsolationMVArun2v1DBoldDMwLT");
+    _lPOGTight[_nL] = tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT");
+    _tauVTightMvaOld[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBoldDMwLT");
+
+    _decayModeFindingNew[_nL] = tau.tauID("decayModeFindingNewDMs");                           //new Tau ID 
+    _tauVLooseMvaNew[_nL] = tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT");
+    _tauLooseMvaNew[_nL] = tau.tauID("byLooseIsolationMVArun2v1DBnewDMwLT");
+    _tauMediumMvaNew[_nL] = tau.tauID("byMediumIsolationMVArun2v1DBnewDMwLT");
+    _tauTightMvaNew[_nL] = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
+    _tauVTightMvaNew[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
+
     ++_nTau;
     ++_nL;
   }

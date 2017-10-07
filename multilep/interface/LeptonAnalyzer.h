@@ -70,9 +70,17 @@ class LeptonAnalyzer {
     bool _lElectronPassEmu[nL_max];                                                                  
     unsigned _lElectronMissingHits[nL_max];
 
-    double _muonSegComp[nL_max];                                                                 //muon speficic variables
+    double _muonSegComp[nL_max];                                                                     //muon speficic variables
 
-                                                                                                     //tau specific variables
+    bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
+    bool _tauEleVeto[nL_max];
+    bool _decayModeFindingNew[nL_max];                      
+    bool _tauVLooseMvaNew[nL_max];                                                                      //"old tau id's will be stored in the POG id definitions (vloose := veto), however very tight is stored separately
+    bool _tauLooseMvaNew[nL_max];
+    bool _tauMediumMvaNew[nL_max];
+    bool _tauTightMvaNew[nL_max];
+    bool _tauVTightMvaNew[nL_max];
+    bool _tauVTightMvaOld[nL_max];
 
     double _leptonMva[nL_max];                                                                       //lepton MVA used in ewkino analysis
 
@@ -131,10 +139,13 @@ class LeptonAnalyzer {
     
     bool isEwkLoose(const pat::Muon&);
     bool isEwkLoose(const pat::Electron&);
+    bool isEwkLoose(const pat::Tau&);
     bool isEwkFO(const pat::Muon&);
     bool isEwkFO(const pat::Electron&);
+    bool isEwkFO(const pat::Tau&);
     bool isEwkTight(const pat::Muon&);
     bool isEwkTight(const pat::Electron&);
+    bool isEwkTight(const pat::Tau&);
 
     double leptonMvaVal(const pat::Muon&);                                                            //compute ewkino lepton MVA
     double leptonMvaVal(const pat::Electron&);
