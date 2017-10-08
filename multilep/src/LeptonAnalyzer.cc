@@ -101,6 +101,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonJetVariables(mu, jets, primaryVertex);
 
     _lFlavor[_nL]        = 1;
+    _muonSegComp[_nL]    = mu.segmentCompatibility();
+
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
     _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
     _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
@@ -108,10 +110,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lHNLoose[_nL]       = isHNLoose(mu);                                                       // ID variables
     _lHNFO[_nL]          = isHNFO(mu);                                                          // don't change order, they rely on above variables
     _lHNTight[_nL]       = isHNTight(mu);
+
     _lPOGVeto[_nL]       = mu.isLooseMuon();
     _lPOGLoose[_nL]      = mu.isLooseMuon();
     _lPOGMedium[_nL]     = mu.isMediumMuon();
     _lPOGTight[_nL]      = mu.isTightMuon(primaryVertex);
+
     _leptonMva[_nL]      = leptonMvaVal(mu);
     _lEwkLoose[_nL]      = isEwkLoose(mu);
     _lEwkFO[_nL]         = isEwkFO(mu);
@@ -141,19 +145,22 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
     _lFlavor[_nL]          = 0;
     _lEtaSC[_nL]           = ele->superCluster()->eta();
+
     _relIso[_nL]           = getRelIso03(*ele, *rho);
     _miniIso[_nL]          = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho);
     _miniIsoCharged[_nL]   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
-
     _lElectronMva[_nL]     = (*electronsMva)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
+
     _lHNLoose[_nL]         = isHNLoose(*ele);
     _lHNFO[_nL]            = isHNFO(*ele);
     _lHNTight[_nL]         = isHNTight(*ele);
+
     _lPOGVeto[_nL]         = (*electronsCutBasedVeto)[electronRef];
     _lPOGLoose[_nL]        = (*electronsCutBasedLoose)[electronRef];
     _lPOGMedium[_nL]       = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]        = (*electronsCutBasedTight)[electronRef];
+
     _leptonMva[_nL]        = leptonMvaVal(*ele);
     _lEwkLoose[_nL]        = isEwkLoose(*ele);
     _lEwkFO[_nL]           = isEwkFO(*ele);
@@ -174,6 +181,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonGenVars(tau.genParticle());
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
+
     _lFlavor[_nL]  = 2;
     _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
     _tauEleVeto[_nL] = tau.tauID("againstElectronLooseMVA6");
@@ -285,48 +293,47 @@ bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose){
 
 
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex){
-  //Make skimmed "close jet" collection
-  std::vector<pat::Jet> selectedJetsAll;
-  for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-    if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
-  }
-
-  // Find closest selected jet
-  unsigned closestIndex = 0;
-  for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
-    if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
-  }
-
-  const pat::Jet& jet = selectedJetsAll[closestIndex];
-  if(reco::deltaR(jet, lepton) > 0.4){
-    _ptRatio[_nL] = 1;
-    _ptRel[_nL]   = 0;
-  } else {
-    auto  l1Jet       = jet.correctedP4("L1FastJet");
-    float JEC         = jet.p4().E()/l1Jet.E();
-    auto  l           = lepton.p4();
-    auto  lepAwareJet = (l1Jet - l)*JEC + l;
-
-    TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
-    TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
-
-    _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
-    _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
-    _closestJetCsv[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
-
-    //compute selected track multiplicity of closest jet
-    _selectedTrackMult[_nL] = 0;
-    for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
-      const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-      try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
-        const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
-        TLorentzVector trackVec          = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-        double daughterDeltaR            = trackVec.DeltaR(jV);
-        bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
-                                           && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
-                                           && fabs(daughterTrack.dxy(vertex.position())) < 17;
-        if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
-      } catch (...){}
+    //Make skimmed "close jet" collection
+    std::vector<pat::Jet> selectedJetsAll;
+    for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
+        if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
     }
-  }
+    // Find closest selected jet
+    unsigned closestIndex = 0;
+    for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
+        if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
+    }
+    const pat::Jet& jet = selectedJetsAll[closestIndex];
+    if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
+        _ptRatio[_nL] = 1;
+        _ptRel[_nL] = 0;
+        _closestJetCsv[_nL] = 0;
+        _selectedTrackMult[_nL] = 0;
+    } else {
+        auto  l1Jet       = jet.correctedP4("L1FastJet");
+        float JEC         = jet.p4().E()/l1Jet.E();
+        auto  l           = lepton.p4();
+        auto  lepAwareJet = (l1Jet - l)*JEC + l;
+        TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
+        TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
+        _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
+        _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
+        _closestJetCsv[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+        //compute selected track multiplicity of closest jet
+        _selectedTrackMult[_nL] = 0;
+        for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
+            const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
+            try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
+                const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
+                TLorentzVector trackVec          = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
+                double daughterDeltaR            = trackVec.DeltaR(jV);
+                bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
+                                                   && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
+                                                   && fabs(daughterTrack.dxy(vertex.position())) < 17;
+                if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
+            } catch (...){
+                _selectedTrackMult[_nL] = 0;
+            }
+        }
+    }
 }
