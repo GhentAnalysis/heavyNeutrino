@@ -46,7 +46,7 @@ bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron
 // Trigger emulation for single electron triggers is available in VID
 // Trigger emulation for double electron triggers with CaloIdL_TrackIdL_IsoVL:
 bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele, const bool hOverE){    
-  float eInvMinusPInv =  (1.0 - iE->eSuperClusterOverP())/ele->correctedEcalEnergy();
+  float eInvMinusPInv =  (1.0 - ele->eSuperClusterOverP())/ele->correctedEcalEnergy();
   if(ele->full5x5_sigmaIetaIeta()                >= (ele->isEB() ? 0.011 : 0.030)) return false;
   if(fabs(ele->deltaPhiSuperClusterTrackAtVtx()) >= (ele->isEB() ? 0.04  : 0.07))  return false;
   if(fabs(ele->deltaEtaSuperClusterTrackAtVtx()) >= (ele->isEB() ? 0.01  : 0.008)) return false;
