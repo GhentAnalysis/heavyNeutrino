@@ -17,8 +17,7 @@ float LeptonAnalyzer::dEtaInSeed(const pat::Electron* ele){
 }
 
 bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron* ele){
-  if(not (ele->isEB() or ele->isEE())) return false;
-
+  if(!(ele->isEB() or ele->isEE()))                                                            return false;
   float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
   if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.11    : 0.0314 ))       return false;
   if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00477 : 0.00868))       return false;
@@ -26,12 +25,12 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron
   if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.298   : 0.101  ))       return false;
   if(eInvMinusPInv                                 >= (ele->isEB() ? 0.241   : 0.14   ))       return false;
   if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) >  1)    return false;
-  if(!ele->passConversionVeto())                                                            return false;
+  if(!ele->passConversionVeto())                                                               return false;
   return true;
 }
 
 bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron* ele){
-  if(not (ele->isEB() or ele->isEE())) return false;
+  if(!(ele->isEB() or ele->isEE())) return false;
   float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
   if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998 : 0.0292))        return false;
   if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00308 : 0.00605))       return false;
@@ -39,7 +38,7 @@ bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron
   if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.0414  : 0.0641))        return false;
   if(eInvMinusPInv                                 >= (ele->isEB() ? 0.0129  : 0.0129))        return false;
   if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) >  1)    return false;
-  if(not ele->passConversionVeto())                                                            return false;
+  if(!ele->passConversionVeto())                                                            return false;
   return true;
 }
 
@@ -124,7 +123,7 @@ bool LeptonAnalyzer::isHNLoose(const pat::Electron& lepton){
   if(fabs(_dxy[_nL]) >= 0.05 || fabs(_dz[_nL]) >= 0.1)                                       return false;
   if(_relIso[_nL] >= 0.6)                                                                    return false;
   if(lepton.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1) return false;
-  if(not lepton.passConversionVeto())                                                        return false;
+  if(!lepton.passConversionVeto())                                                           return false;
   if(eleMuOverlap(lepton, _lHNLoose))                                                        return false; // Always run electrons after muons because of this
   return (lepton.pt() > 10);
 }
