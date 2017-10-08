@@ -221,7 +221,7 @@ bool LeptonAnalyzer::isEwkFO(const pat::Muon& lep){
 bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep){
     if(!_lEwkLoose[_nL]) return false;
     if(_lPt[_nL] <= 10) return false;
-    if(passTriggerEmulationDoubleEG(&lep, false)) return false;
+    if(!passTriggerEmulationDoubleEG(&lep, false)) return false;
     if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) !=0) return false;
     double ptCone = _lPt[_nL];
     if(_leptonMva[_nL] <= 0.5){
