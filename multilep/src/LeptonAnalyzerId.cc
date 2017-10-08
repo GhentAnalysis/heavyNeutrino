@@ -32,7 +32,7 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron
 
 bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron* ele){
   if(not (ele->isEB() or ele->isEE())) return false;
-  float eInvMinusPInv =  (1.0 - iE->eSuperClusterOverP())/ele->correctedEcalEnergy();
+  float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
   if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998 : 0.0292))        return false;
   if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00308 : 0.00605))       return false;
   if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.0816  : 0.0394))        return false;
@@ -46,7 +46,7 @@ bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron
 // Trigger emulation for single electron triggers is available in VID
 // Trigger emulation for double electron triggers with CaloIdL_TrackIdL_IsoVL:
 bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele, const bool hOverE){    
-  float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+  float eInvMinusPInv =  (1.0 - iE->eSuperClusterOverP())/ele->correctedEcalEnergy();
   if(ele->full5x5_sigmaIetaIeta()                >= (ele->isEB() ? 0.011 : 0.030)) return false;
   if(fabs(ele->deltaPhiSuperClusterTrackAtVtx()) >= (ele->isEB() ? 0.04  : 0.07))  return false;
   if(fabs(ele->deltaEtaSuperClusterTrackAtVtx()) >= (ele->isEB() ? 0.01  : 0.008)) return false;
