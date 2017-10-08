@@ -26,7 +26,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_jetDeepCsv_c",              &_jetDeepCsv_c,             "_jetDeepCsv_c[_nJets]/D");
   outputTree->Branch("_jetDeepCsv_bb",             &_jetDeepCsv_bb,            "_jetDeepCsv_bb[_nJets]/D");
 //outputTree->Branch("_jetDeepCsv_cc",             &_jetDeepCsv_cc,            "_jetDeepCsv_cc[_nJets]/D");
-  outputTree->Branch("_jetHadronFlavour",          &_jetHadronFlavour,         "_jetHadronFlavour[_nJets]/D");
+  outputTree->Branch("_jetHadronFlavor",           &_jetHadronFlavor,          "_jetHadronFlavor[_nJets]/D");
   outputTree->Branch("_jetId",                     &_jetId,                    "_jetId[_nJets]/i");
 }
 
@@ -67,7 +67,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     _jetDeepCsv_c[_nJets]             = jet->bDiscriminator("pfDeepCSVJetTags:probc");
     _jetDeepCsv_bb[_nJets]            = jet->bDiscriminator("pfDeepCSVJetTags:probbb");
 //  _jetDeepCsv_cc[_nJets]            = jet->bDiscriminator("pfDeepCSVJetTags:probcc");
-    _jetHadronFlavour[_nJets]         = jet->hadronFlavour();
+    _jetHadronFlavor[_nJets]         = jet->hadronFlavour();
     _jetId[_nJets]                    = jetId(*jet, false) + jetId(*jet, true); // 1: loose, 2: tight
     ++_nJets;
   }
