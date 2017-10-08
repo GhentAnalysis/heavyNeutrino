@@ -32,8 +32,7 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron
 
 bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron* ele){
   if(not (ele->isEB() or ele->isEE())) return false;
-
-  float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+  float eInvMinusPInv =  (1.0 - iE->eSuperClusterOverP())/ele->correctedEcalEnergy();
   if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998 : 0.0292))        return false;
   if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00308 : 0.00605))       return false;
   if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.0816  : 0.0394))        return false;
@@ -198,7 +197,7 @@ bool LeptonAnalyzer::isEwkLoose(const pat::Muon& lep){
 }
 
 bool LeptonAnalyzer::isEwkLoose(const pat::Electron& lep){
-    if(fabs(_dxy[_nL]) > 0.05 || fabs(_dz[_nL]) > 0.1 || _3dIPSig[_nL] > 4) return false;
+    if(fabs(_dxy[_nL]) > 0.05 || fabs(_dz[_nL]) > 0.1 || _3dIPSig[_nL] > 8) return false;
     if(_miniIso[_nL] > 0.4) return false;
     if(_lPt[_nL] < 7 || fabs(_lEta[_nL]) > 2.5) return false;
     if(lep.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1) return false;
