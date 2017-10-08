@@ -191,7 +191,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron){
 }
 
 bool LeptonAnalyzer::isEwkLoose(const pat::Muon& lep){
-     if(fabs(_dxy[_nL]) > 0.05 || fabs(_dz[_nL]) > 0.1 || _3dIPSig[_nL] > 4) return false;
+     if(fabs(_dxy[_nL]) > 0.05 || fabs(_dz[_nL]) > 0.1 || _3dIPSig[_nL] > 8) return false;
      if(_miniIso[_nL] > 0.4) return false;
      if(_lPt[_nL] < 5 || fabs(_lEta[_nL]) > 2.4) return false;
      return lep.isLooseMuon();
