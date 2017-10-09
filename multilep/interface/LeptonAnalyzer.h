@@ -75,6 +75,7 @@ class LeptonAnalyzer {
     double _3dIPSig[nL_max];
     float _lElectronMva[nL_max];
     bool _lElectronPassEmu[nL_max];
+    bool _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL];
     bool _lPOGVeto[nL_max];
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
