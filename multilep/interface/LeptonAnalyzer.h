@@ -110,6 +110,7 @@ class LeptonAnalyzer {
   
     // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*);
+    bool isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron* ele);
     bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
     bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*);
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true);               //For ewkino id it needs to be possible to check hOverE separately
