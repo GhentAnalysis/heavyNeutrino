@@ -54,6 +54,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
   outputTree->Branch("_closestJetCsv",                &_closestJetCsv,                "_closestJetCsv[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
+  outputTree->Branch("_muonSegComp",                  &_muonSegComp,                  "_muonSegComp[_nMu]/D");
+
   if(!multilepAnalyzer->isData){
     outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
     outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
@@ -130,8 +132,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     //if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
     //if(!ele->passConversionVeto()) continue;
     
-    if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(*ele)) continue; // check the loooong name
-    if(eleMuOverlap(ele))  continue;          // overlap muon-electron deltaR  ==  0.05
+    if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele)) continue; // check the loooong name
+    if(eleMuOverlap(*ele))  continue;          // overlap muon-electron deltaR  ==  0.05
     
     _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] =-1;
