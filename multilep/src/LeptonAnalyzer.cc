@@ -47,6 +47,15 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
   outputTree->Branch("_miniIsoCharged",               &_miniIsoCharged,               "_miniIsoCharged[_nLight]/D");
+  outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/D");
+  outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
+  outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
+  outputTree->Branch("_sumNeutralHadronEt04",         &_sumNeutralHadronEt04,         "_sumNeutralHadronEt04[_nL]/D");
+  outputTree->Branch("_sumChargedHadronPt04",         &_sumChargedHadronPt04,         "_sumChargedHadronPt04[_nL]/D");
+  outputTree->Branch("_sumPhotonEt04",                &_sumPhotonEt04,                "_sumPhotonEt04[_nL]/D");
+  outputTree->Branch("_sumNeutralHadronEt03",         &_sumNeutralHadronEt03,         "_sumNeutralHadronEt03[_nL]/D");
+  outputTree->Branch("_sumChargedHadronPt03",         &_sumChargedHadronPt03,         "_sumChargedHadronPt03[_nL]/D");
+  outputTree->Branch("_sumPhotonEt03",                &_sumPhotonEt03,                "_sumPhotonEt03[_nL]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
   outputTree->Branch("_closestJetCsv",                &_closestJetCsv,                "_closestJetCsv[_nLight]/D");
@@ -210,7 +219,7 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
   _puCorr[_nL] = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
-	_absIso03 [_nL] = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - puCorr);
+  _absIso03 [_nL] = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - puCorr);
   _absIso04 [_nL] = mu.pfIsolationR04().sumChargedHadronPt + std::max(0., mu.pfIsolationR04().sumNeutralHadronEt + mu.pfIsolationR04().sumPhotonEt - puCorr);
   _sumNeutralHadronEt04 [_nL] = mu.pfIsolationR04().sumNeutralHadronEt;
   _sumChargedHadronPt04 [_nL] = mu.pfIsolationR04().sumChargedHadronPt;
@@ -224,7 +233,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
 
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rho){
   _puCorr[_nL] = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
-	_absIso03 [_nL] = ele.pfIsolationR03().sumChargedHadronPt + std::max(0., ele.pfIsolationR03().sumNeutralHadronEt + ele.pfIsolationR03().sumPhotonEt - puCorr);
+  _absIso03 [_nL] = ele.pfIsolationR03().sumChargedHadronPt + std::max(0., ele.pfIsolationR03().sumNeutralHadronEt + ele.pfIsolationR03().sumPhotonEt - puCorr);
   _absIso04 [_nL] = ele.pfIsolationR04().sumChargedHadronPt + std::max(0., ele.pfIsolationR04().sumNeutralHadronEt + ele.pfIsolationR04().sumPhotonEt - puCorr);
   _sumNeutralHadronEt04 [_nL] = ele.pfIsolationR04().sumNeutralHadronEt;
   _sumChargedHadronPt04 [_nL] = ele.pfIsolationR04().sumChargedHadronPt;
