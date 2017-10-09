@@ -93,6 +93,8 @@ class LeptonAnalyzer {
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
+    void fillLeptonIsoVars(const pat::Muon& mu, const double rho);
+    void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rho);
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&);  
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose);
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose);
@@ -103,6 +105,9 @@ class LeptonAnalyzer {
     double getRelIso03(const pat::Electron&, const double);
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
 
+  
+  
+  
     // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*);
     bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
