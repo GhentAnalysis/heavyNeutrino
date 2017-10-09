@@ -80,6 +80,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   _nMu    = 0;
   _nEle   = 0;
   _nTau   = 0;
+  
+  bool good_leading=false; // to check 1 leading-well_isolated lepton
 
   //loop over muons
   for(const pat::Muon& mu : *muons){
@@ -111,6 +113,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _leptonMva[_nL]  = leptonMvaVal(mu);
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
+    
+    if (mu.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.2 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) good_leading = true;
 
     ++_nMu;
     ++_nL;
@@ -158,6 +162,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
     _leptonMva[_nL]    = leptonMvaVal(*ele);
 
+    
+   if (ele.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.2 && !ele.innerTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) good_leading = true;
+
+    
     ++_nEle;
     ++_nL;
     ++_nLight;
@@ -198,7 +206,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     ++_nL;
   }
 
-  if(multilepAnalyzer->skim == "trilep"    and _nL     < 3) return false;
+  if(multilepAnalyzer->skim == "trilep"    and (_nL     < 3   ||   !good_leading)) return false;
   if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "ttg"       and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "singlelep" and _nLight < 1) return false;
