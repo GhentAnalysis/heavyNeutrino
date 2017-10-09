@@ -54,14 +54,14 @@ class LeptonAnalyzer {
     double _relIso[nL_max];                                                                          //lepton isolation variables
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];    
-    double _puCorr;    
-    double _absIso03;                    
-    double _sumNeutralHadronEt04;        
-    double _sumChargedHadronPt04;       
-    double _sumPhotonEt04;               
-    double _sumNeutralHadronEt03;       
-    double _sumChargedHadronPt03;       
-    double _sumPhotonEt03;
+    double _puCorr[nL_max];     
+    double _absIso03[nL_max];                    
+    double _sumNeutralHadronEt04[nL_max];          
+    double _sumChargedHadronPt04[nL_max];         
+    double _sumPhotonEt04[nL_max];                 
+    double _sumNeutralHadronEt03[nL_max];         
+    double _sumChargedHadronPt03[nL_max];         
+    double _sumPhotonEt03[nL_max];  
    
     double _ptRel[nL_max];                                                                           //variables related to closest jet
     double _ptRatio[nL_max];
