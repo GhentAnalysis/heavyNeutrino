@@ -83,6 +83,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   _nTau   = 0;
   
   bool good_leading=false; // to check 1 leading-well_isolated lepton
+  
 
   //loop over muons
   for(const pat::Muon& mu : *muons){
@@ -91,6 +92,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
+    _lPFMuon[_nL]=  mu.isPFMuon();
     // ===>  if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
    // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
@@ -133,7 +135,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     //if(!ele->passConversionVeto()) continue;
     
     if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele)) continue; // check the loooong name
-    if(eleMuOverlap(*ele))  continue;          // overlap muon-electron deltaR  ==  0.05
+    if(eleMuOverlap(*ele, _lPFMuon))  continue;          // overlap muon-electron deltaR  ==  0.05
     
     _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] =-1;
@@ -160,10 +162,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGLoose[_nL]    = (*electronsCutBasedLoose)[electronRef]; // cut-based cuts
     _lPOGMedium[_nL]   = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
-    _leptonMva[_nL]    = leptonMvaVal(*ele);
 
     
-   if (ele.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.2 && !ele.innerTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) good_leading = true;
+   if (ele->pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.2 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) good_leading = true;
 
     
     ++_nEle;
@@ -183,8 +184,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
     _lFlavor[_nL]  = 2;
-    _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
-    _tauEleVeto[_nL] = tau.tauID("againstElectronLooseMVA6");
+  
     
     _lPOGVeto[_nL] = tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT");                        //old tau ID
     _lPOGLoose[_nL] = tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT");
@@ -192,16 +192,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGTight[_nL] = tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT");
     _tauVTightMvaOld[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBoldDMwLT");
 
-    _decayModeFindingNew[_nL] = tau.tauID("decayModeFindingNewDMs");                           //new Tau ID 
-    _tauVLooseMvaNew[_nL] = tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT");
-    _tauLooseMvaNew[_nL] = tau.tauID("byLooseIsolationMVArun2v1DBnewDMwLT");
-    _tauMediumMvaNew[_nL] = tau.tauID("byMediumIsolationMVArun2v1DBnewDMwLT");
-    _tauTightMvaNew[_nL] = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
-    _tauVTightMvaNew[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
-
-    _lEwkLoose[_nL] = isEwkLoose(tau);
-    _lEwkFO[_nL]    = isEwkFO(tau);
-    _lEwkTight[_nL] = isEwkTight(tau);
+    
     ++_nTau;
     ++_nL;
   }
@@ -237,14 +228,14 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
 
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rho){
   _puCorr[_nL] = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
-  _absIso03 [_nL] = ele.pfIsolationR03().sumChargedHadronPt + std::max(0., ele.pfIsolationR03().sumNeutralHadronEt + ele.pfIsolationR03().sumPhotonEt - puCorr);
-  _absIso04 [_nL] = ele.pfIsolationR04().sumChargedHadronPt + std::max(0., ele.pfIsolationR04().sumNeutralHadronEt + ele.pfIsolationR04().sumPhotonEt - puCorr);
-  _sumNeutralHadronEt04 [_nL] = ele.pfIsolationR04().sumNeutralHadronEt;
-  _sumChargedHadronPt04 [_nL] = ele.pfIsolationR04().sumChargedHadronPt;
-  _sumPhotonEt04[_nL]   = ele.pfIsolationR04().sumPhotonEt ;
-  _sumNeutralHadronEt03 [_nL] = ele.pfIsolationR03().sumNeutralHadronEt;
-  _sumChargedHadronPt03 [_nL] = ele.pfIsolationR03().sumChargedHadronPt;
-  _sumPhotonEt03[_nL]   = ele.pfIsolationR03().sumPhotonEt ;
+  _absIso03 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - puCorr);
+  _absIso04 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - puCorr);
+  _sumNeutralHadronEt04 [_nL] = ele.pfIsolationVariables().sumNeutralHadronEt;
+  _sumChargedHadronPt04 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt;
+  _sumPhotonEt04[_nL]   = ele.pfIsolationVariables().sumPhotonEt ;
+  _sumNeutralHadronEt03 [_nL] = ele.pfIsolationVariables().sumNeutralHadronEt;
+  _sumChargedHadronPt03 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt;
+  _sumPhotonEt03[_nL]   = ele.pfIsolationVariables().sumPhotonEt ;
 }
 
 void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
@@ -271,6 +262,7 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const 
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
+  _dxy[_nL]      = muon.innerTrack()->dxy(vertex.position());
   _dz[_nL]      = muon.innerTrack()->dz(vertex.position());
   _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
