@@ -55,7 +55,8 @@ class LeptonAnalyzer {
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];    
     double _puCorr[nL_max];     
-    double _absIso03[nL_max];                    
+    double _absIso03[nL_max];   
+    double _absIso04[nL_max];                    
     double _sumNeutralHadronEt04[nL_max];          
     double _sumChargedHadronPt04[nL_max];         
     double _sumPhotonEt04[nL_max];                 
