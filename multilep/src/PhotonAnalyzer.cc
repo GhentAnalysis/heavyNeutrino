@@ -28,7 +28,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_phRandomConeChargedIsolation",       &_phRandomConeChargedIsolation,   "_phRandomConeChargedIsolation[_nPh]/D");
   outputTree->Branch("_phChargedIsolation",                 &_phChargedIsolation,             "_phChargedIsolation[_nPh]/D");
   outputTree->Branch("_phNeutralHadronIsolation",           &_phNeutralHadronIsolation,       "_phNeutralHadronIsolation[_nPh]/D");
-  outputTree->Branch("_phPhotonIsolation",                  &_phPhotonIsolation,              "_phPhoton[_nPh]/D");
+  outputTree->Branch("_phPhotonIsolation",                  &_phPhotonIsolation,              "_phPhotonIsolation[_nPh]/D");
   outputTree->Branch("_phSigmaIetaIeta",                    &_phSigmaIetaIeta,                "_phSigmaIetaIeta[_nPh]/D");
   outputTree->Branch("_phSigmaIetaIphi",                    &_phSigmaIetaIphi,                "_phSigmaIetaIphi[_nPh]/D");
   outputTree->Branch("_phHadronicOverEm",                   &_phHadronicOverEm,               "_phHadronicOverEm[_nPh]/D");
@@ -61,7 +61,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
   edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
   edm::Handle<std::vector<reco::GenParticle>> genParticles;        iEvent.getByToken(multilepAnalyzer->genParticleToken,                  genParticles);
-  edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoTokenAll,                       rho);
+  edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
 
   // Loop over photons
   _nPh = 0;

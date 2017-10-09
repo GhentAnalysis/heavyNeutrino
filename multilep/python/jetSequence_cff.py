@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+import os
 
 def addJetSequence(process, isData):
 
@@ -24,25 +25,23 @@ def addJetSequence(process, isData):
        'pfDeepCSVJetTags:probb',
        'pfDeepCSVJetTags:probc',
        'pfDeepCSVJetTags:probbb',
-       'pfDeepCSVJetTags:probcc',
+      #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
      ]
   )
 
-  process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
-                                     process.pfImpactParameterTagInfosUpdatedJEC *
-                                     process.pfSecondaryVertexTagInfosUpdatedJEC *
-                                     process.pfCombinedSecondaryVertexV2BJetTagsUpdatedJEC *
-                                     process.patJetCorrFactorsTransientCorrectedUpdatedJEC *
-                                     process.pfInclusiveSecondaryVertexFinderTagInfosUpdatedJEC *
-                                     process.pfDeepCSVTagInfosUpdatedJEC *
-                                     process.pfDeepCSVJetTagsUpdatedJEC *
-                                     process.updatedPatJetsTransientCorrectedUpdatedJEC *
-                                     process.selectedUpdatedPatJetsUpdatedJEC)
-
-  #
-  # TODO find some way to access L1FastJet
-  #
-
+  if os.environ['CMSSW_BASE'].count('CMSSW_9'):                                                                     # From CMSSW_9_X, the patAlgosToolsTask contains the whole updateJetCollection sequence
+    process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
+  else:
+    process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
+                                       process.pfImpactParameterTagInfosUpdatedJEC *
+                                       process.pfSecondaryVertexTagInfosUpdatedJEC *
+                                       process.pfCombinedSecondaryVertexV2BJetTagsUpdatedJEC *
+                                       process.patJetCorrFactorsTransientCorrectedUpdatedJEC *
+                                       process.pfInclusiveSecondaryVertexFinderTagInfosUpdatedJEC *
+                                       process.pfDeepCSVTagInfosUpdatedJEC *
+                                       process.pfDeepCSVJetTagsUpdatedJEC *
+                                       process.updatedPatJetsTransientCorrectedUpdatedJEC *
+                                       process.selectedUpdatedPatJetsUpdatedJEC)
 
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures

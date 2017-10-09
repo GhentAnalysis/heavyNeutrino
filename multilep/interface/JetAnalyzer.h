@@ -32,8 +32,8 @@ class JetAnalyzer {
     double   _jetDeepCsv_b[nJets_max];
     double   _jetDeepCsv_c[nJets_max];
     double   _jetDeepCsv_bb[nJets_max];
-    double   _jetDeepCsv_cc[nJets_max];
-    double   _jetHadronFlavour[nJets_max];
+//  double   _jetDeepCsv_cc[nJets_max];
+    double   _jetHadronFlavor[nJets_max];
     unsigned _jetId[nJets_max];
 
     multilep* multilepAnalyzer;

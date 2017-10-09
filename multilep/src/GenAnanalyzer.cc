@@ -20,8 +20,8 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nTrueInt",                   &_nTrueInt,                 "_nTrueInt/F");
 
-  outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/i");
-  outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/i");
+  outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/b");
+  outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/b");
   outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
   outputTree->Branch("_gen_metPhi",                &_gen_metPhi,                "_gen_metPhi/D");
   outputTree->Branch("_gen_nPh",                   &_gen_nPh,                   "_gen_nPh/b");
@@ -38,7 +38,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_lEta",                  &_gen_lEta,                  "_gen_lEta[_gen_nL]/D");
   outputTree->Branch("_gen_lPhi",                  &_gen_lPhi,                  "_gen_lPhi[_gen_nL]/D");
   outputTree->Branch("_gen_lE",                    &_gen_lE,                    "_gen_lE[_gen_nL]/D");
-  outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/I");
+  outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/b");
   outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
   outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
   outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
