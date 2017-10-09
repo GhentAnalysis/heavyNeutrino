@@ -86,6 +86,8 @@ class LeptonAnalyzer {
 
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
+  
+    double _muonSegComp[nL_max];
 
 
 
