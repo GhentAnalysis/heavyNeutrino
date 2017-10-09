@@ -79,6 +79,7 @@ class LeptonAnalyzer {
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
+    bool _lPFMuon[nL_max];
   
     double _eleNumberInnerHitsMissing[nL_max];
     double _muNumberInnerHits[nL_max];
