@@ -84,10 +84,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   _nMu    = 0;
   _nEle   = 0;
   _nTau   = 0;
+  _nVFit  = 0;
   
   bool good_leading=false; // to check 1 leading-well_isolated lepton
+  int counter_index_leptons   = 0;
+  int counter_number_vertices = 0;
   
-
   //loop over muons
   for(const pat::Muon& mu : *muons){
     if(_nL == nL_max)            continue;
@@ -95,6 +97,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
+    
+    counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
+    _lIndex[_nL] = counter_index_leptons;
+    
     _lPFMuon[_nL]=  mu.isPFMuon();
     // ===>  if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
@@ -138,7 +144,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     //if(!ele->passConversionVeto()) continue;
     
     if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele)) continue; // check the loooong name
-    if(eleMuOverlap(*ele, _lPFMuon))  continue;          // overlap muon-electron deltaR  ==  0.05
+    if(eleMuOverlap(*ele, _lPFMuon))  continue;              // overlap muon-electron deltaR  ==  0.05
+    
+    counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
+    _lIndex[_nL] = counter_index_leptons;
+    
     
     _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] =-1;
