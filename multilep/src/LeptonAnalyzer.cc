@@ -20,7 +20,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
   outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/b");
   outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/D");
-  outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[10][_nVFit]/D");
+  outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[12][_nVFit]/D");
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
   outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
   outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
@@ -215,6 +215,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   if(multilepAnalyzer->skim == "singlelep" and _nLight < 1) return false;
   return true;
 }
+
+
+
+/*
+ * //--// Refit dilepton vertex:
+ * Provide a transientvertex 
+ * For taus: dxy is pre-computed with PV it was constructed with
+ */
+
+
+
+
+
 
 void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
   _lPt[_nL]     = lepton.pt();
