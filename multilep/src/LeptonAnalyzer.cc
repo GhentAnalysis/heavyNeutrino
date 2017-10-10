@@ -221,9 +221,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 /*
  * //--// Refit dilepton vertex:
  * Provide a transientvertex 
- * For taus: dxy is pre-computed with PV it was constructed with
  */
-
+ TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const reco::Track& tk2) {
+    MagneticField *bfield = new OAEParametrizedMagneticField("3_8T"); 
+    std::vector<reco::TransientTrack> ttks;
+    ttks.push_back(reco::TransientTrack(tk1, bfield)); 
+    ttks.push_back(reco::TransientTrack(tk2, bfield)); 
+    KalmanVertexFitter vtxFitter;
+    return vtxFitter.vertex(ttks); 
+  } 
 
 
 
