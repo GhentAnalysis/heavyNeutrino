@@ -46,7 +46,7 @@ class LeptonAnalyzer {
     unsigned _nVFit;                     // number vertices re-fitted
   
     double _lIndex[nL_max];              // index assigned to leptons to find back the vertices
-    double _vertices[10][nV_max];        // array of the vertices: 9 variables+index for each vertex 
+    double _vertices[12][nV_max];        // array of the vertices: 9 variables+index for each vertex 
 
     double _lPt[nL_max];                                                                             //lepton kinematics
     double _lEta[nL_max];
