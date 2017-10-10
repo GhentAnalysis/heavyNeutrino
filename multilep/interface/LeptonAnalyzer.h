@@ -36,11 +36,17 @@ class LeptonAnalyzer {
     EffectiveAreas muonsEffectiveAreas;
 
     static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
+    static const unsigned nV_max      = 100;   
+  
     unsigned _nL;                                                                                    //number of leptons
     unsigned _nMu;
     unsigned _nEle;
     unsigned _nLight;
-    unsigned _nTau;
+    unsigned _nTau;          
+    unsigned _nVFit;                     // number vertices re-fitted
+  
+    double _lIndex[nL_max];              // index assigned to leptons to find back the vertices
+    double _vertices[10][nV_max];        // array of the vertices: 9 variables+index for each vertex 
 
     double _lPt[nL_max];                                                                             //lepton kinematics
     double _lEta[nL_max];
