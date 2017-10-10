@@ -11,6 +11,12 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
+#include "MagneticField/ParametrizedEngine/src/OAEParametrizedMagneticField.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
+#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
+
 //include other parts of the framework
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
