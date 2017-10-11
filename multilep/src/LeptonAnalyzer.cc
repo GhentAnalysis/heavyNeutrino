@@ -224,8 +224,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
  
     
       const reco::TrackRef  tk_1=mu_1.innerTrack (); 
-      const reco::Track& tk_2; 
- 
+      const reco::TrackRef tk_2; 
+ tk_2mu_1.innerTrack (); 
      // if(!mu_1.innerTrack().isNull())  tk_1 = mu_1.innerTrack ();
       //else tk_1 = *(mu_1.outerTrack ());
       
@@ -235,8 +235,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         iMu_minus_mu++;
         if (mu_2.charge() > 0) continue;  // only opposite charge
         
-        if(!mu_2.innerTrack().isNull())  tk_2 = mu_2.innerTrack ();
-        else tk_2 = mu_2.outerTrack ();
+       // if(!mu_2.innerTrack().isNull())  tk_2 = mu_2.innerTrack ();
+       // else tk_2 = mu_2.outerTrack ();
         
         TransientVertex dilvtx = dileptonVertex(&tk_1, &tk_2);
         if(!dilvtx.isValid()) { 
