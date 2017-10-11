@@ -139,8 +139,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(fabs(ele->eta()) > 2.5)   continue;
     // ---->  loose requirements about number of hits and VetoConversion
     //if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
-    //if(!ele->passConversionVeto()) continue;
-    
+    //if(!ele->passConversionVeto()) continue;  
     if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele)) continue; // check the loooong name
     if(eleMuOverlap(*ele, _lPFMuon))  continue;              // overlap muon-electron deltaR  ==  0.05
     
@@ -210,8 +209,17 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
  * refitting vertices displaced *********************************************************** 
  */  
   double _nLFitting = 0;
+  
+  float iMu_plus=0;
+  float iMu_minus_mu=0;
+  float iMu_minus_e=0;
+  float iE_plus=_nMu;
+  float iE_minus_mu=_nMu;
+  float iE_minus_e=_nMu;
+  
   for(const pat::Muon& mu_1 : *muons){ // for µ
-    if(mu_1.pt() < 3 || fabs(mu_1.eta()) > 2.4 || !mu_1.isPFMuon())              continue;                    
+    if(mu_1.pt() < 3 || fabs(mu_1.eta()) > 2.4 || !mu_1.isPFMuon())              continue;    
+    iMu_plus++;
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
  
@@ -222,7 +230,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       
       //------------------  loop µ-
       for(const pat::Muon& mu_2 : *muons){ 
-        if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;                   
+        if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
+        iMu_minus_mu++;
         if (mu_2.charge() > 0) continue;  // only opposite charge
         
         if(!mu_2.innerTrack().isNull())  tk_2 = mu_2.innerTrack ();
@@ -233,7 +242,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
           return; 
           } 
-        else {        
+        else {    
+          _vertices[0][_nVFit] = iMu_plus*100 + iMu_minus_mu;
+                   
           _vertices[1][_nVFit] = dilvtx.position().x(); 
           _vertices[2][_nVFit] = dilvtx.position().y(); 
           _vertices[3][_nVFit] = dilvtx.position().z(); 
@@ -254,6 +265,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
         if(ele_2->gsfTrack().isNull()) continue;
         if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
+        iE_minus_mu++; // it is already _nMu
         if(ele_2->charge() > 0) continue; // only opposite charge
 
         tk_2 = ele_2->gsfTrack();
@@ -263,7 +275,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
           return; 
           } 
-        else {        
+        else {      
+          _vertices[0][_nVFit] = iMu_plus*100 + iE_minus_mu;
+
+          
           _vertices[1][_nVFit] = dilvtx.position().x(); 
           _vertices[2][_nVFit] = dilvtx.position().y(); 
           _vertices[3][_nVFit] = dilvtx.position().z(); 
@@ -281,12 +296,17 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     ++_nLFitting;
   }//end loop µ
   
-
+   
+   iMu_minus_e=0;
+   iE_plus=_nMu;
+   iE_minus_e=_nMu;
+  
       
   for(auto ele_1 = electrons->begin(); ele_1 != electrons->end(); ++ele_1){ // for electrons
     auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_1 - electrons->begin()));
     if(ele_1->gsfTrack().isNull()) continue;
     if(ele_1->pt() < 6 || fabs(ele_1->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_1) || eleMuOverlap(*ele_1, _lPFMuon) )           continue; // from 10 to 6
+    iE_plus++;
     //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue; 
     
@@ -295,7 +315,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     tk_1 = ele_1->gsfTrack();
     //------------------  loop µ+
       for(const pat::Muon& mu_2 : *muons){ 
-        if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;                   
+        if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
+        iMu_minus_e++;
         if (mu_2.charge() < 0) continue;  // only opposite charge
         
         if(!mu_2.innerTrack().isNull())  tk_2 = mu_2.innerTrack ();
@@ -306,7 +327,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
           return; 
           } 
-        else {        
+        else {       
+          _vertices[0][_nVFit] = iE_plus*100+iMu_minus_e;
+       
           _vertices[1][_nVFit] = dilvtx.position().x(); 
           _vertices[2][_nVFit] = dilvtx.position().y(); 
           _vertices[3][_nVFit] = dilvtx.position().z(); 
@@ -328,6 +351,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
         if(ele_2->gsfTrack().isNull()) continue;
         if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
+        iE_minus_e++;
+        
         if(ele_2->charge() < 0) continue; // only opposite charge
 
         tk_2 = ele_2->gsfTrack();
@@ -337,7 +362,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
           return; 
           } 
-        else {        
+        else {    
+          _vertices[0][_nVFit] = iE_plus*100 + iE_minus_e;
+          
           _vertices[1][_nVFit] = dilvtx.position().x(); 
           _vertices[2][_nVFit] = dilvtx.position().y(); 
           _vertices[3][_nVFit] = dilvtx.position().z(); 
