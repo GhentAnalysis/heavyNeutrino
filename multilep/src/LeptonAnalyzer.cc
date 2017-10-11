@@ -223,11 +223,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if (mu_1.charge() < 0) continue;
  
     
-        reco::TrackRef  tk_1 = mu_1.innerTrack (); 
-        reco::TrackRef tk_2; 
-        tk_2 = mu_1.innerTrack (); 
-     // if(!mu_1.innerTrack().isNull())  tk_1 = mu_1.innerTrack ();
-      //else tk_1 = *(mu_1.outerTrack ());
+      reco::TrackRef  tk_1 ;
+      reco::TrackRef  tk_2 ; 
+      if(!mu_1.innerTrack().isNull())  tk_1 = mu_1.innerTrack ();
+      else tk_1 = mu_1.outerTrack ();
       
       //------------------  loop µ-
       for(const pat::Muon& mu_2 : *muons){ 
@@ -235,8 +234,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         iMu_minus_mu++;
         if (mu_2.charge() > 0) continue;  // only opposite charge
         
-       // if(!mu_2.innerTrack().isNull())  tk_2 = mu_2.innerTrack ();
-       // else tk_2 = mu_2.outerTrack ();
+        if(!mu_2.innerTrack().isNull())  tk_2 = mu_2.innerTrack ();
+        else tk_2 = mu_2.outerTrack ();
         
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
@@ -311,9 +310,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue; 
     
-    const reco::TrackRef tk_1; 
-    const reco::TrackRef tk_2; 
-    tk_1 = ele_1->gsfTrack();
+    reco::TrackRef  tk_1 =ele_1->gsfTrack();
+    reco::TrackRef  tk_2 ; 
+   
     //------------------  loop µ+
       for(const pat::Muon& mu_2 : *muons){ 
         if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
