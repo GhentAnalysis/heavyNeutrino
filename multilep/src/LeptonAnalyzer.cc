@@ -223,9 +223,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if (mu_1.charge() < 0) continue;
  
     
-      reco::TrackRef  tk_1 ;
-      if(!mu_1.innerTrack().isNull())  tk_1 = mu_1.innerTrack ();
-      else tk_1 = mu_1.outerTrack ();
+      const reco::Track&  tk_1 = *mu_1.innerTrack ();;
+     // if(!mu_1.innerTrack().isNull())  tk_1 = mu_1.innerTrack ();
+     // else tk_1 = mu_1.outerTrack ();
       
       //------------------  loop µ-
       for(const pat::Muon& mu_2 : *muons){ 
