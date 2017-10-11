@@ -240,7 +240,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-          return; 
           } 
         else {    
           _vertices[0][_nVFit] = iMu_plus*100 + iMu_minus_mu;
@@ -273,7 +272,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-          return; 
           } 
         else {      
           _vertices[0][_nVFit] = iMu_plus*100 + iE_minus_mu;
@@ -325,7 +323,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-          return; 
           } 
         else {       
           _vertices[0][_nVFit] = iE_plus*100+iMu_minus_e;
@@ -360,7 +357,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-          return; 
           } 
         else {    
           _vertices[0][_nVFit] = iE_plus*100 + iE_minus_e;
