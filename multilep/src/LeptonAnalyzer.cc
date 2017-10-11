@@ -223,7 +223,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if (mu_1.charge() < 0) continue;
  
     
-      const reco::Track&  tk_1 = *mu_1.innerTrack ();;
+      const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
      // if(!mu_1.innerTrack().isNull())  tk_1 = mu_1.innerTrack ();
      // else tk_1 = mu_1.outerTrack ();
       
