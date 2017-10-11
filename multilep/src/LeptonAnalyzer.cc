@@ -134,8 +134,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   // Loop over electrons (note: using iterator we can easily get the ref too)
   for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
     auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
-
-    //if(ele->gsfTrack().isNull()) continue; // no track requirement
+    if(ele->gsfTrack().isNull()) continue; 
     if(ele->pt() < 6)           continue; // from 10 to 6
     if(fabs(ele->eta()) > 2.5)   continue;
     // ---->  loose requirements about number of hits and VetoConversion
@@ -358,7 +357,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   }//end electrons
     
 
-  if(multilepAnalyzer->skim == "trilep"    and (_nL     < 3   ||   !good_leading)) return false;
+  if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
   if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "ttg"       and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "singlelep" and _nLight < 1) return false;
