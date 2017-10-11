@@ -107,6 +107,7 @@ class LeptonAnalyzer {
 
     multilep* multilepAnalyzer;
 
+    TransientVertex dileptonVertex(const reco::TrackRef tk1, const reco::TrackRef tk2);
     void fillLeptonGenVars(const reco::GenParticle*);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
