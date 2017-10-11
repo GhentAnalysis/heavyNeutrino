@@ -208,7 +208,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
  /*
  * refitting vertices displaced *********************************************************** 
  */  
-  double _nLFitting = 0;
   
   float iMu_plus=0;
   float iMu_minus_mu=0;
