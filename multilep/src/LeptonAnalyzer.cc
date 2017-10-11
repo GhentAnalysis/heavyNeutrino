@@ -222,10 +222,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
  
-      const reco::Track *tk_1; 
-      const reco::Track *tk_2; 
-      if(!mu_1.innerTrack().isNull())  tk_1 = mu_1.innerTrack ();
-      else tk_1 = mu_1.outerTrack ();
+    
+      const reco::TrackRef tk_1; 
+      const reco::TrackRef tk_2; 
+ 
+      if(!mu_1.innerTrack().isNull())  &tk_1 = mu_1.innerTrack ();
+      else &tk_1 = mu_1.outerTrack ();
       
       //------------------  loop µ-
       for(const pat::Muon& mu_2 : *muons){ 
@@ -396,7 +398,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
  * //--// Refit dilepton vertex:
  * Provide a transientvertex 
  */
- TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const reco::Track& tk2) {
+  TransientVertex LeptonAnalyzer::dileptonVertex(const reco::TrackRef tk1, const reco::TrackRef tk2) {
     MagneticField *bfield = new OAEParametrizedMagneticField("3_8T"); 
     std::vector<reco::TransientTrack> ttks;
     ttks.push_back(reco::TransientTrack(tk1, bfield)); 
