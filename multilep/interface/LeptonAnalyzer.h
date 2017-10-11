@@ -121,6 +121,7 @@ class LeptonAnalyzer {
 
     // In leptonAnalyzerIso,cc
     double getRelIso03(const pat::Muon&, const double);
+    double getRelIso04(const pat::Muon&, const double);
     double getRelIso03(const pat::Electron&, const double);
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
 
