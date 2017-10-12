@@ -9,7 +9,7 @@ inputFile       = "root://cmsxrootd.fnal.gov///store/data/Run2017C/MuonEG/MINIAO
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 isData          = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
 nEvents         = 1000
-outputFile      = 'ttg.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
+outputFile      = 'trilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
                                  # ttg       --> skim two leptons + one photon
