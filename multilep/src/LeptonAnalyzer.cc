@@ -87,7 +87,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
   //loop over muons
   for(const pat::Muon& mu : *muons){
-    if(_nL == nL_max)                              continue;
+    if(_nL == nL_max)                              break;
     if(mu.innerTrack().isNull())                   continue;
     if(mu.pt() < 5)                                continue;
     if(fabs(mu.eta()) > 2.4)                       continue;
@@ -173,7 +173,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
   //loop over taus
   for(const pat::Tau& tau : *taus){
-    if(_nL == nL_max)         continue;
+    if(_nL == nL_max)         break;
     if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
     if(fabs(tau.eta()) > 2.3) continue;
     if(!tau.tauID("decayModeFinding")) continue;
