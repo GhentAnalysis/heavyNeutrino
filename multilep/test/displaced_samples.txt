@@ -1,0 +1,45 @@
+##      both µ and electron
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-1_V-0.01_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-1_V-0.5_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-3_V-0.01_2l_NLO
+trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-4_V-0.01_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-5_V-0.00316_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-6_V-0.00316_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-5.5_V-0.00316_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-7_V-0.00316_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-8_V-0.00316_2l_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-9_V-0.00316_2l_NLO
+
+## only µ
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-10_V-0.00188259708_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-11_V-0.00148345941_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-12_V-0.0011934501_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-1_V-0.11505_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-1_V-0.3872_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-1_V-0.5_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-2_V-0.07071_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-3_V-0.0245_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-4_V-0.01225_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-5_V-0.00316_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-5_V-0.0111_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-6_V-0.00316_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-7_V-0.00316_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-8_V-0.00328876176_mu_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-9_V-0.00244991552_mu_NLO
+
+##  only electron
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-10_V-0.00188259708_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-11_V-0.00148345941_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-12_V-0.0011934501_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-1_V-0.11557_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-1_V-0.3872_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-1_V-0.5_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-2_V-0.07071_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-3_V-0.0245_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-4_V-0.01225_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-5_V-0.00316_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-6_V-0.00316_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-7_V-0.00316_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-8_V-0.00328876176_e_NLO
+#trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-9_V-0.00244991552_e_NLO
