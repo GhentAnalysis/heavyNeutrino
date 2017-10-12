@@ -68,7 +68,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
   edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
   edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
-//edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
+  //edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedVeto;          iEvent.getByToken(multilepAnalyzer->eleCutBasedVetoToken,              electronsCutBasedVeto);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedLoose;         iEvent.getByToken(multilepAnalyzer->eleCutBasedLooseToken,             electronsCutBasedLoose);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBasedMedium);
@@ -92,7 +92,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   
   //loop over muons
   for(const pat::Muon& mu : *muons){
-   // ===>  if(mu.innerTrack().isNull()) continue;
+    // ===>  if(mu.innerTrack().isNull()) continue;
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
@@ -103,8 +103,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPFMuon[_nL]=  mu.isPFMuon();
     // ===>  if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
-   // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
-   // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
+    // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
+    // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
     fillLeptonGenVars(mu.genParticle());
     fillLeptonIsoVars(mu, *rho);	  
@@ -174,7 +174,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
 
     
-   if (ele->pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) good_leading = true;
+    if (ele->pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) good_leading = true;
 
     
     ++_nEle;
@@ -205,9 +205,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     ++_nL;
   }
   
- /*
- * refitting vertices displaced *********************************************************** 
- */  
+  /*
+   * refitting vertices displaced *********************************************************** 
+   */  
   
   float iMu_plus=0;
   float iMu_minus_mu=0;
@@ -225,68 +225,68 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       
     //------------------  loop µ-
     for(const pat::Muon& mu_2 : *muons){ 
-        if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
-        iMu_minus_mu++;
-        if (mu_2.charge() > 0) continue;  // only opposite charge
+      if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
+      iMu_minus_mu++;
+      if (mu_2.charge() > 0) continue;  // only opposite charge
         
-        const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
+      const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
       
-        TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
-        if(!dilvtx.isValid()) { 
-          std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-          } 
-        else {    
-          _vertices[0][_nVFit] = iMu_plus*100 + iMu_minus_mu;                   
-          _vertices[1][_nVFit] = dilvtx.position().x(); 
-          _vertices[2][_nVFit] = dilvtx.position().y(); 
-          _vertices[3][_nVFit] = dilvtx.position().z(); 
-          _vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
-          _vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
-          _vertices[6][_nVFit] = dilvtx.positionError().czz(); 
-          _vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
-          _vertices[8][_nVFit] = dilvtx.positionError().czy(); 
-          _vertices[9][_nVFit] = dilvtx.positionError().czx(); 
-          _vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
-          _vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
-          ++_nVFit;   
-        } 
-      }// end loop µ-
+      TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
+      if(!dilvtx.isValid()) { 
+	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
+      } 
+      else {    
+	_vertices[0][_nVFit] = iMu_plus*100 + iMu_minus_mu;                   
+	_vertices[1][_nVFit] = dilvtx.position().x(); 
+	_vertices[2][_nVFit] = dilvtx.position().y(); 
+	_vertices[3][_nVFit] = dilvtx.position().z(); 
+	_vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
+	_vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
+	_vertices[6][_nVFit] = dilvtx.positionError().czz(); 
+	_vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
+	_vertices[8][_nVFit] = dilvtx.positionError().czy(); 
+	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
+	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
+	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
+	++_nVFit;   
+      } 
+    }// end loop µ-
           
-      //------------------  loop e-
-      for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
-        auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
-        if(ele_2->gsfTrack().isNull()) continue;
-        if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
-        iE_minus_mu++; // it is already _nMu
-        if(ele_2->charge() > 0) continue; // only opposite charge
-        const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
+    //------------------  loop e-
+    for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
+      auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
+      if(ele_2->gsfTrack().isNull()) continue;
+      if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
+      iE_minus_mu++; // it is already _nMu
+      if(ele_2->charge() > 0) continue; // only opposite charge
+      const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
         
-        TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
-        if(!dilvtx.isValid()) { 
-          std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-          } 
-        else {      
-          _vertices[0][_nVFit] = iMu_plus*100 + iE_minus_mu;          
-          _vertices[1][_nVFit] = dilvtx.position().x(); 
-          _vertices[2][_nVFit] = dilvtx.position().y(); 
-          _vertices[3][_nVFit] = dilvtx.position().z(); 
-          _vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
-          _vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
-          _vertices[6][_nVFit] = dilvtx.positionError().czz(); 
-          _vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
-          _vertices[8][_nVFit] = dilvtx.positionError().czy(); 
-          _vertices[9][_nVFit] = dilvtx.positionError().czx(); 
-          _vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
-          _vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
-          ++_nVFit;   
-        
-         }// end loop e-
+      TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
+      if(!dilvtx.isValid()) { 
+	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
+      } 
+      else {      
+	_vertices[0][_nVFit] = iMu_plus*100 + iE_minus_mu;          
+	_vertices[1][_nVFit] = dilvtx.position().x(); 
+	_vertices[2][_nVFit] = dilvtx.position().y(); 
+	_vertices[3][_nVFit] = dilvtx.position().z(); 
+	_vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
+	_vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
+	_vertices[6][_nVFit] = dilvtx.positionError().czz(); 
+	_vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
+	_vertices[8][_nVFit] = dilvtx.positionError().czy(); 
+	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
+	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
+	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
+	++_nVFit;   
+      } 
+    }// end loop e-
   }//end loop µ
   
    
-   iMu_minus_e=0;
-   iE_plus=_nMu;
-   iE_minus_e=_nMu;
+  iMu_minus_e=0;
+  iE_plus=_nMu;
+  iE_minus_e=_nMu;
   
       
   for(auto ele_1 = electrons->begin(); ele_1 != electrons->end(); ++ele_1){ // for electrons
@@ -300,65 +300,64 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     const reco::Track&  tk_1 =  *ele_1->gsfTrack() ;
    
     //------------------  loop µ+
-      for(const pat::Muon& mu_2 : *muons){ 
-        if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
-        iMu_minus_e++;
-        if (mu_2.charge() < 0) continue;  // only opposite charge
+    for(const pat::Muon& mu_2 : *muons){ 
+      if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
+      iMu_minus_e++;
+      if (mu_2.charge() < 0) continue;  // only opposite charge
         
-        const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
-        
-        TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
-        if(!dilvtx.isValid()) { 
-          std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-          } 
-        else {       
-          _vertices[0][_nVFit] = iE_plus*100+iMu_minus_e;    
-          _vertices[1][_nVFit] = dilvtx.position().x(); 
-          _vertices[2][_nVFit] = dilvtx.position().y(); 
-          _vertices[3][_nVFit] = dilvtx.position().z(); 
-          _vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
-          _vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
-          _vertices[6][_nVFit] = dilvtx.positionError().czz(); 
-          _vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
-          _vertices[8][_nVFit] = dilvtx.positionError().czy(); 
-          _vertices[9][_nVFit] = dilvtx.positionError().czx(); 
-          _vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
-          _vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
-          ++_nVFit;   
-        } 
-      }// end loop µ-
+      const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;      
+      TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
+      if(!dilvtx.isValid()) { 
+	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
+      } 
+      else {       
+	_vertices[0][_nVFit] = iE_plus*100+iMu_minus_e;    
+	_vertices[1][_nVFit] = dilvtx.position().x(); 
+	_vertices[2][_nVFit] = dilvtx.position().y(); 
+	_vertices[3][_nVFit] = dilvtx.position().z(); 
+	_vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
+	_vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
+	_vertices[6][_nVFit] = dilvtx.positionError().czz(); 
+	_vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
+	_vertices[8][_nVFit] = dilvtx.positionError().czy(); 
+	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
+	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
+	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
+	++_nVFit;   
+      } 
+    }// end loop µ-
     
     
-     //------------------  loop e+
-      for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
-        auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
-        if(ele_2->gsfTrack().isNull()) continue;
-        if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
-        iE_minus_e++;
+    //------------------  loop e+
+    for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
+      auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
+      if(ele_2->gsfTrack().isNull()) continue;
+      if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
+      iE_minus_e++;
         
-        if(ele_2->charge() < 0) continue; // only opposite charge
+      if(ele_2->charge() < 0) continue; // only opposite charge
         
-        const reco::Track&  tk_2 =  *ele_2->gsfTrack();        
-        TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
-        if(!dilvtx.isValid()) { 
-          std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-          } 
-        else {    
-          _vertices[0][_nVFit] = iE_plus*100 + iE_minus_e;          
-          _vertices[1][_nVFit] = dilvtx.position().x(); 
-          _vertices[2][_nVFit] = dilvtx.position().y(); 
-          _vertices[3][_nVFit] = dilvtx.position().z(); 
-          _vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
-          _vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
-          _vertices[6][_nVFit] = dilvtx.positionError().czz(); 
-          _vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
-          _vertices[8][_nVFit] = dilvtx.positionError().czy(); 
-          _vertices[9][_nVFit] = dilvtx.positionError().czx(); 
-          _vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
-          _vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
-          ++_nVFit;   
-        
-         }// end loop e+
+      const reco::Track&  tk_2 =  *ele_2->gsfTrack();        
+      TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
+      if(!dilvtx.isValid()) { 
+	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
+      } 
+      else {    
+	_vertices[0][_nVFit] = iE_plus*100 + iE_minus_e;          
+	_vertices[1][_nVFit] = dilvtx.position().x(); 
+	_vertices[2][_nVFit] = dilvtx.position().y(); 
+	_vertices[3][_nVFit] = dilvtx.position().z(); 
+	_vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
+	_vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
+	_vertices[6][_nVFit] = dilvtx.positionError().czz(); 
+	_vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
+	_vertices[8][_nVFit] = dilvtx.positionError().czy(); 
+	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
+	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
+	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
+	++_nVFit;   
+      }
+    }// end loop e+
     
     
   }//end electrons
@@ -378,13 +377,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
  * Provide a transientvertex 
  */
 TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const reco::Track& tk2) {
-    MagneticField *bfield = new OAEParametrizedMagneticField("3_8T"); 
-    std::vector<reco::TransientTrack> ttks;
-    ttks.push_back(reco::TransientTrack(tk1, bfield)); 
-    ttks.push_back(reco::TransientTrack(tk2, bfield)); 
-    KalmanVertexFitter vtxFitter;
-    return vtxFitter.vertex(ttks); 
-  } 
+  MagneticField *bfield = new OAEParametrizedMagneticField("3_8T"); 
+  std::vector<reco::TransientTrack> ttks;
+  ttks.push_back(reco::TransientTrack(tk1, bfield)); 
+  ttks.push_back(reco::TransientTrack(tk2, bfield)); 
+  KalmanVertexFitter vtxFitter;
+  return vtxFitter.vertex(ttks); 
+} 
 
     
     
@@ -402,7 +401,7 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
   _puCorr[_nL] = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
-   double pucorr= rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
+  double pucorr= rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
   _absIso03 [_nL] = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - pucorr);
   _absIso04 [_nL] = mu.pfIsolationR04().sumChargedHadronPt + std::max(0., mu.pfIsolationR04().sumNeutralHadronEt + mu.pfIsolationR04().sumPhotonEt - pucorr);
   _sumNeutralHadronEt04 [_nL] = mu.pfIsolationR04().sumNeutralHadronEt;
@@ -417,7 +416,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
 
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rho){
   _puCorr[_nL] = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
-   double pucorr= rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
+  double pucorr= rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
   _absIso03 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - pucorr);
   _absIso04 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - pucorr);
   _sumNeutralHadronEt04 [_nL] = ele.pfIsolationVariables().sumNeutralHadronEt;
@@ -430,8 +429,8 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
 
 void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
   if(genParticle != nullptr){
-     _lIsPrompt[_nL] = (genParticle)->isPromptFinalState();
-     _lMatchPdgId[_nL] = (genParticle)->pdgId();
+    _lIsPrompt[_nL] = (genParticle)->isPromptFinalState();
+    _lMatchPdgId[_nL] = (genParticle)->pdgId();
   } else{
     _lIsPrompt[_nL] = false;
     _lMatchPdgId[_nL] = 0;
@@ -488,61 +487,61 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
 
 //Check if tau overlaps with light lepton
 bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose){
-    TLorentzVector tauV;
-    tauV.SetPtEtaPhiE(tau.pt(), tau.eta(), tau.phi(), tau.energy());
-    for(unsigned l = 0; l < _nLight; ++l){
-        if(loose[l]){
-            TLorentzVector lightV;
-            lightV.SetPtEtaPhiE(_lPt[l], _lEta[l], _lPhi[l], _lE[l]);
-            if(tauV.DeltaR(lightV) < 0.4) return true;
-        }
+  TLorentzVector tauV;
+  tauV.SetPtEtaPhiE(tau.pt(), tau.eta(), tau.phi(), tau.energy());
+  for(unsigned l = 0; l < _nLight; ++l){
+    if(loose[l]){
+      TLorentzVector lightV;
+      lightV.SetPtEtaPhiE(_lPt[l], _lEta[l], _lPhi[l], _lE[l]);
+      if(tauV.DeltaR(lightV) < 0.4) return true;
     }
-    return false;
+  }
+  return false;
 }
 
 
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex){
-    //Make skimmed "close jet" collection
-    std::vector<pat::Jet> selectedJetsAll;
-    for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+  //Make skimmed "close jet" collection
+  std::vector<pat::Jet> selectedJetsAll;
+  for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
+    if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+  }
+  // Find closest selected jet
+  unsigned closestIndex = 0;
+  for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
+    if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
+  }
+  const pat::Jet& jet = selectedJetsAll[closestIndex];
+  if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
+    _ptRatio[_nL] = 1;
+    _ptRel[_nL] = 0;
+    _closestJetCsv[_nL] = 0;
+    _selectedTrackMult[_nL] = 0;
+  } else {
+    auto  l1Jet       = jet.correctedP4("L1FastJet");
+    float JEC         = jet.p4().E()/l1Jet.E();
+    auto  l           = lepton.p4();
+    auto  lepAwareJet = (l1Jet - l)*JEC + l;
+    TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
+    TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
+    _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
+    _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
+    _closestJetCsv[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+    //compute selected track multiplicity of closest jet
+    _selectedTrackMult[_nL] = 0;
+    for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
+      const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
+      try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
+	const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
+	TLorentzVector trackVec          = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
+	double daughterDeltaR            = trackVec.DeltaR(jV);
+	bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
+	  && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
+																			  && fabs(daughterTrack.dxy(vertex.position())) < 17;
+	if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
+      } catch (...){
+	_selectedTrackMult[_nL] = 0;
+      }
     }
-    // Find closest selected jet
-    unsigned closestIndex = 0;
-    for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
-        if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
-    }
-    const pat::Jet& jet = selectedJetsAll[closestIndex];
-    if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
-        _ptRatio[_nL] = 1;
-        _ptRel[_nL] = 0;
-        _closestJetCsv[_nL] = 0;
-        _selectedTrackMult[_nL] = 0;
-    } else {
-        auto  l1Jet       = jet.correctedP4("L1FastJet");
-        float JEC         = jet.p4().E()/l1Jet.E();
-        auto  l           = lepton.p4();
-        auto  lepAwareJet = (l1Jet - l)*JEC + l;
-        TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
-        TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
-        _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
-        _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
-        _closestJetCsv[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
-        //compute selected track multiplicity of closest jet
-        _selectedTrackMult[_nL] = 0;
-        for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
-            const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-            try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
-                const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
-                TLorentzVector trackVec          = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-                double daughterDeltaR            = trackVec.DeltaR(jV);
-                bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
-                                                   && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
-                                                   && fabs(daughterTrack.dxy(vertex.position())) < 17;
-                if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
-            } catch (...){
-                _selectedTrackMult[_nL] = 0;
-            }
-        }
-    }
+  }
 }
