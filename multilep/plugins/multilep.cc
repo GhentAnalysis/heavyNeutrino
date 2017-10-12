@@ -88,9 +88,9 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
   edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
 
-  if(_runNb != iEvent.id().run()) triggerAnalyzer->reIndex = true; // HLT results could have different size/order in new run, so look up again de index positions
-
   lheAnalyzer->analyze(iEvent);                                      // needs to be run before selection to get correct uncertainties on MC xsection
+  if(!vertices->size()) return;                                       //Don't consider 0 vertex events
+  if(_runNb != iEvent.id().run()) triggerAnalyzer->reIndex = true;   // HLT results could have different size/order in new run, so look up again de index positions
   if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
   if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
   if(!photonAnalyzer->analyze(iEvent)) return;

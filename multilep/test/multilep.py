@@ -55,7 +55,7 @@ else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_201
 #
 process.load('CommonTools.ParticleFlow.goodOfflinePrimaryVertices_cfi')
 process.goodOfflinePrimaryVertices.src    = cms.InputTag('offlineSlimmedPrimaryVertices')
-process.goodOfflinePrimaryVertices.filter = cms.bool(True)
+process.goodOfflinePrimaryVertices.filter = cms.bool(False)                          #Don't use any EDFilter when relying on hCounter!
 
 
 #
