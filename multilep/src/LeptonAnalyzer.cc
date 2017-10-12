@@ -96,6 +96,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
+	      if(!mu.isLooseMuon()) continue;
+
     
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
@@ -217,7 +219,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   float iE_minus_e=_nMu;
   
   for(const pat::Muon& mu_1 : *muons){ // for µ
-    if(mu_1.pt() < 3 || fabs(mu_1.eta()) > 2.4 || !mu_1.isPFMuon())              continue;    
+    if(mu_1.pt() < 3 || fabs(mu_1.eta()) > 2.4 || !mu_1.isPFMuon())              continue;   
+	  	      if(!mu_1.isLooseMuon()) continue;
+
     iMu_plus++;
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
@@ -227,6 +231,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
     //------------------  loop µ-
     for(const pat::Muon& mu_2 : *muons){ 
+	    	  	      if(!mu_2.isLooseMuon()) continue;
+
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_mu++;
       if (mu_2.charge() > 0) continue;  // only opposite charge
@@ -308,6 +314,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
    
     //------------------  loop µ+
     for(const pat::Muon& mu_2 : *muons){ 
+	    	  	      if(!mu_2.isLooseMuon()) continue;
+
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_e++;
       if (mu_2.charge() < 0) continue;  // only opposite charge
