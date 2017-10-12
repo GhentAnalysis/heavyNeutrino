@@ -221,29 +221,22 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     iMu_plus++;
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
- 
-    
-      const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
-     // if(!mu_1.innerTrack().isNull())  tk_1 = mu_1.innerTrack ();
-     // else tk_1 = mu_1.outerTrack ();
+    const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
       
-      //------------------  loop µ-
-      for(const pat::Muon& mu_2 : *muons){ 
+    //------------------  loop µ-
+    for(const pat::Muon& mu_2 : *muons){ 
         if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
         iMu_minus_mu++;
         if (mu_2.charge() > 0) continue;  // only opposite charge
         
-        reco::TrackRef  tk_2 ; 
-        if(!mu_2.innerTrack().isNull())  tk_2 = mu_2.innerTrack ();
-        else tk_2 = mu_2.outerTrack ();
-        
+        const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
+      
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
           } 
         else {    
-          _vertices[0][_nVFit] = iMu_plus*100 + iMu_minus_mu;
-                   
+          _vertices[0][_nVFit] = iMu_plus*100 + iMu_minus_mu;                   
           _vertices[1][_nVFit] = dilvtx.position().x(); 
           _vertices[2][_nVFit] = dilvtx.position().y(); 
           _vertices[3][_nVFit] = dilvtx.position().z(); 
@@ -266,17 +259,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
         iE_minus_mu++; // it is already _nMu
         if(ele_2->charge() > 0) continue; // only opposite charge
-        reco::GsfTrackRef  tk_2 ; 
-        tk_2 = ele_2->gsfTrack();
+        const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
         
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
           } 
         else {      
-          _vertices[0][_nVFit] = iMu_plus*100 + iE_minus_mu;
-
-          
+          _vertices[0][_nVFit] = iMu_plus*100 + iE_minus_mu;          
           _vertices[1][_nVFit] = dilvtx.position().x(); 
           _vertices[2][_nVFit] = dilvtx.position().y(); 
           _vertices[3][_nVFit] = dilvtx.position().z(); 
@@ -308,25 +298,22 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue; 
     
-    reco::GsfTrackRef  tk_1 =ele_1->gsfTrack();
+    const reco::Track&  tk_1 =  *ele_1->gsfTrack() ;
    
     //------------------  loop µ+
       for(const pat::Muon& mu_2 : *muons){ 
         if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
         iMu_minus_e++;
         if (mu_2.charge() < 0) continue;  // only opposite charge
-            reco::TrackRef  tk_2 ; 
-
-        if(!mu_2.innerTrack().isNull())  tk_2 = mu_2.innerTrack ();
-        else tk_2 = mu_2.outerTrack ();
+        
+        const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
         
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
           } 
         else {       
-          _vertices[0][_nVFit] = iE_plus*100+iMu_minus_e;
-       
+          _vertices[0][_nVFit] = iE_plus*100+iMu_minus_e;    
           _vertices[1][_nVFit] = dilvtx.position().x(); 
           _vertices[2][_nVFit] = dilvtx.position().y(); 
           _vertices[3][_nVFit] = dilvtx.position().z(); 
@@ -351,17 +338,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         iE_minus_e++;
         
         if(ele_2->charge() < 0) continue; // only opposite charge
-      reco::GsfTrackRef  tk_2 ; 
-
-        tk_2 = ele_2->gsfTrack();
         
+        const reco::Track&  tk_2 =  *ele_2->gsfTrack();        
         TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
         if(!dilvtx.isValid()) { 
           std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
           } 
         else {    
-          _vertices[0][_nVFit] = iE_plus*100 + iE_minus_e;
-          
+          _vertices[0][_nVFit] = iE_plus*100 + iE_minus_e;          
           _vertices[1][_nVFit] = dilvtx.position().x(); 
           _vertices[2][_nVFit] = dilvtx.position().y(); 
           _vertices[3][_nVFit] = dilvtx.position().z(); 
@@ -394,7 +378,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
  * //--// Refit dilepton vertex:
  * Provide a transientvertex 
  */
-  TransientVertex LeptonAnalyzer::dileptonVertex(const reco::TrackRef tk1, const reco::TrackRef tk2) {
+  TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const reco::Track& tk2) {
     MagneticField *bfield = new OAEParametrizedMagneticField("3_8T"); 
     std::vector<reco::TransientTrack> ttks;
     ttks.push_back(reco::TransientTrack(tk1, bfield)); 
