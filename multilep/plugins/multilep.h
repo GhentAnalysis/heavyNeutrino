@@ -24,9 +24,6 @@
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 //New for SUSY masses
 #include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoHeader.h"
-//TEST
-#include "FWCore/Framework/interface/LuminosityBlock.h"
-
 
 #include "TTree.h"
 
