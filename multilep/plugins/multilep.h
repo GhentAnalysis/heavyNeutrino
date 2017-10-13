@@ -22,6 +22,8 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+//New for SUSY masses
+#include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoHeader.h"
 
 #include "TTree.h"
 
@@ -60,6 +62,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
         // Public such that we can easily access them in the individual object analyzers)
         edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
         edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
+        edm::EDGetTokenT<GenLumiInfoHeader>                 genLumiInfoToken;
         edm::EDGetTokenT<LHEEventProduct>                   lheEventInfoToken;
         edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken;
         edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 

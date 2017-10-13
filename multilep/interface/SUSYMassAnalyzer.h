@@ -4,6 +4,8 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "TH2D.h"
 
+
+
 class multilep;
 
 class SUSYMassAnalyzer{
@@ -15,9 +17,10 @@ class SUSYMassAnalyzer{
         double _mChi1;              //LSP (neutralino1) mass
         double _mChi2;              //Chargino mass = neutralino2 mass
     public:
-        SUSYMassAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
+        SUSYMassAnalyzer(const edm::ParameterSet&, multilep*);
         ~SUSYMassAnalyzer();
-        void beginJob(TTree* outputTree, edm::Service<TFileService>& fs);
+        void beginJob(TTree* outputTree, edm::Service<TFileService>&);
+        void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
         void analyze(const edm::Event&);
 };
 #endif
