@@ -51,75 +51,75 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
-  //Initialize tree with event info
+    //Initialize tree with event info
 
-  outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
+    outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
 
-  //Set all branches of the outputTree
-  outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
-  outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
-  outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
-  outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
+    //Set all branches of the outputTree
+    outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
+    outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
+    outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
+    outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
-  lheAnalyzer->beginJob(outputTree, fs);
-  if(!isData) genAnalyzer->beginJob(outputTree);
-  triggerAnalyzer->beginJob(outputTree);
-  leptonAnalyzer->beginJob(outputTree);
-  photonAnalyzer->beginJob(outputTree);
-  jetAnalyzer->beginJob(outputTree);
+    lheAnalyzer->beginJob(outputTree, fs);
+    if(!isData) genAnalyzer->beginJob(outputTree);
+    triggerAnalyzer->beginJob(outputTree);
+    leptonAnalyzer->beginJob(outputTree);
+    photonAnalyzer->beginJob(outputTree);
+    jetAnalyzer->beginJob(outputTree);
 
-  outputTree->Branch("_met",                          &_met,                          "_met/D");
-  outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
-  outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
-  outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
-  outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
+    outputTree->Branch("_met",                          &_met,                          "_met/D");
+    outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
+    outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
+    outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
+    outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
 
-  outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
-  outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
-  outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
-  outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
-  outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
+    outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
+    outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
+    outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
+    outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
+    outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
 
-  _runNb = 0;
+    _runNb = 0;
 }
 
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
-  edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
-  edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
+    edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
+    edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
 
-  lheAnalyzer->analyze(iEvent);                                      // needs to be run before selection to get correct uncertainties on MC xsection
-  if(!vertices->size()) return;                                       //Don't consider 0 vertex events
-  if(_runNb != iEvent.id().run()) triggerAnalyzer->reIndex = true;   // HLT results could have different size/order in new run, so look up again de index positions
-  if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
-  if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
-  if(!photonAnalyzer->analyze(iEvent)) return;
-  triggerAnalyzer->analyze(iEvent);
-  jetAnalyzer->analyze(iEvent);
+    lheAnalyzer->analyze(iEvent);                                      // needs to be run before selection to get correct uncertainties on MC xsection
+    if(!vertices->size()) return;                                       //Don't consider 0 vertex events
+    if(_runNb != iEvent.id().run()) triggerAnalyzer->reIndex = true;   // HLT results could have different size/order in new run, so look up again de index positions
+    if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
+    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
+    if(!photonAnalyzer->analyze(iEvent)) return;
+    triggerAnalyzer->analyze(iEvent);
+    jetAnalyzer->analyze(iEvent);
 
-  //determine event number run number and luminosity block
-  _runNb     = (unsigned long) iEvent.id().run();
-  _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
-  _eventNb   = (unsigned long) iEvent.id().event();
-  _nVertex   = vertices->size();
+    //determine event number run number and luminosity block
+    _runNb     = (unsigned long) iEvent.id().run();
+    _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
+    _eventNb   = (unsigned long) iEvent.id().event();
+    _nVertex   = vertices->size();
 
-  //determine the met of the event and its uncertainties
-  //nominal MET value
-  const pat::MET& met = (*mets).front();
-  _met            = met.pt();
-  _metPhi         = met.phi();
-  _metJECDown     = met.shiftedPt(pat::MET::JetEnDown);
-  _metJECUp       = met.shiftedPt(pat::MET::JetEnUp);
-  _metUnclDown    = met.shiftedPt(pat::MET::UnclusteredEnDown);
-  _metUnclUp      = met.shiftedPt(pat::MET::UnclusteredEnUp);
-  _metPhiJECDown  = met.shiftedPhi(pat::MET::JetEnDown);
-  _metPhiJECUp    = met.shiftedPhi(pat::MET::JetEnUp);
-  _metPhiUnclUp   = met.shiftedPhi(pat::MET::UnclusteredEnUp);
-  _metPhiUnclDown = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+    //determine the met of the event and its uncertainties
+    //nominal MET value
+    const pat::MET& met = (*mets).front();
+    _met            = met.pt();
+    _metPhi         = met.phi();
+    _metJECDown     = met.shiftedPt(pat::MET::JetEnDown);
+    _metJECUp       = met.shiftedPt(pat::MET::JetEnUp);
+    _metUnclDown    = met.shiftedPt(pat::MET::UnclusteredEnDown);
+    _metUnclUp      = met.shiftedPt(pat::MET::UnclusteredEnUp);
+    _metPhiJECDown  = met.shiftedPhi(pat::MET::JetEnDown);
+    _metPhiJECUp    = met.shiftedPhi(pat::MET::JetEnUp);
+    _metPhiUnclUp   = met.shiftedPhi(pat::MET::UnclusteredEnUp);
+    _metPhiUnclDown = met.shiftedPhi(pat::MET::UnclusteredEnDown);
 
-  //store calculated event info in root tree
-  outputTree->Fill();
+    //store calculated event info in root tree
+    outputTree->Fill();
 }
 
 
