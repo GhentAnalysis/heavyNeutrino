@@ -90,18 +90,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   
   //loop over muons
   for(const pat::Muon& mu : *muons){
-	  std::cout<<"in muon"<<std::endl;
     if(mu.innerTrack().isNull()) continue;
-	   std::cout<<"in muon with track"<<std::endl;
 
     if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
-	   std::cout<<"in muon loose"<<std::endl;
 
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
     if(!mu.isMediumMuon()) continue;
-	   std::cout<<"in muon medium"<<std::endl;
 
     
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
@@ -110,32 +106,21 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPFMuon[_nL]=  mu.isPFMuon();
     // ===>  if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
-	  	   std::cout<<"in muon impact vars"<<std::endl;
 
     // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
-	  	  	   std::cout<<"in muon kin vars"<<std::endl;
-
     fillLeptonGenVars(mu.genParticle());
-	  	  	   std::cout<<"in muon gen vars"<<std::endl;
-
     fillLeptonIsoVars(mu, *rho);	
-	  	  	   std::cout<<"in muon iso vars"<<std::endl;
-
     fillLeptonJetVariables(mu, jets, primaryVertex);
-	  	  	   std::cout<<"in muon jet vars"<<std::endl;
-
 
     _lFlavor[_nL]        = 1;
     _muonSegComp[_nL]    = mu.segmentCompatibility();
-	  	  	   std::cout<<"in muon segment compatibility"<<std::endl;
-
 
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
-    
-    _muNumberInnerHits[_nL]= (!mu.innerTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : mu.outerTrack()->hitPattern().numberOfValidMuonHits() ;
-    	  	   std::cout<<"in muon  numer hits"<<std::endl;
+  
+     // TODO: this is a possible solution to the missing trackRef, but maybe not what you want 
+    _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : -1);
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     _lPOGMedium[_nL] = mu.isMediumMuon();
