@@ -36,9 +36,7 @@
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
-
-
-
+#include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 
 //
 // class declaration
@@ -49,6 +47,7 @@ class PhotonAnalyzer;
 class JetAnalyzer;
 class GenAnalyzer;
 class LheAnalyzer;
+class SUSYMassAnalyzer;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
@@ -108,11 +107,12 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
         virtual void endJob() override;
 
-        TriggerAnalyzer* triggerAnalyzer;
-        LeptonAnalyzer*  leptonAnalyzer;
-        PhotonAnalyzer*  photonAnalyzer;
-        JetAnalyzer*     jetAnalyzer;
-        LheAnalyzer*     lheAnalyzer;
+        TriggerAnalyzer*  triggerAnalyzer;
+        LeptonAnalyzer*   leptonAnalyzer;
+        PhotonAnalyzer*   photonAnalyzer;
+        JetAnalyzer*      jetAnalyzer;
+        LheAnalyzer*      lheAnalyzer;
+        SUSYMassAnalyzer* susyMassAnalyzer;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;

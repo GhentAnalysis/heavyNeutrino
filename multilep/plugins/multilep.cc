@@ -49,7 +49,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
-    SUSYMassAnalyzer= new SUSYMassAnalyzer(iConfig, this);
+    susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this);
 }
 
 // ------------ method called once each job just before starting event loop  ------------

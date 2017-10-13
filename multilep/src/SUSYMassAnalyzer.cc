@@ -1,6 +1,7 @@
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoHeader.h"
+#include "FWCore/Framework/interface/LuminosityBlock.h"
 SUSYMassAnalyzer::SUSYMassAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
       multilepAnalyzer(multilepAnalyzer)
 {};
