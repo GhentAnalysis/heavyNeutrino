@@ -24,6 +24,9 @@
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 //New for SUSY masses
 #include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoHeader.h"
+//TEST
+#include "FWCore/Framework/interface/LuminosityBlock.h"
+
 
 #include "TTree.h"
 
@@ -104,6 +107,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
     private:
         virtual void beginJob() override;
+        virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&);
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
         virtual void endJob() override;
 

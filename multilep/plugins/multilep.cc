@@ -62,6 +62,10 @@ multilep::~multilep(){
     delete susyMassAnalyzer;
 }
 
+void multilep::beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&){
+
+}
+
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
     //Initialize tree with event info
