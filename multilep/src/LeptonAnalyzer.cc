@@ -115,20 +115,33 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
+	  	  	   std::cout<<"in muon kin vars"<<std::endl;
+
     fillLeptonGenVars(mu.genParticle());
-    fillLeptonIsoVars(mu, *rho);	  
+	  	  	   std::cout<<"in muon gen vars"<<std::endl;
+
+    fillLeptonIsoVars(mu, *rho);	
+	  	  	   std::cout<<"in muon iso vars"<<std::endl;
+
     fillLeptonJetVariables(mu, jets, primaryVertex);
+	  	  	   std::cout<<"in muon jet vars"<<std::endl;
+
 
     _lFlavor[_nL]        = 1;
     _muonSegComp[_nL]    = mu.segmentCompatibility();
+	  	  	   std::cout<<"in muon segment compatibility"<<std::endl;
+
 
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
     
     _muNumberInnerHits[_nL]= (!mu.innerTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : mu.outerTrack()->hitPattern().numberOfValidMuonHits() ;
+    	  	   std::cout<<"in muon  numer hits"<<std::endl;
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     _lPOGMedium[_nL] = mu.isMediumMuon();
     _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
+	  	  	   std::cout<<"in muon tight"<<std::endl;
+
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
     
