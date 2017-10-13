@@ -49,8 +49,7 @@ class GenAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
 
-class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
-
+class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::SharedResources> {
     public:
         explicit multilep(const edm::ParameterSet&);
         ~multilep();
@@ -104,7 +103,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
     private:
         virtual void beginJob() override;
-        virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&);
+        virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
         virtual void endJob() override;
 

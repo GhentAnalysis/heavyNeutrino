@@ -62,10 +62,6 @@ multilep::~multilep(){
     delete susyMassAnalyzer;
 }
 
-void multilep::beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&){
-
-}
-
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
     //Initialize tree with event info
@@ -99,8 +95,11 @@ void multilep::beginJob(){
 
     _runNb = 0;
 }
-
-
+// ------------ method called for each lumi block ---------
+void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
+    std::cout << "Lumi block begins!" << std::endl;
+    if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
+}
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
