@@ -9,6 +9,8 @@ import FWCore.ParameterSet.Config as cms
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
 isData          = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
+is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
+isSUSY = "/SMS-T" in inputFile
 nEvents         = 1000
 outputFile      = 'ttg.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
@@ -28,7 +30,7 @@ for i in range(1,len(sys.argv)):
     elif "events"          in sys.argv[i]: nEvents         = int(getVal(sys.argv[i]))
 
 
-is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
+isSUSY
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -126,7 +128,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
   skim                          = cms.untracked.string(outputFile.split('.')[0]),
   isData                        = cms.untracked.bool(isData),
-  is2017                        = cms.untracked.bool(is2017)
+  is2017                        = cms.untracked.bool(is2017),
+  isSUSY                        = cms.untracked.bool(isSUSY)
 )
 
 
