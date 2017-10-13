@@ -53,7 +53,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 
     public:
         explicit multilep(const edm::ParameterSet&);
-        ~multilep(){};
+        ~multilep();
 
         static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 

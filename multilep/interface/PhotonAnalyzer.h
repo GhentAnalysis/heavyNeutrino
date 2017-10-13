@@ -56,10 +56,9 @@ class PhotonAnalyzer {
 
   public:
     PhotonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~PhotonAnalyzer();
+    ~PhotonAnalyzer(){};
 
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&);
 };
-
 #endif

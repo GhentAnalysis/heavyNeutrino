@@ -18,7 +18,7 @@ class SUSYMassAnalyzer{
         double _mChi2;              //Chargino mass = neutralino2 mass
     public:
         SUSYMassAnalyzer(const edm::ParameterSet&, multilep*);
-        ~SUSYMassAnalyzer();
+        ~SUSYMassAnalyzer(){};
         void beginJob(TTree* outputTree, edm::Service<TFileService>&);
         void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
         void analyze(const edm::Event&);

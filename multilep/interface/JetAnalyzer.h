@@ -42,7 +42,7 @@ class JetAnalyzer {
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~JetAnalyzer();
+    ~JetAnalyzer(){};
 
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&);

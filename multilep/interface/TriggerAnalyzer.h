@@ -35,7 +35,7 @@ class TriggerAnalyzer {
 
   public:
     TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~TriggerAnalyzer();
+    ~TriggerAnalyzer(){};
 
     bool reIndex;
     void beginJob(TTree* outputTree);

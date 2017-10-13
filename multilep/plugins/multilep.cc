@@ -52,6 +52,16 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this);
 }
 
+multilep::~multilep(){
+    delete triggerAnalyzer;
+    delete leptonAnalyzer;
+    delete photonAnalyzer;
+    delete jetAnalyzer;
+    delete genAnalyzer;
+    delete lheAnalyzer;
+    delete susyMassAnalyzer;
+}
+
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
     //Initialize tree with event info
