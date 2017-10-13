@@ -71,58 +71,7 @@ bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele, cons
   return true;
 }
 
-/*
- * SUSY POG MVA definitions
- */
-float LeptonAnalyzer::slidingCut(float pt, float low, float high){
-  float slope = (high - low)/10.;
-  return std::min(low, std::max(high, low + slope*(pt-15)));
-}
 
-bool LeptonAnalyzer::passingElectronMvaHZZ(const pat::Electron* ele, double mvaValueHZZ){
-  if(fabs(ele->eta()) < 0.8)         return mvaValueHZZ > -0.3; 
-  else if (fabs(ele->eta()) < 1.479) return mvaValueHZZ > -0.36;
-  else                               return mvaValueHZZ > -0.63;
-}
-
-bool LeptonAnalyzer::passingElectronMvaLooseSusy(const pat::Electron* ele, double mvaValue, double mvaValueHZZ){
-  if(ele->pt() < 10)                 return passingElectronMvaHZZ(ele, mvaValueHZZ);
-  if(fabs(ele->eta()) < 0.8)         return mvaValue > slidingCut(ele->pt(), -0.86, -0.96);
-  else if (fabs(ele->eta()) < 1.479) return mvaValue > slidingCut(ele->pt(), -0.85, -0.96);
-  else                               return mvaValue > slidingCut(ele->pt(), -0.81, -0.95);
-}
-
-bool LeptonAnalyzer::passingElectronMvaMediumSusy(const pat::Electron* ele, double mvaValue){
-  if(ele->pt() < 10)                 return false; 
-  if(fabs(ele->eta()) < 0.8)         return mvaValue > slidingCut(ele->pt(), -0.86, -0.86);
-  else if (fabs(ele->eta()) < 1.479) return mvaValue > slidingCut(ele->pt(), -0.85, -0.85);
-  else                               return mvaValue > slidingCut(ele->pt(), -0.81, -0.81);
-}
-
-bool LeptonAnalyzer::passingElectronMvaTightSusy(const pat::Electron* ele, double mvaValue){
-  if(ele->pt() < 10)                 return false; 
-  if(fabs(ele->eta()) < 0.8)         return mvaValue > slidingCut(ele->pt(),  0.77,  0.52);
-  else if (fabs(ele->eta()) < 1.479) return mvaValue > slidingCut(ele->pt(),  0.56,  0.11);
-  else                               return mvaValue > slidingCut(ele->pt(),  0.48, -0.01);
-}
-
-/*
- * Own HeavyNeutrino FO tune
- */
-bool LeptonAnalyzer::passingElectronMvaHeavyNeutrinoFO(const pat::Electron* ele, double mvaValue){
-  if(ele->pt() < 10)                 return false; 
-  if(fabs(ele->eta()) < 0.8)         return mvaValue > -0.02;
-  else                               return mvaValue > -0.52;
-}
-
-/*
- * Ewkino FO tune
- */
-bool LeptonAnalyzer::passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue){
-    if(ele->pt() < 10)               return false;
-    if(fabs(ele->eta()) < 1.479)     return mvaValue > 0.0;
-    else                             return mvaValue > 0.3;
-}
 
 
 double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon){
