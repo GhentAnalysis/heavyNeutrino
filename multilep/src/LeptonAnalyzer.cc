@@ -118,7 +118,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
     _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
     _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
-    _muNumberInnerHits[_nL]=mu.globalTrack()->hitPattern().numberOfValidMuonHits() ;
+    _muNumberInnerHits[_nL]= (!muon.innerTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : mu.outerTrack()->hitPattern().numberOfValidMuonHits() ;
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     _lPOGMedium[_nL] = mu.isMediumMuon();
