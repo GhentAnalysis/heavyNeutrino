@@ -91,6 +91,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   //loop over muons
   for(const pat::Muon& mu : *muons){
     if(mu.innerTrack().isNull()) continue;
+    if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
+
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
