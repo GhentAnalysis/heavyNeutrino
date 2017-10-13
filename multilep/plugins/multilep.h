@@ -95,6 +95,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
     std::string                                         skim;
     bool                                                isData;
+    bool                                                is2017;
 
     GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
 

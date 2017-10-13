@@ -15,7 +15,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   if(multilepAnalyzer->is2017){
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
                                   "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",
-                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"} //, "Flag_badMuons", "Flag_duplicateMuons"};       // Duplicate muons still missing in mAOD, not sure how to get those in
+                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};       // Duplicate muons still missing in mAOD, not sure how to get those in
     allFlags["2017_m"]         = {"HLT_IsoMu27", "HLT_IsoMu30"};
     allFlags["2017_e"]         = {"HLT_Ele35_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
     allFlags["2017_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
