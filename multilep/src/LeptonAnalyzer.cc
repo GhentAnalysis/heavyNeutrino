@@ -210,7 +210,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   /*
    * refitting vertices displaced *********************************************************** 
    */  
-  
+  /*
   float iMu_plus=0;
   float iMu_minus_mu=0;
   float iMu_minus_e=0;
@@ -376,7 +376,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     
   }//end electrons
-    
+    */
 
   if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
   if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
