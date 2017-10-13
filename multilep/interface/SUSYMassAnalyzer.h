@@ -1,6 +1,7 @@
+#ifndef SUSYMassAnalyzer_H
+#define SUSYMassAnalyzer_H
 //Class designed to incorportate masses of SMS scans into SUSY signal trees
 #include "multilep.h"
-
 
 class multilep;
 
@@ -18,3 +19,4 @@ class SUSYMassAnalyzer{
         void beginJob(TTree* outputTree, edm::Service<TFileService>& fs);
         void analyze(const edm::Event&);
 };
+#endif
