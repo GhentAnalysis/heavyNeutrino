@@ -40,7 +40,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
-    is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017"))
+    is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -48,6 +49,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
+    SUSYMassAnalyzer= new SUSYMassAnalyzer(iConfig, this);
 }
 
 // ------------ method called once each job just before starting event loop  ------------

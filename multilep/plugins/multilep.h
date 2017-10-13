@@ -99,6 +99,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
         std::string                                         skim;
         bool                                                isData;
         bool                                                is2017;
+        bool                                                isSUSY;
 
         GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
 
