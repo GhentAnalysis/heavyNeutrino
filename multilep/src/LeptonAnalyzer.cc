@@ -210,7 +210,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   /*
    * refitting vertices displaced *********************************************************** 
    */  
-  /*
+  
   float iMu_plus=0;
   float iMu_minus_mu=0;
   float iMu_minus_e=0;
@@ -376,7 +376,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     
   }//end electrons
-    */
+    
 
   if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
   if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
@@ -466,8 +466,9 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const 
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
-  _dxy[_nL]      = muon.innerTrack()->dxy(vertex.position());
-  _dz[_nL]      = muon.innerTrack()->dz(vertex.position());
+		
+  _dxy[_nL]     = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dxy(vertex.position()) : muon.outerTrack()->dxy(vertex.position());
+  _dz[_nL]      = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dz(vertex.position()) : muon.outerTrack()->dz(vertex.position());
   _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
 }
