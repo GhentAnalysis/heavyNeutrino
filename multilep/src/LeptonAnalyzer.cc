@@ -42,8 +42,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/D");
   outputTree->Branch("_eleNumberInnerHitsMissing",    &_eleNumberInnerHitsMissing,    "_eleNumberInnerHitsMissing[_nL]/D");
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
-  outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
-  outputTree->Branch("_miniIsoCharged",               &_miniIsoCharged,               "_miniIsoCharged[_nLight]/D");
   outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/D");
   outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
   outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
@@ -96,7 +94,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
     if(!mu.isPFMuon()) continue;
-    if(!mu.isLooseMuon()) continue;
+    if(!mu.isMediumMuon()) continue;
 
     
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
@@ -116,8 +114,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _muonSegComp[_nL]    = mu.segmentCompatibility();
 
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
-    _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
-    _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
+    
     _muNumberInnerHits[_nL]= (!mu.innerTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : mu.outerTrack()->hitPattern().numberOfValidMuonHits() ;
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
@@ -162,8 +159,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
-    _miniIso[_nL]      = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho);
-    _miniIsoCharged[_nL] = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
+    
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);
@@ -184,28 +180,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     ++_nLight;
   }
 
-  //loop over taus
-  for(const pat::Tau& tau : *taus){
-    if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
-    if(fabs(tau.eta()) > 2.3) continue;
-    if(!tau.tauID("decayModeFinding")) continue;
-    fillLeptonKinVars(tau);
-    fillLeptonGenVars(tau.genParticle());
-    fillLeptonImpactParameters(tau, primaryVertex);
-    if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
-
-    _lFlavor[_nL]  = 2;
   
-    
-    _lPOGVeto[_nL] = tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT");                        //old tau ID
-    _lPOGLoose[_nL] = tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT");
-    _lPOGMedium[_nL] = tau.tauID("byMediumIsolationMVArun2v1DBoldDMwLT");
-    _lPOGTight[_nL] = tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT");
-
-    
-    ++_nTau;
-    ++_nL;
-  }
   
   /*
    * refitting vertices displaced *********************************************************** 
@@ -473,18 +448,7 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const rec
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
 }
 
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
-  _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
-  _dz[_nL]      = tau_dz(tau, vertex.position());
-  _3dIP[_nL]    = tau.ip3d();
-  _3dIPSig[_nL] = tau.ip3d_Sig();
-}
 
-//Function returning tau dz
-double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex){
-  const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
-  return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
-}
 
 //Check if electron overlaps with loose muon
 bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
@@ -496,20 +460,6 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
       TLorentzVector muV;
       muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
       if(eleV.DeltaR(muV) < 0.05) return true;
-    }
-  }
-  return false;
-}
-
-//Check if tau overlaps with light lepton
-bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose){
-  TLorentzVector tauV;
-  tauV.SetPtEtaPhiE(tau.pt(), tau.eta(), tau.phi(), tau.energy());
-  for(unsigned l = 0; l < _nLight; ++l){
-    if(loose[l]){
-      TLorentzVector lightV;
-      lightV.SetPtEtaPhiE(_lPt[l], _lEta[l], _lPhi[l], _lE[l]);
-      if(tauV.DeltaR(lightV) < 0.4) return true;
     }
   }
   return false;
