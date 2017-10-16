@@ -40,6 +40,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
+  outputTree->Branch("_lpassConversionVeto",          &_lpassConversionVeto,          "_lpassConversionVeto[_nL]/O");
   outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/D");
   outputTree->Branch("_eleNumberInnerHitsMissing",    &_eleNumberInnerHitsMissing,    "_eleNumberInnerHitsMissing[_nL]/D");
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
@@ -125,6 +126,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if ( mu.isLooseMuon()) _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
 
     _eleNumberInnerHitsMissing[_nL] =-1;
+    _lpassConversionVeto[_nL] = false;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
     
     if (mu.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso04(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) ++_nGoodLeading;
@@ -153,7 +155,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] =-1;
     fillLeptonImpactParameters(*ele, primaryVertex);
-    fillLeptonIsoVars(*ele, *rho);	  
+    fillLeptonIsoVars(*ele, *rho);
+	  
+    _lpassConversionVeto[_nL] = ele->passConversionVeto();
+
 
     //if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
