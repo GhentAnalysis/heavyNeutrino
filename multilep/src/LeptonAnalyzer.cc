@@ -125,7 +125,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if ( mu.isLooseMuon()) _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
 
     _eleNumberInnerHitsMissing[_nL] =-1;
-    _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
+    _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = true;
     
     if (mu.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso04(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) ++_nGoodLeading;
 
