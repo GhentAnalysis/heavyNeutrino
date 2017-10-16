@@ -204,9 +204,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     iMu_plus++;
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
-	  std::cout<<"... 1"<<std::endl;
     const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
-      	  std::cout<<"... + 1: "<<mu_1.pt() <<std::endl;
+    std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<"  track pos: ("<<mu_1.outerTrack ()->outerX()<<","<<mu_1.outerTrack ()->outerY()<<","<<mu_1.outerTrack ()->outerZ()<<")"<<std::endl;
 
     //------------------  loop µ-
     for(const pat::Muon& mu_2 : *muons){ 
@@ -215,17 +214,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_mu++;
       if (mu_2.charge() > 0) continue;  // only opposite charge
-        	  std::cout<<"... 2"<<std::endl;
 
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
-              	  std::cout<<"... + 2: "<<mu_2.pt()<<std::endl;
-
+      std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<"  track pos: ("<<mu_2.outerTrack ()->outerX()<<","<<mu_2.outerTrack ()->outerY()<<","<<mu_2.outerTrack ()->outerZ()<<")"<<std::endl;
+	
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
       } 
       else {   
-	 std::cout<<"--> indices: "<<iMu_plus<<" - "<<iMu_minus_mu<< "  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
+	 std::cout<<"--> indices: "<<iMu_plus*100 + iMu_minus_mu<<" ("<<iMu_plus<<" - "<<iMu_minus_mu<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
 	_vertices[0][_nVFit] = iMu_plus*100 + iMu_minus_mu;                   
 	_vertices[1][_nVFit] = dilvtx.position().x(); 
@@ -250,10 +248,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
       iE_minus_mu++; // it is already _nMu
       if(ele_2->charge() > 0) continue; // only opposite charge
-	            	  std::cout<<"... 3"<<std::endl;
 
       const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
-                	  std::cout<<"... + 3: "<<ele_2->pt()<<std::endl;
+      std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<"  track pos: ("<<ele_2->outerTrack ()->outerX()<<","<<ele_2->outerTrack ()->outerY()<<","<<ele_2->outerTrack ()->outerZ()<<")"<<std::endl;
 
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
@@ -279,7 +276,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     }// end loop e-
   }//end loop µ
   
-   
+  /* 
   iMu_minus_e=0;
   iE_plus=_nMu;
   iE_minus_e=_nMu;
@@ -359,7 +356,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     
   }//end electrons
-    
+    */
   if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
 
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
