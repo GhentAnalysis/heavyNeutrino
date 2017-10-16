@@ -20,7 +20,7 @@ class SUSYMassAnalyzer{
         SUSYMassAnalyzer(const edm::ParameterSet&, multilep*);
         ~SUSYMassAnalyzer(){};
         void beginJob(TTree* outputTree, edm::Service<TFileService>&);
-        void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+        void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&);
         void analyze(const edm::Event&);
 };
 #endif

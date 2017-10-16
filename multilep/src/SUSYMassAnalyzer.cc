@@ -18,7 +18,7 @@ void SUSYMassAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& f
     outputTree->Branch("_mChi2", &_mChi2, "_mChi2/D");
 }
 
-void SUSYMassAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const& iLumi, edm::EventSetup const& iEventSetup){
+void SUSYMassAnalyzer::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iEventSetup){
     //Extract mass corresponding to this lumi block.
     edm::Handle<GenLumiInfoHeader> genHeader;
     iLumi.getByToken(multilepAnalyzer->genLumiInfoToken, genHeader);
