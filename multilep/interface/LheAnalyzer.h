@@ -25,10 +25,9 @@ class LheAnalyzer {
 
   public:
     LheAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~LheAnalyzer();
+    ~LheAnalyzer(){};
 
     void beginJob(TTree* outputTree, edm::Service<TFileService>& fs);
     void analyze(const edm::Event&);
 };
-
 #endif

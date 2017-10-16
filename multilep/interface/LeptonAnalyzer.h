@@ -168,10 +168,9 @@ class LeptonAnalyzer {
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~LeptonAnalyzer();
+    ~LeptonAnalyzer(){};
 
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&, const reco::Vertex&);
 };
-
 #endif

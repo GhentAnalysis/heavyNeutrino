@@ -22,6 +22,8 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+//New for SUSY masses
+#include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoHeader.h"
 
 #include "TTree.h"
 
@@ -34,9 +36,10 @@
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 
-
-
+//New include. What's the difference withe /one/EDAnalyzer??
+#include "FWCore/Framework/interface/EDAnalyzer.h"
 
 //
 // class declaration
@@ -47,85 +50,91 @@ class PhotonAnalyzer;
 class JetAnalyzer;
 class GenAnalyzer;
 class LheAnalyzer;
+class SUSYMassAnalyzer;
 
-class multilep : public edm::one::EDAnalyzer<edm::one::SharedResources> {
+//class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::SharedResources> {
+class multilep: public edm::EDAnalyzer {
+    public:
+        explicit multilep(const edm::ParameterSet&);
+        ~multilep();
 
-  public:
-    explicit multilep(const edm::ParameterSet&);
-    ~multilep(){};
+        static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
-    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+        // Define EDgetTokens to read data from events
+        // Public such that we can easily access them in the individual object analyzers)
+        edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
+        edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
+        edm::EDGetTokenT<GenLumiInfoHeader>                 genLumiInfoToken;
+        edm::EDGetTokenT<LHEEventProduct>                   lheEventInfoToken;
+        edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken;
+        edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 
+        edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
+        edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaHZZToken;
+        edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedVetoToken;
+        edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedLooseToken;
+        edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedMediumToken;
+        edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedTightToken;
+        edm::EDGetTokenT<std::vector<pat::Tau>>             tauToken;
+        edm::EDGetTokenT<std::vector<pat::Photon>>          photonToken;
+        edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedLooseToken;
+        edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedMediumToken;
+        edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedTightToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              photonMvaToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              photonChargedIsolationToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              photonNeutralHadronIsolationToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              photonPhotonIsolationToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              photonFull5x5SigmaIEtaIPhiToken;
+        edm::EDGetTokenT<std::vector<pat::PackedCandidate>> packedCandidatesToken;                       //particle collection used to calculate isolation variables
+        edm::EDGetTokenT<double>                            rhoToken;
+        edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedUpToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedDownToken;
+        edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
+        edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
+        edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
+        edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
+        edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
+        std::string                                         skim;
+        bool                                                isData;
+        bool                                                is2017;
+        bool                                                isSUSY;
 
-    // Define EDgetTokens to read data from events
-    // Public such that we can easily access them in the individual object analyzers)
-    edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
-    edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
-    edm::EDGetTokenT<LHEEventProduct>                   lheEventInfoToken;
-    edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken;
-    edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 
-    edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
-    edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
-    edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;
-    edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaHZZToken;
-    edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedVetoToken;
-    edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedLooseToken;
-    edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedMediumToken;
-    edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedTightToken;
-    edm::EDGetTokenT<std::vector<pat::Tau>>             tauToken;
-    edm::EDGetTokenT<std::vector<pat::Photon>>          photonToken;
-    edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedLooseToken;
-    edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedMediumToken;
-    edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedTightToken;
-    edm::EDGetTokenT<edm::ValueMap<float>>              photonMvaToken;
-    edm::EDGetTokenT<edm::ValueMap<float>>              photonChargedIsolationToken;
-    edm::EDGetTokenT<edm::ValueMap<float>>              photonNeutralHadronIsolationToken;
-    edm::EDGetTokenT<edm::ValueMap<float>>              photonPhotonIsolationToken;
-    edm::EDGetTokenT<edm::ValueMap<float>>              photonFull5x5SigmaIEtaIPhiToken;
-    edm::EDGetTokenT<std::vector<pat::PackedCandidate>> packedCandidatesToken;                       //particle collection used to calculate isolation variables
-    edm::EDGetTokenT<double>                            rhoToken;
-    edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
-    edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
-    edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
-    edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedUpToken;
-    edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedDownToken;
-    edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
-    edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
-    edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
-    edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
-    edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
-    std::string                                         skim;
-    bool                                                isData;
+        GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
 
-    GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
+    private:
+        virtual void beginJob() override;
+        virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
+        virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
+        virtual void endJob() override;
 
-  private:
-    virtual void beginJob() override;
-    virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
-    virtual void endJob() override;
+        TriggerAnalyzer*  triggerAnalyzer;
+        LeptonAnalyzer*   leptonAnalyzer;
+        PhotonAnalyzer*   photonAnalyzer;
+        JetAnalyzer*      jetAnalyzer;
+        LheAnalyzer*      lheAnalyzer;
+        SUSYMassAnalyzer* susyMassAnalyzer;
 
-    TriggerAnalyzer* triggerAnalyzer;
-    LeptonAnalyzer*  leptonAnalyzer;
-    PhotonAnalyzer*  photonAnalyzer;
-    JetAnalyzer*     jetAnalyzer;
-    LheAnalyzer*     lheAnalyzer;
+        edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
+        TTree* outputTree;
 
-    edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
-    TTree* outputTree;
-
-    unsigned long _runNb;                                                                            //event labels
-    unsigned long _lumiBlock;
-    unsigned long _eventNb;
-    unsigned      _nVertex;                                                                          //Event variables
-    double        _met;                                                                              //met kinematics
-    double        _metPhi;
-    double        _metJECDown;
-    double        _metPhiJECDown;
-    double        _metJECUp;
-    double        _metPhiJECUp;
-    double        _metUnclDown;
-    double        _metPhiUnclDown;
-    double        _metUnclUp;
-    double        _metPhiUnclUp;
+        unsigned long _runNb;                                                                            //event labels
+        unsigned long _lumiBlock;
+        unsigned long _eventNb;
+        unsigned      _nVertex;                                                                          //Event variables
+        double        _met;                                                                              //met kinematics
+        double        _metPhi;
+        double        _metJECDown;
+        double        _metPhiJECDown;
+        double        _metJECUp;
+        double        _metPhiJECUp;
+        double        _metUnclDown;
+        double        _metPhiUnclDown;
+        double        _metUnclUp;
+        double        _metPhiUnclUp;
 };
 #endif
 

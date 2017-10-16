@@ -49,7 +49,7 @@ class GenAnalyzer {
 
   public:
     GenAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~GenAnalyzer();
+    ~GenAnalyzer(){};
 
     void beginJob(TTree* outputTree);
     void analyze(const edm::Event&);

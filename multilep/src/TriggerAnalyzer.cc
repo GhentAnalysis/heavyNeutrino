@@ -6,53 +6,59 @@
  * Simply add your triggers to the list below, the key in allFlags[key] takes the OR of the following triggers
  * Currently not only the combined but also the individual triggers are stored, keeping the possibility for trigger studies
  * Might add a flag to switch all the storage of all those individual paths off
+ * Note: use "pass" in the combined flag if you want to use it recursively
  */
 
 TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
   multilepAnalyzer(multilepAnalyzer){
-  
-  allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
-                                "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",                                 // Not sure if eeBadScFilter is still needed
-                                "flag_badPFMuonFilter","flag_badChCandFilter"};                                                              // TODO: Check if those are in the miniAOD, and where is the duplicateMuons one?
 
-  allFlags["passHN_1l"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoTkMu24"};                                                    // HN 1l triggers
-  allFlags["passHN_eee"]     = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};           // HN eee
-  allFlags["passHN_eem"]     = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",         // HN emm
-                                "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ", 
-                                "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
-  allFlags["passHN_emm"]     = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                        // HN emm
-                                "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", 
-                                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", 
-                                "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL",  "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", 
-                                "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ", 
-                                "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL"};
-  allFlags["passHN_mmm"]     = {"HLT_TripleMu_12_10_5", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                                   // HN mmm
-                                "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",  
-                                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", 
-                                "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL"};
-  allFlags["passMET"]        = {"HLT_MET300","HLT_HT350_MET100","HLT_AllMET300","HLT_AllMET170","HLT_jet","HLT_dijet",                       // To trigger for efficiencies
-                                "HLT_MET170_BeamHaloCleaned","HLT_MET170_BeamHaloCleaned","HLT_MET170_NotCleaned","HLT_HT800",
-                                "HLT_HT900","HLT_dijet55met110","HLT_dijet70met120","HLT_HT600","HLT_HT475","HLT_HT350"};
-  allFlags["passTTG_ee"]     = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",                    // TTG e (same as in SUS-17-001)
-                                "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW"};
-  allFlags["passTTG_e"]      = {"HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT"};                                           // TTG e
-  allFlags["passTTG_mm"]     = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu30_TkMu11",                // TTG mm
-                                "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ"};
-  allFlags["passTTG_m"]      = {"HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"};                                                                // TTG m
-  allFlags["passTTG_em"]     = {"HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",       // TTG em
-                                "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                "HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
-                                "HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL"};
-
-  allFlags["2017_m"]         = {"HLT_IsoMu27", "HLT_IsoMu30"};
-  allFlags["2017_e"]         = {"HLT_Ele35_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
-  allFlags["2017_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8", "HLT_DoubleMu4_Mass8_DZ_PFHT350",                                  "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8"};
-  allFlags["2017_em"]        = {"HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ"};
-  allFlags["2017_ee"]        = {"HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
-  allFlags["2017_mmm"]       = {"HLT_TripleMu_10_5_5_DZ", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ", "TripleMu_12_10_5"};
-  allFlags["2017_mme"]       = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
-  allFlags["2017_mee"]       = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
-  allFlags["2017_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};
+  if(multilepAnalyzer->is2017){
+    allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
+                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",
+                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};       // Duplicate muons still missing in mAOD, not sure how to get those in
+    allFlags["2017_m"]         = {"HLT_IsoMu27", "HLT_IsoMu30"};
+    allFlags["2017_e"]         = {"HLT_Ele35_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
+    allFlags["2017_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                  "HLT_DoubleMu4_Mass8_DZ_PFHT350", "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8"};
+    allFlags["2017_em"]        = {"HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ"};
+    allFlags["2017_ee"]        = {"HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
+    allFlags["2017_mmm"]       = {"HLT_TripleMu_10_5_5_DZ", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ", "TripleMu_12_10_5"};
+    allFlags["2017_mme"]       = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
+    allFlags["2017_mee"]       = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
+    allFlags["2017_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};
+  } else {
+    allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters (if legacy mAOD vbecomes available, copy the filters listed for 2017)
+                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",
+                                  "flag_badPFMuonFilter","flag_badChCandFilter"};
+    allFlags["passHN_1l"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoTkMu24"};                                                    // HN 1l triggers
+    allFlags["passHN_eee"]     = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};                       // HN eee
+    allFlags["passHN_eem"]     = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",                     // HN emm
+                                  "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",
+                                  "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
+    allFlags["passHN_emm"]     = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                                    // HN emm
+                                  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",
+                                  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",
+                                  "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL",  "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                  "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",
+                                  "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL"};
+    allFlags["passHN_mmm"]     = {"HLT_TripleMu_12_10_5", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                                               // HN mmm
+                                  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",
+                                  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",
+                                  "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL"};
+    allFlags["passMET"]        = {"HLT_MET300","HLT_HT350_MET100","HLT_AllMET300","HLT_AllMET170","HLT_jet","HLT_dijet",                       // To trigger for efficiencies
+                                  "HLT_MET170_BeamHaloCleaned","HLT_MET170_BeamHaloCleaned","HLT_MET170_NotCleaned","HLT_HT800",
+                                  "HLT_HT900","HLT_dijet55met110","HLT_dijet70met120","HLT_HT600","HLT_HT475","HLT_HT350"};
+    allFlags["passTTG_ee"]     = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",                    // TTG e (same as in SUS-17-001)
+                                  "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW"};
+    allFlags["passTTG_e"]      = {"HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT"};                                           // TTG e
+    allFlags["passTTG_mm"]     = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu30_TkMu11",                // TTG mm
+                                  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ"};
+    allFlags["passTTG_m"]      = {"HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"};                                                                // TTG m
+    allFlags["passTTG_em"]     = {"HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",       // TTG em
+                                  "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                  "HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                  "HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL"};
+  }
 };
 
 void TriggerAnalyzer::beginJob(TTree* outputTree){
@@ -115,8 +121,8 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   getResults(iEvent, triggerResults, triggersToSave, true);
   getResults(iEvent, recoResults,    filtersToSave,  false);
   reIndex = false;
-  flag["passBadPFMuonFilter"] = *badPFMuonFilter;
-  flag["passBadChCandFilter"] = *badChCandFilter;
+  flag["flag_badPFMuonFilter"] = *badPFMuonFilter;
+  flag["flag_badChCandFilter"] = *badChCandFilter;
 
   for(auto& combinedFlag : allFlags) flag[combinedFlag.first] = passCombinedFlag(combinedFlag.first);
 }
@@ -139,7 +145,7 @@ void TriggerAnalyzer::indexFlags(const edm::Event& iEvent, edm::Handle<edm::Trig
         std::cout << "     --> saving to tree";
       }
     }
-    std::cout << std::endl; 
+    std::cout << std::endl;
   }
 
   for(TString t : toSave){
@@ -162,7 +168,7 @@ void TriggerAnalyzer::getResults(const edm::Event& iEvent, edm::Handle<edm::Trig
   }
 
   if(savePrescales){
-    edm::Handle<pat::PackedTriggerPrescales> prescales; 
+    edm::Handle<pat::PackedTriggerPrescales> prescales;
     iEvent.getByToken(multilepAnalyzer->prescalesToken, prescales);
     for(TString t : toSave){
       if(index[t] == -1) prescale[t] = -1;

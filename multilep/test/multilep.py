@@ -7,7 +7,10 @@ import FWCore.ParameterSet.Config as cms
 #inputFile       = '/store/data/Run2016D/DoubleMuon/MINIAOD/03Feb2017-v1/100000/52779EE0-F4ED-E611-BF87-70106F49CD3C.root'
 inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/displaced/HeavyNeutrino_trilepton_M-4_V-0.01_2l_NLO/heavyNeutrino_4.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
+inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
 isData          = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
+is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
+isSUSY = "/SMS-T" in inputFile
 nEvents         = 1000
 outputFile      = 'trilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
@@ -27,7 +30,7 @@ for i in range(1,len(sys.argv)):
     elif "events"          in sys.argv[i]: nEvents         = int(getVal(sys.argv[i]))
 
 
-is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
+isSUSY
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -55,7 +58,7 @@ else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_201
 #
 process.load('CommonTools.ParticleFlow.goodOfflinePrimaryVertices_cfi')
 process.goodOfflinePrimaryVertices.src    = cms.InputTag('offlineSlimmedPrimaryVertices')
-process.goodOfflinePrimaryVertices.filter = cms.bool(True)
+process.goodOfflinePrimaryVertices.filter = cms.bool(False)                          #Don't use any EDFilter when relying on hCounter!
 
 
 #
@@ -124,13 +127,15 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
   badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
   skim                          = cms.untracked.string(outputFile.split('.')[0]),
-  isData                        = cms.untracked.bool(isData)
+  isData                        = cms.untracked.bool(isData),
+  is2017                        = cms.untracked.bool(is2017),
+  isSUSY                        = cms.untracked.bool(isSUSY)
 )
 
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  if is2017: JSON = "../data/JSON/Cert_294927-303825_13TeV_PromptReco_Collisions17_JSON.txt"
+  if is2017: JSON = "../data/JSON/Cert_294927-304120_13TeV_PromptReco_Collisions17_JSON.txt"
   else:      JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
   process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
 
