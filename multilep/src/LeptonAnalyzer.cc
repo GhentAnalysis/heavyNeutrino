@@ -138,7 +138,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
     auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
     if(ele->gsfTrack().isNull()) continue; 
-    if(ele->pt() < 6)           continue; // from 10 to 6
+    if(ele->pt() < 5)           continue; // from 10 to 6
     if(fabs(ele->eta()) > 2.5)   continue;
     // ---->  loose requirements about number of hits and VetoConversion
         //if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
@@ -248,7 +248,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
       auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
       if(ele_2->gsfTrack().isNull()) continue;
-      if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
+      if(ele_2->pt() < 5 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
       iE_minus_mu++; // it is already _nMu
       if(ele_2->charge() > 0) continue; // only opposite charge
 
@@ -289,7 +289,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   for(auto ele_1 = electrons->begin(); ele_1 != electrons->end(); ++ele_1){ // for electrons
     auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_1 - electrons->begin()));
     if(ele_1->gsfTrack().isNull()) continue;
-    if(ele_1->pt() < 6 || fabs(ele_1->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_1) || eleMuOverlap(*ele_1, _lPFMuon) )           continue; // from 10 to 6
+    if(ele_1->pt() < 5 || fabs(ele_1->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_1) || eleMuOverlap(*ele_1, _lPFMuon) )           continue; // from 10 to 6
     iE_plus++;
     //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue; 
@@ -336,7 +336,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
       auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
       if(ele_2->gsfTrack().isNull()) continue;
-      if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
+      if(ele_2->pt() < 5 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
       iE_minus_e++;
         
       if(ele_2->charge() > 0) continue; // only opposite charge
