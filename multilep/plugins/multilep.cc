@@ -100,6 +100,13 @@ void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm
     std::cout << "Lumi block begins!" << std::endl;
     if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
 }
+//------------- method called for each run -------------
+void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
+    // HLT results could have different size/order in new run, so look up again de index positions
+    std::cout << "Run begins!" << std::endl;
+    triggerAnalyzer->reIndex = true;
+}
+
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
@@ -107,7 +114,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     lheAnalyzer->analyze(iEvent);                                      // needs to be run before selection to get correct uncertainties on MC xsection
     if(!vertices->size()) return;                                       //Don't consider 0 vertex events
-    if(_runNb != iEvent.id().run()) triggerAnalyzer->reIndex = true;   // HLT results could have different size/order in new run, so look up again de index positions
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;
