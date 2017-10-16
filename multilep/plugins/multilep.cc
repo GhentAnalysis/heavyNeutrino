@@ -97,13 +97,11 @@ void multilep::beginJob(){
 }
 // ------------ method called for each lumi block ---------
 void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
-    std::cout << "Lumi block begins!" << std::endl;
     if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
 }
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     // HLT results could have different size/order in new run, so look up again de index positions
-    std::cout << "Run begins!" << std::endl;
     triggerAnalyzer->reIndex = true;
 }
 
