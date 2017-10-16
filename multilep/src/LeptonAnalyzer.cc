@@ -205,7 +205,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
     const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
-    std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<"  track pos: ("<<mu_1.outerTrack ()->outerX()<<","<<mu_1.outerTrack ()->outerY()<<","<<mu_1.outerTrack ()->outerZ()<<")"<<std::endl;
+    //std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<"  track pos: ("<<mu_1.outerTrack ()->outerX()<<","<<mu_1.outerTrack ()->outerY()<<","<<mu_1.outerTrack ()->outerZ()<<")"<<std::endl;
+    std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<std::endl;
 
     //------------------  loop µ-
     for(const pat::Muon& mu_2 : *muons){ 
@@ -216,8 +217,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       if (mu_2.charge() > 0) continue;  // only opposite charge
 
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
-      std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<"  track pos: ("<<mu_2.outerTrack ()->outerX()<<","<<mu_2.outerTrack ()->outerY()<<","<<mu_2.outerTrack ()->outerZ()<<")"<<std::endl;
-	
+      //std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<"  track pos: ("<<mu_2.outerTrack ()->outerX()<<","<<mu_2.outerTrack ()->outerY()<<","<<mu_2.outerTrack ()->outerZ()<<")"<<std::endl;
+ 
+      std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<std::endl;
+    
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
@@ -250,7 +253,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       if(ele_2->charge() > 0) continue; // only opposite charge
 
       const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
-      std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<"  track pos: ("<<ele_2->gsfTrack ()->outerX()<<","<<ele_2->gsfTrack ()->outerY()<<","<<ele_2->gsfTrack ()->outerZ()<<")"<<std::endl;
+      //std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<"  track pos: ("<<ele_2->gsfTrack ()->outerX()<<","<<ele_2->gsfTrack ()->outerY()<<","<<ele_2->gsfTrack ()->outerZ()<<")"<<std::endl;
+      std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<std::endl;
 
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
