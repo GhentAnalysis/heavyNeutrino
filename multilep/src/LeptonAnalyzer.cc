@@ -125,7 +125,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if ( mu.isLooseMuon()) _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
 
     _eleNumberInnerHitsMissing[_nL] =-1;
-    _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = true;
+    _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
     
     if (mu.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso04(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) ++_nGoodLeading;
 
@@ -189,7 +189,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   /*
    * refitting vertices displaced *********************************************************** 
    */  
-  /*
+  
   float iMu_plus=0;
   float iMu_minus_mu=0;
   float iMu_minus_e=0;
@@ -199,7 +199,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   
   for(const pat::Muon& mu_1 : *muons){ // for µ
     if(mu_1.pt() < 3 || fabs(mu_1.eta()) > 2.4 || !mu_1.isPFMuon())              continue;   
-	  	      if(!mu_1.isLooseMuon()) continue;
+	  	  //    if(!mu_1.isLooseMuon()) continue;
 
     iMu_plus++;
     // +++++++++++++++    µ+
@@ -210,7 +210,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
     //------------------  loop µ-
     for(const pat::Muon& mu_2 : *muons){ 
-	    	  	      if(!mu_2.isLooseMuon()) continue;
+	    	//  	      if(!mu_2.isLooseMuon()) continue;
 
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_mu++;
@@ -293,7 +293,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
    
     //------------------  loop µ+
     for(const pat::Muon& mu_2 : *muons){ 
-	    	  	      if(!mu_2.isLooseMuon()) continue;
+	    	  	//      if(!mu_2.isLooseMuon()) continue;
 
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_e++;
@@ -355,7 +355,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     
   }//end electrons
-    */
+    
   if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
 
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
