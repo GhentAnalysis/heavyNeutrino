@@ -92,14 +92,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   
   //loop over muons
   for(const pat::Muon& mu : *muons){
-    if(mu.innerTrack().isNull()) continue;
+   // if(mu.innerTrack().isNull()) continue;
     if(!mu.isPFMuon()) continue;
-    if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
-
+   // if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     if(mu.pt() < 3)              continue;                   // from 5 to 3 GeV
     if(fabs(mu.eta()) > 2.4)     continue;
-    if(!mu.isPFMuon()) continue;
-    if(!mu.isMediumMuon()) continue;
+    //if(!mu.isMediumMuon()) continue;
 
     
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
@@ -125,8 +123,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : -1);
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
-    _lPOGMedium[_nL] = mu.isMediumMuon();
-    _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
+    if ( mu.isLooseMuon()) _lPOGMedium[_nL] = mu.isMediumMuon();
+    if ( mu.isLooseMuon()) _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
 
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
