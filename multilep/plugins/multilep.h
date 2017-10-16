@@ -38,9 +38,6 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 
-//New include. What's the difference withe /one/EDAnalyzer??
-#include "FWCore/Framework/interface/EDAnalyzer.h"
-
 //
 // class declaration
 //
@@ -52,8 +49,7 @@ class GenAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
 
-//class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::SharedResources> {
-class multilep: public edm::EDAnalyzer {
+class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::SharedResources> {
     public:
         explicit multilep(const edm::ParameterSet&);
         ~multilep();
@@ -108,6 +104,7 @@ class multilep: public edm::EDAnalyzer {
     private:
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
+        virtual void endLuminosityBlock(edm::LuminosityBlock const& iEvent, edm::EventSetup const&) override {}
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
         virtual void endJob() override;
 
