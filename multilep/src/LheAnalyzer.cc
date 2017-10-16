@@ -17,9 +17,8 @@ LheAnalyzer::LheAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 
 void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
   //Counter to determine effect of pdf and scale uncertainties on the MC cross section
-  hCounter   = fs->make<TH1D>("hCounter",   "Events counter", 1,0,1);
   if(multilepAnalyzer->isData) return;
-
+  hCounter   = fs->make<TH1D>("hCounter",   "Events counter", 1,0,1);
   lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights", 110,0,110);
   outputTree->Branch("_weight",        &_weight,        "_weight/D");
   outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
@@ -29,10 +28,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
 }
 
 void LheAnalyzer::analyze(const edm::Event& iEvent){
-  if(multilepAnalyzer->isData){
-    hCounter->Fill(0.5, 1.);
-    return;
-  }
+  if(multilepAnalyzer->isData) return;
 
   edm::Handle<GenEventInfoProduct> genEventInfo; iEvent.getByToken(multilepAnalyzer->genEventInfoToken, genEventInfo);
   edm::Handle<LHEEventProduct> lheEventInfo;     iEvent.getByToken(multilepAnalyzer->lheEventInfoToken, lheEventInfo); 
