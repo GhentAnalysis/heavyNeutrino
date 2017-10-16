@@ -19,12 +19,22 @@ void SUSYMassAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& f
 }
 
 void SUSYMassAnalyzer::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iEventSetup){
-    //Extract mass corresponding to this lumi block.
+    //Extract model string corresponding to this lumi block.
     edm::Handle<GenLumiInfoHeader> genHeader;
     iLumi.getByToken(multilepAnalyzer->genLumiInfoToken, genHeader);
     std::string model = genHeader->configDescription(); 
     std::cout<< model << std::endl;
-
+    //Extract mass values from model string 
+    for(unsigned m = 0; m < 2; ++m){
+        std::string::size_type pos = model.find_last_of("_");
+        if(m == 0){
+            _mChi1 = std::stod(model.substr(pos + 1)); 
+            model.erase(pos, model.size());
+        } else{
+            _mChi2 = std::stod(model.substr(pos + 1));
+        }
+    }
+    std::cout << "_mChi1 = " << _mChi1 << "\t _mChi2 = " << _mChi2 << std::endl;
 }
 
 void SUSYMassAnalyzer::analyze(const edm::Event& iEvent){
