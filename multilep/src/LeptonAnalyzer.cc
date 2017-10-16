@@ -45,7 +45,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/D");
   outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
-  outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
+  outputTree->Branch("_absIso04",                     &_absIso04,                     "_absIso04[_nL]/D");
   outputTree->Branch("_sumNeutralHadronEt04",         &_sumNeutralHadronEt04,         "_sumNeutralHadronEt04[_nL]/D");
   outputTree->Branch("_sumChargedHadronPt04",         &_sumChargedHadronPt04,         "_sumChargedHadronPt04[_nL]/D");
   outputTree->Branch("_sumPhotonEt04",                &_sumPhotonEt04,                "_sumPhotonEt04[_nL]/D");
