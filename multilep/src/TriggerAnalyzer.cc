@@ -41,7 +41,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                   "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL",  "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
                                   "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",
                                   "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL"};
-    allFlags["passHN_mmm"]     = {"HLT_TripleMu_12_10_5", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                                               // HN mmm
+    allFlags["passHN_mmm"]     = {"HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx", "HLT_TripleMu_12_10_5", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                                               // HN mmm
                                   "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",
                                   "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",
                                   "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL"};
