@@ -250,7 +250,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       if(ele_2->charge() > 0) continue; // only opposite charge
 
       const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
-      std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<"  track pos: ("<<ele_2->outerTrack ()->outerX()<<","<<ele_2->outerTrack ()->outerY()<<","<<ele_2->outerTrack ()->outerZ()<<")"<<std::endl;
+      std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<"  track pos: ("<<ele_2->gsfTrack ()->outerX()<<","<<ele_2->gsfTrack ()->outerY()<<","<<ele_2->gsfTrack ()->outerZ()<<")"<<std::endl;
 
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
