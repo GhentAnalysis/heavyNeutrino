@@ -12,7 +12,7 @@ isData          = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
 isSUSY = "/SMS-T" in inputFile
 nEvents         = 1000
-outputFile      = 'dilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
+outputFile      = 'trilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
                                  # ttg       --> skim two leptons + one photon
