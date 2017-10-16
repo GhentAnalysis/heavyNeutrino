@@ -261,7 +261,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
       } 
       else {      
-      	 std::cout<<"--> indices: "<<iMu_plus<<" - "<<iE_minus_mu<< "  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
+	 std::cout<<"--> indices: "<<iMu_plus*100 + iE_minus_mu<<" ("<<iMu_plus<<" - "<<iE_minus_mu<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
 	_vertices[0][_nVFit] = iMu_plus*100 + iE_minus_mu;          
 	_vertices[1][_nVFit] = dilvtx.position().x(); 
@@ -280,7 +280,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     }// end loop e-
   }//end loop µ
   
-  /* 
+  
   iMu_minus_e=0;
   iE_plus=_nMu;
   iE_minus_e=_nMu;
@@ -295,21 +295,26 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(ele_1->charge() < 0) continue; 
     
     const reco::Track&  tk_1 =  *ele_1->gsfTrack() ;
-   
+    std::cout<<"****  e+ : "<<ele_1->pt() <<"  charge: "<<ele_1->charge()<<std::endl;
+
     //------------------  loop µ+
     for(const pat::Muon& mu_2 : *muons){ 
 	    	  	//      if(!mu_2.isLooseMuon()) continue;
 
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_e++;
-      if (mu_2.charge() < 0) continue;  // only opposite charge
+      if (mu_2.charge() > 0) continue;  // only opposite charge
         
-      const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;      
+      const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ; 
+	std::cout<<"****  µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<std::endl;
+
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
       } 
       else {       
+	 std::cout<<"--> indices: "<<iE_plus*100 + iMu_minus_e<<" ("<<iE_plus<<" - "<<iMu_minus_e<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
+
 	_vertices[0][_nVFit] = iE_plus*100+iMu_minus_e;    
 	_vertices[1][_nVFit] = dilvtx.position().x(); 
 	_vertices[2][_nVFit] = dilvtx.position().y(); 
@@ -334,14 +339,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       if(ele_2->pt() < 6 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
       iE_minus_e++;
         
-      if(ele_2->charge() < 0) continue; // only opposite charge
+      if(ele_2->charge() > 0) continue; // only opposite charge
         
-      const reco::Track&  tk_2 =  *ele_2->gsfTrack();        
+      const reco::Track&  tk_2 =  *ele_2->gsfTrack();  
+      std::cout<<"****  e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<std::endl;
+
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
       } 
       else {    
+	      	 std::cout<<"--> indices: "<<iE_plus*100 + iE_minus_e<<" ("<<iE_plus<<" - "<<iE_minus_e<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
+
 	_vertices[0][_nVFit] = iE_plus*100 + iE_minus_e;          
 	_vertices[1][_nVFit] = dilvtx.position().x(); 
 	_vertices[2][_nVFit] = dilvtx.position().y(); 
@@ -360,7 +369,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     
   }//end electrons
-    */
+    
   if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
 
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
