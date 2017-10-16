@@ -125,7 +125,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     _lPOGMedium[_nL] = mu.isMediumMuon();
     _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
-	  	  	   std::cout<<"in muon tight"<<std::endl;
 
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
