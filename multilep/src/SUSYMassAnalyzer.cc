@@ -2,8 +2,9 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoHeader.h"
 #include "FWCore/Framework/interface/LuminosityBlock.h"
-SUSYMassAnalyzer::SUSYMassAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
-      multilepAnalyzer(multilepAnalyzer)
+SUSYMassAnalyzer::SUSYMassAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer, LheAnalyzer* lheAnalyzer):
+      multilepAnalyzer(multilepAnalyzer), 
+      lheAnalyzer(lheAnalyzer)
 {};
 
 
@@ -23,7 +24,6 @@ void SUSYMassAnalyzer::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, c
     edm::Handle<GenLumiInfoHeader> genHeader;
     iLumi.getByToken(multilepAnalyzer->genLumiInfoToken, genHeader);
     std::string model = genHeader->configDescription(); 
-    std::cout<< model << std::endl;
     //Extract mass values from model string 
     for(unsigned m = 0; m < 2; ++m){
         std::string::size_type pos = model.find_last_of("_");
@@ -34,10 +34,8 @@ void SUSYMassAnalyzer::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, c
             _mChi2 = std::stod(model.substr(pos + 1));
         }
     }
-    std::cout << "_mChi1 = " << _mChi1 << "\t _mChi2 = " << _mChi2 << std::endl;
 }
 
 void SUSYMassAnalyzer::analyze(const edm::Event& iEvent){
-
-
+    hCounterSUSY->Fill(_mChi2, _mChi1, lheAnalyzer->_weight);
 }

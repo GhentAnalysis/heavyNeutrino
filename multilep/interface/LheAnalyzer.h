@@ -8,8 +8,11 @@
 #include "TTree.h"
 
 class multilep;
+class SUSYMassAnalyzer;
 
 class LheAnalyzer {
+  //friend classes
+  friend SUSYMassAnalyzer;
   private:
     double _weight;
     double _lheHTIncoming;
