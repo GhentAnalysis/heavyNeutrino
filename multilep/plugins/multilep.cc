@@ -74,7 +74,8 @@ void multilep::beginJob(){
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
-    lheAnalyzer->beginJob(outputTree, fs);
+    if(!isData) lheAnalyzer->beginJob(outputTree, fs);
+    if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
     if(!isData) genAnalyzer->beginJob(outputTree);
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
@@ -109,9 +110,11 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
-
+    std::cout << "before LheAnalyzer" << std::endl;
     if(!isData) lheAnalyzer->analyze(iEvent);                                      // needs to be run before selection to get correct uncertainties on MC xsection
+    std::cout << "before SUSY Mass analyzer" << std::endl;
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
+    std::cout << "before vertex check" << std::endl;
     if(!vertices->size()) return;                                       //Don't consider 0 vertex events
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
