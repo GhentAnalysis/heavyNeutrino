@@ -77,6 +77,12 @@ class LeptonAnalyzer {
     double _sumNeutralHadronEt03[nL_max];         
     double _sumChargedHadronPt03[nL_max];         
     double _sumPhotonEt03[nL_max];  
+    double _trackIso[nL_max];
+    double _ecalIso[nL_max];
+    double _hcalIso[nL_max];
+    double _deltaBIso[nL_max];
+    double _ecalPFClusterIso[nL_max];
+    double _hcalPFClusterIso[nL_max];
    
     double _ptRel[nL_max];                                                                           //variables related to closest jet
     double _ptRatio[nL_max];
