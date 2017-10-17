@@ -222,9 +222,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _tauTightMvaNew[_nL] = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
     _tauVTightMvaNew[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
 
-    _lEwkLoose[_nL] = isEwkLoose(tau);
-    _lEwkFO[_nL]    = isEwkFO(tau);
-    _lEwkTight[_nL] = isEwkTight(tau);
+   
     ++_nTau;
     ++_nL;
   }
@@ -543,6 +541,48 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
   }
   return false;
 }
+
+
+//Check if tau overlaps with light lepton
+bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose){
+    TLorentzVector tauV;
+    tauV.SetPtEtaPhiE(tau.pt(), tau.eta(), tau.phi(), tau.energy());
+    for(unsigned l = 0; l < _nLight; ++l){
+        if(loose[l]){
+            TLorentzVector lightV;
+            lightV.SetPtEtaPhiE(_lPt[l], _lEta[l], _lPhi[l], _lE[l]);
+            if(tauV.DeltaR(lightV) < 0.4) return true;
+        }
+    }
+    return false;
+}
+
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
+  _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
+  _dz[_nL]      = tau_dz(tau, vertex.position());
+  _3dIP[_nL]    = tau.ip3d();
+  _3dIPSig[_nL] = tau.ip3d_Sig();
+}
+
+//Function returning tau dz
+double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex){
+  const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
+  return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex){
