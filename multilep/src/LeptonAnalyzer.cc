@@ -436,6 +436,10 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
   _deltaBIso[_nL]        = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumPhotonEt + mu.pfIsolationR03().sumNeutralHadronEt - 0.5*pucorr);
   _ecalPFClusterIso[_nL] =  -1.;
   _hcalPFClusterIso[_nL] =  -1.; 
+	
+	
+std::cout<<"mu track iso: "<<mu.trackIso	()<<std::endl;	
+	
 }
 
 
