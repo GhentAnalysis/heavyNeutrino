@@ -21,7 +21,7 @@ config.General.workArea                = os.path.join('crab', productionLabel, d
 
 config.section_('JobType')
 config.JobType.psetName                = 'multilep.py'
-config.JobType.pyCfgParams             = ['events=-1', 'outputFile='+outputFile, 'isData='+('False' if 'SIM' in dataset else 'True')]
+config.JobType.pyCfgParams             = ['events=-1', 'outputFile='+outputFile, 'inputFile='+dataset]
 config.JobType.pluginName              = 'analysis'
 config.JobType.outputFiles             = [outputFile]
 config.JobType.sendExternalFolder      = True

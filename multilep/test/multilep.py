@@ -8,9 +8,6 @@ import FWCore.ParameterSet.Config as cms
 #inputFile       = "root://cmsxrootd.fnal.gov///store/data/Run2017C/MuonEG/MINIAOD/PromptReco-v3/000/300/780/00000/86494C82-EA7E-E711-ACCC-02163E01441B.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
-isData          = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
-is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
-isSUSY = "/SMS-T" in inputFile
 nEvents         = 1000
 outputFile      = 'ttg.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
@@ -24,13 +21,14 @@ def getVal(arg):
 # Loop over arguments
 for i in range(1,len(sys.argv)):
     print "[arg "+str(i)+"] : ", sys.argv[i]
-    if "isData"            in sys.argv[i]: isData          = (getVal(sys.argv[i]) == "True")
-    elif "outputFile"      in sys.argv[i]: outputFile      = getVal(sys.argv[i])
-    elif "inputFile"       in sys.argv[i]: inputFile       = getVal(sys.argv[i])
-    elif "events"          in sys.argv[i]: nEvents         = int(getVal(sys.argv[i]))
+    if "outputFile"  in sys.argv[i]: outputFile = getVal(sys.argv[i])
+    elif "inputFile" in sys.argv[i]: inputFile  = getVal(sys.argv[i])
+    elif "events"    in sys.argv[i]: nEvents    = int(getVal(sys.argv[i]))
 
 
-isSUSY
+isData = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
+is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
+isSUSY = "SMS-T" in inputFile
 
 process = cms.Process("BlackJackAndHookers")
 
