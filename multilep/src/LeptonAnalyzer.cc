@@ -33,6 +33,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_dz",                           &_dz,                           "_dz[_nL]/D");
   outputTree->Branch("_3dIP",                         &_3dIP,                         "_3dIP[_nL]/D");
   outputTree->Branch("_3dIPSig",                      &_3dIPSig,                      "_3dIPSig[_nL]/D");
+  outputTree->Branch("_2dIP",                         &_2dIP,                         "_2dIP[_nL]/D");
+  outputTree->Branch("_2dIPSig",                      &_2dIPSig,                      "_2dIPSig[_nL]/D");
   outputTree->Branch("_lElectronMva",                 &_lElectronMva,                 "_lElectronMva[_nLight]/F");
   outputTree->Branch("_lElectronPassEmu",             &_lElectronPassEmu,             "_lElectronPassEmu[_nLight]/O");
   outputTree->Branch("_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto", &_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto, "_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL]/O");
@@ -523,6 +525,8 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const 
   _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
   _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
   _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
+  _2dIP[_nL]    = ele.dB();
+  _2dIPSig[_nL] = ele.dB()/ele.edB();
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
@@ -531,6 +535,8 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const rec
   _dz[_nL]      = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dz(vertex.position()) : muon.outerTrack()->dz(vertex.position());
   _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
+  _3dIP[_nL]    = muon.dB();
+  _3dIPSig[_nL] = muon.dB()/muon.edB();
 }
 
 
