@@ -92,7 +92,9 @@ class LeptonAnalyzer {
     double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];
     double _3dIP[nL_max];
+    double _2dIP[nL_max];
     double _3dIPSig[nL_max];
+    double _2dIPSig[nL_max];
     float _lElectronMva[nL_max];
     bool _lElectronPassEmu[nL_max];
     bool _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[nL_max];
