@@ -53,12 +53,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_sumNeutralHadronEt03",         &_sumNeutralHadronEt03,         "_sumNeutralHadronEt03[_nL]/D");
   outputTree->Branch("_sumChargedHadronPt03",         &_sumChargedHadronPt03,         "_sumChargedHadronPt03[_nL]/D");
   outputTree->Branch("_sumPhotonEt03",                &_sumPhotonEt03,                "_sumPhotonEt03[_nL]/D");
-  outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nL]/O");
-  outputTree->Branch("_ecalIso",                      &_ecalIso ,                     " _ecalIso[_nL]/O");
-  outputTree->Branch("_hcalIso",                      &_hcalIso ,                     " _hcalIso[_nL]/O");
-  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    " _deltaBIso[_nL]/O");
-  outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            " _ecalPFClusterIso[_nL]/O");
-  outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            " _hcalPFClusterIso[_nL]/O");
+  outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nL]/D");
+  outputTree->Branch("_ecalIso",                      &_ecalIso ,                     " _ecalIso[_nL]/D");
+  outputTree->Branch("_hcalIso",                      &_hcalIso ,                     " _hcalIso[_nL]/D");
+  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    " _deltaBIso[_nL]/D");
+  outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            " _ecalPFClusterIso[_nL]/D");
+  outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            " _hcalPFClusterIso[_nL]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
   outputTree->Branch("_closestJetCsv",                &_closestJetCsv,                "_closestJetCsv[_nLight]/D");
