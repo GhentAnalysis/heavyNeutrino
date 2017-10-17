@@ -469,7 +469,6 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
   _hcalPFClusterIso[_nL] =  -1.; 
 	
 	
-std::cout<<"mu track iso: "<<mu.trackIso	()<<std::endl;	
 	
 }
 
