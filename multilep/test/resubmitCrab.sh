@@ -2,7 +2,8 @@
 checkCrab(){
     for dir in ./*/*;
         do if [[ $dir != *"done"* ]]
-            then (echo $dir; ./checkCrab.py $dir)
+            then echo $dir 
+            ./crabStatus.py $dir
         fi
     done
 }
