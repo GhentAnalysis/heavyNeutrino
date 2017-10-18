@@ -30,7 +30,6 @@ for i in range(1,len(sys.argv)):
     elif "events"          in sys.argv[i]: nEvents         = int(getVal(sys.argv[i]))
 
 
-isSUSY
 
 process = cms.Process("BlackJackAndHookers")
 
