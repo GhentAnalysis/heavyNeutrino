@@ -4,7 +4,7 @@
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
     genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
-    genLumiInfoToken(                 consumes<GenLumiInfoHeader>(                iConfig.getParameter<edm::InputTag>("genEventInfo"))), //NOT SURE IF THIS WILL WORK, CHECK!
+    genLumiInfoToken(                 consumes<GenLumiInfoHeader, edm::InLumi>(   iConfig.getParameter<edm::InputTag>("genEventInfo"))), //NOT SURE IF THIS WILL WORK, CHECK!
     lheEventInfoToken(                consumes<LHEEventProduct>(                  iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
     pileUpToken(                      consumes<std::vector<PileupSummaryInfo>>(   iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
     genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
@@ -49,7 +49,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
-    susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this);
+    susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
 }
 
 multilep::~multilep(){
@@ -74,13 +74,6 @@ void multilep::beginJob(){
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
-    lheAnalyzer->beginJob(outputTree, fs);
-    if(!isData) genAnalyzer->beginJob(outputTree);
-    triggerAnalyzer->beginJob(outputTree);
-    leptonAnalyzer->beginJob(outputTree);
-    photonAnalyzer->beginJob(outputTree);
-    jetAnalyzer->beginJob(outputTree);
-
     outputTree->Branch("_met",                          &_met,                          "_met/D");
     outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
     outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
@@ -93,21 +86,33 @@ void multilep::beginJob(){
     outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
 
+    if(!isData) lheAnalyzer->beginJob(outputTree, fs);
+    if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
+    if(!isData) genAnalyzer->beginJob(outputTree);
+    triggerAnalyzer->beginJob(outputTree);
+    leptonAnalyzer->beginJob(outputTree);
+    photonAnalyzer->beginJob(outputTree);
+    jetAnalyzer->beginJob(outputTree);
+
     _runNb = 0;
 }
 // ------------ method called for each lumi block ---------
 void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
-    std::cout << "Lumi block begins!" << std::endl;
     if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
 }
+//------------- method called for each run -------------
+void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
+    // HLT results could have different size/order in new run, so look up again de index positions
+    triggerAnalyzer->reIndex = true;
+}
+
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
-
-    lheAnalyzer->analyze(iEvent);                                      // needs to be run before selection to get correct uncertainties on MC xsection
-    if(!vertices->size()) return;                                       //Don't consider 0 vertex events
-    if(_runNb != iEvent.id().run()) triggerAnalyzer->reIndex = true;   // HLT results could have different size/order in new run, so look up again de index positions
+    if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
+    if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
+    if(!vertices->size()) return;                                      //Don't consider 0 vertex events
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;

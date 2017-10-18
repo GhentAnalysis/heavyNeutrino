@@ -18,8 +18,6 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 
 
 void GenAnalyzer::beginJob(TTree* outputTree){
-  outputTree->Branch("_nTrueInt",                   &_nTrueInt,                 "_nTrueInt/F");
-
   outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/b");
   outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/b");
   outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
@@ -38,7 +36,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_lEta",                  &_gen_lEta,                  "_gen_lEta[_gen_nL]/D");
   outputTree->Branch("_gen_lPhi",                  &_gen_lPhi,                  "_gen_lPhi[_gen_nL]/D");
   outputTree->Branch("_gen_lE",                    &_gen_lE,                    "_gen_lE[_gen_nL]/D");
-  outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/b");
+  outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/i");
   outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
   outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
   outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
@@ -46,9 +44,6 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
-  edm::Handle<std::vector<PileupSummaryInfo>>  pileUpInfo;  iEvent.getByToken(multilepAnalyzer->pileUpToken,      pileUpInfo);
-
-  _nTrueInt = pileUpInfo->begin()->getTrueNumInteractions(); // getTrueNumInteractions is the same for all bunch crossings
 
   if(!genParticles.isValid()) return;
 

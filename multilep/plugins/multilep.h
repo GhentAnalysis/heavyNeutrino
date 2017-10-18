@@ -38,9 +38,6 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 
-//New include. What's the difference withe /one/EDAnalyzer??
-#include "FWCore/Framework/interface/EDAnalyzer.h"
-
 //
 // class declaration
 //
@@ -52,16 +49,23 @@ class GenAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
 
-//class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::SharedResources> {
-class multilep: public edm::EDAnalyzer {
+class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::WatchRuns, edm::one::SharedResources> {
+    //Define other analyzers as friends
+    friend TriggerAnalyzer;
+    friend LeptonAnalyzer;
+    friend PhotonAnalyzer;
+    friend JetAnalyzer;
+    friend GenAnalyzer;
+    friend LheAnalyzer;
+    friend SUSYMassAnalyzer;
     public:
         explicit multilep(const edm::ParameterSet&);
         ~multilep();
 
         static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-
+        GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
+    private:
         // Define EDgetTokens to read data from events
-        // Public such that we can easily access them in the individual object analyzers)
         edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
         edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
         edm::EDGetTokenT<GenLumiInfoHeader>                 genLumiInfoToken;
@@ -103,11 +107,11 @@ class multilep: public edm::EDAnalyzer {
         bool                                                is2017;
         bool                                                isSUSY;
 
-        GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
-
-    private:
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
+        virtual void endLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override {}
+        virtual void beginRun(const edm::Run&, edm::EventSetup const&) override;
+        virtual void endRun(const edm::Run&, edm::EventSetup const&) override {}
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
         virtual void endJob() override;
 
