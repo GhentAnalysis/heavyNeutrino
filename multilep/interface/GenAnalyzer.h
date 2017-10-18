@@ -16,7 +16,6 @@ class GenAnalyzer {
    
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
-    float  _nTrueInt;
 
     //generator level MET
     double   _gen_met;
