@@ -25,8 +25,6 @@ for i in range(1,len(sys.argv)):
     elif "inputFile" in sys.argv[i]: inputFile  = getVal(sys.argv[i])
     elif "events"    in sys.argv[i]: nEvents    = int(getVal(sys.argv[i]))
 
-print outputFile.split('/')[-1].split('.')[0]
-
 isData = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
 isSUSY = "SMS-T" in inputFile
