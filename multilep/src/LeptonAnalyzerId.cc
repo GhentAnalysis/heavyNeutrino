@@ -164,7 +164,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon){
             _miniIso[_nL] - _miniIsoCharged[_nL],
             _ptRel[_nL],
             _ptRatio[_nL],
-            _closestJetCsv[_nL],
+            _closestJetCsvV2[_nL],
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
@@ -180,7 +180,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron){
             _miniIso[_nL] - _miniIsoCharged[_nL],
             _ptRel[_nL],
             _ptRatio[_nL],
-            _closestJetCsv[_nL],
+            _closestJetCsvV2[_nL],
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
@@ -215,7 +215,7 @@ bool LeptonAnalyzer::isEwkFO(const pat::Muon& lep){
     if(!_lEwkLoose[_nL]) return false;
     if(_lPt[_nL] <= 10) return false;
     if(!lep.isMediumMuon()) return false;
-    return _leptonMva[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
+    return _leptonMva[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
 }
 
 bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep){
@@ -228,7 +228,7 @@ bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep){
         ptCone *= 0.85/_ptRatio[_nL];
     }
     if(ptCone >= 30 && lep.hadronicOverEm() >= (lep.isEB() ? 0.10  : 0.07) ) return false;
-    return _leptonMva[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMva[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsv[_nL] < 0.3);
+    return _leptonMva[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMva[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
 }
 
 bool LeptonAnalyzer::isEwkFO(const pat::Tau& tau){
