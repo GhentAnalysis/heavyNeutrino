@@ -2,7 +2,7 @@
 import os, glob, sys
 
 datasetsFile    = sys.argv[1]                                                                             # Input file with datasets
-productionLabel = os.path.basename(datasetsFile.split('.')[0])                                            # Label to keep track of the tuple version (is taken from the name of the above input file)
+productionLabel = os.path.basename(datasetsFile.split('.')[0].split('/')[-1])                                            # Label to keep track of the tuple version (is taken from the name of the above input file)
 outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'                                 # Output directory in case of local submission
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
