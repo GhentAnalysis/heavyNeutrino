@@ -9,7 +9,7 @@ checkCrab(){
 }
 if [[ -z $1 ]] 
     then echo "Empty string given, will resubmit ALL failed crab jobs"
-    for d in ./crab/*
+    for d in ../crab/*
         do if [[ -d $d ]]
             then checkCrab $d
         fi
