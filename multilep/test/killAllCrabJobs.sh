@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Killing all running crab jobs listed in ./crab directory"
 cd ./crab
 for dir in *
     do if [[ -d $dir ]]; then
