@@ -309,6 +309,8 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _ptRatio[_nL] = 1;
         _ptRel[_nL] = 0;
         _closestJetCsvV2[_nL] = 0;
+        _closestJetDeepCsv_b[_nL] = 0;
+        _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
     } else {
         auto  l1Jet       = jet.correctedP4("L1FastJet");
