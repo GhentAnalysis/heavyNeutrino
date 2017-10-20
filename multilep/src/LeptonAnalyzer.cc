@@ -336,6 +336,5 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
                 if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
             } catch (...){}
         }
-        std::cout << "_selectedTrackMult[_nL] = " << _selectedTrackMult[_nL] << std::endl;
     }
 }
