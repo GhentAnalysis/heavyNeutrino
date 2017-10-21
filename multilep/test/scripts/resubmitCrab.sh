@@ -3,7 +3,7 @@ checkCrab(){
     for dir in ${1}/*/*;
         do if [[ $dir != *"done"* ]]
             then echo $dir 
-            ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/crabStatus.py $dir
+            ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/scripts/crabStatus.py $dir
         fi
     done
 }
