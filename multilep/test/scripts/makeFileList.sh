@@ -42,5 +42,8 @@ fileList(){
             fi
         done < fileNames.txt
 
+        #clean up temporary file
+        rm fileNames.txt
+
     fi
 }
