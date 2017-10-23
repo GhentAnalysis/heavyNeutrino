@@ -18,7 +18,7 @@ for dataset in datasets:
       dir        = os.getcwd()
       outputDir = outDir + dataset.split('/')[-1]      
       #cut out the first part of /pnfs path for official sample if needed
-      if 'pnfs' in dataset:
+      if 'pnfs' in dataset and 'user' not in dataset:
         dataset = dataset.replace("/pnfs/iihe/cms/ph/sc4/store/mc", "")
         #naming in pnfs directories is slightly altered compared to the CMSDAS name, rever this to the CMSDAS version:
         period = dataset[1:].split('/')[0]
