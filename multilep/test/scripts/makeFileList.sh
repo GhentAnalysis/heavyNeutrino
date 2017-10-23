@@ -34,7 +34,7 @@ fileList(){
         
         while read f
             #check if file is locally available
-            do if [ -e ${location}${f} ]
+            do if [[ -e ${location}${f} ]]
                 then echo "${dcap}${location}${f}" >> fileList.txt
             #if the file is not available add an xrootd redirector to a remote location
             else

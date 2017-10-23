@@ -62,7 +62,8 @@ while read f
     fi
     echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py dir=$output , inputFile=$f, outputFile=${output}/Job_${count}_${skim}.root, events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submitS
     count=$((count + 1))
-done < ../fileList.txt
-qsub $submit -l walltime=40:00:00;
+done < fileList.txt
+#qsub $submit -l walltime=40:00:00;
+cat $submit
 #remove temporary files
-rm ../fileList.txt
+rm fileList.txt
