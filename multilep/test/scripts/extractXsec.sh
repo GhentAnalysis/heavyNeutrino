@@ -7,6 +7,9 @@ source makeFileList.sh
 input=$1
 output=$2
 
+echo "Extracting cross section for sample $input"
+echo "Note that this script might run for a while on large samples!"
+
 #make list of files
 fileList $input
 
