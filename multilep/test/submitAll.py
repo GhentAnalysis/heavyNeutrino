@@ -16,9 +16,7 @@ for dataset in datasets:
 
   if 'pnfs' in dataset or 'user' in dataset or submitLocal: 
       dir        = os.getcwd()
-      outputFile = os.path.join(outDir, datasetName, 'local_' + productionLabel, outputName + '_' + str(i) + '.root')
       outputDir = outDir + dataset.split('/')[-1]      
-      outputFile = 
       #find way to give skim conditon (determined by outPutName) to bash script
       os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + outputName + ' ' + filesPerJob)
   else: # use crab

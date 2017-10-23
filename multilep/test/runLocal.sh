@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #include function to make list of all files in given sample
-source makeFileList.sh
+source scripts/makeFileList.sh
 
 #function to set up CMSSW in a job
 setCMSSW(){
