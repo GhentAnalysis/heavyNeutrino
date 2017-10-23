@@ -25,7 +25,6 @@ for i in range(1,len(sys.argv)):
     elif "inputFile" in sys.argv[i]: inputFile  = getVal(sys.argv[i])
     elif "events"    in sys.argv[i]: nEvents    = int(getVal(sys.argv[i]))
 
-
 isData = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
 isSUSY = "SMS-T" in inputFile
@@ -133,7 +132,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  if is2017: JSON = "../data/JSON/Cert_294927-304120_13TeV_PromptReco_Collisions17_JSON.txt"
+  if is2017: JSON = "../data/JSON/Cert_294927-304507_13TeV_PromptReco_Collisions17_JSON.txt"
   else:      JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
   process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
 

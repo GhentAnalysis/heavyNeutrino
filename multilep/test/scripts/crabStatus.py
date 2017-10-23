@@ -100,4 +100,4 @@ for job in jobs:
 if len(jobsToResubmit) > 0:
   print "Resubmitting " + jobsToCrabList(jobsToResubmit)
   if len(args) > 0: os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxmemory=4000' if raiseMemoryLimit else '') + " " +  args[0])
-  else:             os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxmemory=4000' if raiseMemoryLimit else '') + " --siteblacklist=T2_US_Wisconsin")
+  else:             os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxmemory=4000' if raiseMemoryLimit else '') + " --siteblacklist=T2_US_Wisconsin, T2_US_Vanderbilt")

@@ -1,61 +1,68 @@
 #!/bin/bash
 
+#include function to make list of all files in given sample
+source scripts/makeFileList.sh
+
+#function to set up CMSSW in a job
+setCMSSW(){
+    echo "cd ${CMSSW_BASE}/src" >> $1
+    echo "source /cvmfs/cms.cern.ch/cmsset_default.sh" >> $1
+    echo "eval \`scram runtime -sh\`" >> $1
+}
+
 #read command-line arguments
 input=$1
-output=$3
-filesPerJob=$2
-
-#check if output exists
+output=$2
+skim=$3             #skim condition for the sample
+                    #This will determine the name of the output files.
+                    #The names of the output files will determine the
+                    #skim, via multilep.py
+filesPerJob=$4
+                    
 
 #if no output directory given, automatically initialize one
+if [[ -z "$output" ]]; then
+    #strip sample name from input
+    output=${input///}    
+    #set output directory to default 
+    output=~/heavyNeutrino/${output}    
+fi
 
-#list all files present in sample in a txt file
-python ~/das_client.py --query="file dataset=$input" --limit=0 > fileNames.txt
+#make output directory structure if needed
+mkdir -p $output
 
-#location of files on local cluster
-location=/pnfs/iihe/cms/ph/sc4
-dcap=dcap://maite.iihe.ac.be
+#initialize filesPerJob to a default value if the argument is unspecified
+if [[ -z "$filesPerJob" ]]; then
+    filesPerJob=10
+fi
 
-#xrootd redirector for files not present on local cluster
-redirector=root://cmsxrootd.fnal.gov//
 
-#make temporary txt file to store final list of files
-touch fileList.txt
+#check if output exists, if not make the directory
+mkdir -p $output
+mkdir -p ${output}/errs
+mkdir -p ${output}/logs
 
-while read f
-    #check if file is locally available
-    do if [ -e ${location}${f} ]
-        then echo "${dcap}${location}${f}" >> fileList.txt
-    #if the file is not available add an xrootd redirector to a remote location
-    else 
-        echo "${redirector}${f}" >> fileList.txt
-    fi
-done < fileNames.txt
+#make list of all files in input sample
+fileList $input
 
 #loop over new list of files and submit jobs
 count=0
 submit=submit.sh
 while read f
-    do echo "$f"
     #submit a job for every few files, as specified in the input
-    if (( $count % $filesPerJob == 0 ))
+    do if (( $count % $filesPerJob == 0 ))
         then if (( $count != 0)) 
-            #then qsub $submit -l walltime=40:00:00;
-            then cat $submit
+            then qsub $submit -l walltime=40:00:00;
         fi
         #initialize temporary submission script
         if [ -e $submit ]; then rm $submit; fi
         touch $submit
         #initialize CMSSW environment in submission script
-        echo "cd ${CMSSW_BASE}/src" >> $submit
-        echo "source /cvmfs/cms.cern.ch/cmsset_default.sh" >> $submit
-        echo "eval \`scram runtime -sh\`" >> $submit
+        setCMSSW $submit
     fi
-    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py $f ${output}/Job_${count}.root > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
+    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py dir=$output, inputFile=$f, outputFile=${output}/Job_${count}_${skim}.root, events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
     count=$((count + 1))
 done < fileList.txt
 qsub $submit -l walltime=40:00:00;
 #remove temporary files
-rm $submit
-rm fileNames.txt
-rm fileList.txt
+#rm fileList.txt
