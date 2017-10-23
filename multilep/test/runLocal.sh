@@ -10,15 +10,30 @@ setCMSSW(){
     echo "eval \`scram runtime -sh\`" >> $1
 }
 
-
 #read command-line arguments
 input=$1
 output=$3
 filesPerJob=$2
 
-#check if output exists
-
 #if no output directory given, automatically initialize one
+if [[ -z "$output" ]]; then
+    #strip sample name from input
+    output=${input///}    
+    #set output directory to default 
+    output=~/heavyNeutrino/${output}    
+fi
+
+#make output directory structure if needed
+mkdir -p $output
+
+#initialize filesPerJob to a default value if the argument is unspecified
+if [[ -z "$filesPerJob" ]]; then
+    filesPerJob=10
+fi
+
+
+#check if output exists, if not make the directory
+mkdir -p $output
 
 #make list of all files in input sample
 fileList $input
@@ -40,8 +55,9 @@ while read f
         #initialize CMSSW environment in submission script
         setCMSSW $1
     fi
-    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py $f ${output}/Job_${count}.root > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
+    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py dir=$output , inputFile=$f, outputFile=${output}/Job_${count}.root, events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
     count=$((count + 1))
 done < fileList.txt
 qsub $submit -l walltime=40:00:00;
 #remove temporary files
+rm fileList.txt
