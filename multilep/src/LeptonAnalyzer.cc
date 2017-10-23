@@ -604,49 +604,6 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
 
 
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex){
-<<<<<<< HEAD
-  //Make skimmed "close jet" collection
-  std::vector<pat::Jet> selectedJetsAll;
-  for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-    if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
-  }
-  // Find closest selected jet
-  unsigned closestIndex = 0;
-  for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
-    if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
-  }
-  const pat::Jet& jet = selectedJetsAll[closestIndex];
-  if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
-    _ptRatio[_nL] = 1;
-    _ptRel[_nL] = 0;
-    _closestJetCsv[_nL] = 0;
-    _selectedTrackMult[_nL] = 0;
-  } else {
-    auto  l1Jet       = jet.correctedP4("L1FastJet");
-    float JEC         = jet.p4().E()/l1Jet.E();
-    auto  l           = lepton.p4();
-    auto  lepAwareJet = (l1Jet - l)*JEC + l;
-    TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
-    TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
-    _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
-    _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
-    _closestJetCsv[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
-    //compute selected track multiplicity of closest jet
-    _selectedTrackMult[_nL] = 0;
-    for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
-      const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-      try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
-	const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
-	TLorentzVector trackVec          = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-	double daughterDeltaR            = trackVec.DeltaR(jV);
-	bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
-	  && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
-																			  && fabs(daughterTrack.dxy(vertex.position())) < 17;
-	if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
-      } catch (...){
-	_selectedTrackMult[_nL] = 0;
-      }
-=======
     //Make skimmed "close jet" collection
     std::vector<pat::Jet> selectedJetsAll;
     for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
@@ -691,7 +648,6 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
                 if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
             } catch (...){}
         }
->>>>>>> master
     }
   }
 }
