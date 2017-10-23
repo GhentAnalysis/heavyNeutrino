@@ -65,4 +65,4 @@ while read f
 done < fileList.txt
 qsub $submit -l walltime=40:00:00;
 #remove temporary files
-#rm fileList.txt
+rm fileList.txt
