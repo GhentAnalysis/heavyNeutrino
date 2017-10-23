@@ -39,6 +39,8 @@ fi
 
 #check if output exists, if not make the directory
 mkdir -p $output
+mkdir -p ${output}/errs
+mkdir -p ${output}/logs
 
 #make list of all files in input sample
 fileList $input
