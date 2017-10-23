@@ -14,6 +14,11 @@ setCMSSW(){
 input=$1
 output=$3
 filesPerJob=$2
+skim=$3             #skim condition for the sample
+                    #This will determine the name of the output files.
+                    #The names of the output files will determine the
+                    #skim, via multilep.py
+                    
 
 #if no output directory given, automatically initialize one
 if [[ -z "$output" ]]; then
@@ -55,7 +60,7 @@ while read f
         #initialize CMSSW environment in submission script
         setCMSSW $1
     fi
-    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py dir=$output , inputFile=$f, outputFile=${output}/Job_${count}.root, events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
+    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py dir=$output , inputFile=$f, outputFile=${output}/Job_${count}_${skim}.root, events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submitS
     count=$((count + 1))
 done < fileList.txt
 qsub $submit -l walltime=40:00:00;
