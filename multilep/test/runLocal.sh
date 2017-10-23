@@ -12,12 +12,12 @@ setCMSSW(){
 
 #read command-line arguments
 input=$1
-output=$3
-filesPerJob=$2
+output=$2
 skim=$3             #skim condition for the sample
                     #This will determine the name of the output files.
                     #The names of the output files will determine the
                     #skim, via multilep.py
+filesPerJob=$4
                     
 
 #if no output directory given, automatically initialize one

@@ -6,8 +6,6 @@ productionLabel = os.path.basename(datasetsFile.split('.')[0].split('/')[-1])   
 outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'                                 # Output directory in case of local submission
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
-groupFiles      = 1                                                                                       # Group files together when running locally
-
 #check if call asked for local submission
 submitLocal     = sys.argv[2]
 #Use third argument to specify the number of jobs per file
@@ -22,7 +20,7 @@ for dataset in datasets:
       outputDir = outDir + dataset.split('/')[-1]      
       outputFile = 
       #find way to give skim conditon (determined by outPutName) to bash script
-      os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + filesPerJob + ' ' + outputName)
+      os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + outputName + ' ' + filesPerJob)
   else: # use crab
     print 'Submitting ' + dataset + ' using crab:'
     os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
