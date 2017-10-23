@@ -49,12 +49,10 @@ fileList $input
 count=0
 submit=submit.sh
 while read f
-    do echo "$f"
     #submit a job for every few files, as specified in the input
-    if (( $count % $filesPerJob == 0 ))
+    do if (( $count % $filesPerJob == 0 ))
         then if (( $count != 0)) 
-            #then qsub $submit -l walltime=40:00:00;
-            then cat $submit #temporary for testing
+            then qsub $submit -l walltime=40:00:00;
         fi
         #initialize temporary submission script
         if [ -e $submit ]; then rm $submit; fi
@@ -62,10 +60,9 @@ while read f
         #initialize CMSSW environment in submission script
         setCMSSW $submit
     fi
-    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py dir=$output , inputFile=$f, outputFile=${output}/Job_${count}_${skim}.root, events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
+    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py dir=$output, inputFile=$f, outputFile=${output}/Job_${count}_${skim}.root, events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
     count=$((count + 1))
 done < fileList.txt
-#qsub $submit -l walltime=40:00:00;
-cat $submit
+qsub $submit -l walltime=40:00:00;
 #remove temporary files
 #rm fileList.txt

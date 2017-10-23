@@ -27,7 +27,6 @@ for dataset in datasets:
         puScen = dataset[1:].split('/')[3]
         dataset = '/' + name + '/' + period + '-' + puScen + '/' + form
 
-      print dataset
       os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + outputName + ' ' + filesPerJob)
   else: # use crab
     print 'Submitting ' + dataset + ' using crab:'
