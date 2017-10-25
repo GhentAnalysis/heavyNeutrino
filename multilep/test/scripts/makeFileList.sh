@@ -22,7 +22,7 @@ fileList(){
     else                                #official sample
 
         #use CMSDAS query to list all files present in sample in a txt file
-        python das_client.py --query="file dataset=$input" --limit=0 > fileNames.txt
+        python ${CMSSW_BASE}/src/heavyNeutrino/multilep/das_client.py --query="file dataset=$input" --limit=0 > fileNames.txt
         
         #location of files on local cluster
         location=/pnfs/iihe/cms/ph/sc4
