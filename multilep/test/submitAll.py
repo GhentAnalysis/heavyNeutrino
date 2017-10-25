@@ -11,9 +11,9 @@ submitLocal     = False
 #Use third argument to specify the number of jobs per file
 filesPerJob     = 10
 
-if len(sys.argv) > 1:
+if len(sys.argv) > 2:
     submitLocal = sys.argv[2]
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         filesPerJob = sys.argv[3]
 
 for dataset in datasets:
@@ -32,7 +32,7 @@ for dataset in datasets:
             puScen = dataset[1:].split('/')[3]
             dataset = '/' + name + '/' + period + '-' + puScen + '/' + form
 
-        os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + outputName + ' ' + filesPerJob)
+        os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + outputName + ' ' + str(filesPerJob) )
 
     else: # use crab
         print 'Submitting ' + dataset + ' using crab:'
