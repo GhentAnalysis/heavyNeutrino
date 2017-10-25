@@ -68,4 +68,5 @@ done < fileList.txt
 qsub $submit -l walltime=40:00:00;
 #cat $submit
 #remove temporary files
+rm $submit
 rm fileList.txt
