@@ -7,7 +7,7 @@
 #include <memory>
 class LeptonMvaHelper{
     public:
-        LeptonMvaHelper(const edm::ParameterSet& iConfig);
+        LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool SUSY = true);
         double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double segComp);
         double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double eleMva);
     private:
