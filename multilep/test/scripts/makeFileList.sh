@@ -12,7 +12,7 @@ fileList(){
     touch fileList.txt
     
     #check if sample is private or official production
-    if [[ input == *"/user/"* ]]; then  #private sample
+    if [[ input == *"/user/"* ]] || [[ input == "/pnfs/"* ]] ; then  #private sample or local path
 
         #add all files to list 
         for file in $input/*
