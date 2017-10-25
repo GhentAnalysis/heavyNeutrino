@@ -23,9 +23,10 @@ filesPerJob=$4
 #if no output directory given, automatically initialize one
 if [[ -z "$output" ]]; then
     #strip sample name from input
-    output=${input///}    
+    output=${input:1}    
+    output=${output%%/}
     #set output directory to default 
-    output=~/heavyNeutrino/${output}    
+    output=~/public/heavyNeutrino/${output}    
 fi
 
 #make output directory structure if needed

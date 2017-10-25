@@ -17,11 +17,12 @@ if len(sys.argv) > 2:
         filesPerJob = sys.argv[3]
 
 for dataset in datasets:
-    outputName, dataset = dataset.split(':')
+    skim, dataset = dataset.split(':')
 
     if 'pnfs' in dataset or 'user' in dataset or submitLocal: 
         dir        = os.getcwd()
-        outputDir = outDir + dataset.split('/')[-1]      
+        outputDir = outDir + dataset.split('/')[1]      
+        print outputDir
         #cut out the first part of /pnfs path for official sample if needed
         if 'pnfs' in dataset and 'user' not in dataset:
             dataset = dataset.replace("/pnfs/iihe/cms/ph/sc4/store/mc", "")
@@ -32,7 +33,7 @@ for dataset in datasets:
             puScen = dataset[1:].split('/')[3]
             dataset = '/' + name + '/' + period + '-' + puScen + '/' + form
 
-        os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + outputName + ' ' + str(filesPerJob) )
+        os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + skim + ' ' + str(filesPerJob) )
 
     else: # use crab
         print 'Submitting ' + dataset + ' using crab:'
