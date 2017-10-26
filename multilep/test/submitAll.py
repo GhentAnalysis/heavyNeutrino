@@ -39,5 +39,5 @@ for dataset in datasets:
         print 'Submitting ' + dataset + ' using crab:'
         os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
         os.environ['CRAB_DATASET']         = dataset
-        os.environ['CRAB_OUTPUTFILE']      = outputName + '.root'
+        os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
         os.system('crab submit -c crab.py')
