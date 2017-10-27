@@ -30,7 +30,7 @@ class LeptonIdHelper{
         
         double ptRel;               //closest jet variables
         double ptRatio;
-        double closestJetCsv;
+        double closestJetCsvV2;
         unsigned selectedTrackMult;
 
         double sip3d;               //Pointing variables 

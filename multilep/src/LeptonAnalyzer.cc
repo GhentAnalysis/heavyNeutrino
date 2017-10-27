@@ -56,7 +56,9 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_miniIsoCharged",               &_miniIsoCharged,               "_miniIsoCharged[_nLight]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
-  outputTree->Branch("_closestJetCsv",                &_closestJetCsv,                "_closestJetCsv[_nLight]/D");
+  outputTree->Branch("_closestJetCsvV2",              &_closestJetCsvV2,              "_closestJetCsvV2[_nLight]/D");
+  outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
+  outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
   outputTree->Branch("_muonSegComp",                  &_muonSegComp,                  "_muonSegComp[_nMu]/D");
   if(!multilepAnalyzer->isData){
@@ -306,7 +308,9 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
         _ptRatio[_nL] = 1;
         _ptRel[_nL] = 0;
-        _closestJetCsv[_nL] = 0;
+        _closestJetCsvV2[_nL] = 0;
+        _closestJetDeepCsv_b[_nL] = 0;
+        _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
     } else {
         auto  l1Jet       = jet.correctedP4("L1FastJet");
@@ -317,7 +321,9 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
         _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
         _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
-        _closestJetCsv[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+        _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+        _closestJetDeepCsv_b[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probb");
+        _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
         //compute selected track multiplicity of closest jet
         _selectedTrackMult[_nL] = 0;
         for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
@@ -330,9 +336,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
                                                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
                                                    && fabs(daughterTrack.dxy(vertex.position())) < 17;
                 if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
-            } catch (...){
-                _selectedTrackMult[_nL] = 0;
-            }
+            } catch (...){}
         }
     }
 }

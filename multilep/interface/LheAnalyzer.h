@@ -14,12 +14,14 @@ class LheAnalyzer {
   //friend classes
   friend SUSYMassAnalyzer;
   private:
+    float  _nTrueInt;
     double _weight;
     double _lheHTIncoming;
     double _ctauHN;
 
     TH1D*  hCounter;
     TH1D*  lheCounter;
+    TH1D*  nTrue;
 
     unsigned _nLheWeights;
     double _lheWeight[110];

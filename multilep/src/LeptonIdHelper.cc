@@ -9,7 +9,7 @@ LeptonIdHelper::LeptonIdHelper(const LeptonAnalyzer& lepAn, const unsigned index
     relIso = lepAn._relIso[index];
     ptRel = lepAn._ptRel[index];
     ptRatio = lepAn._ptRatio[index];
-    closestJetCsv = lepAn._closestJetCsv[index];
+    closestJetCsvV2 = lepAn._closestJetCsvV2[index];
     sip3d = lepAn._3dIPSig[index];
     dxy = lepAn._dxy[index];
     dz = lepAn._dz[index];

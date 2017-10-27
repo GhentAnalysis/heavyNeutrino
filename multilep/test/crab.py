@@ -10,7 +10,8 @@ requestName = dataset.split('/')[2] + '_' + productionLabel
 requestName = requestName.replace('RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6','Moriond2017')
 requestName = requestName.replace('RunIISummer16MiniAODv2-PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6','Moriond2017')
 requestName = requestName.replace('RunIISummer16MiniAODv2-80X_mcRun2_asymptotic_2016_TrancheIV_v6', '80X')
-
+requestName = requestName.replace('RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016', 'Spring16FS')
+requestName = requestName.replace('RunIISummer16MiniAODv2-PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6', 'Moriond2017FS')
 
 # Crab configuration
 config = Configuration()

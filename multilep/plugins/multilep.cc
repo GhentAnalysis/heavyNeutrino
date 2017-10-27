@@ -74,14 +74,6 @@ void multilep::beginJob(){
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
-    if(!isData) lheAnalyzer->beginJob(outputTree, fs);
-    if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
-    if(!isData) genAnalyzer->beginJob(outputTree);
-    triggerAnalyzer->beginJob(outputTree);
-    leptonAnalyzer->beginJob(outputTree);
-    photonAnalyzer->beginJob(outputTree);
-    jetAnalyzer->beginJob(outputTree);
-
     outputTree->Branch("_met",                          &_met,                          "_met/D");
     outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
     outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
@@ -93,6 +85,14 @@ void multilep::beginJob(){
     outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
     outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
+
+    if(!isData) lheAnalyzer->beginJob(outputTree, fs);
+    if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
+    if(!isData) genAnalyzer->beginJob(outputTree);
+    triggerAnalyzer->beginJob(outputTree);
+    leptonAnalyzer->beginJob(outputTree);
+    photonAnalyzer->beginJob(outputTree);
+    jetAnalyzer->beginJob(outputTree);
 
     _runNb = 0;
 }
