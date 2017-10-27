@@ -45,7 +45,6 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_nW",			   &_gen_nW,			"_gen_nW/b");
   outputTree->Branch("_gen_WMomPdg",		   &_gen_WMomPdg,		"_gen_WMomPdg[_gen_nW]/b");
   outputTree->Branch("_gen_nWfromN",		   &_gen_nWfromN,		"_gen_nWfromN/b");
-  outputTree->Branch("_gen_nq",			   &_gen_nq,			"_gen_nq[6]/b");
   outputTree->Branch("_gen_nN",			   &_gen_nN,			"_gen_nN/b");
   outputTree->Branch("_gen_nNdaughters",	   &_gen_nNdaughters,		"_gen_nNdaughters/b");
   outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	"_gen_Ndaughters_pdg[_gen_nNdaughters]/b");
@@ -84,8 +83,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
   _gen_nstatus23_fromN = 0;
   _gen_nstatus23_fromW = 0;
   _gen_nq23 = 0;
-  int pdgid;
-  for(unsigned int i = 0; i < 6; i++) _gen_nq[i] = 0;
+  int mompdgid;
+  int index_quark = 1;// first or second quark from HNL decay
   
   _gen_nL = 0;
   _gen_nPh = 0;
@@ -132,19 +131,13 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
       ++_gen_nPh;
     }
 
-    //attempt to store generator level jet/quark info
+    //attempt to store generator level quark info
+    mompdgid = getMotherPdgId(p, *genParticles);
     if(abs(p.pdgId()) == 24){
       _gen_WMomPdg[_gen_nW] = getMotherPdgId(p, *genParticles);
-      pdgid = getMotherPdgId(p, *genParticles);
-      if(abs(pdgid) == 9900012) ++_gen_nWfromN;
+      if(abs(mompdgid) == 9900012) ++_gen_nWfromN;
       ++_gen_nW;
     }
-    if(abs(p.pdgId()) == 1) _gen_nq[0] += 1;
-    if(abs(p.pdgId()) == 2) _gen_nq[1] += 1;
-    if(abs(p.pdgId()) == 3) _gen_nq[2] += 1;
-    if(abs(p.pdgId()) == 4) _gen_nq[3] += 1;
-    if(abs(p.pdgId()) == 5) _gen_nq[4] += 1;
-    if(abs(p.pdgId()) == 6) _gen_nq[5] += 1;
     
     if(abs(p.pdgId()) == 9900012){
       ++_gen_nN;
@@ -154,14 +147,13 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     if(p.status() == 23){
       _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
       ++_gen_nstatus23;
-      pdgid = getMotherPdgId(p, *genParticles);
-      if(abs(pdgid) == 9900012 || abs(pdgid) == 24){
-        if(abs(pdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30;
-        else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(pdgid);
+      if(abs(mompdgid) == 9900012 || abs(mompdgid) == 24){
+        if(abs(mompdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30;
+        else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(mompdgid);
         _gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW] = abs(p.pdgId());
         ++_gen_nstatus23_fromNorW;
       }
-      if(abs(pdgid) == 9900012){
+      if(abs(mompdgid) == 9900012){
         _gen_status23_fromN_pdg[_gen_nstatus23_fromN] = abs(p.pdgId());
         ++_gen_nstatus23_fromN;
         if(abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6){
@@ -172,11 +164,18 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
           ++_gen_nq23;
         }
       }
-      if(abs(pdgid) == 24){
+      if(abs(mompdgid) == 24){
         _gen_status23_fromW_pdg[_gen_nstatus23_fromW] = abs(p.pdgId());
         ++_gen_nstatus23_fromW;
       }
     }
+
+    // find daughters of quarks
+    if(p.status() == 23 && abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6 && abs(mompdgid) == 9900012){ // find 2 quarks from HNL decay
+      std::cout << "Pdg Id " << p.pdgId() << ": " << p.numberOfDaughters() << std::endl;
+    }
+
+
   }
   _gen_met    = genMetVector.Pt();
   _gen_metPhi = genMetVector.Phi();
@@ -211,6 +210,14 @@ void GenAnalyzer::getMotherList(const reco::GenParticle& p, const std::vector<re
   if((list.empty() or p.pdgId() != list.back()) and p.pdgId() != 2212) list.push_back(p.pdgId());
   if(p.numberOfMothers() > 1) getMotherList(genParticles[p.motherRef(1).key()], genParticles, list);
   if(p.numberOfMothers() > 0) getMotherList(genParticles[p.motherRef(0).key()], genParticles, list);
+}
+
+void GenAnalyzer::getDaughterList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<int>& list){
+  if((list.empty() or p.pdgId() != list.back())) list.push_back(p.pdgId());
+  int n = p.numberOfDaughters();
+ // for(int i = 0; i < n; i++){
+ //   getDaughterList(
+ // }
 }
 
 

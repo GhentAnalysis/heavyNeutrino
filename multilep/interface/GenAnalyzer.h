@@ -40,6 +40,7 @@ class GenAnalyzer {
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const int                getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
+    void		     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
     bool                     inMotherList(std::vector<int>& list, int i);
 
     unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
@@ -67,7 +68,6 @@ class GenAnalyzer {
     unsigned _gen_nW;
     int      _gen_WMomPdg[gen_n_max];
     unsigned _gen_nWfromN;
-    int      _gen_nq[6];
     unsigned _gen_nN;
     unsigned _gen_nNdaughters;
     int      _gen_Ndaughters_pdg[gen_n_max];
