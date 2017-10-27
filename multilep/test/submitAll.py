@@ -6,46 +6,38 @@ productionLabel = os.path.basename(datasetsFile.split('.')[0].split('/')[-1])   
 outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'                                 # Output directory in case of local submission
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
-groupFiles      = 1                                                                                       # Group files together when running locally
+#check if call asked for local submission
+submitLocal     = False
+#Use third argument to specify the number of jobs per file
+filesPerJob     = 10
 
+if len(sys.argv) > 2:
+    submitLocal = sys.argv[2]
+    if len(sys.argv) > 3:
+        filesPerJob = sys.argv[3]
 
 for dataset in datasets:
-  outputName, dataset = dataset.split(':')
+    skim, dataset = dataset.split(':')
 
-  if 'pnfs' in dataset or 'user' in dataset:
-    if 'user' in dataset: datasetName = dataset.split('/')[-1]
-    else:        datasetName = dataset.split('/MINIAOD')[0].split('/')[-1]
-    print dataset
+    if 'pnfs' in dataset or 'user' in dataset or submitLocal: 
+        dir        = os.getcwd()
+        outputDir = outDir + "/" + dataset.split('/')[1]      
+        print outputDir
+        #cut out the first part of /pnfs path for official sample if needed
+        if 'pnfs' in dataset and 'user' not in dataset:
+            dataset = dataset.replace("/pnfs/iihe/cms/ph/sc4/store/mc", "")
+            #naming in pnfs directories is slightly altered compared to the CMSDAS name, rever this to the CMSDAS version:
+            period = dataset[1:].split('/')[0]
+            name   = dataset[1:].split('/')[1]
+            form   = dataset[1:].split('/')[2]
+            puScen = dataset[1:].split('/')[3]
+            dataset = '/' + name + '/' + period + '-' + puScen + '/' + form
 
-    i = 0
-    j = 0
-    inputFiles = []
-    for file in glob.glob(dataset + ('/*.root' if 'user' in dataset else '/*/*.root')):
-      j          += 1
-      inputFiles += [('dcap://maite.iihe.ac.be' if not 'user' in dataset else 'file://') + file]
-      if j%groupFiles!=0: continue
+        os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + skim + ' ' + str(filesPerJob) )
 
-      dir        = os.getcwd()
-      wallTime   = '05:00:00'
-      inputFile  = ','.join(inputFiles)
-      outputFile = os.path.join(outDir, datasetName, 'local_' + productionLabel, outputName + '_' + str(i) + '.root')
-      logFile    = os.path.join(outDir, datasetName, 'local_' + productionLabel, 'log', outputName + '_' + str(i) + '.log')
-
-      for filename in [outputFile, logFile]:
-        try:    os.makedirs(os.path.dirname(filename))
-        except: pass
-      
-      print 'Submitting ' + inputFile + ' to cream02:'
-      args  = 'dir=' + dir + ',inputFile=\"' + inputFile + '\",outputFile=' + outputFile + ',events=-1'
-      args += ',isData='+ ('False' if ('SIM' in dataset or 'HeavyNeutrino' in dataset) else 'True')
-      os.system('qsub -v ' + args + ' -q localgrid@cream02 -o ' + logFile + ' -e ' + logFile + ' -l walltime=' + wallTime + ' runOnCream02.sh')
-      i += 1
-      inputFiles = []
-
-  else: # use crab
-    print 'Submitting ' + dataset + ' using crab:'
-    os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
-    os.environ['CRAB_DATASET']         = dataset
-    os.environ['CRAB_OUTPUTFILE']      = outputName + '.root'
-    os.system('crab submit -c crab.py')
-
+    else: # use crab
+        print 'Submitting ' + dataset + ' using crab:'
+        os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
+        os.environ['CRAB_DATASET']         = dataset
+        os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
+        os.system('crab submit -c crab.py')
