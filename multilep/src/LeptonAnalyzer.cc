@@ -331,6 +331,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
 	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
 	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
+	 std::cout<<     _vertices[2][_nVFit]<<std::endl;
+	      
+	      
+	      
 	++_nVFit;   
       } 
     }// end loop e-
