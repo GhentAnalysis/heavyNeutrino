@@ -5,7 +5,7 @@
 
 //Default constructor
 //This will set up both MVA readers and book the correct variables
-LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig){
+LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool SUSY){
     for(unsigned i = 0; i < 2; ++i){
         //Set up Mva reader 
         reader[i] = std::make_shared<TMVA::Reader>( "!Color:!Silent");
@@ -28,8 +28,13 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig){
     reader[1]->AddVariable("LepGood_mvaIdSpring16GP", &LepGood_mvaIdSpring16GP);
 
     //Read Mva weights
-    reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMu").fullPath());
-    reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEle").fullPath());
+    if(SUSY){ //SUSY weights used by default
+        reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMu").fullPath());
+        reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEle").fullPath());
+    } else{
+        reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMuttH").fullPath());
+        reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsElettH").fullPath());
+    }
 }
 void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz){
     LepGood_pt = pt;

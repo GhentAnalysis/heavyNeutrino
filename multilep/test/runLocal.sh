@@ -23,9 +23,10 @@ filesPerJob=$4
 #if no output directory given, automatically initialize one
 if [[ -z "$output" ]]; then
     #strip sample name from input
-    output=${input///}    
+    output=${input:1}    
+    output=${output%%/}
     #set output directory to default 
-    output=~/heavyNeutrino/${output}    
+    output=~/public/heavyNeutrino/${output}    
 fi
 
 #make output directory structure if needed
@@ -46,23 +47,33 @@ mkdir -p ${output}/logs
 fileList $input
 
 #loop over new list of files and submit jobs
-count=0
+fileCount=0
+jobCount=0
 submit=submit.sh
+fileList=""
 while read f
     #submit a job for every few files, as specified in the input
     do if (( $count % $filesPerJob == 0 ))
         then if (( $count != 0)) 
-            then qsub $submit -l walltime=40:00:00;
+            then fileList="${fileList%,}" #remove trailing comma from fileList
+            echo echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
+            qsub $submit -l walltime=40:00:00;
+            #cat $submit
+            jobCount=$((jobCount + 1))
         fi
+        fileList=""
         #initialize temporary submission script
         if [ -e $submit ]; then rm $submit; fi
         touch $submit
         #initialize CMSSW environment in submission script
         setCMSSW $submit
     fi
-    echo "cmsRun ./heavyNeutrino/multilep/test/multilep.py dir=$output, inputFile=$f, outputFile=${output}/Job_${count}_${skim}.root, events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
+    #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=${output}/Job_${count}_${skim}.root events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
+    fileList="${fileList}${f},"
     count=$((count + 1))
 done < fileList.txt
 qsub $submit -l walltime=40:00:00;
+#cat $submit
 #remove temporary files
+rm $submit
 rm fileList.txt
