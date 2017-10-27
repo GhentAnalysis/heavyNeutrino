@@ -40,6 +40,31 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
   outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
   outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
+
+  //jet stuff
+  outputTree->Branch("_gen_nW",			   &_gen_nW,			"_gen_nW/b");
+  outputTree->Branch("_gen_WMomPdg",		   &_gen_WMomPdg,		"_gen_WMomPdg[_gen_nW]/b");
+  outputTree->Branch("_gen_nWfromN",		   &_gen_nWfromN,		"_gen_nWfromN/b");
+  outputTree->Branch("_gen_nq",			   &_gen_nq,			"_gen_nq[6]/b");
+  outputTree->Branch("_gen_nN",			   &_gen_nN,			"_gen_nN/b");
+  outputTree->Branch("_gen_nNdaughters",	   &_gen_nNdaughters,		"_gen_nNdaughters/b");
+  outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	"_gen_Ndaughters_pdg[_gen_nNdaughters]/b");
+  outputTree->Branch("_gen_nstatus23",		   &_gen_nstatus23,		"_gen_nstatus23/b");
+  outputTree->Branch("_gen_nstatus23_fromNorW",	   &_gen_nstatus23_fromNorW,	"_gen_nstatus23_fromNorW/b");
+  outputTree->Branch("_gen_nstatus23_fromNorW",	   &_gen_nstatus23_fromNorW,	"_gen_nstatus23_fromNorW/b");
+  outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	"_gen_nstatus23_fromN/b");
+  outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	"_gen_nstatus23_fromW/b");
+  outputTree->Branch("_gen_status23_pdg",	   &_gen_status23_pdg,		"_gen_status23_pdg[_gen_nstatus23]/I");
+  outputTree->Branch("_gen_status23_fromNorW_mompdg", &_gen_status23_fromNorW_mompdg, "_gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW]/I");
+  outputTree->Branch("_gen_status23_fromNorW_pdg", &_gen_status23_fromNorW_pdg, "_gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW]/I");
+  outputTree->Branch("_gen_status23_fromN_pdg",    &_gen_status23_fromN_pdg, 	"_gen_status23_fromN_pdg[_gen_nstatus23_fromN]/I");
+  outputTree->Branch("_gen_status23_fromW_pdg",    &_gen_status23_fromW_pdg, 	"_gen_status23_fromW_pdg[_gen_nstatus23_fromW]/I");
+  outputTree->Branch("_gen_nq23",		   &_gen_nq23,			"_gen_nq23/b");
+  outputTree->Branch("_gen_qPt",		   &_gen_qPt,			"_gen_qPt[_gen_nq23]/D");
+  outputTree->Branch("_gen_qEta",		   &_gen_qEta,			"_gen_qPt[_gen_nq23]/D");
+  outputTree->Branch("_gen_qPhi",		   &_gen_qPhi,			"_gen_qPt[_gen_nq23]/D");
+  outputTree->Branch("_gen_qE",		   	   &_gen_qE,			"_gen_qPt[_gen_nq23]/D");
+
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
@@ -50,6 +75,18 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
   _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
   _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
 
+  _gen_nW = 0;
+  _gen_nWfromN = 0;
+  _gen_nN = 0;
+  _gen_nNdaughters = 0;
+  _gen_nstatus23 = 0;
+  _gen_nstatus23_fromNorW = 0;
+  _gen_nstatus23_fromN = 0;
+  _gen_nstatus23_fromW = 0;
+  _gen_nq23 = 0;
+  int pdgid;
+  for(unsigned int i = 0; i < 6; i++) _gen_nq[i] = 0;
+  
   _gen_nL = 0;
   _gen_nPh = 0;
   TLorentzVector genMetVector(0,0,0,0);
@@ -93,6 +130,52 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
       _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
       _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37 or *(std::min_element(std::begin(motherList), std::end(motherList))) < -37);
       ++_gen_nPh;
+    }
+
+    //attempt to store generator level jet/quark info
+    if(abs(p.pdgId()) == 24){
+      _gen_WMomPdg[_gen_nW] = getMotherPdgId(p, *genParticles);
+      pdgid = getMotherPdgId(p, *genParticles);
+      if(abs(pdgid) == 9900012) ++_gen_nWfromN;
+      ++_gen_nW;
+    }
+    if(abs(p.pdgId()) == 1) _gen_nq[0] += 1;
+    if(abs(p.pdgId()) == 2) _gen_nq[1] += 1;
+    if(abs(p.pdgId()) == 3) _gen_nq[2] += 1;
+    if(abs(p.pdgId()) == 4) _gen_nq[3] += 1;
+    if(abs(p.pdgId()) == 5) _gen_nq[4] += 1;
+    if(abs(p.pdgId()) == 6) _gen_nq[5] += 1;
+    
+    if(abs(p.pdgId()) == 9900012){
+      ++_gen_nN;
+    }
+    if(abs(getMotherPdgId(p, *genParticles)) == 9900012) {_gen_Ndaughters_pdg[_gen_nNdaughters] = abs(p.pdgId()); _gen_nNdaughters++;}
+    //only hardest process:
+    if(p.status() == 23){
+      _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
+      ++_gen_nstatus23;
+      pdgid = getMotherPdgId(p, *genParticles);
+      if(abs(pdgid) == 9900012 || abs(pdgid) == 24){
+        if(abs(pdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30;
+        else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(pdgid);
+        _gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW] = abs(p.pdgId());
+        ++_gen_nstatus23_fromNorW;
+      }
+      if(abs(pdgid) == 9900012){
+        _gen_status23_fromN_pdg[_gen_nstatus23_fromN] = abs(p.pdgId());
+        ++_gen_nstatus23_fromN;
+        if(abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6){
+          _gen_qPt[_gen_nq23]  = p.pt();
+          _gen_qEta[_gen_nq23] = p.eta();
+          _gen_qPhi[_gen_nq23] = p.phi();
+          _gen_qE[_gen_nq23]   = p.energy();
+          ++_gen_nq23;
+        }
+      }
+      if(abs(pdgid) == 24){
+        _gen_status23_fromW_pdg[_gen_nstatus23_fromW] = abs(p.pdgId());
+        ++_gen_nstatus23_fromW;
+      }
     }
   }
   _gen_met    = genMetVector.Pt();
