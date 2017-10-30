@@ -63,7 +63,12 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_qEta",		   &_gen_qEta,			"_gen_qPt[_gen_nq23]/D");
   outputTree->Branch("_gen_qPhi",		   &_gen_qPhi,			"_gen_qPt[_gen_nq23]/D");
   outputTree->Branch("_gen_qE",		   	   &_gen_qE,			"_gen_qPt[_gen_nq23]/D");
-
+  outputTree->Branch("_gen_nqdtr",		   &_gen_nqdtr,			"_gen_nqdtr/b");
+  outputTree->Branch("_gen_qdtr_pdgid",		   &_gen_qdtr_pdgid,		"_gen_qdtr_pdgid[_gen_nqdtr]/I");
+  outputTree->Branch("_gen_qdtr_Pt",		   &_gen_qdtr_Pt,		"_gen_qdtr_Pt[_gen_nqdtr]/D");
+  outputTree->Branch("_gen_qdtr_Eta",		   &_gen_qdtr_Eta,		"_gen_qdtr_Eta[_gen_nqdtr]/D");
+  outputTree->Branch("_gen_qdtr_Phi",		   &_gen_qdtr_Phi,		"_gen_qdtr_Phi[_gen_nqdtr]/D");
+  outputTree->Branch("_gen_qdtr_E",		   &_gen_qdtr_E,		"_gen_qdtr_E[_gen_nqdtr]/D");
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
@@ -83,8 +88,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
   _gen_nstatus23_fromN = 0;
   _gen_nstatus23_fromW = 0;
   _gen_nq23 = 0;
+  _gen_nqdtr = 0;
   int mompdgid;
-  int index_quark = 1;// first or second quark from HNL decay
   
   _gen_nL = 0;
   _gen_nPh = 0;
@@ -172,7 +177,34 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     // find daughters of quarks
     if(p.status() == 23 && abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6 && abs(mompdgid) == 9900012){ // find 2 quarks from HNL decay
-      std::cout << "Pdg Id " << p.pdgId() << ": " << p.numberOfDaughters() << std::endl;
+      std::vector<reco::GenParticle> daughterList = {};
+      getDaughterList(p, *genParticles, daughterList);
+      removeDoubleCountedDaughters(daughterList);
+      for(auto daughters : daughterList){
+	if(daughters.status() != 1) continue;
+	_gen_qdtr_pdgid[_gen_nqdtr] = daughters.pdgId();
+	_gen_qdtr_Pt[_gen_nqdtr] = daughters.pt();
+	_gen_qdtr_Eta[_gen_nqdtr] = daughters.eta();
+	_gen_qdtr_Phi[_gen_nqdtr] = daughters.phi();
+	_gen_qdtr_E[_gen_nqdtr] = daughters.energy();
+	_gen_nqdtr++;
+      }
+
+      //print statements to analyze daughters
+      /*std::cout << "Pdg Id " << p.pdgId() << " pt: " << p.pt() << std::endl;
+      for(unsigned int i = 0; i < p.numberOfDaughters(); i++){
+        std::cout << "Daughter " << (*genParticles)[p.daughterRef(i).key()].pdgId() << " pt: " << (*genParticles)[p.daughterRef(i).key()].pt() << std::endl;
+      }*/
+      /*std::cout << "number of daughters: " << daughterList.size() << std::endl;
+      for(auto i : daughterList){
+	std::cout << i.pdgId() << " -> ";
+      } std::cout << std::endl;
+      for(auto i : daughterList){
+	std::cout << i.status() << " -> ";
+      } std::cout << std::endl;
+      for(auto i : daughterList){
+	std::cout << i.pt() << " -> ";
+      } std::cout << std::endl;*/
     }
 
 
@@ -212,12 +244,21 @@ void GenAnalyzer::getMotherList(const reco::GenParticle& p, const std::vector<re
   if(p.numberOfMothers() > 0) getMotherList(genParticles[p.motherRef(0).key()], genParticles, list);
 }
 
-void GenAnalyzer::getDaughterList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<int>& list){
-  if((list.empty() or p.pdgId() != list.back())) list.push_back(p.pdgId());
+void GenAnalyzer::getDaughterList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<reco::GenParticle>& list){
+  if(list.empty() or p.pdgId() != list.back().pdgId()) list.push_back(p);
   int n = p.numberOfDaughters();
- // for(int i = 0; i < n; i++){
- //   getDaughterList(
- // }
+  for(int i = 0; i < n; i++){
+    getDaughterList(genParticles[p.daughterRef(i).key()], genParticles, list);
+  }
+}
+
+void GenAnalyzer::removeDoubleCountedDaughters(std::vector<reco::GenParticle>& list)
+{
+  for(unsigned int i = 0; i < list.size(); i++){
+    for(unsigned int j = i+1; j < list.size(); j++){
+      if(list[i].pt() == list[j].pt()) list.erase(list.begin() + j);
+    }
+  }
 }
 
 

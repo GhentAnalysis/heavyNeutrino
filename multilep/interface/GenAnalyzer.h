@@ -14,6 +14,7 @@ class GenAnalyzer {
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
     static const unsigned gen_n_max = 20;
+    static const unsigned gen_ndtr_max = 100;
    
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
@@ -40,7 +41,8 @@ class GenAnalyzer {
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const int                getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
-    void		     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
+    void		     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<reco::GenParticle>&);
+    void		     removeDoubleCountedDaughters(std::vector<reco::GenParticle>&);
     bool                     inMotherList(std::vector<int>& list, int i);
 
     unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
@@ -85,7 +87,12 @@ class GenAnalyzer {
     double   _gen_qEta[gen_n_max];
     double   _gen_qPhi[gen_n_max];
     double   _gen_qE[gen_n_max];
-
+    unsigned _gen_nqdtr;
+    int	     _gen_qdtr_pdgid[gen_ndtr_max];
+    double   _gen_qdtr_Pt[gen_ndtr_max];
+    double   _gen_qdtr_Eta[gen_ndtr_max];
+    double   _gen_qdtr_Phi[gen_ndtr_max];
+    double   _gen_qdtr_E[gen_ndtr_max];
 
 };
 
