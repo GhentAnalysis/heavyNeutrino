@@ -242,13 +242,14 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const 
   _dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
   _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
   _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
-  _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
+  _3dIPSig[_nL] = fabs(ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D));
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
+  _dxy[_nL]     = muon.innerTrack()->dxy(vertex.position());
   _dz[_nL]      = muon.innerTrack()->dz(vertex.position());
   _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
-  _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
+  _3dIPSig[_nL] = fabs(muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D));
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
