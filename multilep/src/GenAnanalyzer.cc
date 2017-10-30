@@ -42,22 +42,23 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
 
   //jet stuff
-  outputTree->Branch("_gen_nW",			   &_gen_nW,			"_gen_nW/b");
-  outputTree->Branch("_gen_WMomPdg",		   &_gen_WMomPdg,		"_gen_WMomPdg[_gen_nW]/b");
-  outputTree->Branch("_gen_nWfromN",		   &_gen_nWfromN,		"_gen_nWfromN/b");
-  outputTree->Branch("_gen_nN",			   &_gen_nN,			"_gen_nN/b");
-  outputTree->Branch("_gen_nNdaughters",	   &_gen_nNdaughters,		"_gen_nNdaughters/b");
-  outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	"_gen_Ndaughters_pdg[_gen_nNdaughters]/b");
-  outputTree->Branch("_gen_nstatus23",		   &_gen_nstatus23,		"_gen_nstatus23/b");
+  outputTree->Branch("_gen_nW",			           &_gen_nW,			        "_gen_nW/b");
+  outputTree->Branch("_gen_WMomPdg",		       &_gen_WMomPdg,		        "_gen_WMomPdg[_gen_nW]/i");
+  outputTree->Branch("_gen_nWfromN",		       &_gen_nWfromN,		        "_gen_nWfromN/b");
+  outputTree->Branch("_gen_nq",			           &_gen_nq,			        "_gen_nq[6]/i");
+  outputTree->Branch("_gen_nN",			           &_gen_nN,			        "_gen_nN/b");
+  outputTree->Branch("_gen_nNdaughters",	       &_gen_nNdaughters,		    "_gen_nNdaughters/b");
+  outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	    "_gen_Ndaughters_pdg[_gen_nNdaughters]/i");
+  outputTree->Branch("_gen_nstatus23",		       &_gen_nstatus23,		        "_gen_nstatus23/b");
   outputTree->Branch("_gen_nstatus23_fromNorW",	   &_gen_nstatus23_fromNorW,	"_gen_nstatus23_fromNorW/b");
   outputTree->Branch("_gen_nstatus23_fromNorW",	   &_gen_nstatus23_fromNorW,	"_gen_nstatus23_fromNorW/b");
-  outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	"_gen_nstatus23_fromN/b");
-  outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	"_gen_nstatus23_fromW/b");
-  outputTree->Branch("_gen_status23_pdg",	   &_gen_status23_pdg,		"_gen_status23_pdg[_gen_nstatus23]/I");
-  outputTree->Branch("_gen_status23_fromNorW_mompdg", &_gen_status23_fromNorW_mompdg, "_gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW]/I");
-  outputTree->Branch("_gen_status23_fromNorW_pdg", &_gen_status23_fromNorW_pdg, "_gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW]/I");
-  outputTree->Branch("_gen_status23_fromN_pdg",    &_gen_status23_fromN_pdg, 	"_gen_status23_fromN_pdg[_gen_nstatus23_fromN]/I");
-  outputTree->Branch("_gen_status23_fromW_pdg",    &_gen_status23_fromW_pdg, 	"_gen_status23_fromW_pdg[_gen_nstatus23_fromW]/I");
+  outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	    "_gen_nstatus23_fromN/b");
+  outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	    "_gen_nstatus23_fromW/b");
+  outputTree->Branch("_gen_status23_pdg",	       &_gen_status23_pdg,		        "_gen_status23_pdg[_gen_nstatus23]/I");
+  outputTree->Branch("_gen_status23_fromNorW_mompdg", &_gen_status23_fromNorW_mompdg, "_gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW]/i");
+  outputTree->Branch("_gen_status23_fromNorW_pdg", &_gen_status23_fromNorW_pdg, "_gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW]/i");
+  outputTree->Branch("_gen_status23_fromN_pdg",    &_gen_status23_fromN_pdg, 	"_gen_status23_fromN_pdg[_gen_nstatus23_fromN]/i");
+  outputTree->Branch("_gen_status23_fromW_pdg",    &_gen_status23_fromW_pdg, 	"_gen_status23_fromW_pdg[_gen_nstatus23_fromW]/i");
   outputTree->Branch("_gen_nq23",		   &_gen_nq23,			"_gen_nq23/b");
   outputTree->Branch("_gen_qPt",		   &_gen_qPt,			"_gen_qPt[_gen_nq23]/D");
   outputTree->Branch("_gen_qEta",		   &_gen_qEta,			"_gen_qPt[_gen_nq23]/D");
@@ -136,25 +137,27 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
       ++_gen_nPh;
     }
 
-    //attempt to store generator level quark info
-    mompdgid = getMotherPdgId(p, *genParticles);
-    if(abs(p.pdgId()) == 24){
+    //attempt to store generator level jet/quark info
+    if(abs(p.pdgId()) == 24 && p.isLastCopy()){ //Multiple iterations of same W will otherwise be stored!
       _gen_WMomPdg[_gen_nW] = getMotherPdgId(p, *genParticles);
-      if(abs(mompdgid) == 9900012) ++_gen_nWfromN;
+      if(abs(_gen_WMomPdg[_gen_nW]) == 9900012) ++_gen_nWfromN;
       ++_gen_nW;
     }
-    
+    for(unsigned i = 0; i < 6; ++i){
+        if(abs(p.pdgId()) == (i + 1) ) ++_gen_nq[i];
+    } 
     if(abs(p.pdgId()) == 9900012){
       ++_gen_nN;
     }
-    if(abs(getMotherPdgId(p, *genParticles)) == 9900012) {_gen_Ndaughters_pdg[_gen_nNdaughters] = abs(p.pdgId()); _gen_nNdaughters++;}
-    //only hardest process:
+    if(abs(getMotherPdgId(p, *genParticles)) == 9900012) {_gen_Ndaughters_pdg[_gen_nNdaughters] = abs(p.pdgId()); ++_gen_nNdaughters;}
+    //only hard scatter:
     if(p.status() == 23){
       _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
       ++_gen_nstatus23;
-      if(abs(mompdgid) == 9900012 || abs(mompdgid) == 24){
-        if(abs(mompdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30;
-        else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(mompdgid);
+      pdgid = getMotherPdgId(p, *genParticles);
+      if((abs(pdgid) == 9900012 || abs(pdgid) == 24)){
+        if(abs(pdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30; //What is 30???
+        else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(pdgid);
         _gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW] = abs(p.pdgId());
         ++_gen_nstatus23_fromNorW;
       }
@@ -272,7 +275,7 @@ bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
  */
 unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
   int type = 0;
-  for(auto p = genParticles.begin(); p != genParticles.end(); ++p){
+  for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
     if(p->status()<0)         continue;
     if(p->pdgId()!=22)        continue;
     type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles with generator level cuts
