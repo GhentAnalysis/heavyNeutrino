@@ -19,7 +19,7 @@ class PhotonAnalyzer {
     EffectiveAreas neutralEffectiveAreas;
     EffectiveAreas photonsEffectiveAreas;
 
-    static const unsigned nPhoton_max = 5;
+    static const unsigned nPhoton_max = 20;
 
     unsigned _nPh;
     double   _phPt[nPhoton_max];
