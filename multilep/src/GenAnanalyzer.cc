@@ -154,10 +154,10 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     if(p.status() == 23){
       _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
       ++_gen_nstatus23;
-      pdgid = getMotherPdgId(p, *genParticles);
-      if((abs(pdgid) == 9900012 || abs(pdgid) == 24)){
-        if(abs(pdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30; //What is 30???
-        else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(pdgid);
+      mompdgid = getMotherPdgId(p, *genParticles);
+      if((abs(mompdgid) == 9900012 || abs(mompdgid) == 24)){
+        if(abs(mompdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30; //What is 30???
+        else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(mompdgid);
         _gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW] = abs(p.pdgId());
         ++_gen_nstatus23_fromNorW;
       }
