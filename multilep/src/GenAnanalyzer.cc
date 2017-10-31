@@ -141,7 +141,7 @@ bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
  */
 unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
   int type = 0;
-  for(auto p = genParticles.begin(); p != genParticles.end(); ++p){
+  for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
     if(p->status()<0)         continue;
     if(p->pdgId()!=22)        continue;
     type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles with generator level cuts
