@@ -21,7 +21,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/b");
   outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/b");
   outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/D");
-  outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[12][_nVFit]/D");
+  outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
   outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
   outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
@@ -284,18 +284,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       else {   
 	 //std::cout<<"--> indices: "<<iMu_plus*100 + iMu_minus_mu<<" ("<<iMu_plus<<" - "<<iMu_minus_mu<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
-	_vertices[0][_nVFit] = iMu_plus*100 + iMu_minus_mu;                   
-	_vertices[1][_nVFit] = dilvtx.position().x(); 
-	_vertices[2][_nVFit] = dilvtx.position().y(); 
-	_vertices[3][_nVFit] = dilvtx.position().z(); 
-	_vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
-	_vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
-	_vertices[6][_nVFit] = dilvtx.positionError().czz(); 
-	_vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
-	_vertices[8][_nVFit] = dilvtx.positionError().czy(); 
-	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
-	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
-	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
+	_vertices[_nVFit][0] = iMu_plus*100 + iMu_minus_mu;                   
+	_vertices[_nVFit][1] = dilvtx.position().x(); 
+	_vertices[_nVFit][2] = dilvtx.position().y(); 
+	_vertices[_nVFit][3] = dilvtx.position().z(); 
+	_vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
+	_vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
+	_vertices[_nVFit][6] = dilvtx.positionError().czz(); 
+	_vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
+	_vertices[_nVFit][8] = dilvtx.positionError().czy(); 
+	_vertices[_nVFit][9] = dilvtx.positionError().czx(); 
+	_vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
+	_vertices[_nVFit][11] = dilvtx.totalChiSquared(); 
 	++_nVFit;   
       } 
     }// end loop µ-
@@ -319,19 +319,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       else {      
 	 //std::cout<<"--> indices: "<<iMu_plus*100 + iE_minus_mu<<" ("<<iMu_plus<<" - "<<iE_minus_mu<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
-	_vertices[0][_nVFit] = iMu_plus*100 + iE_minus_mu;          
-	_vertices[1][_nVFit] = dilvtx.position().x(); 
-	_vertices[2][_nVFit] = dilvtx.position().y(); 
-	_vertices[3][_nVFit] = dilvtx.position().z(); 
-	_vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
-	_vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
-	_vertices[6][_nVFit] = dilvtx.positionError().czz(); 
-	_vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
-	_vertices[8][_nVFit] = dilvtx.positionError().czy(); 
-	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
-	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
-	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
-	std::cout<<"---> "<<     _vertices[2][_nVFit]<<std::endl;
+	_vertices[_nVFit][0] = iMu_plus*100 + iE_minus_mu;          
+	_vertices[_nVFit][1] = dilvtx.position().x(); 
+	_vertices[_nVFit][2] = dilvtx.position().y(); 
+	_vertices[_nVFit][3] = dilvtx.position().z(); 
+	_vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
+	_vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
+	_vertices[_nVFit][6] = dilvtx.positionError().czz(); 
+	_vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
+	_vertices[_nVFit][8] = dilvtx.positionError().czy(); 
+	_vertices[_nVFit][9] = dilvtx.positionError().czx(); 
+	_vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
+	_vertices[_nVFit][11] = dilvtx.totalChiSquared();  
+	//std::cout<<"---> "<<     _vertices[2][_nVFit]<<std::endl;
 	      
 	      
 	      
@@ -375,18 +375,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       else {       
 	 //std::cout<<"--> indices: "<<iE_plus*100 + iMu_minus_e<<" ("<<iE_plus<<" - "<<iMu_minus_e<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
-	_vertices[0][_nVFit] = iE_plus*100+iMu_minus_e;    
-	_vertices[1][_nVFit] = dilvtx.position().x(); 
-	_vertices[2][_nVFit] = dilvtx.position().y(); 
-	_vertices[3][_nVFit] = dilvtx.position().z(); 
-	_vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
-	_vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
-	_vertices[6][_nVFit] = dilvtx.positionError().czz(); 
-	_vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
-	_vertices[8][_nVFit] = dilvtx.positionError().czy(); 
-	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
-	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
-	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
+	_vertices[_nVFit][0] = iE_plus*100+iMu_minus_e;    
+	_vertices[_nVFit][1] = dilvtx.position().x(); 
+	_vertices[_nVFit][2] = dilvtx.position().y(); 
+	_vertices[_nVFit][3] = dilvtx.position().z(); 
+	_vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
+	_vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
+	_vertices[_nVFit][6] = dilvtx.positionError().czz(); 
+	_vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
+	_vertices[_nVFit][8] = dilvtx.positionError().czy(); 
+	_vertices[_nVFit][9] = dilvtx.positionError().czx(); 
+	_vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
+	_vertices[_nVFit][11] = dilvtx.totalChiSquared();  
 	++_nVFit;   
       } 
     }// end loop µ-
@@ -411,30 +411,25 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       else {    
 	      //	 std::cout<<"--> indices: "<<iE_plus*100 + iE_minus_e<<" ("<<iE_plus<<" - "<<iE_minus_e<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
-	_vertices[0][_nVFit] = iE_plus*100 + iE_minus_e;          
-	_vertices[1][_nVFit] = dilvtx.position().x(); 
-	_vertices[2][_nVFit] = dilvtx.position().y(); 
-	_vertices[3][_nVFit] = dilvtx.position().z(); 
-	_vertices[4][_nVFit] = dilvtx.positionError().cxx(); 
-	_vertices[5][_nVFit] = dilvtx.positionError().cyy(); 
-	_vertices[6][_nVFit] = dilvtx.positionError().czz(); 
-	_vertices[7][_nVFit] = dilvtx.positionError().cyx(); 
-	_vertices[8][_nVFit] = dilvtx.positionError().czy(); 
-	_vertices[9][_nVFit] = dilvtx.positionError().czx(); 
-	_vertices[10][_nVFit] = dilvtx.degreesOfFreedom(); 
-	_vertices[11][_nVFit] = dilvtx.totalChiSquared(); 
+	_vertices[_nVFit][0] = iE_plus*100 + iE_minus_e;          
+	_vertices[_nVFit][1] = dilvtx.position().x(); 
+	_vertices[_nVFit][2] = dilvtx.position().y(); 
+	_vertices[_nVFit][3] = dilvtx.position().z(); 
+	_vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
+	_vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
+	_vertices[_nVFit][6] = dilvtx.positionError().czz(); 
+	_vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
+	_vertices[_nVFit][8] = dilvtx.positionError().czy(); 
+	_vertices[_nVFit][9] = dilvtx.positionError().czx(); 
+	_vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
+	_vertices[_nVFit][11] = dilvtx.totalChiSquared();   
 	++_nVFit;   
       }
     }// end loop e+
     
     
   }//end electrons
-   for (int i =0; i < 12; i++){ 
-	
-	
-	std::cout<<i<< ")  ***** "<<    _vertices[i][0]<<std::endl;
-	   
-   }
+  
   if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
 
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
