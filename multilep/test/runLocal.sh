@@ -18,14 +18,25 @@ skim=$3             #skim condition for the sample
                     #The names of the output files will determine the
                     #skim, via multilep.py
 filesPerJob=$4
-                    
+
+
+
 
 #if no output directory given, automatically initialize one
 if [[ -z "$output" ]]; then
-    #strip sample name from input
-    output=${input:1}    
-    output=${output%%/}
-    #set output directory to default 
+    output=$input
+    if [[ $input == *"/user/"* ]] || [[ $input == *"/pnfs/"* ]]; then
+        if [[  -z "${a##/}" ]]; then
+            output=${output%:*}
+        fi
+        output=${input##/}
+    else 
+        #strip sample name from input
+        output=${input:1}    
+        output=${output%%/}
+        #set output directory to default 
+    fi
+    echo "OUTPUT = $output"
     output=~/public/heavyNeutrino/${output}    
 fi
 
