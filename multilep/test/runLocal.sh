@@ -53,8 +53,8 @@ submit=submit.sh
 fileList=""
 while read f
     #submit a job for every few files, as specified in the input
-    do if (( $count % $filesPerJob == 0 ))
-        then if (( $count != 0)) 
+    do if (( $fileCount % $filesPerJob == 0 ))
+        then if (( $fileCount != 0)) 
             then fileList="${fileList%,}" #remove trailing comma from fileList
             echo echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
             qsub $submit -l walltime=40:00:00;
