@@ -429,7 +429,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     
   }//end electrons
-    std::cout<< "***** "<<    _vertices[2][0]<<std::endl;
+   for (int i =0; i < 12; i++){ 
+	
+	
+	std::cout<<i<< ")  ***** "<<    _vertices[i][0]<<std::endl;
+	   
+   }
   if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
 
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
