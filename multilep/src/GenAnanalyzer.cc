@@ -52,11 +52,11 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
   _gen_nL = 0;
   _gen_nPh = 0;
-  TLorentzVector genMetVector;
+  TLorentzVector genMetVector(0,0,0,0);
   for(const reco::GenParticle& p : *genParticles){
     //Calculate generator level MET
     if(p.status() == 1){
-      if(abs(p.pdgId()) == 12 || abs(p.pdgId()) == 14 || abs(p.pdgId()) == 16){
+      if(abs(p.pdgId()) == 12 || abs(p.pdgId()) == 14 || abs(p.pdgId()) == 16 || (multilepAnalyzer->isSUSY &&  abs(p.pdgId()) == 1000022) ){
         TLorentzVector nuVect;
         nuVect.SetPtEtaPhiE(p.pt(), p.eta(), p.phi(), p.energy());
         genMetVector += nuVect;
@@ -141,7 +141,7 @@ bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
  */
 unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
   int type = 0;
-  for(auto p = genParticles.begin(); p != genParticles.end(); ++p){
+  for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
     if(p->status()<0)         continue;
     if(p->pdgId()!=22)        continue;
     type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles with generator level cuts

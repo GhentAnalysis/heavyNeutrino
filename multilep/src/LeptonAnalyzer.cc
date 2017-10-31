@@ -542,9 +542,10 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const rec
   _dz[_nL]      = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dz(vertex.position()) : muon.outerTrack()->dz(vertex.position());
   _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
   _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
-  _3dIP[_nL]    = muon.dB();
-  _3dIPSig[_nL] = muon.dB()/muon.edB();
+  _2dIP[_nL]    = muon.dB();
+  _2dIPSig[_nL] = muon.dB()/muon.edB();
 }
+
 
 
 
