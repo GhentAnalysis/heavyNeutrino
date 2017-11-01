@@ -56,16 +56,16 @@ fileList $input
 
 #loop over new list of files and submit jobs
 fileCount=0
-jobCount=0
+#jobCount=0
 submit=submit.sh
 fileList=""
 while read f; do
-    fileList="${fileList}${f},"
+    #fileList="${fileList}${f},"
     fileCount=$((fileCount + 1))
     #submit a job for every few files, as specified in the input
     if (( $fileCount % $filesPerJob == 0 ))
         then fileList="${fileList%,}" #remove trailing comma from fileList
-        echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
+        #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
         qsub $submit -l walltime=40:00:00;
         #cat $submit
         jobCount=$((jobCount + 1))
@@ -76,7 +76,7 @@ while read f; do
         #initialize CMSSW environment in submission script
         setCMSSW $submit
     fi
-    #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=${output}/Job_${count}_${skim}.root events=-1 > ${output}/logs/Job_${count}.txt 2> ${output}/errs/Job_${count}.txt" >> $submit
+    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=${output}/Job_${fileCount}_${skim}.root events=-1 > ${output}/logs/Job_${fileCount}.txt 2> ${output}/errs/Job_${fileCount}.txt" >> $submit
 done < fileList.txt
 if (( $fileCount % $filesPerJob != 0 )); then
     fileList="${fileList%,}" #remove trailing comma from fileList
