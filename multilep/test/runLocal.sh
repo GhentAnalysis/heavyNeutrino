@@ -65,7 +65,7 @@ while read f; do
     #submit a job for every few files, as specified in the input
     if (( $fileCount % $filesPerJob == 0 ))
         then fileList="${fileList%,}" #remove trailing comma from fileList
-        echo echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
+        echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
         qsub $submit -l walltime=40:00:00;
         #cat $submit
         jobCount=$((jobCount + 1))
@@ -80,10 +80,10 @@ while read f; do
 done < fileList.txt
 if (( $fileCount % $filesPerJob != 0 )); then
     fileList="${fileList%,}" #remove trailing comma from fileList
-    echo echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
+    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
     qsub $submit -l walltime=40:00:00;
     #cat $submit
 fi
 #remove temporary files
-#rm $submit
-#rm fileList.txt
+rm $submit
+rm fileList.txt
