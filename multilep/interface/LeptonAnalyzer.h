@@ -84,7 +84,8 @@ class LeptonAnalyzer {
     bool _tauVTightMvaNew[nL_max];
     bool _tauVTightMvaOld[nL_max];
 
-    double _leptonMva[nL_max];                                                                       //lepton MVA used in ewkino analysis
+    double _leptonMvaSUSY[nL_max];                                                                       //lepton MVA used in ewkino analysis
+    double _leptonMvaTTH[nL_max];
 
     bool _lHNLoose[nL_max];                                                                          //analysis specific lepton selection decisions
     bool _lHNFO[nL_max];
@@ -149,15 +150,16 @@ class LeptonAnalyzer {
     bool isEwkTight(const pat::Electron&);
     bool isEwkTight(const pat::Tau&);
 
-    double leptonMvaVal(const pat::Muon&);                                                            //compute ewkino lepton MVA
-    double leptonMvaVal(const pat::Electron&);
+    double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);                                                            //compute ewkino lepton MVA
+    double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
     
     //for lepton MVA calculation
-    std::shared_ptr<LeptonMvaHelper> leptonMvaComputer;
+    LeptonMvaHelper* leptonMvaComputerSUSY;
+    LeptonMvaHelper* leptonMvaComputerTTH;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~LeptonAnalyzer(){};
+    ~LeptonAnalyzer();
 
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&, const reco::Vertex&);
