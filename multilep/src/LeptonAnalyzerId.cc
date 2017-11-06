@@ -184,7 +184,8 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron, LeptonMvaHelp
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
-            _lElectronMva[_nL]
+            _lElectronMva[_nL],
+            _lElectronMvaHZZ[_nL]
             );
 }
 
