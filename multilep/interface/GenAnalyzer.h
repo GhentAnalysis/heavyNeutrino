@@ -13,6 +13,7 @@ class GenAnalyzer {
   private:
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
+    static const unsigned gen_n_max = 20;
    
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
@@ -62,6 +63,29 @@ class GenAnalyzer {
     double   _gen_phPt[gen_nPh_max];
     double   _gen_phEta[gen_nPh_max];
     double   _gen_phPhi[gen_nPh_max];
+
+    unsigned _gen_nW;
+    unsigned _gen_WMomPdg[gen_n_max];
+    unsigned _gen_nWfromN;
+    unsigned _gen_nq[6];
+    unsigned _gen_nN;
+    unsigned _gen_nNdaughters;
+    unsigned _gen_Ndaughters_pdg[gen_n_max];
+    unsigned _gen_nstatus23;
+    unsigned _gen_nstatus23_fromNorW;
+    unsigned _gen_nstatus23_fromN;
+    unsigned _gen_nstatus23_fromW;
+    unsigned _gen_status23_pdg[gen_n_max];
+    unsigned _gen_status23_fromNorW_mompdg[gen_n_max];
+    unsigned _gen_status23_fromNorW_pdg[gen_n_max];
+    unsigned _gen_status23_fromN_pdg[gen_n_max];
+    unsigned _gen_status23_fromW_pdg[gen_n_max];
+    unsigned _gen_nq23;
+    double   _gen_qPt[gen_n_max];
+    double   _gen_qEta[gen_n_max];
+    double   _gen_qPhi[gen_n_max];
+    double   _gen_qE[gen_n_max];
+
 
 };
 
