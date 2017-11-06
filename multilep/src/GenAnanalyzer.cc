@@ -42,19 +42,19 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
 
   //jet stuff
-  outputTree->Branch("_gen_nW",			           &_gen_nW,			        "_gen_nW/b");
-  outputTree->Branch("_gen_WMomPdg",		       &_gen_WMomPdg,		        "_gen_WMomPdg[_gen_nW]/i");
-  outputTree->Branch("_gen_nWfromN",		       &_gen_nWfromN,		        "_gen_nWfromN/b");
-  outputTree->Branch("_gen_nq",			           &_gen_nq,			        "_gen_nq[6]/i");
-  outputTree->Branch("_gen_nN",			           &_gen_nN,			        "_gen_nN/b");
-  outputTree->Branch("_gen_nNdaughters",	       &_gen_nNdaughters,		    "_gen_nNdaughters/b");
-  outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	    "_gen_Ndaughters_pdg[_gen_nNdaughters]/i");
-  outputTree->Branch("_gen_nstatus23",		       &_gen_nstatus23,		        "_gen_nstatus23/b");
+  outputTree->Branch("_gen_nW",		           &_gen_nW,			"_gen_nW/b");
+  outputTree->Branch("_gen_WMomPdg",               &_gen_WMomPdg,		"_gen_WMomPdg[_gen_nW]/i");
+  outputTree->Branch("_gen_nWfromN",	           &_gen_nWfromN,		"_gen_nWfromN/b");
+  outputTree->Branch("_gen_nq",		           &_gen_nq,			"_gen_nq[6]/i");
+  outputTree->Branch("_gen_nN",		           &_gen_nN,			"_gen_nN/b");
+  outputTree->Branch("_gen_nNdaughters",	   &_gen_nNdaughters,		"_gen_nNdaughters/b");
+  outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	"_gen_Ndaughters_pdg[_gen_nNdaughters]/i");
+  outputTree->Branch("_gen_nstatus23",		   &_gen_nstatus23,		"_gen_nstatus23/b");
   outputTree->Branch("_gen_nstatus23_fromNorW",	   &_gen_nstatus23_fromNorW,	"_gen_nstatus23_fromNorW/b");
   outputTree->Branch("_gen_nstatus23_fromNorW",	   &_gen_nstatus23_fromNorW,	"_gen_nstatus23_fromNorW/b");
-  outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	    "_gen_nstatus23_fromN/b");
-  outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	    "_gen_nstatus23_fromW/b");
-  outputTree->Branch("_gen_status23_pdg",	       &_gen_status23_pdg,		        "_gen_status23_pdg[_gen_nstatus23]/I");
+  outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	"_gen_nstatus23_fromN/b");
+  outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	"_gen_nstatus23_fromW/b");
+  outputTree->Branch("_gen_status23_pdg",	   &_gen_status23_pdg,		"_gen_status23_pdg[_gen_nstatus23]/I");
   outputTree->Branch("_gen_status23_fromNorW_mompdg", &_gen_status23_fromNorW_mompdg, "_gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW]/i");
   outputTree->Branch("_gen_status23_fromNorW_pdg", &_gen_status23_fromNorW_pdg, "_gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW]/i");
   outputTree->Branch("_gen_status23_fromN_pdg",    &_gen_status23_fromN_pdg, 	"_gen_status23_fromN_pdg[_gen_nstatus23_fromN]/i");
@@ -64,12 +64,20 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_qEta",		   &_gen_qEta,			"_gen_qPt[_gen_nq23]/D");
   outputTree->Branch("_gen_qPhi",		   &_gen_qPhi,			"_gen_qPt[_gen_nq23]/D");
   outputTree->Branch("_gen_qE",		   	   &_gen_qE,			"_gen_qPt[_gen_nq23]/D");
-  outputTree->Branch("_gen_nqdtr",		   &_gen_nqdtr,			"_gen_nqdtr/b");
-  outputTree->Branch("_gen_qdtr_pdgid",		   &_gen_qdtr_pdgid,		"_gen_qdtr_pdgid[_gen_nqdtr]/I");
-  outputTree->Branch("_gen_qdtr_Pt",		   &_gen_qdtr_Pt,		"_gen_qdtr_Pt[_gen_nqdtr]/D");
-  outputTree->Branch("_gen_qdtr_Eta",		   &_gen_qdtr_Eta,		"_gen_qdtr_Eta[_gen_nqdtr]/D");
-  outputTree->Branch("_gen_qdtr_Phi",		   &_gen_qdtr_Phi,		"_gen_qdtr_Phi[_gen_nqdtr]/D");
-  outputTree->Branch("_gen_qdtr_E",		   &_gen_qdtr_E,		"_gen_qdtr_E[_gen_nqdtr]/D");
+  outputTree->Branch("_gen_nq1dtr",		   &_gen_nq1dtr,		"_gen_nq1dtr/b");
+  outputTree->Branch("_gen_q1dtr_status",	   &_gen_q1dtr_status,		"_gen_q1dtr_status[_gen_nq1dtr]/I");
+  outputTree->Branch("_gen_q1dtr_pdgid",	   &_gen_q1dtr_pdgid,		"_gen_q1dtr_pdgid[_gen_nq1dtr]/I");
+  outputTree->Branch("_gen_q1dtr_Pt",		   &_gen_q1dtr_Pt,		"_gen_q1dtr_Pt[_gen_nq1dtr]/D");
+  outputTree->Branch("_gen_q1dtr_Eta",		   &_gen_q1dtr_Eta,		"_gen_q1dtr_Eta[_gen_nq1dtr]/D");
+  outputTree->Branch("_gen_q1dtr_Phi",		   &_gen_q1dtr_Phi,		"_gen_q1dtr_Phi[_gen_nq1dtr]/D");
+  outputTree->Branch("_gen_q1dtr_E",		   &_gen_q1dtr_E,		"_gen_q1dtr_E[_gen_nq1dtr]/D");
+  outputTree->Branch("_gen_nq2dtr",		   &_gen_nq2dtr,		"_gen_nq2dtr/b");
+  outputTree->Branch("_gen_q2dtr_status",	   &_gen_q2dtr_status,		"_gen_q2dtr_status[_gen_nq2dtr]/I");
+  outputTree->Branch("_gen_q2dtr_pdgid",	   &_gen_q2dtr_pdgid,		"_gen_q2dtr_pdgid[_gen_nq2dtr]/I");
+  outputTree->Branch("_gen_q2dtr_Pt",		   &_gen_q2dtr_Pt,		"_gen_q2dtr_Pt[_gen_nq2dtr]/D");
+  outputTree->Branch("_gen_q2dtr_Eta",		   &_gen_q2dtr_Eta,		"_gen_q2dtr_Eta[_gen_nq2dtr]/D");
+  outputTree->Branch("_gen_q2dtr_Phi",		   &_gen_q2dtr_Phi,		"_gen_q2dtr_Phi[_gen_nq2dtr]/D");
+  outputTree->Branch("_gen_q2dtr_E",		   &_gen_q2dtr_E,		"_gen_q2dtr_E[_gen_nq2dtr]/D");
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
@@ -89,7 +97,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
   _gen_nstatus23_fromN = 0;
   _gen_nstatus23_fromW = 0;
   _gen_nq23 = 0;
-  _gen_nqdtr = 0;
+  _gen_nq1dtr = 0;
+  _gen_nq2dtr = 0;
   int mompdgid;
   
   _gen_nL = 0;
@@ -178,36 +187,73 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
       }
     }
 
-    // find daughters of quarks
+    // find daughters of quarks, I can use _gen_nq23 to count the quarks from hard process (_gen_nq23 always finds exactly 2 quarks)
+    std::vector<reco::GenParticle> daughterList1 = {};
+    std::vector<reco::GenParticle> daughterList2 = {};
+    std::vector<int> chain_ends1 = {};
+    std::vector<int> chain_ends2 = {};
     if(p.status() == 23 && abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6 && abs(mompdgid) == 9900012){ // find 2 quarks from HNL decay
-      std::vector<reco::GenParticle> daughterList = {};
-      getDaughterList(p, *genParticles, daughterList);
-      removeDoubleCountedDaughters(daughterList);
-      for(auto daughters : daughterList){
-	if(daughters.status() != 1) continue;
-	_gen_qdtr_pdgid[_gen_nqdtr] = daughters.pdgId();
-	_gen_qdtr_Pt[_gen_nqdtr] = daughters.pt();
-	_gen_qdtr_Eta[_gen_nqdtr] = daughters.eta();
-	_gen_qdtr_Phi[_gen_nqdtr] = daughters.phi();
-	_gen_qdtr_E[_gen_nqdtr] = daughters.energy();
-	_gen_nqdtr++;
+      if(_gen_nq23 == 1){
+        getDaughterList(p, *genParticles, daughterList1, chain_ends1);
+	removeDoubleCountedDaughters(daughterList1);
+        for(auto daughters : daughterList1){
+	  //if(daughters.status() != 1) continue;
+	  _gen_q1dtr_status[_gen_nq1dtr] = daughters.status();
+          _gen_q1dtr_pdgid[_gen_nq1dtr]  = daughters.pdgId();
+	  _gen_q1dtr_Pt[_gen_nq1dtr] 	 = daughters.pt();
+	  _gen_q1dtr_Eta[_gen_nq1dtr] 	 = daughters.eta();
+	  _gen_q1dtr_Phi[_gen_nq1dtr] 	 = daughters.phi();
+	  _gen_q1dtr_E[_gen_nq1dtr] 	 = daughters.energy();
+	  _gen_nq1dtr++;
+        }
+      }else if(_gen_nq23 == 2){
+        getDaughterList(p, *genParticles, daughterList2, chain_ends2);
+        removeDoubleCountedDaughters(daughterList2);
+        for(auto daughters : daughterList2){
+	  //if(daughters.status() != 1) continue;
+	  _gen_q2dtr_status[_gen_nq2dtr] = daughters.status();
+	  _gen_q2dtr_pdgid[_gen_nq2dtr]  = daughters.pdgId();
+	  _gen_q2dtr_Pt[_gen_nq2dtr] 	 = daughters.pt();
+	  _gen_q2dtr_Eta[_gen_nq2dtr] 	 = daughters.eta();
+	  _gen_q2dtr_Phi[_gen_nq2dtr] 	 = daughters.phi();
+	  _gen_q2dtr_E[_gen_nq2dtr] 	 = daughters.energy();
+	  _gen_nq2dtr++;
+        }
       }
-
       //print statements to analyze daughters
       /*std::cout << "Pdg Id " << p.pdgId() << " pt: " << p.pt() << std::endl;
       for(unsigned int i = 0; i < p.numberOfDaughters(); i++){
         std::cout << "Daughter " << (*genParticles)[p.daughterRef(i).key()].pdgId() << " pt: " << (*genParticles)[p.daughterRef(i).key()].pt() << std::endl;
       }*/
-      /*std::cout << "number of daughters: " << daughterList.size() << std::endl;
-      for(auto i : daughterList){
-	std::cout << i.pdgId() << " -> ";
-      } std::cout << std::endl;
-      for(auto i : daughterList){
-	std::cout << i.status() << " -> ";
-      } std::cout << std::endl;
-      for(auto i : daughterList){
-	std::cout << i.pt() << " -> ";
-      } std::cout << std::endl;*/
+      if(_gen_nq23 == 1){
+        std::cout << "number of daughters: " << daughterList1.size() << std::endl;
+        for(unsigned int i = 0; i < daughterList1.size(); i++){
+	  if(chain_ends1[i] == 0) std::cout << daughterList1[i].pdgId() << " -> ";
+	  if(chain_ends1[i] == 1) std::cout << daughterList1[i].pdgId() << " | ";
+        } std::cout << std::endl;
+        for(unsigned int i = 0; i < daughterList1.size(); i++){
+	  if(chain_ends1[i] == 0) std::cout << daughterList1[i].status() << " -> ";
+	  if(chain_ends1[i] == 1) std::cout << daughterList1[i].status() << " | ";
+        } std::cout << std::endl;
+        for(unsigned int i = 0; i < daughterList1.size(); i++){
+	  if(chain_ends1[i] == 0) std::cout << daughterList1[i].pt() << " -> ";
+	  if(chain_ends1[i] == 1) std::cout << daughterList1[i].pt() << " | ";
+        } std::cout << std::endl;
+      }else if(_gen_nq23 == 2){
+        std::cout << "number of daughters: " << daughterList2.size() << std::endl;
+        for(unsigned int i = 0; i < daughterList2.size(); i++){
+	  if(chain_ends2[i] == 0) std::cout << daughterList2[i].pdgId() << " -> ";
+	  if(chain_ends2[i] == 1) std::cout << daughterList2[i].pdgId() << " | ";
+        } std::cout << std::endl;
+        for(unsigned int i = 0; i < daughterList2.size(); i++){
+	  if(chain_ends2[i] == 0) std::cout << daughterList2[i].status() << " -> ";
+	  if(chain_ends2[i] == 1) std::cout << daughterList2[i].status() << " | ";
+        } std::cout << std::endl;
+        for(unsigned int i = 0; i < daughterList2.size(); i++){
+	  if(chain_ends2[i] == 0) std::cout << daughterList2[i].pt() << " -> ";
+	  if(chain_ends2[i] == 1) std::cout << daughterList2[i].pt() << " | ";
+        } std::cout << std::endl << std::endl;
+      }
     }
 
 
@@ -247,21 +293,36 @@ void GenAnalyzer::getMotherList(const reco::GenParticle& p, const std::vector<re
   if(p.numberOfMothers() > 0) getMotherList(genParticles[p.motherRef(0).key()], genParticles, list);
 }
 
-void GenAnalyzer::getDaughterList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<reco::GenParticle>& list){
-  if(list.empty() or p.pdgId() != list.back().pdgId()) list.push_back(p);
+void GenAnalyzer::getDaughterList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<reco::GenParticle>& list, std::vector<int>& chain_ends)
+{
+  if(list.empty() or p.pdgId() != list.back().pdgId()){
+    list.push_back(p);
+  }
   int n = p.numberOfDaughters();
+  chain_ends.push_back(check_for_daughter(p, genParticles));
   for(int i = 0; i < n; i++){
-    getDaughterList(genParticles[p.daughterRef(i).key()], genParticles, list);
+    getDaughterList(genParticles[p.daughterRef(i).key()], genParticles, list, chain_ends);
   }
 }
 
 void GenAnalyzer::removeDoubleCountedDaughters(std::vector<reco::GenParticle>& list)
 {
-  for(unsigned int i = 0; i < list.size(); i++){
+  for(unsigned int i = 1; i < list.size() - 1; i++){
     for(unsigned int j = i+1; j < list.size(); j++){
-      if(list[i].pt() == list[j].pt()) list.erase(list.begin() + j);
+      if(((double)list[i].pt() - (double)list[j].pt()) < 0.0001){ list.erase(list.begin() + j); j--; }
     }
   }
+}
+
+int GenAnalyzer::check_for_daughter(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
+  //returns 0 if particle is not the end of a chain of daughters, 1 if it is
+  int n = p.numberOfDaughters();
+  if(n > 1) return 0;
+  else if(n == 1){
+    if(p.pdgId() == genParticles[p.daughterRef(0).key()].pdgId()) return check_for_daughter(genParticles[p.daughterRef(0).key()],genParticles);
+    else return 0;
+  }
+  else return 1; // if n == 0 this is the end of the chain
 }
 
 

@@ -41,8 +41,9 @@ class GenAnalyzer {
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const int                getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
-    void		     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<reco::GenParticle>&);
+    void		     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<reco::GenParticle>&, std::vector<int>&);
     void		     removeDoubleCountedDaughters(std::vector<reco::GenParticle>&);
+    int 		     check_for_daughter(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     bool                     inMotherList(std::vector<int>& list, int i);
 
     unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
@@ -89,12 +90,20 @@ class GenAnalyzer {
     double   _gen_qEta[gen_n_max];
     double   _gen_qPhi[gen_n_max];
     double   _gen_qE[gen_n_max];
-    unsigned _gen_nqdtr;
-    int	     _gen_qdtr_pdgid[gen_ndtr_max];
-    double   _gen_qdtr_Pt[gen_ndtr_max];
-    double   _gen_qdtr_Eta[gen_ndtr_max];
-    double   _gen_qdtr_Phi[gen_ndtr_max];
-    double   _gen_qdtr_E[gen_ndtr_max];
+    unsigned _gen_nq1dtr;
+    int	     _gen_q1dtr_status[gen_ndtr_max];
+    int	     _gen_q1dtr_pdgid[gen_ndtr_max];
+    double   _gen_q1dtr_Pt[gen_ndtr_max];
+    double   _gen_q1dtr_Eta[gen_ndtr_max];
+    double   _gen_q1dtr_Phi[gen_ndtr_max];
+    double   _gen_q1dtr_E[gen_ndtr_max];
+    unsigned _gen_nq2dtr;
+    int	     _gen_q2dtr_status[gen_ndtr_max];
+    int	     _gen_q2dtr_pdgid[gen_ndtr_max];
+    double   _gen_q2dtr_Pt[gen_ndtr_max];
+    double   _gen_q2dtr_Eta[gen_ndtr_max];
+    double   _gen_q2dtr_Phi[gen_ndtr_max];
+    double   _gen_q2dtr_E[gen_ndtr_max];
 
 };
 
