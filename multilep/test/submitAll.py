@@ -7,7 +7,7 @@ outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'       
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
 #check if call asked for local submission
-submitLocal     = False
+submitLocal     = ""
 #Use third argument to specify the number of jobs per file
 filesPerJob     = 10
 
@@ -19,9 +19,9 @@ if len(sys.argv) > 2:
 for dataset in datasets:
     skim, dataset = dataset.split(':')
 
-    if 'pnfs' in dataset or 'user' in dataset or submitLocal: 
+    if 'pnfs' in dataset or 'user' in dataset or submitLocal == "local":
         dir        = os.getcwd()
-        outputDir = outDir + "/" + dataset.split('/')[1]      
+        outputDir = outDir + "/" + dataset.split('/')[-1]      
         print outputDir
         #cut out the first part of /pnfs path for official sample if needed
         if 'pnfs' in dataset and 'user' not in dataset:

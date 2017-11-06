@@ -8,6 +8,7 @@ import FWCore.ParameterSet.Config as cms
 #inputFile       = "root://cmsxrootd.fnal.gov///store/data/Run2017C/MuonEG/MINIAOD/PromptReco-v3/000/300/780/00000/86494C82-EA7E-E711-ACCC-02163E01441B.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_samesign_M-5_V-0.01_mu_NLO/heavyNeutrino_11.root'
 inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/prompt/HeavyNeutrino_lljj_M-60_V-0.01_e_onshell_pre2017_NLO/heavyNeutrino_10.root'
+#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
 nEvents         = 1000
 outputFile      = 'dilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -135,7 +136,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  if is2017: JSON = "../data/JSON/Cert_294927-305185_13TeV_PromptReco_Collisions17_JSON.txt"
+  if is2017: JSON = "../data/JSON/Cert_294927-305364_13TeV_PromptReco_Collisions17_JSON.txt"
   else:      JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
   process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
 
