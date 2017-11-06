@@ -76,7 +76,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
   edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
   edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
-//edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
+  edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedVeto;          iEvent.getByToken(multilepAnalyzer->eleCutBasedVetoToken,              electronsCutBasedVeto);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedLoose;         iEvent.getByToken(multilepAnalyzer->eleCutBasedLooseToken,             electronsCutBasedLoose);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBasedMedium);
@@ -126,6 +126,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
     _leptonMvaSUSY[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY);
     _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
+
     _lEwkLoose[_nL]      = isEwkLoose(mu);
     _lEwkFO[_nL]         = isEwkFO(mu);
     _lEwkTight[_nL]      = isEwkTight(mu);
@@ -146,7 +147,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonImpactParameters(*ele, primaryVertex);
     if(fabs(_dxy[_nL]) > 0.05)                                                               continue;
     if(fabs(_dz[_nL]) > 0.1)                                                                 continue;
-
     fillLeptonKinVars(*ele);
     fillLeptonGenVars(ele->genParticle());
     fillLeptonJetVariables(*ele, jets, primaryVertex);
@@ -158,6 +158,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _miniIso[_nL]          = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho);
     _miniIsoCharged[_nL]   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
     _lElectronMva[_nL]     = (*electronsMva)[electronRef];
+    _lElectronMvaHZZ[_nL]  = (*electronsMvaHZZ)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
 
     _lHNLoose[_nL]         = isHNLoose(*ele);
@@ -171,6 +172,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
     _leptonMvaSUSY[_nL]    = leptonMvaVal(*ele, leptonMvaComputerSUSY);
     _leptonMvaTTH[_nL]     = leptonMvaVal(*ele, leptonMvaComputerTTH);
+
     _lEwkLoose[_nL]        = isEwkLoose(*ele);
     _lEwkFO[_nL]           = isEwkFO(*ele);
     _lEwkTight[_nL]        = isEwkTight(*ele);
