@@ -70,9 +70,13 @@ class LeptonAnalyzer {
     float _lElectronMva[nL_max];                                                                     //electron specific variables
     float _lElectronMvaHZZ[nL_max];
     bool _lElectronPassEmu[nL_max];                                                                  
+    bool _lElectronPassConvVeto[nL_max];
+    bool _lElectronChargeConst[nL_max];
     unsigned _lElectronMissingHits[nL_max];
 
-    double _muonSegComp[nL_max];                                                                     //muon speficic variables
+    double _lMuonSegComp[nL_max];                                                                     //muon speficic variables
+    double _lMuonTrackPt[nL_max];
+    double _lMuonTrackPtErr[nL_max];
 
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
     bool _tauEleVeto[nL_max];
