@@ -14,7 +14,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
 
   if(multilepAnalyzer->is2017){
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
-                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalSuperTightHalo2016Filter",//"Flag_globalTightHalo2016Filter",
+                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalSuperTightHalo2016Filter",                             //Super tight halo filter recommended EARLY 2017, keep and eye on this
                                   "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};       // Duplicate muons still missing in mAOD, not sure how to get those in
     allFlags["2017_m"]         = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
     allFlags["2017_e"]         = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
@@ -25,7 +25,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["2017_mmm"]       = {"HLT_TripleMu_10_5_5_DZ", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ", "TripleMu_12_10_5"};
     allFlags["2017_mme"]       = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
     allFlags["2017_mee"]       = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
-    allFlags["2017_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};
+    allFlags["2017_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
   } else {
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters (if legacy mAOD vbecomes available, copy the filters listed for 2017)
                                   "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",
