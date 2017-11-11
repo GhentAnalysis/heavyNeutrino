@@ -24,6 +24,13 @@ for dataset in datasets:
         outputDir = outDir + "/"
         if 'pnfs' in dataset or 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]      
         else: outputDir = outputDir + dataset.split('/')[1]
+        if 'ext' in dataset:
+            outputDir = outputDir + "_"
+            index = dataset.find('ext')
+            for i in range (index, len(dataset)):
+                if dataset[i] == "/": break
+                else : outputDir = outputDir + dataset[i]
+
         print outputDir
         #cut out the first part of /pnfs path for official sample if needed
         if 'pnfs' in dataset and 'user' not in dataset:
