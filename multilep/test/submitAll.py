@@ -21,7 +21,9 @@ for dataset in datasets:
 
     if 'pnfs' in dataset or 'user' in dataset or submitLocal == "local":
         dir        = os.getcwd()
-        outputDir = outDir + "/" + dataset.split('/')[-1]      
+        outputDir = outDir + "/"
+        if 'pnfs' in dataset or 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]      
+        else: outputDir = outputDir + dataset.split('/')[1]
         print outputDir
         #cut out the first part of /pnfs path for official sample if needed
         if 'pnfs' in dataset and 'user' not in dataset:
