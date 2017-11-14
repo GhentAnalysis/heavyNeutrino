@@ -120,6 +120,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
 
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
+    _relIso0p4Mu[_nL]    = getRelIso04(mu);                                               // Isolation variables
     _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
     _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 

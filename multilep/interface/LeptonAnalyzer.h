@@ -52,6 +52,7 @@ class LeptonAnalyzer {
     int _lCharge[nL_max];
 
     double _relIso[nL_max];                                                                          //lepton isolation variables
+    double _relIso0p4Mu[nL_max];                                                                          //lepton isolation variables
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];                                                              
     
@@ -120,8 +121,10 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
 
     // In leptonAnalyzerIso,cc
+
     double getRelIso03(const pat::Muon&, const double);
     double getRelIso03(const pat::Electron&, const double);
+    double getRelIso04(const pat::Muon& mu);
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
 
     // In LeptonAnalyzerId.cc
