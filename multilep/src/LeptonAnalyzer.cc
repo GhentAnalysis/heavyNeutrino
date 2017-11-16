@@ -62,6 +62,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_tauVTightMvaNew",              &_tauVTightMvaNew,              "_tauVTightMvaNew[_nL]/O");
   outputTree->Branch("_tauVTightMvaOld",              &_tauVTightMvaOld,              "_tauVTightMvaOld[_nL]/O");
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
+  outputTree->Branch("_relIso0p4Mu",                  &_relIso0p4Mu,                  "_relIso0p4Mu[_nMu]/D");
   outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
   outputTree->Branch("_miniIsoCharged",               &_miniIsoCharged,               "_miniIsoCharged[_nLight]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
@@ -120,7 +121,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
 
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
-    _relIso0p4Mu[_nL]    = getRelIso04(mu);                                               // Isolation variables
+    _relIso0p4Mu[_nL]    = getRelIso04(mu);                                                     
     _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho);
     _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
