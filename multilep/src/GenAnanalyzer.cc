@@ -38,6 +38,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
     outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
+    outputTree->Branch("_gen_HT",                    &_gen_HT,                    "_gen_HT/D");
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
@@ -95,6 +96,16 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     }
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
+    
+    //compute gen HT as the sum of all status 23 partons
+    _gen_HT = 0;
+    for(const reco::GenParticle& p: *genParticles){
+        if(p.status() == 23){
+            if(abs(p.pdgId()) > 0 && abs(p.pdgId()) < 7){
+                _gen_HT += p.pt();
+            }
+        }
+    }
 }
 
 double GenAnalyzer::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){

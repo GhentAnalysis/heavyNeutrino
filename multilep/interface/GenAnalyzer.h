@@ -4,12 +4,16 @@
 #include "FWCore/Framework/interface/Event.h"
 
 #include "heavyNeutrino/multilep/plugins/multilep.h"
+#include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 
 #include "TTree.h"
 
 class multilep;
-
+class PhotonAnalyzer;
 class GenAnalyzer {
+  //class friends
+  friend PhotonAnalyzer;
+
   private:
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
@@ -42,6 +46,9 @@ class GenAnalyzer {
     int      _gen_lCharge[gen_nL_max];
     int      _gen_lMomPdg[gen_nL_max];
     bool     _gen_lIsPrompt[gen_nL_max];
+
+    //Generator HT (needed when merging HT binned sample with inclusive one)
+    double _gen_HT;
 
     //Functions to find the mother of a gen particle
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
