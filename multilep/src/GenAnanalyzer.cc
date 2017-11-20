@@ -64,39 +64,41 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
         //store generator level lepton info
         if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
-            if(_gen_nL == gen_nL_max) break;
-            _gen_lPt[_gen_nL]       = p.pt();
-            _gen_lEta[_gen_nL]      = p.eta();
-            _gen_lPhi[_gen_nL]      = p.phi();
-            _gen_lE[_gen_nL]        = p.energy();
-            _gen_lCharge[_gen_nL]   = p.charge();
-            _gen_lIsPrompt[_gen_nL] = (p.isPromptDecayed() || p.isPromptFinalState());
-            _gen_lMomPdg[_gen_nL]   = getMotherPdgId(p, *genParticles);
-            if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
-            else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
-            else                          _gen_lFlavor[_gen_nL] = 2;
-            ++_gen_nL;
+            if(_gen_nL != gen_nL_max){
+                _gen_lPt[_gen_nL]       = p.pt();
+                _gen_lEta[_gen_nL]      = p.eta();
+                _gen_lPhi[_gen_nL]      = p.phi();
+                _gen_lE[_gen_nL]        = p.energy();
+                _gen_lCharge[_gen_nL]   = p.charge();
+                _gen_lIsPrompt[_gen_nL] = (p.isPromptDecayed() || p.isPromptFinalState());
+                _gen_lMomPdg[_gen_nL]   = getMotherPdgId(p, *genParticles);
+                if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
+                else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
+                else                          _gen_lFlavor[_gen_nL] = 2;
+                ++_gen_nL;
+            }
         }
 
         //store generator level photon info
         if(p.status() == 1 && abs(p.pdgId()) == 22){
-            if(_gen_nPh == gen_nPh_max) break;
-            std::vector<int> motherList = {};
-            getMotherList(p, *genParticles, motherList);
-            _gen_phPt[_gen_nPh]            = p.pt();
-            _gen_phEta[_gen_nPh]           = p.eta();
-            _gen_phPhi[_gen_nPh]           = p.phi();
-            _gen_phE[_gen_nPh]             = p.energy();
-            _gen_phIsPrompt[_gen_nPh]      = p.isPromptFinalState();
-            _gen_phMomPdg[_gen_nPh]        = getMotherPdgId(p, *genParticles);
-            _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
-            _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37 or *(std::min_element(std::begin(motherList), std::end(motherList))) < -37);
-            ++_gen_nPh;
+            if(_gen_nPh != gen_nPh_max){
+                std::vector<int> motherList = {};
+                getMotherList(p, *genParticles, motherList);
+                _gen_phPt[_gen_nPh]            = p.pt();
+                _gen_phEta[_gen_nPh]           = p.eta();
+                _gen_phPhi[_gen_nPh]           = p.phi();
+                _gen_phE[_gen_nPh]             = p.energy();
+                _gen_phIsPrompt[_gen_nPh]      = p.isPromptFinalState();
+                _gen_phMomPdg[_gen_nPh]        = getMotherPdgId(p, *genParticles);
+                _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
+                _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37 or *(std::min_element(std::begin(motherList), std::end(motherList))) < -37);
+                ++_gen_nPh;
+            } 
         }
     }
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
-    
+
     //compute gen HT as the sum of all status 23 partons
     _gen_HT = 0;
     for(const reco::GenParticle& p: *genParticles){
