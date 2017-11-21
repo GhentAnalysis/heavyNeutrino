@@ -27,6 +27,7 @@ class GenAnalyzer {
 
     //Generator photons
     unsigned _gen_nPh;
+    unsigned _gen_phStatus[gen_nPh_max];
     double   _gen_phPt[gen_nPh_max];
     double   _gen_phEta[gen_nPh_max];
     double   _gen_phPhi[gen_nPh_max];

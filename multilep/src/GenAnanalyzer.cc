@@ -21,6 +21,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
     outputTree->Branch("_gen_metPhi",                &_gen_metPhi,                "_gen_metPhi/D");
     outputTree->Branch("_gen_nPh",                   &_gen_nPh,                   "_gen_nPh/b");
+    outputTree->Branch("_gen_phStatus",              &_gen_phStatus,              "_gen_phStatus[_gen_nPh]/b");
     outputTree->Branch("_gen_phPt",                  &_gen_phPt,                  "_gen_phPt[_gen_nPh]/D");
     outputTree->Branch("_gen_phEta",                 &_gen_phEta,                 "_gen_phEta[_gen_nPh]/D");
     outputTree->Branch("_gen_phPhi",                 &_gen_phPhi,                 "_gen_phPhi[_gen_nPh]/D");
@@ -80,10 +81,11 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 
         //store generator level photon info
-        if(p.status() == 1 && abs(p.pdgId()) == 22){
+        if((p.status() == 1 || p.status() == 71) && abs(p.pdgId()) == 22){
             if(_gen_nPh != gen_nPh_max){
                 std::vector<int> motherList = {};
                 getMotherList(p, *genParticles, motherList);
+                _gen_phStatus[_gen_nPh]        = p.status();
                 _gen_phPt[_gen_nPh]            = p.pt();
                 _gen_phEta[_gen_nPh]           = p.eta();
                 _gen_phPhi[_gen_nPh]           = p.phi();
