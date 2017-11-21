@@ -77,6 +77,9 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
+#clean 2016 data met from spurious muons and ECAL slew rate
+metCollection = "slimmedMETs"
+if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean"
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
