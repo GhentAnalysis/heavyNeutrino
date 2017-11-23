@@ -137,8 +137,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  if is2017: JSON = "../data/JSON/Cert_294927-306460_13TeV_PromptReco_Collisions17_JSON.txt"
-  else:      JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+  JSON = "../data/JSON/" + os.environ['JSON']
   process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
 
 
