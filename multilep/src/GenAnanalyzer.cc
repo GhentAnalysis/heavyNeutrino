@@ -39,8 +39,8 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
     outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
-    outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nPh]/D");
-    outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nPh]/O");
+    outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
+    outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
     outputTree->Branch("_gen_HT",                    &_gen_HT,                    "_gen_HT/D");
 }
 
@@ -78,8 +78,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
                 std::vector<int> motherList = {};
                 getMotherList(p, *genParticles, motherList);
-                _gen_lMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
-                _gen_lPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37 or *(std::min_element(std::begin(motherList), std::end(motherList))) < -37);
+                _gen_lMinDeltaR[_gen_nL]     = getMinDeltaR(p, *genParticles);
+                _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37 or *(std::min_element(std::begin(motherList), std::end(motherList))) < -37);
 
                 if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
                 else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;

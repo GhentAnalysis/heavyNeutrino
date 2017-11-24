@@ -47,8 +47,8 @@ class GenAnalyzer {
     int      _gen_lCharge[gen_nL_max];
     int      _gen_lMomPdg[gen_nL_max];
     bool     _gen_lIsPrompt[gen_nL_max];
-    bool     _gen_lPassParentage[gen_nPh_max];
-    double   _gen_lMinDeltaR[gen_nPh_max];
+    bool     _gen_lPassParentage[gen_nL_max];
+    double   _gen_lMinDeltaR[gen_nL_max];
 
     //Generator HT (needed when merging HT binned sample with inclusive one)
     double _gen_HT;
