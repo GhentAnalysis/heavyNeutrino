@@ -24,14 +24,16 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool SU
     }
     //Book specific muon variables
     reader[0]->AddVariable("LepGood_segmentCompatibility", &LepGood_segmentCompatibility);
-    //Book specific electron variables
-    reader[1]->AddVariable("LepGood_mvaIdSpring16GP", &LepGood_mvaIdSpring16GP);
 
     //Read Mva weights
     if(SUSY){ //SUSY weights used by default
+        //Book specific electron variables
+        reader[1]->AddVariable("LepGood_mvaIdSpring16GP", &LepGood_mvaIdSpring16GP);
         reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMu").fullPath());
         reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEle").fullPath());
     } else{
+        //Book specific electron variables
+        reader[1]->AddVariable("LepGood_mvaIdSpring16HZZ", &LepGood_mvaIdSpring16HZZ);
         reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMuttH").fullPath());
         reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsElettH").fullPath());
     }
@@ -56,8 +58,9 @@ double LeptonMvaHelper::leptonMvaMuon(double pt, double eta, double selectedTrac
     return reader[0]->EvaluateMVA("BDTG method");
 }
 
-double LeptonMvaHelper::leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double eleMva){
+double LeptonMvaHelper::leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double sip3d, double dxy, double dz, double eleMva, double eleMvaHZZ){
     bookCommonVars(pt, eta, selectedTrackMult, miniIsoCharged, miniIsoNeutral, ptRel, ptRatio, closestJetCsv, sip3d, dxy, dz);
     LepGood_mvaIdSpring16GP = eleMva;
+    LepGood_mvaIdSpring16HZZ = eleMvaHZZ;
     return reader[1]->EvaluateMVA("BDTG method");
 }

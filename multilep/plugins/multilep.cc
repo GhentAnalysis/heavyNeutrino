@@ -86,6 +86,8 @@ void multilep::beginJob(){
     outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
 
+    outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
+
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
     if(!isData) genAnalyzer->beginJob(outputTree);
@@ -128,16 +130,19 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
-    _met            = met.pt();
-    _metPhi         = met.phi();
-    _metJECDown     = met.shiftedPt(pat::MET::JetEnDown);
-    _metJECUp       = met.shiftedPt(pat::MET::JetEnUp);
-    _metUnclDown    = met.shiftedPt(pat::MET::UnclusteredEnDown);
-    _metUnclUp      = met.shiftedPt(pat::MET::UnclusteredEnUp);
-    _metPhiJECDown  = met.shiftedPhi(pat::MET::JetEnDown);
-    _metPhiJECUp    = met.shiftedPhi(pat::MET::JetEnUp);
-    _metPhiUnclUp   = met.shiftedPhi(pat::MET::UnclusteredEnUp);
-    _metPhiUnclDown = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+    _met             = met.pt();
+    _metPhi          = met.phi();
+    //met values with uncertainties varied up and down
+    _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
+    _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);
+    _metUnclDown     = met.shiftedPt(pat::MET::UnclusteredEnDown);
+    _metUnclUp       = met.shiftedPt(pat::MET::UnclusteredEnUp);
+    _metPhiJECDown   = met.shiftedPhi(pat::MET::JetEnDown);
+    _metPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp);
+    _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
+    _metPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+    //significance of met
+    _metSignificance = met.metSignificance();
 
     //store calculated event info in root tree
     outputTree->Fill();

@@ -49,7 +49,6 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     double unc = jecUnc.getUncertainty(true);
 
     if(std::max((1+unc)*jetSmeared->pt(), std::max(jetSmearedUp->pt(), jetSmearedDown->pt())) < 25) continue;
-    if(fabs(jet->eta()) > 2.4)                                                                      continue;
 
     _jetPt[_nJets]                    = jetSmeared->pt();
     _jetPt_JECDown[_nJets]            = jetSmeared->pt()*(1-unc);

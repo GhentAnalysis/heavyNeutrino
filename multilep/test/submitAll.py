@@ -2,7 +2,7 @@
 import os, glob, sys
 
 datasetsFile    = sys.argv[1]                                                                             # Input file with datasets
-productionLabel = os.path.basename(datasetsFile.split('.')[0].split('/')[-1])                             # Label to keep track of the tuple version (is taken from the name of the above input file)
+productionLabel = os.path.basename(datasetsFile.split('/')[-1].split('.')[0])                             # Label to keep track of the tuple version (is taken from the name of the above input file)
 outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'                                 # Output directory in case of local submission
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
@@ -19,9 +19,22 @@ if len(sys.argv) > 2:
 for dataset in datasets:
     skim, dataset = dataset.split(':')
 
+    #Specify JSON file
+    if "Run2017" in dataset: os.environ['JSON'] = "Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"
+    else : os.environ['JSON'] = "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+
     if 'pnfs' in dataset or 'user' in dataset or submitLocal == "local":
         dir        = os.getcwd()
-        outputDir = outDir + "/" + dataset.split('/')[-1]      
+        outputDir = outDir + "/"
+        if 'pnfs' in dataset or 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]      
+        else: outputDir = outputDir + dataset.split('/')[1]
+        if 'ext' in dataset:
+            outputDir = outputDir + "_"
+            index = dataset.find('ext')
+            for i in range (index, len(dataset)):
+                if dataset[i] == "/": break
+                else : outputDir = outputDir + dataset[i]
+
         print outputDir
         #cut out the first part of /pnfs path for official sample if needed
         if 'pnfs' in dataset and 'user' not in dataset:
@@ -40,4 +53,6 @@ for dataset in datasets:
         os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
         os.environ['CRAB_DATASET']         = dataset
         os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
+        if 'Run2017' in dataset: os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/" + os.environ['JSON']
+        else:                    os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Final/"      + os.environ['JSON']
         os.system('crab submit -c crab.py')
