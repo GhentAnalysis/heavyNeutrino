@@ -29,6 +29,19 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron
   return true;
 }
 
+bool LeptonAnalyzer::isMediumCutBasedElectronWithoutIsolation(const pat::Electron* ele){
+  if(!(ele->isEB() or ele->isEE()))                                                            return false;
+  float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+  if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998    : 0.0298 ))       return false;
+  if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00311    : 0.00609))       return false;
+  if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.103      : 0.045  ))       return false;
+  if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.253      : 0.0878  ))       return false;
+  if(eInvMinusPInv                                 >= (ele->isEB() ? 0.134      : 0.13   ))       return false;
+  if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) >  1)    return false;
+  if(!ele->passConversionVeto())                                                               return false;
+  return true;
+}
+
 bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron* ele){
   if(!(ele->isEB() or ele->isEE())) return false;
   float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();

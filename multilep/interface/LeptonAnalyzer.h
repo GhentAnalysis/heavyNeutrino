@@ -103,6 +103,10 @@ class LeptonAnalyzer {
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
 
+    bool _lPOGLooseWOIso[nL_max];
+    bool _lPOGMediumWOIso[nL_max];
+    bool _lPOGTightWOIso[nL_max];
+
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
 
@@ -130,6 +134,7 @@ class LeptonAnalyzer {
     // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*);
     bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
+    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*);
     bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*);
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true);               //For ewkino id it needs to be possible to check hOverE separately
     float slidingCut(float, float, float);
