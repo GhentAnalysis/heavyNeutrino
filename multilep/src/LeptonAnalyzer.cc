@@ -52,6 +52,9 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
   outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
+  outputTree->Branch("_lPOGLooseWOIso",               &_lPOGLooseWOIso,               "_lPOGLooseWOIso[_nLight]/O");
+  outputTree->Branch("_lPOGMediumWOIso",              &_lPOGMediumWOIso,              "_lPOGMediumWOIso[_nLight]/O");
+  outputTree->Branch("_lPOGTightWOIso",               &_lPOGTightWOIso,               "_lPOGTightWOIso[_nLight]/O");
   outputTree->Branch("_tauMuonVeto",                  &_tauMuonVeto,                  "_tauMuonVeto[_nL]/O");
   outputTree->Branch("_tauEleVeto",                   &_tauEleVeto,                   "_tauEleVeto[_nL]/O");
   outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
@@ -182,6 +185,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGLoose[_nL]             = (*electronsCutBasedLoose)[electronRef];
     _lPOGMedium[_nL]            = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]             = (*electronsCutBasedTight)[electronRef];
+
+    _lPOGLooseWOIso[_nL]        = isLooseCutBasedElectronWithoutIsolation(&*ele);
+    _lPOGMediumWOIso[_nL]       = isMediumCutBasedElectronWithoutIsolation(&*ele);
+    _lPOGTightWOIso[_nL]        = isTightCutBasedElectronWithoutIsolation(&*ele);
 
     _leptonMvaSUSY[_nL]         = leptonMvaVal(*ele, leptonMvaComputerSUSY);
     _leptonMvaTTH[_nL]          = leptonMvaVal(*ele, leptonMvaComputerTTH);

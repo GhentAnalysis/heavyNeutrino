@@ -44,8 +44,8 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'    # This is actually for CMSSW_9_2_11 or higher!
-elif is2017:            process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v7' # This is actually for CMSSW_9_2_7 or higher!
+if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'   
+elif is2017:            process.GlobalTag.globaltag = '93X_upgrade2023_realistic_v3'
 elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
@@ -77,6 +77,9 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
+#clean 2016 data met from spurious muons and ECAL slew rate
+metCollection = "slimmedMETs"
+if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean"
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -114,7 +117,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   taus                          = cms.InputTag("slimmedTaus"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
-  met                           = cms.InputTag("slimmedMETs"),
+  met                           = cms.InputTag(metCollection),
   jets                          = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
   jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
   jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
@@ -134,8 +137,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  if is2017: JSON = "../data/JSON/Cert_294927-306126_13TeV_PromptReco_Collisions17_JSON.txt"
-  else:      JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+  JSON = "../data/JSON/" + os.environ['JSON']
   process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
 
 

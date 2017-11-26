@@ -19,6 +19,10 @@ if len(sys.argv) > 2:
 for dataset in datasets:
     skim, dataset = dataset.split(':')
 
+    #Specify JSON file
+    if "Run2017" in dataset: os.environ['JSON'] = "Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"
+    else : os.environ['JSON'] = "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+
     if 'pnfs' in dataset or 'user' in dataset or submitLocal == "local":
         dir        = os.getcwd()
         outputDir = outDir + "/"
@@ -49,6 +53,6 @@ for dataset in datasets:
         os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
         os.environ['CRAB_DATASET']         = dataset
         os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
-        if 'Run2017' in dataset: os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/Cert_294927-303825_13TeV_PromptReco_Collisions17_JSON.txt"
-        else:                    os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Final/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt" 
+        if 'Run2017' in dataset: os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/" + os.environ['JSON']
+        else:                    os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Final/"      + os.environ['JSON']
         os.system('crab submit -c crab.py')
