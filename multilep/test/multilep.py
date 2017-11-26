@@ -44,8 +44,8 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'    # This is actually for CMSSW_9_2_11 or higher!
-elif is2017:            process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v7' # This is actually for CMSSW_9_2_7 or higher!
+if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'   
+elif is2017:            process.GlobalTag.globaltag = '93X_upgrade2023_realistic_v3'
 elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
