@@ -290,7 +290,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
       } 
       else {   
-	 //std::cout<<"--> indices: "<<iMu_plus*100 + iMu_minus_mu<<" ("<<iMu_plus<<" - "<<iMu_minus_mu<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
+	 std::cout<<"--> indices: "<<iMu_plus*100 + iMu_minus_mu<<" ("<<iMu_plus<<" - "<<iMu_minus_mu<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
 	_vertices[_nVFit][0] = iMu_plus*100 + iMu_minus_mu;                   
 	_vertices[_nVFit][1] = dilvtx.position().x(); 
