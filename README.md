@@ -19,8 +19,8 @@ git checkout displaced
 
 # Set-up instructions for 2017 data
 ```
-cmsrel CMSSW_9_2_4
-cd CMSSW_9_2_4/src
+cmsrel CMSSW_9_3_4
+cd CMSSW_9_3_4/src
 cmsenv
 git cms-init
 git clone https://github.com/GhentAnalysis/heavyNeutrino

@@ -139,6 +139,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         double        _metPhiUnclDown;
         double        _metUnclUp;
         double        _metPhiUnclUp;
+        double        _metSignificance;
 };
 #endif
 

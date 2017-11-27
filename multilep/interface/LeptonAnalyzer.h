@@ -66,6 +66,7 @@ class LeptonAnalyzer {
     int _lCharge[nL_max];
 
     double _relIso[nL_max];                                                                          //lepton isolation variables
+    double _relIso0p4Mu[nL_max];                                                                          //lepton isolation variables
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];    
     double _puCorr[nL_max];     
@@ -107,7 +108,6 @@ class LeptonAnalyzer {
     bool _lPFMuon[nL_max];
     bool _lpassConversionVeto[nL_max];
   
-  
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
     bool _tauEleVeto[nL_max];
     bool _decayModeFindingNew[nL_max];                      
@@ -123,6 +123,10 @@ class LeptonAnalyzer {
     double _eleNumberInnerHitsMissing[nL_max];
     double _muNumberInnerHits[nL_max];
   
+
+    bool _lPOGLooseWOIso[nL_max];
+    bool _lPOGMediumWOIso[nL_max];
+    bool _lPOGTightWOIso[nL_max];
 
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
@@ -147,9 +151,11 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
 
     // In leptonAnalyzerIso,cc
+
     double getRelIso03(const pat::Muon&, const double);
     double getRelIso04(const pat::Muon&, const double);
     double getRelIso03(const pat::Electron&, const double);
+    double getRelIso04(const pat::Muon& mu);
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
 
   
@@ -159,6 +165,7 @@ class LeptonAnalyzer {
     float dEtaInSeed(const pat::Electron*);
     bool isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron* ele);
     bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
+    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*);
     bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*);
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true);               //For ewkino id it needs to be possible to check hOverE separately
     float slidingCut(float, float, float);
@@ -186,15 +193,16 @@ class LeptonAnalyzer {
     bool isEwkTight(const pat::Electron&);
     bool isEwkTight(const pat::Tau&);
 
-    double leptonMvaVal(const pat::Muon&);                                                            //compute ewkino lepton MVA
-    double leptonMvaVal(const pat::Electron&);
+    double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);                                                            //compute ewkino lepton MVA
+    double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
     
     //for lepton MVA calculation
-    std::shared_ptr<LeptonMvaHelper> leptonMvaComputer;
+    LeptonMvaHelper* leptonMvaComputerSUSY;
+    LeptonMvaHelper* leptonMvaComputerTTH;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~LeptonAnalyzer(){};
+    ~LeptonAnalyzer();
 
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&, const reco::Vertex&);

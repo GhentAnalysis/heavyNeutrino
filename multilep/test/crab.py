@@ -5,6 +5,7 @@ import os
 productionLabel = os.environ['CRAB_PRODUCTIONLABEL']
 dataset         = os.environ['CRAB_DATASET']
 outputFile      = os.environ['CRAB_OUTPUTFILE']
+lumiMask        = os.environ['CRAB_LUMIMASK']
 
 requestName = dataset.split('/')[2] + '_' + productionLabel
 requestName = requestName.replace('RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6','Moriond2017')
@@ -34,6 +35,7 @@ config.Data.unitsPerJob                = 300 if 'SIM' in dataset else 50
 config.Data.splitting                  = 'LumiBased'
 config.Data.outLFNDirBase              = '/store/user/' + os.environ['USER'] + '/heavyNeutrino/'
 config.Data.publication                = False
+config.Data.lumiMask                   = lumiMask if not 'SIM' in dataset else None
 
 config.section_('Site')
 config.Site.storageSite                = 'T2_BE_IIHE'
