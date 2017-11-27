@@ -363,11 +363,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(ele_1->gsfTrack().isNull()) continue;
     if(ele_1->pt() < 5 || fabs(ele_1->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_1) || eleMuOverlap(*ele_1, _lPFMuon) )           continue; // from 10 to 6
     iE_plus++;
+	  std::cout<<"*******> indice ele1 : "<<iE_plus<<"  charge: "<<ele_1.charge()<<"  pt: "<<ele_1.pt()<<std::endl;
+
     //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue; 
     
     const reco::Track&  tk_1 =  *ele_1->gsfTrack() ;
-    //std::cout<<"****  e+ : "<<ele_1->pt() <<"  charge: "<<ele_1->charge()<<std::endl;
+    std::cout<<"****  e+ : "<<ele_1->pt() <<"  charge: "<<ele_1->charge()<<std::endl;
 
     //------------------  loop µ+
     for(const pat::Muon& mu_2 : *muons){ 
@@ -375,17 +377,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_e++;
+	    std::cout<<"***> indice muone2 : "<<iMu_minus_e<<"  charge: "<<mu_2.charge()<<"  pt: "<<mu_2.pt() <<std::endl;
+
       if (mu_2.charge() > 0) continue;  // only opposite charge
         
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ; 
-	//std::cout<<"****  µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<std::endl;
+	std::cout<<"****  µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<std::endl;
 
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
       } 
       else {       
-	 //std::cout<<"--> indices: "<<iE_plus*100 + iMu_minus_e<<" ("<<iE_plus<<" - "<<iMu_minus_e<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
+	 std::cout<<"***> indices: "<<iE_plus*100 + iMu_minus_e<<" ("<<iE_plus<<" - "<<iMu_minus_e<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
 	_vertices[_nVFit][0] = iE_plus*100+iMu_minus_e;    
 	_vertices[_nVFit][1] = dilvtx.position().x(); 
