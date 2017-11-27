@@ -197,7 +197,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);
-   
+    _lElectronMvaHZZ[_nL]       = (*electronsMvaHZZ)[electronRef];
+
    
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele);
     _lPOGVeto[_nL]     = (*electronsCutBasedVeto)[electronRef];
