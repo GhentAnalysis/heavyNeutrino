@@ -260,20 +260,21 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   float iE_minus_e=_nMu;
   
   for(const pat::Muon& mu_1 : *muons){ // for µ
+	  
     if(mu_1.pt() < 3 || fabs(mu_1.eta()) > 2.4 || !mu_1.isPFMuon())              continue;   
 	  	  //    if(!mu_1.isLooseMuon()) continue;
-
+	  std::cout<<"------> indice muone1 : "<<_lIndex[mu_1]<<std::endl;
     iMu_plus++;
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
     const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
     //std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<"  track pos: ("<<mu_1.outerTrack ()->outerX()<<","<<mu_1.outerTrack ()->outerY()<<","<<mu_1.outerTrack ()->outerZ()<<")"<<std::endl;
-  //  std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<std::endl;
+  	std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<std::endl;
 
     //------------------  loop µ-
     for(const pat::Muon& mu_2 : *muons){ 
 	    	//  	      if(!mu_2.isLooseMuon()) continue;
-
+std::cout<<"-> indice muone2 : "<<_lIndex[mu_2]<<std::endl;
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_mu++;
       if (mu_2.charge() > 0) continue;  // only opposite charge
@@ -281,8 +282,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
       //std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<"  track pos: ("<<mu_2.outerTrack ()->outerX()<<","<<mu_2.outerTrack ()->outerY()<<","<<mu_2.outerTrack ()->outerZ()<<")"<<std::endl;
  
-     // std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<std::endl;
-    
+     std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<std::endl;
+    std::cout<<"numerto imu_plus: "<<iMu_plus<<"   2 "<<iMu_minus_mu<<std::endl;
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
