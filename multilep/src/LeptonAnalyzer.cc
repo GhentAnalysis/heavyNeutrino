@@ -363,7 +363,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(ele_1->gsfTrack().isNull()) continue;
     if(ele_1->pt() < 5 || fabs(ele_1->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_1) || eleMuOverlap(*ele_1, _lPFMuon) )           continue; // from 10 to 6
     iE_plus++;
-	  std::cout<<"*******> indice ele1 : "<<iE_plus<<"  charge: "<<ele_1.charge()<<"  pt: "<<ele_1.pt()<<std::endl;
+	  std::cout<<"*******> indice ele1 : "<<iE_plus<<"  charge: "<<ele_1->charge()<<"  pt: "<<ele_1->pt()<<std::endl;
 
     //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue; 
