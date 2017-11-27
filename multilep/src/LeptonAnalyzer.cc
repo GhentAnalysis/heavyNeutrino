@@ -275,6 +275,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   	std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<std::endl;
 
     //------------------  loop µ-
+	  iMu_minus_mu=0;
     for(const pat::Muon& mu_2 : *muons){ 
 	    	//  	      if(!mu_2.isLooseMuon()) continue;
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
@@ -311,6 +312,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     }// end loop µ-
           
     //------------------  loop e-
+	  iE_minus_mu=0;
     for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
       auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
       if(ele_2->gsfTrack().isNull()) continue;
@@ -372,6 +374,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     std::cout<<"****  e+ : "<<ele_1->pt() <<"  charge: "<<ele_1->charge()<<std::endl;
 
     //------------------  loop µ+
+	  iMu_minus_e=0;
     for(const pat::Muon& mu_2 : *muons){ 
 	    	  	//      if(!mu_2.isLooseMuon()) continue;
 
@@ -409,6 +412,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     
     //------------------  loop e+
+	  iE_minus_e=_nMu;
     for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
       auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
       if(ele_2->gsfTrack().isNull()) continue;
