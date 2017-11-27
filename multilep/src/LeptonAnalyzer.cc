@@ -252,12 +252,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
    * refitting vertices displaced *********************************************************** 
    */  
   
-  float iMu_plus=0;
-  float iMu_minus_mu=0;
-  float iMu_minus_e=0;
-  float iE_plus=_nMu;
-  float iE_minus_mu=_nMu;
-  float iE_minus_e=_nMu;
+  double iMu_plus=0;
+  double iMu_minus_mu=0;
+  double iMu_minus_e=0;
+  double iE_plus=_nMu;
+  double iE_minus_mu=_nMu;
+  double iE_minus_e=_nMu;
   
   for(const pat::Muon& mu_1 : *muons){ // for µ
 	  
