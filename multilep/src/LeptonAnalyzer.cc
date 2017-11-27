@@ -115,7 +115,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   //bool good_leading=false; // to check 1 leading-well_isolated lepton
   int counter_index_leptons   = 0;
   int counter_number_vertices = 0;
-  //std::cout<<"*******************************************"<<std::endl;
+  std::cout<<"*******************************************"<<std::endl;
   //std::cout<<"*******************************************"<<std::endl;
 	
   //loop over muons
@@ -129,7 +129,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
-    std::cout<<"indice:    "<<_lIndex[_nL]<<"   con il suo pt: "<<mu.pt()<<std::endl;
+    std::cout<<"indice muone:    "<<_lIndex[_nL]<<"   con il suo pt: "<<mu.pt()<<std::endl;
     _lPFMuon[_nL]=  mu.isPFMuon();
     // ===>  if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
@@ -174,11 +174,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         //if(!ele->passConversionVeto()) continue;  
     if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele)) continue; // check the loooong name
     if(eleMuOverlap(*ele, _lPFMuon))  continue;              // overlap muon-electron deltaR  ==  0.05
-    
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
     
-    
+        std::cout<<"indice elettrone:    "<<_lIndex[_nL]<<"   con il suo pt: "<<ele->pt()<<std::endl;
+
     _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] =-1;
     fillLeptonImpactParameters(*ele, primaryVertex);
@@ -267,7 +267,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 	  	  //    if(!mu_1.isLooseMuon()) continue;
 	  
     iMu_plus++;
-	  std::cout<<"------> indice muone1 : "<<iMu_plus<<"  "<<std::endl;
+	  std::cout<<"------> indice muone1 : "<<iMu_plus<<"  charge: "<<mu_1.charge()<<"  pt: "<<mu_1.pt()<<std::endl;
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
     const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
@@ -279,14 +279,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 	    	//  	      if(!mu_2.isLooseMuon()) continue;
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_mu++;
- std::cout<<"---> indice muone2 : "<<iMu_minus_mu<<"  "<<std::endl;
+ std::cout<<"---> indice muone2 : "<<iMu_minus_mu<<"  charge: "<<mu_2.charge()<<"  pt: "<<mu_2.pt() <<std::endl;
       if (mu_2.charge() > 0) continue;  // only opposite charge
 
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
       //std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<"  track pos: ("<<mu_2.outerTrack ()->outerX()<<","<<mu_2.outerTrack ()->outerY()<<","<<mu_2.outerTrack ()->outerZ()<<")"<<std::endl;
  
      std::cout<<"µ- : "<<mu_2.pt() <<"  charge: "<<mu_2.charge()<<std::endl;
-    std::cout<<"numerto imu_plus: "<<iMu_plus<<"   2 "<<iMu_minus_mu<<std::endl;
+    std::cout<<"coppia trovata di OS numerto imu_plus: "<<iMu_plus<<"   imu2: "<<iMu_minus_mu<<std::endl;
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
@@ -316,18 +316,20 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       if(ele_2->gsfTrack().isNull()) continue;
       if(ele_2->pt() < 5 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
       iE_minus_mu++; // it is already _nMu
+ std::cout<<"---> indice ele2 : "<<iE_minus_mu<<"  charge: "<<ele_2->charge()<<"  pt: "<<ele_2->pt() <<std::endl;
+
       if(ele_2->charge() > 0) continue; // only opposite charge
 
       const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
       //std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<"  track pos: ("<<ele_2->gsfTrack ()->outerX()<<","<<ele_2->gsfTrack ()->outerY()<<","<<ele_2->gsfTrack ()->outerZ()<<")"<<std::endl;
-      //std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<std::endl;
-
+      std::cout<<"e- : "<<ele_2->pt() <<"  charge: "<<ele_2->charge()<<std::endl;
+	std::cout<<"coppia trovata di OS numerto µ+ e-: "<<iMu_plus<<"   imu2: "<<iE_minus_mu<<std::endl;
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
       } 
       else {      
-	 //std::cout<<"--> indices: "<<iMu_plus*100 + iE_minus_mu<<" ("<<iMu_plus<<" - "<<iE_minus_mu<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
+	 std::cout<<"--> indices: "<<iMu_plus*100 + iE_minus_mu<<" ("<<iMu_plus<<" - "<<iE_minus_mu<< ")  pos:  "<<dilvtx.position().x()<<" , "<<dilvtx.position().y()<<" , "<<dilvtx.position().z()<<std::endl;
 
 	_vertices[_nVFit][0] = iMu_plus*100 + iE_minus_mu;          
 	_vertices[_nVFit][1] = dilvtx.position().x(); 
