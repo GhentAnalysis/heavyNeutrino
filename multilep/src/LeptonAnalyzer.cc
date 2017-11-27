@@ -127,7 +127,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
-    
+    std::cout<<"indice:    "<<_lIndex[_nL]<<"   con il suo pt: "<<mu.pt()<<std::endl;
     _lPFMuon[_nL]=  mu.isPFMuon();
     // ===>  if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
@@ -265,7 +265,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 	  	  //    if(!mu_1.isLooseMuon()) continue;
 	  
     iMu_plus++;
-	  std::cout<<"------> indice muone1 : "<<iMu_plus<<"  "<<_lIndex[iMu_plus]<<std::endl;
+	  std::cout<<"------> indice muone1 : "<<iMu_plus<<"  "<<std::endl;
     // +++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
     const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
@@ -277,7 +277,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 	    	//  	      if(!mu_2.isLooseMuon()) continue;
       if(mu_2.pt() < 3 || fabs(mu_2.eta()) > 2.4 || !mu_2.isPFMuon())              continue;   
       iMu_minus_mu++;
- std::cout<<"---> indice muone2 : "<<iMu_minus_mu<<"  "<<_lIndex[iMu_minus_mu]<<std::endl;
+ std::cout<<"---> indice muone2 : "<<iMu_minus_mu<<"  "<<std::endl;
       if (mu_2.charge() > 0) continue;  // only opposite charge
 
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
