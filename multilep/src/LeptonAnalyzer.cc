@@ -115,7 +115,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   //bool good_leading=false; // to check 1 leading-well_isolated lepton
   int counter_index_leptons   = 0;
   int counter_number_vertices = 0;
-  
+  std::cout<<"*******************************************"<<std::endl;
+  std::cout<<"*******************************************"<<std::endl;
+	
   //loop over muons
   for(const pat::Muon& mu : *muons){
    // if(mu.innerTrack().isNull()) continue;
