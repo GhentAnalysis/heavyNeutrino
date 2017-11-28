@@ -82,8 +82,8 @@ while read f; do
 done < fileList.txt
 if (( $fileCount % $filesPerJob != 0 )); then
     fileList="${fileList%,}" #remove trailing comma from fileList
-    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/${skim}_Job_${jobCount}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
     qsub $submit -l walltime=40:00:00;
+    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/${skim}_Job_${jobCount}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
     #cat $submit
 fi
 #remove temporary files
