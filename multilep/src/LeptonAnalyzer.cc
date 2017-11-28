@@ -268,13 +268,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 	  
     iMu_plus++;
  std::cout<<"------> indice muone1 : "<<iMu_plus<<"  charge: "<<mu_1.charge()<<"  pt: "<<mu_1.pt()<<std::endl;
-    +++++++++++++++    µ+
+    //+++++++++++++++    µ+
     if (mu_1.charge() < 0) continue;
     const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
     //std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<"  track pos: ("<<mu_1.outerTrack ()->outerX()<<","<<mu_1.outerTrack ()->outerY()<<","<<mu_1.outerTrack ()->outerZ()<<")"<<std::endl;
   std::cout<<"µ+ : "<<mu_1.pt() <<"  charge: "<<mu_1.charge()<<std::endl;
 
-    ------------------  loop µ-
+   // ------------------  loop µ-
 	  iMu_minus_mu=0;
     for(const pat::Muon& mu_2 : *muons){ 
 	    	//  	      if(!mu_2.isLooseMuon()) continue;
@@ -311,7 +311,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
       } 
     }// end loop µ-
           
-    ------------------  loop e-
+   // ------------------  loop e-
 	  iE_minus_mu=0;
     for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
       auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
@@ -367,13 +367,13 @@ std::cout<<"---> indice ele2 : "<<iE_minus_mu<<"  charge: "<<ele_2->charge()<<" 
     iE_plus++;
 	  std::cout<<"*******> indice ele1 : "<<iE_plus<<"  charge: "<<ele_1->charge()<<"  pt: "<<ele_1->pt()<<std::endl;
 
-    +++++++++++++++++++++ e+
+    //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue; 
     
     const reco::Track&  tk_1 =  *ele_1->gsfTrack() ;
     std::cout<<"****  e+ : "<<ele_1->pt() <<"  charge: "<<ele_1->charge()<<std::endl;
 
-    ------------------  loop µ+
+    //------------------  loop µ+
 	  iMu_minus_e=0;
     for(const pat::Muon& mu_2 : *muons){ 
 	    	  	//      if(!mu_2.isLooseMuon()) continue;
