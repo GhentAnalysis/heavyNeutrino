@@ -15,6 +15,7 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
 #include "heavyNeutrino/multilep/interface/LeptonIdHelper.h"
+#include "heavyNeutrino/multilep/interface/GenMatching.h"
 
 //include ROOT classes
 #include "TTree.h"
@@ -27,6 +28,7 @@
  * Functions for electron identification
  */
 class multilep;
+class GenMatching;
 
 class LeptonAnalyzer {
   //Friend classes and functions
@@ -114,7 +116,8 @@ class LeptonAnalyzer {
 
     multilep* multilepAnalyzer;
 
-    void fillLeptonGenVars(const reco::GenParticle*);
+    //void fillLeptonGenVars(const reco::GenParticle*);
+    void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
@@ -168,6 +171,9 @@ class LeptonAnalyzer {
     //for lepton MVA calculation
     LeptonMvaHelper* leptonMvaComputerSUSY;
     LeptonMvaHelper* leptonMvaComputerTTH;
+
+    //for generator matching
+    GenMatching* genMatcher;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
