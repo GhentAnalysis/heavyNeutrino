@@ -11,13 +11,13 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
 {
   leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
   leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
-  genMatcher = new GenMatching(iConfig, multilepAnalyzer);
+  if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
     delete leptonMvaComputerSUSY;
     delete leptonMvaComputerTTH;
-    delete genMatcher;
+    if(!multilepAnalyzer->isData) delete genMatcher;
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
@@ -107,7 +107,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   _nTau   = 0;
 
   //set up generator matching
-  genMatcher->setGenParticles(iEvent);
+  if(!multilepAnalyzer->isData) genMatcher->setGenParticles(iEvent);
 
   //loop over muons
   for(const pat::Muon& mu : *muons){
@@ -122,7 +122,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(fabs(_dz[_nL]) > 0.1)                       continue;
     fillLeptonKinVars(mu);
     //fillLeptonGenVars(mu.genParticle());
-    fillLeptonGenVars(mu, genMatcher);
+    if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
     fillLeptonJetVariables(mu, jets, primaryVertex);
 
     _lFlavor[_nL]        = 1;
@@ -169,7 +169,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(fabs(_dz[_nL]) > 0.1)                                                                 continue;
     fillLeptonKinVars(*ele);
     //fillLeptonGenVars(ele->genParticle());
-    fillLeptonGenVars(*ele, genMatcher);
+    if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
     fillLeptonJetVariables(*ele, jets, primaryVertex);
 
     _lFlavor[_nL]          = 0;
@@ -218,7 +218,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(!tau.tauID("decayModeFinding")) continue;
     fillLeptonKinVars(tau);
     //fillLeptonGenVars(tau.genParticle());
-    fillLeptonGenVars(tau, genMatcher);
+    if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
