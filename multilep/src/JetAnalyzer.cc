@@ -71,6 +71,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     ++_nJets;
   }
   if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
+  if(multilepAnalyzer->skim == "FR" and _nJets < 1) return false;
   return true;
 }
 

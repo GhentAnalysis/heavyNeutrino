@@ -63,13 +63,15 @@ while read f; do
     #fileList="${fileList}${f},"
     fileCount=$((fileCount + 1))
     #submit a job for every few files, as specified in the input
-    if (( $fileCount % $filesPerJob == 0 ))
-        then fileList="${fileList%,}" #remove trailing comma from fileList
-        #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
-        qsub $submit -l walltime=40:00:00;
-        #cat $submit
-        jobCount=$((jobCount + 1))
-        fileList=""
+    if (( $fileCount % $filesPerJob == 0 )) || (( $fileCount == 1 ))
+        then if (( $fileCount % $filesPerJob == 0 ));
+            then fileList="${fileList%,}" #remove trailing comma from fileList
+            #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
+            qsub $submit -l walltime=40:00:00;
+            #cat $submit
+            jobCount=$((jobCount + 1))
+            fileList=""
+        fi
         #initialize temporary submission script
         if [ -e $submit ]; then rm $submit; fi
         touch $submit

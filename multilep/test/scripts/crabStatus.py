@@ -22,11 +22,11 @@ parser.add_option("-e", "--exitCode", dest="exitCode", default="All", help="filt
 def jobsToCrabList(jobs):
   crabList = ""
   for i in jobs:
-    if crabList == "": crabList = format(i) 
+    if crabList == "": crabList = format(i)
     else:
       pythonRange = crabList.split(',')[-1]
       last = pythonRange.split('-')[-1]
-      if i == int(last) + 1: 
+      if i == int(last) + 1:
         if pythonRange.split('-')[0] == last: crabList += '-' + format(i)
         else: crabList = crabList.replace(last, format(i))
       else: crabList += "," + format(i)
@@ -43,17 +43,17 @@ def jobsToPythonList(jobs):
       i+=1
   return pythonList
 
-if options.checkCrab: 
+if options.checkCrab:
   print "Getting the crab status..."
   if len(args) > 0: os.system("crab status --long " + args[0] + "> .status.txt")
   else:             os.system("crab status --long > .status.txt")
-  
+
 
 jobs = []
 outputIsGood = False
 with open(".status.txt") as statusFile:
   for str in statusFile:
-    if 'Jobs status' in str: 
+    if 'Jobs status' in str:
       outputIsGood = True
       if 'finished' in str and '100.0%' in str:
 	print 'All jobs finished with exit code 0'

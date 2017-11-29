@@ -1,6 +1,11 @@
 import sys, os
 import FWCore.ParameterSet.Config as cms
 
+#function to return JSON file
+def getJSON(is2017):
+    if is2017: return "Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"
+    else: return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+
 # Default arguments
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/QCD_Pt-50to80_EMEnriched_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00A9113F-15D6-E611-9142-047D7B881D3A.root'
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/90000/003658EE-77E6-E611-ACB1-7CD30ABD295A.root'
@@ -49,14 +54,12 @@ elif is2017:            process.GlobalTag.globaltag = '93X_upgrade2023_realistic
 elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
-
 #
 # Vertex collection
 #
 process.load('CommonTools.ParticleFlow.goodOfflinePrimaryVertices_cfi')
 process.goodOfflinePrimaryVertices.src    = cms.InputTag('offlineSlimmedPrimaryVertices')
 process.goodOfflinePrimaryVertices.filter = cms.bool(False)                          #Don't use any EDFilter when relying on hCounter!
-
 
 #
 # Import some objectsequences sequence (details in cff files)
@@ -65,8 +68,6 @@ from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 from heavyNeutrino.multilep.egmSequence_cff import addElectronAndPhotonSequence
 addJetSequence(process, isData)
 addElectronAndPhotonSequence(process)
-
-
 
 #
 # Read additional MET filters not stored in miniAOD
@@ -134,12 +135,9 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isSUSY                        = cms.untracked.bool(isSUSY)
 )
 
-
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  JSON = "../data/JSON/" + os.environ['JSON']
-  process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
-
+  process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017)).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadPFMuonFilter *
@@ -148,4 +146,3 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.jetSequence *
                      process.fullPatMetSequence *
                      process.blackJackAndHookers)
-

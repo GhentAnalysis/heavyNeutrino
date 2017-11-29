@@ -1,4 +1,5 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/GenMatching.h"
 
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 #include "TLorentzVector.h"
@@ -10,11 +11,13 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
 {
   leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
   leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
+  genMatcher = new GenMatching(iConfig, multilepAnalyzer);
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
     delete leptonMvaComputerSUSY;
     delete leptonMvaComputerTTH;
+    delete genMatcher;
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
@@ -118,6 +121,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   //std::cout<<"*******************************************"<<std::endl;
   //std::cout<<"*******************************************"<<std::endl;
 	
+
+  //set up generator matching
+  genMatcher->setGenParticles(iEvent);
+
   //loop over muons
   for(const pat::Muon& mu : *muons){
    // if(mu.innerTrack().isNull()) continue;
@@ -137,8 +144,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
-    fillLeptonGenVars(mu.genParticle());
     fillLeptonIsoVars(mu, *rho);	
+    fillLeptonGenVars(mu, genMatcher);
     fillLeptonJetVariables(mu, jets, primaryVertex);
 
     _lFlavor[_nL]        = 1;
@@ -190,7 +197,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     //if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
     fillLeptonKinVars(*ele);
-    fillLeptonGenVars(ele->genParticle());
+    //fillLeptonGenVars(ele->genParticle());
+    fillLeptonGenVars(*ele, genMatcher);
     fillLeptonJetVariables(*ele, jets, primaryVertex);
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
@@ -223,7 +231,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(fabs(tau.eta()) > 2.3) continue;
     if(!tau.tauID("decayModeFinding")) continue;
     fillLeptonKinVars(tau);
-    fillLeptonGenVars(tau.genParticle());
+    //fillLeptonGenVars(tau.genParticle());
+    fillLeptonGenVars(tau, genMatcher);
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
@@ -531,6 +540,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
 	
 }
 
+/*
 void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
   if(genParticle != nullptr){
     _lIsPrompt[_nL] = (genParticle)->isPromptFinalState();
@@ -539,6 +549,13 @@ void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
     _lIsPrompt[_nL] = false;
     _lMatchPdgId[_nL] = 0;
   }
+}
+*/
+
+void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatching* genMatcher){
+  genMatcher->fillMatchingVars(lepton);
+  _lIsPrompt[_nL] = genMatcher->promptMatch();
+  _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
 }
 
 
