@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import os, glob, sys
+#import function returning JSON from multilep.py
+from multilep import getJSON
 
 datasetsFile    = sys.argv[1]                                                                             # Input file with datasets
 productionLabel = os.path.basename(datasetsFile.split('/')[-1].split('.')[0])                             # Label to keep track of the tuple version (is taken from the name of the above input file)
@@ -49,6 +51,6 @@ for dataset in datasets:
         os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
         os.environ['CRAB_DATASET']         = dataset
         os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
-        if 'Run2017' in dataset: os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/Cert_294927-303825_13TeV_PromptReco_Collisions17_JSON.txt"
-        else:                    os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Final/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt" 
+        if 'Run2017' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/" + getJSON( ('Run2017' in dataset) )
+        else : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/" + getJSON( ('Run2017' in dataset) )
         os.system('crab submit -c crab.py')
