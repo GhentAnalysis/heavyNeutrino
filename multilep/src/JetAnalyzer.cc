@@ -44,7 +44,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
   //auto jetSmearedDown = jetsSmearedDown->begin();
   //for(; jet != jets->end(); ++jet, ++jetSmeared, ++jetSmearedUp, ++jetSmearedDown){
   for(; jet != jets->end(); ++jet){
-    //if(_nJets == nJets_max) break;
+    if(_nJets == nJets_max) break;
     //jecUnc.setJetEta(jetSmeared->eta());
     //jecUnc.setJetPt(jetSmeared->pt());
     //double unc = jecUnc.getUncertainty(true);
@@ -52,6 +52,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //if(std::max((1+unc)*jetSmeared->pt(), std::max(jetSmearedUp->pt(), jetSmearedDown->pt())) < 25) continue;
 
     //_jetPt[_nJets]                    = jetSmeared->pt();
+    _jetPt[_nJets]                    = jet->pt();
     //_jetPt_JECDown[_nJets]            = jetSmeared->pt()*(1-unc);
     //_jetPt_JECUp[_nJets]              = jetSmeared->pt()*(1+unc);
     //_jetPt_JERDown[_nJets]            = jetSmearedDown->pt();
