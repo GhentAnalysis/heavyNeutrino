@@ -241,6 +241,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   if(multilepAnalyzer->skim == "dilep"     &&  _nLight < 2) return false;
   if(multilepAnalyzer->skim == "ttg"       &&  _nLight < 2) return false;
   if(multilepAnalyzer->skim == "singlelep" &&  _nLight < 1) return false;
+  if(multilepAnalyzer->skim == "FR" &&  _nLight < 1) return false;
   return true;
 }
 
