@@ -1,18 +1,20 @@
 import sys, os
 import FWCore.ParameterSet.Config as cms
 
+#function to return JSON file
+def getJSON(is2017):
+    if is2017: return "Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"
+    else: return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+
 # Default arguments
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/QCD_Pt-50to80_EMEnriched_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00A9113F-15D6-E611-9142-047D7B881D3A.root'
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/90000/003658EE-77E6-E611-ACB1-7CD30ABD295A.root'
 #inputFile       = '/store/data/Run2016D/DoubleMuon/MINIAOD/03Feb2017-v1/100000/52779EE0-F4ED-E611-BF87-70106F49CD3C.root'
 #inputFile       = "root://cmsxrootd.fnal.gov///store/data/Run2017C/MuonEG/MINIAOD/PromptReco-v3/000/300/780/00000/86494C82-EA7E-E711-ACCC-02163E01441B.root"
-#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
+inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
-#inputFile       = "/store/data/Run2017F/DoubleEG/MINIAOD/PromptReco-v1/000/305/040/00000/2E5E7E62-29B2-E711-9E47-02163E019D16.root"
-#inputFile        = "/store/data/Run2017D/DoubleEG/MINIAOD/PromptReco-v1/000/302/031/00000/7A9F7C15-458F-E711-AC40-02163E0143FC.root"
-inputFile       = "/store/data/Run2017F/DoubleEG/MINIAOD/PromptReco-v1/000/305/044/00000/609CA549-5AB2-E711-8DCA-02163E01A503.root"
 nEvents         = 1000
-outputFile      = 'FR.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
+outputFile      = 'ttg.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
                                  # ttg       --> skim two leptons + one photon
@@ -47,11 +49,10 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'    # This is actually for CMSSW_9_2_11 or higher!
-elif is2017:            process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v7' # This is actually for CMSSW_9_2_7 or higher!
+if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'
+elif is2017:            process.GlobalTag.globaltag = '93X_upgrade2023_realistic_v3'
 elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
-
 
 #
 # Vertex collection
@@ -60,7 +61,6 @@ process.load('CommonTools.ParticleFlow.goodOfflinePrimaryVertices_cfi')
 process.goodOfflinePrimaryVertices.src    = cms.InputTag('offlineSlimmedPrimaryVertices')
 process.goodOfflinePrimaryVertices.filter = cms.bool(False)                          #Don't use any EDFilter when relying on hCounter!
 
-
 #
 # Import some objectsequences sequence (details in cff files)
 #
@@ -68,8 +68,6 @@ from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 from heavyNeutrino.multilep.egmSequence_cff import addElectronAndPhotonSequence
 addJetSequence(process, isData)
 addElectronAndPhotonSequence(process)
-
-
 
 #
 # Read additional MET filters not stored in miniAOD
@@ -80,6 +78,9 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
+#clean 2016 data met from spurious muons and ECAL slew rate
+metCollection = "slimmedMETs"
+if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean"
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -117,7 +118,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   taus                          = cms.InputTag("slimmedTaus"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
-  met                           = cms.InputTag("slimmedMETs"),
+  met                           = cms.InputTag(metCollection),
   jets                          = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
   jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
   jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
@@ -134,13 +135,9 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isSUSY                        = cms.untracked.bool(isSUSY)
 )
 
-
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  if is2017: JSON = "../data/JSON/Cert_294927-306126_13TeV_PromptReco_Collisions17_JSON.txt"
-  else:      JSON = "../data/JSON/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
-  process.source.lumisToProcess = LumiList.LumiList(filename = JSON).getVLuminosityBlockRange()
-
+  process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017)).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadPFMuonFilter *
@@ -149,4 +146,3 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.jetSequence *
                      process.fullPatMetSequence *
                      process.blackJackAndHookers)
-
