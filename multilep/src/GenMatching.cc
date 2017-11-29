@@ -12,7 +12,7 @@ reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, 
     TLorentzVector recoV(reco.px(), reco.py(), reco.pz(), reco.energy());
     double minDeltaR = 99999.;
     for(std::vector<reco::GenParticle>::const_iterator genIt = genParticles->cbegin(); genIt != genParticles->cend(); ++genIt){
-        if(toConsider(reco, *genIt) && (differentId || abs(genIt->pdgId()) == abs(reco.pdgId()) ) ){
+        if(toConsider(reco, *genIt, differentId) ){
             TLorentzVector genV(genIt->px(), genIt->py(), genIt->pz(), genIt->energy());
             double deltaR = recoV.DeltaR(genV);
             if(deltaR < minDeltaR){
@@ -25,13 +25,24 @@ reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, 
     return match;
 };
 
-bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticle& gen){
+bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId){
+    if(!differentId && (abs(reco.pdgId()) != abs(gen.pdgId())) ) return false;
     if(abs(reco.pdgId()) == 15 && abs(gen.pdgId()) == 15) return gen.status() == 2 && gen.isLastCopy();
     return gen.status() == 1;
 }
 
-bool GenMatching::isPrompt(const reco::Candidate& reco){
-    const reco::GenParticle& match = *findGenMatch(reco);
-    if(fabs(reco.pdgId()) == fabs(match.pdgId()) || match.pdgId() == 22) match.isPromptFinalState();
+bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match){
+    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return match.isPromptFinalState();
     return false;
+}
+
+void GenMatching::fillMatchingVars(const reco::Candidate& reco){
+    const reco::GenParticle* match = findGenMatch(reco);
+    if(match != nullptr){
+        matchIsPrompt = isPrompt(reco, *match);
+        matchPdgId = match->pdgId();
+    } else{
+        matchIsPrompt = false;
+        matchPdgId = 0;
+    }
 }
