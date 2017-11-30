@@ -21,9 +21,9 @@ reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, 
             }
         }
     } 
-    if(minDeltaR > 0.2) match = findGenMatch(reco, true);
+    if(minDeltaR > 0.2 && !differentId) match = findGenMatch(reco, true);
     return match;
-};
+}
 
 bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId){
     if(!differentId && (abs(reco.pdgId()) != abs(gen.pdgId())) ) return false;
