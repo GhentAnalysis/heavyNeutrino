@@ -366,8 +366,8 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         float JEC         = jet.p4().E()/l1Jet.E();
         auto  l           = lepton.p4();
         auto  lepAwareJet = (l1Jet - l)*JEC + l;
-        TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
-        TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
+        TLorentzVector lV(l.px(), l.py(), l.pz(), l.E());
+        TLorentzVector jV(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
         _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
         _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
         _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
@@ -379,7 +379,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
             const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
             try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
                 const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
-                TLorentzVector trackVec          = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
+                TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
                 double daughterDeltaR            = trackVec.DeltaR(jV);
                 bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
                                                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
