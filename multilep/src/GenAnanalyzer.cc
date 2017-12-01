@@ -13,9 +13,7 @@
 
 
 GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
-  multilepAnalyzer(multilepAnalyzer)
-{};
-
+    multilepAnalyzer(multilepAnalyzer){};
 
 void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/b");
@@ -40,6 +38,9 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
   outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
   outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
+  outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
+  outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
+  outputTree->Branch("_gen_HT",                    &_gen_HT,                    "_gen_HT/D");
 
   //jet stuff
   outputTree->Branch("_gen_nW",		           &_gen_nW,			"_gen_nW/b");
@@ -79,220 +80,222 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_q2dtr_E",		   &_gen_q2dtr_E,		"_gen_q2dtr_E[_gen_nq2dtr]/D");
 }
 
+
 void GenAnalyzer::analyze(const edm::Event& iEvent){
-  edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
+    edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
 
-  if(!genParticles.isValid()) return;
+    if(!genParticles.isValid()) return;
 
-  _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
-  _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
+    _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
+    _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
 
-  _gen_nW = 0;
-  _gen_nWfromN = 0;
-  for(unsigned i = 0; i < 6; i++) _gen_nq[i] = 0;
-  _gen_nN = 0;
-  _gen_nNdaughters = 0;
-  _gen_nstatus23 = 0;
-  _gen_nstatus23_fromNorW = 0;
-  _gen_nstatus23_fromN = 0;
-  _gen_nstatus23_fromW = 0;
-  _gen_nq23 = 0;
-  _gen_nq1dtr = 0;
-  _gen_nq2dtr = 0;
-  int mompdgid;
-  std::vector<int> allstatuscodes = {};
-  bool statuscontained = false;
-  
-  _gen_nL = 0;
-  _gen_nPh = 0;
-  TLorentzVector genMetVector(0,0,0,0);
-  for(const reco::GenParticle& p : *genParticles){
-    //Calculate generator level MET
-    if(p.status() == 1){
-      if(abs(p.pdgId()) == 12 || abs(p.pdgId()) == 14 || abs(p.pdgId()) == 16 || (multilepAnalyzer->isSUSY &&  abs(p.pdgId()) == 1000022) ){
-        TLorentzVector nuVect;
-        nuVect.SetPtEtaPhiE(p.pt(), p.eta(), p.phi(), p.energy());
-        genMetVector += nuVect;
-      }
-    }
-
-    //store generator level lepton info
-    if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
-      if(_gen_nL == gen_nL_max) break;
-      _gen_lPt[_gen_nL]       = p.pt();
-      _gen_lEta[_gen_nL]      = p.eta();
-      _gen_lPhi[_gen_nL]      = p.phi();
-      _gen_lE[_gen_nL]        = p.energy();
-      _gen_lCharge[_gen_nL]   = p.charge();
-      _gen_lIsPrompt[_gen_nL] = (p.isPromptDecayed() || p.isPromptFinalState());
-      _gen_lMomPdg[_gen_nL]   = getMotherPdgId(p, *genParticles);
-      if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
-      else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
-      else                          _gen_lFlavor[_gen_nL] = 2;
-      ++_gen_nL;
-    }
-
-    //store generator level photon info
-    if(p.status() == 1 && abs(p.pdgId()) == 22){
-      if(_gen_nPh == gen_nPh_max) break;
-      std::vector<int> motherList = {};
-      getMotherList(p, *genParticles, motherList);
-      _gen_phPt[_gen_nPh]            = p.pt();
-      _gen_phEta[_gen_nPh]           = p.eta();
-      _gen_phPhi[_gen_nPh]           = p.phi();
-      _gen_phE[_gen_nPh]             = p.energy();
-      _gen_phIsPrompt[_gen_nPh]      = p.isPromptFinalState();
-      _gen_phMomPdg[_gen_nPh]        = getMotherPdgId(p, *genParticles);
-      _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
-      _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37 or *(std::min_element(std::begin(motherList), std::end(motherList))) < -37);
-      ++_gen_nPh;
-    }
-
-
-    //attempt to store generator level jet/quark info
-    if(abs(p.pdgId()) == 24 && p.isLastCopy()){ //Multiple iterations of same W will otherwise be stored!
-      _gen_WMomPdg[_gen_nW] = getMotherPdgId(p, *genParticles);
-      if(abs(_gen_WMomPdg[_gen_nW]) == 9900012) ++_gen_nWfromN;
-      ++_gen_nW;
-    }
-    for(unsigned i = 0; i < 6; ++i){
-        if(abs(p.pdgId()) == (i + 1) ) ++_gen_nq[i];
-    } 
-    if(abs(p.pdgId()) == 9900012){
-      ++_gen_nN;
-    }
-    if(abs(getMotherPdgId(p, *genParticles)) == 9900012) {_gen_Ndaughters_pdg[_gen_nNdaughters] = abs(p.pdgId()); ++_gen_nNdaughters;}
-    mompdgid = getMotherPdgId(p, *genParticles);
-    //only hard scatter:
-    if(p.status() == 23){
-      _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
-      ++_gen_nstatus23;
-      if((abs(mompdgid) == 9900012 || abs(mompdgid) == 24)){
-        if(abs(mompdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30; //What is 30???
-        else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(mompdgid);
-        _gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW] = abs(p.pdgId());
-        ++_gen_nstatus23_fromNorW;
-      }
-      if(abs(mompdgid) == 9900012){
-        _gen_status23_fromN_pdg[_gen_nstatus23_fromN] = abs(p.pdgId());
-        ++_gen_nstatus23_fromN;
-        if(abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6){
-          _gen_qPt[_gen_nq23]  = p.pt();
-          _gen_qEta[_gen_nq23] = p.eta();
-          _gen_qPhi[_gen_nq23] = p.phi();
-          _gen_qE[_gen_nq23]   = p.energy();
-          ++_gen_nq23;
+    _gen_nL = 0;
+    _gen_nPh = 0;
+    TLorentzVector genMetVector(0,0,0,0);
+    for(const reco::GenParticle& p : *genParticles){
+        //Calculate generator level MET
+        if(p.status() == 1){
+            if(abs(p.pdgId()) == 12 || abs(p.pdgId()) == 14 || abs(p.pdgId()) == 16 || (multilepAnalyzer->isSUSY &&  abs(p.pdgId()) == 1000022) ){
+                TLorentzVector nuVect;
+                nuVect.SetPtEtaPhiE(p.pt(), p.eta(), p.phi(), p.energy());
+                genMetVector += nuVect;
+            }
         }
-      }
-      if(abs(mompdgid) == 24){
-        _gen_status23_fromW_pdg[_gen_nstatus23_fromW] = abs(p.pdgId());
-        ++_gen_nstatus23_fromW;
-      }
-    }
 
+        //store generator level lepton info
+        if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
+            if(_gen_nL != gen_nL_max){
+                _gen_lPt[_gen_nL]       = p.pt();
+                _gen_lEta[_gen_nL]      = p.eta();
+                _gen_lPhi[_gen_nL]      = p.phi();
+                _gen_lE[_gen_nL]        = p.energy();
+                _gen_lCharge[_gen_nL]   = p.charge();
+                _gen_lIsPrompt[_gen_nL] = (p.isPromptDecayed() || p.isPromptFinalState());
+                _gen_lMomPdg[_gen_nL]   = getMotherPdgId(p, *genParticles);
 
-    // Daughters of quarks
-    std::vector<reco::GenParticle> daughterList1 = {};
-    std::vector<reco::GenParticle> daughterList2 = {};
-    std::vector<int> chain_ends1 = {};
-    std::vector<int> chain_ends2 = {};
-    if(p.status() == 23 && abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6 && abs(mompdgid) == 9900012){ // find 2 quarks from HNL decay
-      if(_gen_nq23 == 1){
-        getDaughterList(p, *genParticles, daughterList1, chain_ends1);
-	removeDoubleCountedDaughters(daughterList1);
-        for(auto daughters : daughterList1){
-	  //if(daughters.status() != 1) continue;
-	  _gen_q1dtr_status[_gen_nq1dtr] = daughters.status();
-          _gen_q1dtr_pdgid[_gen_nq1dtr]  = daughters.pdgId();
-	  _gen_q1dtr_Pt[_gen_nq1dtr] 	 = daughters.pt();
-	  _gen_q1dtr_Eta[_gen_nq1dtr] 	 = daughters.eta();
-	  _gen_q1dtr_Phi[_gen_nq1dtr] 	 = daughters.phi();
-	  _gen_q1dtr_E[_gen_nq1dtr] 	 = daughters.energy();
-	  _gen_nq1dtr++;
+                std::vector<int> motherList = {};
+                getMotherList(p, *genParticles, motherList);
+                _gen_lMinDeltaR[_gen_nL]     = getMinDeltaR(p, *genParticles);
+                _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37 or *(std::min_element(std::begin(motherList), std::end(motherList))) < -37);
+
+                if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
+                else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
+                else                          _gen_lFlavor[_gen_nL] = 2;
+                ++_gen_nL;
+            }
         }
-      }else if(_gen_nq23 == 2){
-        getDaughterList(p, *genParticles, daughterList2, chain_ends2);
-        removeDoubleCountedDaughters(daughterList2);
-        for(auto daughters : daughterList2){
-	  //if(daughters.status() != 1) continue;
-	  _gen_q2dtr_status[_gen_nq2dtr] = daughters.status();
-	  _gen_q2dtr_pdgid[_gen_nq2dtr]  = daughters.pdgId();
-	  _gen_q2dtr_Pt[_gen_nq2dtr] 	 = daughters.pt();
-	  _gen_q2dtr_Eta[_gen_nq2dtr] 	 = daughters.eta();
-	  _gen_q2dtr_Phi[_gen_nq2dtr] 	 = daughters.phi();
-	  _gen_q2dtr_E[_gen_nq2dtr] 	 = daughters.energy();
-	  _gen_nq2dtr++;
+
+        //store generator level photon info
+        if((p.status() == 1 || p.status() == 71) && abs(p.pdgId()) == 22){
+            if(_gen_nPh != gen_nPh_max){
+                std::vector<int> motherList = {};
+                getMotherList(p, *genParticles, motherList);
+                _gen_phStatus[_gen_nPh]        = p.status();
+                _gen_phPt[_gen_nPh]            = p.pt();
+                _gen_phEta[_gen_nPh]           = p.eta();
+                _gen_phPhi[_gen_nPh]           = p.phi();
+                _gen_phE[_gen_nPh]             = p.energy();
+                _gen_phIsPrompt[_gen_nPh]      = p.isPromptFinalState();
+                _gen_phMomPdg[_gen_nPh]        = getMotherPdgId(p, *genParticles);
+                _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
+                _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37 or *(std::min_element(std::begin(motherList), std::end(motherList))) < -37);
+                ++_gen_nPh;
+            } 
         }
-      }
-      //print statements to analyze daughters
-      /*std::cout << "Pdg Id " << p.pdgId() << " pt: " << p.pt() << std::endl;
-      for(unsigned int i = 0; i < p.numberOfDaughters(); i++){
-        std::cout << "Daughter " << (*genParticles)[p.daughterRef(i).key()].pdgId() << " pt: " << (*genParticles)[p.daughterRef(i).key()].pt() << std::endl;
-      }
-      if(_gen_nq23 == 1){
-        std::cout << "number of daughters: " << daughterList1.size() << std::endl;
-        for(unsigned int i = 0; i < daughterList1.size(); i++){
-	  if(chain_ends1[i] == 0) std::cout << daughterList1[i].pdgId() << " -> ";
-	  if(chain_ends1[i] == 1) std::cout << daughterList1[i].pdgId() << " | ";
-        } std::cout << std::endl;
-        for(unsigned int i = 0; i < daughterList1.size(); i++){
-	  if(chain_ends1[i] == 0) std::cout << daughterList1[i].status() << " -> ";
-	  if(chain_ends1[i] == 1) std::cout << daughterList1[i].status() << " | ";
-        } std::cout << std::endl;
-        for(unsigned int i = 0; i < daughterList1.size(); i++){
-	  if(chain_ends1[i] == 0) std::cout << daughterList1[i].pt() << " -> ";
-	  if(chain_ends1[i] == 1) std::cout << daughterList1[i].pt() << " | ";
-        } std::cout << std::endl;
-      }else if(_gen_nq23 == 2){
-        std::cout << "number of daughters: " << daughterList2.size() << std::endl;
-        for(unsigned int i = 0; i < daughterList2.size(); i++){
-	  if(chain_ends2[i] == 0) std::cout << daughterList2[i].pdgId() << " -> ";
-	  if(chain_ends2[i] == 1) std::cout << daughterList2[i].pdgId() << " | ";
-        } std::cout << std::endl;
-        for(unsigned int i = 0; i < daughterList2.size(); i++){
-	  if(chain_ends2[i] == 0) std::cout << daughterList2[i].status() << " -> ";
-	  if(chain_ends2[i] == 1) std::cout << daughterList2[i].status() << " | ";
-        } std::cout << std::endl;
-        for(unsigned int i = 0; i < daughterList2.size(); i++){
-	  if(chain_ends2[i] == 0) std::cout << daughterList2[i].pt() << " -> ";
-	  if(chain_ends2[i] == 1) std::cout << daughterList2[i].pt() << " | ";
-        } std::cout << std::endl << std::endl;
-      }*/
+        //attempt to store generator level jet/quark info
+        if(abs(p.pdgId()) == 24 && p.isLastCopy()){ //Multiple iterations of same W will otherwise be stored!
+          _gen_WMomPdg[_gen_nW] = getMotherPdgId(p, *genParticles);
+          if(abs(_gen_WMomPdg[_gen_nW]) == 9900012) ++_gen_nWfromN;
+          ++_gen_nW;
+        }
+        for(unsigned i = 0; i < 6; ++i){
+            if(abs(p.pdgId()) == (i + 1) ) ++_gen_nq[i];
+        } 
+        if(abs(p.pdgId()) == 9900012){
+          ++_gen_nN;
+        }
+        if(abs(getMotherPdgId(p, *genParticles)) == 9900012) {_gen_Ndaughters_pdg[_gen_nNdaughters] = abs(p.pdgId()); ++_gen_nNdaughters;}
+        mompdgid = getMotherPdgId(p, *genParticles);
+        //only hard scatter:
+        if(p.status() == 23){
+          _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
+          ++_gen_nstatus23;
+          if((abs(mompdgid) == 9900012 || abs(mompdgid) == 24)){
+            if(abs(mompdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30; //What is 30???
+            else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(mompdgid);
+            _gen_status23_fromNorW_pdg[_gen_nstatus23_fromNorW] = abs(p.pdgId());
+            ++_gen_nstatus23_fromNorW;
+          }
+          if(abs(mompdgid) == 9900012){
+            _gen_status23_fromN_pdg[_gen_nstatus23_fromN] = abs(p.pdgId());
+            ++_gen_nstatus23_fromN;
+            if(abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6){
+              _gen_qPt[_gen_nq23]  = p.pt();
+              _gen_qEta[_gen_nq23] = p.eta();
+              _gen_qPhi[_gen_nq23] = p.phi();
+              _gen_qE[_gen_nq23]   = p.energy();
+              ++_gen_nq23;
+            }
+          }
+          if(abs(mompdgid) == 24){
+            _gen_status23_fromW_pdg[_gen_nstatus23_fromW] = abs(p.pdgId());
+            ++_gen_nstatus23_fromW;
+          }
+        }
+
+
+        // Daughters of quarks
+        std::vector<reco::GenParticle> daughterList1 = {};
+        std::vector<reco::GenParticle> daughterList2 = {};
+        std::vector<int> chain_ends1 = {};
+        std::vector<int> chain_ends2 = {};
+        if(p.status() == 23 && abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6 && abs(mompdgid) == 9900012){ // find 2 quarks from HNL decay
+          if(_gen_nq23 == 1){
+            getDaughterList(p, *genParticles, daughterList1, chain_ends1);
+            removeDoubleCountedDaughters(daughterList1);
+            for(auto daughters : daughterList1){
+              //if(daughters.status() != 1) continue;
+              _gen_q1dtr_status[_gen_nq1dtr] = daughters.status();
+              _gen_q1dtr_pdgid[_gen_nq1dtr]  = daughters.pdgId();
+              _gen_q1dtr_Pt[_gen_nq1dtr] 	 = daughters.pt();
+              _gen_q1dtr_Eta[_gen_nq1dtr] 	 = daughters.eta();
+              _gen_q1dtr_Phi[_gen_nq1dtr] 	 = daughters.phi();
+              _gen_q1dtr_E[_gen_nq1dtr] 	 = daughters.energy();
+              _gen_nq1dtr++;
+            }
+          }else if(_gen_nq23 == 2){
+            getDaughterList(p, *genParticles, daughterList2, chain_ends2);
+            removeDoubleCountedDaughters(daughterList2);
+            for(auto daughters : daughterList2){
+              //if(daughters.status() != 1) continue;
+              _gen_q2dtr_status[_gen_nq2dtr] = daughters.status();
+              _gen_q2dtr_pdgid[_gen_nq2dtr]  = daughters.pdgId();
+              _gen_q2dtr_Pt[_gen_nq2dtr] 	 = daughters.pt();
+              _gen_q2dtr_Eta[_gen_nq2dtr] 	 = daughters.eta();
+              _gen_q2dtr_Phi[_gen_nq2dtr] 	 = daughters.phi();
+              _gen_q2dtr_E[_gen_nq2dtr] 	 = daughters.energy();
+              _gen_nq2dtr++;
+            }
+          }
+          //print statements to analyze daughters
+          /*std::cout << "Pdg Id " << p.pdgId() << " pt: " << p.pt() << std::endl;
+          for(unsigned int i = 0; i < p.numberOfDaughters(); i++){
+            std::cout << "Daughter " << (*genParticles)[p.daughterRef(i).key()].pdgId() << " pt: " << (*genParticles)[p.daughterRef(i).key()].pt() << std::endl;
+          }
+          if(_gen_nq23 == 1){
+            std::cout << "number of daughters: " << daughterList1.size() << std::endl;
+            for(unsigned int i = 0; i < daughterList1.size(); i++){
+              if(chain_ends1[i] == 0) std::cout << daughterList1[i].pdgId() << " -> ";
+              if(chain_ends1[i] == 1) std::cout << daughterList1[i].pdgId() << " | ";
+            } std::cout << std::endl;
+            for(unsigned int i = 0; i < daughterList1.size(); i++){
+              if(chain_ends1[i] == 0) std::cout << daughterList1[i].status() << " -> ";
+              if(chain_ends1[i] == 1) std::cout << daughterList1[i].status() << " | ";
+            } std::cout << std::endl;
+            for(unsigned int i = 0; i < daughterList1.size(); i++){
+              if(chain_ends1[i] == 0) std::cout << daughterList1[i].pt() << " -> ";
+              if(chain_ends1[i] == 1) std::cout << daughterList1[i].pt() << " | ";
+            } std::cout << std::endl;
+          }else if(_gen_nq23 == 2){
+            std::cout << "number of daughters: " << daughterList2.size() << std::endl;
+            for(unsigned int i = 0; i < daughterList2.size(); i++){
+              if(chain_ends2[i] == 0) std::cout << daughterList2[i].pdgId() << " -> ";
+              if(chain_ends2[i] == 1) std::cout << daughterList2[i].pdgId() << " | ";
+            } std::cout << std::endl;
+            for(unsigned int i = 0; i < daughterList2.size(); i++){
+              if(chain_ends2[i] == 0) std::cout << daughterList2[i].status() << " -> ";
+              if(chain_ends2[i] == 1) std::cout << daughterList2[i].status() << " | ";
+            } std::cout << std::endl;
+            for(unsigned int i = 0; i < daughterList2.size(); i++){
+              if(chain_ends2[i] == 0) std::cout << daughterList2[i].pt() << " -> ";
+              if(chain_ends2[i] == 1) std::cout << daughterList2[i].pt() << " | ";
+            } std::cout << std::endl << std::endl;
+          }*/
+        }
+
+
+        // string fragmentation model
+        if(p.status() == 71 || p.status() == 73){
+          std::cout << "pdg Id: " << p.pdgId() << std::endl;
+          std::cout << "status: " << p.status() << std::endl;
+          std::cout << "Nmoms: "  << p.numberOfMothers() << std::endl;
+          std::cout << "Ndaughters: " << p.numberOfDaughters() << std::endl;
+        }
+        
+        statuscontained = false;
+        for(int i : allstatuscodes){
+          if(p.status() == i) statuscontained = true;
+        }
+        if(!statuscontained) allstatuscodes.push_back(p.status());
+
+
     }
+    for(unsigned i = 0; i < allstatuscodes.size(); i++) std::cout << allstatuscodes[i] << " ";
+    std::cout << std::endl;
+    _gen_met    = genMetVector.Pt();
+    _gen_metPhi = genMetVector.Phi();
 
-
-    // string fragmentation model
-    if(p.status() == 71 || p.status() == 73){
-      std::cout << "pdg Id: " << p.pdgId() << std::endl;
-      std::cout << "status: " << p.status() << std::endl;
-      std::cout << "Nmoms: "  << p.numberOfMothers() << std::endl;
-      std::cout << "Ndaughters: " << p.numberOfDaughters() << std::endl;
+    //compute gen HT as the sum of all status 23 partons
+    _gen_HT = 0;
+    for(const reco::GenParticle& p: *genParticles){
+        if(p.status() == 23){
+            if(abs(p.pdgId()) > 0 && abs(p.pdgId()) < 7){
+                _gen_HT += p.pt();
+            }
+        }
     }
-    
-    statuscontained = false;
-    for(int i : allstatuscodes){
-      if(p.status() == i) statuscontained = true;
-    }
-    if(!statuscontained) allstatuscodes.push_back(p.status());
-
-
-  }
-  for(unsigned i = 0; i < allstatuscodes.size(); i++) std::cout << allstatuscodes[i] << " ";
-  std::cout << std::endl;
-  _gen_met    = genMetVector.Pt();
-  _gen_metPhi = genMetVector.Phi();
 }
 
 double GenAnalyzer::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
-  double minDeltaR = 10;
-  for(auto& q : genParticles){
-    if(q.pt() < 5)                                            continue;
-    if(p.pt()-q.pt() < 0.0001)                                continue; // same particle
-    if(q.status() != 1)                                       continue;
-    if(q.pdgId() == 12 or q.pdgId() == 14 or q.pdgId() == 16) continue;
-    minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
-  }
-  return minDeltaR;
+    double minDeltaR = 10;
+    for(auto& q : genParticles){
+        if(q.pt() < 5)                                            continue;
+        if(p.pt()-q.pt() < 0.0001)                                continue; // same particle
+        if(q.status() != 1)                                       continue;
+        if(q.pdgId() == 12 or q.pdgId() == 14 or q.pdgId() == 16) continue;
+        minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
+    }
+    return minDeltaR;
 }
 
 
@@ -309,9 +312,9 @@ const int GenAnalyzer::getMotherPdgId(const reco::GenParticle& p, const std::vec
 
 // Make a (recursive) list of ancestors of a particle, taking out copies and protons
 void GenAnalyzer::getMotherList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<int>& list){
-  if((list.empty() or p.pdgId() != list.back()) and p.pdgId() != 2212) list.push_back(p.pdgId());
-  if(p.numberOfMothers() > 1) getMotherList(genParticles[p.motherRef(1).key()], genParticles, list);
-  if(p.numberOfMothers() > 0) getMotherList(genParticles[p.motherRef(0).key()], genParticles, list);
+    if((list.empty() or p.pdgId() != list.back()) and p.pdgId() != 2212) list.push_back(p.pdgId());
+    if(p.numberOfMothers() > 1) getMotherList(genParticles[p.motherRef(1).key()], genParticles, list);
+    if(p.numberOfMothers() > 0) getMotherList(genParticles[p.motherRef(0).key()], genParticles, list);
 }
 
 void GenAnalyzer::getDaughterList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<reco::GenParticle>& list, std::vector<int>& chain_ends)
@@ -348,7 +351,7 @@ int GenAnalyzer::check_for_daughter(const reco::GenParticle& p, const std::vecto
 
 
 bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
-  return (std::find(list.begin(), list.end(), i) != list.end());
+    return (std::find(list.begin(), list.end(), i) != list.end());
 }
 
 
@@ -356,31 +359,31 @@ bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
  * Some event categorization in order to understand/debug/apply overlap removal for TTG <--> TTJets
  */
 unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
-  int type = 0;
-  for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
-    if(p->status()<0)         continue;
-    if(p->pdgId()!=22)        continue;
-    type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles with generator level cuts
-    if(p->pt()<ptCut)         continue;
-    if(fabs(p->eta())>etaCut) continue;
-    type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
+    int type = 0;
+    for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
+        if(p->status()<0)         continue;
+        if(p->pdgId()!=22)        continue;
+        type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles with generator level cuts
+        if(p->pt()<ptCut)         continue;
+        if(fabs(p->eta())>etaCut) continue;
+        type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
-    std::vector<int> motherList = {};
-    getMotherList(*p, genParticles, motherList);
+        std::vector<int> motherList = {};
+        getMotherList(*p, genParticles, motherList);
 
-    if(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37)  continue;
-    if(*(std::min_element(std::begin(motherList), std::end(motherList))) < -37) continue;
+        if(*(std::max_element(std::begin(motherList), std::end(motherList))) > 37)  continue;
+        if(*(std::min_element(std::begin(motherList), std::end(motherList))) < -37) continue;
 
-    // Everything below is *signal*
-    if(inMotherList(motherList, 24) or inMotherList(motherList, -24)){                   // If a W-boson in ancestry
-      if(abs(getMotherPdgId(*p, genParticles)) == 24)     type =std::max(type, 6);       // Type 6: photon directly from W or decay products which are part of ME
-      else if(abs(getMotherPdgId(*p, genParticles)) <= 6) type =std::max(type, 4);       // Type 4: photon from quark from W (photon from pythia, rarely)
-      else                                                type =std::max(type, 5);       // Type 5: photon from lepton from W (photon from pythia)
-    } else {
-      if(abs(getMotherPdgId(*p, genParticles)) == 6)      type = std::max(type, 7);      // Type 7: photon from top
-      else if(abs(getMotherPdgId(*p, genParticles)) == 5) type = std::max(type, 3);      // Type 3: photon from b
-      else                                                type = std::max(type, 8);      // Type 8: photon from ME
+        // Everything below is *signal*
+        if(inMotherList(motherList, 24) or inMotherList(motherList, -24)){                   // If a W-boson in ancestry
+            if(abs(getMotherPdgId(*p, genParticles)) == 24)     type =std::max(type, 6);       // Type 6: photon directly from W or decay products which are part of ME
+            else if(abs(getMotherPdgId(*p, genParticles)) <= 6) type =std::max(type, 4);       // Type 4: photon from quark from W (photon from pythia, rarely)
+            else                                                type =std::max(type, 5);       // Type 5: photon from lepton from W (photon from pythia)
+        } else {
+            if(abs(getMotherPdgId(*p, genParticles)) == 6)      type = std::max(type, 7);      // Type 7: photon from top
+            else if(abs(getMotherPdgId(*p, genParticles)) == 5) type = std::max(type, 3);      // Type 3: photon from b
+            else                                                type = std::max(type, 8);      // Type 8: photon from ME
+        }
     }
-  }
-  return type;
+    return type;
 }
