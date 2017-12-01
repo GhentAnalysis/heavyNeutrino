@@ -54,42 +54,13 @@ class GenAnalyzer {
 
     //Generator HT (needed when merging HT binned sample with inclusive one)
     double _gen_HT;
-
-    //Functions to find the mother of a gen particle
-    const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    const int                getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
-    void		     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<reco::GenParticle>&, std::vector<int>&);
-    void		     removeDoubleCountedDaughters(std::vector<reco::GenParticle>&);
-    int 		     check_for_daughter(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    bool                     inMotherList(std::vector<int>& list, int i);
-
-    unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
-    double                   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
-
-    multilep* multilepAnalyzer;
-
-  public:
-    GenAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~GenAnalyzer(){};
-
-    void beginJob(TTree* outputTree);
-    void analyze(const edm::Event&);
-
-    unsigned _gen_nL;
-    double   _gen_lPt[gen_nL_max];
-    double   _gen_lEta[gen_nL_max];
-    double   _gen_lPhi[gen_nL_max];
-
-    unsigned _gen_nPh;
-    double   _gen_phPt[gen_nPh_max];
-    double   _gen_phEta[gen_nPh_max];
-    double   _gen_phPhi[gen_nPh_max];
-
+    
+    //Generator W
     unsigned _gen_nW;
     unsigned _gen_WMomPdg[gen_n_max];
     unsigned _gen_nWfromN;
 
+    //Generator quarks
     unsigned _gen_nq[6];
     unsigned _gen_nN;
     unsigned _gen_nNdaughters;
@@ -123,5 +94,25 @@ class GenAnalyzer {
     double   _gen_q2dtr_Phi[gen_ndtr_max];
     double   _gen_q2dtr_E[gen_ndtr_max];
 
+    //Functions to find the mother of a gen particle
+    const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    const int                getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
+    void		     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<reco::GenParticle>&, std::vector<int>&);
+    void		     removeDoubleCountedDaughters(std::vector<reco::GenParticle>&);
+    int 		     check_for_daughter(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    bool                     inMotherList(std::vector<int>& list, int i);
+
+    unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
+    double                   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
+
+    multilep* multilepAnalyzer;
+
+  public:
+    GenAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
+    ~GenAnalyzer(){};
+
+    void beginJob(TTree* outputTree);
+    void analyze(const edm::Event&);
 };
 #endif
