@@ -254,24 +254,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 
 
-        // string fragmentation model
-        if(p.status() == 71 || p.status() == 73){
-          std::cout << "pdg Id: " << p.pdgId() << std::endl;
-          std::cout << "status: " << p.status() << std::endl;
-          std::cout << "Nmoms: "  << p.numberOfMothers() << std::endl;
-          std::cout << "Ndaughters: " << p.numberOfDaughters() << std::endl;
-        }
-        
-        statuscontained = false;
-        for(int i : allstatuscodes){
-          if(p.status() == i) statuscontained = true;
-        }
-        if(!statuscontained) allstatuscodes.push_back(p.status());
-
-
     }
-    for(unsigned i = 0; i < allstatuscodes.size(); i++) std::cout << allstatuscodes[i] << " ";
-    std::cout << std::endl;
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
 
