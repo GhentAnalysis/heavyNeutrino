@@ -28,6 +28,14 @@ void JetAnalyzer::beginJob(TTree* outputTree){
 //outputTree->Branch("_jetDeepCsv_cc",             &_jetDeepCsv_cc,            "_jetDeepCsv_cc[_nJets]/D");
   outputTree->Branch("_jetHadronFlavor",           &_jetHadronFlavor,          "_jetHadronFlavor[_nJets]/i");
   outputTree->Branch("_jetId",                     &_jetId,                    "_jetId[_nJets]/i");
+  outputTree->Branch("_nDaughters",		   &_nDaughters,	       "_nDaughters/b");
+  outputTree->Branch("_nJetswithDaughters",	   &_nJetswithDaughters,       "_nJetswithDaughters/b");
+  outputTree->Branch("_jet_tag_for_daughters",	   &_jet_tag_for_daughters,    "_jet_tag_for_daughters[_nDaughters]/I");
+  outputTree->Branch("_jet_daughter_pdgid",	   &_jet_daughter_pdgid,       "_jet_daughter_pdgid[_nDaughters]/I");
+  outputTree->Branch("_jet_daughter_pt",	   &_jet_daughter_pt,          "_jet_daughter_pt[_nDaughters]/D");
+  outputTree->Branch("_jet_daughter_eta",	   &_jet_daughter_eta,         "_jet_daughter_eta[_nDaughters]/D");
+  outputTree->Branch("_jet_daughter_phi",	   &_jet_daughter_phi,         "_jet_daughter_phi[_nDaughters]/D");
+  outputTree->Branch("_jet_daughter_energy",	   &_jet_daughter_energy,      "_jet_daughter_energy[_nDaughters]/D");
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
@@ -37,6 +45,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
 
   _nJets = 0;
+  _nJetswithDaughters = 0;
+  _nDaughters = 0;
 
   auto jet            = jets->begin();
   auto jetSmeared     = jetsSmeared->begin();
@@ -69,6 +79,17 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 //  _jetDeepCsv_cc[_nJets]            = jet->bDiscriminator("pfDeepCSVJetTags:probcc");
     _jetHadronFlavor[_nJets]         = jet->hadronFlavour();
     _jetId[_nJets]                    = jetId(*jet, false) + jetId(*jet, true); // 1: loose, 2: tight
+    for(unsigned d = 0; d < jet->numberOfDaughters(); ++d){
+      const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet->daughter(d);
+      _jet_tag_for_daughters[_nDaughters] = _nJets;
+      _jet_daughter_pdgid[_nDaughters] 	  = daughter->pdgId();
+      _jet_daughter_pt[_nDaughters] 	  = daughter->pt();
+      _jet_daughter_eta[_nDaughters] 	  = daughter->eta();
+      _jet_daughter_phi[_nDaughters] 	  = daughter->phi();
+      _jet_daughter_energy[_nDaughters]   = daughter->energy();
+      ++_nDaughters;
+    }
+    if(jet->numberOfDaughters() > 0) ++_nJetswithDaughters;
     ++_nJets;
   }
   if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;

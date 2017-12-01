@@ -45,12 +45,11 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_nW",		           &_gen_nW,			"_gen_nW/b");
   outputTree->Branch("_gen_WMomPdg",               &_gen_WMomPdg,		"_gen_WMomPdg[_gen_nW]/i");
   outputTree->Branch("_gen_nWfromN",	           &_gen_nWfromN,		"_gen_nWfromN/b");
-  outputTree->Branch("_gen_nq",		           &_gen_nq,			"_gen_nq[6]/i");
+  outputTree->Branch("_gen_nq",		           &_gen_nq,			"_gen_nq[6]/b");
   outputTree->Branch("_gen_nN",		           &_gen_nN,			"_gen_nN/b");
   outputTree->Branch("_gen_nNdaughters",	   &_gen_nNdaughters,		"_gen_nNdaughters/b");
   outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	"_gen_Ndaughters_pdg[_gen_nNdaughters]/i");
   outputTree->Branch("_gen_nstatus23",		   &_gen_nstatus23,		"_gen_nstatus23/b");
-  outputTree->Branch("_gen_nstatus23_fromNorW",	   &_gen_nstatus23_fromNorW,	"_gen_nstatus23_fromNorW/b");
   outputTree->Branch("_gen_nstatus23_fromNorW",	   &_gen_nstatus23_fromNorW,	"_gen_nstatus23_fromNorW/b");
   outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	"_gen_nstatus23_fromN/b");
   outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	"_gen_nstatus23_fromW/b");
@@ -90,6 +89,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
   _gen_nW = 0;
   _gen_nWfromN = 0;
+  for(unsigned i = 0; i < 6; i++) _gen_nq[i] = 0;
   _gen_nN = 0;
   _gen_nNdaughters = 0;
   _gen_nstatus23 = 0;
@@ -100,6 +100,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
   _gen_nq1dtr = 0;
   _gen_nq2dtr = 0;
   int mompdgid;
+  std::vector<int> allstatuscodes = {};
+  bool statuscontained = false;
   
   _gen_nL = 0;
   _gen_nPh = 0;
@@ -146,6 +148,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
       ++_gen_nPh;
     }
 
+
     //attempt to store generator level jet/quark info
     if(abs(p.pdgId()) == 24 && p.isLastCopy()){ //Multiple iterations of same W will otherwise be stored!
       _gen_WMomPdg[_gen_nW] = getMotherPdgId(p, *genParticles);
@@ -159,11 +162,11 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
       ++_gen_nN;
     }
     if(abs(getMotherPdgId(p, *genParticles)) == 9900012) {_gen_Ndaughters_pdg[_gen_nNdaughters] = abs(p.pdgId()); ++_gen_nNdaughters;}
+    mompdgid = getMotherPdgId(p, *genParticles);
     //only hard scatter:
     if(p.status() == 23){
       _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
       ++_gen_nstatus23;
-      mompdgid = getMotherPdgId(p, *genParticles);
       if((abs(mompdgid) == 9900012 || abs(mompdgid) == 24)){
         if(abs(mompdgid) == 9900012) _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = 30; //What is 30???
         else _gen_status23_fromNorW_mompdg[_gen_nstatus23_fromNorW] = abs(mompdgid);
@@ -187,7 +190,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
       }
     }
 
-    // find daughters of quarks, I can use _gen_nq23 to count the quarks from hard process (_gen_nq23 always finds exactly 2 quarks)
+
+    // Daughters of quarks
     std::vector<reco::GenParticle> daughterList1 = {};
     std::vector<reco::GenParticle> daughterList2 = {};
     std::vector<int> chain_ends1 = {};
@@ -224,7 +228,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
       /*std::cout << "Pdg Id " << p.pdgId() << " pt: " << p.pt() << std::endl;
       for(unsigned int i = 0; i < p.numberOfDaughters(); i++){
         std::cout << "Daughter " << (*genParticles)[p.daughterRef(i).key()].pdgId() << " pt: " << (*genParticles)[p.daughterRef(i).key()].pt() << std::endl;
-      }*/
+      }
       if(_gen_nq23 == 1){
         std::cout << "number of daughters: " << daughterList1.size() << std::endl;
         for(unsigned int i = 0; i < daughterList1.size(); i++){
@@ -253,11 +257,28 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 	  if(chain_ends2[i] == 0) std::cout << daughterList2[i].pt() << " -> ";
 	  if(chain_ends2[i] == 1) std::cout << daughterList2[i].pt() << " | ";
         } std::cout << std::endl << std::endl;
-      }
+      }*/
     }
 
 
+    // string fragmentation model
+    if(p.status() == 71 || p.status() == 73){
+      std::cout << "pdg Id: " << p.pdgId() << std::endl;
+      std::cout << "status: " << p.status() << std::endl;
+      std::cout << "Nmoms: "  << p.numberOfMothers() << std::endl;
+      std::cout << "Ndaughters: " << p.numberOfDaughters() << std::endl;
+    }
+    
+    statuscontained = false;
+    for(int i : allstatuscodes){
+      if(p.status() == i) statuscontained = true;
+    }
+    if(!statuscontained) allstatuscodes.push_back(p.status());
+
+
   }
+  for(unsigned i = 0; i < allstatuscodes.size(); i++) std::cout << allstatuscodes[i] << " ";
+  std::cout << std::endl;
   _gen_met    = genMetVector.Pt();
   _gen_metPhi = genMetVector.Phi();
 }

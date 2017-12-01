@@ -1,0 +1,22 @@
+
+void blackJackAndHookersTree::test()
+{
+  TString filename = "dilep.root";
+  TFile * input = new TFile(filename,"open");
+  TTree* tree = (TTree*) input->Get("blackJackAndHookers/blackJackAndHookersTree");
+  Init(tree); 
+  Long64_t nentries = tree->GetEntries();
+  cout << "Number of events in " << filename << ": " << nentries << endl; 
+  for(unsigned jentry = 0; jentry < nentries; jentry++){
+    LoadTree(jentry);
+    tree->GetEntry(jentry);
+    for ( int i = 0; i < 6; i++ )
+      for ( int j = 0; j < 40; j++ ) {
+         cout << "_jet_daughters_pdgid[" << i << "][" << j << "]: ";
+         cout << _jet_daughter_pdgid[i][j]<< endl;
+    }
+    cout << "jetid: " << _jetId << endl;
+    cout << "jetdaughterpdgid: " << _jet_daughter_pdgid << endl;  
+  }
+
+}

@@ -17,6 +17,7 @@ class JetAnalyzer {
     JetCorrectionUncertainty jecUnc;
 
     static const unsigned nJets_max = 20;
+    static const unsigned nDaughters_max = 300;
 
     unsigned _nJets;
     double   _jetPt[nJets_max];
@@ -35,7 +36,14 @@ class JetAnalyzer {
 //  double   _jetDeepCsv_cc[nJets_max];
     unsigned _jetHadronFlavor[nJets_max];
     unsigned _jetId[nJets_max];
-
+    unsigned _nDaughters;
+    unsigned _nJetswithDaughters;
+    int      _jet_tag_for_daughters[nDaughters_max];
+    int      _jet_daughter_pdgid[nDaughters_max];
+    double   _jet_daughter_pt[nDaughters_max];
+    double   _jet_daughter_eta[nDaughters_max];
+    double   _jet_daughter_phi[nDaughters_max];
+    double   _jet_daughter_energy[nDaughters_max];
     multilep* multilepAnalyzer;
 
     bool jetId(const pat::Jet& j, bool tight);
