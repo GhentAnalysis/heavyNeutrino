@@ -1,7 +1,0 @@
-#list of MC datasets to run over using submitAll.py 
-
-#HN samesign signal datasets
-dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_samesign_M-10_V-0.01_e_NLO
-dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_samesign_M-5_V-0.01_e_NLO
-dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_samesign_M-10_V-0.01_mu_NLO
-dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_samesign_M-5_V-0.01_mu_NLO
