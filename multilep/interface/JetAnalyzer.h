@@ -17,7 +17,7 @@ class JetAnalyzer {
     JetCorrectionUncertainty jecUnc;
 
     static const unsigned nJets_max = 20;
-    static const unsigned nDaughters_max = 300;
+    static const unsigned nDaughters_max = 200;
 
     unsigned _nJets;
     double   _jetPt[nJets_max];
@@ -38,7 +38,7 @@ class JetAnalyzer {
     unsigned _jetId[nJets_max];
     unsigned _nDaughters;
     unsigned _nJetswithDaughters;
-    int      _jet_tag_for_daughters[nDaughters_max];
+    unsigned _jet_tag_for_daughters[nDaughters_max];
     int      _jet_daughter_pdgid[nDaughters_max];
     double   _jet_daughter_pt[nDaughters_max];
     double   _jet_daughter_eta[nDaughters_max];

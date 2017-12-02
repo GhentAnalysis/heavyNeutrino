@@ -30,7 +30,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_jetId",                     &_jetId,                    "_jetId[_nJets]/i");
   outputTree->Branch("_nDaughters",		   &_nDaughters,	       "_nDaughters/b");
   outputTree->Branch("_nJetswithDaughters",	   &_nJetswithDaughters,       "_nJetswithDaughters/b");
-  outputTree->Branch("_jet_tag_for_daughters",	   &_jet_tag_for_daughters,    "_jet_tag_for_daughters[_nDaughters]/I");
+  outputTree->Branch("_jet_tag_for_daughters",	   &_jet_tag_for_daughters,    "_jet_tag_for_daughters[_nDaughters]/b");
   outputTree->Branch("_jet_daughter_pdgid",	   &_jet_daughter_pdgid,       "_jet_daughter_pdgid[_nDaughters]/I");
   outputTree->Branch("_jet_daughter_pt",	   &_jet_daughter_pt,          "_jet_daughter_pt[_nDaughters]/D");
   outputTree->Branch("_jet_daughter_eta",	   &_jet_daughter_eta,         "_jet_daughter_eta[_nDaughters]/D");
