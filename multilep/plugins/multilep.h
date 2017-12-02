@@ -134,6 +134,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         unsigned      _nVertex;                                                                          //Event variables
         double        _met;                                                                              //met kinematics
         double        _metPhi;
+        double        _rawmet;                                                                              //met kinematics
+        double        _rawmetPhi;
         double        _metJECDown;
         double        _metPhiJECDown;
         double        _metJECUp;

@@ -77,12 +77,14 @@ void multilep::beginJob(){
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
     outputTree->Branch("_met",                          &_met,                          "_met/D");
+    outputTree->Branch("_rawmet",                       &_rawmet,                       "_rawmet/D");
     outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
     outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
     outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
     outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
 
     outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
+    outputTree->Branch("_rawmetPhi",                    &_rawmetPhi,                    "_rawmetPhi/D");
     outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
     outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
     outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
@@ -134,6 +136,9 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     const pat::MET& met = (*mets).front();
     _met             = met.pt();
     _metPhi          = met.phi();
+
+    _rawmet          = met.uncorPt();
+    _rawmetPhi       = met.uncorPhi();
     //met values with uncertainties varied up and down
     _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
     _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);

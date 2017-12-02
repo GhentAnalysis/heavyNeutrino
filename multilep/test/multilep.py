@@ -13,9 +13,12 @@ def getJSON(is2017):
 #inputFile       = "root://cmsxrootd.fnal.gov///store/data/Run2017C/MuonEG/MINIAOD/PromptReco-v3/000/300/780/00000/86494C82-EA7E-E711-ACCC-02163E01441B.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
-inputFile       = "/store/mc/RunIISummer17MiniAOD/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/92X_upgrade2017_realistic_v10-v1/90000/001B98FE-5D93-E711-A686-002590E7D7DE.root"
+#inputFile       = "root://xrootd-cms.infn.it//store/mc/RunIISummer17MiniAOD/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/92X_upgrade2017_realistic_v10-v1/90000/001B98FE-5D93-E711-A686-002590E7D7DE.root"
+#inputFile       = 'file:///user/ikhvastu/CMSSW_9_2_8/src/heavyNeutrino/multilep/test/test.root'
+inputFile       = '/store/data/Run2017B/DoubleEG/MINIAOD/12Sep2017-v1/70000/0003A489-D6A5-E711-BD04-24BE05C44B91.root'
+
 nEvents         = 1000
-outputFile      = 'ttg.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
+outputFile      = 'singlelep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
                                  # ttg       --> skim two leptons + one photon
@@ -145,6 +148,6 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadPFMuonFilter *
                      process.BadChargedCandidateFilter *
                      process.egmSequence *
-                     #process.jetSequence *
-                     #process.fullPatMetSequence *
+                     process.jetSequence *
+                     process.fullPatMetSequence *
                      process.blackJackAndHookers)

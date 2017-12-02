@@ -122,7 +122,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(fabs(_dz[_nL]) > 0.1)                       continue;
     fillLeptonKinVars(mu);
     //fillLeptonGenVars(mu.genParticle());
-    if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
+    // written by WIllem today (29 Nov)
+    //if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
     fillLeptonJetVariables(mu, jets, primaryVertex);
 
     _lFlavor[_nL]        = 1;
@@ -169,7 +170,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(fabs(_dz[_nL]) > 0.1)                                                                 continue;
     fillLeptonKinVars(*ele);
     //fillLeptonGenVars(ele->genParticle());
-    if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
+    //if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
     fillLeptonJetVariables(*ele, jets, primaryVertex);
 
     _lFlavor[_nL]          = 0;
@@ -218,7 +219,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(!tau.tauID("decayModeFinding")) continue;
     fillLeptonKinVars(tau);
     //fillLeptonGenVars(tau.genParticle());
-    if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
+    //if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
