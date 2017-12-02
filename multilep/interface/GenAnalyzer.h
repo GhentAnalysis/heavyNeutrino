@@ -61,7 +61,6 @@ class GenAnalyzer {
     unsigned _gen_nWfromN;
 
     //Generator quarks
-    unsigned _gen_nq[6];
     unsigned _gen_nN;
     unsigned _gen_nNdaughters;
     unsigned _gen_Ndaughters_pdg[gen_n_max];
