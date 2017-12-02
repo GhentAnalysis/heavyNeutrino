@@ -155,7 +155,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
           ++_gen_nN;
         }
         if(abs(getMotherPdgId(p, *genParticles)) == 9900012) {_gen_Ndaughters_pdg[_gen_nNdaughters] = abs(p.pdgId()); ++_gen_nNdaughters;}
-        mompdgid = getMotherPdgId(p, *genParticles);
+        int mompdgid = getMotherPdgId(p, *genParticles);
         //only hard scatter:
         if(p.status() == 23){
           _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
