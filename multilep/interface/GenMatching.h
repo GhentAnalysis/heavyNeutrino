@@ -15,6 +15,7 @@ class GenMatching{
     bool toConsider(const reco::Candidate&, const reco::GenParticle&, const bool differentId = false);
     int matchPdgId;
     bool matchIsPrompt;
+    unsigned provenance;
   public:
     GenMatching(const edm::ParameterSet& iConfig, multilep*);
     ~GenMatching(){};
@@ -25,5 +26,6 @@ class GenMatching{
     void fillMatchingVars(const reco::Candidate&);
     int pdgIdMatch(){return matchPdgId;}
     bool promptMatch(){return matchIsPrompt;}
+    unsigned getProvenance(){return provenance;}
 };
 #endif
