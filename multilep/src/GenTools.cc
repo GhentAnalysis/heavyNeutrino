@@ -1,3 +1,4 @@
+#include <iostream>
 #include "heavyNeutrino/multilep/interface/GenTools.h"
 
 const reco::GenParticle* GenTools::getFirstMother(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
@@ -12,13 +13,13 @@ const reco::GenParticle* GenTools::getMother(const reco::GenParticle& gen, const
 }
  
 void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){
-    if(list.empty() && gen.pdgId() != 2212 && list.find(gen.pdgId()) == list.end()) list.insert(gen.pdgId());
+    if( (list.empty() && gen.pdgId() != 2212) || list.find(gen.pdgId()) == list.end()) list.insert(gen.pdgId());
     if(gen.numberOfMothers() > 1) setDecayChain(genParticles[gen.motherRef(1).key()], genParticles, list);
     if(gen.numberOfMothers() > 0) setDecayChain(genParticles[gen.motherRef(0).key()], genParticles, list);
 }
 
 bool GenTools::bosonInChain(const std::set<int>& chain){
-   return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ return abs(entry) > 22 && abs(entry) < 26; }) != chain.cend();
+   return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry) > 22 && abs(entry) < 26) || (abs(entry) == 9900012); }) != chain.cend();
 }
  
 bool GenTools::bBaryonInChain(const std::set<int>& chain){
