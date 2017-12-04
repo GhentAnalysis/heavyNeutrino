@@ -1,4 +1,5 @@
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
+#include "heavyNeutrino/multilep/interface/GenTools.h"
 #include "TLorentzVector.h" 
 
 GenMatching::GenMatching(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer): multilepAnalyzer(multilepAnalyzer){};
@@ -41,8 +42,10 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
     if(match != nullptr){
         matchIsPrompt = isPrompt(reco, *match);
         matchPdgId = match->pdgId();
+        provenance = GenTools::provenance(*match, *genParticles);
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
+        provenance = 4.;
     }
 }

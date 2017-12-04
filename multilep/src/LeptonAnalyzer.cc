@@ -5,13 +5,13 @@
 #include "TLorentzVector.h"
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
-  electronsEffectiveAreas((iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath()),
-  muonsEffectiveAreas(    (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
-  multilepAnalyzer(multilepAnalyzer)
+    electronsEffectiveAreas((iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath()),
+    muonsEffectiveAreas(    (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
+    multilepAnalyzer(multilepAnalyzer)
 {
-  leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
-  leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
-  if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
+    leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
+    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
+    if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
@@ -87,10 +87,11 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
  
-  if(!multilepAnalyzer->isData){
-    outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
-    outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
-  }
+ if(!multilepAnalyzer->isData){
+        outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
+        outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
+        outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
+    }
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
@@ -490,11 +491,11 @@ TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const rec
 
 
 void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
-  _lPt[_nL]     = lepton.pt();
-  _lEta[_nL]    = lepton.eta();
-  _lPhi[_nL]    = lepton.phi();
-  _lE[_nL]      = lepton.energy();
-  _lCharge[_nL] = lepton.charge();
+    _lPt[_nL]     = lepton.pt();
+    _lEta[_nL]    = lepton.eta();
+    _lPhi[_nL]    = lepton.phi();
+    _lE[_nL]      = lepton.energy();
+    _lCharge[_nL] = lepton.charge();
 }
 
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
@@ -540,24 +541,13 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
 	
 }
 
-/*
-void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
-  if(genParticle != nullptr){
-    _lIsPrompt[_nL] = (genParticle)->isPromptFinalState();
-    _lMatchPdgId[_nL] = (genParticle)->pdgId();
-  } else{
-    _lIsPrompt[_nL] = false;
-    _lMatchPdgId[_nL] = 0;
-  }
-}
-*/
 
 void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatching* genMatcher){
-  genMatcher->fillMatchingVars(lepton);
-  _lIsPrompt[_nL] = genMatcher->promptMatch();
-  _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
+    genMatcher->fillMatchingVars(lepton);
+    _lIsPrompt[_nL] = genMatcher->promptMatch();
+    _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
+    _lProvenance[_nL] = genMatcher->getProvenance();
 }
-
 
 /*
  * Impact parameters:
@@ -596,9 +586,7 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
       TLorentzVector muV;
       muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
       if(eleV.DeltaR(muV) < 0.05) return true;
-    }
-  }
-  return false;
+    return false;
 }
 
 
@@ -668,8 +656,8 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         float JEC         = jet.p4().E()/l1Jet.E();
         auto  l           = lepton.p4();
         auto  lepAwareJet = (l1Jet - l)*JEC + l;
-        TLorentzVector lV = TLorentzVector(l.px(), l.py(), l.pz(), l.E());
-        TLorentzVector jV = TLorentzVector(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
+        TLorentzVector lV(l.px(), l.py(), l.pz(), l.E());
+        TLorentzVector jV(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
         _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
         _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
         _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
@@ -681,15 +669,14 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
             const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
             try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
                 const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
-                TLorentzVector trackVec          = TLorentzVector(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
+                TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
                 double daughterDeltaR            = trackVec.DeltaR(jV);
                 bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
-                                                   && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
-                                                   && fabs(daughterTrack.dxy(vertex.position())) < 17;
+                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
+                    && fabs(daughterTrack.dxy(vertex.position())) < 17;
                 if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
             } catch (...){}
+            }
         }
     }
   }
-
-

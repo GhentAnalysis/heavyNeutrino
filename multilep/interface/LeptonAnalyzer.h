@@ -136,6 +136,7 @@ class LeptonAnalyzer {
     int _lMatchPdgId[nL_max];
   
     double _muonSegComp[nL_max];
+    unsigned _lProvenance[nL_max];                                                                    
 
 
 
@@ -143,6 +144,7 @@ class LeptonAnalyzer {
 
     TransientVertex dileptonVertex(const reco::Track& tk1, const reco::Track& tk2);
     void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
+
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);

@@ -54,11 +54,6 @@ class GenAnalyzer {
     double _gen_HT;
 
     //Functions to find the mother of a gen particle
-    const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    const int                getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
-    bool                     inMotherList(std::vector<int>& list, int i);
-
     unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
     double                   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
 
