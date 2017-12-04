@@ -460,7 +460,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
   }//end electrons
   
-  if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
+  //if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
+  if(multilepAnalyzer->skim == "trilep"    and (_nLight < 0 )  ) return false;
 
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight     < 3   ||   !good_leading)) return false;
   if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
