@@ -385,8 +385,19 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
                                                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
                                                    && fabs(daughterTrack.dxy(vertex.position())) < 17;
                 if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
+                bool goodTrack_nopt              = daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
+                                                   && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
+                                                   && fabs(daughterTrack.dxy(vertex.position())) < 17;
+		if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack_nopt){
+		    //track multiplicity for several pt thresholds:
+		    ++_selectedTrackMult_pt0[_nL];
+		    if(daughterTrack.pt() > 1) ++_selectedTrackMult_pt1[_nL];
+		    if(daughterTrack.pt() > 2) ++_selectedTrackMult_pt2[_nL];
+		    if(daughterTrack.pt() > 3) ++_selectedTrackMult_pt3[_nL];
+		    if(daughterTrack.pt() > 4) ++_selectedTrackMult_pt4[_nL];
+		    if(daughterTrack.pt() > 5) ++_selectedTrackMult_pt5[_nL];
+		}
             } catch (...){}
         }
     }
-    std::cout << "track mult of lepton " << _nL << ": " << _selectedTrackMult[_nL] << std::endl;
 } 
