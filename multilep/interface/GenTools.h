@@ -29,12 +29,12 @@
 namespace GenTools{
     const reco::GenParticle* getFirstMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    std::set<unsigned> getDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<unsigned>& list);
-    bool bosonInChain(const std::set<unsigned>&);
-    bool bBaryonInChain(const std::set<unsigned>&);
-    bool bMesonInChain(const std::set<unsigned>&);
-    bool cBaryonInChain(const std::set<unsigned>&);
-    bool cMesonInChain(const std::set<unsigned>&);
+    void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
+    bool bosonInChain(const std::set<int>&);
+    bool bBaryonInChain(const std::set<int>&);
+    bool bMesonInChain(const std::set<int>&);
+    bool cBaryonInChain(const std::set<int>&);
+    bool cMesonInChain(const std::set<int>&);
     unsigned provenance(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 }
 #endif
