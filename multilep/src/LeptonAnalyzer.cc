@@ -77,6 +77,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
   outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
+  outputTree->Branch("_selectedTrackMult_pt0",        &_selectedTrackMult_pt0,        "_selectedTrackMult_pt0[_nLight]/i");
+  outputTree->Branch("_selectedTrackMult_pt1",        &_selectedTrackMult_pt1,        "_selectedTrackMult_pt1[_nLight]/i");
+  outputTree->Branch("_selectedTrackMult_pt2",        &_selectedTrackMult_pt2,        "_selectedTrackMult_pt2[_nLight]/i");
+  outputTree->Branch("_selectedTrackMult_pt3",        &_selectedTrackMult_pt3,        "_selectedTrackMult_pt3[_nLight]/i");
+  outputTree->Branch("_selectedTrackMult_pt4",        &_selectedTrackMult_pt4,        "_selectedTrackMult_pt4[_nLight]/i");
+  outputTree->Branch("_selectedTrackMult_pt5",        &_selectedTrackMult_pt5,        "_selectedTrackMult_pt5[_nLight]/i");
   outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
   outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
   outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");  
@@ -375,6 +381,12 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
         //compute selected track multiplicity of closest jet
         _selectedTrackMult[_nL] = 0;
+        _selectedTrackMult_pt0[_nL] = 0;
+        _selectedTrackMult_pt1[_nL] = 0;
+        _selectedTrackMult_pt2[_nL] = 0;
+        _selectedTrackMult_pt3[_nL] = 0;
+        _selectedTrackMult_pt4[_nL] = 0;
+        _selectedTrackMult_pt5[_nL] = 0;
         for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
             const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
             try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
