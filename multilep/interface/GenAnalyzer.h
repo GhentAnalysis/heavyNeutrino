@@ -65,12 +65,9 @@ class GenAnalyzer {
     unsigned _gen_nNdaughters;
     unsigned _gen_Ndaughters_pdg[gen_n_max];
     unsigned _gen_nstatus23;
-    unsigned _gen_nstatus23_fromNorW;
     unsigned _gen_nstatus23_fromN;
     unsigned _gen_nstatus23_fromW;
     unsigned _gen_status23_pdg[gen_n_max];
-    unsigned _gen_status23_fromNorW_mompdg[gen_n_max];
-    unsigned _gen_status23_fromNorW_pdg[gen_n_max];
     unsigned _gen_status23_fromN_pdg[gen_n_max];
     unsigned _gen_status23_fromW_pdg[gen_n_max];
     unsigned _gen_nq23;
