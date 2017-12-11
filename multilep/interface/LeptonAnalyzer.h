@@ -64,12 +64,18 @@ class LeptonAnalyzer {
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
     unsigned _selectedTrackMult[nL_max];
-    unsigned _selectedTrackMult_pt0[nL_max];
-    unsigned _selectedTrackMult_pt1[nL_max];
-    unsigned _selectedTrackMult_pt2[nL_max];
-    unsigned _selectedTrackMult_pt3[nL_max];
-    unsigned _selectedTrackMult_pt4[nL_max];
-    unsigned _selectedTrackMult_pt5[nL_max];
+    unsigned _TrackMult_pt0[nL_max];
+    unsigned _TrackMult_pt1[nL_max];
+    unsigned _TrackMult_pt2[nL_max];
+    unsigned _TrackMult_pt3[nL_max];
+    unsigned _TrackMult_pt4[nL_max];
+    unsigned _TrackMult_pt5[nL_max];
+    unsigned _TrackMult_noIP_pt0[nL_max];
+    unsigned _TrackMult_noIP_pt1[nL_max];
+    unsigned _TrackMult_noIP_pt2[nL_max];
+    unsigned _TrackMult_noIP_pt3[nL_max];
+    unsigned _TrackMult_noIP_pt4[nL_max];
+    unsigned _TrackMult_noIP_pt5[nL_max];
 
     double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];

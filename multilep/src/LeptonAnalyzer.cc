@@ -77,12 +77,18 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
     outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
     outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
-    outputTree->Branch("_selectedTrackMult_pt0",        &_selectedTrackMult_pt0,        "_selectedTrackMult_pt0[_nLight]/i");
-    outputTree->Branch("_selectedTrackMult_pt1",        &_selectedTrackMult_pt1,        "_selectedTrackMult_pt1[_nLight]/i");
-    outputTree->Branch("_selectedTrackMult_pt2",        &_selectedTrackMult_pt2,        "_selectedTrackMult_pt2[_nLight]/i");
-    outputTree->Branch("_selectedTrackMult_pt3",        &_selectedTrackMult_pt3,        "_selectedTrackMult_pt3[_nLight]/i");
-    outputTree->Branch("_selectedTrackMult_pt4",        &_selectedTrackMult_pt4,        "_selectedTrackMult_pt4[_nLight]/i");
-    outputTree->Branch("_selectedTrackMult_pt5",        &_selectedTrackMult_pt5,        "_selectedTrackMult_pt5[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt0",        	&_TrackMult_pt0,        	"_TrackMult_pt0[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt1",        	&_TrackMult_pt1,        	"_TrackMult_pt1[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt2",        	&_TrackMult_pt2,        	"_TrackMult_pt2[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt3",        	&_TrackMult_pt3,        	"_TrackMult_pt3[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt4",        	&_TrackMult_pt4,        	"_TrackMult_pt4[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt5",        	&_TrackMult_pt5,        	"_TrackMult_pt5[_nLight]/i");
+    outputTree->Branch("_TrackMult_noIP_pt0",        	&_TrackMult_noIP_pt0,        	"_TrackMult_noIP_pt0[_nLight]/i");
+    outputTree->Branch("_TrackMult_noIP_pt1",        	&_TrackMult_noIP_pt1,        	"_TrackMult_noIP_pt1[_nLight]/i");
+    outputTree->Branch("_TrackMult_noIP_pt2",        	&_TrackMult_noIP_pt2,        	"_TrackMult_noIP_pt2[_nLight]/i");
+    outputTree->Branch("_TrackMult_noIP_pt3",        	&_TrackMult_noIP_pt3,        	"_TrackMult_noIP_pt3[_nLight]/i");
+    outputTree->Branch("_TrackMult_noIP_pt4",        	&_TrackMult_noIP_pt4,        	"_TrackMult_noIP_pt4[_nLight]/i");
+    outputTree->Branch("_TrackMult_noIP_pt5",        	&_TrackMult_noIP_pt5,        	"_TrackMult_noIP_pt5[_nLight]/i");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");  
@@ -367,6 +373,18 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_b[_nL] = 0;
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
+        _TrackMult_pt0[_nL] = 0;
+        _TrackMult_pt1[_nL] = 0;
+        _TrackMult_pt2[_nL] = 0;
+        _TrackMult_pt3[_nL] = 0;
+        _TrackMult_pt4[_nL] = 0;
+        _TrackMult_pt5[_nL] = 0;
+        _TrackMult_noIP_pt0[_nL] = 0;
+        _TrackMult_noIP_pt1[_nL] = 0;
+        _TrackMult_noIP_pt2[_nL] = 0;
+        _TrackMult_noIP_pt3[_nL] = 0;
+        _TrackMult_noIP_pt4[_nL] = 0;
+        _TrackMult_noIP_pt5[_nL] = 0;
     } else {
         auto  l1Jet       = jet.correctedP4("L1FastJet");
         float JEC         = jet.p4().E()/l1Jet.E();
@@ -381,12 +399,18 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
         //compute selected track multiplicity of closest jet
         _selectedTrackMult[_nL] = 0;
-        _selectedTrackMult_pt0[_nL] = 0;
-        _selectedTrackMult_pt1[_nL] = 0;
-        _selectedTrackMult_pt2[_nL] = 0;
-        _selectedTrackMult_pt3[_nL] = 0;
-        _selectedTrackMult_pt4[_nL] = 0;
-        _selectedTrackMult_pt5[_nL] = 0;
+        _TrackMult_pt0[_nL] = 0;
+        _TrackMult_pt1[_nL] = 0;
+        _TrackMult_pt2[_nL] = 0;
+        _TrackMult_pt3[_nL] = 0;
+        _TrackMult_pt4[_nL] = 0;
+        _TrackMult_pt5[_nL] = 0;
+        _TrackMult_noIP_pt0[_nL] = 0;
+        _TrackMult_noIP_pt1[_nL] = 0;
+        _TrackMult_noIP_pt2[_nL] = 0;
+        _TrackMult_noIP_pt3[_nL] = 0;
+        _TrackMult_noIP_pt4[_nL] = 0;
+        _TrackMult_noIP_pt5[_nL] = 0;
         for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
             const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
             try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
@@ -397,18 +421,31 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
                     && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
                     && fabs(daughterTrack.dxy(vertex.position())) < 17;
                 if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
-                bool goodTrack_nopt              = daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
+		// track mult as a function of pt:
+		bool goodTrack_nopt              = daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
                                                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
                                                    && fabs(daughterTrack.dxy(vertex.position())) < 17;
 		if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack_nopt){
 		    //track multiplicity for several pt thresholds:
-		    ++_selectedTrackMult_pt0[_nL];
-		    if(daughterTrack.pt() > 1) ++_selectedTrackMult_pt1[_nL];
-		    if(daughterTrack.pt() > 2) ++_selectedTrackMult_pt2[_nL];
-		    if(daughterTrack.pt() > 3) ++_selectedTrackMult_pt3[_nL];
-		    if(daughterTrack.pt() > 4) ++_selectedTrackMult_pt4[_nL];
-		    if(daughterTrack.pt() > 5) ++_selectedTrackMult_pt5[_nL];
+		    ++_TrackMult_pt0[_nL];
+		    if(daughterTrack.pt() > 1) ++_TrackMult_pt1[_nL];
+		    if(daughterTrack.pt() > 2) ++_TrackMult_pt2[_nL];
+		    if(daughterTrack.pt() > 3) ++_TrackMult_pt3[_nL];
+		    if(daughterTrack.pt() > 4) ++_TrackMult_pt4[_nL];
+		    if(daughterTrack.pt() > 5) ++_TrackMult_pt5[_nL];
 		}
+		// track mult without ip requirements:
+		bool goodTrack_nopt_noIP         = daughterTrack.charge() != 0 && daughterTrack.normalizedChi2() < 5;
+		if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack_nopt_noIP){
+		    //track multiplicity for several pt thresholds:
+		    ++_TrackMult_noIP_pt0[_nL];
+		    if(daughterTrack.pt() > 1) ++_TrackMult_noIP_pt1[_nL];
+		    if(daughterTrack.pt() > 2) ++_TrackMult_noIP_pt2[_nL];
+		    if(daughterTrack.pt() > 3) ++_TrackMult_noIP_pt3[_nL];
+		    if(daughterTrack.pt() > 4) ++_TrackMult_noIP_pt4[_nL];
+		    if(daughterTrack.pt() > 5) ++_TrackMult_noIP_pt5[_nL];
+		}
+
             } catch (...){}
         }
     }
