@@ -27,7 +27,7 @@ config.JobType.pyCfgParams             = ['events=-1', 'outputFile='+outputFile,
 config.JobType.pluginName              = 'analysis'
 config.JobType.outputFiles             = [outputFile]
 config.JobType.sendExternalFolder      = True
-config.JobType.allowUndistributedCMSSW = True 
+config.JobType.allowUndistributedCMSSW = True
 
 config.section_('Data')
 config.Data.inputDataset               = dataset
@@ -36,6 +36,7 @@ config.Data.splitting                  = 'LumiBased'
 config.Data.outLFNDirBase              = '/store/user/' + os.environ['USER'] + '/heavyNeutrino/'
 config.Data.publication                = False
 config.Data.lumiMask                   = lumiMask if not 'SIM' in dataset else None
+config.Data.allowNonValidInputDataset  = True
 
 config.section_('Site')
 config.Site.storageSite                = 'T2_BE_IIHE'

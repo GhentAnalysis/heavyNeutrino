@@ -15,7 +15,9 @@ def getJSON(is2017):
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
 #inputFile       = "root://xrootd-cms.infn.it//store/mc/RunIISummer17MiniAOD/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/92X_upgrade2017_realistic_v10-v1/90000/001B98FE-5D93-E711-A686-002590E7D7DE.root"
 #inputFile       = 'file:///user/ikhvastu/CMSSW_9_2_8/src/heavyNeutrino/multilep/test/test.root'
-inputFile       = '/store/data/Run2017B/DoubleEG/MINIAOD/12Sep2017-v1/70000/0003A489-D6A5-E711-BD04-24BE05C44B91.root'
+inputFile       = '/store/data/Run2017B/DoubleMuon/MINIAOD/17Nov2017-v1/30000/0852E0CB-E7D7-E711-B2DA-0025905C3DCE.root'
+#inputFile       = 'file:///user/ikhvastu/CMSSW_9_2_3_patch2/src/SUSYAnalyzer/PatAnalyzer/test/results/pickEvent/pickEvent_checkForLoukas.root'
+#inputFile       = 'file:///user/ikhvastu/CMSSW_9_2_8/src/heavyNeutrino/multilep/test/fixMETfilters/pickevents_2.root'
 
 nEvents         = 1000
 outputFile      = 'singlelep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -142,7 +144,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017)).getVLuminosityBlockRange()
+  #process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017)).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadPFMuonFilter *

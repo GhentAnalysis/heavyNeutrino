@@ -1,9 +1,9 @@
 #2017 data
 
 #MuonEG
-dilep:/MuonEG/Run2017A-PromptReco-v1/MINIAOD
-dilep:/MuonEG/Run2017A-PromptReco-v2/MINIAOD
-dilep:/MuonEG/Run2017A-PromptReco-v3/MINIAOD
+#dilep:/MuonEG/Run2017A-PromptReco-v1/MINIAOD
+#dilep:/MuonEG/Run2017A-PromptReco-v2/MINIAOD
+#dilep:/MuonEG/Run2017A-PromptReco-v3/MINIAOD
 #dilep:/MuonEG/Run2017B-PromptReco-v1/MINIAOD
 #dilep:/MuonEG/Run2017B-PromptReco-v2/MINIAOD
 dilep:/MuonEG/Run2017B-12Sep2017-v1/MINIAOD
