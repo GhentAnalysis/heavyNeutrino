@@ -122,7 +122,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     }
 }
 
-double GenAnalyzer::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
+double GenAnalyzer::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const{
     double minDeltaR = 10;
     for(auto& q : genParticles){
         if(q.pt() < 5)                                            continue;
@@ -137,7 +137,7 @@ double GenAnalyzer::getMinDeltaR(const reco::GenParticle& p, const std::vector<r
 /*
  * Some event categorization in order to understand/debug/apply overlap removal for TTG <--> TTJets
  */
-unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
+unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const{
     int type = 0;
     for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
         if(p->status()<0)         continue;

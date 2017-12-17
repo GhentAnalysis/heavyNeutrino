@@ -310,13 +310,13 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco:
 }
 
 //Function returning tau dz
-double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex){
+double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex) const{
     const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
     return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
 }
 
 //Check if electron overlaps with loose muon
-bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
+bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose) const{
     TLorentzVector eleV(ele.px(), ele.py(), ele.pz(), ele.energy());
     for(unsigned m = 0; m < _nMu; ++m){
         if(loose[m]){
@@ -329,7 +329,7 @@ bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose){
 }
 
 //Check if tau overlaps with light lepton
-bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose){
+bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose) const{
     TLorentzVector tauV(tau.px(), tau.py(), tau.pz(), tau.energy());
     for(unsigned l = 0; l < _nLight; ++l){
         if(loose[l]){

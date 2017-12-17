@@ -8,7 +8,7 @@ void GenMatching::setGenParticles(const edm::Event& iEvent){
     iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
 }
 
-reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, const bool differentId){
+reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, const bool differentId) const{
     reco::GenParticle const* match = nullptr;
     TLorentzVector recoV(reco.px(), reco.py(), reco.pz(), reco.energy());
     double minDeltaR = 99999.;
@@ -26,13 +26,13 @@ reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, 
     return match;
 }
 
-bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId){
+bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId) const{
     if(!differentId && (abs(reco.pdgId()) != abs(gen.pdgId())) ) return false;
     if(abs(reco.pdgId()) == 15 && abs(gen.pdgId()) == 15) return gen.status() == 2 && gen.isLastCopy();
     return gen.status() == 1;
 }
 
-bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match){
+bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
     if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return match.isPromptFinalState();
     return false;
 }
