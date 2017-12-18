@@ -63,6 +63,16 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/D"):
   outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/D");
   outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/D"):	
+  outputTree->Branch("_lEleIsEB",                     &_lEleIsEB ,                    "_lEleIsEB[_nL]/O");
+  outputTree->Branch("_lEleIsEE",                     &_lEleIsEE ,                    "_lEleIsEE[_nL]/O");
+  outputTree->Branch(" _lEleSuperClusterOverP",       &_lEleSuperClusterOverP ,       "_lEleSuperClusterOverP[_nL]/D");
+  outputTree->Branch(" _lEleEcalEnergy",              &_lEleEcalEnergy ,              "_lEleEcalEnergy[_nL]/D");
+  outputTree->Branch(" _lElefull5x5SigmaIetaIeta",    &_lElefull5x5SigmaIetaIeta ,    "_lElefull5x5SigmaIetaIeta[_nL]/D");
+  outputTree->Branch(" _lEleDEtaInSeed",              &_lEleDEtaInSeed ,              "_lEleDEtaInSeed[_nL]/D");
+  outputTree->Branch(" _lEleDeltaPhiSuperClusterTrackAtVtx", &_lEleDeltaPhiSuperClusterTrackAtVtx , "_lEleDeltaPhiSuperClusterTrackAtVtx[_nL]/D");
+  outputTree->Branch(" _lElehadronicOverEm",          &_lElehadronicOverEm ,          "_lElehadronicOverEm[_nL]/D");
+  outputTree->Branch(" _lEleInvMinusPInv",            &_lEleInvMinusPInv ,            "_lEleInvMinusPInv[_nL]/D");
+  outputTree->Branch(" _eleNumberInnerHitsMissing",   &_eleNumberInnerHitsMissing ,   "_eleNumberInnerHitsMissing[_nL]/D");
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/D");
   outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
