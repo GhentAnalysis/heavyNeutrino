@@ -244,9 +244,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lEleSuperClusterOverP[_nL] = ele->eSuperClusterOverP();
     _lEleEcalEnergy[_nL]= ele->ecalEnergy();
     _lElefull5x5SigmaIetaIeta[_nL] = ele->full5x5_sigmaIetaIeta();
-    _lEleDEtaInSeed[_nL] = fabs(dEtaInSeed(ele));
+    _lEleDEtaInSeed[_nL] = fabs(dEtaInSeed(*ele));
     _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] = fabs(ele->deltaPhiSuperClusterTrackAtVtx());
-    _lElehadronicOverEm[_nL] = ele->hadronicOverEm() 
+    _lElehadronicOverEm[_nL] = ele->hadronicOverEm();
     _lEleInvMinusPInv[_nL] = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
 	  
 	  
