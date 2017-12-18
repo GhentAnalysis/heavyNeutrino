@@ -52,7 +52,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
   outputTree->Branch("_lpassConversionVeto",          &_lpassConversionVeto,          "_lpassConversionVeto[_nL]/O");
   outputTree->Branch("_eleNumberInnerHitsMissing",    &_eleNumberInnerHitsMissing,    "_eleNumberInnerHitsMissing[_nL]/D");
-  outputTree->Branch("_lPFparticle",                  &_lPFparticle,                  "_lPFparticle[_nL]/O");
   outputTree->Branch("_lGlobalMuon",                  &_lGlobalMuon,                  "_lGlobalMuon[_nL]/O");
   outputTree->Branch("_lTrackerMuon",                 &_lTrackerMuon,                 "_lTrackerMuon[_nL]/O"):
   outputTree->Branch("_lInnerTrackValidFraction",     &_lInnerTrackValidFraction,     "_lInnerTrackValidFraction[_nL]/D"):
@@ -129,8 +128,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
   //bool good_leading=false; // to check 1 leading-well_isolated lepton
   int counter_index_leptons   = 0;
   int counter_number_vertices = 0;
-  //std::cout<<"*******************************************"<<std::endl;
-  //std::cout<<"*******************************************"<<std::endl;
+  
 	
 
   //set up generator matching
@@ -147,7 +145,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
-    //std::cout<<"indice muone:    "<<_lIndex[_nL]<<"   con il suo pt: "<<mu.pt()<<std::endl;
     _lPFMuon[_nL]=  mu.isPFMuon();
     // ===>  if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue; // loose POG muon
     fillLeptonImpactParameters(mu, primaryVertex);
@@ -158,7 +155,21 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     fillLeptonIsoVars(mu, *rho);	
     if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
     fillLeptonJetVariables(mu, jets, primaryVertex);
+	
 
+   /////////// ID variables   
+	  
+	  
+    _lGlobalMuon[_nL] = mu.isGlobalMuon();
+    _lTrackerMuon[_nL]= mu.isTrackerMuon();
+    _lInnerTrackValidFraction[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->validFraction()  : -1);
+    _lGlobalTrackNormalizeChi2[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->normalizedChi2()  : -1);
+    _lCQChi2Position[_nL] = mu.combinedQuality().chi2LocalPosition;
+    _lCQTrackKink[_nL] = mu.combinedQuality().trkKink;
+    _lNumberOfMatchedStation[_nL] = mu.numberOfMatchedStations();
+    _lNumberOfValidPixelHits[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().numberOfValidPixelHits()  : -1);
+    _lTrackerLayersWithMeasurement[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().trackerLayersWithMeasurement()  : -1);
+	  
     _lFlavor[_nL]        = 1;
     _muonSegComp[_nL]    = mu.segmentCompatibility();
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
@@ -227,7 +238,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lPOGMedium[_nL]   = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
 
-    
+    //muon variables
+    _lGlobalMuon[_nL] = false;
+    _lTrackerMuon[_nL]= false;
+    _lInnerTrackValidFraction[_nL] = -1;
+    _lGlobalTrackNormalizeChi2[_nL]=  -1;
+    _lCQChi2Position[_nL] =  -1;
+    _lCQTrackKink[_nL] =  -1;
+    _lNumberOfMatchedStation[_nL] =  -1;
+    _lNumberOfValidPixelHits[_nL] =  -1;
+    _lTrackerLayersWithMeasurement[_nL] =  -1;
+	  
+	  
+	  
     if (ele->pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) ++_nGoodLeading;
 
     
