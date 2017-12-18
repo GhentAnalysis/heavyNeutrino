@@ -195,6 +195,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lpassConversionVeto[_nL] = false;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
     
+     _lEleIsEB [_nL] = false;
+    _lEleIsEE[_nL] = false;
+    _lEleSuperClusterOverP[_nL] =  -1;
+    _lEleEcalEnergy[_nL]=   -1;
+    _lElefull5x5SigmaIetaIeta[_nL] =   -1;
+    _lEleDEtaInSeed[_nL] =   -1;
+    _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] =   -1;
+    _lElehadronicOverEm[_nL] =   -1;
+    _lEleInvMinusPInv[_nL] =   -1;
+	  
+	  
+	  
     if (mu.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso04(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) ++_nGoodLeading;
 
     ++_nMu;
@@ -226,6 +238,20 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lpassConversionVeto[_nL] = ele->passConversionVeto();
 
 
+    // ID ele variables	  
+    _lEleIsEB [_nL] = ele->isEB();
+    _lEleIsEE[_nL] = ele->isEE();
+    _lEleSuperClusterOverP[_nL] = ele->eSuperClusterOverP();
+    _lEleEcalEnergy[_nL]= ele->ecalEnergy();
+    _lElefull5x5SigmaIetaIeta[_nL] = ele->full5x5_sigmaIetaIeta();
+    _lEleDEtaInSeed[_nL] = fabs(dEtaInSeed(ele));
+    _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] = fabs(ele->deltaPhiSuperClusterTrackAtVtx());
+    _lElehadronicOverEm[_nL] = ele->hadronicOverEm() 
+    _lEleInvMinusPInv[_nL] = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+	  
+	  
+	  
+	  
     //if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
     fillLeptonKinVars(*ele);
