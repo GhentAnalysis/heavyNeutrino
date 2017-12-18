@@ -113,8 +113,7 @@ class LeptonAnalyzer {
     bool _lpassConversionVeto[nL_max];
    
   
-  
-    bool _lPFparticle[nL_max];
+  /////// µ ID variables
     bool _lGlobalMuon[nL_max];
     bool _lTrackerMuon[nL_max];
     double _lInnerTrackValidFraction[nL_max];
@@ -126,6 +125,19 @@ class LeptonAnalyzer {
     double _lNumberOfValidPixelHits[nL_max];
     double _muNumberInnerHits[nL_max];
     double _lTrackerLayersWithMeasurement[nL_max];
+  
+  /////// ele ID variabels
+    bool _lEleIsEB [nL_max];
+    bool _lEleIsEE[nL_max];
+    double _lEleSuperClusterOverP[nL_max];
+    double _lEleEcalEnergy[nL_max];
+    double _lElefull5x5SigmaIetaIeta[nL_max];
+    double _lEleDEtaInSeed[nL_max];
+    double _lEleDeltaPhiSuperClusterTrackAtVtx[nL_max];
+    double _lElehadronicOverEm[nL_max];
+    double _lEleInvMinusPInv[nL_max];
+    double _eleNumberInnerHitsMissing[nL_max];
+  
   
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
     bool _tauEleVeto[nL_max];
