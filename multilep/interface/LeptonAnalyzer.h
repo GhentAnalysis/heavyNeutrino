@@ -111,6 +111,21 @@ class LeptonAnalyzer {
     bool _lPOGTight[nL_max];
     bool _lPFMuon[nL_max];
     bool _lpassConversionVeto[nL_max];
+   
+  
+  
+    bool _lPFparticle[nL_max];
+    bool _lGlobalMuon[nL_max];
+    bool _lTrackerMuon[nL_max];
+    double _lInnerTrackValidFraction[nL_max];
+    double _lGlobalTrackNormalizeChi2[nL_max];
+    double _lCQChi2Position[nL_max];
+    double _lCQTrackKink[nL_max];
+    double _muonSegComp[nL_max];
+    double _lNumberOfMatchedStation[nL_max];
+    double _lNumberOfValidPixelHits[nL_max];
+    double _muNumberInnerHits[nL_max];
+    double _lTrackerLayersWithMeasurement[nL_max];
   
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
     bool _tauEleVeto[nL_max];
@@ -125,7 +140,7 @@ class LeptonAnalyzer {
   
   
     double _eleNumberInnerHitsMissing[nL_max];
-    double _muNumberInnerHits[nL_max];
+    
   
 
     bool _lPOGLooseWOIso[nL_max];
@@ -135,7 +150,6 @@ class LeptonAnalyzer {
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
   
-    double _muonSegComp[nL_max];
     unsigned _lProvenance[nL_max];                                                                    
 
 
