@@ -151,7 +151,6 @@ class LeptonAnalyzer {
   
   
   
-    double _eleNumberInnerHitsMissing[nL_max];
     
   
 
