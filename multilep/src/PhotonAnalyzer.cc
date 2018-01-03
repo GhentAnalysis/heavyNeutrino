@@ -1,6 +1,7 @@
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
+#include "heavyNeutrino/multilep/interface/GenTools.h"
 /*
  * Calculating all photon-related variables
  */
@@ -38,6 +39,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
         outputTree->Branch("_phIsPrompt",                       &_phIsPrompt,                     "_phIsPrompt[_nPh]/O");
         outputTree->Branch("_phMatchMCPhotonAN15165",           &_phMatchMCPhotonAN15165,         "_phMatchMCPhotonAN15165[_nPh]/I");
         outputTree->Branch("_phMatchMCLeptonAN15165",           &_phMatchMCLeptonAN15165,         "_phMatchMCLeptonAN15165[_nPh]/I");
+        outputTree->Branch("_phMatchCategoryTTG",               &_phMatchCategoryTTG,             "_phMatchCategoryTTG[_nPh]/I");
         outputTree->Branch("_phMatchPdgId",                     &_phMatchPdgId,                   "_phMatchPdgId[_nPh]/I");
     }
 
@@ -100,6 +102,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         if(!multilepAnalyzer->isData){
             fillPhotonGenVars(photon->genParticle());
             matchAN15165(*photon, genParticles);
+            matchCategory(*photon, genParticles);
         }
 
         ++_nPh;
@@ -162,8 +165,6 @@ double PhotonAnalyzer::randomConeIso(double eta, edm::Handle<std::vector<pat::Pa
 
 // First stage of matching definition as used in AN-15-165
 // Further selection in the matching can be applied on tuple-level
-// See also makeAnalysisNtuple::findPhotonCategory in the semiLeptonic TTG code:
-// https://github.com/dnoonan08/TTGammaSemiLep_13TeV/blob/master/AnalysisNtuple/makeAnalysisNtuple.C#L783
 // Note: accessing GenAnalyzer variables, which should run before the PhotonAnalyzer
 void PhotonAnalyzer::matchAN15165(const pat::Photon& photon, edm::Handle<std::vector<reco::GenParticle>>& genParticles){
     _phMatchMCPhotonAN15165[_nPh] = -1;
@@ -187,4 +188,34 @@ void PhotonAnalyzer::matchAN15165(const pat::Photon& photon, edm::Handle<std::ve
         _phMatchMCLeptonAN15165[_nPh] = (int)i;
         break;
     }
+}
+
+// New matching, abandoning the two stage matching, following https://indico.cern.ch/event/686540/contributions/2816395/attachments/1578345/2493189/Dec20_TTGammaChanges.pdf
+void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::vector<reco::GenParticle>>& genParticles){
+    enum matchCategory {UNDEFINED, GENUINE, MISIDELE, HADRONICPHOTON, HADRONICFAKE};
+    _phMatchCategoryTTG[_nPh] = UNDEFINED;
+
+    float minDeltaR = 999;
+    reco::GenParticle* matched;
+
+    for(auto p : *genParticles){
+      if(p.status()!=1 and p.status()!=71)  continue;
+      if((p.pt()-photon.pt())/p.pt() > 0.5) continue;
+      float myDeltaR = deltaR(p.eta(), p.phi(), photon.eta(), photon.phi());
+      if(myDeltaR > 0.1 or myDeltaR > minDeltaR) continue;
+      minDeltaR  = myDeltaR;
+      matched    = &p;
+    }
+
+    std::set<int> decayChain;
+    GenTools::setDecayChain(*matched, *genParticles, decayChain);
+    bool passParentage = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37); 
+    float minOtherDeltaR = GenTools::getMinDeltaR(*matched, *genParticles);
+
+    if(matched and matched->pdgId() == 22){
+      if(passParentage and minOtherDeltaR > 0.2)       _phMatchCategoryTTG[_nPh] = GENUINE;
+      else                                             _phMatchCategoryTTG[_nPh] = HADRONICPHOTON;
+    } else if(matched and abs(matched->pdgId())==11){
+      if(passParentage and minOtherDeltaR > 0.2)       _phMatchCategoryTTG[_nPh] = MISIDELE;
+    } else                                             _phMatchCategoryTTG[_nPh] = HADRONICFAKE;
 }

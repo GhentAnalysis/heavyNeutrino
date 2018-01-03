@@ -43,6 +43,7 @@ class PhotonAnalyzer {
         bool     _phIsPrompt[nPhoton_max];
         int      _phMatchMCPhotonAN15165[nPhoton_max];
         int      _phMatchMCLeptonAN15165[nPhoton_max];
+        int      _phMatchCategoryTTG[nPhoton_max];
         int      _phMatchPdgId[nPhoton_max];
 
         void fillPhotonGenVars(const reco::GenParticle*);
@@ -50,6 +51,7 @@ class PhotonAnalyzer {
                 edm::Handle<std::vector<pat::Electron>>&, edm::Handle<std::vector<pat::Muon>>&,
                 edm::Handle<std::vector<pat::Jet>>&, edm::Handle<std::vector<pat::Photon>>&);
         void matchAN15165(const pat::Photon&, edm::Handle<std::vector<reco::GenParticle>>&);
+        void matchCategory(const pat::Photon&, edm::Handle<std::vector<reco::GenParticle>>&);
 
         multilep* multilepAnalyzer;
         TRandom3  generator;

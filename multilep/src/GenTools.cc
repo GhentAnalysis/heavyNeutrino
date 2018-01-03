@@ -47,3 +47,15 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
     if(!decayChain.empty()) return 3;                                               //light flavor fake
     return 4;                                                                       //unkown origin
 }
+
+double GenTools::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
+    double minDeltaR = 10;
+    for(auto& q : genParticles){
+        if(q.pt() < 5)                                            continue;
+        if(p.pt()-q.pt() < 0.0001)                                continue; // same particle
+        if(q.status() != 1)                                       continue;
+        if(q.pdgId() == 12 or q.pdgId() == 14 or q.pdgId() == 16) continue;
+        minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
+    }
+    return minDeltaR;
+}
