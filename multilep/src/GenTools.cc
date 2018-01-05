@@ -11,9 +11,9 @@ const reco::GenParticle* GenTools::getMother(const reco::GenParticle& gen, const
     else if(mom->pdgId() == gen.pdgId()) return getMother(*mom, genParticles);
     else return mom;
 }
- 
+
 void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){
-    if( (list.empty() && gen.pdgId() != 2212) || list.find(gen.pdgId()) == list.end()) list.insert(gen.pdgId());
+    if((list.empty() or list.find(gen.pdgId())==list.end()) and gen.pdgId() != 2212) list.insert(gen.pdgId());
     if(gen.numberOfMothers() > 1) setDecayChain(genParticles[gen.motherRef(1).key()], genParticles, list);
     if(gen.numberOfMothers() > 0) setDecayChain(genParticles[gen.motherRef(0).key()], genParticles, list);
 }
