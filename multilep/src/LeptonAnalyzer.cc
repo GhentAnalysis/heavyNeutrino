@@ -257,7 +257,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lEwkTight[_nL] = isEwkTight(tau);
 
 	// todo: find nutau and look around that instead of the tau!!!
-	fillLeptonJetVariables(*tau, jets, primaryVertex);
+	fillLeptonJetVariables(tau, jets, primaryVertex);
 
         ++_nTau;
         ++_nL;
