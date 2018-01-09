@@ -29,6 +29,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
   outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/b");
   outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/b");
+  outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/b");
   outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/D");
   outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");
   outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");
@@ -139,6 +140,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   _nTau   = 0;
   _nVFit  = 0;
   _nGoodLeading = 0;
+  _nGoodDisplaced = 0;
+
   
   //bool good_leading=false; // to check 1 leading-well_isolated lepton
   int counter_index_leptons   = 0;
@@ -211,8 +214,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lEleInvMinusPInv[_nL] =   -1;
 	  
 	  
-	  
-    if (mu.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso04(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) ++_nGoodLeading;
+    if (fabs(_dxy[_nL])> 0.02)  ++_nGoodDisplaced; 
+    if (mu.pt() > 22 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso04(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) ++_nGoodLeading;
 
     ++_nMu;
     ++_nL;
@@ -287,9 +290,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lNumberOfValidPixelHits[_nL] =  -1;
     _lTrackerLayersWithMeasurement[_nL] =  -1;
 	  
-	  
-	  
-    if (ele->pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) ++_nGoodLeading;
+    if (fabs(_dxy[_nL])> 0.02)  ++_nGoodDisplaced; 
+    if (ele->pt() > 22 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) ++_nGoodLeading;
 
     
     ++_nEle;
@@ -363,12 +365,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	std::cout << "              1: "
+	/*std::cout << "              1: "
 		  << (mu_1.innerTrack().isNull() ? "OUT" : "TRK")
 		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
 		  << (mu_2.innerTrack().isNull() ? "OUT" : "TRK")
 		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;
+		  << std::endl;*/
       }
       else {   
 	fillDileptonVertexArrays(_nVFit, iMu_plus, iMu_minus_mu, dilvtx, tk_1, tk_2);
@@ -402,12 +404,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	std::cout << "              1: "
+	/*std::cout << "              1: "
 		  << (mu_1.innerTrack().isNull() ? "OUT" : "TRK")
 		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
 		  << "GSF"
 		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;
+		  << std::endl;*/
       } 
       else {      
 	fillDileptonVertexArrays(_nVFit, iMu_plus, iE_minus_mu, dilvtx, tk_1, tk_2);
@@ -458,12 +460,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	std::cout << "              1: "
+	/*std::cout << "              1: "
 		  << "GSF"
 		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
 		  << (mu_2.innerTrack().isNull() ? "OUT" : "TRK")
 		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;
+		  << std::endl;*/
       } 
       else {
 	fillDileptonVertexArrays(_nVFit, iE_plus, iMu_minus_e, dilvtx, tk_1, tk_2);
@@ -499,12 +501,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	std::cout << "              1: "
+	/*std::cout << "              1: "
 		  << "GSF"
 		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
 		  << "GSF"
 		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;
+		  << std::endl;*/
       } 
       else {
 	fillDileptonVertexArrays(_nVFit, iE_plus, iE_minus_e, dilvtx, tk_1, tk_2);
@@ -526,8 +528,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     
     
   }//end electrons
-  
-  if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
+
+  if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1 || _nGoodDisplaced < 2)  ) return false;
   if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "ttg"       and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "singlelep" and _nLight < 1) return false;
