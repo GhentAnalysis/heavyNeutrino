@@ -202,6 +202,7 @@ class LeptonAnalyzer {
   
  // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*) const;
+    bool  isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron*) const;
     bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*) const;
     bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*) const;
     bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*) const;
