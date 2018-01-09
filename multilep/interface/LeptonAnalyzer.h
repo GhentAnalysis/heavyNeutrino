@@ -55,6 +55,7 @@ class LeptonAnalyzer {
     unsigned _nTau;          
     unsigned _nVFit;                     // number vertices re-fitted
     unsigned _nGoodLeading;                     // number vertices re-fitted
+    unsigned _nGoodDisplaced;
 
   
     double _lIndex[nL_max];              // index assigned to leptons to find back the vertices
