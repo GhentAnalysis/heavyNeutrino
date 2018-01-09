@@ -16,7 +16,7 @@ float LeptonAnalyzer::dEtaInSeed(const pat::Electron* ele) const{
     else                                                                            return std::numeric_limits<float>::max();
 }
 
-bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron* ele){
+bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron* ele) const{
   if(not (ele->isEB() or ele->isEE())) return false;
 
   float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
@@ -32,7 +32,7 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerh
   
 
 
-bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron* ele){
+bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron* ele) const {
     if(!(ele->isEB() or ele->isEE()))                                                            return false;
     float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
     if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.11    : 0.0314 ))       return false;
