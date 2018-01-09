@@ -38,7 +38,7 @@ class JetAnalyzer {
 
     multilep* multilepAnalyzer;
 
-    bool jetId(const pat::Jet& j, bool tight);
+    bool jetId(const pat::Jet& j, bool tight) const;
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

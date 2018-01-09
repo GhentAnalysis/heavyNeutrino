@@ -36,5 +36,6 @@ namespace GenTools{
     bool cBaryonInChain(const std::set<int>&);
     bool cMesonInChain(const std::set<int>&);
     unsigned provenance(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
 }
 #endif

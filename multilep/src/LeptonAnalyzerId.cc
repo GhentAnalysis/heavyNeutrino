@@ -11,7 +11,7 @@
  * Manual electron Summer16 cut-based id without isolation
  * Based on https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedLeptonAnalyzerRun2#Offline_selection_criteria
  */
-float LeptonAnalyzer::dEtaInSeed(const pat::Electron* ele){
+float LeptonAnalyzer::dEtaInSeed(const pat::Electron* ele) const{
     if(ele->superCluster().isNonnull() and ele->superCluster()->seed().isNonnull()) return ele->deltaEtaSuperClusterTrackAtVtx() - ele->superCluster()->eta() + ele->superCluster()->seed()->eta();
     else                                                                            return std::numeric_limits<float>::max();
 }
@@ -45,7 +45,7 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron
     return true;
 }
 
-bool LeptonAnalyzer::isMediumCutBasedElectronWithoutIsolation(const pat::Electron* ele){
+bool LeptonAnalyzer::isMediumCutBasedElectronWithoutIsolation(const pat::Electron* ele) const{
     if(!(ele->isEB() or ele->isEE()))                                                            return false;
     float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
     if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998    : 0.0298 ))    return false;
@@ -58,7 +58,7 @@ bool LeptonAnalyzer::isMediumCutBasedElectronWithoutIsolation(const pat::Electro
     return true;
 }
 
-bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron* ele){
+bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron* ele) const{
     if(!(ele->isEB() or ele->isEE())) return false;
     float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
     if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998 : 0.0292))        return false;
@@ -73,7 +73,7 @@ bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron
 
 // Trigger emulation for single electron triggers is available in VID
 // Trigger emulation for double electron triggers with CaloIdL_TrackIdL_IsoVL:
-bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele, const bool hOverE){    
+bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele, const bool hOverE) const{
     float eInvMinusPInv =  (1.0 - ele->eSuperClusterOverP())/ele->correctedEcalEnergy();
     if(ele->full5x5_sigmaIetaIeta()                >= (ele->isEB() ? 0.011 : 0.030)) return false;
     if(fabs(ele->deltaPhiSuperClusterTrackAtVtx()) >= (ele->isEB() ? 0.04  : 0.07))  return false;

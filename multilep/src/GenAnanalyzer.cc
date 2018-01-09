@@ -79,7 +79,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);
-                _gen_lMinDeltaR[_gen_nL]     = getMinDeltaR(p, *genParticles);
+                _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
 
                 if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
@@ -99,10 +99,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_phE[_gen_nPh]             = p.energy();
                 _gen_phIsPrompt[_gen_nPh]      = p.isPromptFinalState();
                 _gen_phMomPdg[_gen_nPh]        = GenTools::getMother(p, *genParticles)->pdgId();
-                _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
+                _gen_phMinDeltaR[_gen_nPh]     = GenTools::getMinDeltaR(p, *genParticles);
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);
-                _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
                 _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
                 ++_gen_nPh;
             } 
@@ -122,22 +121,12 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     }
 }
 
-double GenAnalyzer::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
-    double minDeltaR = 10;
-    for(auto& q : genParticles){
-        if(q.pt() < 5)                                            continue;
-        if(p.pt()-q.pt() < 0.0001)                                continue; // same particle
-        if(q.status() != 1)                                       continue;
-        if(q.pdgId() == 12 or q.pdgId() == 14 or q.pdgId() == 16) continue;
-        minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
-    }
-    return minDeltaR;
-}
+
 
 /*
  * Some event categorization in order to understand/debug/apply overlap removal for TTG <--> TTJets
  */
-unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
+unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const{
     int type = 0;
     for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
         if(p->status()<0)         continue;
@@ -151,6 +140,7 @@ unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genPart
         GenTools::setDecayChain(*p, genParticles, decayChain);
         if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  continue;
         if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) continue;
+
         // Everything below is *signal*
         const reco::GenParticle* mom = GenTools::getMother(*p, genParticles);
         if(std::find_if(decayChain.cbegin(), decayChain.cend(), [](const int entry) { return abs(entry) == 24; }) != decayChain.cend() ){

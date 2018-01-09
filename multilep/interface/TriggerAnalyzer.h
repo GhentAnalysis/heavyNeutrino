@@ -31,7 +31,8 @@ class TriggerAnalyzer {
     void initList(std::vector<TString>&, TString);
     std::vector<TString> getAllFlags();
 
-    bool passCombinedFlag(TString combinedFlag);
+    bool passCombinedFlagAND(TString combinedFlag);
+    bool passCombinedFlagOR(TString combinedFlag);
 
   public:
     TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

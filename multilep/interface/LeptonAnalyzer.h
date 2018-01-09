@@ -217,22 +217,22 @@ class LeptonAnalyzer {
     bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
     bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue);
   
-    bool  isHNLoose(const pat::Electron& lepton);                                                     //check HNL id definitions
-    bool  isHNLoose(const pat::Muon& lepton);
-    bool  isHNFO(const pat::Electron& lepton);
-    bool  isHNFO(const pat::Muon& lepton);
-    bool  isHNTight(const pat::Electron& lepton);
-    bool  isHNTight(const pat::Muon& lepton);
+    bool  isHNLoose(const pat::Electron& lepton) const;                                                     //check HNL id definitions
+    bool  isHNLoose(const pat::Muon& lepton) const;
+    bool  isHNFO(const pat::Electron& lepton) const;
+    bool  isHNFO(const pat::Muon& lepton) const;
+    bool  isHNTight(const pat::Electron& lepton) const;
+    bool  isHNTight(const pat::Muon& lepton) const;
     
-    bool isEwkLoose(const pat::Muon&);
-    bool isEwkLoose(const pat::Electron&);
-    bool isEwkLoose(const pat::Tau&);
-    bool isEwkFO(const pat::Muon&);
-    bool isEwkFO(const pat::Electron&);
-    bool isEwkFO(const pat::Tau&);
-    bool isEwkTight(const pat::Muon&);
-    bool isEwkTight(const pat::Electron&);
-    bool isEwkTight(const pat::Tau&);
+    bool isEwkLoose(const pat::Muon&) const;
+    bool isEwkLoose(const pat::Electron&) const;
+    bool isEwkLoose(const pat::Tau&) const;
+    bool isEwkFO(const pat::Muon&) const;
+    bool isEwkFO(const pat::Electron&) const;
+    bool isEwkFO(const pat::Tau&) const;
+    bool isEwkTight(const pat::Muon&) const;
+    bool isEwkTight(const pat::Electron&) const;
+    bool isEwkTight(const pat::Tau&) const;
 
     double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);                                                            //compute ewkino lepton MVA
     double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);

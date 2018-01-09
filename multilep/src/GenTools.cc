@@ -11,9 +11,9 @@ const reco::GenParticle* GenTools::getMother(const reco::GenParticle& gen, const
     else if(mom->pdgId() == gen.pdgId()) return getMother(*mom, genParticles);
     else return mom;
 }
- 
+
 void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){
-    if( (list.empty() && gen.pdgId() != 2212) || list.find(gen.pdgId()) == list.end()) list.insert(gen.pdgId());
+    if((list.empty() or list.find(gen.pdgId())==list.end()) and gen.pdgId() != 2212) list.insert(gen.pdgId());
     if(gen.numberOfMothers() > 1) setDecayChain(genParticles[gen.motherRef(1).key()], genParticles, list);
     if(gen.numberOfMothers() > 0) setDecayChain(genParticles[gen.motherRef(0).key()], genParticles, list);
 }
@@ -46,4 +46,16 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
     if(bosonInChain(decayChain) ) return 0;                                         //lepton from boson
     if(!decayChain.empty()) return 3;                                               //light flavor fake
     return 4;                                                                       //unkown origin
+}
+
+double GenTools::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
+    double minDeltaR = 10;
+    for(auto& q : genParticles){
+        if(q.pt() < 5)                                            continue;
+        if(p.pt()-q.pt() < 0.0001)                                continue; // same particle
+        if(q.status() != 1)                                       continue;
+        if(q.pdgId() == 12 or q.pdgId() == 14 or q.pdgId() == 16) continue;
+        minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
+    }
+    return minDeltaR;
 }
