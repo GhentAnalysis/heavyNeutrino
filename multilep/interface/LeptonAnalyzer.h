@@ -213,8 +213,6 @@ class LeptonAnalyzer {
     bool  passingElectronMvaTightSusy(const pat::Electron*, double) const;
     bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double) const;
     bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue) const;
-    
-  
   
     bool  isHNLoose(const pat::Electron& lepton) const;                                                     //check HNL id definitions
     bool  isHNLoose(const pat::Muon& lepton) const;
