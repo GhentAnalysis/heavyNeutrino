@@ -11,7 +11,9 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
+#include "MagneticField/Engine/interface/MagneticField.h"
 #include "MagneticField/ParametrizedEngine/src/OAEParametrizedMagneticField.h"
+#include "TrackPropagation/SteppingHelixPropagator/interface/SteppingHelixPropagator.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 #include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
 #include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
@@ -57,6 +59,7 @@ class LeptonAnalyzer {
   
     double _lIndex[nL_max];              // index assigned to leptons to find back the vertices
     double _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex 
+    double _lDisplaced[nV_max][24];      // array of the displaced lepton momenta and positions at the displaced vertex
 
     double _lPt[nL_max];                                                                             //lepton kinematics
     double _lEta[nL_max];
@@ -167,7 +170,13 @@ class LeptonAnalyzer {
 
     multilep* multilepAnalyzer;
 
-    TransientVertex dileptonVertex(const reco::Track& tk1, const reco::Track& tk2);
+    edm::ESHandle<MagneticField> _bField;
+    edm::ESHandle<Propagator> _shProp;
+    TransientVertex dileptonVertex(const reco::Track&, const reco::Track&);
+    void fillDileptonVertexArrays(unsigned, unsigned, unsigned,
+				  const TransientVertex&,
+				  const reco::Track&, const reco::Track&);
+
     void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
 
     void fillLeptonKinVars(const reco::Candidate&);
@@ -239,6 +248,6 @@ class LeptonAnalyzer {
     ~LeptonAnalyzer();
 
     void beginJob(TTree* outputTree);
-    bool analyze(const edm::Event&, const reco::Vertex&);
+    bool analyze(const edm::Event&, const edm::EventSetup&, const reco::Vertex&);
 };
 #endif

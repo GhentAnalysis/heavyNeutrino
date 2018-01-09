@@ -9,6 +9,7 @@
 <use name="CondFormats/JetMETObjects"/>
 <use name="MagneticField/ParametrizedEngine"/>
 <use name="TrackingTools/TransientTrack"/>
+<use name="TrackingTools/Records"/>
 <use name="RecoVertex/VertexPrimitives"/>
 <use name="RecoVertex/KalmanVertexFit"/>
 <use name="RecoVertex/VertexTools"/>
