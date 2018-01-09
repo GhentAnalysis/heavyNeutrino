@@ -200,22 +200,21 @@ class LeptonAnalyzer {
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
 
   
+ // In LeptonAnalyzerId.cc
+    float dEtaInSeed(const pat::Electron*) const;
+    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*) const;
+    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*) const;
+    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*) const;
+    bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately
+    float slidingCut(float, float, float) const;
+    bool  passingElectronMvaHZZ(const pat::Electron*, double) const;
+    bool  passingElectronMvaLooseSusy(const pat::Electron*, double, double) const;
+    bool  passingElectronMvaMediumSusy(const pat::Electron*, double) const;
+    bool  passingElectronMvaTightSusy(const pat::Electron*, double) const;
+    bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double) const;
+    bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue) const;
+    
   
-  
-    // In LeptonAnalyzerId.cc
-    float dEtaInSeed(const pat::Electron*);
-    bool isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron* ele);
-    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true);               //For ewkino id it needs to be possible to check hOverE separately
-    float slidingCut(float, float, float);
-    bool  passingElectronMvaHZZ(const pat::Electron*, double);
-    bool  passingElectronMvaLooseSusy(const pat::Electron*, double, double);
-    bool  passingElectronMvaMediumSusy(const pat::Electron*, double);
-    bool  passingElectronMvaTightSusy(const pat::Electron*, double);
-    bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
-    bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue);
   
     bool  isHNLoose(const pat::Electron& lepton) const;                                                     //check HNL id definitions
     bool  isHNLoose(const pat::Muon& lepton) const;
