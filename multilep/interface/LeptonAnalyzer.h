@@ -192,11 +192,9 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
 
     // In leptonAnalyzerIso,cc
-
-    double getRelIso03(const pat::Muon&, const double);
-    double getRelIso04(const pat::Muon&, const double);
-    double getRelIso03(const pat::Electron&, const double);
-    double getRelIso04(const pat::Muon& mu);
+    double getRelIso04(const pat::Muon& mu) const;
+    double getRelIso03(const pat::Muon& mu, const double rho) const;
+    double getRelIso03(const pat::Electron& ele, const double rho) const;
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
 
   
