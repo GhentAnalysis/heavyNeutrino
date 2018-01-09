@@ -43,7 +43,9 @@ class PhotonAnalyzer {
         bool     _phIsPrompt[nPhoton_max];
         int      _phMatchMCPhotonAN15165[nPhoton_max];
         int      _phMatchMCLeptonAN15165[nPhoton_max];
-        int      _phMatchCategoryTTG[nPhoton_max];
+        int      _phTTGMatchCategory[nPhoton_max];
+        double   _phTTGMatchPt[nPhoton_max];
+        double   _phTTGMatchEta[nPhoton_max];
         int      _phMatchPdgId[nPhoton_max];
 
         void fillPhotonGenVars(const reco::GenParticle*);
