@@ -191,14 +191,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lFlavor[_nL]        = 1;
     _muonSegComp[_nL]    = mu.segmentCompatibility();
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
-  
+  	
+if (_relIso[_nL] > 0.8) continue;
+	  
+	  
     // TODO: this is a possible solution to the missing trackRef, but maybe not what you want 
     _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : -1);
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     if ( mu.isLooseMuon()) _lPOGMedium[_nL] = mu.isMediumMuon();
     if ( mu.isLooseMuon()) _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
-
+ 
+	  if (    !_lPOGLoose[_nL] ) continue;
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lpassConversionVeto[_nL] = false;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
@@ -266,7 +270,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
-    
+    if (_relIso[_nL] > 0.8) continue;
+
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);
