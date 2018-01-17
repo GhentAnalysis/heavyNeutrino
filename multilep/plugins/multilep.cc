@@ -100,7 +100,7 @@ void multilep::beginJob(){
     TLorentzVector jet1;
     lepton1.SetPtEtaPhiE(leptonAnalyzer->_lPt[0],leptonAnalyzer->_lEta[0],leptonAnalyzer->_lPhi[0],leptonAnalyzer->_lE[0]);
     jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[0],jetAnalyzer->_jetEta[0],jetAnalyzer->_jetPhi[0],jetAnalyzer->_jetE[0]);
-    if(skim == "FR" and jet1.DeltaR(lepton1) < 1) return false;
+    if(this == "FR" and jet1.DeltaR(lepton1) < 1) return false;
     
     
 
