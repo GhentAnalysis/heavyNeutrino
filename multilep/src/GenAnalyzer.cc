@@ -140,18 +140,20 @@ unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genPart
         GenTools::setDecayChain(*p, genParticles, decayChain);
         if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  continue;
         if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) continue;
+        if(GenTools::getMinDeltaR(*p, genParticles) < 0.2)                          continue;
 
         // Everything below is *signal*
         const reco::GenParticle* mom = GenTools::getMother(*p, genParticles);
         if(std::find_if(decayChain.cbegin(), decayChain.cend(), [](const int entry) { return abs(entry) == 24; }) != decayChain.cend() ){
-            if( abs(mom->pdgId()) == 24 )    type = std::max(type, 6);      // Type 6: photon directly from W or decay products which are part of ME
-            else if( abs(mom->pdgId()) <= 6) type =std::max(type, 4);       // Type 4: photon from quark from W (photon from pythia, rarely)
-            else                             type =std::max(type, 5);       // Type 5: photon from lepton from W (photon from pythia)
+            if(abs(mom->pdgId()) == 24)     type = std::max(type, 6);      // Type 6: photon directly from W or decay products which are part of ME
+            else if(abs(mom->pdgId()) <= 6) type = std::max(type, 4);      // Type 4: photon from quark from W (photon from pythia, rarely)
+            else                            type = std::max(type, 5);      // Type 5: photon from lepton from W (photon from pythia)
         } else {
             if(abs(mom->pdgId()) == 6)      type = std::max(type, 7);      // Type 7: photon from top
             else if(abs(mom->pdgId()) == 5) type = std::max(type, 3);      // Type 3: photon from b
             else                            type = std::max(type, 8);      // Type 8: photon from ME
         }
     }
+
     return type;
 }
