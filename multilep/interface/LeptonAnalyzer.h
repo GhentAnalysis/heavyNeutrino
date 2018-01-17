@@ -33,6 +33,7 @@ class GenMatching;
 class LeptonAnalyzer {
   //Friend classes and functions
   friend class LeptonIdHelper;
+  friend class multilep;
   private:
     EffectiveAreas electronsEffectiveAreas;
     EffectiveAreas muonsEffectiveAreas;
