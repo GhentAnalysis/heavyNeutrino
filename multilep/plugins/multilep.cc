@@ -95,6 +95,14 @@ void multilep::beginJob(){
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
     jetAnalyzer->beginJob(outputTree);
+    
+    TLorentzVector lepton1;
+    TLorentzVector jet1;
+    lepton1.SetPtEtaPhiE(_lPt[0],_lEta[0],_lPhi[0],_lE[0]);
+    jet1.SetPtEtaPhiE(_jetPt[0],_jetEta[0],_jetPhi[0],_jetE[0]);
+    if(multilepAnalyzer->skim == "FR" and jet1.DeltaR(lepton1) < 1) return false;
+    
+    
 
     _runNb = 0;
 }
