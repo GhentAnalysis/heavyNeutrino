@@ -57,7 +57,7 @@ fileList $input
 #loop over new list of files and submit jobs
 fileCount=0
 #jobCount=0
-submit=mineBitCoin.sh
+submit=job.sh
 fileList=""
 while read f; do
     #fileList="${fileList}${f},"
