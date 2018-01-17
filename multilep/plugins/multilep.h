@@ -38,6 +38,7 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
+#include "TLorentzVector.h"
 
 //
 // class declaration
