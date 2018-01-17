@@ -13,6 +13,7 @@
 class multilep;
 
 class JetAnalyzer {
+  friend class multilep;
   private:
     JetCorrectionUncertainty jecUnc;
 
