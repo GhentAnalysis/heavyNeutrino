@@ -538,7 +538,7 @@ if (_relIso[_nL] > 0.8) continue;
   if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "ttg"       and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "singlelep" and _nLight < 1) return false;
-  if(multilepAnalyzer->skim == "FR" &&  (_nGoodDisplaced < 1 || _nLight < 1 || _nGoodLeading!= 0)) return false;
+  if(multilepAnalyzer->skim == "FR" &&   _nLight != 1) return false;
 
   return true;
 }
