@@ -160,14 +160,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     // Loop over electrons (note: using iterator we can easily get the ref too)
     for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
         auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
-        if(_nL == nL_max)                                                                        break;
-        if(ele->gsfTrack().isNull())                                                             continue;
-        if(ele->pt() < 7)                                                                        continue;
-        if(fabs(ele->eta()) > 2.5)                                                               continue;
-        if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
+        if(_nL == nL_max)                                                                               break;
+        if(ele->gsfTrack().isNull())                                                                    continue;
+        if(ele->pt() < 7)                                                                               continue;
+        if(fabs(ele->eta()) > 2.5)                                                                      continue;
+        if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 2)    continue;
         fillLeptonImpactParameters(*ele, primaryVertex);
-        if(fabs(_dxy[_nL]) > 0.05)                                                               continue;
-        if(fabs(_dz[_nL]) > 0.1)                                                                 continue;
+        if(fabs(_dxy[_nL]) > 0.05)                                                                      continue;
+        if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
         fillLeptonKinVars(*ele);
         //fillLeptonGenVars(ele->genParticle());
         if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
@@ -184,7 +184,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lElectronPassEmu[_nL]      = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
         _lElectronPassConvVeto[_nL] = ele->passConversionVeto();
         _lElectronChargeConst[_nL]  = ele->isGsfCtfScPixChargeConsistent();
-        _lElectronMissingHits[_nL]  = ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+        _lElectronMissingHits[_nL]  = ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
 
         _lHNLoose[_nL]              = isHNLoose(*ele);
         _lHNFO[_nL]                 = isHNFO(*ele);
