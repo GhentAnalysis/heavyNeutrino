@@ -15,7 +15,7 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
 #include "heavyNeutrino/multilep/interface/LeptonIdHelper.h"
-//#include "heavyNeutrino/multilep/interface/GenMatching.h"
+#include "heavyNeutrino/multilep/interface/GenMatching.h"
 
 //include ROOT classes
 #include "TTree.h"
@@ -28,7 +28,7 @@
  * Functions for electron identification
  */
 class multilep;
-//class GenMatching;
+class GenMatching;
 
 class LeptonAnalyzer {
   //Friend classes and functions
@@ -76,6 +76,8 @@ class LeptonAnalyzer {
     unsigned _TrackMult_noIP_pt3[nL_max];
     unsigned _TrackMult_noIP_pt4[nL_max];
     unsigned _TrackMult_noIP_pt5[nL_max];
+    unsigned _Nutau_TrackMult_pt1[nL_max];
+    unsigned _Nutau_TrackMult_pt5[nL_max];
 
     double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];
@@ -139,6 +141,8 @@ class LeptonAnalyzer {
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose);
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose);
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
+    void fillLeptonTrackVariables(const reco::Candidate&, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&);
+    void fillNutauTrackVariables(const reco::GenParticle&, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&);
 
     // In leptonAnalyzerIso,cc
 
@@ -186,7 +190,7 @@ class LeptonAnalyzer {
     LeptonMvaHelper* leptonMvaComputerTTH;
 
     //for generator matching
-    //GenMatching* genMatcher;
+    GenMatching* genMatcher;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
