@@ -67,7 +67,7 @@ dilep:/SingleMuon/Run2017F-17Nov2017-v1/MINIAOD
 dilep:/SingleElectron/Run2017B-17Nov2017-v1/MINIAOD
 dilep:/SingleElectron/Run2017C-12Sep2017-v1/MINIAOD
 dilep:/SingleElectron/Run2017D-17Nov2017-v1/MINIAOD
-dilep:/SingleElectron/Run2017E-PromptReco-v1/MINIAOD
+dilep:/SingleElectron/Run2017E-17Nov2017-v1/MINIAOD
 dilep:/SingleElectron/Run2017F-17Nov2017-v1/MINIAOD
 
 ###########
