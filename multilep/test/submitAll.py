@@ -24,8 +24,11 @@ for dataset in datasets:
     if 'pnfs' in dataset or 'user' in dataset or submitLocal == "local":
         dir        = os.getcwd()
         outputDir = outDir + "/"
-        if 'pnfs' in dataset or 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]      
-        else: outputDir = outputDir + dataset.split('/')[1]
+        if 'pnfs' in dataset and 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]      
+        #else: 
+	#    print 'outputDir: ' + outputDir
+	#    print 'dataset.split: ' + dataset.split('/')[1]
+	#    outputDir = outputDir + dataset.split('/')[1]
         if 'ext' in dataset:
             outputDir = outputDir + "_"
             index = dataset.find('ext')
@@ -43,6 +46,8 @@ for dataset in datasets:
             form   = dataset[1:].split('/')[2]
             puScen = dataset[1:].split('/')[3]
             dataset = '/' + name + '/' + period + '-' + puScen + '/' + form
+	    outputDir = outputDir + name
+	    print 'outputdirectory: ' + outputDir
 
         os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + skim + ' ' + str(filesPerJob) )
 

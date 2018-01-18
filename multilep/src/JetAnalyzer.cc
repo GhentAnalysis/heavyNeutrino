@@ -81,7 +81,6 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     if(jet->numberOfDaughters() > 0) ++_nJetswithDaughters;
     
     for(unsigned d = 0; d < jet->numberOfDaughters(); ++d){
-      if(_nDaughters > 100) std::cout << _nDaughters;
       const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet->daughter(d);
       _jet_tag_for_daughters[_nDaughters] = _nJets;
       _jet_daughter_pdgid[_nDaughters] 	  = daughter->pdgId();
@@ -93,7 +92,6 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     }
     ++_nJets;
   }
-  std::cout << std::endl;
   if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
   if(multilepAnalyzer->skim == "FR" and _nJets < 1) return false;
   return true;
