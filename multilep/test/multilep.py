@@ -51,7 +51,7 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_ReReco_EOY17_v2'   
 elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v10'
-elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
+elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016LegacyRepro_v4'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
 #
