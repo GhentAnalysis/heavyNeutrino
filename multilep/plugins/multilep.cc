@@ -17,15 +17,15 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     eleCutBasedMediumToken(           consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedMedium"))),
     eleCutBasedTightToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedTight"))),
     tauToken(                         consumes<std::vector<pat::Tau>>(            iConfig.getParameter<edm::InputTag>("taus"))),
-    photonToken(                      consumes<std::vector<pat::Photon>>(         iConfig.getParameter<edm::InputTag>("photons"))),
-    photonCutBasedLooseToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedLoose"))),
-    photonCutBasedMediumToken(        consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedMedium"))),
-    photonCutBasedTightToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedTight"))),
-    photonMvaToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsMva"))),
-    photonChargedIsolationToken(      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsChargedIsolation"))),
-    photonNeutralHadronIsolationToken(consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsNeutralHadronIsolation"))),
-    photonPhotonIsolationToken(       consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsPhotonIsolation"))),
-    photonFull5x5SigmaIEtaIPhiToken(  consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsFull5x5SigmaIEtaIPhi"))),
+    //photonToken(                      consumes<std::vector<pat::Photon>>(         iConfig.getParameter<edm::InputTag>("photons"))),
+    //photonCutBasedLooseToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedLoose"))),
+    //photonCutBasedMediumToken(        consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedMedium"))),
+    //photonCutBasedTightToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedTight"))),
+    //photonMvaToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsMva"))),
+    //photonChargedIsolationToken(      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsChargedIsolation"))),
+    //photonNeutralHadronIsolationToken(consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsNeutralHadronIsolation"))),
+    //photonPhotonIsolationToken(       consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsPhotonIsolation"))),
+    //photonFull5x5SigmaIEtaIPhiToken(  consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsFull5x5SigmaIEtaIPhi"))),
     packedCandidatesToken(            consumes<std::vector<pat::PackedCandidate>>(iConfig.getParameter<edm::InputTag>("packedCandidates"))),
     rhoToken(                         consumes<double>(                           iConfig.getParameter<edm::InputTag>("rho"))),
     metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
@@ -45,7 +45,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
-    photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
+    //photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
@@ -55,7 +55,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 multilep::~multilep(){
     delete triggerAnalyzer;
     delete leptonAnalyzer;
-    delete photonAnalyzer;
+    //delete photonAnalyzer;
     delete jetAnalyzer;
     delete genAnalyzer;
     delete lheAnalyzer;
@@ -93,7 +93,7 @@ void multilep::beginJob(){
     if(!isData) genAnalyzer->beginJob(outputTree);
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
-    photonAnalyzer->beginJob(outputTree);
+    //photonAnalyzer->beginJob(outputTree);
     jetAnalyzer->beginJob(outputTree);
 
     _runNb = 0;
@@ -117,7 +117,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(!vertices->size()) return;                                      //Don't consider 0 vertex events
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
-    if(!photonAnalyzer->analyze(iEvent)) return;
+    //if(!photonAnalyzer->analyze(iEvent)) return;
     triggerAnalyzer->analyze(iEvent);
     jetAnalyzer->analyze(iEvent);
 
