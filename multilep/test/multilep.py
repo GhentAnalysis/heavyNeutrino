@@ -10,7 +10,7 @@ def getJSON(is2017):
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/QCD_Pt-50to80_EMEnriched_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00A9113F-15D6-E611-9142-047D7B881D3A.root'
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/90000/003658EE-77E6-E611-ACB1-7CD30ABD295A.root'
 #inputFile       = '/store/data/Run2016D/DoubleMuon/MINIAOD/03Feb2017-v1/100000/52779EE0-F4ED-E611-BF87-70106F49CD3C.root'
-inputFile       = "/store/data/Run2017C/MuonEG/MINIAOD/PromptReco-v2/000/300/087/00000/BCD302E0-1D77-E711-A685-02163E0118D8.root"
+#inputFile       = "/store/data/Run2017C/MuonEG/MINIAOD/PromptReco-v2/000/300/087/00000/BCD302E0-1D77-E711-A685-02163E0118D8.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
 #inputFile       = "root://xrootd-cms.infn.it//store/mc/RunIISummer17MiniAOD/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/92X_upgrade2017_realistic_v10-v1/90000/001B98FE-5D93-E711-A686-002590E7D7DE.root"
@@ -19,6 +19,7 @@ inputFile       = "/store/data/Run2017C/MuonEG/MINIAOD/PromptReco-v2/000/300/087
 #inputFile       = 'file:///user/ikhvastu/CMSSW_9_2_3_patch2/src/SUSYAnalyzer/PatAnalyzer/test/results/pickEvent/pickEvent_checkForLoukas.root'
 #inputFile       = 'file:///user/ikhvastu/CMSSW_9_2_8/src/heavyNeutrino/multilep/test/fixMETfilters/pickevents_2.root'
 #inputFile       = 'file:///user/ikhvastu/pickevents_PromptReco_297178_1312_1492195608.root'
+inputFile       = '/store/mc/RunIIFall17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/00000/005DC030-D3F4-E711-889A-02163E01A62D.root'
 
 nEvents         = 100
 outputFile      = 'dilep.root'   # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -63,7 +64,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_Prompt_v11'
 #if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_ReReco17_forValidation'
 #elif is2017:            process.GlobalTag.globaltag = '93X_upgrade2023_realistic_v2'
-elif is2017:            process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v7'
+elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v10'
 elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
