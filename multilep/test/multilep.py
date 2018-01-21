@@ -21,7 +21,7 @@ def getJSON(is2017):
 #inputFile       = 'file:///user/ikhvastu/pickevents_PromptReco_297178_1312_1492195608.root'
 inputFile       = '/store/mc/RunIIFall17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/00000/005DC030-D3F4-E711-889A-02163E01A62D.root'
 
-nEvents         = 100
+nEvents         = 1000
 outputFile      = 'dilep.root'   # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
@@ -135,10 +135,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag(metCollection),
-  jets                          = cms.InputTag("slimmedJets"),
-  #jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
-  #jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
-  #jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
+  jets                          = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
+  jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
+  jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
+  jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
   jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt"),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),

@@ -32,31 +32,31 @@ void JetAnalyzer::beginJob(TTree* outputTree){
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
-  //edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
-  //edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
-  //edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
+  edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
+  edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
+  edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
 
   _nJets = 0;
 
   auto jet            = jets->begin();
-  //auto jetSmeared     = jetsSmeared->begin();
-  //auto jetSmearedUp   = jetsSmearedUp->begin();
-  //auto jetSmearedDown = jetsSmearedDown->begin();
-  //for(; jet != jets->end(); ++jet, ++jetSmeared, ++jetSmearedUp, ++jetSmearedDown){
-  for(; jet != jets->end(); ++jet){
+  auto jetSmeared     = jetsSmeared->begin();
+  auto jetSmearedUp   = jetsSmearedUp->begin();
+  auto jetSmearedDown = jetsSmearedDown->begin();
+  for(; jet != jets->end(); ++jet, ++jetSmeared, ++jetSmearedUp, ++jetSmearedDown){
+  //for(; jet != jets->end(); ++jet){
     if(_nJets == nJets_max) break;
-    //jecUnc.setJetEta(jetSmeared->eta());
-    //jecUnc.setJetPt(jetSmeared->pt());
-    //double unc = jecUnc.getUncertainty(true);
+    jecUnc.setJetEta(jetSmeared->eta());
+    jecUnc.setJetPt(jetSmeared->pt());
+    double unc = jecUnc.getUncertainty(true);
 
-    //if(std::max((1+unc)*jetSmeared->pt(), std::max(jetSmearedUp->pt(), jetSmearedDown->pt())) < 25) continue;
+    if(std::max((1+unc)*jetSmeared->pt(), std::max(jetSmearedUp->pt(), jetSmearedDown->pt())) < 25) continue;
 
-    //_jetPt[_nJets]                    = jetSmeared->pt();
-    _jetPt[_nJets]                    = jet->pt();
-    //_jetPt_JECDown[_nJets]            = jetSmeared->pt()*(1-unc);
-    //_jetPt_JECUp[_nJets]              = jetSmeared->pt()*(1+unc);
-    //_jetPt_JERDown[_nJets]            = jetSmearedDown->pt();
-    //_jetPt_JERUp[_nJets]              = jetSmearedUp->pt();
+    _jetPt[_nJets]                    = jetSmeared->pt();
+    //_jetPt[_nJets]                    = jet->pt();
+    _jetPt_JECDown[_nJets]            = jetSmeared->pt()*(1-unc);
+    _jetPt_JECUp[_nJets]              = jetSmeared->pt()*(1+unc);
+    _jetPt_JERDown[_nJets]            = jetSmearedDown->pt();
+    _jetPt_JERUp[_nJets]              = jetSmearedUp->pt();
     _jetEta[_nJets]                   = jet->eta();
     _jetPhi[_nJets]                   = jet->phi();
     _jetE[_nJets]                     = jet->energy();
