@@ -14,8 +14,8 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
 
   if(multilepAnalyzer->is2017){
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
-                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalSuperTightHalo2016Filter",                             //Super tight halo filter recommended EARLY 2017, keep and eye on this
-                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};       // Duplicate muons still missing in mAOD, not sure how to get those in
+                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter", "Flag_globalSuperTightHalo2016Filter", //Super tight halo filter recommended EARLY 2017, keep and eye on this
+                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};       // Duplicate muons still missing in mAOD, not sure how to get those in
     allFlags["2017_m"]         = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
     allFlags["2017_e"]         = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
     allFlags["2017_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
@@ -29,8 +29,9 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["2017_FR"]        = {"HLT_Mu3_PFJet40", "HLT_Mu8", "HLT_Mu17", "HLT_Mu27", "HLT_Ele8_CaloIdM_TrackIdM_PFJet30", "HLT_Ele12_CaloIdM_TrackIdM_PFJet30", "HLT_Ele17_CaloIdM_TrackIdM_PFJet30", "HLT_Ele23_CaloIdM_TrackIdM_PFJet30"};
   } else {
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters (if legacy mAOD vbecomes available, copy the filters listed for 2017)
-                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",
-                                  "flag_badPFMuonFilter","flag_badChCandFilter"};
+                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter", "Flag_globalSuperTightHalo2016Filter",
+                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter"}; 
+
     allFlags["passHN_1l"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoTkMu24"};                                                    // HN 1l triggers
     allFlags["passHN_eee"]     = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};                       // HN eee
     allFlags["passHN_eem"]     = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",                     // HN emm
@@ -60,6 +61,10 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                   "HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
                                   "HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL"};
     allFlags["2017_FR"]        = {"HLT_Mu3_PFJet40", "HLT_Mu8", "HLT_Mu17", "HLT_Mu27", "HLT_Ele8_CaloIdM_TrackIdM_PFJet30", "HLT_Ele17_CaloIdM_TrackIdM_PFJet30", "HLT_Ele23_CaloIdM_TrackIdM_PFJet30"};
+
+    allFlags["2017_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                  "HLT_DoubleMu4_Mass8_DZ_PFHT350", "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8"};
+    allFlags["2017_ee"]        = {"HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
   }
 };
 
@@ -116,15 +121,15 @@ bool TriggerAnalyzer::passCombinedFlag(TString combinedFlag){
 void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<edm::TriggerResults> recoResults;       iEvent.getByToken(multilepAnalyzer->recoResultsToken,      recoResults);
   edm::Handle<edm::TriggerResults> triggerResults;    iEvent.getByToken(multilepAnalyzer->triggerToken,          triggerResults);
-  edm::Handle<bool> badPFMuonFilter;                  iEvent.getByToken(multilepAnalyzer->badPFMuonFilterToken,  badPFMuonFilter);
-  edm::Handle<bool> badChCandFilter;                  iEvent.getByToken(multilepAnalyzer->badChCandFilterToken,  badChCandFilter);
+  //edm::Handle<bool> badPFMuonFilter;                  iEvent.getByToken(multilepAnalyzer->badPFMuonFilterToken,  badPFMuonFilter);
+  //edm::Handle<bool> badChCandFilter;                  iEvent.getByToken(multilepAnalyzer->badChCandFilterToken,  badChCandFilter);
 
   // Get all flags
   getResults(iEvent, triggerResults, triggersToSave, true);
   getResults(iEvent, recoResults,    filtersToSave,  false);
   reIndex = false;
-  flag["flag_badPFMuonFilter"] = *badPFMuonFilter;
-  flag["flag_badChCandFilter"] = *badChCandFilter;
+  //flag["Flag_BadPFMuonFilter"]           = *badPFMuonFilter;
+  //flag["Flag_BadChargedCandidateFilter"] = *badChCandFilter;
 
   for(auto& combinedFlag : allFlags) flag[combinedFlag.first] = passCombinedFlag(combinedFlag.first);
 }

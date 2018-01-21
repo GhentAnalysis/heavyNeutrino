@@ -164,7 +164,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(ele->gsfTrack().isNull())                                                             continue;
     if(ele->pt() < 7)                                                                        continue;
     if(fabs(ele->eta()) > 2.5)                                                               continue;
-    if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
+    if(ele->gsfTrack()->hitPattern().numberOfAllHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
     fillLeptonImpactParameters(*ele, primaryVertex);
     if(fabs(_dxy[_nL]) > 0.05)                                                               continue;
     if(fabs(_dz[_nL]) > 0.1)                                                                 continue;
@@ -184,7 +184,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     _lElectronPassEmu[_nL]      = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
     _lElectronPassConvVeto[_nL] = ele->passConversionVeto();
     _lElectronChargeConst[_nL]  = ele->isGsfCtfScPixChargeConsistent();
-    _lElectronMissingHits[_nL]  = ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+    _lElectronMissingHits[_nL]  = ele->gsfTrack()->hitPattern().numberOfAllHits(reco::HitPattern::MISSING_INNER_HITS);
 
     _lHNLoose[_nL]              = isHNLoose(*ele);
     _lHNFO[_nL]                 = isHNFO(*ele);
