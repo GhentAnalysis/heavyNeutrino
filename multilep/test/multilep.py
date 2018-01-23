@@ -58,6 +58,12 @@ elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepr
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
 #
+# TrackingComponentsRecord 
+#
+process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+process.load('TrackPropagation.SteppingHelixPropagator.SteppingHelixPropagatorAny_cfi')
+
+#
 # Vertex collection
 #
 process.load('CommonTools.ParticleFlow.goodOfflinePrimaryVertices_cfi')

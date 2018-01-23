@@ -11,6 +11,14 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
+#include "MagneticField/Engine/interface/MagneticField.h"
+#include "MagneticField/ParametrizedEngine/src/OAEParametrizedMagneticField.h"
+#include "TrackPropagation/SteppingHelixPropagator/interface/SteppingHelixPropagator.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
+#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
+
 //include other parts of the framework
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
@@ -79,6 +87,18 @@ class LeptonAnalyzer {
     unsigned _Nutau_TrackMult_pt1[nL_max];
     unsigned _Nutau_TrackMult_pt5[nL_max];
 
+    double _lVtxpos_x[nL_max];
+    double _lVtxpos_y[nL_max];
+    double _lVtxpos_z[nL_max];
+    double _lVtxpos_cxx[nL_max];
+    double _lVtxpos_cyy[nL_max];
+    double _lVtxpos_czz[nL_max];
+    double _lVtxpos_cyx[nL_max];
+    double _lVtxpos_czy[nL_max];
+    double _lVtxpos_czx[nL_max];
+    double _lVtxpos_df[nL_max];
+    double _lVtxpos_chi2[nL_max];
+
     double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];
     double _3dIP[nL_max];
@@ -131,6 +151,9 @@ class LeptonAnalyzer {
 
     multilep* multilepAnalyzer;
 
+    edm::ESHandle<MagneticField> _bField;
+    edm::ESHandle<Propagator> _shProp;
+    TransientVertex constructKalmanVertex(std::vector<reco::Track>&);
     void fillLeptonGenVars(const reco::GenParticle*);
     //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
     void fillLeptonKinVars(const reco::Candidate&);
@@ -143,6 +166,7 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
     void fillLeptonTrackVariables(const reco::Candidate&, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&);
     void fillNutauTrackVariables(const reco::GenParticle&, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&);
+    void fillLeptonVtxVariables(const reco::Candidate&, edm::Handle<std::vector<pat::PackedCandidate>>&, std::vector<reco::Track>&);
 
     // In leptonAnalyzerIso,cc
 
@@ -197,6 +221,6 @@ class LeptonAnalyzer {
     ~LeptonAnalyzer();
 
     void beginJob(TTree* outputTree);
-    bool analyze(const edm::Event&, const reco::Vertex&);
+    bool analyze(const edm::Event&, const edm::EventSetup&, const reco::Vertex&);
 };
 #endif
