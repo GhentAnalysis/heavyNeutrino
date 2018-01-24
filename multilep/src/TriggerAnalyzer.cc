@@ -110,12 +110,20 @@ std::vector<TString> TriggerAnalyzer::getAllFlags(){
   return list;
 }
 
-bool TriggerAnalyzer::passCombinedFlag(TString combinedFlag){
+bool TriggerAnalyzer::passCombinedFlagOR(TString combinedFlag){
   for(auto& f : allFlags[combinedFlag]){
-    if(f.Contains("pass") and passCombinedFlag(f)) return true;
-    else if(flag[f])                               return true;
+    if(f.Contains("pass") and passCombinedFlagOR(f)) return true;
+    else if(flag[f])                                 return true;
   }
   return false;
+}
+
+bool TriggerAnalyzer::passCombinedFlagAND(TString combinedFlag){
+  for(auto& f : allFlags[combinedFlag]){
+    if(f.Contains("pass") and not passCombinedFlagAND(f)) return false;
+    else if(not flag[f])                                  return false;
+  }
+  return true;
 }
 
 void TriggerAnalyzer::analyze(const edm::Event& iEvent){
@@ -131,7 +139,10 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   //flag["Flag_BadPFMuonFilter"]           = *badPFMuonFilter;
   //flag["Flag_BadChargedCandidateFilter"] = *badChCandFilter;
 
-  for(auto& combinedFlag : allFlags) flag[combinedFlag.first] = passCombinedFlag(combinedFlag.first);
+  for(auto& combinedFlag : allFlags){
+    if(combinedFlag.first.Contains("MET")) flag[combinedFlag.first] = passCombinedFlagAND(combinedFlag.first);
+    else                                   flag[combinedFlag.first] = passCombinedFlagOR(combinedFlag.first);
+  }
 }
 
 /*
