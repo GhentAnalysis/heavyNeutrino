@@ -1,5 +1,6 @@
 #include <iostream>
 #include "heavyNeutrino/multilep/interface/GenParticleManager.h"
+#include "TLorentzVector.h"
 
 using namespace std;
 const GenParticle* GenParticleManager::getMother(const GenParticle *p)
@@ -203,11 +204,11 @@ std::vector<const GenParticle*> GenParticleManager::filterByStatus(std::vector<c
 
 void GenParticleManager::printInheritance(const GenParticle* p)
 {
-    cout << setw(10) << ParticleName(p->pdgId()  )<<" ("<<p->status()<<")" ;
+    //cout << setw(10) << ParticleName(p->pdgId()  )<<" ("<<p->status()<<")" ;
     const GenParticle* mom = getMother(&*p);
     while( mom )
     {
-        cout << setw(10) << "  <--  " << ParticleName(mom->pdgId())<<" ("<<mom->status()<<")" ;
+        //cout << setw(10) << "  <--  " << ParticleName(mom->pdgId())<<" ("<<mom->status()<<")" ;
         if( mom->numberOfMothers() > 1 )
         {
             cout << setw(10) << "  <--  " << " MANY " ;
