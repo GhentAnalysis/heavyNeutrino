@@ -49,7 +49,7 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
         provenance = GenTools::provenance(*match, *genParticles);
         origin = GPM.origin(match);
         std::cout<<origin<<std::endl;
-        originReduced = GPM.originReduced(GPM.origin(*match));
+        originReduced = GPM.originReduced(GPM.origin(match));
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
