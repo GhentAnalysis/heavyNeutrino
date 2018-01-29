@@ -1,7 +1,6 @@
 #ifndef GEN_PARTICLE_MANAGER_H
 #define GEN_PARTICLE_MANAGER_H
 
-#include "Tools.h"
 #include "TMath.h"
 #include "PdgIdConverter.h"
 
