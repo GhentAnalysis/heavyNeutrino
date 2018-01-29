@@ -18,7 +18,6 @@ class GenMatching{
     unsigned provenance;
     unsigned origin;
     unsigned originReduced;
-    GenParticleManager GPM;
   public:
     GenMatching(const edm::ParameterSet& iConfig, multilep*);
     ~GenMatching(){};
