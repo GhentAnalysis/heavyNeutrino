@@ -38,9 +38,7 @@ bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle&
     return false;
 }
 
-std::cout<<"before GPM"<<std::endl;
 GenParticleManager  GPM;
-std::cout<<"after GPM"<<std::endl;
 
 void GenMatching::fillMatchingVars(const reco::Candidate& reco){
     const reco::GenParticle* match = findGenMatch(reco);
