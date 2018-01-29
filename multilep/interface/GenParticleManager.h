@@ -2,7 +2,6 @@
 #define GEN_PARTICLE_MANAGER_H
 
 #include "TMath.h"
-#include "PdgIdConverter.h"
 
 #include <set>
 
