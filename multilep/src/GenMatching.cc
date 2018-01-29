@@ -1,5 +1,6 @@
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
+#include "heavyNeutrino/multilep/interface/GenParticleManager.h"
 #include "TLorentzVector.h" 
 
 GenMatching::GenMatching(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer): multilepAnalyzer(multilepAnalyzer){};
