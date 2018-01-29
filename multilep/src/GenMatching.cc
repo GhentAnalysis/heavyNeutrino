@@ -39,7 +39,7 @@ bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle&
 }
 
 
-GenParticleManager  GPM();
+GenParticleManager  GPM;
 
 void GenMatching::fillMatchingVars(const reco::Candidate& reco){
     const reco::GenParticle* match = findGenMatch(reco);
@@ -48,6 +48,7 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
         matchPdgId = match->pdgId();
         provenance = GenTools::provenance(*match, *genParticles);
         origin = GPM.origin(match);
+        std::cout<<origin<<std::endl;
         originReduced = GPM.originReduced(GPM.origin(*match));
     } else{
         matchIsPrompt = false;
