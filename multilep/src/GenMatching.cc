@@ -44,7 +44,7 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
         matchIsPrompt = isPrompt(reco, *match);
         matchPdgId = match->pdgId();
         provenance = GenTools::provenance(*match, *genParticles);
-        origin = GenParticleManager::origin(*&match);
+        origin = GenParticleManager::origin(*genParticles);
         originReduced = GenParticleManager::originReduced(GenParticleManager::origin(match));
     } else{
         matchIsPrompt = false;
