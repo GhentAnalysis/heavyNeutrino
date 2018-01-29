@@ -14,7 +14,7 @@ def getJSON(is2017):
 inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = 'root://cmsxrootd.fnal.gov///store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
-nEvents         = 1000
+nEvents         = -1
 outputFile      = 'FR.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
