@@ -39,13 +39,14 @@ bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle&
 }
 
 void GenMatching::fillMatchingVars(const reco::Candidate& reco){
+    GPM = GenParticleManager();
     const reco::GenParticle* match = findGenMatch(reco);
     if(match != nullptr){
         matchIsPrompt = isPrompt(reco, *match);
         matchPdgId = match->pdgId();
         provenance = GenTools::provenance(*match, *genParticles);
-        origin = GenParticleManager::origin(*genParticles);
-        originReduced = GenParticleManager::originReduced(GenParticleManager::origin(match));
+        origin = GPM.origin(match);
+        originReduced = GPM.originReduced(GPM.origin(*match));
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
