@@ -204,11 +204,11 @@ std::vector<const GenParticle*> GenParticleManager::filterByStatus(std::vector<c
 
 void GenParticleManager::printInheritance(const GenParticle* p)
 {
-    std::cout << setw(10) << ParticleName(p->pdgId()  )<<" ("<<p->status()<<")" <<std::endl;
+    std::cout << setw(10) <<" ("<<p->status()<<")" <<std::endl;
     const GenParticle* mom = getMother(&*p);
     while( mom )
     {
-        std::cout << setw(10) << "  <--  " << ParticleName(mom->pdgId())<<" ("<<mom->status()<<")" <<std::endl;
+        std::cout << setw(10) << "  <--  " <<" ("<<mom->status()<<")" <<std::endl;
         if( mom->numberOfMothers() > 1 )
         {
             std::cout << setw(10) << "  <--  " << " MANY "<<std::endl ;
