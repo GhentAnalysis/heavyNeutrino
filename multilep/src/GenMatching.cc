@@ -38,8 +38,10 @@ bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle&
     return false;
 }
 
+
+GenParticleManager  GPM();
+
 void GenMatching::fillMatchingVars(const reco::Candidate& reco){
-    GPM = GenParticleManager();
     const reco::GenParticle* match = findGenMatch(reco);
     if(match != nullptr){
         matchIsPrompt = isPrompt(reco, *match);
