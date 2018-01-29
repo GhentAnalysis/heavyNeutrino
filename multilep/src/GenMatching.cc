@@ -47,7 +47,7 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
         matchPdgId = match->pdgId();
         provenance = GenTools::provenance(*match, *genParticles);
         std::cout<<"after provecence"<<std::endl;
-
+        GPM.SetCollection(genParticles);
         origin = GPM.origin(match);
         std::cout<<"after origin"<<std::endl;
 
