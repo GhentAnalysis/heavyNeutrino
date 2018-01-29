@@ -16,6 +16,8 @@ class GenMatching{
     int matchPdgId;
     bool matchIsPrompt;
     unsigned provenance;
+    unsigned origin;
+    unsigned originReduced;
   public:
     GenMatching(const edm::ParameterSet& iConfig, multilep*);
     ~GenMatching(){};
