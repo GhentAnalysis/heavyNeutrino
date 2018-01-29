@@ -53,7 +53,7 @@ const GenParticle* GenParticleManager::getMotherParton(const GenParticle *p)
         for (unsigned int i = 0; i<mom->numberOfMothers(); ++i) {
             mom0 = getMother(mom,i);
             moms.push_back(mom0);
-            //std::cout<<mom0->pdgId()<<" "<<mom0->status()<<std::endl;
+            std::cout<<mom0->pdgId()<<" "<<mom0->status()<<std::endl;
             
             if (mom0) {
                 if (fabs(mom0->pdgId()) < 7 || fabs(mom0->pdgId()) == 21) {
@@ -125,7 +125,7 @@ void GenParticleManager::Classify()
     for(GenParticleCollection::const_reverse_iterator p = _Collection->rbegin() ; p != _Collection->rend() ; p++ )
     {
         int id = TMath::Abs(p->pdgId());
-        //cout << id << endl;
+        std::cout << id << std::endl;
         //continue;
         
         if( id == 11 )
@@ -204,14 +204,14 @@ std::vector<const GenParticle*> GenParticleManager::filterByStatus(std::vector<c
 
 void GenParticleManager::printInheritance(const GenParticle* p)
 {
-    //cout << setw(10) << ParticleName(p->pdgId()  )<<" ("<<p->status()<<")" ;
+    std::cout << setw(10) << ParticleName(p->pdgId()  )<<" ("<<p->status()<<")" <<std::endl;
     const GenParticle* mom = getMother(&*p);
     while( mom )
     {
-        //cout << setw(10) << "  <--  " << ParticleName(mom->pdgId())<<" ("<<mom->status()<<")" ;
+        std::cout << setw(10) << "  <--  " << ParticleName(mom->pdgId())<<" ("<<mom->status()<<")" <<std::endl;
         if( mom->numberOfMothers() > 1 )
         {
-            cout << setw(10) << "  <--  " << " MANY " ;
+            std::cout << setw(10) << "  <--  " << " MANY "<<std::endl ;
             for (unsigned int i=0; i!=mom->numberOfMothers(); ++i) {
                 cout<<getMother(mom, i)->pdgId()<<"("<<getMother(mom, i)->pt()<<"), ";
             }
