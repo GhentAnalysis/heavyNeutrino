@@ -5,7 +5,7 @@
 //include ROOT classes
 #include "TLorentzVector.h"
 
-//include other parts of code 
+//include other parts of code
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
 /*
@@ -16,7 +16,7 @@
 GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer){};
 
-void GenAnalyzer::beginJob(TTree* outputTree){
+void GenAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/b");
     outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/b");
     outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
@@ -43,6 +43,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
     outputTree->Branch("_gen_HT",                    &_gen_HT,                    "_gen_HT/D");
+    eventTypes = fs->make<TH1I>("eventTypes", "ttgEventType", 9,0,9);
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
@@ -52,6 +53,10 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
     _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
+
+    edm::Handle<GenEventInfoProduct> genEventInfo;          iEvent.getByToken(multilepAnalyzer->genEventInfoToken, genEventInfo);
+    double _weight   = genEventInfo->weight();
+    eventTypes->Fill(_ttgEventType, _weight);
 
     _gen_nL = 0;
     _gen_nPh = 0;
@@ -104,7 +109,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 GenTools::setDecayChain(p, *genParticles, decayChain);
                 _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
                 ++_gen_nPh;
-            } 
+            }
         }
     }
     _gen_met    = genMetVector.Pt();
@@ -154,6 +159,5 @@ unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genPart
             else                            type = std::max(type, 8);      // Type 8: photon from ME
         }
     }
-
     return type;
 }
