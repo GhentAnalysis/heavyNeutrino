@@ -627,9 +627,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
   _deltaBIso[_nL]        = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumPhotonEt + mu.pfIsolationR03().sumNeutralHadronEt - 0.5*pucorr);
   _ecalPFClusterIso[_nL] =  -1.;
   _hcalPFClusterIso[_nL] =  -1.; 
-	
-	
-	
+		
 }
 
 
@@ -650,7 +648,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
   _deltaBIso[_nL]       = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumPhotonEt +  ele.pfIsolationVariables().sumNeutralHadronEt - 0.5*pucorr);
   _ecalPFClusterIso[_nL]= ele.ecalPFClusterIso();
   _hcalPFClusterIso[_nL]= ele.hcalPFClusterIso();
-	
+}
 void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatching* genMatcher){
     genMatcher->fillMatchingVars(lepton);
     _lIsPrompt[_nL] = genMatcher->promptMatch();
@@ -660,12 +658,6 @@ void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatchin
 }
 
 
-void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatching* genMatcher){
-  genMatcher->fillMatchingVars(lepton);
-  _lIsPrompt[_nL] = genMatcher->promptMatch();
-  _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
-  _lProvenance[_nL] = genMatcher->getProvenance();
-}
 
 /*
  * Impact parameters:
