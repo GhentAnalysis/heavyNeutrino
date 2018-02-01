@@ -53,7 +53,8 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
-        provenance = 4.;
+        provenance = 18;
+        provenanceCompressed = 4;
 
     }
 }
