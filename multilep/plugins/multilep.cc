@@ -154,7 +154,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     TLorentzVector jet1;
     double nJetBackToBack=0;
     lepton1.SetPtEtaPhiE(leptonAnalyzer->_lPt[0],leptonAnalyzer->_lEta[0],leptonAnalyzer->_lPhi[0],leptonAnalyzer->_lE[0]);
-    for (int k =0; k < _nJets; k ++){
+    for (int k =0; k < jetAnalyzer->_nJets; k ++){
         jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
         if (jet1.DeltaR(lepton1) > 1) nJetBackToBack++;
     }
