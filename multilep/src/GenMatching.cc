@@ -39,25 +39,25 @@ bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle&
 }
 
 
+
 void GenMatching::fillMatchingVars(const reco::Candidate& reco){
     const reco::GenParticle* match = findGenMatch(reco);
     if(match != nullptr){
         matchIsPrompt = isPrompt(reco, *match);
         matchPdgId = match->pdgId();
-        provenance = GenTools::provenance(*match, *genParticles);
-        provenanceCompressed = GenTools::provenanceCompressed(*match, *genParticles);
-        
-        std::cout<<"provence:  "<<provenance<<std::endl;
+        provenance = (matchIsPrompt ? 0 : GenTools::provenance(*match, *genParticles) );
+        provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
+         std::cout<<"provence:  "<<provenance<<std::endl;
         std::cout<<"provence compressed:  "<<provenanceCompressed<<std::endl;
-
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
-        provenance = 4.;
-
+        provenanceCompressed = 4;
+        provenance = 18;
+         std::cout<<"provence:  "<<provenance<<std::endl;
+        std::cout<<"provence compressed:  "<<provenanceCompressed<<std::endl;
     }
 }
-
 
 
 
