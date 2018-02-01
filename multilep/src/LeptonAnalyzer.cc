@@ -199,7 +199,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _muonSegComp[_nL]    = mu.segmentCompatibility();
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
   	
-if (_relIso[_nL] > 0.3) continue;
+    if (_relIso[_nL] > 1) continue;
 	  
 	  
     // TODO: this is a possible solution to the missing trackRef, but maybe not what you want 
@@ -277,7 +277,7 @@ if (_relIso[_nL] > 0.3) continue;
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
-    if (_relIso[_nL] > 0.3) continue;
+    if (_relIso[_nL] > 1) continue;
 
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
@@ -355,7 +355,7 @@ if (_relIso[_nL] > 0.3) continue;
   unsigned iE_plus=_nMu;
   unsigned iE_minus_mu=_nMu;
   unsigned iE_minus_e=_nMu;
-  
+  cleanDileptonVertexArrays(_nVFit);
   for(const pat::Muon& mu_1 : *muons){ // for µ
 	  
     if(mu_1.pt() < 3 || fabs(mu_1.eta()) > 2.4 || !mu_1.isPFMuon())              continue;   
@@ -386,18 +386,6 @@ if (_relIso[_nL] > 0.3) continue;
       }
       else {   
 	fillDileptonVertexArrays(_nVFit, iMu_plus, iMu_minus_mu, dilvtx, tk_1, tk_2);
-	// _vertices[_nVFit][0] = iMu_plus*100 + iMu_minus_mu;                   
-	// _vertices[_nVFit][1] = dilvtx.position().x(); 
-	// _vertices[_nVFit][2] = dilvtx.position().y(); 
-	// _vertices[_nVFit][3] = dilvtx.position().z(); 
-	// _vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
-	// _vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
-	// _vertices[_nVFit][6] = dilvtx.positionError().czz(); 
-	// _vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
-	// _vertices[_nVFit][8] = dilvtx.positionError().czy(); 
-	// _vertices[_nVFit][9] = dilvtx.positionError().czx(); 
-	// _vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
-	// _vertices[_nVFit][11] = dilvtx.totalChiSquared(); 
 	++_nVFit;   
       } 
     }// end loop µ-
@@ -425,18 +413,6 @@ if (_relIso[_nL] > 0.3) continue;
       } 
       else {      
 	fillDileptonVertexArrays(_nVFit, iMu_plus, iE_minus_mu, dilvtx, tk_1, tk_2);
-	// _vertices[_nVFit][0] = iMu_plus*100 + iE_minus_mu;          
-	// _vertices[_nVFit][1] = dilvtx.position().x(); 
-	// _vertices[_nVFit][2] = dilvtx.position().y(); 
-	// _vertices[_nVFit][3] = dilvtx.position().z(); 
-	// _vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
-	// _vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
-	// _vertices[_nVFit][6] = dilvtx.positionError().czz(); 
-	// _vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
-	// _vertices[_nVFit][8] = dilvtx.positionError().czy(); 
-	// _vertices[_nVFit][9] = dilvtx.positionError().czx(); 
-	// _vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
-	// _vertices[_nVFit][11] = dilvtx.totalChiSquared();  
 	++_nVFit;   
       } 
     }// end loop e-
@@ -481,18 +457,7 @@ if (_relIso[_nL] > 0.3) continue;
       } 
       else {
 	fillDileptonVertexArrays(_nVFit, iE_plus, iMu_minus_e, dilvtx, tk_1, tk_2);
-	// _vertices[_nVFit][0] = iE_plus*100+iMu_minus_e;    
-	// _vertices[_nVFit][1] = dilvtx.position().x(); 
-	// _vertices[_nVFit][2] = dilvtx.position().y(); 
-	// _vertices[_nVFit][3] = dilvtx.position().z(); 
-	// _vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
-	// _vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
-	// _vertices[_nVFit][6] = dilvtx.positionError().czz(); 
-	// _vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
-	// _vertices[_nVFit][8] = dilvtx.positionError().czy(); 
-	// _vertices[_nVFit][9] = dilvtx.positionError().czx(); 
-	// _vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
-	// _vertices[_nVFit][11] = dilvtx.totalChiSquared();  
+	 
 	++_nVFit;   
       } 
     }// end loop µ-
@@ -522,18 +487,6 @@ if (_relIso[_nL] > 0.3) continue;
       } 
       else {
 	fillDileptonVertexArrays(_nVFit, iE_plus, iE_minus_e, dilvtx, tk_1, tk_2);
-	// _vertices[_nVFit][0] = iE_plus*100 + iE_minus_e; 
-	// _vertices[_nVFit][1] = dilvtx.position().x(); 
-	// _vertices[_nVFit][2] = dilvtx.position().y(); 
-	// _vertices[_nVFit][3] = dilvtx.position().z(); 
-	// _vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
-	// _vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
-	// _vertices[_nVFit][6] = dilvtx.positionError().czz(); 
-	// _vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
-	// _vertices[_nVFit][8] = dilvtx.positionError().czy(); 
-	// _vertices[_nVFit][9] = dilvtx.positionError().czx(); 
-	// _vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
-	// _vertices[_nVFit][11] = dilvtx.totalChiSquared();   
 	++_nVFit;   
       }
     }// end loop e+
@@ -564,6 +517,17 @@ TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const rec
   KalmanVertexFitter vtxFitter;
   return vtxFitter.vertex(ttks); 
 } 
+
+
+void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
+   for (int i =0; i < 50; i++){
+	  for (int j =0; j < 24 ; j++){
+		  if (j < 12) _vertices[i][j] = 0;
+		  _lDisplaced[i][j] = 0;
+	  }
+   }	
+}
+
 
 
 // Fill the arrays of displaced vertices and leptons 
