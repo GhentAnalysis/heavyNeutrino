@@ -29,13 +29,26 @@
 namespace GenTools{
     const reco::GenParticle* getFirstMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    //return decay chain for a particle;
     void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
+    //scan decay chain for certain types of particles
     bool bosonInChain(const std::set<int>&);
     bool bBaryonInChain(const std::set<int>&);
     bool bMesonInChain(const std::set<int>&);
     bool cBaryonInChain(const std::set<int>&);
     bool cMesonInChain(const std::set<int>&);
+    bool sBaryonInChain(const std::set<int>&);
+    bool sMesonInChain(const std::set<int>&);
+    bool lightBaryonInChain(const std::set<int>&);
+    bool lightMesonInChain(const std::set<int>&);
+    bool pi0InChain(const std::set<int>&);
+    bool photonInChain(const std::set<int>&);
+    bool udsInChain(const std::set<int>&);
+    bool tauInChain(const std::set<int>&);
+    //find the provenance of a particle using the contents of its decayChain
     unsigned provenance(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    unsigned provenanceCompressed(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    //find the minimum deltaR between a reco particle and all genparticles
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
 }
 #endif

@@ -16,5 +16,4 @@ def addElectronAndPhotonSequence(process):
                      'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff']
   for idmod in electronModules: setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
   for idmod in photonModules:   setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
-
   process.egmSequence = cms.Sequence(process.egmGsfElectronIDSequence * process.egmPhotonIDSequence)

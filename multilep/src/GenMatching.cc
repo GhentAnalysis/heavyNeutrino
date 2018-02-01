@@ -46,21 +46,11 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
         matchIsPrompt = isPrompt(reco, *match);
         matchPdgId = match->pdgId();
         provenance = GenTools::provenance(*match, *genParticles);
-        std::cout<<"after provecence"<<std::endl;
-        GPM.SetCollection(genParticles);
-        origin = GPM.origin(match);
-        std::cout<<"after origin"<<std::endl;
-
-        std::cout<<"origin: "<<origin<<std::endl;
-        originReduced = GPM.originReduced(GPM.origin(match));
-        std::cout<<"origin reduced: "<<origin<< "    vs   provence: "<<provenance<<std::endl;
-
+        provenanceCompressed = GenTools::provenanceCompressed(*match, *genParticles);
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
         provenance = 4.;
-        origin = -1;
-        originReduced = -1;
 
     }
 }

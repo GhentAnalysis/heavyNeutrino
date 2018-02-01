@@ -108,11 +108,18 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
   outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
+outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nLight]/O");
+    outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nLight]/O");
+    outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nLight]/O");
+    outputTree->Branch("_lEwkLoose",                    &_lEwkLoose,                    "_lEwkLoose[_nL]/O");
+    outputTree->Branch("_lEwkFO",                       &_lEwkFO,                       "_lEwkFO[_nL]/O");
+    outputTree->Branch("_lEwkTight",                    &_lEwkTight,                    "_lEwkTight[_nL]/O");
  
   if(!multilepAnalyzer->isData){
     outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
     outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
     outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
+    outputTree->Branch("_lProvenanceCompressed",	  &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
   }
 }
 
@@ -685,6 +692,12 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
   _ecalPFClusterIso[_nL]= ele.ecalPFClusterIso();
   _hcalPFClusterIso[_nL]= ele.hcalPFClusterIso();
 	
+void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatching* genMatcher){
+    genMatcher->fillMatchingVars(lepton);
+    _lIsPrompt[_nL] = genMatcher->promptMatch();
+    _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
+    _lProvenance[_nL] = genMatcher->getProvenance();
+    _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
 }
 
 
@@ -827,5 +840,3 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     }
   }
 }
-
-

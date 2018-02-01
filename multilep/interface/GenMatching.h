@@ -16,8 +16,7 @@ class GenMatching{
     int matchPdgId;
     bool matchIsPrompt;
     unsigned provenance;
-    unsigned origin;
-    unsigned originReduced;
+    unsigned provenanceCompressed;
   public:
     GenMatching(const edm::ParameterSet& iConfig, multilep*);
     ~GenMatching(){};
@@ -26,8 +25,10 @@ class GenMatching{
     void setGenParticles(const edm::Event&);    
     //fill match variables
     void fillMatchingVars(const reco::Candidate&);
+    //return values
     int pdgIdMatch() const {return matchPdgId; }
     bool promptMatch() const {return matchIsPrompt;}
     unsigned getProvenance() const {return provenance;}
+    unsigned getProvenanceCompressed() const{ return provenanceCompressed; }
 };
 #endif
