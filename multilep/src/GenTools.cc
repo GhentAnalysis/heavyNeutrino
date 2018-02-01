@@ -43,7 +43,7 @@ bool GenTools::sBaryonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::lightMesonInChain(const std::set<int>& chain){
-    return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return mod >= 100 && mod < 300; }) != chain.cend();
+    return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return (mod >= 100 && mod < 400) || entry == 21; }) != chain.cend();
 }
 
 bool GenTools::lightBaryonInChain(const std::set<int>& chain){
