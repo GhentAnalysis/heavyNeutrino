@@ -84,6 +84,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
         outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
         outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
+        outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
     }
 }
 
@@ -280,6 +281,7 @@ void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatchin
     _lIsPrompt[_nL] = genMatcher->promptMatch();
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
     _lProvenance[_nL] = genMatcher->getProvenance();
+    _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
 }
 
 
