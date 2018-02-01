@@ -47,7 +47,7 @@ class LeptonAnalyzer {
     EffectiveAreas muonsEffectiveAreas;
 
     static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
-    static const unsigned nV_max      = 100;   
+    static const unsigned nV_max      = 50;   
   
     unsigned _nL;                                                                                    //number of leptons
     unsigned _nMu;
@@ -175,6 +175,8 @@ class LeptonAnalyzer {
     edm::ESHandle<MagneticField> _bField;
     edm::ESHandle<Propagator> _shProp;
     TransientVertex dileptonVertex(const reco::Track&, const reco::Track&);
+    void cleanDileptonVertexArrays(unsigned);
+
     void fillDileptonVertexArrays(unsigned, unsigned, unsigned,
 				  const TransientVertex&,
 				  const reco::Track&, const reco::Track&);
