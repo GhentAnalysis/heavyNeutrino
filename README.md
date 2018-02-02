@@ -12,6 +12,7 @@ git cms-init
 git clone https://github.com/GhentAnalysis/heavyNeutrino
 git checkout CMSSW_8_0_X
 cd heavyNeutrino
+git checkout CMSSW_8_0_X
 ./setup.sh
 ```
 
