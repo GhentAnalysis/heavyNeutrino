@@ -1,5 +1,6 @@
 if [[ $CMSSW_BASE == *CMSSW_8* ]]
 then
+  git checkout CMSSW_8_0_X
   eval `scram runtime -sh`
   cd $CMSSW_BASE/src
 
