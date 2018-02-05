@@ -2,6 +2,16 @@ import FWCore.ParameterSet.Config as cms
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
 def addElectronAndPhotonSequence(process):
+  from EgammaAnalysis.ElectronTools.calibrationTablesRun2 import files
+  process.load('Configuration.StandardSequences.Services_cff')
+  process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+    calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81), engineName = cms.untracked.string('TRandom3'),),
+    calibratedPatPhotons    = cms.PSet( initialSeed = cms.untracked.uint32(81), engineName = cms.untracked.string('TRandom3'),),
+  )
+  process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
+  process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
+  process.calibratedPatElectrons.correctionFile = cms.string(files['Moriond17_23Jan'])
+  process.calibratedPatPhotons.correctionFile   = cms.string(files['Moriond17_23Jan'])
 
   #
   # Set up electron and photon identifications
@@ -17,4 +27,4 @@ def addElectronAndPhotonSequence(process):
   for idmod in electronModules: setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
   for idmod in photonModules:   setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
-  process.egmSequence = cms.Sequence(process.egmGsfElectronIDSequence * process.egmPhotonIDSequence)
+  process.egmSequence = cms.Sequence(process.egmGsfElectronIDSequence * process.egmPhotonIDSequence * process.calibratedPatElectrons * process.calibratedPatPhotons)
