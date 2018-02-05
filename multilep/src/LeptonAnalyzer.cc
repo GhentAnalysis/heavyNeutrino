@@ -30,7 +30,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/b");
   outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/b");
   outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/b");
-  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/D");
+  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");
   outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");
   outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
@@ -62,10 +62,10 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lCQChi2Position",              &_lCQChi2Position,              "_lCQChi2Position[_nL]/D");
   outputTree->Branch("_lCQTrackKink",                 &_lCQTrackKink,                 "_lCQTrackKink[_nL]/D");
   outputTree->Branch("_muonSegComp",                  &_muonSegComp,                  "_muonSegComp[_nMu]/D");
-  outputTree->Branch("_lNumberOfMatchedStation",      &_lNumberOfMatchedStation,      "_lNumberOfMatchedStation[_nL]/D");
-  outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/D");
-  outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/D");
-  outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/D");
+  outputTree->Branch("_lNumberOfMatchedStation",      &_lNumberOfMatchedStation,      "_lNumberOfMatchedStation[_nL]/i");
+  outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/i");
+  outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/i");
+  outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/i");
   outputTree->Branch("_lEleIsEB",                     &_lEleIsEB ,                    "_lEleIsEB[_nL]/O");
   outputTree->Branch("_lEleIsEE",                     &_lEleIsEE ,                    "_lEleIsEE[_nL]/O");
   outputTree->Branch("_lEleSuperClusterOverP",        &_lEleSuperClusterOverP ,       "_lEleSuperClusterOverP[_nL]/D");
@@ -75,7 +75,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lEleDeltaPhiSuperClusterTrackAtVtx", &_lEleDeltaPhiSuperClusterTrackAtVtx , "_lEleDeltaPhiSuperClusterTrackAtVtx[_nL]/D");
   outputTree->Branch("_lElehadronicOverEm",           &_lElehadronicOverEm ,          "_lElehadronicOverEm[_nL]/D");
   outputTree->Branch("_lEleInvMinusPInv",             &_lEleInvMinusPInv ,            "_lEleInvMinusPInv[_nL]/D");
-  outputTree->Branch("_eleNumberInnerHitsMissing",    &_eleNumberInnerHitsMissing ,   "_eleNumberInnerHitsMissing[_nL]/D");
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/D");
   outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
@@ -87,11 +86,11 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_sumChargedHadronPt03",         &_sumChargedHadronPt03,         "_sumChargedHadronPt03[_nL]/D");
   outputTree->Branch("_sumPhotonEt03",                &_sumPhotonEt03,                "_sumPhotonEt03[_nL]/D");
   outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nL]/D");
-  outputTree->Branch("_ecalIso",                      &_ecalIso ,                     " _ecalIso[_nL]/D");
-  outputTree->Branch("_hcalIso",                      &_hcalIso ,                     " _hcalIso[_nL]/D");
-  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    " _deltaBIso[_nL]/D");
-  outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            " _ecalPFClusterIso[_nL]/D");
-  outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            " _hcalPFClusterIso[_nL]/D");
+  outputTree->Branch("_ecalIso",                      &_ecalIso ,                     "_ecalIso[_nL]/D");
+  outputTree->Branch("_hcalIso",                      &_hcalIso ,                     "_hcalIso[_nL]/D");
+  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    "_deltaBIso[_nL]/D");
+  outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            "_ecalPFClusterIso[_nL]/D");
+  outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            "_hcalPFClusterIso[_nL]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
