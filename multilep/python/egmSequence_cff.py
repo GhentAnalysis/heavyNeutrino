@@ -2,6 +2,11 @@ import FWCore.ParameterSet.Config as cms
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
 def addElectronAndPhotonSequence(process):
+
+  from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+  process = regressionWeights(process)
+  process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
+
   from EgammaAnalysis.ElectronTools.calibrationTablesRun2 import files
   process.load('Configuration.StandardSequences.Services_cff')
   process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
@@ -27,4 +32,10 @@ def addElectronAndPhotonSequence(process):
   for idmod in electronModules: setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
   for idmod in photonModules:   setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
-  process.egmSequence = cms.Sequence(process.egmGsfElectronIDSequence * process.egmPhotonIDSequence * process.calibratedPatElectrons * process.calibratedPatPhotons)
+  process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
+  process.electronIDValueMapProducer.srcMiniAOD  = cms.InputTag('slimmedElectrons')
+  process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
+  process.photonIDValueMapProducer.srcMiniAOD    = cms.InputTag('slimmedPhotons')
+  process.photonMVAValueMapProducer.srcMiniAOD   = cms.InputTag('slimmedPhotons')
+
+  process.egmSequence = cms.Sequence(process.regressionApplication * process.calibratedPatElectrons * process.calibratedPatPhotons * process.egmGsfElectronIDSequence * process.egmPhotonIDSequence)
