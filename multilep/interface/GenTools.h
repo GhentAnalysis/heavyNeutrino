@@ -48,6 +48,8 @@ namespace GenTools{
     //find the provenance of a particle using the contents of its decayChain
     unsigned provenance(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     unsigned provenanceCompressed(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
+    bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //find the minimum deltaR between a reco particle and all genparticles
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
 }
