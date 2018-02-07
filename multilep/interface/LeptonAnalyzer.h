@@ -73,6 +73,8 @@ class LeptonAnalyzer {
 
     float _lElectronMva[nL_max];                                                                     //electron specific variables
     float _lElectronMvaHZZ[nL_max];
+    float _lElectronMvaFall17Iso[nL_max];
+    float _lElectronMvaFall17NoIso[nL_max];
     bool _lElectronPassEmu[nL_max];                                                                  
     bool _lElectronPassConvVeto[nL_max];
     bool _lElectronChargeConst[nL_max];
@@ -113,6 +115,7 @@ class LeptonAnalyzer {
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
     unsigned _lProvenance[nL_max];                                                                    
+    unsigned _lProvenanceCompressed[nL_max];
 
 
 

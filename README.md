@@ -5,8 +5,8 @@ The tuplizer itself is entirely contained in the multilep directory.
 
 # Set-up instructions
 ```
-cmsrel CMSSW_9_4_2
-cd CMSSW_9_4_2/src
+cmsrel CMSSW_9_4_3
+cd CMSSW_9_4_3/src
 cmsenv
 git cms-init
 git clone https://github.com/GhentAnalysis/heavyNeutrino
