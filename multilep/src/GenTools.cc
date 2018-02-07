@@ -104,7 +104,7 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
     std::set<int> decayChain;
     setDecayChain(gen, genParticles, decayChain);
     //first consider decays involving a boson
-    if(!bosonInChain(decayChain)){
+    if(bosonInChain(decayChain)){
         if(bMesonInChain(decayChain)){
             if(cMesonInChain(decayChain)){
                 if(tauInChain(decayChain)){
