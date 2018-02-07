@@ -163,6 +163,12 @@ unsigned GenTools::provenanceCompressed(const reco::GenParticle& gen, const std:
     return 4;                                                                       //unkown origin
 }
 
+bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    const reco::GenParticle* mom = getMother(gen, genParticles);
+    if(abs(mom->pdgId()) == 15 && mom->isPromptDecayed()) return true;
+    return (gen.isPromptFinalState() || gen.isPromptDecayed());
+}
+
 double GenTools::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
     double minDeltaR = 10;
     for(auto& q : genParticles){

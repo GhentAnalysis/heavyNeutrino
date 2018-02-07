@@ -33,7 +33,7 @@ bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticl
 }
 
 bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
-    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return match.isPromptFinalState();
+    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPrompt(match, *genParticles);
     return false;
 }
 
