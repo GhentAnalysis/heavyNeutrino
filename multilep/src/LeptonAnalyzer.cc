@@ -41,6 +41,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_3dIPSig",                      &_3dIPSig,                      "_3dIPSig[_nL]/D");
     outputTree->Branch("_lElectronMva",                 &_lElectronMva,                 "_lElectronMva[_nLight]/F");
     outputTree->Branch("_lElectronMvaHZZ",              &_lElectronMvaHZZ,              "_lElectronMvaHZZ[_nLight]/F");
+    outputTree->Branch("_lElectronMvaFall17Iso",        &_lElectronMvaFall17Iso,        "_lElectronMvaFall17Iso[_nLight]/F");
+    outputTree->Branch("_lElectronMvaFall17NoIso",      &_lElectronMvaFall17NoIso,      "_lElectronMvaFall17NoIso[_nLight]/F");
     outputTree->Branch("_lElectronPassEmu",             &_lElectronPassEmu,             "_lElectronPassEmu[_nLight]/O");
     outputTree->Branch("_lElectronPassConvVeto",        &_lElectronPassConvVeto,        "_lElectronPassConvVeto[_nLight]/O");
     outputTree->Branch("_lElectronChargeConst",         &_lElectronChargeConst,         "_lElectronChargeConst[_nLight]/O");
@@ -181,37 +183,37 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lFlavor[_nL]          = 0;
         _lEtaSC[_nL]           = ele->superCluster()->eta();
 
-        _relIso[_nL]                = getRelIso03(*ele, *rho, multilepAnalyzer->is2017);
-        _miniIso[_nL]               = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false, multilepAnalyzer->is2017);
-        _miniIsoCharged[_nL]        = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true, multilepAnalyzer->is2017);
-        _lElectronMva[_nL]          = (*electronsMva)[electronRef];
-        _lElectronMvaHZZ[_nL]       = (*electronsMvaHZZ)[electronRef];
-        _lElectronMvaFall17Iso[_nL] = (*electronMvaFall17Iso)[electronRef];
-        _lElectronMvaFall17NoIso[_nL] = (*electronMvaFall17NoIso)[electronRef];
-        _lElectronPassEmu[_nL]      = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
-        _lElectronPassConvVeto[_nL] = ele->passConversionVeto();
-        _lElectronChargeConst[_nL]  = ele->isGsfCtfScPixChargeConsistent();
-        _lElectronMissingHits[_nL]  = ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
+        _relIso[_nL]                    = getRelIso03(*ele, *rho, multilepAnalyzer->is2017);
+        _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false, multilepAnalyzer->is2017);
+        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true, multilepAnalyzer->is2017);
+        _lElectronMva[_nL]              = (*electronsMva)[electronRef];
+        _lElectronMvaHZZ[_nL]           = (*electronsMvaHZZ)[electronRef];
+        _lElectronMvaFall17Iso[_nL]     = (*electronMvaFall17Iso)[electronRef];
+        _lElectronMvaFall17NoIso[_nL]   = (*electronMvaFall17NoIso)[electronRef];
+        _lElectronPassEmu[_nL]          = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
+        _lElectronPassConvVeto[_nL]     = ele->passConversionVeto();
+        _lElectronChargeConst[_nL]      = ele->isGsfCtfScPixChargeConsistent();
+        _lElectronMissingHits[_nL]      = ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
 
-        _lHNLoose[_nL]              = isHNLoose(*ele);
-        _lHNFO[_nL]                 = isHNFO(*ele);
-        _lHNTight[_nL]              = isHNTight(*ele);
+        _lHNLoose[_nL]                  = isHNLoose(*ele);
+        _lHNFO[_nL]                     = isHNFO(*ele);
+        _lHNTight[_nL]                  = isHNTight(*ele);
 
-        _lPOGVeto[_nL]              = (*electronsCutBasedVeto)[electronRef];
-        _lPOGLoose[_nL]             = (*electronsCutBasedLoose)[electronRef];
-        _lPOGMedium[_nL]            = (*electronsCutBasedMedium)[electronRef];
-        _lPOGTight[_nL]             = (*electronsCutBasedTight)[electronRef];
+        _lPOGVeto[_nL]                  = (*electronsCutBasedVeto)[electronRef];
+        _lPOGLoose[_nL]                 = (*electronsCutBasedLoose)[electronRef];
+        _lPOGMedium[_nL]                = (*electronsCutBasedMedium)[electronRef];
+        _lPOGTight[_nL]                 = (*electronsCutBasedTight)[electronRef];
 
-        _lPOGLooseWOIso[_nL]        = isLooseCutBasedElectronWithoutIsolation(&*ele);
-        _lPOGMediumWOIso[_nL]       = isMediumCutBasedElectronWithoutIsolation(&*ele);
-        _lPOGTightWOIso[_nL]        = isTightCutBasedElectronWithoutIsolation(&*ele);
+        _lPOGLooseWOIso[_nL]            = isLooseCutBasedElectronWithoutIsolation(&*ele);
+        _lPOGMediumWOIso[_nL]           = isMediumCutBasedElectronWithoutIsolation(&*ele);
+        _lPOGTightWOIso[_nL]            = isTightCutBasedElectronWithoutIsolation(&*ele);
 
-        _leptonMvaSUSY[_nL]         = leptonMvaVal(*ele, leptonMvaComputerSUSY);
-        _leptonMvaTTH[_nL]          = leptonMvaVal(*ele, leptonMvaComputerTTH);
+        _leptonMvaSUSY[_nL]             = leptonMvaVal(*ele, leptonMvaComputerSUSY);
+        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
 
-        _lEwkLoose[_nL]             = isEwkLoose(*ele);
-        _lEwkFO[_nL]                = isEwkFO(*ele);
-        _lEwkTight[_nL]             = isEwkTight(*ele);
+        _lEwkLoose[_nL]                 = isEwkLoose(*ele);
+        _lEwkFO[_nL]                    = isEwkFO(*ele);
+        _lEwkTight[_nL]                 = isEwkTight(*ele);
 
         ++_nEle;
         ++_nL;
