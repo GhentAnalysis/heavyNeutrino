@@ -36,7 +36,9 @@ class LeptonAnalyzer {
   friend class multilep;
   private:
     EffectiveAreas electronsEffectiveAreas;
+    EffectiveAreas electronsEffectiveAreasFall17;
     EffectiveAreas muonsEffectiveAreas;
+    EffectiveAreas muonsEffectiveAreasFall17;
 
     static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
     unsigned _nL;                                                                                    //number of leptons
@@ -134,10 +136,10 @@ class LeptonAnalyzer {
 
     // In leptonAnalyzerIso,cc
 
-    double getRelIso03(const pat::Muon&, const double) const;
-    double getRelIso03(const pat::Electron&, const double) const;
+    double getRelIso03(const pat::Muon&, const double, const bool is2017) const;
+    double getRelIso03(const pat::Electron&, const double, const bool is2017) const;
     double getRelIso04(const pat::Muon& mu) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false, const bool is2017 = false) const;
 
     // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*) const;
