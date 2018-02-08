@@ -43,10 +43,10 @@ class LeptonAnalyzer {
   friend class LeptonIdHelper;
   friend class multilep;
   private:
+    multilep* multilepAnalyzer;
+
     EffectiveAreas electronsEffectiveAreas;
-    EffectiveAreas electronsEffectiveAreasFall17;
     EffectiveAreas muonsEffectiveAreas;
-    EffectiveAreas muonsEffectiveAreasFall17;
 
     static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
     static const unsigned nV_max      = 50;   
@@ -172,7 +172,6 @@ class LeptonAnalyzer {
 
 
 
-    multilep* multilepAnalyzer;
 
     edm::ESHandle<MagneticField> _bField;
     edm::ESHandle<Propagator> _shProp;
@@ -197,10 +196,11 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
 
     // In leptonAnalyzerIso,cc
+
+    double getRelIso03(const pat::Muon&, const double) const;
+    double getRelIso03(const pat::Electron&, const double) const;
     double getRelIso04(const pat::Muon& mu) const;
-    double getRelIso03(const pat::Muon& mu, const double rho) const;
-    double getRelIso03(const pat::Electron& ele, const double rho) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false) const;
 
 
   
