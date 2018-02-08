@@ -126,10 +126,10 @@ class LeptonAnalyzer {
     double _lCQChi2Position[nL_max];
     double _lCQTrackKink[nL_max];
     double _muonSegComp[nL_max];
-    double _lNumberOfMatchedStation[nL_max];
-    double _lNumberOfValidPixelHits[nL_max];
-    double _muNumberInnerHits[nL_max];
-    double _lTrackerLayersWithMeasurement[nL_max];
+    unsigned _lNumberOfMatchedStation[nL_max];
+    unsigned _lNumberOfValidPixelHits[nL_max];
+    unsigned _muNumberInnerHits[nL_max];
+    unsigned _lTrackerLayersWithMeasurement[nL_max];
   
   /////// ele ID variabels
     bool _lEleIsEB [nL_max];
