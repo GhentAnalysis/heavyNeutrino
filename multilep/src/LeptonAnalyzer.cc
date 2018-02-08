@@ -5,11 +5,9 @@
 #include "TLorentzVector.h"
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
-    electronsEffectiveAreas((iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath()),
-    electronsEffectiveAreasFall17((iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath()),
-    muonsEffectiveAreas((iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
-    muonsEffectiveAreasFall17((iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
-    multilepAnalyzer(multilepAnalyzer)
+    multilepAnalyzer(multilepAnalyzer), 
+    electronsEffectiveAreas(multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath() ),
+    muonsEffectiveAreas    (multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFell17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
     leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
@@ -138,10 +136,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lMuonTrackPt[_nL]    = mu.innerTrack()->pt();
         _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
 
-        _relIso[_nL]         = getRelIso03(mu, *rho, multilepAnalyzer->is2017);                     // Isolation variables
+        _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
         _relIso0p4Mu[_nL]    = getRelIso04(mu);                                                     
-        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false, multilepAnalyzer->is2017);
-        _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true,  multilepAnalyzer->is2017);
+        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false);
+        _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
         _lHNLoose[_nL]       = isHNLoose(mu);                                                       // ID variables
         _lHNFO[_nL]          = isHNFO(mu);                                                          // don't change order, they rely on above variables
@@ -183,9 +181,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lFlavor[_nL]          = 0;
         _lEtaSC[_nL]           = ele->superCluster()->eta();
 
-        _relIso[_nL]                    = getRelIso03(*ele, *rho, multilepAnalyzer->is2017);
-        _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false, multilepAnalyzer->is2017);
-        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true, multilepAnalyzer->is2017);
+        _relIso[_nL]                    = getRelIso03(*ele, *rho);
+        _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);
+        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
         _lElectronMva[_nL]              = (*electronsMva)[electronRef];
         _lElectronMvaHZZ[_nL]           = (*electronsMvaHZZ)[electronRef];
         _lElectronMvaFall17Iso[_nL]     = (*electronMvaFall17Iso)[electronRef];

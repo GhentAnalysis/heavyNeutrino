@@ -15,24 +15,20 @@ double LeptonAnalyzer::getRelIso04(const pat::Muon& mu) const{ //Note: effective
 	return absIso/mu.pt();
 }
 
-double LeptonAnalyzer::getRelIso03(const pat::Muon& mu, const double rho, const bool is2017) const{ //Note: effective area correction is used instead of delta-beta correction
-    double puCorr;
-    if(is2017)  puCorr = rho*muonsEffectiveAreasFall17.getEffectiveArea(mu.eta());
-    else        puCorr = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
+double LeptonAnalyzer::getRelIso03(const pat::Muon& mu, const double rho) const{ //Note: effective area correction is used instead of delta-beta correction
+    double puCorr = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
 	double absIso = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - puCorr);
 	return absIso/mu.pt();
 }
 
-double LeptonAnalyzer::getRelIso03(const pat::Electron& ele, const double rho, const bool is2017) const{
-	double puCorr;
-    if(is2017)  puCorr = rho*electronsEffectiveAreasFall17.getEffectiveArea(ele.superCluster()->eta());
-    else        puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
+double LeptonAnalyzer::getRelIso03(const pat::Electron& ele, const double rho) const{
+	double puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
 	double absIso = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - puCorr);
 	return absIso/ele.pt();
 }
 
 double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Handle<pat::PackedCandidateCollection> pfcands,
-                                        double r_iso_min, double r_iso_max, double kt_scale, double rho, const bool onlyCharged, const bool is2017) const{
+                                        double r_iso_min, double r_iso_max, double kt_scale, double rho, const bool onlyCharged) const{
     bool deltaBeta   = false;
     double deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);
     if(ptcl.isElectron() and fabs(ptcl.superCluster()->eta() >1.479)){ deadcone_ch = 0.015;  deadcone_pu = 0.015; deadcone_ph = 0.08; deadcone_nh = 0;}
@@ -64,11 +60,9 @@ double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Ha
 
     double puCorr = 0;
     if(ptcl.isMuon()){
-        if(is2017)  puCorr = rho*muonsEffectiveAreasFall17.getEffectiveArea(ptcl.eta());
-        else        puCorr = rho*muonsEffectiveAreas.getEffectiveArea(ptcl.eta());
+        puCorr = rho*muonsEffectiveAreas.getEffectiveArea(ptcl.eta());
     } else{
-        if(is2017)  puCorr = rho*electronsEffectiveAreasFall17.getEffectiveArea(ptcl.superCluster()->eta());
-        else        puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
+        puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
     }
 
     double iso;
