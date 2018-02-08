@@ -34,7 +34,7 @@ bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticl
 }
 
 bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
-    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return match.isPromptFinalState();
+    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPrompt(match, *genParticles);
     return false;
 }
 
@@ -47,15 +47,11 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
         matchPdgId = match->pdgId();
         provenance = (matchIsPrompt ? 0 : GenTools::provenance(*match, *genParticles) );
         provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
-         std::cout<<"provence:  "<<provenance<<std::endl;
-        std::cout<<"provence compressed:  "<<provenanceCompressed<<std::endl;
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
         provenanceCompressed = 4;
         provenance = 18;
-         std::cout<<"provence:  "<<provenance<<std::endl;
-        std::cout<<"provence compressed:  "<<provenanceCompressed<<std::endl;
     }
 }
 

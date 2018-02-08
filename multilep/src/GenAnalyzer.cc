@@ -74,7 +74,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lPhi[_gen_nL]      = p.phi();
                 _gen_lE[_gen_nL]        = p.energy();
                 _gen_lCharge[_gen_nL]   = p.charge();
-                _gen_lIsPrompt[_gen_nL] = (p.isPromptDecayed() || p.isPromptFinalState());
+                _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
                 _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
 
                 std::set<int> decayChain;

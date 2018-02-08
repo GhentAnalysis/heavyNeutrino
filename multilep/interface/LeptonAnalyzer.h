@@ -44,7 +44,9 @@ class LeptonAnalyzer {
   friend class multilep;
   private:
     EffectiveAreas electronsEffectiveAreas;
+    EffectiveAreas electronsEffectiveAreasFall17;
     EffectiveAreas muonsEffectiveAreas;
+    EffectiveAreas muonsEffectiveAreasFall17;
 
     static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
     static const unsigned nV_max      = 50;   
@@ -199,6 +201,7 @@ class LeptonAnalyzer {
     double getRelIso03(const pat::Muon& mu, const double rho) const;
     double getRelIso03(const pat::Electron& ele, const double rho) const;
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
+
 
   
  // In LeptonAnalyzerId.cc
