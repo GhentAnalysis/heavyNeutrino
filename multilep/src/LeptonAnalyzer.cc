@@ -117,21 +117,21 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   }
 }
 
-<<<<<<< HEAD
-bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup, const reco::Vertex& primaryVertex){
-  edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
-  edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
-  edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
-  edm::Handle<edm::ValueMap<bool>> electronsCutBasedVeto;          iEvent.getByToken(multilepAnalyzer->eleCutBasedVetoToken,              electronsCutBasedVeto);
-  edm::Handle<edm::ValueMap<bool>> electronsCutBasedLoose;         iEvent.getByToken(multilepAnalyzer->eleCutBasedLooseToken,             electronsCutBasedLoose);
-  edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBasedMedium);
-  edm::Handle<edm::ValueMap<bool>> electronsCutBasedTight;         iEvent.getByToken(multilepAnalyzer->eleCutBasedTightToken,             electronsCutBasedTight);
-  edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
-  edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
-  edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
-  edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
-  edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
-
+bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
+    edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
+    edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
+    edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
+    edm::Handle<edm::ValueMap<float>> electronMvaFall17Iso;          iEvent.getByToken(multilepAnalyzer->eleMvaFall17IsoToken,              electronMvaFall17$
+    edm::Handle<edm::ValueMap<float>> electronMvaFall17NoIso;        iEvent.getByToken(multilepAnalyzer->eleMvaFall17NoIsoToken,            electronMvaFall17$
+    edm::Handle<edm::ValueMap<bool>> electronsCutBasedVeto;          iEvent.getByToken(multilepAnalyzer->eleCutBasedVetoToken,              electronsCutBased$
+    edm::Handle<edm::ValueMap<bool>> electronsCutBasedLoose;         iEvent.getByToken(multilepAnalyzer->eleCutBasedLooseToken,             electronsCutBased$
+    edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBased$
+    edm::Handle<edm::ValueMap<bool>> electronsCutBasedTight;         iEvent.getByToken(multilepAnalyzer->eleCutBasedTightToken,             electronsCutBased$
+    edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
+    edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
+    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
+    edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
+    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
   iSetup.get<IdealMagneticFieldRecord>().get(_bField);
   iSetup.get<TrackingComponentsRecord>().get("SteppingHelixPropagatorAny", _shProp);
 
@@ -498,135 +498,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   return true;
 }
 
-=======
-bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
-    edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
-    edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
-    edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
-    edm::Handle<edm::ValueMap<float>> electronMvaFall17Iso;          iEvent.getByToken(multilepAnalyzer->eleMvaFall17IsoToken,              electronMvaFall17Iso);
-    edm::Handle<edm::ValueMap<float>> electronMvaFall17NoIso;        iEvent.getByToken(multilepAnalyzer->eleMvaFall17NoIsoToken,            electronMvaFall17NoIso);
-    edm::Handle<edm::ValueMap<bool>> electronsCutBasedVeto;          iEvent.getByToken(multilepAnalyzer->eleCutBasedVetoToken,              electronsCutBasedVeto);
-    edm::Handle<edm::ValueMap<bool>> electronsCutBasedLoose;         iEvent.getByToken(multilepAnalyzer->eleCutBasedLooseToken,             electronsCutBasedLoose);
-    edm::Handle<edm::ValueMap<bool>> electronsCutBasedMedium;        iEvent.getByToken(multilepAnalyzer->eleCutBasedMediumToken,            electronsCutBasedMedium);
-    edm::Handle<edm::ValueMap<bool>> electronsCutBasedTight;         iEvent.getByToken(multilepAnalyzer->eleCutBasedTightToken,             electronsCutBasedTight);
-    edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
-    edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
-    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
-    edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
-    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
-
-    _nL     = 0;
-    _nLight = 0;
-    _nMu    = 0;
-    _nEle   = 0;
-    _nTau   = 0;
-
-    //set up generator matching
-    if(!multilepAnalyzer->isData) genMatcher->setGenParticles(iEvent);
-
-    //loop over muons
-    for(const pat::Muon& mu : *muons){
-        if(_nL == nL_max)                              break;
-        if(mu.innerTrack().isNull())                   continue;
-        if(mu.pt() < 5)                                continue;
-        if(fabs(mu.eta()) > 2.4)                       continue;
-        if(!mu.isPFMuon())                             continue;
-        if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue;
-        fillLeptonImpactParameters(mu, primaryVertex);
-        if(fabs(_dxy[_nL]) > 0.05)                     continue;
-        if(fabs(_dz[_nL]) > 0.1)                       continue;
-        fillLeptonKinVars(mu);
-        //fillLeptonGenVars(mu.genParticle());
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
-        fillLeptonJetVariables(mu, jets, primaryVertex);
-
-        _lFlavor[_nL]        = 1;
-        _lMuonSegComp[_nL]    = mu.segmentCompatibility();
-        _lMuonTrackPt[_nL]    = mu.innerTrack()->pt();
-        _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
-
-        _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
-        _relIso0p4Mu[_nL]    = getRelIso04(mu);                                                     
-        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false);
-        _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
-
-        _lHNLoose[_nL]       = isHNLoose(mu);                                                       // ID variables
-        _lHNFO[_nL]          = isHNFO(mu);                                                          // don't change order, they rely on above variables
-        _lHNTight[_nL]       = isHNTight(mu);
-
-        _lPOGVeto[_nL]       = mu.isLooseMuon();
-        _lPOGLoose[_nL]      = mu.isLooseMuon();
-        _lPOGMedium[_nL]     = mu.isMediumMuon();
-        _lPOGTight[_nL]      = mu.isTightMuon(primaryVertex);
-
-        _leptonMvaSUSY[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY);
-        _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
-
-        _lEwkLoose[_nL]      = isEwkLoose(mu);
-        _lEwkFO[_nL]         = isEwkFO(mu);
-        _lEwkTight[_nL]      = isEwkTight(mu);
-
-        ++_nMu;
-        ++_nL;
-        ++_nLight;
-    }
-
-    // Loop over electrons (note: using iterator we can easily get the ref too)
-    for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
-        auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
-        if(_nL == nL_max)                                                                               break;
-        if(ele->gsfTrack().isNull())                                                                    continue;
-        if(ele->pt() < 7)                                                                               continue;
-        if(fabs(ele->eta()) > 2.5)                                                                      continue;
-        if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 2)    continue;
-        fillLeptonImpactParameters(*ele, primaryVertex);
-        if(fabs(_dxy[_nL]) > 0.05)                                                                      continue;
-        if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
-        fillLeptonKinVars(*ele);
-        //fillLeptonGenVars(ele->genParticle());
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
-        fillLeptonJetVariables(*ele, jets, primaryVertex);
-
-        _lFlavor[_nL]          = 0;
-        _lEtaSC[_nL]           = ele->superCluster()->eta();
-
-        _relIso[_nL]                    = getRelIso03(*ele, *rho);
-        _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);
-        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
-        _lElectronMva[_nL]              = (*electronsMva)[electronRef];
-        _lElectronMvaHZZ[_nL]           = (*electronsMvaHZZ)[electronRef];
-        _lElectronMvaFall17Iso[_nL]     = (*electronMvaFall17Iso)[electronRef];
-        _lElectronMvaFall17NoIso[_nL]   = (*electronMvaFall17NoIso)[electronRef];
-        _lElectronPassEmu[_nL]          = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
-        _lElectronPassConvVeto[_nL]     = ele->passConversionVeto();
-        _lElectronChargeConst[_nL]      = ele->isGsfCtfScPixChargeConsistent();
-        _lElectronMissingHits[_nL]      = ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
-
-        _lHNLoose[_nL]                  = isHNLoose(*ele);
-        _lHNFO[_nL]                     = isHNFO(*ele);
-        _lHNTight[_nL]                  = isHNTight(*ele);
-
-        _lPOGVeto[_nL]                  = (*electronsCutBasedVeto)[electronRef];
-        _lPOGLoose[_nL]                 = (*electronsCutBasedLoose)[electronRef];
-        _lPOGMedium[_nL]                = (*electronsCutBasedMedium)[electronRef];
-        _lPOGTight[_nL]                 = (*electronsCutBasedTight)[electronRef];
-
-        _lPOGLooseWOIso[_nL]            = isLooseCutBasedElectronWithoutIsolation(&*ele);
-        _lPOGMediumWOIso[_nL]           = isMediumCutBasedElectronWithoutIsolation(&*ele);
-        _lPOGTightWOIso[_nL]            = isTightCutBasedElectronWithoutIsolation(&*ele);
-
-        _leptonMvaSUSY[_nL]             = leptonMvaVal(*ele, leptonMvaComputerSUSY);
-        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
-
-        _lEwkLoose[_nL]                 = isEwkLoose(*ele);
-        _lEwkFO[_nL]                    = isEwkFO(*ele);
-        _lEwkTight[_nL]                 = isEwkTight(*ele);
-
-        ++_nEle;
-        ++_nL;
-        ++_nLight;
-    }
->>>>>>> master
 
 
 /*
