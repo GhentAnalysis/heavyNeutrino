@@ -194,7 +194,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _muonSegComp[_nL]    = mu.segmentCompatibility();
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
   	
-    if (_relIso[_nL] > 1) continue;
+//    if (_relIso[_nL] > 1) continue;
 	  
 	  
     // TODO: this is a possible solution to the missing trackRef, but maybe not what you want 
@@ -272,7 +272,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
-    if (_relIso[_nL] > 1) continue;
+//    if (_relIso[_nL] > 1) continue;
 
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
