@@ -1,12 +1,17 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
-def addElectronAndPhotonSequence(process):
-
+def addElectronAndPhotonSequence(process, isData):
+  #
+  # EGM Regression
+  #
   from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
   process = regressionWeights(process)
   process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 
+  #
+  # EGM scale corrections (on data) and smearing (on MC)
+  #
   from EgammaAnalysis.ElectronTools.calibrationTablesRun2 import files
   process.load('Configuration.StandardSequences.Services_cff')
   process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
@@ -15,8 +20,9 @@ def addElectronAndPhotonSequence(process):
   )
   process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
   process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
-  process.calibratedPatElectrons.correctionFile = cms.string(files['Moriond17_23Jan'])
-  process.calibratedPatPhotons.correctionFile   = cms.string(files['Moriond17_23Jan'])
+  for calmod in [process.calibratedPatElectrons, process.calibratedPatPhotons]:
+    calmod.correctionFile = cms.string(files['Moriond17_23Jan'])
+    calmod.isMC           = cms.bool(not isData)
 
   #
   # Set up electron and photon identifications
