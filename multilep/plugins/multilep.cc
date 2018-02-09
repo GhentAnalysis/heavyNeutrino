@@ -10,6 +10,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
     muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
+    eleCalibratedToken(               consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electronsCalibrated"))),
     eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
     eleMvaHZZToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMvaHZZ"))),
     eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedVeto"))),
@@ -18,6 +19,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     eleCutBasedTightToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedTight"))),
     tauToken(                         consumes<std::vector<pat::Tau>>(            iConfig.getParameter<edm::InputTag>("taus"))),
     photonToken(                      consumes<std::vector<pat::Photon>>(         iConfig.getParameter<edm::InputTag>("photons"))),
+    photonCalibratedToken(            consumes<std::vector<pat::Photon>>(         iConfig.getParameter<edm::InputTag>("photonsCalibrated"))),
     photonCutBasedLooseToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedLoose"))),
     photonCutBasedMediumToken(        consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedMedium"))),
     photonCutBasedTightToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedTight"))),
@@ -41,7 +43,15 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
+    eScaleUpUncertaintyToken(         consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("eScaleUpUncertainty"))),
+    eScaleDownUncertaintyToken(       consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("eScaleDownUncertainty"))),
+    eResolutionUpUncertaintyToken(    consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("eResolutionUpUncertainty"))),
+    eResolutionDownUncertaintyToken(  consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("eResolutionDownUncertainty"))),
+    phScaleUpUncertaintyToken(        consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("phScaleUpUncertainty"))),
+    phScaleDownUncertaintyToken(      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("phScaleDownUncertainty"))),
+    phResolutionUpUncertaintyToken(   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("phResolutionUpUncertainty"))),
+    phResolutionDownUncertaintyToken( consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("phResolutionDownUncertainty")))
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
