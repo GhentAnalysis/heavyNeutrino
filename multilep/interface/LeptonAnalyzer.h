@@ -35,6 +35,7 @@ class LeptonAnalyzer {
   friend class LeptonIdHelper;
   friend class multilep;
   private:
+    //this has to come before the effective areas as their initialization depends on it!
     multilep* multilepAnalyzer;
 
     EffectiveAreas electronsEffectiveAreas;
@@ -95,6 +96,15 @@ class LeptonAnalyzer {
     bool _tauTightMvaNew[nL_max];
     bool _tauVTightMvaNew[nL_max];
     bool _tauVTightMvaOld[nL_max];
+
+    double _tauAgainstElectronMVA6Raw[nL_max];
+    double _tauCombinedIsoDBRaw3Hits[nL_max];
+    double _tauIsoMVAPWdR03oldDMwLT[nL_max];
+    double _tauIsoMVADBdR03oldDMwLT[nL_max];
+    double _tauIsoMVADBdR03newDMwLT[nL_max];
+    double _tauIsoMVAPWnewDMwLT[nL_max];
+    double _tauIsoMVAPWoldDMwLT[nL_max];
+
 
     double _leptonMvaSUSY[nL_max];                                                                       //lepton MVA used in ewkino analysis
     double _leptonMvaTTH[nL_max];

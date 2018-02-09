@@ -69,6 +69,13 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauTightMvaNew",               &_tauTightMvaNew,               "_tauTightMvaNew[_nL]/O");
     outputTree->Branch("_tauVTightMvaNew",              &_tauVTightMvaNew,              "_tauVTightMvaNew[_nL]/O");
     outputTree->Branch("_tauVTightMvaOld",              &_tauVTightMvaOld,              "_tauVTightMvaOld[_nL]/O");
+    outputTree->Branch("_tauAgainstElectronMVA6Raw",    &_tauAgainstElectronMVA6Raw,    "_tauAgainstElectronMVA6Raw[_nL]/D");
+    outputTree->Branch("_tauCombinedIsoDBRaw3Hits",     &_tauCombinedIsoDBRaw3Hits,     "_tauCombinedIsoDBRaw3Hits[_nL]/D");
+    outputTree->Branch("_tauIsoMVAPWdR03oldDMwLT",      &_tauIsoMVAPWdR03oldDMwLT,      "_tauIsoMVAPWdR03oldDMwLT[_nL]/D");
+    outputTree->Branch("_tauIsoMVADBdR03oldDMwLT",      &_tauIsoMVADBdR03oldDMwLT,      "_tauIsoMVADBdR03oldDMwLT[_nL]/D");
+    outputTree->Branch("_tauIsoMVADBdR03newDMwLT",      &_tauIsoMVADBdR03newDMwLT,      "_tauIsoMVADBdR03newDMwLT[_nL]/D");
+    outputTree->Branch("_tauIsoMVAPWnewDMwLT",          &_tauIsoMVAPWnewDMwLT,          "_tauIsoMVAPWnewDMwLT[_nL]/D");
+    outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D"); 
     outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
     outputTree->Branch("_relIso0p4Mu",                  &_relIso0p4Mu,                  "_relIso0p4Mu[_nMu]/D");
     outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
@@ -223,7 +230,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(_nL == nL_max)         break;
         if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
         if(fabs(tau.eta()) > 2.3) continue;
-        if(!tau.tauID("decayModeFinding")) continue;
+        //if(!tau.tauID("decayModeFinding")) continue;
         fillLeptonKinVars(tau);
         //fillLeptonGenVars(tau.genParticle());
         if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
@@ -247,6 +254,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _tauTightMvaNew[_nL] = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
         _tauVTightMvaNew[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
 
+        _tauAgainstElectronMVA6Raw[_nL] = tau.tauID("againstElectronMVA6Raw");
+        _tauCombinedIsoDBRaw3Hits[_nL] = tau.tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits");
+        _tauIsoMVAPWdR03oldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWdR03oldDMwLTraw");
+        _tauIsoMVADBdR03oldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1DBoldDMwLTraw");
+        _tauIsoMVADBdR03newDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1DBnewDMwLTraw");
+        _tauIsoMVAPWnewDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWnewDMwLTraw");
+        _tauIsoMVAPWoldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWoldDMwLTraw"); 
+
         _lEwkLoose[_nL] = isEwkLoose(tau);
         _lEwkFO[_nL]    = isEwkFO(tau);
         _lEwkTight[_nL] = isEwkTight(tau);
@@ -255,9 +270,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     }
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
-    if(multilepAnalyzer->skim == "dilep"     &&  _nLight < 2) return false;
+    if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
     if(multilepAnalyzer->skim == "ttg"       &&  _nLight < 2) return false;
-    if(multilepAnalyzer->skim == "singlelep" &&  _nLight < 1) return false;
+    if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
     if(multilepAnalyzer->skim == "FR" &&  _nLight < 1) return false;
     return true;
 }
