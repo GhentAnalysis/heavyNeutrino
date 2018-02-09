@@ -5,11 +5,9 @@
 #include "TLorentzVector.h"
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
-    electronsEffectiveAreas((iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath()),
-    electronsEffectiveAreasFall17((iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath()),
-    muonsEffectiveAreas((iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
-    muonsEffectiveAreasFall17((iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
-    multilepAnalyzer(multilepAnalyzer)
+    multilepAnalyzer(multilepAnalyzer), 
+    electronsEffectiveAreas(multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath() ),
+    muonsEffectiveAreas    (multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
     leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
@@ -71,6 +69,13 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauTightMvaNew",               &_tauTightMvaNew,               "_tauTightMvaNew[_nL]/O");
     outputTree->Branch("_tauVTightMvaNew",              &_tauVTightMvaNew,              "_tauVTightMvaNew[_nL]/O");
     outputTree->Branch("_tauVTightMvaOld",              &_tauVTightMvaOld,              "_tauVTightMvaOld[_nL]/O");
+    outputTree->Branch("_tauAgainstElectronMVA6Raw",    &_tauAgainstElectronMVA6Raw,    "_tauAgainstElectronMVA6Raw[_nL]/D");
+    outputTree->Branch("_tauCombinedIsoDBRaw3Hits",     &_tauCombinedIsoDBRaw3Hits,     "_tauCombinedIsoDBRaw3Hits[_nL]/D");
+    outputTree->Branch("_tauIsoMVAPWdR03oldDMwLT",      &_tauIsoMVAPWdR03oldDMwLT,      "_tauIsoMVAPWdR03oldDMwLT[_nL]/D");
+    outputTree->Branch("_tauIsoMVADBdR03oldDMwLT",      &_tauIsoMVADBdR03oldDMwLT,      "_tauIsoMVADBdR03oldDMwLT[_nL]/D");
+    outputTree->Branch("_tauIsoMVADBdR03newDMwLT",      &_tauIsoMVADBdR03newDMwLT,      "_tauIsoMVADBdR03newDMwLT[_nL]/D");
+    outputTree->Branch("_tauIsoMVAPWnewDMwLT",          &_tauIsoMVAPWnewDMwLT,          "_tauIsoMVAPWnewDMwLT[_nL]/D");
+    outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D"); 
     outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
     outputTree->Branch("_relIso0p4Mu",                  &_relIso0p4Mu,                  "_relIso0p4Mu[_nMu]/D");
     outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
@@ -138,10 +143,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lMuonTrackPt[_nL]    = mu.innerTrack()->pt();
         _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
 
-        _relIso[_nL]         = getRelIso03(mu, *rho, multilepAnalyzer->is2017);                     // Isolation variables
+        _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
         _relIso0p4Mu[_nL]    = getRelIso04(mu);                                                     
-        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false, multilepAnalyzer->is2017);
-        _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true,  multilepAnalyzer->is2017);
+        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false);
+        _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
         _lHNLoose[_nL]       = isHNLoose(mu);                                                       // ID variables
         _lHNFO[_nL]          = isHNFO(mu);                                                          // don't change order, they rely on above variables
@@ -183,37 +188,37 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lFlavor[_nL]          = 0;
         _lEtaSC[_nL]           = ele->superCluster()->eta();
 
-        _relIso[_nL]                = getRelIso03(*ele, *rho, multilepAnalyzer->is2017);
-        _miniIso[_nL]               = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false, multilepAnalyzer->is2017);
-        _miniIsoCharged[_nL]        = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true, multilepAnalyzer->is2017);
-        _lElectronMva[_nL]          = (*electronsMva)[electronRef];
-        _lElectronMvaHZZ[_nL]       = (*electronsMvaHZZ)[electronRef];
-        _lElectronMvaFall17Iso[_nL] = (*electronMvaFall17Iso)[electronRef];
-        _lElectronMvaFall17NoIso[_nL] = (*electronMvaFall17NoIso)[electronRef];
-        _lElectronPassEmu[_nL]      = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
-        _lElectronPassConvVeto[_nL] = ele->passConversionVeto();
-        _lElectronChargeConst[_nL]  = ele->isGsfCtfScPixChargeConsistent();
-        _lElectronMissingHits[_nL]  = ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
+        _relIso[_nL]                    = getRelIso03(*ele, *rho);
+        _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);
+        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
+        _lElectronMva[_nL]              = (*electronsMva)[electronRef];
+        _lElectronMvaHZZ[_nL]           = (*electronsMvaHZZ)[electronRef];
+        _lElectronMvaFall17Iso[_nL]     = (*electronMvaFall17Iso)[electronRef];
+        _lElectronMvaFall17NoIso[_nL]   = (*electronMvaFall17NoIso)[electronRef];
+        _lElectronPassEmu[_nL]          = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
+        _lElectronPassConvVeto[_nL]     = ele->passConversionVeto();
+        _lElectronChargeConst[_nL]      = ele->isGsfCtfScPixChargeConsistent();
+        _lElectronMissingHits[_nL]      = ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
 
-        _lHNLoose[_nL]              = isHNLoose(*ele);
-        _lHNFO[_nL]                 = isHNFO(*ele);
-        _lHNTight[_nL]              = isHNTight(*ele);
+        _lHNLoose[_nL]                  = isHNLoose(*ele);
+        _lHNFO[_nL]                     = isHNFO(*ele);
+        _lHNTight[_nL]                  = isHNTight(*ele);
 
-        _lPOGVeto[_nL]              = (*electronsCutBasedVeto)[electronRef];
-        _lPOGLoose[_nL]             = (*electronsCutBasedLoose)[electronRef];
-        _lPOGMedium[_nL]            = (*electronsCutBasedMedium)[electronRef];
-        _lPOGTight[_nL]             = (*electronsCutBasedTight)[electronRef];
+        _lPOGVeto[_nL]                  = (*electronsCutBasedVeto)[electronRef];
+        _lPOGLoose[_nL]                 = (*electronsCutBasedLoose)[electronRef];
+        _lPOGMedium[_nL]                = (*electronsCutBasedMedium)[electronRef];
+        _lPOGTight[_nL]                 = (*electronsCutBasedTight)[electronRef];
 
-        _lPOGLooseWOIso[_nL]        = isLooseCutBasedElectronWithoutIsolation(&*ele);
-        _lPOGMediumWOIso[_nL]       = isMediumCutBasedElectronWithoutIsolation(&*ele);
-        _lPOGTightWOIso[_nL]        = isTightCutBasedElectronWithoutIsolation(&*ele);
+        _lPOGLooseWOIso[_nL]            = isLooseCutBasedElectronWithoutIsolation(&*ele);
+        _lPOGMediumWOIso[_nL]           = isMediumCutBasedElectronWithoutIsolation(&*ele);
+        _lPOGTightWOIso[_nL]            = isTightCutBasedElectronWithoutIsolation(&*ele);
 
-        _leptonMvaSUSY[_nL]         = leptonMvaVal(*ele, leptonMvaComputerSUSY);
-        _leptonMvaTTH[_nL]          = leptonMvaVal(*ele, leptonMvaComputerTTH);
+        _leptonMvaSUSY[_nL]             = leptonMvaVal(*ele, leptonMvaComputerSUSY);
+        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
 
-        _lEwkLoose[_nL]             = isEwkLoose(*ele);
-        _lEwkFO[_nL]                = isEwkFO(*ele);
-        _lEwkTight[_nL]             = isEwkTight(*ele);
+        _lEwkLoose[_nL]                 = isEwkLoose(*ele);
+        _lEwkFO[_nL]                    = isEwkFO(*ele);
+        _lEwkTight[_nL]                 = isEwkTight(*ele);
 
         ++_nEle;
         ++_nL;
@@ -225,7 +230,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(_nL == nL_max)         break;
         if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
         if(fabs(tau.eta()) > 2.3) continue;
-        if(!tau.tauID("decayModeFinding")) continue;
+        //if(!tau.tauID("decayModeFinding")) continue;
         fillLeptonKinVars(tau);
         //fillLeptonGenVars(tau.genParticle());
         if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
@@ -249,6 +254,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _tauTightMvaNew[_nL] = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
         _tauVTightMvaNew[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
 
+        _tauAgainstElectronMVA6Raw[_nL] = tau.tauID("againstElectronMVA6Raw");
+        _tauCombinedIsoDBRaw3Hits[_nL] = tau.tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits");
+        _tauIsoMVAPWdR03oldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWdR03oldDMwLTraw");
+        _tauIsoMVADBdR03oldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1DBoldDMwLTraw");
+        _tauIsoMVADBdR03newDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1DBnewDMwLTraw");
+        _tauIsoMVAPWnewDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWnewDMwLTraw");
+        _tauIsoMVAPWoldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWoldDMwLTraw"); 
+
         _lEwkLoose[_nL] = isEwkLoose(tau);
         _lEwkFO[_nL]    = isEwkFO(tau);
         _lEwkTight[_nL] = isEwkTight(tau);
@@ -257,9 +270,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     }
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
-    if(multilepAnalyzer->skim == "dilep"     &&  _nLight < 2) return false;
+    if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
     if(multilepAnalyzer->skim == "ttg"       &&  _nLight < 2) return false;
-    if(multilepAnalyzer->skim == "singlelep" &&  _nLight < 1) return false;
+    if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
     if(multilepAnalyzer->skim == "FR" &&  _nLight < 1) return false;
     return true;
 }

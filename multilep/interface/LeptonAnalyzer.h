@@ -35,10 +35,11 @@ class LeptonAnalyzer {
   friend class LeptonIdHelper;
   friend class multilep;
   private:
+    //this has to come before the effective areas as their initialization depends on it!
+    multilep* multilepAnalyzer;
+
     EffectiveAreas electronsEffectiveAreas;
-    EffectiveAreas electronsEffectiveAreasFall17;
     EffectiveAreas muonsEffectiveAreas;
-    EffectiveAreas muonsEffectiveAreasFall17;
 
     static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
     unsigned _nL;                                                                                    //number of leptons
@@ -96,6 +97,15 @@ class LeptonAnalyzer {
     bool _tauVTightMvaNew[nL_max];
     bool _tauVTightMvaOld[nL_max];
 
+    double _tauAgainstElectronMVA6Raw[nL_max];
+    double _tauCombinedIsoDBRaw3Hits[nL_max];
+    double _tauIsoMVAPWdR03oldDMwLT[nL_max];
+    double _tauIsoMVADBdR03oldDMwLT[nL_max];
+    double _tauIsoMVADBdR03newDMwLT[nL_max];
+    double _tauIsoMVAPWnewDMwLT[nL_max];
+    double _tauIsoMVAPWoldDMwLT[nL_max];
+
+
     double _leptonMvaSUSY[nL_max];                                                                       //lepton MVA used in ewkino analysis
     double _leptonMvaTTH[nL_max];
 
@@ -121,7 +131,6 @@ class LeptonAnalyzer {
 
 
 
-    multilep* multilepAnalyzer;
 
     //void fillLeptonGenVars(const reco::GenParticle*);
     void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
@@ -136,10 +145,10 @@ class LeptonAnalyzer {
 
     // In leptonAnalyzerIso,cc
 
-    double getRelIso03(const pat::Muon&, const double, const bool is2017) const;
-    double getRelIso03(const pat::Electron&, const double, const bool is2017) const;
+    double getRelIso03(const pat::Muon&, const double) const;
+    double getRelIso03(const pat::Electron&, const double) const;
     double getRelIso04(const pat::Muon& mu) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false, const bool is2017 = false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false) const;
 
     // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*) const;
