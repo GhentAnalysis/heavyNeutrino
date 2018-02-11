@@ -119,12 +119,16 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
-    std::cout<<"=============================="<<std::endl;
+    std::cout<<"=============new event================="<<std::endl;
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
     if(!vertices->size()) return;                                      // don't consider 0 vertex events
+        std::cout<<"to go in leptn analyzer"<<std::endl;
+
     if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))
-      return;                                                          // returns false if doesn't pass skim condition, so skip event in such case
+      return;            // returns false if doesn't pass skim condition, so skip event in such case
+        std::cout<<"to go in gen analyzer"<<std::endl;
+
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;
     triggerAnalyzer->analyze(iEvent);
