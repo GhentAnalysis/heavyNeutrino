@@ -86,6 +86,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
                 else                          _gen_lFlavor[_gen_nL] = 2;
                 ++_gen_nL;
+                
+                std::cout<<_gen_nL<<")  id: "<<p.pdgId()<<"  mumpdg: "<<_gen_lMomPdg[_gen_nL]<<"   prompt: "<<_gen_lIsPrompt[_gen_nL] <<std::endl;
             }
         }
 
@@ -104,6 +106,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 GenTools::setDecayChain(p, *genParticles, decayChain);
                 _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
                 ++_gen_nPh;
+                 std::cout<<_gen_nL<<") gamma!!!!! id: "<<p.pdgId()<<"  mumpdg: "<<_gen_phMomPdg[_gen_nL]<<"   prompt: "<<_gen_phIsPrompt[_gen_nL] <<std::endl;
+
             } 
         }
     }
