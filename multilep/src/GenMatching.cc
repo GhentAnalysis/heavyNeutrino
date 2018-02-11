@@ -47,6 +47,8 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
         matchPdgId = match->pdgId();
         provenance = (matchIsPrompt ? 0 : GenTools::provenance(*match, *genParticles) );
         provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
+        
+        std::cout<<"matching----> id   "<<matchPdgId<< "  provenance: "<<provenance<<"  compressed: "<< provenanceCompressed<<std::endl;
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
