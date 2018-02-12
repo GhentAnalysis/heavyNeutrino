@@ -15,6 +15,7 @@ submitJob(){
     qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
     while grep "Invalid credential" outputCheck.txt; do
         echo "Invalid credential caught, resubmitting"
+        sleep 2  #sleep 2 seconds before attemtping resubmission
         qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
     done
     cat outputCheck.txt
