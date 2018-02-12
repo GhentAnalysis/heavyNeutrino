@@ -41,12 +41,15 @@ class GenMatching;
 class LeptonAnalyzer {
   //Friend classes and functions
   friend class LeptonIdHelper;
+  friend class multilep;
   private:
+    multilep* multilepAnalyzer;
+
     EffectiveAreas electronsEffectiveAreas;
     EffectiveAreas muonsEffectiveAreas;
 
     static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
-    static const unsigned nV_max      = 100;   
+    static const unsigned nV_max      = 50;   
   
     unsigned _nL;                                                                                    //number of leptons
     unsigned _nMu;
@@ -55,6 +58,7 @@ class LeptonAnalyzer {
     unsigned _nTau;          
     unsigned _nVFit;                     // number vertices re-fitted
     unsigned _nGoodLeading;                     // number vertices re-fitted
+    unsigned _nGoodDisplaced;
 
   
     double _lIndex[nL_max];              // index assigned to leptons to find back the vertices
@@ -124,10 +128,10 @@ class LeptonAnalyzer {
     double _lCQChi2Position[nL_max];
     double _lCQTrackKink[nL_max];
     double _muonSegComp[nL_max];
-    double _lNumberOfMatchedStation[nL_max];
-    double _lNumberOfValidPixelHits[nL_max];
-    double _muNumberInnerHits[nL_max];
-    double _lTrackerLayersWithMeasurement[nL_max];
+    unsigned _lNumberOfMatchedStation[nL_max];
+    unsigned _lNumberOfValidPixelHits[nL_max];
+    unsigned _muNumberInnerHits[nL_max];
+    unsigned _lTrackerLayersWithMeasurement[nL_max];
   
   /////// ele ID variabels
     bool _lEleIsEB [nL_max];
@@ -163,16 +167,17 @@ class LeptonAnalyzer {
 
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
-  
     unsigned _lProvenance[nL_max];                                                                    
+    unsigned _lProvenanceCompressed[nL_max];
 
 
 
-    multilep* multilepAnalyzer;
 
     edm::ESHandle<MagneticField> _bField;
     edm::ESHandle<Propagator> _shProp;
     TransientVertex dileptonVertex(const reco::Track&, const reco::Track&);
+    void cleanDileptonVertexArrays(unsigned);
+
     void fillDileptonVertexArrays(unsigned, unsigned, unsigned,
 				  const TransientVertex&,
 				  const reco::Track&, const reco::Track&);
@@ -192,46 +197,44 @@ class LeptonAnalyzer {
 
     // In leptonAnalyzerIso,cc
 
-    double getRelIso03(const pat::Muon&, const double);
-    double getRelIso04(const pat::Muon&, const double);
-    double getRelIso03(const pat::Electron&, const double);
-    double getRelIso04(const pat::Muon& mu);
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false);
+    double getRelIso03(const pat::Muon&, const double) const;
+    double getRelIso03(const pat::Electron&, const double) const;
+    double getRelIso04(const pat::Muon& mu) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false) const;
+
 
   
+ // In LeptonAnalyzerId.cc
+    float dEtaInSeed(const pat::Electron*) const;
+    bool  isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron*) const;
+    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*) const;
+    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*) const;
+    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*) const;
+    bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately
+    float slidingCut(float, float, float) const;
+    bool  passingElectronMvaHZZ(const pat::Electron*, double) const;
+    bool  passingElectronMvaLooseSusy(const pat::Electron*, double, double) const;
+    bool  passingElectronMvaMediumSusy(const pat::Electron*, double) const;
+    bool  passingElectronMvaTightSusy(const pat::Electron*, double) const;
+    bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double) const;
+    bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue) const;
   
-  
-    // In LeptonAnalyzerId.cc
-    float dEtaInSeed(const pat::Electron*);
-    bool isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron* ele);
-    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*);
-    bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true);               //For ewkino id it needs to be possible to check hOverE separately
-    float slidingCut(float, float, float);
-    bool  passingElectronMvaHZZ(const pat::Electron*, double);
-    bool  passingElectronMvaLooseSusy(const pat::Electron*, double, double);
-    bool  passingElectronMvaMediumSusy(const pat::Electron*, double);
-    bool  passingElectronMvaTightSusy(const pat::Electron*, double);
-    bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double);
-    bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue);
-  
-    bool  isHNLoose(const pat::Electron& lepton);                                                     //check HNL id definitions
-    bool  isHNLoose(const pat::Muon& lepton);
-    bool  isHNFO(const pat::Electron& lepton);
-    bool  isHNFO(const pat::Muon& lepton);
-    bool  isHNTight(const pat::Electron& lepton);
-    bool  isHNTight(const pat::Muon& lepton);
+    bool  isHNLoose(const pat::Electron& lepton) const;                                                     //check HNL id definitions
+    bool  isHNLoose(const pat::Muon& lepton) const;
+    bool  isHNFO(const pat::Electron& lepton) const;
+    bool  isHNFO(const pat::Muon& lepton) const;
+    bool  isHNTight(const pat::Electron& lepton) const;
+    bool  isHNTight(const pat::Muon& lepton) const;
     
-    bool isEwkLoose(const pat::Muon&);
-    bool isEwkLoose(const pat::Electron&);
-    bool isEwkLoose(const pat::Tau&);
-    bool isEwkFO(const pat::Muon&);
-    bool isEwkFO(const pat::Electron&);
-    bool isEwkFO(const pat::Tau&);
-    bool isEwkTight(const pat::Muon&);
-    bool isEwkTight(const pat::Electron&);
-    bool isEwkTight(const pat::Tau&);
+    bool isEwkLoose(const pat::Muon&) const;
+    bool isEwkLoose(const pat::Electron&) const;
+    bool isEwkLoose(const pat::Tau&) const;
+    bool isEwkFO(const pat::Muon&) const;
+    bool isEwkFO(const pat::Electron&) const;
+    bool isEwkFO(const pat::Tau&) const;
+    bool isEwkTight(const pat::Muon&) const;
+    bool isEwkTight(const pat::Electron&) const;
+    bool isEwkTight(const pat::Tau&) const;
 
     double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);                                                            //compute ewkino lepton MVA
     double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
@@ -248,6 +251,6 @@ class LeptonAnalyzer {
     ~LeptonAnalyzer();
 
     void beginJob(TTree* outputTree);
-    bool analyze(const edm::Event&, const edm::EventSetup&, const reco::Vertex&);
+bool analyze(const edm::Event&, const edm::EventSetup&, const reco::Vertex&);
 };
 #endif

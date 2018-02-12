@@ -13,6 +13,7 @@
 class multilep;
 
 class JetAnalyzer {
+  friend class multilep;
   private:
     JetCorrectionUncertainty jecUnc;
 
@@ -38,7 +39,7 @@ class JetAnalyzer {
 
     multilep* multilepAnalyzer;
 
-    bool jetId(const pat::Jet& j, bool tight);
+    bool jetId(const pat::Jet& j, bool tight) const;
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

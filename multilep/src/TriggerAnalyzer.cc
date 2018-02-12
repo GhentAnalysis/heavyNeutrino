@@ -27,6 +27,8 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["2017_mee"]       = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
     allFlags["2017_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
   } else {
+    allFlags["FR_single_lepton"]= {"HLT_Mu8","HLT_Mu17","HLT_Mu24","HLT_Mu34","HLT_Mu3_PFJet40","HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30","HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30",
+                      "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30","HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30"};
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters (if legacy mAOD vbecomes available, copy the filters listed for 2017)
                                   "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",
                                   "flag_badPFMuonFilter","flag_badChCandFilter"};
@@ -103,12 +105,20 @@ std::vector<TString> TriggerAnalyzer::getAllFlags(){
   return list;
 }
 
-bool TriggerAnalyzer::passCombinedFlag(TString combinedFlag){
+bool TriggerAnalyzer::passCombinedFlagOR(TString combinedFlag){
   for(auto& f : allFlags[combinedFlag]){
-    if(f.Contains("pass") and passCombinedFlag(f)) return true;
-    else if(flag[f])                               return true;
+    if(f.Contains("pass") and passCombinedFlagOR(f)) return true;
+    else if(flag[f])                                 return true;
   }
   return false;
+}
+
+bool TriggerAnalyzer::passCombinedFlagAND(TString combinedFlag){
+  for(auto& f : allFlags[combinedFlag]){
+    if(f.Contains("pass") and not passCombinedFlagAND(f)) return false;
+    else if(not flag[f])                                  return false;
+  }
+  return true;
 }
 
 void TriggerAnalyzer::analyze(const edm::Event& iEvent){
@@ -124,7 +134,10 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   flag["flag_badPFMuonFilter"] = *badPFMuonFilter;
   flag["flag_badChCandFilter"] = *badChCandFilter;
 
-  for(auto& combinedFlag : allFlags) flag[combinedFlag.first] = passCombinedFlag(combinedFlag.first);
+  for(auto& combinedFlag : allFlags){
+    if(combinedFlag.first.Contains("MET")) flag[combinedFlag.first] = passCombinedFlagAND(combinedFlag.first);
+    else                                   flag[combinedFlag.first] = passCombinedFlagOR(combinedFlag.first);
+  }
 }
 
 /*

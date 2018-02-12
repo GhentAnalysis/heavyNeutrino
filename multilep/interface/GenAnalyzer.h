@@ -57,8 +57,8 @@ class GenAnalyzer {
     double _gen_HT;
 
     //Functions to find the mother of a gen particle
-    unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
-    double                   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
+    unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
+    double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
 
     multilep* multilepAnalyzer;
 

@@ -52,7 +52,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
 
     if(!genParticles.isValid()) return;
-
+    std::cout<<"in analyze gen:"<<std::endl;
     _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
     _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
 
@@ -77,7 +77,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lPhi[_gen_nL]      = p.phi();
                 _gen_lE[_gen_nL]        = p.energy();
                 _gen_lCharge[_gen_nL]   = p.charge();
-                _gen_lIsPrompt[_gen_nL] = (p.isPromptDecayed() || p.isPromptFinalState());
+                _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
                 _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
 		_gen_vertex_x[_gen_nL]  = p.vertex().x();
 		_gen_vertex_y[_gen_nL]  = p.vertex().y();
@@ -85,13 +85,15 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);
-                _gen_lMinDeltaR[_gen_nL]     = getMinDeltaR(p, *genParticles);
+                _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
 
                 if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
                 else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
                 else                          _gen_lFlavor[_gen_nL] = 2;
                 ++_gen_nL;
+                
+                std::cout<<_gen_nL<<")  id: "<<p.pdgId()<<"  pt: "<< p.pt()<<"  mumpdg: "<<_gen_lMomPdg[_gen_nL]<<"   prompt: "<<_gen_lIsPrompt[_gen_nL] <<std::endl;
             }
         }
 
@@ -105,12 +107,13 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_phE[_gen_nPh]             = p.energy();
                 _gen_phIsPrompt[_gen_nPh]      = p.isPromptFinalState();
                 _gen_phMomPdg[_gen_nPh]        = GenTools::getMother(p, *genParticles)->pdgId();
-                _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
+                _gen_phMinDeltaR[_gen_nPh]     = GenTools::getMinDeltaR(p, *genParticles);
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);
-                _gen_phMinDeltaR[_gen_nPh]     = getMinDeltaR(p, *genParticles);
                 _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
                 ++_gen_nPh;
+                 std::cout<<_gen_nL<<") gamma!!!!! id: "<<p.pdgId()<<"  pt: "<< p.pt()<<"  mumpdg: "<<_gen_phMomPdg[_gen_nL]<<"   prompt: "<<_gen_phIsPrompt[_gen_nL] <<std::endl;
+
             } 
         }
     }
@@ -128,22 +131,12 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     }
 }
 
-double GenAnalyzer::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
-    double minDeltaR = 10;
-    for(auto& q : genParticles){
-        if(q.pt() < 5)                                            continue;
-        if(p.pt()-q.pt() < 0.0001)                                continue; // same particle
-        if(q.status() != 1)                                       continue;
-        if(q.pdgId() == 12 or q.pdgId() == 14 or q.pdgId() == 16) continue;
-        minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
-    }
-    return minDeltaR;
-}
+
 
 /*
  * Some event categorization in order to understand/debug/apply overlap removal for TTG <--> TTJets
  */
-unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut){
+unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const{
     int type = 0;
     for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
         if(p->status()<0)         continue;
@@ -157,17 +150,20 @@ unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genPart
         GenTools::setDecayChain(*p, genParticles, decayChain);
         if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  continue;
         if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) continue;
+        if(GenTools::getMinDeltaR(*p, genParticles) < 0.2)                          continue;
+
         // Everything below is *signal*
         const reco::GenParticle* mom = GenTools::getMother(*p, genParticles);
         if(std::find_if(decayChain.cbegin(), decayChain.cend(), [](const int entry) { return abs(entry) == 24; }) != decayChain.cend() ){
-            if( abs(mom->pdgId()) == 24 )    type = std::max(type, 6);      // Type 6: photon directly from W or decay products which are part of ME
-            else if( abs(mom->pdgId()) <= 6) type =std::max(type, 4);       // Type 4: photon from quark from W (photon from pythia, rarely)
-            else                             type =std::max(type, 5);       // Type 5: photon from lepton from W (photon from pythia)
+            if(abs(mom->pdgId()) == 24)     type = std::max(type, 6);      // Type 6: photon directly from W or decay products which are part of ME
+            else if(abs(mom->pdgId()) <= 6) type = std::max(type, 4);      // Type 4: photon from quark from W (photon from pythia, rarely)
+            else                            type = std::max(type, 5);      // Type 5: photon from lepton from W (photon from pythia)
         } else {
             if(abs(mom->pdgId()) == 6)      type = std::max(type, 7);      // Type 7: photon from top
             else if(abs(mom->pdgId()) == 5) type = std::max(type, 3);      // Type 3: photon from b
             else                            type = std::max(type, 8);      // Type 8: photon from ME
         }
     }
+
     return type;
 }

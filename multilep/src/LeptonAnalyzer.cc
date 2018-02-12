@@ -6,9 +6,9 @@
 #include "TLorentzVector.h"
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
-  electronsEffectiveAreas((iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath()),
-  muonsEffectiveAreas(    (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
-  multilepAnalyzer(multilepAnalyzer)
+    multilepAnalyzer(multilepAnalyzer), 
+    electronsEffectiveAreas(multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath() ),
+    muonsEffectiveAreas    (multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
   leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
   leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
@@ -29,7 +29,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
   outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/b");
   outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/b");
-  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/D");
+  outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/b");
+  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");
   outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");
   outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
@@ -61,10 +62,10 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lCQChi2Position",              &_lCQChi2Position,              "_lCQChi2Position[_nL]/D");
   outputTree->Branch("_lCQTrackKink",                 &_lCQTrackKink,                 "_lCQTrackKink[_nL]/D");
   outputTree->Branch("_muonSegComp",                  &_muonSegComp,                  "_muonSegComp[_nMu]/D");
-  outputTree->Branch("_lNumberOfMatchedStation",      &_lNumberOfMatchedStation,      "_lNumberOfMatchedStation[_nL]/D");
-  outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/D");
-  outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/D");
-  outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/D");
+  outputTree->Branch("_lNumberOfMatchedStation",      &_lNumberOfMatchedStation,      "_lNumberOfMatchedStation[_nL]/i");
+  outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/i");
+  outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/i");
+  outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/i");
   outputTree->Branch("_lEleIsEB",                     &_lEleIsEB ,                    "_lEleIsEB[_nL]/O");
   outputTree->Branch("_lEleIsEE",                     &_lEleIsEE ,                    "_lEleIsEE[_nL]/O");
   outputTree->Branch("_lEleSuperClusterOverP",        &_lEleSuperClusterOverP ,       "_lEleSuperClusterOverP[_nL]/D");
@@ -74,7 +75,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lEleDeltaPhiSuperClusterTrackAtVtx", &_lEleDeltaPhiSuperClusterTrackAtVtx , "_lEleDeltaPhiSuperClusterTrackAtVtx[_nL]/D");
   outputTree->Branch("_lElehadronicOverEm",           &_lElehadronicOverEm ,          "_lElehadronicOverEm[_nL]/D");
   outputTree->Branch("_lEleInvMinusPInv",             &_lEleInvMinusPInv ,            "_lEleInvMinusPInv[_nL]/D");
-  outputTree->Branch("_eleNumberInnerHitsMissing",    &_eleNumberInnerHitsMissing ,   "_eleNumberInnerHitsMissing[_nL]/D");
   outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
   outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/D");
   outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
@@ -86,11 +86,11 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_sumChargedHadronPt03",         &_sumChargedHadronPt03,         "_sumChargedHadronPt03[_nL]/D");
   outputTree->Branch("_sumPhotonEt03",                &_sumPhotonEt03,                "_sumPhotonEt03[_nL]/D");
   outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nL]/D");
-  outputTree->Branch("_ecalIso",                      &_ecalIso ,                     " _ecalIso[_nL]/D");
-  outputTree->Branch("_hcalIso",                      &_hcalIso ,                     " _hcalIso[_nL]/D");
-  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    " _deltaBIso[_nL]/D");
-  outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            " _ecalPFClusterIso[_nL]/D");
-  outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            " _hcalPFClusterIso[_nL]/D");
+  outputTree->Branch("_ecalIso",                      &_ecalIso ,                     "_ecalIso[_nL]/D");
+  outputTree->Branch("_hcalIso",                      &_hcalIso ,                     "_hcalIso[_nL]/D");
+  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    "_deltaBIso[_nL]/D");
+  outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            "_ecalPFClusterIso[_nL]/D");
+  outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            "_hcalPFClusterIso[_nL]/D");
   outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
   outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
@@ -107,16 +107,18 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
   outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
   outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
+  
  
   if(!multilepAnalyzer->isData){
     outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
     outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
     outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
+    outputTree->Branch("_lProvenanceCompressed",	  &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
   }
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup, const reco::Vertex& primaryVertex){
-  edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
+edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
   edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
   edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
   edm::Handle<edm::ValueMap<bool>> electronsCutBasedVeto;          iEvent.getByToken(multilepAnalyzer->eleCutBasedVetoToken,              electronsCutBasedVeto);
@@ -127,11 +129,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
   edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
   edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
-  edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
-
+  edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                            jets);
   iSetup.get<IdealMagneticFieldRecord>().get(_bField);
   iSetup.get<TrackingComponentsRecord>().get("SteppingHelixPropagatorAny", _shProp);
 
+			       
+										       
+										       
+										       
   _nL     = 0;
   _nLight = 0;
   _nMu    = 0;
@@ -139,6 +144,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   _nTau   = 0;
   _nVFit  = 0;
   _nGoodLeading = 0;
+  _nGoodDisplaced = 0;
+
   
   //bool good_leading=false; // to check 1 leading-well_isolated lepton
   int counter_index_leptons   = 0;
@@ -167,7 +174,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // if(fabs(_dxy[_nL]) > 0.05) continue;                   // no impact parameter cuts
     // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
-    fillLeptonIsoVars(mu, *rho);	
+    fillLeptonIsoVars(mu, *rho);
+	  std::cout<<_nL<<")   muon!!!! pt: "<<mu.pt()<<std::endl;
     if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
     fillLeptonJetVariables(mu, jets, primaryVertex);
 	
@@ -188,14 +196,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lFlavor[_nL]        = 1;
     _muonSegComp[_nL]    = mu.segmentCompatibility();
     _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
-  
+  	
+//    if (_relIso[_nL] > 1) continue;
+	  
+	  
     // TODO: this is a possible solution to the missing trackRef, but maybe not what you want 
     _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : -1);
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     if ( mu.isLooseMuon()) _lPOGMedium[_nL] = mu.isMediumMuon();
     if ( mu.isLooseMuon()) _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
-
+ 
+	  if (    !_lPOGLoose[_nL] ) continue;
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lpassConversionVeto[_nL] = false;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
@@ -211,8 +223,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lEleInvMinusPInv[_nL] =   -1;
 	  
 	  
-	  
-    if (mu.pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso04(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) ++_nGoodLeading;
+    if (fabs(_dxy[_nL])> 0.02)  ++_nGoodDisplaced; 
+    if (mu.pt() > 22 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) ++_nGoodLeading;
 
     ++_nMu;
     ++_nL;
@@ -258,12 +270,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
     fillLeptonKinVars(*ele);
     //fillLeptonGenVars(ele->genParticle());
+	  	  std::cout<<_nL<<")   electrons!!!! pt: "<<ele->pt()<<std::endl;
+
     if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
     fillLeptonJetVariables(*ele, jets, primaryVertex);
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
-    
+//    if (_relIso[_nL] > 1) continue;
+
 
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);
@@ -287,9 +302,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lNumberOfValidPixelHits[_nL] =  -1;
     _lTrackerLayersWithMeasurement[_nL] =  -1;
 	  
-	  
-	  
-    if (ele->pt() > 20 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) ++_nGoodLeading;
+    if (fabs(_dxy[_nL])> 0.02)  ++_nGoodDisplaced; 
+    if (ele->pt() > 22 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) ++_nGoodLeading;
 
     
     ++_nEle;
@@ -341,7 +355,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   unsigned iE_plus=_nMu;
   unsigned iE_minus_mu=_nMu;
   unsigned iE_minus_e=_nMu;
-  
+  cleanDileptonVertexArrays(_nVFit);
   for(const pat::Muon& mu_1 : *muons){ // for µ
 	  
     if(mu_1.pt() < 3 || fabs(mu_1.eta()) > 2.4 || !mu_1.isPFMuon())              continue;   
@@ -363,27 +377,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	std::cout << "              1: "
+	/*std::cout << "              1: "
 		  << (mu_1.innerTrack().isNull() ? "OUT" : "TRK")
 		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
 		  << (mu_2.innerTrack().isNull() ? "OUT" : "TRK")
 		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;
+		  << std::endl;*/
       }
       else {   
 	fillDileptonVertexArrays(_nVFit, iMu_plus, iMu_minus_mu, dilvtx, tk_1, tk_2);
-	// _vertices[_nVFit][0] = iMu_plus*100 + iMu_minus_mu;                   
-	// _vertices[_nVFit][1] = dilvtx.position().x(); 
-	// _vertices[_nVFit][2] = dilvtx.position().y(); 
-	// _vertices[_nVFit][3] = dilvtx.position().z(); 
-	// _vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
-	// _vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
-	// _vertices[_nVFit][6] = dilvtx.positionError().czz(); 
-	// _vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
-	// _vertices[_nVFit][8] = dilvtx.positionError().czy(); 
-	// _vertices[_nVFit][9] = dilvtx.positionError().czx(); 
-	// _vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
-	// _vertices[_nVFit][11] = dilvtx.totalChiSquared(); 
 	++_nVFit;   
       } 
     }// end loop µ-
@@ -402,27 +404,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	std::cout << "              1: "
+	/*std::cout << "              1: "
 		  << (mu_1.innerTrack().isNull() ? "OUT" : "TRK")
 		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
 		  << "GSF"
 		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;
+		  << std::endl;*/
       } 
       else {      
 	fillDileptonVertexArrays(_nVFit, iMu_plus, iE_minus_mu, dilvtx, tk_1, tk_2);
-	// _vertices[_nVFit][0] = iMu_plus*100 + iE_minus_mu;          
-	// _vertices[_nVFit][1] = dilvtx.position().x(); 
-	// _vertices[_nVFit][2] = dilvtx.position().y(); 
-	// _vertices[_nVFit][3] = dilvtx.position().z(); 
-	// _vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
-	// _vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
-	// _vertices[_nVFit][6] = dilvtx.positionError().czz(); 
-	// _vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
-	// _vertices[_nVFit][8] = dilvtx.positionError().czy(); 
-	// _vertices[_nVFit][9] = dilvtx.positionError().czx(); 
-	// _vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
-	// _vertices[_nVFit][11] = dilvtx.totalChiSquared();  
 	++_nVFit;   
       } 
     }// end loop e-
@@ -458,27 +448,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	std::cout << "              1: "
+	/*std::cout << "              1: "
 		  << "GSF"
 		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
 		  << (mu_2.innerTrack().isNull() ? "OUT" : "TRK")
 		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;
+		  << std::endl;*/
       } 
       else {
 	fillDileptonVertexArrays(_nVFit, iE_plus, iMu_minus_e, dilvtx, tk_1, tk_2);
-	// _vertices[_nVFit][0] = iE_plus*100+iMu_minus_e;    
-	// _vertices[_nVFit][1] = dilvtx.position().x(); 
-	// _vertices[_nVFit][2] = dilvtx.position().y(); 
-	// _vertices[_nVFit][3] = dilvtx.position().z(); 
-	// _vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
-	// _vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
-	// _vertices[_nVFit][6] = dilvtx.positionError().czz(); 
-	// _vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
-	// _vertices[_nVFit][8] = dilvtx.positionError().czy(); 
-	// _vertices[_nVFit][9] = dilvtx.positionError().czx(); 
-	// _vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
-	// _vertices[_nVFit][11] = dilvtx.totalChiSquared();  
+	 
 	++_nVFit;   
       } 
     }// end loop µ-
@@ -499,38 +478,28 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(!dilvtx.isValid()) { 
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	std::cout << "              1: "
+	/*std::cout << "              1: "
 		  << "GSF"
 		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
 		  << "GSF"
 		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;
+		  << std::endl;*/
       } 
       else {
 	fillDileptonVertexArrays(_nVFit, iE_plus, iE_minus_e, dilvtx, tk_1, tk_2);
-	// _vertices[_nVFit][0] = iE_plus*100 + iE_minus_e; 
-	// _vertices[_nVFit][1] = dilvtx.position().x(); 
-	// _vertices[_nVFit][2] = dilvtx.position().y(); 
-	// _vertices[_nVFit][3] = dilvtx.position().z(); 
-	// _vertices[_nVFit][4] = dilvtx.positionError().cxx(); 
-	// _vertices[_nVFit][5] = dilvtx.positionError().cyy(); 
-	// _vertices[_nVFit][6] = dilvtx.positionError().czz(); 
-	// _vertices[_nVFit][7] = dilvtx.positionError().cyx(); 
-	// _vertices[_nVFit][8] = dilvtx.positionError().czy(); 
-	// _vertices[_nVFit][9] = dilvtx.positionError().czx(); 
-	// _vertices[_nVFit][10] = dilvtx.degreesOfFreedom(); 
-	// _vertices[_nVFit][11] = dilvtx.totalChiSquared();   
 	++_nVFit;   
       }
     }// end loop e+
     
     
   }//end electrons
-  
-  if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1)  ) return false;
+
+  if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1 || _nGoodDisplaced < 2)  ) return false;
   if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "ttg"       and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "singlelep" and _nLight < 1) return false;
+  if(multilepAnalyzer->skim == "FR" &&   _nLight != 1) return false;
+
   return true;
 }
 
@@ -548,6 +517,17 @@ TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const rec
   KalmanVertexFitter vtxFitter;
   return vtxFitter.vertex(ttks); 
 } 
+
+
+void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
+   for (int i =0; i < 50; i++){
+	  for (int j =0; j < 24 ; j++){
+		  if (j < 12) _vertices[i][j] = 0;
+		  _lDisplaced[i][j] = 0;
+	  }
+   }	
+}
+
 
 
 // Fill the arrays of displaced vertices and leptons 
@@ -652,9 +632,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
   _deltaBIso[_nL]        = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumPhotonEt + mu.pfIsolationR03().sumNeutralHadronEt - 0.5*pucorr);
   _ecalPFClusterIso[_nL] =  -1.;
   _hcalPFClusterIso[_nL] =  -1.; 
-	
-	
-	
+		
 }
 
 
@@ -675,16 +653,16 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
   _deltaBIso[_nL]       = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumPhotonEt +  ele.pfIsolationVariables().sumNeutralHadronEt - 0.5*pucorr);
   _ecalPFClusterIso[_nL]= ele.ecalPFClusterIso();
   _hcalPFClusterIso[_nL]= ele.hcalPFClusterIso();
-	
 }
-
-
 void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatching* genMatcher){
-  genMatcher->fillMatchingVars(lepton);
-  _lIsPrompt[_nL] = genMatcher->promptMatch();
-  _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
-  _lProvenance[_nL] = genMatcher->getProvenance();
+    genMatcher->fillMatchingVars(lepton);
+    _lIsPrompt[_nL] = genMatcher->promptMatch();
+    _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
+    _lProvenance[_nL] = genMatcher->getProvenance();
+    _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
 }
+
+
 
 /*
  * Impact parameters:
@@ -818,5 +796,3 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     }
   }
 }
-
-

@@ -12,6 +12,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
     eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
     eleMvaHZZToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMvaHZZ"))),
+    eleMvaFall17IsoToken(             consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17Iso"))),
+    eleMvaFall17NoIsoToken(           consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17NoIso"))),
     eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedVeto"))),
     eleCutBasedLooseToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedLoose"))),
     eleCutBasedMediumToken(           consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedMedium"))),
@@ -95,6 +97,10 @@ void multilep::beginJob(){
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
     jetAnalyzer->beginJob(outputTree);
+    
+  
+    
+    
 
     _runNb = 0;
 }
@@ -110,13 +116,19 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
+    
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
+    std::cout<<"=============new event================="<<std::endl;
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
     if(!vertices->size()) return;                                      // don't consider 0 vertex events
+        std::cout<<"to go in leptn analyzer"<<std::endl;
+
     if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))
-      return;                                                          // returns false if doesn't pass skim condition, so skip event in such case
+      return;            // returns false if doesn't pass skim condition, so skip event in such case
+        std::cout<<"to go in gen analyzer"<<std::endl;
+
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;
     triggerAnalyzer->analyze(iEvent);
@@ -145,6 +157,21 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     //significance of met
     _metSignificance = met.metSignificance();
 
+    
+    TLorentzVector lepton1;
+    TLorentzVector jet1;
+    double nJetBackToBack=0;
+    double njet=0;
+    njet = jetAnalyzer->_nJets;
+    lepton1.SetPtEtaPhiE(leptonAnalyzer->_lPt[0],leptonAnalyzer->_lEta[0],leptonAnalyzer->_lPhi[0],leptonAnalyzer->_lE[0]);
+    for (int k =0; k < njet; k ++){
+        jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
+        if (jet1.DeltaR(lepton1) > 1) nJetBackToBack++;
+    }
+    if(skim == "FR" and nJetBackToBack == 0) return;
+    
+    
+    
     //store calculated event info in root tree
     outputTree->Fill();
 }

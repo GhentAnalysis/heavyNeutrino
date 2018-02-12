@@ -1,5 +1,6 @@
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
+#include "heavyNeutrino/multilep/interface/GenParticleManager.h"
 #include "TLorentzVector.h" 
 
 GenMatching::GenMatching(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer): multilepAnalyzer(multilepAnalyzer){};
@@ -8,7 +9,7 @@ void GenMatching::setGenParticles(const edm::Event& iEvent){
     iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
 }
 
-reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, const bool differentId){
+reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, const bool differentId) const{
     reco::GenParticle const* match = nullptr;
     TLorentzVector recoV(reco.px(), reco.py(), reco.pz(), reco.energy());
     double minDeltaR = 99999.;
@@ -26,26 +27,35 @@ reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, 
     return match;
 }
 
-bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId){
+bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId) const{
     if(!differentId && (abs(reco.pdgId()) != abs(gen.pdgId())) ) return false;
     if(abs(reco.pdgId()) == 15 && abs(gen.pdgId()) == 15) return gen.status() == 2 && gen.isLastCopy();
     return gen.status() == 1;
 }
 
-bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match){
-    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return match.isPromptFinalState();
+bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
+    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPrompt(match, *genParticles);
     return false;
 }
+
+
 
 void GenMatching::fillMatchingVars(const reco::Candidate& reco){
     const reco::GenParticle* match = findGenMatch(reco);
     if(match != nullptr){
         matchIsPrompt = isPrompt(reco, *match);
         matchPdgId = match->pdgId();
-        provenance = GenTools::provenance(*match, *genParticles);
+        provenance = (matchIsPrompt ? 0 : GenTools::provenance(*match, *genParticles) );
+        provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
+        
+        std::cout<<"matching----> id   "<<matchPdgId<< "  provenance: "<<provenance<<"  compressed: "<< provenanceCompressed<<std::endl;
     } else{
         matchIsPrompt = false;
         matchPdgId = 0;
-        provenance = 4.;
+        provenanceCompressed = 4;
+        provenance = 18;
     }
 }
+
+
+
