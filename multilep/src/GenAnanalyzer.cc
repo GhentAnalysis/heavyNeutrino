@@ -39,6 +39,9 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/i");
     outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
     outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
+    outputTree->Branch("_gen_vertex_x",              &_gen_vertex_x,              "_gen_vertex_x[_gen_nL]/D");
+    outputTree->Branch("_gen_vertex_y",              &_gen_vertex_y,              "_gen_vertex_y[_gen_nL]/D");
+    outputTree->Branch("_gen_vertex_z",              &_gen_vertex_z,              "_gen_vertex_z[_gen_nL]/D");
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
@@ -76,6 +79,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lCharge[_gen_nL]   = p.charge();
                 _gen_lIsPrompt[_gen_nL] = (p.isPromptDecayed() || p.isPromptFinalState());
                 _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
+		_gen_vertex_x[_gen_nL]  = p.vertex().x();
+		_gen_vertex_y[_gen_nL]  = p.vertex().y();
+		_gen_vertex_z[_gen_nL]  = p.vertex().z();
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);
