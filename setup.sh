@@ -1,4 +1,4 @@
-if [[ $CMSSW_BASE == *CMSSW_8* ]]
+if [[ $CMSSW_VERSION == *CMSSW_8* ]]
 then
   # CMSSW_8_0_X checkout
   git checkout CMSSW_8_0_X
