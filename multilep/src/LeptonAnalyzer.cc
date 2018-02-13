@@ -176,7 +176,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     fillLeptonKinVars(mu);
     fillLeptonIsoVars(mu, *rho);
     if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
-	  		  std::cout<<_nL<<")   muon!!!! pt: "<<mu.pt()<<"     and prompt: "<<lIsPrompt[_nL]<<std::endl;
+	  		  std::cout<<_nL<<")   muon!!!! pt: "<<mu.pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
 
     fillLeptonJetVariables(mu, jets, primaryVertex);
 	
@@ -271,7 +271,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
     fillLeptonKinVars(*ele);
     //fillLeptonGenVars(ele->genParticle());
-	  	  std::cout<<_nL<<")   electrons!!!! pt: "<<ele->pt()<<"     and prompt: "<<lIsPrompt[_nL]<<std::endl;
+	  	  std::cout<<_nL<<")   electrons!!!! pt: "<<ele->pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
 
     if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
     fillLeptonJetVariables(*ele, jets, primaryVertex);
@@ -322,7 +322,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
-	  std::cout<<_nL<<")   tau!!!! pt: "<<tau.pt()<<"     and prompt: "<<lIsPrompt[_nL]<<std::endl;
+	  std::cout<<_nL<<")   tau!!!! pt: "<<tau.pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
 
     _lFlavor[_nL]  = 2;
     _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
