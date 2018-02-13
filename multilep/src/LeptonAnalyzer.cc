@@ -321,6 +321,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
+	  std::cout<<_nL<<")   tau!!!! pt: "<<tau.pt()<<std::endl;
 
     _lFlavor[_nL]  = 2;
     _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
