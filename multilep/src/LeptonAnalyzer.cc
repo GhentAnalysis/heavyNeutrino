@@ -175,6 +175,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
     fillLeptonIsoVars(mu, *rho);
+	  	std::cout<<"call genVars muon:"<<std::endl;
     if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
 	  		  std::cout<<_nL<<")   muon!!!! pt: "<<mu.pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
 
@@ -271,9 +272,10 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
     fillLeptonKinVars(*ele);
     //fillLeptonGenVars(ele->genParticle());
-	  	  std::cout<<_nL<<")   electrons!!!! pt: "<<ele->pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
-
+	std::cout<<"call genVars ele:"<<std::endl;
     if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
+	std::cout<<_nL<<")   electrons!!!! pt: "<<ele->pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
+
     fillLeptonJetVariables(*ele, jets, primaryVertex);
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
@@ -319,10 +321,11 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     if(!tau.tauID("decayModeFinding")) continue;
     fillLeptonKinVars(tau);
     //fillLeptonGenVars(tau.genParticle());
+	  	std::cout<<"call genVars tau:"<<std::endl;
     if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
+	  	  std::cout<<_nL<<")   tau!!!! pt: "<<tau.pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
-	  std::cout<<_nL<<")   tau!!!! pt: "<<tau.pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
 
     _lFlavor[_nL]  = 2;
     _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
