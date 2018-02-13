@@ -10,6 +10,17 @@ setCMSSW(){
     echo "eval \`scram runtime -sh\`" >> $1
 }
 
+#function to submit a job and catch invalid credentials
+submitJob(){
+    qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
+    while grep "Invalid credential" outputCheck.txt; do
+        echo "Invalid credential caught, resubmitting"
+        sleep 2  #sleep 2 seconds before attemtping resubmission
+        qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
+    done
+    cat outputCheck.txt
+    rm outputCheck.txt
+}
 #read command-line arguments
 input=$1
 output=$2
@@ -67,13 +78,8 @@ while read f; do
         then if (( $fileCount % $filesPerJob == 0 ));
             then fileList="${fileList%,}" #remove trailing comma from fileList
             #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
-            #pipe qsub output to txt file to catch invalid credentials
-            qsub $submit -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
-            while grep "Invalid credential" outputCheck.txt; do
-                echo "Invalid credential caught, resubmitting"
-                qsub $submit -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
-            done
-            cat outputCheck.txt
+            #submit job
+            submitJob $submit
             #cat $submit
             jobCount=$((jobCount + 1))
             fileList=""
@@ -89,14 +95,8 @@ done < fileList.txt
 if (( $fileCount % $filesPerJob != 0 )); then
     fileList="${fileList%,}" #remove trailing comma from fileList
     echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/${skim}_Job_${jobCount}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
-    qsub $submit -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
-    while grep "Invalid credential" outputCheck.txt; do
-        echo "Invalid credential caught, resubmitting"
-        qsub $submit -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
-    done
-    cat outputCheck.txt
-    rm outputCheck.txt
-    #cat $submit
+    #submit job
+    submitJob $submit
 fi
 #remove temporary files
 rm $submit
