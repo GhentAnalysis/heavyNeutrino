@@ -54,6 +54,7 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
         matchPdgId = 0;
         provenanceCompressed = 4;
         provenance = 18;
+        std::cout<<"NO matching"<<std::endl;
     }
 }
 
