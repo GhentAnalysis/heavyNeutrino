@@ -156,7 +156,7 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
 unsigned GenTools::provenanceCompressed(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     std::set<int> decayChain;
     setDecayChain(gen, genParticles, decayChain);
-    for(auto& i : decayChain) std::cout << i << std::endl;
+    for(auto& i : decayChain) std::cout << "chain---> "<<i << std::endl;
     if(bMesonInChain(decayChain) || bBaryonInChain(decayChain) ) return 1;          //lepton from heavy flavor decay
     if(cMesonInChain(decayChain) || cBaryonInChain(decayChain) ) return 2;          //lepton from c flavor decay
     if(bosonInChain(decayChain) ) return 0;                                         //lepton from boson
