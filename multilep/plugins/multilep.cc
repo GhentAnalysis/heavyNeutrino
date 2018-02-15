@@ -137,7 +137,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
     _eventNb   = (unsigned long) iEvent.id().event();
     _nVertex   = vertices->size();
-
+    std::cout<<"event number: "<< _eventNb<<std::endl;
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
@@ -166,6 +166,14 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
         if (jet1.DeltaR(lepton1) > 1) nJetBackToBack++;
     }
+    double prompti=0;
+    double nL=0;
+    nL = leptonAnalyzer->_nL;
+    for (int k =0; k < nL; k ++){
+        jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
+        if (leptonAnalyzer->_lIsPrompt[k]) prompti++;
+    }
+    if (skim == "trilep" and prompti < 3) return;
     if(skim == "FR" and nJetBackToBack == 0) return;
     
     
