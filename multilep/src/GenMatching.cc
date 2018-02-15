@@ -42,7 +42,7 @@ void GenMatching::fillMatchingVars(const reco::Candidate& reco){
     if(match != nullptr){
         matchIsPrompt = isPrompt(reco, *match);
         matchPdgId = match->pdgId();
-        provenance = (matchIsPrompt ? 0 : GenTools::provenance(*match, *genParticles) );
+        provenance = GenTools::provenance(*match, *genParticles);
         provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
     } else{
         matchIsPrompt = false;
