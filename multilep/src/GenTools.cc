@@ -15,7 +15,7 @@ const reco::GenParticle* GenTools::getMother(const reco::GenParticle& gen, const
 void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){
    //  for(auto& i : list) std::cout << "list---> "<<i << std::endl;
     if((list.empty() or list.find(gen.pdgId())==list.end()) and gen.pdgId() != 2212) list.insert(gen.pdgId());
-    std::cout<<"in setdecaychain: gen.pdgId()"<<gen.pdgId()<<std::endl;
+    //std::cout<<"in setdecaychain: gen.pdgId()"<<gen.pdgId()<<std::endl;
     if(gen.numberOfMothers() > 1) setDecayChain(genParticles[gen.motherRef(1).key()], genParticles, list);
     if(gen.numberOfMothers() > 0) setDecayChain(genParticles[gen.motherRef(0).key()], genParticles, list);
   //  for(auto& i : list) std::cout << "list  2   ---> "<<i << std::endl;
