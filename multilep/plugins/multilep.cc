@@ -166,13 +166,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
         if (jet1.DeltaR(lepton1) > 1) nJetBackToBack++;
     }
-    double prompti=0;
-    double nL=0;
-    nL = leptonAnalyzer->_nL;
-    for (int k =0; k < nL; k ++){
-        if (leptonAnalyzer->_lIsPrompt[k]) prompti++;
-    }
-    if (skim == "trilep" and prompti < 5) return;
+    
     if(skim == "FR" and nJetBackToBack == 0) return;
     
     
