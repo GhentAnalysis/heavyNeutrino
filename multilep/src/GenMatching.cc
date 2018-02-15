@@ -20,6 +20,7 @@ reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, 
             if(deltaR < minDeltaR){
                 minDeltaR = deltaR;
                 match = &*genIt;
+                std::cout<<"the pt of the one used for the matching: "<< genIt->px()<<std::endl;
             }
         }
     } 
