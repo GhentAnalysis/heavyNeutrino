@@ -145,7 +145,6 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
   _nVFit  = 0;
   _nGoodLeading = 0;
   _nGoodDisplaced = 0;
-  _prompti=0;
 
   
   //bool good_leading=false; // to check 1 leading-well_isolated lepton
