@@ -155,8 +155,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
 
   //set up generator matching
   if(!multilepAnalyzer->isData) genMatcher->setGenParticles(iEvent);
- for(const pat::Muon& mu : *muons){
- }
+
   //loop over muons
   for(const pat::Muon& mu : *muons){
     // if(mu.innerTrack().isNull()) continue;
