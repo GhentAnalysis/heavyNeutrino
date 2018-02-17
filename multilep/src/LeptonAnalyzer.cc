@@ -285,24 +285,13 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
     _lCharge[_nL] = lepton.charge();
 }
 
-/*
-   void LeptonAnalyzer::fillLeptonGenVars(const reco::GenParticle* genParticle){
-   if(genParticle != nullptr){
-   _lIsPrompt[_nL] = (genParticle)->isPromptFinalState();
-   _lMatchPdgId[_nL] = (genParticle)->pdgId();
-   } else{
-   _lIsPrompt[_nL] = false;
-   _lMatchPdgId[_nL] = 0;
-   }
-   }
-   */
-
-void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatching* genMatcher){
+template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher){
     genMatcher->fillMatchingVars(lepton);
     _lIsPrompt[_nL] = genMatcher->promptMatch();
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
+
 }
 
 

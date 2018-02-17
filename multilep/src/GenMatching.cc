@@ -8,12 +8,12 @@ void GenMatching::setGenParticles(const edm::Event& iEvent){
     iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
 }
 
-reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, const bool differentId) const{
+const reco::GenParticle* GenMatching::geometricMatch(const reco::Candidate& reco, const bool differentId) const{
     reco::GenParticle const* match = nullptr;
     TLorentzVector recoV(reco.px(), reco.py(), reco.pz(), reco.energy());
     double minDeltaR = 99999.;
     for(std::vector<reco::GenParticle>::const_iterator genIt = genParticles->cbegin(); genIt != genParticles->cend(); ++genIt){
-        if(toConsider(reco, *genIt, differentId) ){
+        if(considerForMatching(reco, *genIt, differentId) ){
             TLorentzVector genV(genIt->px(), genIt->py(), genIt->pz(), genIt->energy());
             double deltaR = recoV.DeltaR(genV);
             if(deltaR < minDeltaR){
@@ -22,32 +22,36 @@ reco::GenParticle const* GenMatching::findGenMatch(const reco::Candidate& reco, 
             }
         }
     } 
-    if(minDeltaR > 0.2 && !differentId) match = findGenMatch(reco, true);
+    if(minDeltaR > 0.2){
+        if(!differentId){
+            match = geometricMatch(reco, true);
+        } else{
+            //no decent match found!
+            return nullptr;
+        }
+    }
     return match;
 }
 
-bool GenMatching::toConsider(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId) const{
-    if(!differentId && (abs(reco.pdgId()) != abs(gen.pdgId())) ) return false;
+bool GenMatching::considerForMatching(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId) const{
+    //if gen particle is not of same as reco particle
+    if(!sameParticle(reco, gen)){
+        if(!differentId){
+            return false;
+        } else {
+            //allow matching to photons
+            return (abs(gen.pdgId()) == 22);
+        }
+    }
     if(abs(reco.pdgId()) == 15 && abs(gen.pdgId()) == 15) return gen.status() == 2 && gen.isLastCopy();
     return gen.status() == 1;
+}
+
+bool GenMatching::sameParticle(const reco::Candidate& reco, const reco::GenParticle& gen) const{
+    return ( abs(reco.pdgId()) == abs(gen.pdgId()) );
 }
 
 bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
     if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPrompt(match, *genParticles);
     return false;
-}
-
-void GenMatching::fillMatchingVars(const reco::Candidate& reco){
-    const reco::GenParticle* match = findGenMatch(reco);
-    if(match != nullptr){
-        matchIsPrompt = isPrompt(reco, *match);
-        matchPdgId = match->pdgId();
-        provenance = GenTools::provenance(*match, *genParticles);
-        provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
-    } else{
-        matchIsPrompt = false;
-        matchPdgId = 0;
-        provenanceCompressed = 4;
-        provenance = 18;
-    }
 }
