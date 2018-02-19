@@ -46,6 +46,9 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_3dIPSig",                      &_3dIPSig,                      "_3dIPSig[_nL]/D");
   outputTree->Branch("_2dIP",                         &_2dIP,                         "_2dIP[_nL]/D");
   outputTree->Branch("_2dIPSig",                      &_2dIPSig,                      "_2dIPSig[_nL]/D");
+  outputTree->Branch("_lSimType",                     &_lSimType,                     "_lSimType[_nL]/I");
+  outputTree->Branch("_lSimExtType",                  &_lSimExtType,                  "_lSimExtType[_nL]/I");
+  outputTree->Branch("_lSimFlavour",                  &_lSimFlavour,                  "_lSimFlavour[_nL]/I");
   outputTree->Branch("_lElectronMva",                 &_lElectronMva,                 "_lElectronMva[_nLight]/F");
   outputTree->Branch("_lElectronPassEmu",             &_lElectronPassEmu,             "_lElectronPassEmu[_nLight]/O");
   outputTree->Branch("_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto", &_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto, "_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL]/O");
@@ -197,8 +200,13 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
 	  
     _lFlavor[_nL]        = 1;
     _muonSegComp[_nL]    = mu.segmentCompatibility();
-    _relIso[_nL]         = getRelIso03(mu, *rho);                                               // Isolation variables
+    _relIso[_nL]         = getRelIso03(mu, *rho);   // Isolation variables
   	
+    _lSimType[_nL]       = mu.simType();  
+    _lSimExtType[_nL]    = mu.simExtType();  
+    _lSimFlavour[_nL]    = mu.simFlavour();  
+	  
+	  
 //    if (_relIso[_nL] > 1) continue;
 	  
 	  
@@ -306,6 +314,9 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     _lNumberOfMatchedStation[_nL] =  -1;
     _lNumberOfValidPixelHits[_nL] =  -1;
     _lTrackerLayersWithMeasurement[_nL] =  -1;
+    _lSimType[_nL]       = -1; 
+    _lSimExtType[_nL]    = -1; 
+    _lSimFlavour[_nL]    = -1; 
 	  
     if (fabs(_dxy[_nL])> 0.02)  ++_nGoodDisplaced; 
     if (ele->pt() > 22 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) ++_nGoodLeading;
@@ -345,7 +356,9 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     _tauMediumMvaNew[_nL] = tau.tauID("byMediumIsolationMVArun2v1DBnewDMwLT");
     _tauTightMvaNew[_nL] = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
     _tauVTightMvaNew[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
-
+    _lSimType[_nL]       = -1; 
+    _lSimExtType[_nL]    = -1; 
+    _lSimFlavour[_nL]    = -1; 
    
     ++_nTau;
     ++_nL;
