@@ -145,7 +145,8 @@ class LeptonAnalyzer {
     double getRelIso03(const pat::Muon&, const double) const;
     double getRelIso03(const pat::Electron&, const double) const;
     double getRelIso04(const pat::Muon& mu) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false) const;
+    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged = false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged = false) const;
 
     // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*) const;
