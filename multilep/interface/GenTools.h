@@ -52,5 +52,9 @@ namespace GenTools{
     bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //find the minimum deltaR between a reco particle and all genparticles
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
+    //get CMSSW gen match for lepton
+    template<typename Lepton> const reco::GenParticle* getCMSSWGenMatch(const Lepton& lepton){
+        return lepton.genParticle();
+    }
 }
 #endif

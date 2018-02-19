@@ -659,12 +659,13 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
   _ecalPFClusterIso[_nL]= ele.ecalPFClusterIso();
   _hcalPFClusterIso[_nL]= ele.hcalPFClusterIso();
 }
-void LeptonAnalyzer::fillLeptonGenVars(const reco::Candidate& lepton, GenMatching* genMatcher){
+template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher){
     genMatcher->fillMatchingVars(lepton);
     _lIsPrompt[_nL] = genMatcher->promptMatch();
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
+
 }
 
 

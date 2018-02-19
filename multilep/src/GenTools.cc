@@ -118,7 +118,7 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
             } else if(tauInChain(decayChain)){
                 return W_B_T_L;
             }
-            return W_T_L;
+            return W_B_L;
         } else if(cMesonInChain(decayChain)){
             if(tauInChain(decayChain)){
                 return W_C_T_L;

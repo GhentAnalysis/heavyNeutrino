@@ -43,6 +43,7 @@ class LeptonAnalyzer {
   friend class LeptonIdHelper;
   friend class multilep;
   private:
+    //this has to come before the effective areas as their initialization depends on it!
     multilep* multilepAnalyzer;
 
     EffectiveAreas electronsEffectiveAreas;
@@ -155,11 +156,6 @@ class LeptonAnalyzer {
     bool _tauTightMvaNew[nL_max];
     bool _tauVTightMvaNew[nL_max];
     bool _tauVTightMvaOld[nL_max];
-  
-  
-  
-    
-  
 
     bool _lPOGLooseWOIso[nL_max];
     bool _lPOGMediumWOIso[nL_max];
@@ -182,8 +178,8 @@ class LeptonAnalyzer {
 				  const TransientVertex&,
 				  const reco::Track&, const reco::Track&);
 
-    void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
-
+    //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
+    template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
