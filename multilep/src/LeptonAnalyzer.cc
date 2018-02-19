@@ -178,9 +178,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     // if(fabs(_dz[_nL]) > 0.1) continue;                     // no impact parameter cuts
     fillLeptonKinVars(mu);
     fillLeptonIsoVars(mu, *rho);
-	  	std::cout<<"call genVars muon:"<<std::endl;
     if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
-	  		  std::cout<<_nL<<")   muon!!!! pt: "<<mu.pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
 
     fillLeptonJetVariables(mu, jets, primaryVertex);
 	
@@ -282,9 +280,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     // if(fabs(_dz[_nL]) > 0.1) continue;                   // no impact parameter cuts
     fillLeptonKinVars(*ele);
     //fillLeptonGenVars(ele->genParticle());
-	std::cout<<"call genVars ele:"<<std::endl;
     if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
-	std::cout<<_nL<<")   electrons!!!! pt: "<<ele->pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
 
     fillLeptonJetVariables(*ele, jets, primaryVertex);
     _lFlavor[_nL]      = 0;
