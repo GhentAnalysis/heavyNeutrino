@@ -52,7 +52,6 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
 
     if(!genParticles.isValid()) return;
-    std::cout<<"in analyze gen:"<<std::endl;
     _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
     _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
 
