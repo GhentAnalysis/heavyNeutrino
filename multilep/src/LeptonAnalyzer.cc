@@ -251,7 +251,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     
     // std::cout<<"indice elettrone:    "<<_lIndex[_nL]<<"   con il suo pt: "<<ele->pt()<<std::endl;
 
-    _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfAllHits(reco::HitPattern::MISSING_INNER_HITS);
+    _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] =-1;
     fillLeptonImpactParameters(*ele, primaryVertex);
     fillLeptonIsoVars(*ele, *rho);
