@@ -330,9 +330,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     if(!tau.tauID("decayModeFinding")) continue;
     fillLeptonKinVars(tau);
     //fillLeptonGenVars(tau.genParticle());
-	  	std::cout<<"call genVars tau:"<<std::endl;
     if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
-	  	  std::cout<<_nL<<")   tau!!!! pt: "<<tau.pt()<<"     and prompt: "<<_lIsPrompt[_nL]<<std::endl;
     fillLeptonImpactParameters(tau, primaryVertex);
     if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
