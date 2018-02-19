@@ -183,7 +183,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
 	
 
    /////////// ID variables   
-	  
+    if (!mu.hasTrackDetails	()) continue;
 	  
     _lGlobalMuon[_nL] = mu.isGlobalMuon();
     _lTrackerMuon[_nL]= mu.isTrackerMuon();
@@ -239,6 +239,8 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     if(ele->gsfTrack().isNull()) continue; 
     if(ele->pt() < 5)           continue; // from 10 to 6
     if(fabs(ele->eta()) > 2.5)   continue;
+    if (!ele->hasTrackDetails	()) continue;
+
     // ---->  loose requirements about number of hits and VetoConversion
     //if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
     //if(!ele->passConversionVeto()) continue;  
