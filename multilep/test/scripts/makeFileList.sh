@@ -29,13 +29,14 @@ fileList(){
     else                                #official sample
 
         #use CMSDAS query to list all files present in sample in a txt file
-        python ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/scripts/das_client.py --query="file dataset=$input" --limit=0 > fileNames.txt
+        dasgoclient --query="file dataset=$input" --limit=0 > fileNames.txt
         
         #location of files on local cluster
         location=/pnfs/iihe/cms/ph/sc4
         
         #xrootd redirector for files not present on local cluster
-        redirector=root://cmsxrootd.fnal.gov//
+        #redirector=root://cmsxrootd.fnal.gov//
+        redirector=root://xrootd-cms.infn.it//
         
         while read f
             #check if file is locally available
