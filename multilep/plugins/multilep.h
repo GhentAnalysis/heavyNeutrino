@@ -77,6 +77,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 
         edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
         edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
+        edm::EDGetTokenT<std::vector<pat::Electron>>        eleCalibratedToken;
         edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;
         edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaHZZToken;
         edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaFall17IsoToken;
@@ -87,6 +88,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedTightToken;
         edm::EDGetTokenT<std::vector<pat::Tau>>             tauToken;
         edm::EDGetTokenT<std::vector<pat::Photon>>          photonToken;
+        edm::EDGetTokenT<std::vector<pat::Photon>>          photonCalibratedToken;
         edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedLooseToken;
         edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedMediumToken;
         edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedTightToken;
@@ -111,6 +113,14 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                isData;
         bool                                                is2017;
         bool                                                isSUSY;
+        edm::EDGetTokenT<edm::ValueMap<float>>              eScaleUpUncertaintyToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              eScaleDownUncertaintyToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              eResolutionUpUncertaintyToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              eResolutionDownUncertaintyToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              phScaleUpUncertaintyToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              phScaleDownUncertaintyToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              phResolutionUpUncertaintyToken;
+        edm::EDGetTokenT<edm::ValueMap<float>>              phResolutionDownUncertaintyToken;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;

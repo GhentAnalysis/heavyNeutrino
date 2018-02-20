@@ -10,6 +10,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
     muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
+    eleCalibratedToken(               consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electronsCalibrated"))),
     eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
     eleMvaHZZToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMvaHZZ"))),
     eleMvaFall17IsoToken(             consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17Iso"))),
@@ -20,6 +21,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     eleCutBasedTightToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedTight"))),
     tauToken(                         consumes<std::vector<pat::Tau>>(            iConfig.getParameter<edm::InputTag>("taus"))),
     photonToken(                      consumes<std::vector<pat::Photon>>(         iConfig.getParameter<edm::InputTag>("photons"))),
+    photonCalibratedToken(            consumes<std::vector<pat::Photon>>(         iConfig.getParameter<edm::InputTag>("photonsCalibrated"))),
     photonCutBasedLooseToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedLoose"))),
     photonCutBasedMediumToken(        consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedMedium"))),
     photonCutBasedTightToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedTight"))),
@@ -43,7 +45,15 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
+    eScaleUpUncertaintyToken(         consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("eScaleUpUncertainty"))),
+    eScaleDownUncertaintyToken(       consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("eScaleDownUncertainty"))),
+    eResolutionUpUncertaintyToken(    consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("eResolutionUpUncertainty"))),
+    eResolutionDownUncertaintyToken(  consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("eResolutionDownUncertainty"))),
+    phScaleUpUncertaintyToken(        consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("phScaleUpUncertainty"))),
+    phScaleDownUncertaintyToken(      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("phScaleDownUncertainty"))),
+    phResolutionUpUncertaintyToken(   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("phResolutionUpUncertainty"))),
+    phResolutionDownUncertaintyToken( consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("phResolutionDownUncertainty")))
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -92,7 +102,7 @@ void multilep::beginJob(){
 
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
-    if(!isData) genAnalyzer->beginJob(outputTree);
+    if(!isData) genAnalyzer->beginJob(outputTree, fs);
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
@@ -116,9 +126,9 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
+    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!vertices->size()) return;                                      //Don't consider 0 vertex events
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
-    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;
     triggerAnalyzer->analyze(iEvent);
     jetAnalyzer->analyze(iEvent);

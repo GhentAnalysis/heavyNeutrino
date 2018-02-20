@@ -57,13 +57,14 @@ class GenAnalyzer {
     unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
 
+    TH1I*     eventTypes;
     multilep* multilepAnalyzer;
 
   public:
     GenAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
     ~GenAnalyzer(){};
 
-    void beginJob(TTree* outputTree);
+    void beginJob(TTree* outputTree, edm::Service<TFileService>& fs);
     void analyze(const edm::Event&);
 };
 #endif

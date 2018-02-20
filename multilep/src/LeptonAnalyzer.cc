@@ -27,10 +27,20 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/b");
     outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
     outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
+    outputTree->Branch("_lPtCorr",                      &_lPtCorr,                      "_lPtCorr[_nL]/D");
+    outputTree->Branch("_lPtScaleUp",                   &_lPtScaleUp,                   "_lPtScaleUp[_nL]/D");
+    outputTree->Branch("_lPtScaleDown",                 &_lPtScaleDown,                 "_lPtScaleDown[_nL]/D");
+    outputTree->Branch("_lPtResUp",                     &_lPtResUp,                     "_lPtResUp[_nL]/D");
+    outputTree->Branch("_lPtResDown",                   &_lPtResDown,                   "_lPtResDown[_nL]/D");
     outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
     outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
     outputTree->Branch("_lPhi",                         &_lPhi,                         "_lPhi[_nL]/D");
     outputTree->Branch("_lE",                           &_lE,                           "_lE[_nL]/D");
+    outputTree->Branch("_lECorr",                       &_lECorr,                       "_lECorr[_nL]/D");
+    outputTree->Branch("_lEScaleUp",                    &_lEScaleUp,                    "_lEScaleUp[_nL]/D");
+    outputTree->Branch("_lEScaleDown",                  &_lEScaleDown,                  "_lEScaleDown[_nL]/D");
+    outputTree->Branch("_lEResUp",                      &_lEResUp,                      "_lEResUp[_nL]/D");
+    outputTree->Branch("_lEResDown",                    &_lEResDown,                    "_lEResDown[_nL]/D");
     outputTree->Branch("_lFlavor",                      &_lFlavor,                      "_lFlavor[_nL]/i");
     outputTree->Branch("_lCharge",                      &_lCharge,                      "_lCharge[_nL]/I");
     outputTree->Branch("_dxy",                          &_dxy,                          "_dxy[_nL]/D");
@@ -99,6 +109,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
     edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
+    edm::Handle<std::vector<pat::Electron>> electronsCalibrated;     iEvent.getByToken(multilepAnalyzer->eleCalibratedToken,                electronsCalibrated);
     edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
     edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
     edm::Handle<edm::ValueMap<float>> electronMvaFall17Iso;          iEvent.getByToken(multilepAnalyzer->eleMvaFall17IsoToken,              electronMvaFall17Iso);
@@ -112,6 +123,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
     edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
     edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
+    edm::Handle<edm::ValueMap<float>> eScaleUpUncertainty;           iEvent.getByToken(multilepAnalyzer->eScaleUpUncertaintyToken,          eScaleUpUncertainty);
+    edm::Handle<edm::ValueMap<float>> eScaleDownUncertainty;         iEvent.getByToken(multilepAnalyzer->eScaleDownUncertaintyToken,        eScaleDownUncertainty);
+    edm::Handle<edm::ValueMap<float>> eResolutionUpUncertainty;      iEvent.getByToken(multilepAnalyzer->eResolutionUpUncertaintyToken,     eResolutionUpUncertainty);
+    edm::Handle<edm::ValueMap<float>> eResolutionDownUncertainty;    iEvent.getByToken(multilepAnalyzer->eResolutionDownUncertaintyToken,   eResolutionDownUncertainty);
 
     _nL     = 0;
     _nLight = 0;
@@ -185,8 +200,28 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
         fillLeptonJetVariables(*ele, jets, primaryVertex);
 
-        _lFlavor[_nL]          = 0;
-        _lEtaSC[_nL]           = ele->superCluster()->eta();
+        for(auto eleCalibrated = electronsCalibrated->begin(); eleCalibrated != electronsCalibrated->end(); ++eleCalibrated){
+          if(fabs(eleCalibrated->phi()-ele->phi()) < 0.001 and fabs(eleCalibrated->eta()-ele->eta() < 0.001)){
+            auto electronCalRef  = edm::Ref<std::vector<pat::Electron>>(electronsCalibrated, (eleCalibrated - electronsCalibrated->begin()));
+            float resUp          = (*eResolutionUpUncertainty)[electronCalRef]/ele->energy();
+            float resDown        = (*eResolutionDownUncertainty)[electronCalRef]/ele->energy();
+            float scaleUp        = (*eScaleUpUncertainty)[electronCalRef]/ele->energy();
+            float scaleDown      = (*eScaleDownUncertainty)[electronCalRef]/ele->energy();
+            _lPtCorr[_nL]        = eleCalibrated->pt();
+            _lPtScaleUp[_nL]     = ele->pt()*scaleUp;
+            _lPtScaleDown[_nL]   = ele->pt()*scaleDown;
+            _lPtResUp[_nL]       = ele->pt()*resUp;
+            _lPtResDown[_nL]     = ele->pt()*resDown;
+            _lECorr[_nL]         = eleCalibrated->energy();
+            _lEScaleUp[_nL]      = ele->energy()*scaleUp;
+            _lEScaleDown[_nL]    = ele->energy()*scaleDown;
+            _lEResUp[_nL]        = ele->energy()*resUp;
+            _lEResDown[_nL]      = ele->energy()*resDown;
+          }
+        }
+
+        _lFlavor[_nL]               = 0;
+        _lEtaSC[_nL]                 = ele->superCluster()->eta();
 
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
         _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);

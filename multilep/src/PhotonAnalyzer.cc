@@ -18,10 +18,20 @@ PhotonAnalyzer::PhotonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
 void PhotonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nPh",                                &_nPh,                            "_nPh/b");
     outputTree->Branch("_phPt",                               &_phPt,                           "_phPt[_nPh]/D");
+    outputTree->Branch("_phPtCorr",                           &_phPtCorr,                       "_phPtCorr[_nPh]/D");
+    outputTree->Branch("_phPtScaleUp",                        &_phPtScaleUp,                    "_phPtScaleUp[_nPh]/D");
+    outputTree->Branch("_phPtScaleDown",                      &_phPtScaleDown,                  "_phPtScaleDown[_nPh]/D");
+    outputTree->Branch("_phPtResUp",                          &_phPtResUp,                      "_phPtResUp[_nPh]/D");
+    outputTree->Branch("_phPtResDown",                        &_phPtResDown,                    "_phPtResDown[_nPh]/D");
     outputTree->Branch("_phEta",                              &_phEta,                          "_phEta[_nPh]/D");
     outputTree->Branch("_phEtaSC",                            &_phEtaSC,                        "_phEtaSC[_nPh]/D");
     outputTree->Branch("_phPhi",                              &_phPhi,                          "_phPhi[_nPh]/D");
     outputTree->Branch("_phE",                                &_phE,                            "_phE[_nPh]/D");
+    outputTree->Branch("_phECorr",                            &_phECorr,                        "_phECorr[_nPh]/D");
+    outputTree->Branch("_phEScaleUp",                         &_phEScaleUp,                     "_phEScaleUp[_nPh]/D");
+    outputTree->Branch("_phEScaleDown",                       &_phEScaleDown,                   "_phEScaleDown[_nPh]/D");
+    outputTree->Branch("_phEResUp",                           &_phEResUp,                       "_phEResUp[_nPh]/D");
+    outputTree->Branch("_phEResDown",                         &_phEResDown,                     "_phEResDown[_nPh]/D");
     outputTree->Branch("_phCutBasedLoose",                    &_phCutBasedLoose,                "_phCutBasedLoose[_nPh]/O");
     outputTree->Branch("_phCutBasedMedium",                   &_phCutBasedMedium,               "_phCutBasedMedium[_nPh]/O");
     outputTree->Branch("_phCutBasedTight",                    &_phCutBasedTight,                "_phCutBasedTight[_nPh]/O");
@@ -51,6 +61,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
 
 bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Photon>> photons;                   iEvent.getByToken(multilepAnalyzer->photonToken,                       photons);
+    edm::Handle<std::vector<pat::Photon>> photonsCalibrated;         iEvent.getByToken(multilepAnalyzer->photonCalibratedToken,             photonsCalibrated);
     edm::Handle<edm::ValueMap<bool>> photonsCutBasedLoose;           iEvent.getByToken(multilepAnalyzer->photonCutBasedLooseToken,          photonsCutBasedLoose);
     edm::Handle<edm::ValueMap<bool>> photonsCutBasedMedium;          iEvent.getByToken(multilepAnalyzer->photonCutBasedMediumToken,         photonsCutBasedMedium);
     edm::Handle<edm::ValueMap<bool>> photonsCutBasedTight;           iEvent.getByToken(multilepAnalyzer->photonCutBasedTightToken,          photonsCutBasedTight);
@@ -66,6 +77,10 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
     edm::Handle<std::vector<reco::GenParticle>> genParticles;        iEvent.getByToken(multilepAnalyzer->genParticleToken,                  genParticles);
     edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
+    edm::Handle<edm::ValueMap<float>> phScaleUpUncertainty;          iEvent.getByToken(multilepAnalyzer->phScaleUpUncertaintyToken,         phScaleUpUncertainty);
+    edm::Handle<edm::ValueMap<float>> phScaleDownUncertainty;        iEvent.getByToken(multilepAnalyzer->phScaleDownUncertaintyToken,       phScaleDownUncertainty);
+    edm::Handle<edm::ValueMap<float>> phResolutionUpUncertainty;     iEvent.getByToken(multilepAnalyzer->phResolutionUpUncertaintyToken,    phResolutionUpUncertainty);
+    edm::Handle<edm::ValueMap<float>> phResolutionDownUncertainty;   iEvent.getByToken(multilepAnalyzer->phResolutionDownUncertaintyToken,  phResolutionDownUncertainty);
 
     // Loop over photons
     _nPh = 0;
@@ -101,6 +116,26 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         _phHadronicOverEm[_nPh]             = photon->hadronicOverEm();
         _phPassElectronVeto[_nPh]           = photon->passElectronVeto();
         _phHasPixelSeed[_nPh]               = photon->hasPixelSeed();
+
+        for(auto photonCalibrated = photonsCalibrated->begin(); photonCalibrated != photonsCalibrated->end(); ++photonCalibrated){
+          if(fabs(photonCalibrated->phi()-photon->phi()) < 0.001 and fabs(photonCalibrated->eta()-photon->eta()) < 0.001){
+            float resUp          = (*phResolutionUpUncertainty)[photonRef]/photon->energy();
+            float resDown        = (*phResolutionDownUncertainty)[photonRef]/photon->energy();
+            float scaleUp        = (*phScaleUpUncertainty)[photonRef]/photon->energy();
+            float scaleDown      = (*phScaleDownUncertainty)[photonRef]/photon->energy();
+            _phPtCorr[_nPh]      = photonCalibrated->pt();
+            _phPtScaleUp[_nPh]   = photon->pt()*scaleUp;
+            _phPtScaleDown[_nPh] = photon->pt()*scaleDown;
+            _phPtResUp[_nPh]     = photon->pt()*resUp;
+            _phPtResDown[_nPh]   = photon->pt()*resDown;
+            _phECorr[_nPh]       = photonCalibrated->energy();
+            _phEScaleUp[_nPh]    = photon->energy()*scaleUp;
+            _phEScaleDown[_nPh]  = photon->energy()*scaleDown;
+            _phEResUp[_nPh]      = photon->energy()*resUp;
+            _phEResDown[_nPh]    = photon->energy()*resDown;
+          }
+        }
+
         if(!multilepAnalyzer->isData){
             fillPhotonGenVars(photon->genParticle());
             matchAN15165(*photon, genParticles);
