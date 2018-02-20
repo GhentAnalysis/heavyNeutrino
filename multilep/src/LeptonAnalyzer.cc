@@ -78,6 +78,10 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D"); 
     outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
     outputTree->Branch("_relIso0p4Mu",                  &_relIso0p4Mu,                  "_relIso0p4Mu[_nMu]/D");
+    outputTree->Branch("_relIso0p4",                    &_relIso0p4,                    "_relIso0p4[_nLight]/D");
+    outputTree->Branch("_relIso0p6",                    &_relIso0p6,                    "_relIso0p6[_nLight]/D");
+    outputTree->Branch("_relIso0p8",                    &_relIso0p8,                    "_relIso0p8[_nLight]/D");
+    outputTree->Branch("_relIso1p0",                    &_relIso1p0,                    "_relIso1p0[_nLight]/D");
     outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
     outputTree->Branch("_miniIsoCharged",               &_miniIsoCharged,               "_miniIsoCharged[_nLight]/D");
     outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
@@ -148,6 +152,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false);
         _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
+        _relIso0p4[_nL]      = getRelIso(mu, packedCands, 0.4, *rho, false);
+        _relIso0p6[_nL]      = getRelIso(mu, packedCands, 0.6, *rho, false);
+        _relIso0p8[_nL]      = getRelIso(mu, packedCands, 0.8, *rho, false);
+        _relIso1p0[_nL]      = getRelIso(mu, packedCands, 1.0, *rho, false);
+
         _lHNLoose[_nL]       = isHNLoose(mu);                                                       // ID variables
         _lHNFO[_nL]          = isHNFO(mu);                                                          // don't change order, they rely on above variables
         _lHNTight[_nL]       = isHNTight(mu);
@@ -191,6 +200,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
         _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);
         _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
+
+        _relIso0p4[_nL]      = getRelIso(*ele, packedCands, 0.4, *rho, false);
+        _relIso0p6[_nL]      = getRelIso(*ele, packedCands, 0.6, *rho, false);
+        _relIso0p8[_nL]      = getRelIso(*ele, packedCands, 0.8, *rho, false);
+        _relIso1p0[_nL]      = getRelIso(*ele, packedCands, 1.0, *rho, false);
+
         _lElectronMva[_nL]              = (*electronsMva)[electronRef];
         _lElectronMvaHZZ[_nL]           = (*electronsMvaHZZ)[electronRef];
         _lElectronMvaFall17Iso[_nL]     = (*electronMvaFall17Iso)[electronRef];

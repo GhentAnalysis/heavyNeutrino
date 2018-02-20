@@ -58,6 +58,10 @@ class LeptonAnalyzer {
     int _lCharge[nL_max];
 
     double _relIso[nL_max];                                                                          //lepton isolation variables
+    double _relIso0p4[nL_max];                                                                          //lepton isolation variables
+    double _relIso0p6[nL_max];                                                                          //lepton isolation variables
+    double _relIso0p8[nL_max];                                                                          //lepton isolation variables
+    double _relIso1p0[nL_max];                                                                          //lepton isolation variables
     double _relIso0p4Mu[nL_max];                                                                          //lepton isolation variables
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];                                                              
