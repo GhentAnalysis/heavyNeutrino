@@ -2,12 +2,6 @@ import FWCore.ParameterSet.Config as cms
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
 def addElectronAndPhotonSequence(process, isData, is2017):
-  #
-  # EGM Regression
-  #
-  from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
-  process = regressionWeights(process)
-  process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 
   #
   # EGM scale corrections (on data) and smearing (on MC)
@@ -46,4 +40,4 @@ def addElectronAndPhotonSequence(process, isData, is2017):
   process.photonIDValueMapProducer.srcMiniAOD    = cms.InputTag('slimmedPhotons')
   process.photonMVAValueMapProducer.srcMiniAOD   = cms.InputTag('slimmedPhotons')
 
-  process.egmSequence = cms.Sequence(process.regressionApplication * process.calibratedPatElectrons * process.calibratedPatPhotons * process.egmGsfElectronIDSequence * process.egmPhotonIDSequence)
+  process.egmSequence = cms.Sequence(process.calibratedPatElectrons * process.calibratedPatPhotons * process.egmGsfElectronIDSequence * process.egmPhotonIDSequence)
