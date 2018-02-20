@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
-def addElectronAndPhotonSequence(process, isData):
+def addElectronAndPhotonSequence(process, isData, is2017):
   #
   # EGM Regression
   #
@@ -21,7 +21,7 @@ def addElectronAndPhotonSequence(process, isData):
   process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
   process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
   for calmod in [process.calibratedPatElectrons, process.calibratedPatPhotons]:
-    calmod.correctionFile = cms.string(files['Moriond17_23Jan'])
+    calmod.correctionFile = cms.string(files['Run2017_17Nov2017_v1' if is2017 else 'Moriond17_23Jan'])
     calmod.isMC           = cms.bool(not isData)
 
   #

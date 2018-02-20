@@ -67,7 +67,7 @@ process.goodOfflinePrimaryVertices.filter = cms.bool(False)                     
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 from heavyNeutrino.multilep.egmSequence_cff import addElectronAndPhotonSequence
 addJetSequence(process, isData)
-addElectronAndPhotonSequence(process, isData)
+addElectronAndPhotonSequence(process, isData, is2017)
 
 #
 # Read additional MET filters not stored in miniAOD
