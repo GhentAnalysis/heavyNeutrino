@@ -35,8 +35,7 @@ fileList(){
         location=/pnfs/iihe/cms/ph/sc4
         
         #xrootd redirector for files not present on local cluster
-        #redirector=root://cmsxrootd.fnal.gov//
-        redirector=root://xrootd-cms.infn.it//
+        redirector=root://cmsxrootd.fnal.gov//
         
         while read f
             #check if file is locally available
