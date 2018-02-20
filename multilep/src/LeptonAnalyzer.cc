@@ -509,9 +509,9 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
   }//end electrons
 
   if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3  || _nGoodLeading < 1 || _nGoodDisplaced < 2)  ) return false;
-//    if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3 || _nGoodLeading < 1) ) return false;
+  if(multilepAnalyzer->skim == "trilep_FR"    and (_nLight < 3 || _nGoodLeading < 1) ) return false;
 
-	if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
+  if(multilepAnalyzer->skim == "dilep"     and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "ttg"       and _nLight < 2) return false;
   if(multilepAnalyzer->skim == "singlelep" and _nLight < 1) return false;
   if(multilepAnalyzer->skim == "FR" &&   _nLight != 1) return false;
