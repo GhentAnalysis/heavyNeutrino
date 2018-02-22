@@ -30,7 +30,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/b");
   outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/b");
   outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/b");
-  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");
+  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/I");
   outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");
   outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
