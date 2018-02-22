@@ -18,9 +18,17 @@ else
   # CMSSW_9_4_X checkout
   eval `scram runtime -sh`
   cd $CMSSW_BASE/src
+
+  # First EGM smearing
+  git cms-merge-topic cms-egamma:EGM_94X_v1
+  cd EgammaAnalysis/ElectronTools/data
+  git clone https://github.com/ECALELFS/ScalesSmearings.git
+  cd ScalesSmearings/
+  git checkout Run2017_17Nov2017_v1
+
+  # Electron ID
   git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
   git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
-  scram b -j 10
 
   # Setting up new photon ID
   cd $CMSSW_BASE/external
@@ -34,14 +42,6 @@ else
   cd data/RecoEgamma/ElectronIdentification/data
   git checkout CMSSW_9_4_0_pre3_TnP
   cd $CMSSW_BASE/src
-
-  # EGM smearing
-  git cms-merge-topic cms-egamma:EGM_94X_v1
-  cd EgammaAnalysis/ElectronTools/data
-  git clone https://github.com/ECALELFS/ScalesSmearings.git
-  cd ScalesSmearings/
-  git checkout Run2017_17Nov2017_v1
-
 fi
 
 # Finally, compile
