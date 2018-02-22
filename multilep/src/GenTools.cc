@@ -1,5 +1,7 @@
-#include <iostream>
 #include "heavyNeutrino/multilep/interface/GenTools.h"
+
+//include ROOT classes
+#include "TLorentzVector.h"
 
 const reco::GenParticle* GenTools::getFirstMother(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     return (gen.numberOfMothers() == 0) ? nullptr : &genParticles[gen.motherRef(0).key()];
@@ -161,6 +163,35 @@ unsigned GenTools::provenanceCompressed(const reco::GenParticle& gen, const std:
     if(bosonInChain(decayChain) ) return 0;                                         //lepton from boson
     if(!decayChain.empty()) return 3;                                               //light flavor fake
     return 4;                                                                       //unkown origin
+}
+
+unsigned GenTools::provenanceConversion(const reco::GenParticle& photon, const std::vector<reco::GenParticle>& genParticles) {
+    //https://hypernews.cern.ch/HyperNews/CMS/get/susy-interpretations/192.html
+    //99: not a photon
+    //0: direct prompt photon (prompt and delta R with ME parton > 0.05)
+    //1: fragmentation photon (prompt and delta R with ME parton < 0.05)
+    //2: non-prompt photon
+    if (photon.pdgId() != 22) return 99;
+    if (!photon.isPromptFinalState()) return 2;
+    if (photon.pt() < 10) return 1;
+
+    TLorentzVector photonVec(photon.px(), photon.py(), photon.pz(), photon.energy() );
+    for(auto& parton : genParticles){
+
+        //only compare photon to ME partons
+        if(parton.status() != 23) continue;
+
+        //make sure parton is a parton
+        unsigned partonId = abs( parton.pdgId() );
+        if( ! ( (partonId == 21) || (partonId > 0 && partonId < 7) ) ) continue;
+        
+        //check separation of photon to parton
+        TLorentzVector partonVec(parton.px(), parton.py(), parton.pz(), parton.energy() );
+        if( photonVec.DeltaR(partonVec) < 0.05){
+            return 1;
+        }
+    }
+    return 0;
 }
 
 bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
