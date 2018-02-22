@@ -29,6 +29,7 @@ else
   # Electron ID
   git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
   git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
+  scram b -j 10
 
   # Setting up new photon ID
   cd $CMSSW_BASE/external
