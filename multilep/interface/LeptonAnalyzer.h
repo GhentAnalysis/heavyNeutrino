@@ -67,7 +67,7 @@ class LeptonAnalyzer {
     int    _lSimFlavour[nL_max];
 
 	
-    double _lIndex[nL_max];              // index assigned to leptons to find back the vertices
+    int _lIndex[nL_max];              // index assigned to leptons to find back the vertices
     double _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex 
     double _lDisplaced[nV_max][24];      // array of the displaced lepton momenta and positions at the displaced vertex
 
