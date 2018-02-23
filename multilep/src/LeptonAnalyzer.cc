@@ -1,6 +1,6 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
-
+#include "DataFormats/Math/interface/deltaR.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 #include "TLorentzVector.h"
 
@@ -99,6 +99,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
         outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
         outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
         outputTree->Branch("_lPartonPt",                  &_lPartonPt,                    "_lPartonPt[_nL]/D");
+        outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
     }
 }
 
@@ -116,7 +117,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
     edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
     edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
-    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
+    //edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
+    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetSmearedToken,                   jets);
 
     _nL     = 0;
     _nLight = 0;
@@ -308,7 +310,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
     _lPartonPt[_nL] = genMatcher->getPartonPt();
-
+    _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
 }
 
 

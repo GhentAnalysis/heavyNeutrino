@@ -79,8 +79,6 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
                 _gen_partonPt[_gen_nL]  = GenTools::getParton(p, *genParticles) == 0 ? 0 : GenTools::getParton(p, *genParticles)->pt();
                 //GenTools::printInheritance(p, *genParticles);
-                //_gen_partonPt[_gen_nL]  = GenTools::getParton(p, *genParticles)->pt();
-                //std::cout << "parton pt is: " <<  _gen_partonPt[_gen_nL] << std::endl;
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);

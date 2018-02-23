@@ -133,6 +133,7 @@ class LeptonAnalyzer {
     unsigned _lProvenance[nL_max];                                                                    
     unsigned _lProvenanceCompressed[nL_max];
     double _lPartonPt[nL_max];
+    unsigned _lProvenanceConversion[nL_max];
 
     //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher);
