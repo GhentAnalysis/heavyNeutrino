@@ -12,6 +12,24 @@ const reco::GenParticle* GenTools::getMother(const reco::GenParticle& gen, const
     else return mom;
 }
 
+const reco::GenParticle* GenTools::getParton(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    const reco::GenParticle* mom = getMother(gen, genParticles);
+    if(!mom) return 0; 
+    //else if(!((abs(mom->pdgId()) < 7 || abs(mom->pdgId() == 21)) && mom->status() == 23)) return getParton(*mom, genParticles);
+    //else return mom;
+    while( mom ){
+        if((abs(mom->pdgId()) < 7 || abs(mom->pdgId() == 21)) && mom->status() == 23) return mom;
+        if(mom->numberOfMothers() > 1){
+            for (unsigned int i=0; i!=mom->numberOfMothers(); ++i) {
+                const reco::GenParticle* oneOfMom = &genParticles[mom->motherRef(i).key()];
+                if((abs(oneOfMom->pdgId()) < 7 || abs(oneOfMom->pdgId() == 21)) && oneOfMom->status() == 23) return oneOfMom;
+            }
+        }
+        mom = getMother(*mom, genParticles);
+    }
+    return 0;
+}
+
 void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){
     if((list.empty() or list.find(gen.pdgId())==list.end()) and gen.pdgId() != 2212) list.insert(gen.pdgId());
     if(gen.numberOfMothers() > 1) setDecayChain(genParticles[gen.motherRef(1).key()], genParticles, list);
@@ -179,4 +197,25 @@ double GenTools::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco
         minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
     }
     return minDeltaR;
+}
+
+void GenTools::printInheritance(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    std::cout << std::setw(10) << ParticleName(gen.pdgId())<<" ("<<gen.status()<<")" ;
+    const reco::GenParticle* mom = getMother(gen, genParticles);
+    while( mom )
+    {
+        std::cout << std::setw(10) << "  <--  " << ParticleName(mom->pdgId())<<" ("<<mom->status()<<", " << mom->pt() << ")" ;
+        if( mom->numberOfMothers() > 1 )
+        {
+            std::cout << std::setw(10) << "  <--  " << " MANY " ;
+            for (unsigned int i=0; i!=mom->numberOfMothers(); ++i) {
+                std::cout<<ParticleName(genParticles[mom->motherRef(i).key()].pdgId()) << ",status: " << genParticles[mom->motherRef(i).key()].status() <<"("<<genParticles[mom->motherRef(i).key()].pt()<< "," << genParticles[mom->motherRef(i).key()].eta() << "," << genParticles[mom->motherRef(i).key()].phi() << "), ";
+            }
+            std::cout <<")";
+            break;
+        }
+        mom = getMother(*mom, genParticles);
+    }
+    std::cout << endl;
+
 }

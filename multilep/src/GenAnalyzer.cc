@@ -39,6 +39,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/i");
     outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
     outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
+    outputTree->Branch("_gen_partonPt",              &_gen_partonPt,              "_gen_partonPt[_gen_nL]/D");
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
@@ -76,6 +77,10 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lCharge[_gen_nL]   = p.charge();
                 _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
                 _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
+                _gen_partonPt[_gen_nL]  = GenTools::getParton(p, *genParticles) == 0 ? 0 : GenTools::getParton(p, *genParticles)->pt();
+                //GenTools::printInheritance(p, *genParticles);
+                //_gen_partonPt[_gen_nL]  = GenTools::getParton(p, *genParticles)->pt();
+                //std::cout << "parton pt is: " <<  _gen_partonPt[_gen_nL] << std::endl;
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);
