@@ -47,9 +47,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         if(_nJets == nJets_max) break;
 
         //only store loose jets 
-        //_jetId[_nJets] = jetId(*jetSmeared, false) + jetId(*jetSmeared, true); // 1: loose, 2: tight
         _jetIsLoose[_nJets] = jetIsLoose(jetSmeared, multilepAnalyzer->is2017);
-        //if(!_jetIsLoose[_nJets]) continue;
+        if(!_jetIsLoose[_nJets]) continue;
         _jetIsTight[_nJets] = jetIsTight(jetSmeared, multilepAnalyzer->is2017);
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jetSmeared, multilepAnalyzer->is2017);
 
