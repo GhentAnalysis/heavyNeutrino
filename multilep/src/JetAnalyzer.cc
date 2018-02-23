@@ -41,6 +41,11 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
     for(auto jetSmeared = jetsSmeared->begin(); jetSmeared != jetsSmeared->end(); ++jetSmeared){
         if(_nJets == nJets_max) break;
+
+        //only store loose jets 
+        _jetId[_nJets] = jetId(*jetSmeared, false) + jetId(*jetSmeared, true); // 1: loose, 2: tight
+        if(_jetId[_nJets] < 1 ) continue;
+
         jecUnc.setJetEta(jetSmeared->eta());
         jecUnc.setJetPt(jetSmeared->pt());
         double unc = jecUnc.getUncertainty(true);
@@ -56,10 +61,6 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         }
 
         if(std::max((1+unc)*jetSmeared->pt(), std::max(jetSmearedUp->pt(), jetSmearedDown->pt())) < 25) continue;
-        _jetId[_nJets]                    = jetId(*jet, false) + jetId(*jet, true); // 1: loose, 2: tight
-
-        //only store loose jets 
-        if(_jetId[_nJets] < 1 ) continue;
 
         _jetPt[_nJets]                    = jetSmeared->pt();
         _jetPt_JECDown[_nJets]            = jetSmeared->pt()*(1-unc);
@@ -78,7 +79,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetDeepCsv_bb[_nJets]            = jetSmeared->bDiscriminator("pfDeepCSVJetTags:probbb");
     //  _jetDeepCsv_cc[_nJets]            = jetSmeared->bDiscriminator("pfDeepCSVJetTags:probcc");
         _jetHadronFlavor[_nJets]          = jetSmeared->hadronFlavour();
-        _jetId[_nJets]                    = jetId(*jetSmeared, false) + jetId(*jetSmeared, true); // 1: loose, 2: tight
+
         ++_nJets;
     }
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
