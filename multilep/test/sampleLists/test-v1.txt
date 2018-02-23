@@ -1,9 +1,0 @@
-####################################################################
-# Example dataset.txt file to be used with the submitAll.py script #
-####################################################################
-
-# Datasets submitted using crab
-#ttg:/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM
-
-# Datasets on pnfs, using local submission
-ttg:/pnfs/iihe/cms/ph/sc4/store/mc/RunIISpring16MiniAODv2/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1
