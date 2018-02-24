@@ -14,8 +14,17 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
 
   if(multilepAnalyzer->is2017){
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
-                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalSuperTightHalo2016Filter",                             //Super tight halo filter recommended EARLY 2017, keep and eye on this
-                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};       // Duplicate muons still missing in mAOD, not sure how to get those in
+                                  "Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_ecalBadCalibFilter"                             //for Moriond 2018 superTightHalo -> TightHalo
+                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};      // Duplicate muons still missing in mAOD, not sure how to get those in
+    //met filters only to be applied on fullsim and data
+    if(!multilepAnalyzer->isSUSY){
+        allFlags["passMETFilters"].push_back("Flag_globalTightHalo2016Filter");
+    }
+    //extra filters only to be applied on data:
+    if(multilepAnalyzer->isData){
+        allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
+    }
+
     allFlags["2017_m"]         = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
     allFlags["2017_e"]         = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
     allFlags["2017_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
@@ -28,8 +37,17 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["2017_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
   } else {
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters (if legacy mAOD vbecomes available, copy the filters listed for 2017)
-                                  "Flag_goodVertices", "Flag_eeBadScFilter", "Flag_globalTightHalo2016Filter",
-                                  "flag_badPFMuonFilter","flag_badChCandFilter"};
+                                  "Flag_goodVertices", "flag_badPFMuonFilter","flag_badChCandFilter"};
+    //met filters only to be applied on fullsim and data
+    if(!multilepAnalyzer->isSUSY){
+        allFlags["passMETFilters"].push_back("Flag_globalTightHalo2016Filter");
+    }
+    //extra filters only to be applied on data:
+    if(multilepAnalyzer->isData){
+        allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
+    }
+
+
     allFlags["passHN_1l"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoTkMu24"};                                                    // HN 1l triggers
     allFlags["passHN_eee"]     = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};                       // HN eee
     allFlags["passHN_eem"]     = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",                     // HN emm
