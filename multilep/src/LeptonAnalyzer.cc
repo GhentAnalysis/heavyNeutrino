@@ -9,14 +9,16 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     electronsEffectiveAreas(multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath() ),
     muonsEffectiveAreas    (multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
-    leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
-    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
+    leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig, 0);     //SUSY
+    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, 1);     //TTH
+    leptonMvaComputertZqTTV = new LeptonMvaHelper(iConfig, 2);  //tZq/TTV
     if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
     delete leptonMvaComputerSUSY;
     delete leptonMvaComputerTTH;
+    delete leptonMvaComputertZqTTV;
     if(!multilepAnalyzer->isData) delete genMatcher;
 }
 
@@ -47,6 +49,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElectronMissingHits",         &_lElectronMissingHits,         "_lElectronMissingHits[_nLight]/i");
     outputTree->Branch("_leptonMvaSUSY",                &_leptonMvaSUSY,                "_leptonMvaSUSY[_nLight]/D");
     outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
+    outputTree->Branch("_leptonMvatZqTTV",              &_leptonMvatZqTTV,              "_leptonMvatZqTTV[_nLight]/D");
     outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nLight]/O");
     outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nLight]/O");
     outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nLight]/O");
@@ -161,6 +164,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
         _leptonMvaSUSY[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY);
         _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
+        _leptonMvatZqTTV[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV);
 
         _lEwkLoose[_nL]      = isEwkLoose(mu);
         _lEwkFO[_nL]         = isEwkFO(mu);
@@ -217,6 +221,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
         _leptonMvaSUSY[_nL]             = leptonMvaVal(*ele, leptonMvaComputerSUSY);
         _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
+        _leptonMvatZqTTV[_nL]           = leptonMvaVal(*ele, leptonMvaComputertZqTTV);
 
         _lEwkLoose[_nL]                 = isEwkLoose(*ele);
         _lEwkFO[_nL]                    = isEwkFO(*ele);
