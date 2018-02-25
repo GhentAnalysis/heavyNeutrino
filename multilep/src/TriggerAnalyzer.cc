@@ -26,31 +26,31 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
         allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
     }
 
-    allFlags["2017_m"]         = {"HLT_IsoMu24_v", "HLT_IsoMu24_eta2p1_v", "HLT_IsoMu27_v", "HLT_IsoMu30_v", "HLT_Mu50_v", "HLT_Mu55_v"};
+    allFlags["2017_m"]         = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
 
-    allFlags["2017_e"]         = {"HLT_Ele32_WPTight_Gsf_v", "HLT_Ele35_WPTight_Gsf_v", "HLT_Ele38_WPTight_Gsf_v", "HLT_Ele40_WPTight_Gsf_v"};
+    allFlags["2017_e"]         = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele38_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
 
-    allFlags["2017_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v",
-                                  "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8_v", "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8_v"};
+    allFlags["2017_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                  "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8", "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8"};
 
-    allFlags["2017_em"]        = {"HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_v", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v",
-                                  "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v"};
+    allFlags["2017_em"]        = {"HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                  "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"};
 
-    allFlags["2017_ee"]        = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"};
+    allFlags["2017_ee"]        = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
 
                                     //Is it useful to also store MediumChargedIso and TightChargedIso versions of these tau triggers?
-    allFlags["2017_et"]        = {"HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v"};
+    allFlags["2017_et"]        = {"HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1"};
 
-    allFlags["2017_mt"]        = {"HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_v", "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1_v", 
-                                  "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1_v", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1_v", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1_v",
-                                  "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1_v"}; 
+    allFlags["2017_mt"]        = {"HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1", "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1", 
+                                  "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1",
+                                  "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1"}; 
 
-    allFlags["2017_t"]         = {"HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_v"};
+    allFlags["2017_t"]         = {"HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr"};
 
-    allFlags["2017_mmm"]       = {"HLT_TripleMu_10_5_5_DZ_v", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v", "TripleMu_12_10_5_v"};
-    allFlags["2017_mme"]       = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL_v", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_v"};
-    allFlags["2017_mee"]       = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ_v"};
-    allFlags["2017_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
+    allFlags["2017_mmm"]       = {"HLT_TripleMu_10_5_5_DZ", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ", "TripleMu_12_10_5"};
+    allFlags["2017_mme"]       = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
+    allFlags["2017_mee"]       = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
+    allFlags["2017_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
 
   //2016 data and MC
   } else {
@@ -65,23 +65,23 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
         allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
     }
 
-    allFlags["2016_e"]      = {"HLT_Ele27_WPTight_Gsf_v", "HLT_IsoMu24_v", "HLT_IsoTkMu24_v", "HLT_IsoMu22_v", "HLT_IsoTkMu22_v"};                                                    // HN 1l triggers
-    allFlags["2016_m"]      = {"HLT_IsoMu24_v", "HLT_IsoTkMu24_v", "HLT_Mu50_v", "HLT_TkMu50_v", "HLT_Mu45_eta2p1_v"};
-    allFlags["2016_ee"]     = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v", 
-                               "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_v", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"};
-    allFlags["2016_em"]     = {"HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v",
-                               "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_v",
-                               "HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL_v"};
-    allFlags["2016_mm"]     = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v",
-                               "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v",
-                               "HLT_Mu30_TkMu11_v"};
-    allFlags["2016_et"]     = {"HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1_v", "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30_v", "HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v",
-                               "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v"};
-    allFlags["2016_mt"]     = {"HLT_IsoMu19_eta2p1_LooseIsoPFTau20_v"};
-    allFlags["2016_eee"]    = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v"};
-    allFlags["2016_eem"]    = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v"};
-    allFlags["2016_emm"]    = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL_v"};
-    allFlags["2016_mmm"]    = {"HLT_TripleMu_12_10_5_v"};
+    allFlags["2016_e"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_IsoMu22", "HLT_IsoTkMu22"};                                                    // HN 1l triggers
+    allFlags["2016_m"]      = {"HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"};
+    allFlags["2016_ee"]     = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+                               "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
+    allFlags["2016_em"]     = {"HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                               "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",
+                               "HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL"};
+    allFlags["2016_mm"]     = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",
+                               "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL",
+                               "HLT_Mu30_TkMu11"};
+    allFlags["2016_et"]     = {"HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1", "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30", "HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1",
+                               "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20"};
+    allFlags["2016_mt"]     = {"HLT_IsoMu19_eta2p1_LooseIsoPFTau20"};
+    allFlags["2016_eee"]    = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};
+    allFlags["2016_eem"]    = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL"};
+    allFlags["2016_emm"]    = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL"};
+    allFlags["2016_mmm"]    = {"HLT_TripleMu_12_10_5"};
     /*
     allFlags["passHN_1l"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoTkMu24"};                                                    // HN 1l triggers
     allFlags["passHN_eee"]     = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};                       // HN eee
