@@ -13,6 +13,7 @@
 class multilep;
 
 class JetAnalyzer {
+  friend class multilep;
   private:
     JetCorrectionUncertainty jecUnc;
 
@@ -35,7 +36,9 @@ class JetAnalyzer {
     double   _jetDeepCsv_bb[nJets_max];
 //  double   _jetDeepCsv_cc[nJets_max];
     unsigned _jetHadronFlavor[nJets_max];
-    unsigned _jetId[nJets_max];
+    bool    _jetIsLoose[nJets_max];
+    bool    _jetIsTight[nJets_max];
+    bool    _jetIsTightLepVeto[nJets_max];
     unsigned _nJetswithDaughters;
     Int_t    _nDaughters;
     int      _jet_tag_for_daughters[nDaughters_max];
@@ -44,14 +47,17 @@ class JetAnalyzer {
     double   _jet_daughter_eta[nDaughters_max];
     double   _jet_daughter_phi[nDaughters_max];
     double   _jet_daughter_energy[nDaughters_max];
+    
     multilep* multilepAnalyzer;
 
-    bool jetId(const pat::Jet& j, bool tight);
+    bool jetIsLoose(const pat::Jet& jet, const bool is2017) const;
+    bool jetIsTight(const pat::Jet& jet, const bool is2017) const;
+    bool jetIsTightLepVeto(const pat::Jet& jet, const bool is2017) const;
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
     ~JetAnalyzer(){};
-
+    
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&);
 };

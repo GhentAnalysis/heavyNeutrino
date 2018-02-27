@@ -13,6 +13,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
     eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
     eleMvaHZZToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMvaHZZ"))),
+    eleMvaFall17IsoToken(             consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17Iso"))),
+    eleMvaFall17NoIsoToken(           consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17NoIso"))),
     eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedVeto"))),
     eleCutBasedLooseToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedLoose"))),
     eleCutBasedMediumToken(           consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedMedium"))),

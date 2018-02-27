@@ -11,10 +11,11 @@ def addElectronAndPhotonSequence(process):
   switchOnVIDPhotonIdProducer(  process, DataFormat.MiniAOD)
   electronModules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
                      'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff',
-                     'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
+                     'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
+                     'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_noIso_V1_cff', 
+                     'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff']
   photonModules   = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff',
                      'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff']
   for idmod in electronModules: setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
   for idmod in photonModules:   setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
-
   process.egmSequence = cms.Sequence(process.egmGsfElectronIDSequence * process.egmPhotonIDSequence)

@@ -92,15 +92,14 @@ class GenAnalyzer {
 
     //Functions to find the mother of a gen particle
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    const int                getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    void                     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
-    void		     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<reco::GenParticle>&, std::vector<int>&);
-    void		     removeDoubleCountedDaughters(std::vector<reco::GenParticle>&);
-    int 		     check_for_daughter(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    bool                     inMotherList(std::vector<int>& list, int i);
-
-    unsigned                 ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut);
-    double                   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
+    const int getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    void     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
+    void     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<reco::GenParticle>&, std::vector<int>&);
+    void     removeDoubleCountedDaughters(std::vector<reco::GenParticle>&);
+    int      check_for_daughter(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    bool     inMotherList(std::vector<int>& list, int i);
+    unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
+    double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
 
     multilep* multilepAnalyzer;
 
