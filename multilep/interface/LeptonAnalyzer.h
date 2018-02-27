@@ -6,6 +6,7 @@
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -87,17 +88,22 @@ class LeptonAnalyzer {
     unsigned _Nutau_TrackMult_pt1[nL_max];
     unsigned _Nutau_TrackMult_pt5[nL_max];
 
-    double _lVtxpos_x[nL_max];
-    double _lVtxpos_y[nL_max];
-    double _lVtxpos_z[nL_max];
-    double _lVtxpos_cxx[nL_max];
-    double _lVtxpos_cyy[nL_max];
-    double _lVtxpos_czz[nL_max];
-    double _lVtxpos_cyx[nL_max];
-    double _lVtxpos_czy[nL_max];
-    double _lVtxpos_czx[nL_max];
-    double _lVtxpos_df[nL_max];
-    double _lVtxpos_chi2[nL_max];
+    double   _lVtxpos_x[nL_max];
+    double   _lVtxpos_y[nL_max];
+    double   _lVtxpos_z[nL_max];
+    double   _lVtxpos_cxx[nL_max];
+    double   _lVtxpos_cyy[nL_max];
+    double   _lVtxpos_czz[nL_max];
+    double   _lVtxpos_cyx[nL_max];
+    double   _lVtxpos_czy[nL_max];
+    double   _lVtxpos_czx[nL_max];
+    double   _lVtxpos_df[nL_max];
+    double   _lVtxpos_chi2[nL_max];
+    unsigned _lVtxpos_ntracks[nL_max];
+    double   _lVtxpos_PVdxy[nL_max];
+    double   _lVtxpos_BSdxy[nL_max];
+    double   _lVtxpos_PVdz[nL_max];
+    double   _lVtxpos_BSdz[nL_max];
 
     double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];

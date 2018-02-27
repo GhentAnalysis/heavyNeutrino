@@ -8,6 +8,7 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
@@ -69,6 +70,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
     private:
         // Define EDgetTokens to read data from events
+        edm::EDGetTokenT<reco::BeamSpot>		    beamSpotToken;
         edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
         edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
         edm::EDGetTokenT<GenLumiInfoHeader>                 genLumiInfoToken;

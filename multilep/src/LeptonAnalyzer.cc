@@ -103,6 +103,11 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lVtxpos_czx",			&_lVtxpos_czx,			"_lVtxpos_czx[_nLight]/D");
     outputTree->Branch("_lVtxpos_df",			&_lVtxpos_df,			"_lVtxpos_df[_nLight]/D");
     outputTree->Branch("_lVtxpos_chi2",			&_lVtxpos_chi2,			"_lVtxpos_chi2[_nLight]/D");
+    outputTree->Branch("_lVtxpos_ntracks",		&_lVtxpos_ntracks,		"_lVtxpos_ntracks[_nLight]/i");
+    outputTree->Branch("_lVtxpos_PVdxy",		&_lVtxpos_PVdxy,		"_lVtxpos_PVdxy[_nLight]/D");
+    outputTree->Branch("_lVtxpos_BSdxy",		&_lVtxpos_BSdxy,		"_lVtxpos_BSdxy[_nLight]/D");
+    outputTree->Branch("_lVtxpos_PVdz",			&_lVtxpos_PVdz,			"_lVtxpos_PVdz[_nLight]/D");
+    outputTree->Branch("_lVtxpos_BSdz",			&_lVtxpos_BSdz,			"_lVtxpos_BSdz[_nLight]/D");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");  
@@ -114,6 +119,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup, const reco::Vertex& primaryVertex){
+    edm::Handle<reco::BeamSpot> beamspot;			     iEvent.getByToken(multilepAnalyzer->beamSpotToken, 		    beamspot);
     edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
     edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
     edm::Handle<edm::ValueMap<float>> electronsMvaHZZ;               iEvent.getByToken(multilepAnalyzer->eleMvaHZZToken,                    electronsMvaHZZ);
@@ -149,8 +155,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(!mu.isPFMuon())                             continue;
         if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue;
         fillLeptonImpactParameters(mu, primaryVertex);
-        if(fabs(_dxy[_nL]) > 0.05)                     continue;
-        if(fabs(_dz[_nL]) > 0.1)                       continue;
+        //if(fabs(_dxy[_nL]) > 0.05)                     continue; this can be applied at root level, but not here to preserve displaced signal
+        //if(fabs(_dz[_nL]) > 0.1)                       continue;
         fillLeptonKinVars(mu);
         fillLeptonGenVars(mu.genParticle());
         //if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
@@ -173,6 +179,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	std::vector<reco::Track> vertex_tracks;
 	vertex_tracks.push_back(*mu.bestTrack());
 	fillLeptonVtxVariables(mu, packedCands, vertex_tracks);
+	_lVtxpos_PVdxy[_nL] = sqrt((_lVtxpos_x[_nL] - primaryVertex.x())*(_lVtxpos_x[_nL] - primaryVertex.x()) + (_lVtxpos_y[_nL] - primaryVertex.y())*(_lVtxpos_y[_nL] - primaryVertex.y()));
+	_lVtxpos_BSdxy[_nL] = sqrt((_lVtxpos_x[_nL] - beamspot->x0())*(_lVtxpos_x[_nL] - beamspot->x0()) + (_lVtxpos_y[_nL] - beamspot->y0())*(_lVtxpos_y[_nL] - beamspot->y0()));
+	_lVtxpos_PVdz[_nL] = fabs(_lVtxpos_z[_nL] - primaryVertex.z());
+	_lVtxpos_BSdz[_nL] = fabs(_lVtxpos_z[_nL] - beamspot->z0());
 
         _lFlavor[_nL]        = 1;
         _lMuonSegComp[_nL]    = mu.segmentCompatibility();
@@ -212,10 +222,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(ele->gsfTrack().isNull())                                                             continue;
         if(ele->pt() < 7)                                                                        continue;
         if(fabs(ele->eta()) > 2.5)                                                               continue;
-        if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
+        //if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 2) continue;
         fillLeptonImpactParameters(*ele, primaryVertex);
-        if(fabs(_dxy[_nL]) > 0.05)                                                               continue;
-        if(fabs(_dz[_nL]) > 0.1)                                                                 continue;
+        //if(fabs(_dxy[_nL]) > 0.05)                                                               continue;   //same argument as for muons, dont harm displaced samples and can be applied at root level
+        //if(fabs(_dz[_nL]) > 0.1)                                                                 continue;
         fillLeptonKinVars(*ele);
         fillLeptonGenVars(ele->genParticle());
         //if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
@@ -229,6 +239,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	std::vector<reco::Track> vertex_tracks;
 	vertex_tracks.push_back(*ele->gsfTrack());
 	fillLeptonVtxVariables(*ele, packedCands, vertex_tracks); 
+	_lVtxpos_PVdxy[_nL] = sqrt((_lVtxpos_x[_nL] - primaryVertex.x())*(_lVtxpos_x[_nL] - primaryVertex.x()) + (_lVtxpos_y[_nL] - primaryVertex.y())*(_lVtxpos_y[_nL] - primaryVertex.y()));
+	_lVtxpos_BSdxy[_nL] = sqrt((_lVtxpos_x[_nL] - beamspot->x0())*(_lVtxpos_x[_nL] - beamspot->x0()) + (_lVtxpos_y[_nL] - beamspot->y0())*(_lVtxpos_y[_nL] - beamspot->y0()));
+	_lVtxpos_PVdz[_nL] = fabs(_lVtxpos_z[_nL] - primaryVertex.z());
+	_lVtxpos_BSdz[_nL] = fabs(_lVtxpos_z[_nL] - beamspot->z0());
 
         _lFlavor[_nL]          = 0;
         _lEtaSC[_nL]           = ele->superCluster()->eta();
@@ -278,7 +292,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         fillLeptonGenVars(tau.genParticle());
         //if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
         fillLeptonImpactParameters(tau, primaryVertex);
-        if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
+        //if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
         _lFlavor[_nL]  = 2;
         _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
@@ -738,6 +752,7 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
     _lVtxpos_czx[_nL] = vtx.positionError().czx();
     _lVtxpos_df[_nL] = vtx.degreesOfFreedom();
     _lVtxpos_chi2[_nL] = vtx.totalChiSquared();
+    _lVtxpos_ntracks[_nL] = tracks.size();
     } catch(...){}
 }
 

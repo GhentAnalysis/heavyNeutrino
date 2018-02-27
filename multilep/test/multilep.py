@@ -93,6 +93,7 @@ if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean"
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
+  offlineBeamSpot		= cms.InputTag("offlineBeamSpot"),
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
   genEventInfo                  = cms.InputTag("generator"),
   lheEventInfo                  = cms.InputTag("externalLHEProducer"),

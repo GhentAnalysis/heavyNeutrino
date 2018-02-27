@@ -2,6 +2,7 @@
 
 
 multilep::multilep(const edm::ParameterSet& iConfig):
+    beamSpotToken(		      consumes<reco::BeamSpot>(			  iConfig.getParameter<edm::InputTag>("offlineBeamSpot"))),
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
     genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
     genLumiInfoToken(                 consumes<GenLumiInfoHeader, edm::InLumi>(   iConfig.getParameter<edm::InputTag>("genEventInfo"))), //NOT SURE IF THIS WILL WORK, CHECK!
