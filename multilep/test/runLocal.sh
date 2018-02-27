@@ -8,7 +8,7 @@ setCMSSW(){
     echo "cd ${CMSSW_BASE}/src" >> $1
     echo "source /cvmfs/cms.cern.ch/cmsset_default.sh" >> $1
     echo "eval \`scram runtime -sh\`" >> $1
-    echo "cd heavyNeutrino/multilep/test/"
+    echo "cd heavyNeutrino/multilep/test/" >> $1
 }
 
 #function to submit a job and catch invalid credentials
