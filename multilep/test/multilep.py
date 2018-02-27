@@ -145,7 +145,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  process.source.lumisToProcess = LumiList.LumiList(filename = "${CMSSW_BASE}/src/heavyNeutrino/multilep/data/JSON/" + getJSON(is2017)).getVLuminosityBlockRange()
+  process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017)).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadPFMuonFilter *
