@@ -8,11 +8,10 @@ JEC::JEC(const std::string& JECPath, bool dataSample, bool fall17Sample):
     path(JECPath), isData(dataSample), is2017(fall17Sample) , currentJEC("none") {}
 
 JEC::~JEC(){}
-    
-
 
 void JEC::updateJEC(const unsigned long runNumber){
     if(getJECName(runNumber) != currentJEC){
+        currentJEC = getJECName(runNumber);
         setJEC(getJECName(runNumber) );
     }
 }
@@ -20,7 +19,7 @@ void JEC::updateJEC(const unsigned long runNumber){
 void JEC::setJEC(const std::string& JECName){
     std::vector< JetCorrectorParameters > JECParameters;
     JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L1FastJet_AK4PFchs.txt") );
-    JECParameters.push_back(JetCorrectorParameters( path + "_L2Relative_AK4PFchs.txt") );
+    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2Relative_AK4PFchs.txt") );
     JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L3Absolute_AK4PFchs.txt") );
     if(isData) JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2L3Residual_AK4PFchs.txt") );
     jetCorrector.reset(new FactorizedJetCorrector(JECParameters) );
@@ -90,6 +89,7 @@ std::vector<float> JEC::getSubCorrections(double rawPt, double eta, double rho, 
 }
 
 double JEC::jetCorrection(double rawPt, double eta, double rho, double area, const std::string& level){
+
     std::vector< float > corrections = getSubCorrections(rawPt, eta, rho, area); 
 
     if (level == "L1FastJet")    return corrections.front();
@@ -97,6 +97,16 @@ double JEC::jetCorrection(double rawPt, double eta, double rho, double area, con
     if (level == "L2L3Residual") return corrections.back();
     return corrections[2];
 }
+
+
+double JEC::jetUncertainty(double pt, double eta){
+    if(eta> 5.0) eta = 5.0;
+    else if (eta<-5.0) eta =-5.0;
+    jetUncertainties->setJetPt(pt);
+    jetUncertainties->setJetEta(eta);
+    return jetUncertainties->getUncertainty(true);
+}
+
 
 std::pair<double, double> JEC::getMETCorrectionPxPy(double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area){
 

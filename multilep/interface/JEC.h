@@ -27,7 +27,7 @@ class JEC {
         void setJEC(const std::string&);
 
         double jetCorrection(double rawPt, double eta, double rho, double area, const std::string& level = "L3Absolute");     // this function returns, for a given jet the correction factor
-        double jetUncertainty(double, double, int runnumber = -1);
+        double jetUncertainty(double pt, double eta);
         std::pair <double, double > correctedMETAndPhi(const pat::MET& met, const std::vector< pat::Jet >& jets, const double rho);
 
     private:
