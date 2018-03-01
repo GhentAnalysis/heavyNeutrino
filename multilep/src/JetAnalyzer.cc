@@ -77,6 +77,11 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         //txt based JEC
         double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
         _jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
+        /*
+        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+        std::cout << "txt based JetPt = " << _jetPt[_nJets] << std::endl;
+        std::cout << "CMSSSW JetPt = " << jet.pt() << std::endl;
+        */
         //extract uncertainty based on corrected jet pt!
         double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], jet.eta());
         double maxpT = (1+unc)*_jetPt[_nJets];
@@ -102,11 +107,15 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
-    _met             = met.pt();
+    //_met             = met.pt();
+    //_metPhi          = met.phi();
+    /*
     std::cout << "~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "met = " << _met << std::endl;
     std::cout << "txt corrected met = " << multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first << std::endl;
-    _metPhi          = met.phi();
+    */
+    _met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
+    _metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
     //met values with uncertainties varied up and down
     _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
     _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);
