@@ -20,7 +20,7 @@ class to apply JEC from txt files
 
 class JEC {
     public:
-        JEC(const std::string& JECPath, const bool dataSample, const bool fall17Sample);
+        JEC(const std::string& JECpath, const bool dataSample, const bool fall17Sample);
         ~JEC();
 
         void updateJEC(const unsigned long);

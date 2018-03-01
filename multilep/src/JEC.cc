@@ -19,10 +19,10 @@ void JEC::updateJEC(const unsigned long runNumber){
 
 void JEC::setJEC(const std::string& JECName){
     std::vector< JetCorrectorParameters > JECParameters;
-    JECParameters.push_back(JetCorrectorParameters(path + JECName + "_L1FastJet_AK4PFchs.txt") );
-    JECParameters.push_back(JetCorrectorParameters(path + JECName + "_L2Relative_AK4PFchs.txt") );
-    JECParameters.push_back(JetCorrectorParameters(path + JECName + "_L3Absolute_AK4PFchs.txt") );
-    if(isData) JECParameters.push_back(JetCorrectorParameters(path + JECName + "_L2L3Residual_AK4PFchs.txt") );
+    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L1FastJet_AK4PFchs.txt") );
+    JECParameters.push_back(JetCorrectorParameters( path + "_L2Relative_AK4PFchs.txt") );
+    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L3Absolute_AK4PFchs.txt") );
+    if(isData) JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2L3Residual_AK4PFchs.txt") );
     jetCorrector.reset(new FactorizedJetCorrector(JECParameters) );
     jetUncertainties.reset(new JetCorrectionUncertainty(path + JECName + "_Uncertainty_AK4PFchs.txt") );
 }
@@ -146,21 +146,3 @@ std::pair<double, double> JEC::correctedMETAndPhi(const pat::MET& met, const std
     double correctedMETPhi = atan2(corrMETx, corrMETy);
     return {correctedMET, correctedMETPhi};
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

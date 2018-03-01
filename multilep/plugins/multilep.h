@@ -112,6 +112,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
         edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
         std::string                                         skim;
+        std::string                                         jecPath;
         bool                                                isData;
         bool                                                is2017;
         bool                                                isSUSY;

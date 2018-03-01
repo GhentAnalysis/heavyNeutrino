@@ -41,6 +41,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
     badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
+    jecPath(                                                                      iConfig.getUntrackedParameter<std::string>("JECtxtPath")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
@@ -52,7 +53,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
-    jec             = new JEC("heavyNeutrino/multilep/data/", isData, is2017); 
+    jec             = new JEC(jecPath, isData, is2017); 
 }
 
 multilep::~multilep(){
