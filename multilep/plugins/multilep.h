@@ -42,6 +42,9 @@
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
 #include "heavyNeutrino/multilep/interface/JEC.h"
 
+//Temporary for JEC test, remove later
+#include "JetMETCorrections/JetCorrector/interface/JetCorrector.h"
+
 //
 // class declaration
 //
@@ -103,19 +106,16 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<double>                            rhoToken;
         edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedUpToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedDownToken;
         edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
         edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
         edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
         edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
         edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
         std::string                                         skim;
-        std::string                                         jecPath;
         bool                                                isData;
         bool                                                is2017;
         bool                                                isSUSY;
+        std::string                                         jecPath;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
