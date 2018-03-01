@@ -139,7 +139,7 @@ class LeptonAnalyzer {
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
-    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
+    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
 
     // In leptonAnalyzerIso,cc
 
@@ -190,6 +190,9 @@ class LeptonAnalyzer {
 
     //for generator matching
     GenMatching* genMatcher;
+
+    //for JEC from txt
+    std::string jecLevel;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
