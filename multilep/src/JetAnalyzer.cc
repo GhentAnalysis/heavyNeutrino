@@ -77,9 +77,6 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         //txt based JEC
         double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
         _jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
-        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-        std::cout << "txt based jetPt = " << _jetPt[_nJets] << std::endl;
-        std::cout << "CMSSW jetPt = " << jet.pt() << std::endl;
         //extract uncertainty based on corrected jet pt!
         double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], jet.eta());
         double maxpT = (1+unc)*_jetPt[_nJets];
