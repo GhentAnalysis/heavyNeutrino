@@ -5,6 +5,8 @@
 #include "FWCore/Framework/interface/one/EDAnalyzer.h"
 
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/LuminosityBlock.h"
+#include "FWCore/Framework/interface/Run.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
@@ -38,6 +40,7 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
+#include "heavyNeutrino/multilep/interface/JEC.h"
 
 //
 // class declaration
@@ -50,6 +53,7 @@ class GenAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
 class GenMatching;
+class JEC;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::WatchRuns, edm::one::SharedResources> {
     //Define other analyzers as friends
@@ -126,6 +130,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         JetAnalyzer*      jetAnalyzer;
         LheAnalyzer*      lheAnalyzer;
         SUSYMassAnalyzer* susyMassAnalyzer;
+        JEC*              jec; 
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;
@@ -134,17 +139,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         unsigned long _lumiBlock;
         unsigned long _eventNb;
         unsigned      _nVertex;                                                                          //Event variables
-        double        _met;                                                                              //met kinematics
-        double        _metPhi;
-        double        _metJECDown;
-        double        _metPhiJECDown;
-        double        _metJECUp;
-        double        _metPhiJECUp;
-        double        _metUnclDown;
-        double        _metPhiUnclDown;
-        double        _metUnclUp;
-        double        _metPhiUnclUp;
-        double        _metSignificance;
 };
 #endif
 

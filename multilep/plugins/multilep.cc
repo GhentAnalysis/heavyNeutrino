@@ -52,6 +52,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
+    jec             = new JEC("heavyNeutrino/multilep/data/", isData, is2017); 
 }
 
 multilep::~multilep(){
@@ -62,6 +63,7 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
+    delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -76,20 +78,6 @@ void multilep::beginJob(){
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
 
-    outputTree->Branch("_met",                          &_met,                          "_met/D");
-    outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
-    outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
-    outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
-    outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
-
-    outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
-    outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
-    outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
-    outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
-    outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
-
-    outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
-
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
     if(!isData) genAnalyzer->beginJob(outputTree);
@@ -103,11 +91,15 @@ void multilep::beginJob(){
 // ------------ method called for each lumi block ---------
 void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
     if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
+    _lumiBlock = (unsigned long) iLumi.id().luminosityBlock();
 }
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     // HLT results could have different size/order in new run, so look up again de index positions
     triggerAnalyzer->reIndex = true;
+    //update JEC 
+    _runNb = (unsigned long) iRun.id().run();
+    jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------
@@ -124,27 +116,8 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     jetAnalyzer->analyze(iEvent);
 
     //determine event number run number and luminosity block
-    _runNb     = (unsigned long) iEvent.id().run();
-    _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
     _eventNb   = (unsigned long) iEvent.id().event();
     _nVertex   = vertices->size();
-
-    //determine the met of the event and its uncertainties
-    //nominal MET value
-    const pat::MET& met = (*mets).front();
-    _met             = met.pt();
-    _metPhi          = met.phi();
-    //met values with uncertainties varied up and down
-    _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
-    _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);
-    _metUnclDown     = met.shiftedPt(pat::MET::UnclusteredEnDown);
-    _metUnclUp       = met.shiftedPt(pat::MET::UnclusteredEnUp);
-    _metPhiJECDown   = met.shiftedPhi(pat::MET::JetEnDown);
-    _metPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp);
-    _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
-    _metPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown);
-    //significance of met
-    _metSignificance = met.metSignificance();
 
     //store calculated event info in root tree
     outputTree->Fill();

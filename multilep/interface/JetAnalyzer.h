@@ -39,6 +39,19 @@ class JetAnalyzer {
     bool    _jetIsTight[nJets_max];
     bool    _jetIsTightLepVeto[nJets_max];
 
+    double        _met;                                                                              //met kinematics
+    double        _metPhi;
+    double        _metJECDown;
+    double        _metPhiJECDown;
+    double        _metJECUp;
+    double        _metPhiJECUp;
+    double        _metUnclDown;
+    double        _metPhiUnclDown;
+    double        _metUnclUp;
+    double        _metPhiUnclUp;
+    double        _metSignificance;
+
+
     multilep* multilepAnalyzer;
 
     bool jetIsLoose(const pat::Jet& jet, const bool is2017) const;

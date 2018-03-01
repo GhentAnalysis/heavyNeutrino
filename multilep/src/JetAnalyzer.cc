@@ -32,6 +32,20 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetIsLoose",                &_jetIsLoose,               "_jetIsLoose[_nJets]/i");
     outputTree->Branch("_jetIsTight",                &_jetIsTight,               "_jetIsTight[_nJets]/i");
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/i");
+
+    outputTree->Branch("_met",                          &_met,                          "_met/D");
+    outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
+    outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
+    outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
+    outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
+
+    outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
+    outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
+    outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
+    outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
+    outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
+    outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
+
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
@@ -39,6 +53,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
+    edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken, mets);
 
     _nJets = 0;
 
@@ -90,6 +105,25 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
         ++_nJets;
     }
+
+    //determine the met of the event and its uncertainties
+    //nominal MET value
+    const pat::MET& met = (*mets).front();
+    _met             = met.pt();
+    _metPhi          = met.phi();
+    //met values with uncertainties varied up and down
+    _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
+    _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);
+    _metUnclDown     = met.shiftedPt(pat::MET::UnclusteredEnDown);
+    _metUnclUp       = met.shiftedPt(pat::MET::UnclusteredEnUp);
+    _metPhiJECDown   = met.shiftedPhi(pat::MET::JetEnDown);
+    _metPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp);
+    _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
+    _metPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+    //significance of met
+    _metSignificance = met.metSignificance(); 
+
+
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
     if(multilepAnalyzer->skim == "FR" and _nJets < 1) return false;
     return true;
