@@ -188,7 +188,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     fillLeptonIsoVars(mu, *rho);
     if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
 
-    fillLeptonJetVariables(mu, jets, primaryVertex);
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
 	
 
    /////////// ID variables   
@@ -290,7 +290,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     //fillLeptonGenVars(ele->genParticle());
     if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
 
-    fillLeptonJetVariables(*ele, jets, primaryVertex);
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
