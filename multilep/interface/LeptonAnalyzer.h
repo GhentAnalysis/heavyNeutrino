@@ -173,11 +173,7 @@ class LeptonAnalyzer {
     bool _lEwkLoose[nL_max];
     bool _lEwkFO[nL_max];
     bool _lEwkTight[nL_max];
-    bool _lPOGVeto[nL_max];
-    bool _lPOGLoose[nL_max];
-    bool _lPOGMedium[nL_max];
-    bool _lPOGTight[nL_max];
-
+    
     bool _lPOGLooseWOIso[nL_max];
     bool _lPOGMediumWOIso[nL_max];
     bool _lPOGTightWOIso[nL_max];
