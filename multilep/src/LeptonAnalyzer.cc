@@ -290,7 +290,7 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     //fillLeptonGenVars(ele->genParticle());
     if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
 
-        fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
+        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
