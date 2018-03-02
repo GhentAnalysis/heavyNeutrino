@@ -131,7 +131,7 @@ std::pair<double, double> JEC::getMETCorrectionPxPy(double rawPt, double rawEta,
     double l1corrpt   = rawMuonSubtractedPt*L1CCorrections.front();
     double fullcorrpt = rawMuonSubtractedPt*corrections.back();  // full corrections are the last in the vector
     // the corretions for the MET are the difference between l1fastjet and the full corrections on the jet!
-    if(emf > 0.9 or fullcorrpt < 15.) return {0., 0.}; // skip jets with EMF > 0.9
+    if(emf > 0.9 or fullcorrpt < 15. || (fabs(rawEta) > 9.9) ) return {0., 0.}; // skip jets with EMF > 0.9
     
     std::pair<double, double> corr = {px(l1corrpt - fullcorrpt, phi), py(l1corrpt - fullcorrpt, phi)};
     return corr; 
