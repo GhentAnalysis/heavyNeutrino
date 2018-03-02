@@ -760,8 +760,6 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
 }
 
 
-
-
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex, const double rho){
     //Make skimmed "close jet" collection
     std::vector<pat::Jet> selectedJetsAll;
@@ -819,5 +817,4 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
             }
         }
     }
-  }
 }
