@@ -5,11 +5,11 @@ then
   eval `scram runtime -sh`
   cd $CMSSW_BASE/src
 
-  # EGM smearing
+  # First EGM smearing
   git cms-merge-topic cms-egamma:EGM_gain_v1
   cd EgammaAnalysis/ElectronTools/data
   git clone -b Moriond17_gainSwitch_unc https://github.com/ECALELFS/ScalesSmearings.git 
-  cd $CMSSW_BASE/src
+  cd -
 
   # Setup for new electron and photon MVA
   git cms-merge-topic ikrav:egm_id_80X_v3_photons
@@ -19,6 +19,7 @@ else
   eval `scram runtime -sh`
   cd $CMSSW_BASE/src
   git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
+  git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
   scram b -j 10
 
   # Setting up new photon ID
@@ -33,6 +34,7 @@ else
   cd data/RecoEgamma/ElectronIdentification/data
   git checkout CMSSW_9_4_0_pre3_TnP
   cd $CMSSW_BASE/src
+
 fi
 
 # Finally, compile

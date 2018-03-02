@@ -141,6 +141,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon, LeptonMvaHelper* mvaH
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
+            _relIso[_nL],
             muon.segmentCompatibility()
             );
 }
@@ -157,6 +158,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron, LeptonMvaHelp
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
+            _relIso[_nL],
             _lElectronMva[_nL],
             _lElectronMvaHZZ[_nL]
             );

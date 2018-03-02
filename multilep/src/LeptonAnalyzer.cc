@@ -1,6 +1,6 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
-
+#include "DataFormats/Math/interface/deltaR.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 #include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
 #include "TLorentzVector.h"
@@ -10,9 +10,15 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     electronsEffectiveAreas(multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath() ),
     muonsEffectiveAreas    (multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
-  leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig);           //SUSY
-  leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, false);     //TTH
-  if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
+leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig, 0);     //SUSY
+    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, 1);     //TTH
+    leptonMvaComputertZqTTV = new LeptonMvaHelper(iConfig, 2);  //tZq/TTV
+    if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
+    if(multilepAnalyzer->isData){
+        jecLevel = "L2L3Residual";
+    } else {
+	jecLevel = "L3Absolute";
+    }
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
@@ -678,7 +684,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
-
+    _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
 }
 
 
@@ -756,62 +762,62 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
 
 
 
+void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex, const double rho){
+    //Make skimmed "close jet" collection
+    std::vector<pat::Jet> selectedJetsAll;
+    for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
+        if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+    }
+    // Find closest selected jet
+    unsigned closestIndex = 0;
+    for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
+        if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
+    }
+    const pat::Jet& jet = selectedJetsAll[closestIndex];
+    if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
+        _ptRatio[_nL] = 1;
+        _ptRel[_nL] = 0;
+        _closestJetCsvV2[_nL] = 0;
+        _closestJetDeepCsv_b[_nL] = 0;
+        _closestJetDeepCsv_bb[_nL] = 0;
+        _selectedTrackMult[_nL] = 0;
+    } else {
+        double totalJEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), jecLevel);
+        double l1JEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), "L1FastJet");
+        /*
+        auto  l1Jet       = jet.correctedP4("L1FastJet");
+        float JEC         = jet.p4().E()/l1Jet.E();
+        auto  l           = lepton.p4();
+        auto  lepAwareJet = (l1Jet - l)*JEC + l;
+        */
+        TLorentzVector l1Jet;
+        l1Jet.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt()*l1JEC, jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E()*l1JEC);
+        float JEC = totalJEC/l1JEC;
+        TLorentzVector l(lepton.px(), lepton.py(), lepton.pz(), lepton.energy());
+        TLorentzVector lepAwareJet = (l1Jet - l)*JEC + l;
 
 
-
-
-
-
-
-
-
-
-
-
-void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex){
-  //Make skimmed "close jet" collection
-  std::vector<pat::Jet> selectedJetsAll;
-  for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-    if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
-  }
-  // Find closest selected jet
-  unsigned closestIndex = 0;
-  for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
-    if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
-  }
-  const pat::Jet& jet = selectedJetsAll[closestIndex];
-  if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
-    _ptRatio[_nL] = 1;
-    _ptRel[_nL] = 0;
-    _closestJetCsvV2[_nL] = 0;
-    _closestJetDeepCsv_b[_nL] = 0;
-    _closestJetDeepCsv_bb[_nL] = 0;
-    _selectedTrackMult[_nL] = 0;
-  } else {
-    auto  l1Jet       = jet.correctedP4("L1FastJet");
-    float JEC         = jet.p4().E()/l1Jet.E();
-    auto  l           = lepton.p4();
-    auto  lepAwareJet = (l1Jet - l)*JEC + l;
-    TLorentzVector lV(l.px(), l.py(), l.pz(), l.E());
-    TLorentzVector jV(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
-    _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
-    _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
-    _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
-    _closestJetDeepCsv_b[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probb");
-    _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
-    //compute selected track multiplicity of closest jet
-    _selectedTrackMult[_nL] = 0;
-    for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
-      const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-      try {                                                                                                     // In principle, from CMSSW_9_X you need to use if(daughter->hasTrackDetails()){ here, bus that function does not exist in CMSSW_8_X
-	const reco::Track& daughterTrack = daughter->pseudoTrack();                                             // Using try {} catch (...){} the code compiles in both versions
-	TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-	double daughterDeltaR            = trackVec.DeltaR(jV);
-	bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
-	  && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
-																			  && fabs(daughterTrack.dxy(vertex.position())) < 17;
-	if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
-      } catch (...){}
+        TLorentzVector lV(l.Px(), l.Py(), l.Pz(), l.E());
+        TLorentzVector jV(lepAwareJet.Px(), lepAwareJet.Py(), lepAwareJet.Pz(), lepAwareJet.E());
+        _ptRatio[_nL]       = l.Pt()/lepAwareJet.Pt();
+        _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
+        _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+        _closestJetDeepCsv_b[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probb");
+        _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+        //compute selected track multiplicity of closest jet
+        _selectedTrackMult[_nL] = 0;
+        for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
+            const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
+            if(daughter->hasTrackDetails()){
+                const reco::Track& daughterTrack = daughter->pseudoTrack();
+                TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
+                double daughterDeltaR            = trackVec.DeltaR(jV);
+                bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
+                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
+                    && fabs(daughterTrack.dxy(vertex.position())) < 17;
+                if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
+            }
+        }
     }
   }
 }

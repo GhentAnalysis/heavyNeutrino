@@ -25,11 +25,13 @@ class GenMatching{
             matchPdgId = match->pdgId();
             provenance = GenTools::provenance(*match, *genParticles);
             provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
+            provenanceConversion = GenTools::provenanceConversion(*match, *genParticles);
         } else{
             matchIsPrompt = false;
             matchPdgId = 0;
             provenanceCompressed = 4;
             provenance = 18;
+            provenanceConversion = 99;
         }
     }
 
@@ -38,6 +40,7 @@ class GenMatching{
     bool promptMatch() const {return matchIsPrompt;}
     unsigned getProvenance() const {return provenance;}
     unsigned getProvenanceCompressed() const{ return provenanceCompressed; }
+    unsigned getProvenanceConversion() const{ return provenanceConversion; }
 
   private:
     multilep* multilepAnalyzer;
@@ -59,5 +62,6 @@ class GenMatching{
     bool matchIsPrompt;
     unsigned provenance;
     unsigned provenanceCompressed;
+    unsigned provenanceConversion;
 };
 #endif

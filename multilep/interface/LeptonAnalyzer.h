@@ -162,6 +162,22 @@ class LeptonAnalyzer {
     bool _tauVTightMvaNew[nL_max];
     bool _tauVTightMvaOld[nL_max];
 
+
+    double _leptonMvaSUSY[nL_max];                                                                       //lepton MVA used in ewkino analysis
+    double _leptonMvaTTH[nL_max];
+    double _leptonMvatZqTTV[nL_max];
+
+    bool _lHNLoose[nL_max];                                                                          //analysis specific lepton selection decisions
+    bool _lHNFO[nL_max];
+    bool _lHNTight[nL_max];
+    bool _lEwkLoose[nL_max];
+    bool _lEwkFO[nL_max];
+    bool _lEwkTight[nL_max];
+    bool _lPOGVeto[nL_max];
+    bool _lPOGLoose[nL_max];
+    bool _lPOGMedium[nL_max];
+    bool _lPOGTight[nL_max];
+
     bool _lPOGLooseWOIso[nL_max];
     bool _lPOGMediumWOIso[nL_max];
     bool _lPOGTightWOIso[nL_max];
@@ -170,6 +186,7 @@ class LeptonAnalyzer {
     int _lMatchPdgId[nL_max];
     unsigned _lProvenance[nL_max];                                                                    
     unsigned _lProvenanceCompressed[nL_max];
+    unsigned _lProvenanceConversion[nL_max];
 
 
 
@@ -194,14 +211,15 @@ class LeptonAnalyzer {
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&);  
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose);
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose);
-    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
+    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
 
     // In leptonAnalyzerIso,cc
 
     double getRelIso03(const pat::Muon&, const double) const;
     double getRelIso03(const pat::Electron&, const double) const;
     double getRelIso04(const pat::Muon& mu) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection> pfcands, double, double, double, double, bool onlyCharged = false) const;
+    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged = false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged = false) const;
 
 
   
@@ -243,9 +261,13 @@ class LeptonAnalyzer {
     //for lepton MVA calculation
     LeptonMvaHelper* leptonMvaComputerSUSY;
     LeptonMvaHelper* leptonMvaComputerTTH;
+    LeptonMvaHelper* leptonMvaComputertZqTTV;
 
     //for generator matching
     GenMatching* genMatcher;
+
+    //for JEC from txt
+    std::string jecLevel;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

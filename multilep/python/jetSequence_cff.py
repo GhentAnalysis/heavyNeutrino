@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-def addJetSequence(process, isData):
+def addJetSequence(process, isData, is2017):
 
   #
   # Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
@@ -13,21 +13,30 @@ def addJetSequence(process, isData):
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
-  updateJetCollection(
-     process,
-     jetSource = cms.InputTag('slimmedJets'),
-     labelName = 'UpdatedJEC',
-     jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
-     # DeepCSV twiki: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
-     btagDiscriminators = [
-       'pfCombinedSecondaryVertexV2BJetTags',
-       'pfDeepCSVJetTags:probudsg',
-       'pfDeepCSVJetTags:probb',
-       'pfDeepCSVJetTags:probc',
-       'pfDeepCSVJetTags:probbb',
-      #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
-     ]
-  )
+
+  if not is2017 :
+    updateJetCollection(
+      process,
+      jetSource = cms.InputTag('slimmedJets'),
+      labelName = 'UpdatedJEC',
+      jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
+      # DeepCSV twiki: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
+      btagDiscriminators = [
+        'pfCombinedSecondaryVertexV2BJetTags',
+        'pfDeepCSVJetTags:probudsg',
+        'pfDeepCSVJetTags:probb',
+        'pfDeepCSVJetTags:probc',
+        'pfDeepCSVJetTags:probbb',
+       #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
+      ]
+     )
+  else: 
+     updateJetCollection(
+       process,
+       jetSource = cms.InputTag('slimmedJets'),
+       labelName = 'UpdatedJEC',
+       jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
+    ) 
 
   if os.environ['CMSSW_BASE'].count('CMSSW_9'):                                                                     # From CMSSW_9_X, the patAlgosToolsTask contains the whole updateJetCollection sequence
     process.jetSequence = cms.Sequence(process.patAlgosToolsTask)

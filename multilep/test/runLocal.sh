@@ -8,6 +8,7 @@ setCMSSW(){
     echo "cd ${CMSSW_BASE}/src" >> $1
     echo "source /cvmfs/cms.cern.ch/cmsset_default.sh" >> $1
     echo "eval \`scram runtime -sh\`" >> $1
+    echo "cd heavyNeutrino/multilep/test/" >> $1
 }
 
 #function to submit a job and catch invalid credentials
@@ -20,6 +21,20 @@ submitJob(){
     done
     cat outputCheck.txt
     rm outputCheck.txt
+}
+
+##################################
+#Change to your proxy!
+proxy=/user/wverbeke/x509up_u20640
+##################################
+
+if ! [[ $proxy = *"$USER"* ]]; then
+    echo "Change path to proxy in RunLocal.sh before submitting jobs!"
+    exit 1
+fi
+
+exportProxy(){
+   echo "export X509_USER_PROXY=$proxy" >> $1
 }
 #read command-line arguments
 input=$1
@@ -89,6 +104,7 @@ while read f; do
         touch $submit
         #initialize CMSSW environment in submission script
         setCMSSW $submit
+        exportProxy $submit
     fi
     echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=${output}/${skim}_Job_${fileCount}.root events=-1 > ${output}/logs/Job_${fileCount}.txt 2> ${output}/errs/Job_${fileCount}.txt" >> $submit
 done < fileList.txt
@@ -97,6 +113,7 @@ if (( $fileCount % $filesPerJob != 0 )); then
     echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/${skim}_Job_${jobCount}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
     #submit job
     submitJob $submit
+    #cat $submit
 fi
 #remove temporary files
 rm $submit
