@@ -68,8 +68,8 @@ class LeptonAnalyzer {
 
 	
     int _lIndex[nL_max];              // index assigned to leptons to find back the vertices
-    double _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex 
-    double _lDisplaced[nV_max][24];      // array of the displaced lepton momenta and positions at the displaced vertex
+    float _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex 
+    float _lDisplaced[nV_max][24];      // array of the displaced lepton momenta and positions at the displaced vertex
 
     double _lPt[nL_max];                                                                             //lepton kinematics
     double _lEta[nL_max];
@@ -80,39 +80,39 @@ class LeptonAnalyzer {
     unsigned _lFlavor[nL_max];                                                                       //lepton flavor and charge
     int _lCharge[nL_max];
 
-    double _relIso[nL_max];                                                                          //lepton isolation variables
-    double _relIso0p4Mu[nL_max];                                                                          //lepton isolation variables
-    double _miniIso[nL_max];
-    double _miniIsoCharged[nL_max];    
-    double _puCorr[nL_max];     
-    double _absIso03[nL_max];   
-    double _absIso04[nL_max];                    
-    double _sumNeutralHadronEt04[nL_max];          
-    double _sumChargedHadronPt04[nL_max];         
-    double _sumPhotonEt04[nL_max];                 
-    double _sumNeutralHadronEt03[nL_max];         
-    double _sumChargedHadronPt03[nL_max];         
-    double _sumPhotonEt03[nL_max];  
-    double _trackIso[nL_max];
-    double _ecalIso[nL_max];
-    double _hcalIso[nL_max];
-    double _deltaBIso[nL_max];
-    double _ecalPFClusterIso[nL_max];
-    double _hcalPFClusterIso[nL_max];
+    float _relIso[nL_max];                                                                          //lepton isolation variables
+    float _relIso0p4Mu[nL_max];                                                                          //lepton isolation variables
+    float _miniIso[nL_max];
+    float _miniIsoCharged[nL_max];    
+    float _puCorr[nL_max];     
+    float _absIso03[nL_max];   
+    float _absIso04[nL_max];                    
+    float _sumNeutralHadronEt04[nL_max];          
+    float _sumChargedHadronPt04[nL_max];         
+    float _sumPhotonEt04[nL_max];                 
+    float _sumNeutralHadronEt03[nL_max];         
+    float _sumChargedHadronPt03[nL_max];         
+    float _sumPhotonEt03[nL_max];  
+    float _trackIso[nL_max];
+    float _ecalIso[nL_max];
+    float _hcalIso[nL_max];
+    float _deltaBIso[nL_max];
+    float _ecalPFClusterIso[nL_max];
+    float _hcalPFClusterIso[nL_max];
    
-    double _ptRel[nL_max];                                                                           //variables related to closest jet
-    double _ptRatio[nL_max];
-    double _closestJetCsvV2[nL_max];
-    double _closestJetDeepCsv_b[nL_max];
-    double _closestJetDeepCsv_bb[nL_max];
-    unsigned _selectedTrackMult[nL_max];
+    float _ptRel[nL_max];                                                                           //variables related to closest jet
+    float _ptRatio[nL_max];
+    float _closestJetCsvV2[nL_max];
+    float _closestJetDeepCsv_b[nL_max];
+    float _closestJetDeepCsv_bb[nL_max];
+    float _selectedTrackMult[nL_max];
 
-    double _dxy[nL_max];                                                                             //pointing variables
-    double _dz[nL_max];
-    double _3dIP[nL_max];
-    double _2dIP[nL_max];
-    double _3dIPSig[nL_max];
-    double _2dIPSig[nL_max];
+    float _dxy[nL_max];                                                                             //pointing variables
+    float _dz[nL_max];
+    float _3dIP[nL_max];
+    float _2dIP[nL_max];
+    float _3dIPSig[nL_max];
+    float _2dIPSig[nL_max];
     float _lElectronMva[nL_max];
     float _lElectronMvaHZZ[nL_max];
 
@@ -129,27 +129,27 @@ class LeptonAnalyzer {
   /////// µ ID variables
     bool _lGlobalMuon[nL_max];
     bool _lTrackerMuon[nL_max];
-    double _lInnerTrackValidFraction[nL_max];
-    double _lGlobalTrackNormalizeChi2[nL_max];
-    double _lCQChi2Position[nL_max];
-    double _lCQTrackKink[nL_max];
-    double _muonSegComp[nL_max];
-    unsigned _lNumberOfMatchedStation[nL_max];
-    unsigned _lNumberOfValidPixelHits[nL_max];
-    unsigned _muNumberInnerHits[nL_max];
-    unsigned _lTrackerLayersWithMeasurement[nL_max];
+    float _lInnerTrackValidFraction[nL_max];
+    float _lGlobalTrackNormalizeChi2[nL_max];
+    float _lCQChi2Position[nL_max];
+    float _lCQTrackKink[nL_max];
+    float _muonSegComp[nL_max];
+    float _lNumberOfMatchedStation[nL_max];
+    float _lNumberOfValidPixelHits[nL_max];
+    float _muNumberInnerHits[nL_max];
+    float _lTrackerLayersWithMeasurement[nL_max];
   
   /////// ele ID variabels
     bool _lEleIsEB [nL_max];
     bool _lEleIsEE[nL_max];
-    double _lEleSuperClusterOverP[nL_max];
-    double _lEleEcalEnergy[nL_max];
-    double _lElefull5x5SigmaIetaIeta[nL_max];
-    double _lEleDEtaInSeed[nL_max];
-    double _lEleDeltaPhiSuperClusterTrackAtVtx[nL_max];
-    double _lElehadronicOverEm[nL_max];
-    double _lEleInvMinusPInv[nL_max];
-    double _eleNumberInnerHitsMissing[nL_max];
+    float _lEleSuperClusterOverP[nL_max];
+    float _lEleEcalEnergy[nL_max];
+    float _lElefull5x5SigmaIetaIeta[nL_max];
+    float _lEleDEtaInSeed[nL_max];
+    float _lEleDeltaPhiSuperClusterTrackAtVtx[nL_max];
+    float _lElehadronicOverEm[nL_max];
+    float _lEleInvMinusPInv[nL_max];
+    float _eleNumberInnerHitsMissing[nL_max];
   
   
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
