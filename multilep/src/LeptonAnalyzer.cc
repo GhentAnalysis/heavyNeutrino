@@ -71,38 +71,38 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lCQChi2Position",              &_lCQChi2Position,              "_lCQChi2Position[_nL]/D");
   outputTree->Branch("_lCQTrackKink",                 &_lCQTrackKink,                 "_lCQTrackKink[_nL]/D");
   outputTree->Branch("_muonSegComp",                  &_muonSegComp,                  "_muonSegComp[_nMu]/D");
-  outputTree->Branch("_lNumberOfMatchedStation",      &_lNumberOfMatchedStation,      "_lNumberOfMatchedStation[_nL]/i");
-  outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/i");
-  outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/i");
-  outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/i");
+  outputTree->Branch("_lNumberOfMatchedStation",      &_lNumberOfMatchedStation,      "_lNumberOfMatchedStation[_nL]/F");
+  outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/F");
+  outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/F");
+  outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/F");
   outputTree->Branch("_lEleIsEB",                     &_lEleIsEB ,                    "_lEleIsEB[_nL]/O");
   outputTree->Branch("_lEleIsEE",                     &_lEleIsEE ,                    "_lEleIsEE[_nL]/O");
-  outputTree->Branch("_lEleSuperClusterOverP",        &_lEleSuperClusterOverP ,       "_lEleSuperClusterOverP[_nL]/D");
-  outputTree->Branch("_lEleEcalEnergy",               &_lEleEcalEnergy ,              "_lEleEcalEnergy[_nL]/D");
-  outputTree->Branch("_lElefull5x5SigmaIetaIeta",     &_lElefull5x5SigmaIetaIeta ,    "_lElefull5x5SigmaIetaIeta[_nL]/D");
-  outputTree->Branch("_lEleDEtaInSeed",               &_lEleDEtaInSeed ,              "_lEleDEtaInSeed[_nL]/D");
-  outputTree->Branch("_lEleDeltaPhiSuperClusterTrackAtVtx", &_lEleDeltaPhiSuperClusterTrackAtVtx , "_lEleDeltaPhiSuperClusterTrackAtVtx[_nL]/D");
-  outputTree->Branch("_lElehadronicOverEm",           &_lElehadronicOverEm ,          "_lElehadronicOverEm[_nL]/D");
-  outputTree->Branch("_lEleInvMinusPInv",             &_lEleInvMinusPInv ,            "_lEleInvMinusPInv[_nL]/D");
-  outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
-  outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/D");
-  outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");
-  outputTree->Branch("_absIso04",                     &_absIso04,                     "_absIso04[_nL]/D");
-  outputTree->Branch("_sumNeutralHadronEt04",         &_sumNeutralHadronEt04,         "_sumNeutralHadronEt04[_nL]/D");
-  outputTree->Branch("_sumChargedHadronPt04",         &_sumChargedHadronPt04,         "_sumChargedHadronPt04[_nL]/D");
-  outputTree->Branch("_sumPhotonEt04",                &_sumPhotonEt04,                "_sumPhotonEt04[_nL]/D");
-  outputTree->Branch("_sumNeutralHadronEt03",         &_sumNeutralHadronEt03,         "_sumNeutralHadronEt03[_nL]/D");
-  outputTree->Branch("_sumChargedHadronPt03",         &_sumChargedHadronPt03,         "_sumChargedHadronPt03[_nL]/D");
-  outputTree->Branch("_sumPhotonEt03",                &_sumPhotonEt03,                "_sumPhotonEt03[_nL]/D");
-  outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nL]/D");
-  outputTree->Branch("_ecalIso",                      &_ecalIso ,                     "_ecalIso[_nL]/D");
-  outputTree->Branch("_hcalIso",                      &_hcalIso ,                     "_hcalIso[_nL]/D");
-  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    "_deltaBIso[_nL]/D");
-  outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            "_ecalPFClusterIso[_nL]/D");
-  outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            "_hcalPFClusterIso[_nL]/D");
-  outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
-  outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
-  outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
+  outputTree->Branch("_lEleSuperClusterOverP",        &_lEleSuperClusterOverP ,       "_lEleSuperClusterOverP[_nL]/F");
+  outputTree->Branch("_lEleEcalEnergy",               &_lEleEcalEnergy ,              "_lEleEcalEnergy[_nL]/F");
+  outputTree->Branch("_lElefull5x5SigmaIetaIeta",     &_lElefull5x5SigmaIetaIeta ,    "_lElefull5x5SigmaIetaIeta[_nL]/F");
+  outputTree->Branch("_lEleDEtaInSeed",               &_lEleDEtaInSeed ,              "_lEleDEtaInSeed[_nL]/F");
+  outputTree->Branch("_lEleDeltaPhiSuperClusterTrackAtVtx", &_lEleDeltaPhiSuperClusterTrackAtVtx , "_lEleDeltaPhiSuperClusterTrackAtVtx[_nL]/F");
+  outputTree->Branch("_lElehadronicOverEm",           &_lElehadronicOverEm ,          "_lElehadronicOverEm[_nL]/F");
+  outputTree->Branch("_lEleInvMinusPInv",             &_lEleInvMinusPInv ,            "_lEleInvMinusPInv[_nL]/F");
+  outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/F");
+  outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/F");
+  outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/F");
+  outputTree->Branch("_absIso04",                     &_absIso04,                     "_absIso04[_nL]/F");
+  outputTree->Branch("_sumNeutralHadronEt04",         &_sumNeutralHadronEt04,         "_sumNeutralHadronEt04[_nL]/F");
+  outputTree->Branch("_sumChargedHadronPt04",         &_sumChargedHadronPt04,         "_sumChargedHadronPt04[_nL]/F");
+  outputTree->Branch("_sumPhotonEt04",                &_sumPhotonEt04,                "_sumPhotonEt04[_nL]/F");
+  outputTree->Branch("_sumNeutralHadronEt03",         &_sumNeutralHadronEt03,         "_sumNeutralHadronEt03[_nL]/F");
+  outputTree->Branch("_sumChargedHadronPt03",         &_sumChargedHadronPt03,         "_sumChargedHadronPt03[_nL]/F");
+  outputTree->Branch("_sumPhotonEt03",                &_sumPhotonEt03,                "_sumPhotonEt03[_nL]/F");
+  outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nL]/F");
+  outputTree->Branch("_ecalIso",                      &_ecalIso ,                     "_ecalIso[_nL]/F");
+  outputTree->Branch("_hcalIso",                      &_hcalIso ,                     "_hcalIso[_nL]/F");
+  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    "_deltaBIso[_nL]/F");
+  outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            "_ecalPFClusterIso[_nL]/F");
+  outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            "_hcalPFClusterIso[_nL]/F");
+  outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/F");
+  outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/F");
+  outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/F");
   outputTree->Branch("_tauMuonVeto",                  &_tauMuonVeto,                  "_tauMuonVeto[_nL]/O");
   outputTree->Branch("_tauEleVeto",                   &_tauEleVeto,                   "_tauEleVeto[_nL]/O");
   outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
@@ -115,7 +115,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_closestJetCsvV2",              &_closestJetCsvV2,              "_closestJetCsvV2[_nLight]/D");
   outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
   outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
-  outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
   
  
   if(!multilepAnalyzer->isData){
@@ -196,13 +195,13 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
 	  
     _lGlobalMuon[_nL] = mu.isGlobalMuon();
     _lTrackerMuon[_nL]= mu.isTrackerMuon();
-    _lInnerTrackValidFraction[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->validFraction()  : -1;
-    _lGlobalTrackNormalizeChi2[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->normalizedChi2()  : -1;
+    _lInnerTrackValidFraction[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->validFraction()  : 9999;
+    _lGlobalTrackNormalizeChi2[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->normalizedChi2()  : 9999;
     _lCQChi2Position[_nL] = mu.combinedQuality().chi2LocalPosition;
     _lCQTrackKink[_nL] = mu.combinedQuality().trkKink;
     _lNumberOfMatchedStation[_nL] = mu.numberOfMatchedStations();
-    _lNumberOfValidPixelHits[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().numberOfValidPixelHits()  : -1;
-    _lTrackerLayersWithMeasurement[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().trackerLayersWithMeasurement()  : -1;
+    _lNumberOfValidPixelHits[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().numberOfValidPixelHits()  : 9999;
+    _lTrackerLayersWithMeasurement[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().trackerLayersWithMeasurement()  : 9999;
 	  
     _lFlavor[_nL]        = 1;
     _muonSegComp[_nL]    = mu.segmentCompatibility();
@@ -217,13 +216,13 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
 	  
 	  
     // TODO: this is a possible solution to the missing trackRef, but maybe not what you want 
-    _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : -1);
+    _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : 9999);
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
     if ( mu.isLooseMuon()) _lPOGMedium[_nL] = mu.isMediumMuon();
     if ( mu.isLooseMuon()) _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
  
-	  if (    !_lPOGLoose[_nL] ) continue;
+	//  if (    !_lPOGLoose[_nL] ) continue;
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lpassConversionVeto[_nL] = false;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
@@ -311,16 +310,16 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
     //muon variables
     _lGlobalMuon[_nL] = false;
     _lTrackerMuon[_nL]= false;
-    _lInnerTrackValidFraction[_nL] = -1;
-    _lGlobalTrackNormalizeChi2[_nL]=  -1;
-    _lCQChi2Position[_nL] =  -1;
-    _lCQTrackKink[_nL] =  -1;
-    _lNumberOfMatchedStation[_nL] =  -1;
-    _lNumberOfValidPixelHits[_nL] =  -1;
-    _lTrackerLayersWithMeasurement[_nL] =  -1;
-    _lSimType[_nL]       = -1; 
-    _lSimExtType[_nL]    = -1; 
-    _lSimFlavour[_nL]    = -1; 
+    _lInnerTrackValidFraction[_nL] = 9999;
+    _lGlobalTrackNormalizeChi2[_nL]=  9999;
+    _lCQChi2Position[_nL] =  9999;
+    _lCQTrackKink[_nL] =  9999;
+    _lNumberOfMatchedStation[_nL] =  9999;
+    _lNumberOfValidPixelHits[_nL] =  9999;
+    _lTrackerLayersWithMeasurement[_nL] =  9999;
+    _lSimType[_nL]       = 9999; 
+    _lSimExtType[_nL]    = 9999; 
+    _lSimFlavour[_nL]    = 9999; 
 	  
     if (fabs(_dxy[_nL])> 0.02)  ++_nGoodDisplaced; 
     if (ele->pt() > 22 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) ++_nGoodLeading;
@@ -418,7 +417,8 @@ edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByTok
       //auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele_2 - electrons->begin()));
       if(ele_2->gsfTrack().isNull()) continue;
       if(ele_2->pt() < 5 || fabs(ele_2->eta()) > 2.5 || !isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele_2) || eleMuOverlap(*ele_2, _lPFMuon) )           continue; // from 10 to 6
-      iE_minus_mu++; // it is already _nMu
+    	    
+	    iE_minus_mu++; // it is already _nMu
 
       if(ele_2->charge() > 0) continue; // only opposite charge
 
