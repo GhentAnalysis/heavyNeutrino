@@ -14,9 +14,8 @@ inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
 inputFile       = '/store/mc/RunIIFall17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/00000/005DC030-D3F4-E711-889A-02163E01A62D.root'
-#inputFile       = '/store/mc/RunIIFall17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/00000/005DC030-D3F4-E711-889A-02163E01A62D.root'
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/70000/06598411-2DC8-E611-AFCC-02163E019D8F.root'
-#inputFile       = 'file:///user/ikhvastu/CMSSW_9_4_4/src/heavyNeutrino/multilep/test/pickEventForTest.root'
+#inputFile       = 'file:///user/ikhvastu/CMSSW_9_4_4/src/heavyNeutrino/multilep/test/pickEvent_1_5226_3910714.root'
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root'
 nEvents         = 1000
 outputFile      = 'singlelep.root'   # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -43,10 +42,6 @@ if 'pickevent' in inputFile.lower():
     isData = False
     is2017 = False
     isSUSY = False
-
-#isData = False
-#is2017 = False
-#isSUSY = False
 
 print isData, is2017, isSUSY
 

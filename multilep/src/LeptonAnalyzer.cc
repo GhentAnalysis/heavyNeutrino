@@ -171,6 +171,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lPOGLoose[_nL]      = mu.isLooseMuon();
         _lPOGMedium[_nL]     = mu.isMediumMuon();
         _lPOGTight[_nL]      = mu.isTightMuon(primaryVertex);
+        //std::cout << "Let's check output of 2 functions: " << mu.passed(mu.CutBasedIdMedium) << " " << mu.isMediumMuon() << std::endl;
 
         _leptonMvaSUSY[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY);
         _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
@@ -409,6 +410,8 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
         _closestJetDeepCsv_b[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+
+        //std::cout << "closest jet csv for lepton with pt: " << lepton.pt() << ": " << _closestJetDeepCsv_b[_nL] << " " << _closestJetDeepCsv_bb[_nL] << " " << _ptRatio[_nL] << " " << _ptRel[_nL] << std::endl;
         //compute selected track multiplicity of closest jet
         _selectedTrackMult[_nL] = 0;
         for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
