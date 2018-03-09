@@ -38,6 +38,8 @@ class JetAnalyzer {
 
     double        _met;                                                                              //met kinematics
     double        _metPhi;
+    double        _metRaw;
+    double        _metRawPhi;
     double        _metJECDown;
     double        _metPhiJECDown;
     double        _metJECUp;
