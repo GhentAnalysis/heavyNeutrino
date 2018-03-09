@@ -90,7 +90,7 @@ while read f; do
     fileCount=$((fileCount + 1))
     #submit a job for every few files, as specified in the input
     if (( $fileCount % $filesPerJob == 0 )) || (( $fileCount == 1 ))
-        then if (( $fileCount % $filesPerJob == 0 ));
+        then if (( $fileCount % $filesPerJob == 0 )); then
             #then fileList="${fileList%,}" #remove trailing comma from fileList
             #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
             #submit job
