@@ -13,6 +13,11 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, 1);     //TTH
     leptonMvaComputertZqTTV = new LeptonMvaHelper(iConfig, 2);  //tZq/TTV
     if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
+    if(multilepAnalyzer->isData){
+        jecLevel = "L2L3Residual";
+    } else {
+        jecLevel = "L3Absolute";
+    }
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
@@ -120,8 +125,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
     edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
     edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
-    //edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
-    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetSmearedToken,                   jets);
+    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
+    //edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetSmearedToken,                   jets);
 
     _nL     = 0;
     _nLight = 0;
@@ -146,7 +151,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         fillLeptonKinVars(mu);
         //fillLeptonGenVars(mu.genParticle());
         if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
-        fillLeptonJetVariables(mu, jets, primaryVertex);
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
 
         _lFlavor[_nL]        = 1;
         _lMuonSegComp[_nL]    = mu.segmentCompatibility();
@@ -200,7 +205,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         fillLeptonKinVars(*ele);
         //fillLeptonGenVars(ele->genParticle());
         if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
-        fillLeptonJetVariables(*ele, jets, primaryVertex);
+        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
         _lFlavor[_nL]          = 0;
         _lEtaSC[_nL]           = ele->superCluster()->eta();
@@ -379,11 +384,12 @@ bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose) con
 }
 
 
-void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex){
+void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex, const double rho){
     //Make skimmed "close jet" collection
     std::vector<pat::Jet> selectedJetsAll;
     for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+        double jetPt = jet->pt()*multilepAnalyzer->jec->jetCorrection(jet->correctedP4("Uncorrected").Pt(), jet->correctedP4("Uncorrected").Eta(), rho, jet->jetArea(), jecLevel); 
+        if( jetPt > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
     }
     // Find closest selected jet
     unsigned closestIndex = 0;
@@ -399,13 +405,24 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
     } else {
+        double totalJEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), jecLevel);
+        double l1JEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), "L1FastJet");
+        /*
         auto  l1Jet       = jet.correctedP4("L1FastJet");
         float JEC         = jet.p4().E()/l1Jet.E();
         auto  l           = lepton.p4();
         auto  lepAwareJet = (l1Jet - l)*JEC + l;
-        TLorentzVector lV(l.px(), l.py(), l.pz(), l.E());
-        TLorentzVector jV(lepAwareJet.px(), lepAwareJet.py(), lepAwareJet.pz(), lepAwareJet.E());
-        _ptRatio[_nL]       = l.pt()/lepAwareJet.pt();
+        */
+        TLorentzVector l1Jet;
+        l1Jet.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt()*l1JEC, jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E()*l1JEC);
+        float JEC = totalJEC/l1JEC;
+        TLorentzVector l(lepton.px(), lepton.py(), lepton.pz(), lepton.energy());
+        TLorentzVector lepAwareJet = (l1Jet - l)*JEC + l;
+
+
+        TLorentzVector lV(l.Px(), l.Py(), l.Pz(), l.E());
+        TLorentzVector jV(lepAwareJet.Px(), lepAwareJet.Py(), lepAwareJet.Pz(), lepAwareJet.E());
+        _ptRatio[_nL]       = l.Pt()/lepAwareJet.Pt();
         _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
         _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
         _closestJetDeepCsv_b[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probb");

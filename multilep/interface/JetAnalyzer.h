@@ -23,8 +23,6 @@ class JetAnalyzer {
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
     double   _jetPt_JECDown[nJets_max];
-    double   _jetPt_JERUp[nJets_max];
-    double   _jetPt_JERDown[nJets_max];
     double   _jetEta[nJets_max];
     double   _jetPhi[nJets_max];
     double   _jetE[nJets_max];
@@ -33,11 +31,28 @@ class JetAnalyzer {
     double   _jetDeepCsv_b[nJets_max];
     double   _jetDeepCsv_c[nJets_max];
     double   _jetDeepCsv_bb[nJets_max];
-//  double   _jetDeepCsv_cc[nJets_max];
     unsigned _jetHadronFlavor[nJets_max];
     bool    _jetIsLoose[nJets_max];
     bool    _jetIsTight[nJets_max];
     bool    _jetIsTightLepVeto[nJets_max];
+
+    double        _met;                                                                              //met kinematics
+    double        _rawmet;                                                                              //met kinematics
+    double        _metPhi;
+    double        _rawmetPhi;
+    double        _metJECDown;
+    double        _metPhiJECDown;
+    double        _metJECUp;
+    double        _metPhiJECUp;
+    double        _metUnclDown;
+    double        _metPhiUnclDown;
+    double        _metUnclUp;
+    double        _metPhiUnclUp;
+    double        _metSignificance;
+
+    //correction level for JEC
+    std::string jecLevel;
+
 
     multilep* multilepAnalyzer;
 

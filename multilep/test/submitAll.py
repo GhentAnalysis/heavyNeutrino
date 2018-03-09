@@ -24,7 +24,7 @@ for dataset in datasets:
     if 'pnfs' in dataset or 'user' in dataset or submitLocal == "local":
         dir        = os.getcwd()
         outputDir = outDir + "/"
-        if 'pnfs' in dataset or 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]      
+        if 'pnfs' in dataset or 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]
         else: outputDir = outputDir + dataset.split('/')[1]
         if 'ext' in dataset:
             outputDir = outputDir + "_"
