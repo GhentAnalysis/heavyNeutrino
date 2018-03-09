@@ -6,6 +6,7 @@ then
   cd $CMSSW_BASE/src
 
   # First EGM smearing
+  git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
   git cms-merge-topic cms-egamma:EGM_gain_v1
   cd EgammaAnalysis/ElectronTools/data
   git clone -b Moriond17_gainSwitch_unc https://github.com/ECALELFS/ScalesSmearings.git 
