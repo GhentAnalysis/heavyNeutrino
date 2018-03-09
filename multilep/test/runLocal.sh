@@ -59,6 +59,20 @@ if [[ -z "$output" ]]; then
         output=${output%%/}
         #set output directory to default 
     fi
+    #add run labels for data
+    if [[ $input == *"Run2017"* ]] || [[ $input == *"Run2016"* ]]; then
+        echo "passed IF"
+        if [[ $input == *"Run2017"* ]]; then
+            output=${output}/Run2017
+        else 
+            output=${output}/Run2016
+        fi
+        for era in B C D E F G H; do
+            if [[ $input == *"Run2016${era}"* ]] || [[ $input == *"Run2017${era}"* ]]; then
+                output=${output}${era}
+            fi
+        done
+    fi
     echo "OUTPUT = $output"
     output=~/public/heavyNeutrino/${output}    
 fi
