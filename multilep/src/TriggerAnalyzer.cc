@@ -15,7 +15,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   //2017 data and MC   
   if(multilepAnalyzer->is2017){
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
-                                  "Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_ecalBadCalibFilter"                             //for Moriond 2018 superTightHalo -> TightHalo
+                                  "Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_ecalBadCalibFilter",                             //for Moriond 2018 superTightHalo -> TightHalo
                                   "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};      // Duplicate muons still missing in mAOD, not sure how to get those in
     //met filters only to be applied on fullsim and data
     if(!multilepAnalyzer->isSUSY){
