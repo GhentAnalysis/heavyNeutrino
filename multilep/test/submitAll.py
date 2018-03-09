@@ -32,6 +32,16 @@ for dataset in datasets:
             for i in range (index, len(dataset)):
                 if dataset[i] == "/": break
                 else : outputDir = outputDir + dataset[i]
+        #add run labels to data output directory 
+        if ('Run2016' in dataset) or ('Run2017' in dataset):
+            if('Run2016') in dataset :
+                outputDir = outputDir + "/Run2016"
+            else :
+                outputDir = outputDir + "/Run2017"
+            for era in ["B", "C", "D", "E", "F", "G", "H"]:
+                if ( ("Run2016" + era) in dataset ) or ( ("Run2017" + era) in dataset ): 
+                    outputDir = outputDir + era
+
 
         print outputDir
         #cut out the first part of /pnfs path for official sample if needed
