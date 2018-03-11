@@ -16,8 +16,8 @@ def getJSON(is2017):
 #inputFile       = '/store/mc/RunIIFall17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/00000/005DC030-D3F4-E711-889A-02163E01A62D.root'
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/70000/06598411-2DC8-E611-AFCC-02163E019D8F.root'
 #inputFile       = 'file:///user/ikhvastu/CMSSW_9_4_4/src/heavyNeutrino/multilep/test/pickEvent_1_5226_3910714.root'
-#inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root'
-inputFile       = '/store/data/Run2017B/DoubleMuon/MINIAOD/17Nov2017-v1/30000/3800AFDD-20D6-E711-87D6-02163E019D17.root'
+inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root'
+#inputFile       = '/store/data/Run2017B/DoubleMuon/MINIAOD/17Nov2017-v1/30000/3800AFDD-20D6-E711-87D6-02163E019D17.root'
 nEvents         = 1000
 outputFile      = 'singlelep.root'   # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
