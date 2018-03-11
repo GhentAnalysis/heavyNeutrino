@@ -37,5 +37,5 @@ void SUSYMassAnalyzer::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, c
 }
 
 void SUSYMassAnalyzer::analyze(const edm::Event& iEvent){
-    hCounterSUSY->Fill(_mChi2, _mChi1, lheAnalyzer->_weight);
+    hCounterSUSY->Fill(_mChi2, _mChi1, lheAnalyzer->getWeight());
 }

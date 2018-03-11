@@ -140,6 +140,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         unsigned long _lumiBlock;
         unsigned long _eventNb;
         unsigned      _nVertex;                                                                          //Event variables
+
+        TH1D* nVertices;                                                                                 //Histogram with number of vertices
 };
 #endif
 
