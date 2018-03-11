@@ -24,11 +24,6 @@ void JEC::setJEC(const std::string& JECName){
     if(isData) JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2L3Residual_AK4PFchs.txt") );
     jetCorrector.reset(new FactorizedJetCorrector(JECParameters) );
     jetUncertainties.reset(new JetCorrectionUncertainty(path + JECName + "_Uncertainty_AK4PFchs.txt") );
-
-    //set up L1RC corrector for met correction
-    std::vector<JetCorrectorParameters> JECParametersL1C;
-    JECParametersL1C.push_back(JetCorrectorParameters( path + JECName + "_L1RC_AK4PFchs.txt") );
-    L1CCorrector.reset(new FactorizedJetCorrector(JECParameters) );
 }
    
 std::string JEC::getJECRunName(const unsigned long runNumber){
@@ -93,15 +88,6 @@ std::vector<float> JEC::getSubCorrections(double rawPt, double eta, double rho, 
     return corrections;
 }
 
-std::vector<float> JEC::getL1CCorrections(double rawPt, double eta, double rho, double area){
-    L1CCorrector->setJetEta(eta);
-    L1CCorrector->setRho(rho);
-    L1CCorrector->setJetA(area);
-    L1CCorrector->setJetPt(rawPt); 
-    std::vector< float > corrections = L1CCorrector->getSubCorrections();
-    return corrections;
-}
-
 double JEC::jetCorrection(double rawPt, double eta, double rho, double area, const std::string& level){
 
     std::vector< float > corrections = getSubCorrections(rawPt, eta, rho, area); 
@@ -125,10 +111,8 @@ double JEC::jetUncertainty(double pt, double eta){
 std::pair<double, double> JEC::getMETCorrectionPxPy(double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area){
 
     std::vector< float > corrections = getSubCorrections(rawPt, rawEta, rho, area); 
-    std::vector< float > L1CCorrections = getL1CCorrections(rawPt, rawEta, rho, area); 
-    
-    //double l1corrpt   = rawMuonSubtractedPt*corrections.front(); // l1fastjet corrections were pushed pack first
-    double l1corrpt   = rawMuonSubtractedPt*L1CCorrections.front();
+
+    double l1corrpt   = rawMuonSubtractedPt*corrections.front(); // l1fastjet corrections were pushed pack first
     double fullcorrpt = rawMuonSubtractedPt*corrections.back();  // full corrections are the last in the vector
     // the corretions for the MET are the difference between l1fastjet and the full corrections on the jet!
     if(emf > 0.9 or fullcorrpt < 15. || (fabs(rawEta) > 9.9) ) return {0., 0.}; // skip jets with EMF > 0.9

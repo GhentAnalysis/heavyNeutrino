@@ -37,9 +37,9 @@ class JetAnalyzer {
     bool    _jetIsTightLepVeto[nJets_max];
 
     double        _met;                                                                              //met kinematics
-    double        _rawmet;                                                                              //met kinematics
     double        _metPhi;
-    double        _rawmetPhi;
+    double        _metRaw;
+    double        _metRawPhi;
     double        _metJECDown;
     double        _metPhiJECDown;
     double        _metJECUp;

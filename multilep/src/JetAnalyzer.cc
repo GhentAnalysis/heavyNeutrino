@@ -36,14 +36,14 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/i");
 
     outputTree->Branch("_met",                          &_met,                          "_met/D");
-    outputTree->Branch("_rawmet",                       &_rawmet,                       "_rawmet/D");
+    outputTree->Branch("_metRaw",                       &_metRaw,                       "_metRaw/D");
     outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
     outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
     outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
     outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
 
     outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
-    outputTree->Branch("_rawmetPhi",                    &_rawmetPhi,                    "_rawmetPhi/D");
+    outputTree->Branch("_metRawPhi",                    &_metRawPhi,                    "_metRawPhi/D");
     outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
     outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
     outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
@@ -119,8 +119,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     _met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
     _metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
 
-    _rawmet          = met.uncorPt();
-    _rawmetPhi       = met.uncorPhi();
+    //raw met values
+    _metRaw = met.uncorPt();
+    _metRawPhi = met.uncorPhi();
     //met values with uncertainties varied up and down
     _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
     _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);

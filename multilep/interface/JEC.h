@@ -38,13 +38,10 @@ class JEC {
 
         std::shared_ptr<FactorizedJetCorrector> jetCorrector;
         std::shared_ptr<JetCorrectionUncertainty> jetUncertainties;
-        std::shared_ptr<FactorizedJetCorrector> L1CCorrector;
 
         double px(double pt, double phi){ return pt*cos(phi); };
         double py(double pt, double phi){ return pt*sin(phi); };
         std::vector<float> getSubCorrections(double rawPt, double eta, double rho, double area);
-        std::vector<float> getL1CCorrections(double rawPt, double eta, double rho, double area);
-
         std::pair<double, double> getMETCorrectionPxPy(double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area);
 
         //JEC naming 
