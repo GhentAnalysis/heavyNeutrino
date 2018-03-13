@@ -55,7 +55,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   //2016 data and MC
   } else {
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters (if legacy mAOD vbecomes available, copy the filters listed for 2017)
-                                  "Flag_goodVertices", "flag_badPFMuonFilter","flag_badChCandFilter"};
+                                  "Flag_goodVertices", "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"};
     //met filters only to be applied on fullsim and data
     if(!multilepAnalyzer->isSUSY){
         allFlags["passMETFilters"].push_back("Flag_globalTightHalo2016Filter");
@@ -176,15 +176,22 @@ bool TriggerAnalyzer::passCombinedFlagAND(TString combinedFlag){
 void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<edm::TriggerResults> recoResults;       iEvent.getByToken(multilepAnalyzer->recoResultsToken,      recoResults);
   edm::Handle<edm::TriggerResults> triggerResults;    iEvent.getByToken(multilepAnalyzer->triggerToken,          triggerResults);
-  edm::Handle<bool> badPFMuonFilter;                  iEvent.getByToken(multilepAnalyzer->badPFMuonFilterToken,  badPFMuonFilter);
-  edm::Handle<bool> badChCandFilter;                  iEvent.getByToken(multilepAnalyzer->badChCandFilterToken,  badChCandFilter);
-
+  edm::Handle<bool> badPFMuonFilter;                  
+  edm::Handle<bool> badChCandFilter;                  
+  if(!multilepAnalyzer->is2017){
+    iEvent.getByToken(multilepAnalyzer->badPFMuonFilterToken,  badPFMuonFilter);
+    iEvent.getByToken(multilepAnalyzer->badChCandFilterToken,  badChCandFilter);
+  }
   // Get all flags
   getResults(iEvent, triggerResults, triggersToSave, true);
   getResults(iEvent, recoResults,    filtersToSave,  false);
   reIndex = false;
-  flag["flag_badPFMuonFilter"] = *badPFMuonFilter;
-  flag["flag_badChCandFilter"] = *badChCandFilter;
+ 
+  // These met filters are to be applied on-the-fly in 2016 samples
+  if(! multilepAnalyzer->is2017){
+    flag["Flag_BadPFMuonFilter"] = *badPFMuonFilter;
+    flag["Flag_BadChargedCandidateFilter"] = *badChCandFilter;
+  }
 
   for(auto& combinedFlag : allFlags){
     if(combinedFlag.first.Contains("MET")) flag[combinedFlag.first] = passCombinedFlagAND(combinedFlag.first);
