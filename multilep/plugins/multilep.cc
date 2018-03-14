@@ -118,6 +118,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
     if(_nVertex == 0) return;                                      //Don't consider 0 vertex events
 
+    std::cout << "new event" << std::endl;
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     //if(!photonAnalyzer->analyze(iEvent)) return;

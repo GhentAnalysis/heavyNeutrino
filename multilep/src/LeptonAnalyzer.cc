@@ -322,6 +322,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
     _lPartonPt[_nL] = genMatcher->getPartonPt();
     _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
+    std::cout << "info about reco lepton: (pt/eta/phi/isPrompt) " << _lPt[_nL] << " " << _lEta[_nL] << " " << _lPhi[_nL] << " " << _lIsPrompt[_nL] << std::endl; 
 }
 
 
