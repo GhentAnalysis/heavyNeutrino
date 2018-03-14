@@ -85,7 +85,7 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
     LepGood_jetPtRelv2 = ptRel;
     LepGood_jetPtRatio = std::min(ptRatio, 1.5);
     if(is2017 || type  > 2){
-        LepGood_jetBTagCSV = std::max(closestJetDeepCsv, 0.);
+        LepGood_jetBTagCSV = std::max( (std::isnan(closestJetDeepCsv) ? 0. : closestJetDeepCsv) , 0.);
     } else{
         LepGood_jetBTagCSV = std::max(closestJetCsv, 0.);
     }
@@ -93,7 +93,7 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
     //use relIso for closest jet when no close jet for 2017 SUSY and ttH mvas
     if(is2017 && type < 2){
         LepGood_jetPtRatio = 1 + relIso0p4;
-        bool goodBTag = (closestJetDeepCsv > -5.);
+        bool goodBTag = (closestJetDeepCsv > -5.) || !std::isnan(closestJetDeepCsv);
         LepGood_jetPtRatio = goodBTag*std::min(ptRatio, 1.5) + (!goodBTag)/(1 + relIso0p4);
     }
     LepGood_sip3d = sip3d;
