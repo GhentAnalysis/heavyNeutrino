@@ -84,13 +84,14 @@ addElectronAndPhotonSequence(process)
 #
 # Read additional MET filters not stored in miniAOD
 #
-"""
 process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
 for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
-"""
+
+process.BadPFMuonFilter.filter = cms.bool(False)
+process.BadChargedCandidateFilter.filter = cms.bool(False)
 
 #clean 2016 data met from spurious muons and ECAL slew rate
 metCollection = "slimmedMETs"
@@ -118,12 +119,16 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   electronsCutBasedLoose        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
   electronsCutBasedMedium       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
   electronsCutBasedTight        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
-  leptonMvaWeightsMu            = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_BDTG.weights.xml"),
-  leptonMvaWeightsEle           = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_BDTG.weights.xml"),
-  leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH_BDTG.weights.xml"),
-  leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH_BDTG.weights.xml"),
-  leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/ele_leptonMva_tZqTTV.weights.xml"),
-  leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_leptonMva_tZqTTV.weights.xml"),
+  leptonMvaWeightsMuSUSY16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml"),
+  leptonMvaWeightsEleSUSY16     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml"),
+  leptonMvaWeightsMuttH16       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml"),
+  leptonMvaWeightsElettH16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH16_BDTG.weights.xml"),
+  leptonMvaWeightsMuSUSY17      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml"),
+  leptonMvaWeightsEleSUSY17     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml"),
+  leptonMvaWeightsMuttH17       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml"),
+  leptonMvaWeightsElettH17      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml"),
+  leptonMvaWeightsEletZqTTV16   = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/ele_leptonMva_tZqTTV16.weights.xml"),
+  leptonMvaWeightsMutZqTTV16    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_leptonMva_tZqTTV16.weights.xml"),
   #photons                       = cms.InputTag("slimmedPhotons"),
   #photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfChargedHadrons_90percentBased.txt'),
   #photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased.txt'),
@@ -149,15 +154,12 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),
   recoResults                   = cms.InputTag("TriggerResults::RECO"),
-  #badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
-  #badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
+  badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
+  badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
   isSUSY                        = cms.untracked.bool(isSUSY),
-  #temporary, remove later
-  jetCorrection                 = cms.InputTag("ak4PFCHSL1FastL2L3Corrector"),
-  ###########################
 
 )
 
@@ -166,8 +168,8 @@ if isData:
   process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017)).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
-                     #process.BadPFMuonFilter *
-                     #process.BadChargedCandidateFilter *
+                     process.BadPFMuonFilter *
+                     process.BadChargedCandidateFilter *
                      process.egmSequence *
                      process.jetSequence *
                      process.fullPatMetSequence *
