@@ -51,7 +51,7 @@ class JetAnalyzer {
     double        _metSignificance;
 
     //correction level for JEC
-    std::string jecLevel;
+    //std::string jecLevel;
 
 
     multilep* multilepAnalyzer;
