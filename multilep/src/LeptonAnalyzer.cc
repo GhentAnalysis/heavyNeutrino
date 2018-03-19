@@ -133,6 +133,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup, const reco::Vertex& primaryVertex){
+    std::cout << "begin leptonanalyzer" << std::endl;
     edm::Handle<reco::BeamSpot> beamspot;			     iEvent.getByToken(multilepAnalyzer->beamSpotToken, 		    beamspot);
     edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
     edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
@@ -377,6 +378,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         ++_nTau;
         ++_nL;
     }
+    std::cout << "end leptonanalyzer" << std::endl;
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
     if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
@@ -508,7 +510,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _selectedTrackMult[_nL] = 0;
         for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
             const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-            if(daughter->bestTrack() == nullptr){ //hasTrackDetails()){
+            if(daughter->hasTrackDetails()){
                 const reco::Track& daughterTrack = daughter->pseudoTrack();
                 TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
                 double daughterDeltaR            = trackVec.DeltaR(jV);
@@ -559,38 +561,40 @@ void LeptonAnalyzer::fillLeptonTrackVariables(const reco::Candidate& lepton, edm
 	double mindR = 50;
 	double mindpt = 50;
  	for(unsigned j = 0; j < packedCandidates.size(); ++j){
-	    const reco::Track& candTrack = packedCandidates[j].pseudoTrack();
-	    TLorentzVector trackVec(candTrack.px(), candTrack.py(), candTrack.pz(), candTrack.p());
-	    double leptondeltaR = trackVec.DeltaR(lepVec);
-	    bool goodTrack	= leptondeltaR < 0.4 &&
+	    if(packedCandidates[j].hasTrackDetails()){
+	    	const reco::Track& candTrack = packedCandidates[j].pseudoTrack();
+	    	TLorentzVector trackVec(candTrack.px(), candTrack.py(), candTrack.pz(), candTrack.p());
+	    	double leptondeltaR = trackVec.DeltaR(lepVec);
+	    	bool goodTrack	= leptondeltaR < 0.4 &&
 				  candTrack.normalizedChi2() < 5 &&
 				  candTrack.charge() != 0;
-	    bool goodIP		= candTrack.hitPattern().numberOfValidHits() > 7 &&
+	    	bool goodIP		= candTrack.hitPattern().numberOfValidHits() > 7 &&
 				  candTrack.hitPattern().numberOfValidPixelHits() > 1 &&
 				  fabs(candTrack.dz(vertex.position())) < 17 &&
 				  fabs(candTrack.dxy(vertex.position())) < 17;
 				  //packedCandidates[j].fromPV() > 1; skipped because it was not good for taus
-	    bool is_lepton	= (fabs(lepVec.Pt() - trackVec.Pt()) < 1 &&
+	    	bool is_lepton	= (fabs(lepVec.Pt() - trackVec.Pt()) < 1 &&
 				  leptondeltaR < 0.05 &&
 				  (lepton.isElectron() || lepton.isMuon()))
 				  ||
 				  (fabs(lepVec.Pt() - trackVec.Pt()) < 0.1 &&
 				  leptondeltaR < 0.05);
-	    mindpt = (fabs(lepVec.Pt() - trackVec.Pt()) < mindpt)? fabs(lepVec.Pt() - trackVec.Pt()) : mindpt;
-	    mindR  = (leptondeltaR < mindR)? leptondeltaR : mindR;
-	    if(is_lepton){ ++n_lepton; }
-	    if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 0) ++_TrackMult_pt0[_nL];
-	    if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 1) ++_TrackMult_pt1[_nL];
-	    if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 2) ++_TrackMult_pt2[_nL];
-	    if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 3) ++_TrackMult_pt3[_nL];
-	    if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 4) ++_TrackMult_pt4[_nL];
-	    if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 5) ++_TrackMult_pt5[_nL];
-	    if(goodTrack && !is_lepton && candTrack.pt() > 0) ++_TrackMult_noIP_pt0[_nL];
-	    if(goodTrack && !is_lepton && candTrack.pt() > 1) ++_TrackMult_noIP_pt1[_nL];
-	    if(goodTrack && !is_lepton && candTrack.pt() > 2) ++_TrackMult_noIP_pt2[_nL];
-	    if(goodTrack && !is_lepton && candTrack.pt() > 3) ++_TrackMult_noIP_pt3[_nL];
-	    if(goodTrack && !is_lepton && candTrack.pt() > 4) ++_TrackMult_noIP_pt4[_nL];
-	    if(goodTrack && !is_lepton && candTrack.pt() > 5) ++_TrackMult_noIP_pt5[_nL];
+	    	mindpt = (fabs(lepVec.Pt() - trackVec.Pt()) < mindpt)? fabs(lepVec.Pt() - trackVec.Pt()) : mindpt;
+	    	mindR  = (leptondeltaR < mindR)? leptondeltaR : mindR;
+	    	if(is_lepton){ ++n_lepton; }
+	    	if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 0) ++_TrackMult_pt0[_nL];
+	    	if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 1) ++_TrackMult_pt1[_nL];
+	    	if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 2) ++_TrackMult_pt2[_nL];
+	    	if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 3) ++_TrackMult_pt3[_nL];
+	    	if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 4) ++_TrackMult_pt4[_nL];
+	    	if(goodTrack && goodIP && !is_lepton && candTrack.pt() > 5) ++_TrackMult_pt5[_nL];
+	    	if(goodTrack && !is_lepton && candTrack.pt() > 0) ++_TrackMult_noIP_pt0[_nL];
+	    	if(goodTrack && !is_lepton && candTrack.pt() > 1) ++_TrackMult_noIP_pt1[_nL];
+	    	if(goodTrack && !is_lepton && candTrack.pt() > 2) ++_TrackMult_noIP_pt2[_nL];
+	    	if(goodTrack && !is_lepton && candTrack.pt() > 3) ++_TrackMult_noIP_pt3[_nL];
+	    	if(goodTrack && !is_lepton && candTrack.pt() > 4) ++_TrackMult_noIP_pt4[_nL];
+	    	if(goodTrack && !is_lepton && candTrack.pt() > 5) ++_TrackMult_noIP_pt5[_nL];
+	    }
 	}
     }
 }
@@ -610,10 +614,11 @@ void LeptonAnalyzer::fillNutauTrackVariables(const reco::GenParticle& gen_tau, e
 	auto lep = gen_tau.p4();
         TLorentzVector lepVec(lep.px(), lep.py(), lep.pz(), lep.E());
  	for(unsigned j = 0; j < packedCandidates.size(); ++j){
-	    const reco::Track& candTrack = packedCandidates[j].pseudoTrack();
-	    TLorentzVector trackVec(candTrack.px(), candTrack.py(), candTrack.pz(), candTrack.p());
-	    double leptondeltaR = trackVec.DeltaR(lepVec);
-	    bool goodTrack	= leptondeltaR < 0.4 &&
+	    if(packedCandidates[j].hasTrackDetails()){
+	    	const reco::Track& candTrack = packedCandidates[j].pseudoTrack();
+	    	TLorentzVector trackVec(candTrack.px(), candTrack.py(), candTrack.pz(), candTrack.p());
+	    	double leptondeltaR = trackVec.DeltaR(lepVec);
+	    	bool goodTrack	= leptondeltaR < 0.4 &&
 				  candTrack.charge() != 0 &&
 				  candTrack.hitPattern().numberOfValidHits() > 7 &&
 				  candTrack.hitPattern().numberOfValidPixelHits() > 1 &&
@@ -621,8 +626,9 @@ void LeptonAnalyzer::fillNutauTrackVariables(const reco::GenParticle& gen_tau, e
 				  fabs(candTrack.dz(vertex.position())) < 17 &&
 				  fabs(candTrack.dxy(vertex.position())) < 17;
 				  //packedCandidates[j].fromPV() > 1; skipped because it was not good for taus
-	    if(goodTrack && candTrack.pt() > 1) ++_Nutau_TrackMult_pt1[_nL];
-	    if(goodTrack && candTrack.pt() > 5) ++_Nutau_TrackMult_pt5[_nL];
+	    	if(goodTrack && candTrack.pt() > 1) ++_Nutau_TrackMult_pt1[_nL];
+	    	if(goodTrack && candTrack.pt() > 5) ++_Nutau_TrackMult_pt5[_nL];
+	    }
 	}
     }
 }
@@ -646,10 +652,11 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
     unsigned n_lepton = 0;
     TLorentzVector lepVec(lep.px(), lep.py(), lep.pz(), lep.E());
     for(unsigned j = 0; j < packedCandidates.size(); ++j){
-	const reco::Track& candTrack = packedCandidates[j].pseudoTrack();
-	TLorentzVector trackVec(candTrack.px(), candTrack.py(), candTrack.pz(), candTrack.p());
-	double leptondeltaR = trackVec.DeltaR(lepVec);
-	bool goodTrack		= leptondeltaR < 0.4 &&
+	if(packedCandidates[j].hasTrackDetails()){
+	    const reco::Track& candTrack = packedCandidates[j].pseudoTrack();
+	    TLorentzVector trackVec(candTrack.px(), candTrack.py(), candTrack.pz(), candTrack.p());
+	    double leptondeltaR = trackVec.DeltaR(lepVec);
+	    bool goodTrack		= leptondeltaR < 0.4 &&
 				  candTrack.charge() != 0 &&
 				  //candTrack.hitPattern().numberOfValidHits() > 7 &&
 				  //candTrack.hitPattern().numberOfValidPixelHits() > 1 &&
@@ -657,14 +664,15 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
 				  //fabs(candTrack.dz(vertex.position())) < 17 &&
 				  //fabs(candTrack.dxy(vertex.position())) < 17 &&
 				  candTrack.pt() > 1;
-	bool is_lepton		= (fabs(lepVec.Pt() - trackVec.Pt()) < 1 &&
+	    bool is_lepton		= (fabs(lepVec.Pt() - trackVec.Pt()) < 1 &&
 				  leptondeltaR < 0.05 &&
 				  (lepton.isElectron() || lepton.isMuon()))
 				  ||
 				  (fabs(lepVec.Pt() - trackVec.Pt()) < 0.1 &&
 				  leptondeltaR < 0.05);
-	if(is_lepton) ++n_lepton;
-	if(goodTrack && !is_lepton) tracks.push_back(candTrack);
+	    if(is_lepton) ++n_lepton;
+	    if(goodTrack && !is_lepton) tracks.push_back(candTrack);
+	}
     }
     if(tracks.size() < 2 || n_lepton != 1) return;
     try{
@@ -681,6 +689,7 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
     _lVtxpos_df[_nL] = vtx.degreesOfFreedom();
     _lVtxpos_chi2[_nL] = vtx.totalChiSquared();
     _lVtxpos_ntracks[_nL] = tracks.size();
+    std::cout << "track size: " << tracks.size() << std::endl;
     } catch(...){}
 }
 

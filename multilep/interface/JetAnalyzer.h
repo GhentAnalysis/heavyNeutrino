@@ -39,7 +39,6 @@ class JetAnalyzer {
     bool    _jetIsLoose[nJets_max];
     bool    _jetIsTight[nJets_max];
     bool    _jetIsTightLepVeto[nJets_max];
-    unsigned _nJetswithDaughters;
     Int_t    _nDaughters;
     int      _jet_tag_for_daughters[nDaughters_max];
     int      _jet_daughter_pdgid[nDaughters_max];

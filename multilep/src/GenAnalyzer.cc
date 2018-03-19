@@ -48,6 +48,10 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_WMomPdg",               &_gen_WMomPdg,		"_gen_WMomPdg[_gen_nW]/i");
   outputTree->Branch("_gen_nWfromN",	           &_gen_nWfromN,		"_gen_nWfromN/b");
   outputTree->Branch("_gen_nN",		           &_gen_nN,			"_gen_nN/b");
+  outputTree->Branch("_gen_NPt",		   &_gen_NPt,			"_gen_NPt/D");
+  outputTree->Branch("_gen_NEta",		   &_gen_NEta,			"_gen_NEta/D");
+  outputTree->Branch("_gen_NPhi",		   &_gen_NPhi,			"_gen_NPhi/D");
+  outputTree->Branch("_gen_NE",		   	   &_gen_NE,			"_gen_NE/D");
   outputTree->Branch("_gen_nNdaughters",	   &_gen_nNdaughters,		"_gen_nNdaughters/b");
   outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	"_gen_Ndaughters_pdg[_gen_nNdaughters]/i");
   outputTree->Branch("_gen_nstatus23",		   &_gen_nstatus23,		"_gen_nstatus23/b");
@@ -58,9 +62,9 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_status23_fromW_pdg",    &_gen_status23_fromW_pdg, 	"_gen_status23_fromW_pdg[_gen_nstatus23_fromW]/i");
   outputTree->Branch("_gen_nq23",		   &_gen_nq23,			"_gen_nq23/b");
   outputTree->Branch("_gen_qPt",		   &_gen_qPt,			"_gen_qPt[_gen_nq23]/D");
-  outputTree->Branch("_gen_qEta",		   &_gen_qEta,			"_gen_qPt[_gen_nq23]/D");
-  outputTree->Branch("_gen_qPhi",		   &_gen_qPhi,			"_gen_qPt[_gen_nq23]/D");
-  outputTree->Branch("_gen_qE",		   	   &_gen_qE,			"_gen_qPt[_gen_nq23]/D");
+  outputTree->Branch("_gen_qEta",		   &_gen_qEta,			"_gen_qEta[_gen_nq23]/D");
+  outputTree->Branch("_gen_qPhi",		   &_gen_qPhi,			"_gen_qPhi[_gen_nq23]/D");
+  outputTree->Branch("_gen_qE",		   	   &_gen_qE,			"_gen_qE[_gen_nq23]/D");
   outputTree->Branch("_gen_nq1dtr",		   &_gen_nq1dtr,		"_gen_nq1dtr/b");
   outputTree->Branch("_gen_q1dtr_status",	   &_gen_q1dtr_status,		"_gen_q1dtr_status[_gen_nq1dtr]/I");
   outputTree->Branch("_gen_q1dtr_pdgid",	   &_gen_q1dtr_pdgid,		"_gen_q1dtr_pdgid[_gen_nq1dtr]/I");
@@ -80,7 +84,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
-
+    std::cout << "begin genanalyzer" << std::endl;
     if(!genParticles.isValid()) return;
 
     _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
@@ -159,6 +163,10 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 	// HNL
         if(abs(p.pdgId()) == 9900012 && p.isLastCopy()){
+	  _gen_NPt  = p.pt();
+	  _gen_NEta = p.eta();
+	  _gen_NPhi = p.phi();
+	  _gen_NE   = p.energy();
           ++_gen_nN;
         }
 	// daughters of HNL
@@ -276,6 +284,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
             }
         }
     }
+    std::cout << "end genanalyzer" << std::endl;
 }
 
 

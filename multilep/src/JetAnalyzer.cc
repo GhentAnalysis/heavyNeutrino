@@ -32,7 +32,6 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetIsLoose",                &_jetIsLoose,               "_jetIsLoose[_nJets]/i");
     outputTree->Branch("_jetIsTight",                &_jetIsTight,               "_jetIsTight[_nJets]/i");
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/i");
-    outputTree->Branch("_nJetswithDaughters",	     &_nJetswithDaughters,       "_nJetswithDaughters/b");
     outputTree->Branch("_nDaughters",		     &_nDaughters,	         "_nDaughters/I");
     outputTree->Branch("_jet_tag_for_daughters",     &_jet_tag_for_daughters,    "_jet_tag_for_daughters[_nDaughters]/I");
     outputTree->Branch("_jet_daughter_pdgid",	     &_jet_daughter_pdgid,       "_jet_daughter_pdgid[_nDaughters]/I");
@@ -43,39 +42,53 @@ void JetAnalyzer::beginJob(TTree* outputTree){
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
+    std::cout << "begin jetanalyzer" << std::endl;
     edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
     edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
 
     _nJets = 0;
-    _nJetswithDaughters = 0;
     _nDaughters = 0;
-
+    std::cout << "ok1" << std::endl;
     //for(auto jetSmeared = jetsSmeared->begin(); jetSmeared != jetsSmeared->end(); ++jetSmeared){
     for(auto& jetSmeared : *jetsSmeared){
+    std::cout << "ok1.5" << std::endl;
         if(_nJets == nJets_max) break;
 
+    std::cout << "ok1.55" << std::endl;
         //only store loose jets 
+    std::cout << "jetsmeared pt: " << jetSmeared.pt() << std::endl;
+    std::cout << "jetsmeared eta: " << jetSmeared.eta() << std::endl;
+    std::cout << "jetsmeared phi: " << jetSmeared.phi() << std::endl;
+    std::cout << "jetsmeared energy: " << jetSmeared.energy() << std::endl;
+    std::cout << "_nJets: " << _nJets << std::endl;
         _jetIsLoose[_nJets] = jetIsLoose(jetSmeared, multilepAnalyzer->is2017);
+    std::cout << "ok1.56" << std::endl;
         if(!_jetIsLoose[_nJets]) continue;
+    std::cout << "ok1.57" << std::endl;
         _jetIsTight[_nJets] = jetIsTight(jetSmeared, multilepAnalyzer->is2017);
+    std::cout << "ok1.58" << std::endl;
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jetSmeared, multilepAnalyzer->is2017);
+    std::cout << "ok1.6" << std::endl;
 
         jecUnc.setJetEta(jetSmeared.eta());
         jecUnc.setJetPt(jetSmeared.pt());
         double unc = jecUnc.getUncertainty(true);
+    std::cout << "ok1.7" << std::endl;
 
         auto jetSmearedUp = jetsSmearedUp->begin();
         for(auto j = jetsSmearedUp->begin() + 1; j != jetsSmearedUp->end(); ++j){
           if(reco::deltaR(jetSmeared, *j) < reco::deltaR(jetSmeared, *jetSmearedUp)) jetSmearedUp = j;
         }
+    std::cout << "ok1.8" << std::endl;
 
         auto jetSmearedDown = jetsSmearedDown->begin();
         for(auto j = jetsSmearedDown->begin() + 1; j != jetsSmearedDown->end(); ++j){
           if(reco::deltaR(jetSmeared, *j) < reco::deltaR(jetSmeared, *jetSmearedDown)) jetSmearedDown = j;
         }
 
+    std::cout << "ok2" << std::endl;
         double maxpT = std::max( (1+unc)*jetSmeared.pt() ,  std::max(jetSmearedUp->pt(), jetSmearedDown->pt() ) );
         if(maxpT <= 25) continue;
         //if(std::max((1+unc)*jetSmeared->pt(), std::max(jetSmearedUp->pt(), jetSmearedDown->pt())) < 25) continue;
@@ -98,20 +111,22 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //  _jetDeepCsv_cc[_nJets]            = jetSmeared->bDiscriminator("pfDeepCSVJetTags:probcc");
         _jetHadronFlavor[_nJets]          = jetSmeared.hadronFlavour();
 
-	if(jetSmeared.numberOfDaughters() > 0) ++_nJetswithDaughters;
+    std::cout << "ok3" << std::endl;
     
 	for(unsigned d = 0; d < jetSmeared.numberOfDaughters(); ++d){
-      	    const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jetSmeared.daughter(d);
-            _jet_tag_for_daughters[_nDaughters] = _nJets;
+      	    const pat::PackedCandidate* daughter  = (const pat::PackedCandidate*) jetSmeared.daughter(d);
+            _jet_tag_for_daughters[_nDaughters]   = _nJets;
             _jet_daughter_pdgid[_nDaughters] 	  = daughter->pdgId();
             _jet_daughter_pt[_nDaughters] 	  = daughter->pt();
             _jet_daughter_eta[_nDaughters] 	  = daughter->eta();
             _jet_daughter_phi[_nDaughters] 	  = daughter->phi();
-            _jet_daughter_energy[_nDaughters]   = daughter->energy();
+            _jet_daughter_energy[_nDaughters]     = daughter->energy();
             ++_nDaughters;
     	}
+    std::cout << "ok4" << std::endl;
         ++_nJets;
     }
+    std::cout << "end jetanalyzer" << std::endl;
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
     if(multilepAnalyzer->skim == "FR" and _nJets < 1) return false;
     return true;
@@ -119,7 +134,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
 bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
 
+    std::cout << "okisloose1" << std::endl;
     if(fabs(jet.eta()) <= 2.7){
+    	std::cout << "okislooseif1" << std::endl;
         if(jet.neutralHadronEnergyFraction() >=  0.99) return false;
         if(jet.neutralEmEnergyFraction() >= 0.99) return false;
         if(jet.chargedMultiplicity()+jet.neutralMultiplicity() <= 1) return false;
@@ -128,17 +145,22 @@ bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
             if(jet.chargedMultiplicity() <= 0) return false;
             if( !is2017 && ( jet.chargedEmEnergyFraction() >= 0.99 ) ) return false;
         }
+    	std::cout << "okislooseif1_2" << std::endl;
 
     } else if(fabs(jet.eta()) <= 3.0){
+    	std::cout << "okislooseif2" << std::endl;
         if(jet.neutralHadronEnergyFraction() >= 0.98) return false;
         if( !is2017 && (jet.neutralEmEnergyFraction() <= 0.01) ) return false;
         if( is2017 && (jet.neutralEmEnergyFraction() <= 0.02) ) return false;
         if(jet.neutralMultiplicity() <= 2) return false;
+    	std::cout << "okislooseif2_2" << std::endl;
 
     } else {
+    	std::cout << "okislooseif3" << std::endl;
         if(jet.neutralEmEnergyFraction() >= 0.90) return false;
         if(jet.neutralMultiplicity() <= 10) return false;
         if(is2017 && jet.neutralHadronEnergyFraction() <= 0.02) return false;
+    	std::cout << "okislooseif3_2" << std::endl;
     }
 
     return true;

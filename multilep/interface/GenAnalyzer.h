@@ -62,6 +62,10 @@ class GenAnalyzer {
 
     //Generator quarks
     unsigned _gen_nN;
+    double   _gen_NPt;
+    double   _gen_NEta;
+    double   _gen_NPhi;
+    double   _gen_NE;
     unsigned _gen_nNdaughters;
     unsigned _gen_Ndaughters_pdg[gen_n_max];
     unsigned _gen_nstatus23;

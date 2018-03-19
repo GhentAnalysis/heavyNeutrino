@@ -25,10 +25,10 @@ for dataset in datasets:
         dir        = os.getcwd()
         outputDir = outDir + "/"
         if 'pnfs' in dataset and 'user' in dataset: outputDir = outputDir + dataset.split('/')[-2] + '/' + dataset.split('/')[-1]      
-        #else: 
-	#    print 'outputDir: ' + outputDir
-	#    print 'dataset.split: ' + dataset.split('/')[1]
-	#    outputDir = outputDir + dataset.split('/')[1]
+        else: 
+	    print 'outputDir: ' + outputDir
+	    print 'dataset.split: ' + dataset.split('/')[1]
+	    outputDir = outputDir + dataset.split('/')[1]
         if 'ext' in dataset:
             outputDir = outputDir + "_"
             index = dataset.find('ext')
