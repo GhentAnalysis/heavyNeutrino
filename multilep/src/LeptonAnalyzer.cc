@@ -256,7 +256,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         //if(!tau.tauID("decayModeFinding")) continue;
         fillLeptonKinVars(tau);
         //fillLeptonGenVars(tau.genParticle());
-        //if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
         fillLeptonImpactParameters(tau, primaryVertex);
         if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
