@@ -40,8 +40,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
-    jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
+    //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -50,10 +50,12 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
+    /*
     //initialize jec txt files
     std::string dirtyHack = "dummy.txt";
     std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
     jec             = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
+    */
 }
 
 multilep::~multilep(){
@@ -64,7 +66,7 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
-    delete jec;
+    //delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -72,6 +74,7 @@ void multilep::beginJob(){
     //Initialize tree with event info
 
     outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
+    nVertices  = fs->make<TH1D>("nVertices", "Number of vertices", 120, 0, 120);
 
     //Set all branches of the outputTree
     outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
@@ -100,7 +103,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     triggerAnalyzer->reIndex = true;
     //update JEC 
     _runNb = (unsigned long) iRun.id().run();
-    jec->updateJEC(_runNb);
+    //jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------
@@ -109,7 +112,12 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
-    if(!vertices->size()) return;                                      //Don't consider 0 vertex events
+
+    //extract number of vertices 
+    _nVertex = vertices->size();
+    nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
+    if(_nVertex == 0) return;                                      //Don't consider 0 vertex events
+
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;
@@ -118,7 +126,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     //determine event number run number and luminosity block
     _eventNb   = (unsigned long) iEvent.id().event();
-    _nVertex   = vertices->size();
 
     //store calculated event info in root tree
     outputTree->Fill();

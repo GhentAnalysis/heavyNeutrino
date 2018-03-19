@@ -9,9 +9,11 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     electronsEffectiveAreas(multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath() ),
     muonsEffectiveAreas    (multilepAnalyzer->is2017 ? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
-    leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig, 0);     //SUSY
-    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, 1);     //TTH
-    leptonMvaComputertZqTTV = new LeptonMvaHelper(iConfig, 2);  //tZq/TTV
+    leptonMvaComputerSUSY16 = new LeptonMvaHelper(iConfig, 0, false);     //SUSY
+    leptonMvaComputerTTH16 = new LeptonMvaHelper(iConfig, 1, false);     //TTH
+    leptonMvaComputerSUSY17 = new LeptonMvaHelper(iConfig, 0, true);     //SUSY
+    leptonMvaComputerTTH17 = new LeptonMvaHelper(iConfig, 1, true);     //TTH
+    leptonMvaComputertZqTTV16 = new LeptonMvaHelper(iConfig, 2, false);  //tZq/TTV
     if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
     if(multilepAnalyzer->isData){
         jecLevel = "L2L3Residual";
@@ -21,9 +23,11 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
-    delete leptonMvaComputerSUSY;
-    delete leptonMvaComputerTTH;
-    delete leptonMvaComputertZqTTV;
+    delete leptonMvaComputerSUSY16;
+    delete leptonMvaComputerTTH16;
+    delete leptonMvaComputertZqTTV16;
+    delete leptonMvaComputerSUSY17;
+    delete leptonMvaComputerTTH17;
     if(!multilepAnalyzer->isData) delete genMatcher;
 }
 
@@ -52,9 +56,11 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElectronPassConvVeto",        &_lElectronPassConvVeto,        "_lElectronPassConvVeto[_nLight]/O");
     outputTree->Branch("_lElectronChargeConst",         &_lElectronChargeConst,         "_lElectronChargeConst[_nLight]/O");
     outputTree->Branch("_lElectronMissingHits",         &_lElectronMissingHits,         "_lElectronMissingHits[_nLight]/i");
-    outputTree->Branch("_leptonMvaSUSY",                &_leptonMvaSUSY,                "_leptonMvaSUSY[_nLight]/D");
-    outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
-    outputTree->Branch("_leptonMvatZqTTV",              &_leptonMvatZqTTV,              "_leptonMvatZqTTV[_nLight]/D");
+    outputTree->Branch("_leptonMvaSUSY16",              &_leptonMvaSUSY16,              "_leptonMvaSUSY16[_nLight]/D");
+    outputTree->Branch("_leptonMvaTTH16",               &_leptonMvaTTH16,               "_leptonMvaTTH16[_nLight]/D");
+    outputTree->Branch("_leptonMvaSUSY17",              &_leptonMvaSUSY17,              "_leptonMvaSUSY17[_nLight]/D");
+    outputTree->Branch("_leptonMvaTTH17",               &_leptonMvaTTH17,               "_leptonMvaTTH17[_nLight]/D");
+    outputTree->Branch("_leptonMvatZqTTV16",            &_leptonMvatZqTTV16,            "_leptonMvatZqTTV16[_nLight]/D");
     outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nLight]/O");
     outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nLight]/O");
     outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nLight]/O");
@@ -85,7 +91,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauIsoMVAPWnewDMwLT",          &_tauIsoMVAPWnewDMwLT,          "_tauIsoMVAPWnewDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D"); 
     outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
-    outputTree->Branch("_relIso0p4Mu",                  &_relIso0p4Mu,                  "_relIso0p4Mu[_nMu]/D");
+    outputTree->Branch("_relIso0p4",                    &_relIso0p4,                    "_relIso0p4[_nLight]/D");
     outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
     outputTree->Branch("_miniIsoCharged",               &_miniIsoCharged,               "_miniIsoCharged[_nLight]/D");
     outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
@@ -154,7 +160,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
 
         _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
-        _relIso0p4Mu[_nL]    = getRelIso04(mu);                                                     
+        _relIso0p4[_nL]      = getRelIso04(mu, *rho);                                                     
         _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false);
         _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
@@ -167,9 +173,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lPOGMedium[_nL]     = mu.isMediumMuon();
         _lPOGTight[_nL]      = mu.isTightMuon(primaryVertex);
 
-        _leptonMvaSUSY[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY);
-        _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
-        _leptonMvatZqTTV[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV);
+        _leptonMvaSUSY16[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY16);
+        _leptonMvaTTH16[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH16);
+        _leptonMvaSUSY17[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY17);
+        _leptonMvaTTH17[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH17);
+        _leptonMvatZqTTV16[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV16);
 
         _lEwkLoose[_nL]      = isEwkLoose(mu);
         _lEwkFO[_nL]         = isEwkFO(mu);
@@ -200,6 +208,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lEtaSC[_nL]           = ele->superCluster()->eta();
 
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
+        _relIso0p4[_nL]                 = getRelIso(*ele, packedCands, 0.4, *rho, false);
         _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);
         _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
         _lElectronMva[_nL]              = (*electronsMva)[electronRef];
@@ -224,9 +233,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lPOGMediumWOIso[_nL]           = isMediumCutBasedElectronWithoutIsolation(&*ele);
         _lPOGTightWOIso[_nL]            = isTightCutBasedElectronWithoutIsolation(&*ele);
 
-        _leptonMvaSUSY[_nL]             = leptonMvaVal(*ele, leptonMvaComputerSUSY);
-        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
-        _leptonMvatZqTTV[_nL]           = leptonMvaVal(*ele, leptonMvaComputertZqTTV);
+        _leptonMvaSUSY16[_nL]           = leptonMvaVal(*ele, leptonMvaComputerSUSY16);
+        _leptonMvaTTH16[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTTH16);
+        _leptonMvaSUSY17[_nL]           = leptonMvaVal(*ele, leptonMvaComputerSUSY17);
+        _leptonMvaTTH17[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTTH17);
+        _leptonMvatZqTTV16[_nL]           = leptonMvaVal(*ele, leptonMvaComputertZqTTV16);
 
         _lEwkLoose[_nL]                 = isEwkLoose(*ele);
         _lEwkFO[_nL]                    = isEwkFO(*ele);
@@ -370,8 +381,9 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     //Make skimmed "close jet" collection
     std::vector<pat::Jet> selectedJetsAll;
     for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        double jetPt = jet->pt()*multilepAnalyzer->jec->jetCorrection(jet->correctedP4("Uncorrected").Pt(), jet->correctedP4("Uncorrected").Eta(), rho, jet->jetArea(), jecLevel); 
-        if( jetPt > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+        //double jetPt = jet->pt()*multilepAnalyzer->jec->jetCorrection(jet->correctedP4("Uncorrected").Pt(), jet->correctedP4("Uncorrected").Eta(), rho, jet->jetArea(), jecLevel); 
+        //if( jetPt > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+        if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
     }
     // Find closest selected jet
     unsigned closestIndex = 0;
@@ -387,19 +399,19 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
     } else {
+        /*
         double totalJEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), jecLevel);
         double l1JEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), "L1FastJet");
-        /*
+        TLorentzVector l1Jet;
+        l1Jet.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt()*l1JEC, jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E()*l1JEC);
+        TLorentzVector l(lepton.px(), lepton.py(), lepton.pz(), lepton.energy());
+        TLorentzVector lepAwareJet = (l1Jet - l)*JEC + l;
+        float JEC = totalJEC/l1JEC;
+        */
         auto  l1Jet       = jet.correctedP4("L1FastJet");
         float JEC         = jet.p4().E()/l1Jet.E();
         auto  l           = lepton.p4();
         auto  lepAwareJet = (l1Jet - l)*JEC + l;
-        */
-        TLorentzVector l1Jet;
-        l1Jet.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt()*l1JEC, jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E()*l1JEC);
-        float JEC = totalJEC/l1JEC;
-        TLorentzVector l(lepton.px(), lepton.py(), lepton.pz(), lepton.energy());
-        TLorentzVector lepAwareJet = (l1Jet - l)*JEC + l;
 
 
         TLorentzVector lV(l.Px(), l.Py(), l.Pz(), l.E());

@@ -20,7 +20,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
   if(multilepAnalyzer->isData) return;
   hCounter   = fs->make<TH1D>("hCounter",   "Events counter",    1,  0,1);
   lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",       110,0,110);
-  nTrue      = fs->make<TH1D>("nTrue",      "nTrueInteractions", 100,0,100);
+  nTrueInteractions = fs->make<TH1D>("nTrueInteractions",  "nTrueInteractions", 120,0,120);
   outputTree->Branch("_nTrueInt",      &_nTrueInt,      "_nTrueInt/F");
   outputTree->Branch("_weight",        &_weight,        "_weight/D");
   outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
@@ -39,7 +39,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
   _nTrueInt = pileUpInfo->begin()->getTrueNumInteractions(); // getTrueNumInteractions is the same for all bunch crossings
   _weight   = genEventInfo->weight();
   hCounter->Fill(0.5,    _weight);
-  nTrue->Fill(_nTrueInt, _weight);
+  nTrueInteractions->Fill(_nTrueInt, _weight);
 
   _lheHTIncoming = 0.;
   _ctauHN = 0.;
@@ -74,3 +74,9 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
   }
 }
+
+double LheAnalyzer::getWeight() const{
+    if(multilepAnalyzer->isData) return 1.;
+    return _weight;
+}
+

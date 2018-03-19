@@ -11,8 +11,8 @@ class multilep;
 class SUSYMassAnalyzer;
 
 class LheAnalyzer {
-  //friend classes
-  friend SUSYMassAnalyzer;
+  public:
+    double getWeight() const;
   private:
     float  _nTrueInt;
     double _weight;
@@ -21,7 +21,7 @@ class LheAnalyzer {
 
     TH1D*  hCounter;
     TH1D*  lheCounter;
-    TH1D*  nTrue;
+    TH1D*  nTrueInteractions;
 
     unsigned _nLheWeights;
     double _lheWeight[110];
