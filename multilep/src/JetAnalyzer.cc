@@ -36,19 +36,55 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/i");
 
     outputTree->Branch("_met",                          &_met,                          "_met/D");
-    outputTree->Branch("_rawmet",                       &_rawmet,                       "_rawmet/D");
     outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
     outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
+    outputTree->Branch("_metJetResDown",                &_metJetResDown,                "_metJetResDown/D");
+    outputTree->Branch("_metJetResUp",                  &_metJetResUp,                  "_metJetResUp/D");
     outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
     outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
 
     outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
-    outputTree->Branch("_rawmetPhi",                    &_rawmetPhi,                    "_rawmetPhi/D");
     outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
     outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
+    outputTree->Branch("_metPhiJetResDown",             &_metPhiJetResDown,             "_metPhiJetResDown/D");
+    outputTree->Branch("_metPhiJetResUp",               &_metPhiJetResUp,               "_metPhiJetResUp/D");
     outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
     outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
+
+    outputTree->Branch("_rawmetPhi",                    &_rawmetPhi,                    "_rawmetPhi/D");
+    outputTree->Branch("_rawmetPhiJECDown",             &_rawmetPhiJECDown,             "_rawmetPhiJECDown/D");
+    outputTree->Branch("_rawmetPhiJECUp",               &_rawmetPhiJECUp,               "_rawmetPhiJECUp/D");
+    outputTree->Branch("_rawmetPhiJetResDown",          &_rawmetPhiJetResDown,          "_rawmetPhiJetResDown/D");
+    outputTree->Branch("_rawmetPhiJetResUp",            &_rawmetPhiJetResUp,            "_rawmetPhiJetResUp/D");
+    outputTree->Branch("_rawmetPhiUnclDown",            &_rawmetPhiUnclDown,            "_rawmetPhiUnclDown/D");
+    outputTree->Branch("_rawmetPhiUnclUp",              &_rawmetPhiUnclUp,              "_rawmetPhiUnclUp/D");
+
+    outputTree->Branch("_rawmet",                       &_rawmet,                       "_rawmet/D");
+    outputTree->Branch("_rawmetJECDown",                &_rawmetJECDown,                "_rawmetJECDown/D");
+    outputTree->Branch("_rawmetJECUp",                  &_rawmetJECUp,                  "_rawmetJECUp/D");
+    outputTree->Branch("_rawmetJetResDown",             &_rawmetJetResDown,             "_rawmetJetResDown/D");
+    outputTree->Branch("_rawmetJetResUp",               &_rawmetJetResUp,               "_rawmetJetResUp/D");
+    outputTree->Branch("_rawmetUnclDown",               &_rawmetUnclDown,               "_rawmetUnclDown/D");
+    outputTree->Branch("_rawmetUnclUp",                 &_rawmetUnclUp,                 "_rawmetUnclUp/D");
+    
+    outputTree->Branch("_met_sm",                       &_met_sm,                       "_met_sm/D");
+    outputTree->Branch("_metJECDown_sm",                &_metJECDown_sm,                "_metJECDown_sm/D");
+    outputTree->Branch("_metJECUp_sm",                  &_metJECUp_sm,                  "_metJECUp_sm/D");
+    outputTree->Branch("_metJetResDown_sm",             &_metJetResDown_sm,             "_metJetResDown_sm/D");
+    outputTree->Branch("_metJetResUp_sm",               &_metJetResUp_sm,               "_metJetResUp_sm/D");
+    outputTree->Branch("_metUnclDown_sm",               &_metUnclDown_sm,               "_metUnclDown_sm/D");
+    outputTree->Branch("_metUnclUp_sm",                 &_metUnclUp_sm,                 "_metUnclUp_sm/D");
+
+    outputTree->Branch("_metPhi_sm",                    &_metPhi_sm,                    "_metPhi_sm/D");
+    outputTree->Branch("_metPhiJECDown_sm",             &_metPhiJECDown_sm,             "_metPhiJECDown_sm/D");
+    outputTree->Branch("_metPhiJECUp_sm",               &_metPhiJECUp_sm,               "_metPhiJECUp_sm/D");
+    outputTree->Branch("_metPhiJetResDown_sm",          &_metPhiJetResDown_sm,          "_metPhiJetResDown_sm/D");
+    outputTree->Branch("_metPhiJetResUp_sm",            &_metPhiJetResUp_sm,            "_metPhiJetResUp_sm/D");
+    outputTree->Branch("_metPhiUnclDown_sm",            &_metPhiUnclDown_sm,            "_metPhiUnclDown_sm/D");
+    outputTree->Branch("_metPhiUnclUp_sm",              &_metPhiUnclUp_sm,              "_metPhiUnclUp_sm/D");
+
+
 
 }
 
@@ -109,28 +145,70 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
-    //_met             = met.pt();
-    //_metPhi          = met.phi();
+    _met             = met.pt();
+    _metPhi          = met.phi();
     /*
     std::cout << "~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "met = " << _met << std::endl;
     std::cout << "txt corrected met = " << multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first << std::endl;
     */
-    _met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
-    _metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
+    //_met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
+    //_metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
 
     //raw met values
     _rawmet= met.uncorPt();
+    _rawmetJECDown   = met.shiftedPt(pat::MET::JetEnDown, pat::MET::Raw);
+    _rawmetJECUp     = met.shiftedPt(pat::MET::JetEnUp, pat::MET::Raw);
+    _rawmetJetResDown= met.shiftedPt(pat::MET::JetResDown, pat::MET::Raw);
+    _rawmetJetResUp  = met.shiftedPt(pat::MET::JetResUp, pat::MET::Raw);
+    _rawmetUnclDown  = met.shiftedPt(pat::MET::UnclusteredEnDown, pat::MET::Raw);
+    _rawmetUnclUp    = met.shiftedPt(pat::MET::UnclusteredEnUp, pat::MET::Raw);
+
     _rawmetPhi= met.uncorPhi();
+    _rawmetPhiJECDown   = met.shiftedPhi(pat::MET::JetEnDown, pat::MET::Raw);
+    _rawmetPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp, pat::MET::Raw);
+    _rawmetPhiJetResDown= met.shiftedPhi(pat::MET::JetResDown, pat::MET::Raw);
+    _rawmetPhiJetResUp  = met.shiftedPhi(pat::MET::JetResUp, pat::MET::Raw);
+    _rawmetPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown, pat::MET::Raw);
+    _rawmetPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp, pat::MET::Raw);
     //met values with uncertainties varied up and down
     _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
     _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);
+    _metJetResDown   = met.shiftedPt(pat::MET::JetResDown);
+    _metJetResUp     = met.shiftedPt(pat::MET::JetResUp);
     _metUnclDown     = met.shiftedPt(pat::MET::UnclusteredEnDown);
     _metUnclUp       = met.shiftedPt(pat::MET::UnclusteredEnUp);
+
     _metPhiJECDown   = met.shiftedPhi(pat::MET::JetEnDown);
     _metPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp);
-    _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
+    _metPhiJetResDown= met.shiftedPhi(pat::MET::JetResDown);
+    _metPhiJetResUp  = met.shiftedPhi(pat::MET::JetResUp);
     _metPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+    _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
+    //smeared met values
+    _met_sm          = met.corPt(pat::MET::Type1Smear);
+    _metJECDown_sm   = met.shiftedPt(pat::MET::JetEnDown, pat::MET::Type1Smear);
+    _metJECUp_sm     = met.shiftedPt(pat::MET::JetEnUp, pat::MET::Type1Smear);
+    _metJetResDown_sm= met.shiftedPt(pat::MET::JetResDown, pat::MET::Type1Smear);
+    _metJetResUp_sm  = met.shiftedPt(pat::MET::JetResUp, pat::MET::Type1Smear);
+    _metUnclDown_sm  = met.shiftedPt(pat::MET::UnclusteredEnDown, pat::MET::Type1Smear);
+    _metUnclUp_sm    = met.shiftedPt(pat::MET::UnclusteredEnUp, pat::MET::Type1Smear);
+
+    _metPhi_sm          = met.corPhi(pat::MET::Type1Smear);
+    _metPhiJECDown_sm   = met.shiftedPhi(pat::MET::JetEnDown, pat::MET::Type1Smear);
+    _metPhiJECUp_sm     = met.shiftedPhi(pat::MET::JetEnUp, pat::MET::Type1Smear);
+    _metPhiJetResDown_sm= met.shiftedPhi(pat::MET::JetResDown, pat::MET::Type1Smear);
+    _metPhiJetResUp_sm  = met.shiftedPhi(pat::MET::JetResUp, pat::MET::Type1Smear);
+    _metPhiUnclDown_sm  = met.shiftedPhi(pat::MET::UnclusteredEnDown, pat::MET::Type1Smear);
+    _metPhiUnclUp_sm    = met.shiftedPhi(pat::MET::UnclusteredEnUp, pat::MET::Type1Smear);
+
+    /*
+    std::cout << "~~~~~~~~~~~~~~~~~" << std::endl;
+    std::cout << "met = " << _met << " " << _metJECUp << " " << _metJECDown << " " << _metJetResUp << " " << _metJetResDown  << " " << _metUnclUp << " " << _metUnclDown << std::endl;
+    std::cout << "raw met = " << _rawmet << " " << _rawmetJECUp << " " << _rawmetJECDown  << " " << _rawmetJetResUp << " " << _rawmetJetResDown << " " << _rawmetUnclUp << " " << _rawmetUnclDown << std::endl;
+    std::cout << "smeared met = " << _met_sm << " " << _metJECUp_sm << " " << _metJECDown_sm  << " " << _metJetResUp_sm << " " << _metJetResDown_sm  << " " << _metUnclUp_sm << " " << _metUnclDown_sm << std::endl;
+    */
+    //std::cout << "txt corrected met = " << multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first << std::endl;
     //significance of met
     _metSignificance = met.metSignificance(); 
 

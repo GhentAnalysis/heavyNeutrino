@@ -37,18 +37,54 @@ class JetAnalyzer {
     bool    _jetIsTightLepVeto[nJets_max];
 
     double        _met;                                                                              //met kinematics
-    double        _metPhi;
-    double        _rawmet;
-    double        _rawmetPhi;
     double        _metJECDown;
-    double        _metPhiJECDown;
     double        _metJECUp;
-    double        _metPhiJECUp;
+    double        _metJetResDown;
+    double        _metJetResUp;
     double        _metUnclDown;
-    double        _metPhiUnclDown;
     double        _metUnclUp;
+
+    double        _met_sm;                                                                              //met kinematics
+    double        _metJECDown_sm;
+    double        _metJECUp_sm;
+    double        _metJetResDown_sm;
+    double        _metJetResUp_sm;
+    double        _metUnclDown_sm;
+    double        _metUnclUp_sm;
+
+    double        _metPhi;
+    double        _metPhiJECDown;
+    double        _metPhiJECUp;
+    double        _metPhiJetResDown;
+    double        _metPhiJetResUp;
+    double        _metPhiUnclDown;
     double        _metPhiUnclUp;
+
+    double        _metPhi_sm;
+    double        _metPhiJECDown_sm;
+    double        _metPhiJECUp_sm;
+    double        _metPhiJetResDown_sm;
+    double        _metPhiJetResUp_sm;
+    double        _metPhiUnclDown_sm;
+    double        _metPhiUnclUp_sm;
+
     double        _metSignificance;
+
+    double        _rawmet;
+    double        _rawmetJECDown;
+    double        _rawmetJECUp;
+    double        _rawmetJetResDown;
+    double        _rawmetJetResUp;
+    double        _rawmetUnclDown;
+    double        _rawmetUnclUp;
+
+    double        _rawmetPhi;
+    double        _rawmetPhiJECDown;
+    double        _rawmetPhiJECUp;
+    double        _rawmetPhiJetResDown;
+    double        _rawmetPhiJetResUp;
+    double        _rawmetPhiUnclDown;
+    double        _rawmetPhiUnclUp;
 
     //correction level for JEC
     std::string jecLevel;

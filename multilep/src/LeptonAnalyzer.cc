@@ -156,10 +156,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(_dz[_nL]) > 0.1)                       continue;
         fillLeptonKinVars(mu);
         //fillLeptonGenVars(mu.genParticle());
+        _lFlavor[_nL]        = 1;
         if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
 
-        _lFlavor[_nL]        = 1;
         _lMuonSegComp[_nL]    = mu.segmentCompatibility();
         _lMuonTrackPt[_nL]    = mu.innerTrack()->pt();
         _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
@@ -212,10 +212,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
         fillLeptonKinVars(*ele);
         //fillLeptonGenVars(ele->genParticle());
+        _lFlavor[_nL]          = 0;
+        _lElectronPassConvVeto[_nL]     = ele->passConversionVeto();
         if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
-        _lFlavor[_nL]          = 0;
         _lEtaSC[_nL]           = ele->superCluster()->eta();
 
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
@@ -233,7 +234,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lElectronMvaFall17Iso[_nL]     = (*electronMvaFall17Iso)[electronRef];
         _lElectronMvaFall17NoIso[_nL]   = (*electronMvaFall17NoIso)[electronRef];
         _lElectronPassEmu[_nL]          = passTriggerEmulationDoubleEG(&*ele);                             // Keep in mind, this trigger emulation is for 2016 DoubleEG, the SingleEG trigger emulation is different
-        _lElectronPassConvVeto[_nL]     = ele->passConversionVeto();
         _lElectronChargeConst[_nL]      = ele->isGsfCtfScPixChargeConsistent();
         _lElectronMissingHits[_nL]      = ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
 
@@ -273,11 +273,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         //if(!tau.tauID("decayModeFinding")) continue;
         fillLeptonKinVars(tau);
         //fillLeptonGenVars(tau.genParticle());
+        _lFlavor[_nL]  = 2;
         if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
         fillLeptonImpactParameters(tau, primaryVertex);
         if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
-        _lFlavor[_nL]  = 2;
         _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
         _tauEleVeto[_nL] = tau.tauID("againstElectronLooseMVA6");
 
@@ -333,7 +333,9 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
     _lPartonPt[_nL] = genMatcher->getPartonPt();
     _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
-    std::cout << "info about reco lepton: (pt/eta/phi/isPrompt) " << _lPt[_nL] << " " << _lEta[_nL] << " " << _lPhi[_nL] << " " << _lIsPrompt[_nL] << std::endl; 
+    std::cout << "info about reco lepton: (pt/eta/phi/isPrompt) " << _lPt[_nL] << " " << _lEta[_nL] << " " << _lPhi[_nL] << " " << _lFlavor[_nL] << " " << _lIsPrompt[_nL] << " " << _lMatchPdgId[_nL] << std::endl; 
+    if(_lFlavor[_nL] == 0)
+        std::cout << "additional info for electron: " << _lElectronPassConvVeto[_nL] << std::endl; 
 }
 
 
