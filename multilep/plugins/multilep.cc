@@ -37,8 +37,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     recoResultsToken(                 consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
-    //badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
-    //badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
+    badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
+    badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
@@ -118,7 +118,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
     if(_nVertex == 0) return;                                      //Don't consider 0 vertex events
 
-    std::cout << "new event" << std::endl;
+    //std::cout << "new event: " << _runNb << " " << _lumiBlock << " " << _eventNb << std::endl;
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     //if(!photonAnalyzer->analyze(iEvent)) return;
