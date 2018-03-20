@@ -144,20 +144,21 @@ bool TriggerAnalyzer::passCombinedFlagAND(TString combinedFlag){
 }
 
 void TriggerAnalyzer::analyze(const edm::Event& iEvent){
-  edm::Handle<edm::TriggerResults> recoResults;       iEvent.getByToken(multilepAnalyzer->recoResultsToken,      recoResults);
-  edm::Handle<edm::TriggerResults> triggerResults;    iEvent.getByToken(multilepAnalyzer->triggerToken,          triggerResults);
-  edm::Handle<bool> badPFMuonFilter;                  
-  edm::Handle<bool> badChCandFilter;                  
-  if(recoResults.failedToGet()){
-      std::cout << "failed to  get recoResults" << std::endl;
-  }
+  edm::Handle<edm::TriggerResults> recoResultsPrimary;   iEvent.getByToken(multilepAnalyzer->recoResultsPrimaryToken,   recoResultsPrimary);
+  edm::Handle<edm::TriggerResults> recoResultsSecondary; iEvent.getByToken(multilepAnalyzer->recoResultsSecondaryToken, recoResultsSecondary);
+  edm::Handle<edm::TriggerResults> triggerResults;       iEvent.getByToken(multilepAnalyzer->triggerToken,              triggerResults);
+  edm::Handle<bool> badPFMuonFilter;
+  edm::Handle<bool> badChCandFilter;
+
   if(!multilepAnalyzer->is2017){
     iEvent.getByToken(multilepAnalyzer->badPFMuonFilterToken,  badPFMuonFilter);
     iEvent.getByToken(multilepAnalyzer->badChCandFilterToken,  badChCandFilter);
   }
+
   // Get all flags
-  getResults(iEvent, triggerResults, triggersToSave, true, false);
-  getResults(iEvent, recoResults,    filtersToSave,  false, true);
+  getResults(iEvent, triggerResults,                                                               triggersToSave, true);
+  getResults(iEvent, recoResultsPrimary.failedToGet() ? recoResultsSecondary : recoResultsPrimary, filtersToSave,  false);
+
   reIndex = false;
  
   // These met filters are to be applied on-the-fly in 2016 samples
@@ -202,13 +203,13 @@ void TriggerAnalyzer::indexFlags(const edm::Event& iEvent, edm::Handle<edm::Trig
 /*
  * Saving triggers and prescales
  */
-void TriggerAnalyzer::getResults(const edm::Event& iEvent, edm::Handle<edm::TriggerResults>& results, std::vector<TString>& toSave, const bool savePrescales, const bool metFilter){
+void TriggerAnalyzer::getResults(const edm::Event& iEvent, edm::Handle<edm::TriggerResults>& results, std::vector<TString>& toSave, const bool savePrescales){
   if(results.failedToGet()) return;
 
   if(reIndex) indexFlags(iEvent, results, toSave);
 
   for(TString t : toSave){
-    if(index[t] == -1) flag[t] = (metFilter ? true : false); 
+    if(index[t] == -1) flag[t] = false; 
     else               flag[t] = results->accept(index[t]);
   }
 
