@@ -67,7 +67,7 @@ class LeptonAnalyzer {
     int _lCharge[nL_max];
 
     double _relIso[nL_max];                                                                          //lepton isolation variables
-    double _relIso0p4Mu[nL_max];                                                                          //lepton isolation variables
+    double _relIso0p4[nL_max];                                                                          //lepton isolation variables
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];                                                              
     
@@ -145,9 +145,11 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
 
-    double _leptonMvaSUSY[nL_max];                                                                       //lepton MVA used in ewkino analysis
-    double _leptonMvaTTH[nL_max];
-    double _leptonMvatZqTTV[nL_max];
+    double _leptonMvaSUSY16[nL_max];                                                                       //lepton MVA used in ewkino analysis
+    double _leptonMvaTTH16[nL_max];
+    double _leptonMvaSUSY17[nL_max];                                                                       //lepton MVA used in ewkino analysis
+    double _leptonMvaTTH17[nL_max];
+    double _leptonMvatZqTTV16[nL_max];
 
     bool _lHNLoose[nL_max];                                                                          //analysis specific lepton selection decisions
     bool _lHNFO[nL_max];
@@ -185,7 +187,7 @@ class LeptonAnalyzer {
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
-    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&);
+    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
     void fillLeptonTrackVariables(const reco::Candidate&, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&);
     void fillNutauTrackVariables(const reco::GenParticle&, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&);
     void fillLeptonVtxVariables(const reco::Candidate&, edm::Handle<std::vector<pat::PackedCandidate>>&, std::vector<reco::Track>&);
@@ -194,7 +196,7 @@ class LeptonAnalyzer {
 
     double getRelIso03(const pat::Muon&, const double) const;
     double getRelIso03(const pat::Electron&, const double) const;
-    double getRelIso04(const pat::Muon& mu) const;
+    double getRelIso04(const pat::Muon& mu, const double) const;
     double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged = false) const;
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged = false) const;
 
@@ -233,12 +235,17 @@ class LeptonAnalyzer {
     double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
     
     //for lepton MVA calculation
-    LeptonMvaHelper* leptonMvaComputerSUSY;
-    LeptonMvaHelper* leptonMvaComputerTTH;
-    LeptonMvaHelper* leptonMvaComputertZqTTV;
+    LeptonMvaHelper* leptonMvaComputerSUSY16;
+    LeptonMvaHelper* leptonMvaComputerTTH16;
+    LeptonMvaHelper* leptonMvaComputerSUSY17;
+    LeptonMvaHelper* leptonMvaComputerTTH17;
+    LeptonMvaHelper* leptonMvaComputertZqTTV16;
 
     //for generator matching
     GenMatching* genMatcher;
+
+    //for JEC from txt
+    std::string jecLevel;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

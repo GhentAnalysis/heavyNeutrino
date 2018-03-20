@@ -15,6 +15,8 @@ inputFile	= '/store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUET
 #inputFile       = "root://cmsxrootd.fnal.gov///store/data/Run2017C/MuonEG/MINIAOD/PromptReco-v3/000/300/780/00000/86494C82-EA7E-E711-ACCC-02163E01441B.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_samesign_M-5_V-0.01_mu_NLO/heavyNeutrino_11.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/prompt/HeavyNeutrino_lljj_M-5_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_10.root'
+#inputFile       = 'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2016G/DoubleEG/MINIAOD/03Feb2017-v1/100000/4E06245C-DFEA-E611-8A9B-0CC47AD99044.root'
+#inputFile       = 'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2017F/DoubleMuon/MINIAOD/17Nov2017-v1/70000/E4B6F7A1-7BDE-E711-8C42-02163E019DE8.root'
 #inputFile       = 'file:///pnfs/iihe/cms/ph/sc4/store/mc/RunIISummer16MiniAODv2/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/06C6936D-7EBC-E611-B990-0025905A60B4.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
@@ -55,9 +57,9 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_ReReco_EOY17_v2'   
-elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v12'
-elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016LegacyRepro_v4'
+if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_v6'   
+elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v13'
+elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
 #
@@ -90,6 +92,9 @@ for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
 
+process.BadPFMuonFilter.filter = cms.bool(False)
+process.BadChargedCandidateFilter.filter = cms.bool(False)
+
 #clean 2016 data met from spurious muons and ECAL slew rate
 metCollection = "slimmedMETs"
 if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean"
@@ -117,12 +122,17 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   electronsCutBasedLoose        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
   electronsCutBasedMedium       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
   electronsCutBasedTight        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
-  leptonMvaWeightsMu            = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_BDTG.weights.xml"),
-  leptonMvaWeightsEle           = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_BDTG.weights.xml"),
-  leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH_BDTG.weights.xml"),
-  leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH_BDTG.weights.xml"),   
-  leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/ele_leptonMva_tZqTTV.weights.xml"),
-  leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_leptonMva_tZqTTV.weights.xml"),
+  leptonMvaWeightsMuSUSY16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml"),
+  leptonMvaWeightsEleSUSY16     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml"),
+  leptonMvaWeightsMuttH16       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml"),
+  leptonMvaWeightsElettH16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH16_BDTG.weights.xml"),   
+  leptonMvaWeightsMuSUSY17      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml"),
+  leptonMvaWeightsEleSUSY17     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml"),
+  leptonMvaWeightsMuttH17       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml"),
+  leptonMvaWeightsElettH17      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml"),   
+  leptonMvaWeightsEletZqTTV16   = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/ele_leptonMva_tZqTTV16.weights.xml"),
+  leptonMvaWeightsMutZqTTV16    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_leptonMva_tZqTTV16.weights.xml"),
+  #JECtxtPath                    = cms.FileInPath("heavyNeutrino/multilep/data/JEC/dummy.txt"), 
   photons                       = cms.InputTag("slimmedPhotons"),
   photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfChargedHadrons_90percentBased.txt'),
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased.txt'),
@@ -140,9 +150,9 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag(metCollection),
   jets                          = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
-  jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
-  jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
-  jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
+  #jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
+  #jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
+  #jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
   jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt"),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),
@@ -152,7 +162,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
-  isSUSY                        = cms.untracked.bool(isSUSY)
+  isSUSY                        = cms.untracked.bool(isSUSY),
+
 )
 
 if isData:

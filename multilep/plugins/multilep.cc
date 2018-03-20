@@ -33,9 +33,6 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     rhoToken(                         consumes<double>(                           iConfig.getParameter<edm::InputTag>("rho"))),
     metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
     jetToken(                         consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
-    jetSmearedToken(                  consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
-    jetSmearedUpToken(                consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
-    jetSmearedDownToken(              consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
     recoResultsToken(                 consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
@@ -45,6 +42,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
+    //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -53,6 +51,12 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
+    /*
+    //initialize jec txt files
+    std::string dirtyHack = "dummy.txt";
+    std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
+    jec             = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
+    */
 }
 
 multilep::~multilep(){
@@ -63,6 +67,7 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
+    //delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -70,26 +75,13 @@ void multilep::beginJob(){
     //Initialize tree with event info
 
     outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
+    nVertices  = fs->make<TH1D>("nVertices", "Number of vertices", 120, 0, 120);
 
     //Set all branches of the outputTree
     outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
     outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
-
-    outputTree->Branch("_met",                          &_met,                          "_met/D");
-    outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
-    outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
-    outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
-    outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
-
-    outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
-    outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
-    outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
-    outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
-    outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
-
-    outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
 
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
@@ -104,11 +96,15 @@ void multilep::beginJob(){
 // ------------ method called for each lumi block ---------
 void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
     if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
+    _lumiBlock = (unsigned long) iLumi.id().luminosityBlock();
 }
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     // HLT results could have different size/order in new run, so look up again de index positions
     triggerAnalyzer->reIndex = true;
+    //update JEC 
+    _runNb = (unsigned long) iRun.id().run();
+    //jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------
@@ -117,7 +113,12 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
-    if(!vertices->size()) return;                                      //Don't consider 0 vertex events
+
+    //extract number of vertices 
+    _nVertex = vertices->size();
+    nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
+    if(_nVertex == 0) return;                                      //Don't consider 0 vertex events
+
     if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;
@@ -125,27 +126,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     jetAnalyzer->analyze(iEvent);
 
     //determine event number run number and luminosity block
-    _runNb     = (unsigned long) iEvent.id().run();
-    _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
     _eventNb   = (unsigned long) iEvent.id().event();
-    _nVertex   = vertices->size();
-
-    //determine the met of the event and its uncertainties
-    //nominal MET value
-    const pat::MET& met = (*mets).front();
-    _met             = met.pt();
-    _metPhi          = met.phi();
-    //met values with uncertainties varied up and down
-    _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
-    _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);
-    _metUnclDown     = met.shiftedPt(pat::MET::UnclusteredEnDown);
-    _metUnclUp       = met.shiftedPt(pat::MET::UnclusteredEnUp);
-    _metPhiJECDown   = met.shiftedPhi(pat::MET::JetEnDown);
-    _metPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp);
-    _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
-    _metPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown);
-    //significance of met
-    _metSignificance = met.metSignificance();
 
     //store calculated event info in root tree
     outputTree->Fill();
