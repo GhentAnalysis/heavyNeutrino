@@ -91,7 +91,7 @@ jobsToResubmit = []
 raiseMemoryLimit = False
 for job in jobs:
   if job['Exit code'] in ['50660']: raiseMemoryLimit = True
-  if job['Exit code'] in ['-1','83','60311','60318','8001','8002','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662', '8010', '50665', '255']: jobsToResubmit.append(job['Job'])
+  if job['Exit code'] in ['-1','83','60311','60318','8001','8002','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662', '8010', '50665', '255', '127']: jobsToResubmit.append(job['Job'])
   if job['State'] == 'failed' and job['Exit code'] == '0':                                  jobsToResubmit.append(job['Job'])
   if job['State'] == 'failed' and job['Exit code'] == '-1':                                 jobsToResubmit.append(job['Job'])
   if 'failed' in job['Exit code']:                                                          jobsToResubmit.append(job['Job'])
