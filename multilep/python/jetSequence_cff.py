@@ -30,13 +30,13 @@ def addJetSequence(process, isData, is2017):
        #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
       ]
      )
-  else: 
+  else:
      updateJetCollection(
        process,
        jetSource = cms.InputTag('slimmedJets'),
        labelName = 'UpdatedJEC',
        jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
-    ) 
+    )
 
   if os.environ['CMSSW_BASE'].count('CMSSW_9'):                                                                     # From CMSSW_9_X, the patAlgosToolsTask contains the whole updateJetCollection sequence
     process.jetSequence = cms.Sequence(process.patAlgosToolsTask)

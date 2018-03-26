@@ -78,9 +78,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
                 _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
                 _gen_partonPt[_gen_nL]  = GenTools::getParton(p, *genParticles) == 0 ? 0 : GenTools::getParton(p, *genParticles)->pt();
-                GenTools::printInheritance(p, *genParticles);
-                std::cout << "about this lepton -> prov: " << GenTools::provenance(p, *genParticles) << " " << GenTools::provenanceCompressed(p, *genParticles) << "; prompt: " << _gen_lIsPrompt[_gen_nL] << std::endl;
-                std::cout << "more about this lepton -> (pt, eta, phi): " << _gen_lPt[_gen_nL] << " " << _gen_lEta[_gen_nL] << " " << _gen_lPhi[_gen_nL] << std::endl;
+                //GenTools::printInheritance(p, *genParticles);
+                //std::cout << "about this lepton -> prov: " << GenTools::provenance(p, *genParticles) << " " << GenTools::provenanceCompressed(p, *genParticles) << "; prompt: " << _gen_lIsPrompt[_gen_nL] << std::endl;
+                //std::cout << "more about this lepton -> (pt, eta, phi): " << _gen_lPt[_gen_nL] << " " << _gen_lEta[_gen_nL] << " " << _gen_lPhi[_gen_nL] << std::endl;
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);

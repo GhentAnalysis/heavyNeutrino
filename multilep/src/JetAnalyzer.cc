@@ -6,11 +6,13 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
     jecUnc((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile")).fullPath()),
     multilepAnalyzer(multilepAnalyzer)
 {
+    /*
     if(multilepAnalyzer->isData){
         jecLevel = "L2L3Residual";
     } else {
         jecLevel = "L3Absolute";
     }
+    */
 };
 
 // Note that here only the uncertainty is saved, the Up and Down variations still need to be calculated later, probably easier to do on python level
@@ -92,7 +94,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
     edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken, mets);
     //to apply JEC from txt files
-    edm::Handle<double> rho;                            iEvent.getByToken(multilepAnalyzer->rhoToken,            rho);
+    //edm::Handle<double> rho;                            iEvent.getByToken(multilepAnalyzer->rhoToken,            rho);
 
     _nJets = 0;
 
@@ -106,22 +108,19 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetIsTight[_nJets] = jetIsTight(jet, multilepAnalyzer->is2017);
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017);
     
-        /*
         jecUnc.setJetEta(jet.eta());
         jecUnc.setJetPt(jet.pt());
         double unc = jecUnc.getUncertainty(true);
-        */
 
         //txt based JEC
+        /*
         double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
         _jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
-        /*
-        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-        std::cout << "txt based JetPt = " << _jetPt[_nJets] << std::endl;
-        std::cout << "CMSSSW JetPt = " << jet.pt() << std::endl;
+        double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], jet.eta());
         */
         //extract uncertainty based on corrected jet pt!
-        double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], jet.eta());
+
+        _jetPt[_nJets] = jet.pt();
         double maxpT = (1+unc)*_jetPt[_nJets];
         if(maxpT <= 25) continue;
 
@@ -129,7 +128,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetPt_JECUp[_nJets]              = _jetPt[_nJets]*(1+unc);
         _jetEta[_nJets]                   = jet.eta();
         _jetPhi[_nJets]                   = jet.phi();
-        _jetE[_nJets]                     = jet.correctedP4("Uncorrected").E()*corrTxt;
+        //_jetE[_nJets]                     = jet.correctedP4("Uncorrected").E()*corrTxt;
+        _jetE[_nJets]                     = jet.energy();
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
         //new DeepFlavour tagger

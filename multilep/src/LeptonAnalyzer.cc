@@ -156,10 +156,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(_dz[_nL]) > 0.1)                       continue;
         fillLeptonKinVars(mu);
         //fillLeptonGenVars(mu.genParticle());
-        _lFlavor[_nL]        = 1;
         if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
 
+        _lFlavor[_nL]        = 1;
         _lMuonSegComp[_nL]    = mu.segmentCompatibility();
         _lMuonTrackPt[_nL]    = mu.innerTrack()->pt();
         _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
@@ -212,11 +212,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
         fillLeptonKinVars(*ele);
         //fillLeptonGenVars(ele->genParticle());
-        _lFlavor[_nL]          = 0;
         _lElectronPassConvVeto[_nL]     = ele->passConversionVeto();
         if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
+        _lFlavor[_nL]          = 0;
         _lEtaSC[_nL]           = ele->superCluster()->eta();
 
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
@@ -273,11 +273,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         //if(!tau.tauID("decayModeFinding")) continue;
         fillLeptonKinVars(tau);
         //fillLeptonGenVars(tau.genParticle());
-        _lFlavor[_nL]  = 2;
         if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
         fillLeptonImpactParameters(tau, primaryVertex);
         if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
+        _lFlavor[_nL]  = 2;
         _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
         _tauEleVeto[_nL] = tau.tauID("againstElectronLooseMVA6");
 
@@ -333,9 +333,9 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
     _lPartonPt[_nL] = genMatcher->getPartonPt();
     _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
-    std::cout << "info about reco lepton: (pt/eta/phi/isPrompt) " << _lPt[_nL] << " " << _lEta[_nL] << " " << _lPhi[_nL] << " " << _lFlavor[_nL] << " " << _lIsPrompt[_nL] << " " << _lMatchPdgId[_nL] << std::endl; 
-    if(_lFlavor[_nL] == 0)
-        std::cout << "additional info for electron: " << _lElectronPassConvVeto[_nL] << std::endl; 
+    //std::cout << "info about reco lepton: (pt/eta/phi/isPrompt) " << _lPt[_nL] << " " << _lEta[_nL] << " " << _lPhi[_nL] << " " << _lFlavor[_nL] << " " << _lIsPrompt[_nL] << " " << _lMatchPdgId[_nL] << std::endl; 
+    //if(_lFlavor[_nL] == 0)
+    //    std::cout << "additional info for electron: " << _lElectronPassConvVeto[_nL] << std::endl; 
 }
 
 
@@ -402,8 +402,9 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     //Make skimmed "close jet" collection
     std::vector<pat::Jet> selectedJetsAll;
     for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        double jetPt = jet->pt()*multilepAnalyzer->jec->jetCorrection(jet->correctedP4("Uncorrected").Pt(), jet->correctedP4("Uncorrected").Eta(), rho, jet->jetArea(), jecLevel); 
-        if( jetPt > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+        //double jetPt = jet->pt()*multilepAnalyzer->jec->jetCorrection(jet->correctedP4("Uncorrected").Pt(), jet->correctedP4("Uncorrected").Eta(), rho, jet->jetArea(), jecLevel); 
+        //if( jetPt > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+        if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
     }
     // Find closest selected jet
     unsigned closestIndex = 0;
@@ -419,20 +420,19 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
     } else {
+        /*
         double totalJEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), jecLevel);
         double l1JEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), "L1FastJet");
-
-        /*
+        TLorentzVector l1Jet;
+        l1Jet.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt()*l1JEC, jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E()*l1JEC);
+        TLorentzVector l(lepton.px(), lepton.py(), lepton.pz(), lepton.energy());
+        TLorentzVector lepAwareJet = (l1Jet - l)*JEC + l;
+        float JEC = totalJEC/l1JEC;
+        */
         auto  l1Jet       = jet.correctedP4("L1FastJet");
         float JEC         = jet.p4().E()/l1Jet.E();
         auto  l           = lepton.p4();
         auto  lepAwareJet = (l1Jet - l)*JEC + l;
-        */
-        TLorentzVector l1Jet;
-        l1Jet.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt()*l1JEC, jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E()*l1JEC);
-        float JEC = totalJEC/l1JEC;
-        TLorentzVector l(lepton.px(), lepton.py(), lepton.pz(), lepton.energy());
-        TLorentzVector lepAwareJet = (l1Jet - l)*JEC + l;
 
 
         TLorentzVector lV(l.Px(), l.Py(), l.Pz(), l.E());
