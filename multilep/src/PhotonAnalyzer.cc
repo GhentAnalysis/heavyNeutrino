@@ -50,7 +50,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
 
 
 bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
-    std::cout << "begin photonanalyzer" << std::endl;
+    //std::cout << "begin photonanalyzer" << std::endl;
     edm::Handle<std::vector<pat::Photon>> photons;                   iEvent.getByToken(multilepAnalyzer->photonToken,                       photons);
     edm::Handle<edm::ValueMap<bool>> photonsCutBasedLoose;           iEvent.getByToken(multilepAnalyzer->photonCutBasedLooseToken,          photonsCutBasedLoose);
     edm::Handle<edm::ValueMap<bool>> photonsCutBasedMedium;          iEvent.getByToken(multilepAnalyzer->photonCutBasedMediumToken,         photonsCutBasedMedium);
@@ -109,7 +109,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         }
         ++_nPh;
     }
-    std::cout << "end photonanalyzer" << std::endl;
+    //std::cout << "end photonanalyzer" << std::endl;
     if(multilepAnalyzer->skim == "ttg" and _nPh < 1) return false;
     if(multilepAnalyzer->skim == "singlephoton" and _nPh < 1) return false;
     if(multilepAnalyzer->skim == "diphoton" and _nPh < 2) return false;

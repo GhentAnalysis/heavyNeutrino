@@ -144,7 +144,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup, const reco::Vertex& primaryVertex){
-    std::cout << "begin leptonanalyzer" << std::endl;
+    //std::cout << "begin leptonanalyzer" << std::endl;
     edm::Handle<reco::BeamSpot> beamspot;			     iEvent.getByToken(multilepAnalyzer->beamSpotToken, 		    beamspot);
     edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
     edm::Handle<edm::ValueMap<float>> electronsMva;                  iEvent.getByToken(multilepAnalyzer->eleMvaToken,                       electronsMva);
@@ -394,7 +394,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         ++_nTau;
         ++_nL;
     }
-    std::cout << "end leptonanalyzer" << std::endl;
+    //std::cout << "end leptonanalyzer" << std::endl;
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
     if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
@@ -718,7 +718,7 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
     _lVtxpos_df[_nL] = vtx.degreesOfFreedom();
     _lVtxpos_chi2[_nL] = vtx.totalChiSquared();
     _lVtxpos_ntracks[_nL] = tracks.size();
-    std::cout << "track size: " << tracks.size() << std::endl;
+    //std::cout << "track size: " << tracks.size() << std::endl;
     } catch(...){}
 }
 

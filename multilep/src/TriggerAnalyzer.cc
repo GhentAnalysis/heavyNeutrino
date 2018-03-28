@@ -144,7 +144,7 @@ bool TriggerAnalyzer::passCombinedFlagAND(TString combinedFlag){
 }
 
 void TriggerAnalyzer::analyze(const edm::Event& iEvent){
-  std::cout << "trigger analyzer" << std::endl;
+  //std::cout << "trigger analyzer" << std::endl;
   edm::Handle<edm::TriggerResults> recoResults;       iEvent.getByToken(multilepAnalyzer->recoResultsToken,      recoResults);
   edm::Handle<edm::TriggerResults> triggerResults;    iEvent.getByToken(multilepAnalyzer->triggerToken,          triggerResults);
   edm::Handle<bool> badPFMuonFilter;                  
@@ -171,7 +171,7 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
     if(combinedFlag.first.Contains("MET")) flag[combinedFlag.first] = passCombinedFlagAND(combinedFlag.first);
     else                                   flag[combinedFlag.first] = passCombinedFlagOR(combinedFlag.first);
   }
-  std::cout << "end trigger analyzer" << std::endl;
+  //std::cout << "end trigger analyzer" << std::endl;
 }
 
 /*
