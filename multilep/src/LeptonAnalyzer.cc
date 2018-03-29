@@ -14,6 +14,7 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     leptonMvaComputerSUSY17 = new LeptonMvaHelper(iConfig, 0, true);     //SUSY
     leptonMvaComputerTTH17 = new LeptonMvaHelper(iConfig, 1, true);     //TTH
     leptonMvaComputertZqTTV16 = new LeptonMvaHelper(iConfig, 2, false);  //tZq/TTV
+    leptonMvaComputertZqTTV17 = new LeptonMvaHelper(iConfig, 2, true);  //tZq/TTV
     if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
     if(multilepAnalyzer->isData){
         jecLevel = "L2L3Residual";
@@ -28,6 +29,7 @@ LeptonAnalyzer::~LeptonAnalyzer(){
     delete leptonMvaComputertZqTTV16;
     delete leptonMvaComputerSUSY17;
     delete leptonMvaComputerTTH17;
+    delete leptonMvaComputertZqTTV17;
     if(!multilepAnalyzer->isData) delete genMatcher;
 }
 
@@ -61,6 +63,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_leptonMvaSUSY17",              &_leptonMvaSUSY17,              "_leptonMvaSUSY17[_nLight]/D");
     outputTree->Branch("_leptonMvaTTH17",               &_leptonMvaTTH17,               "_leptonMvaTTH17[_nLight]/D");
     outputTree->Branch("_leptonMvatZqTTV16",            &_leptonMvatZqTTV16,            "_leptonMvatZqTTV16[_nLight]/D");
+    outputTree->Branch("_leptonMvatZqTTV17",            &_leptonMvatZqTTV17,            "_leptonMvatZqTTV17[_nLight]/D");
     outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nLight]/O");
     outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nLight]/O");
     outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nLight]/O");
@@ -179,6 +182,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _leptonMvaSUSY17[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY17);
         _leptonMvaTTH17[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH17);
         _leptonMvatZqTTV16[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV16);
+        _leptonMvatZqTTV17[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV17);
 
         _lEwkLoose[_nL]      = isEwkLoose(mu);
         _lEwkFO[_nL]         = isEwkFO(mu);
@@ -238,7 +242,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _leptonMvaTTH16[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTTH16);
         _leptonMvaSUSY17[_nL]           = leptonMvaVal(*ele, leptonMvaComputerSUSY17);
         _leptonMvaTTH17[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTTH17);
-        _leptonMvatZqTTV16[_nL]           = leptonMvaVal(*ele, leptonMvaComputertZqTTV16);
+        _leptonMvatZqTTV16[_nL]         = leptonMvaVal(*ele, leptonMvaComputertZqTTV16);
+        _leptonMvatZqTTV17[_nL]         = leptonMvaVal(*ele, leptonMvaComputertZqTTV17);
 
         _lEwkLoose[_nL]                 = isEwkLoose(*ele);
         _lEwkFO[_nL]                    = isEwkFO(*ele);

@@ -110,6 +110,7 @@ class LeptonAnalyzer {
     double _leptonMvaSUSY17[nL_max];                                                                       //lepton MVA used in ewkino analysis
     double _leptonMvaTTH17[nL_max];
     double _leptonMvatZqTTV16[nL_max];
+    double _leptonMvatZqTTV17[nL_max];
 
     bool _lHNLoose[nL_max];                                                                          //analysis specific lepton selection decisions
     bool _lHNFO[nL_max];
@@ -192,6 +193,7 @@ class LeptonAnalyzer {
     LeptonMvaHelper* leptonMvaComputerSUSY17;
     LeptonMvaHelper* leptonMvaComputerTTH17;
     LeptonMvaHelper* leptonMvaComputertZqTTV16;
+    LeptonMvaHelper* leptonMvaComputertZqTTV17;
 
     //for generator matching
     GenMatching* genMatcher;
