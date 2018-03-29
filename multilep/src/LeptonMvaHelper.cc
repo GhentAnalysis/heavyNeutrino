@@ -46,7 +46,7 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
                 reader[1]->AddVariable("LepGood_mvaIdSpring16HZZ", &LepGood_mvaIdSpring16HZZ);
             }
         } else {
-            reader[1]->AddVariable("LepGood_mvaIdFall17noIso", &LepGood_mvaIdSpring16GP);
+            reader[1]->AddVariable("LepGood_mvaIdFall17noIso", &LepGood_mvaIdFall17noIso);
         }
         if(type == 0){
             reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsMuSUSY") + (is2017 ? "17" : "16") ).fullPath());
@@ -59,26 +59,41 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
         for(unsigned i = 0; i < 2; ++i){
             reader[i]->AddVariable( "pt", &LepGood_pt );
             reader[i]->AddVariable( "eta", &LepGood_eta );
-            reader[i]->AddVariable( "trackMult", &LepGood_jetNDauChargedMVASel );
+            reader[i]->AddVariable( "trackMultClosestJet", &LepGood_jetNDauChargedMVASel );
             reader[i]->AddVariable( "miniIsoCharged", &LepGood_miniRelIsoCharged );
             reader[i]->AddVariable( "miniIsoNeutral", &LepGood_miniRelIsoNeutral );
-            reader[i]->AddVariable( "ptrel", &LepGood_jetPtRelv2 );
-            reader[i]->AddVariable( "min(ptratio,1.5)", &LepGood_jetPtRatio );
-            reader[i]->AddVariable( "relIso0p3", &LepGood_relIso0p3); 
-            reader[i]->AddVariable( "max(jetbtagCSV,0)", &LepGood_jetBTagCSV );
+            reader[i]->AddVariable( "pTRel", &LepGood_jetPtRelv2 );
+            reader[i]->AddVariable( "ptRatio", &LepGood_jetPtRatio );
+            reader[i]->AddVariable( "relIso", &LepGood_relIso0p3); 
+            reader[i]->AddVariable( "deepCsvClosestJet", &LepGood_jetBTagCSV );
             reader[i]->AddVariable( "sip3d", &LepGood_sip3d );
+            reader[i]->AddVariable( "dxy", &LepGood_sip3d );
+            reader[i]->AddVariable( "dz", &LepGood_sip3d );
         }
-        reader[0]->AddVariable("segmComp", &LepGood_segmentCompatibility);
-        reader[1]->AddVariable("eleMVA", &LepGood_mvaIdSpring16GP);
-        reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMutZqTTV16").fullPath());
-        reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEletZqTTV16").fullPath());
+        reader[0]->AddVariable("segmentCompatibility", &LepGood_segmentCompatibility);
+        if(!is2017){
+            reader[1]->AddVariable("electronMva", &LepGood_mvaIdSpring16GP);
+        } else{
+            reader[1]->AddVariable("electronMvaFall17NoIso", &LepGood_mvaIdFall17noIso);
+        }
+        if(!is2017){
+            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMutZqTTV16").fullPath());
+            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEletZqTTV16").fullPath());
+        } else{
+            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMutZqTTV17").fullPath());
+            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEletZqTTV17").fullPath());
+        }
     }
 }
 void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, 
     double closestJetCsv, double closestJetDeepCsv, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4)
 {
     LepGood_pt = pt;
-    LepGood_eta = eta;
+    if(type > 2){
+        LepGood_eta = fabs(eta);
+    } else{
+        LepGood_eta = eta;
+    }
     LepGood_jetNDauChargedMVASel = selectedTrackMult;
     LepGood_miniRelIsoCharged = miniIsoCharged;
     LepGood_miniRelIsoNeutral = miniIsoNeutral;
