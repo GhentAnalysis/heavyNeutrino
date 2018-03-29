@@ -67,8 +67,8 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
             reader[i]->AddVariable( "relIso", &LepGood_relIso0p3); 
             reader[i]->AddVariable( "deepCsvClosestJet", &LepGood_jetBTagCSV );
             reader[i]->AddVariable( "sip3d", &LepGood_sip3d );
-            reader[i]->AddVariable( "dxy", &LepGood_sip3d );
-            reader[i]->AddVariable( "dz", &LepGood_sip3d );
+            reader[i]->AddVariable( "dxy", &LepGood_dxy);
+            reader[i]->AddVariable( "dz", &LepGood_dz);
         }
         reader[0]->AddVariable("segmentCompatibility", &LepGood_segmentCompatibility);
         if(!is2017){
