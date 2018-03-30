@@ -89,7 +89,7 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
     double closestJetCsv, double closestJetDeepCsv, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4)
 {
     LepGood_pt = pt;
-    if(type > 2){
+    if(type >= 2){
         LepGood_eta = fabs(eta);
     } else{
         LepGood_eta = eta;
