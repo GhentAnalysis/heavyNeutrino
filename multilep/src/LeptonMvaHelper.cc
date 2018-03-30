@@ -99,7 +99,7 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
     LepGood_miniRelIsoNeutral = miniIsoNeutral;
     LepGood_jetPtRelv2 = ptRel;
     LepGood_jetPtRatio = std::min(ptRatio, 1.5);
-    if(is2017 || type  > 2){
+    if(is2017 || type  >= 2){
         LepGood_jetBTagCSV = std::max( (std::isnan(closestJetDeepCsv) ? 0. : closestJetDeepCsv) , 0.);
     } else{
         LepGood_jetBTagCSV = std::max(closestJetCsv, 0.);
