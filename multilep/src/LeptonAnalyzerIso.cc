@@ -37,7 +37,7 @@ double LeptonAnalyzer::getRelIso(const reco::RecoCandidate& ptcl, edm::Handle<pa
         double coneSize, double rho, const bool onlyCharged) const{
     bool deltaBeta   = false;
     double deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);
-    if(ptcl.isElectron() and fabs(ptcl.superCluster()->eta() >1.479)){ deadcone_ch = 0.015;  deadcone_pu = 0.015; deadcone_ph = 0.08; deadcone_nh = 0;}
+    if(ptcl.isElectron() and fabs(ptcl.superCluster()->eta()) >1.479){ deadcone_ch = 0.015;  deadcone_pu = 0.015; deadcone_ph = 0.08; deadcone_nh = 0;}
     else if(ptcl.isMuon())                                           { deadcone_ch = 0.0001; deadcone_pu = 0.01;  deadcone_ph = 0.01; deadcone_nh = 0.01;}
 
     double iso_nh(0.); double iso_ch(0.);
