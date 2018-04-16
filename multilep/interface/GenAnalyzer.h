@@ -10,9 +10,11 @@
 
 class multilep;
 class PhotonAnalyzer;
+class GenMatching;
 class GenAnalyzer {
   //class friends
   friend PhotonAnalyzer;
+  friend GenMatching;
 
   private:
     static const unsigned gen_nL_max = 20;
@@ -53,7 +55,13 @@ class GenAnalyzer {
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
 
-    //Generator HT (needed when merging HT binned sample with inclusive one)
+    // Array of pointers to genLeptons (NOT saved in the tree!)
+    // (only charged leptons for now, no photons)
+    //const reco::GenParticle* _gen_refs[gen_nL_max+gen_nPh_max];
+    const reco::GenParticle* _gen_lRefs[gen_nL_max];
+    // const reco::GenParticle* _gen_phRefs[gen_nPh_max];
+
+   //Generator HT (needed when merging HT binned sample with inclusive one)
     double _gen_HT;
 
     //Functions to find the mother of a gen particle

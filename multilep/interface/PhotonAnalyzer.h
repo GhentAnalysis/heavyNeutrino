@@ -40,6 +40,7 @@ class PhotonAnalyzer {
         double   _phHadronicOverEm[nPhoton_max];
         bool     _phPassElectronVeto[nPhoton_max];
         bool     _phHasPixelSeed[nPhoton_max];
+        // unsigned _phGenIndex[nPhoton_max];
         bool     _phIsPrompt[nPhoton_max];
         int      _phMatchMCPhotonAN15165[nPhoton_max];
         int      _phMatchMCLeptonAN15165[nPhoton_max];

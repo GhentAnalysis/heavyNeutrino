@@ -12,9 +12,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
     eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
     eleMvaHZZToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMvaHZZ"))),
-//  eleMvaFall17IsoToken(             consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17Iso"))),
-  //  eleMvaFall17NoIsoToken(           consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17NoIso"))),   
-eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedVeto"))),
+    eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedVeto"))),
     eleCutBasedLooseToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedLoose"))),
     eleCutBasedMediumToken(           consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedMedium"))),
     eleCutBasedTightToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedTight"))),
@@ -34,7 +32,8 @@ eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iC
     jetToken(                         consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
     recoResultsToken(                 consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
-    prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
+    trigObjToken(                consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjets"))),
+    //prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
     badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
@@ -43,7 +42,7 @@ eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iC
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
     jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
-    triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
+    //triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
     photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
@@ -57,7 +56,7 @@ eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iC
 }
 
 multilep::~multilep(){
-    delete triggerAnalyzer;
+    //delete triggerAnalyzer;
     delete leptonAnalyzer;
     delete photonAnalyzer;
     delete jetAnalyzer;
@@ -82,7 +81,7 @@ void multilep::beginJob(){
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
     if(!isData) genAnalyzer->beginJob(outputTree);
-    triggerAnalyzer->beginJob(outputTree);
+    //triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
     jetAnalyzer->beginJob(outputTree);
@@ -101,7 +100,7 @@ void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     // HLT results could have different size/order in new run, so look up again de index positions
-    triggerAnalyzer->reIndex = true;
+    //triggerAnalyzer->reIndex = true;
     //update JEC 
     _runNb = (unsigned long) iRun.id().run();
     jec->updateJEC(_runNb);
@@ -116,15 +115,19 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
     if(!vertices->size()) return;                                      // don't consider 0 vertex events
 
+    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
+                                                                       // also needs to run before leptonAnalyzer to save gen-matching info...
+
     if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))
       return;            // returns false if doesn't pass skim condition, so skip event in such case
 
-    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;
-    triggerAnalyzer->analyze(iEvent);
+    //triggerAnalyzer->analyze(iEvent);
     jetAnalyzer->analyze(iEvent);
 
     //determine event number run number and luminosity block
+    _runNb     = (unsigned long) iEvent.id().run();
+    _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
     _eventNb   = (unsigned long) iEvent.id().event();
     _nVertex   = vertices->size();
     //determine the met of the event and its uncertainties

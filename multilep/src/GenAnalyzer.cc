@@ -57,6 +57,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    //for(unsigned ig=0; ig<(gen_nL_max+gen_nPh_max); ++ig) _gen_refs[ig] = nullptr;
+    for(unsigned ig=0; ig<gen_nL_max ; ++ig) _gen_lRefs[ig]  = nullptr;
+    // for(unsigned ig=0; ig<gen_nPh_max; ++ig) _gen_phRefs[ig] = nullptr;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
         //Calculate generator level MET
@@ -71,6 +74,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         //store generator level lepton info
         if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
             if(_gen_nL != gen_nL_max){
+	        _gen_lRefs[_gen_nL]     = &p;
                 _gen_lPt[_gen_nL]       = p.pt();
                 _gen_lEta[_gen_nL]      = p.eta();
                 _gen_lPhi[_gen_nL]      = p.phi();
@@ -99,6 +103,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         //store generator level photon info
         if((p.status() == 1 || p.status() == 71) && abs(p.pdgId()) == 22){
             if(_gen_nPh != gen_nPh_max){
+	        // _gen_phRefs[_gen_nPh]           = &p;
                 _gen_phStatus[_gen_nPh]        = p.status();
                 _gen_phPt[_gen_nPh]            = p.pt();
                 _gen_phEta[_gen_nPh]           = p.eta();

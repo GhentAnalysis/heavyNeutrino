@@ -18,24 +18,11 @@ class GenMatching{
     void setGenParticles(const edm::Event&);    
 
     //fill match variables
-    template <typename Lepton> void fillMatchingVars(const Lepton& reco){
-        const reco::GenParticle* match = findGenMatch(reco);
-        if(match != nullptr){
-            matchIsPrompt = isPrompt(reco, *match);
-            matchPdgId = match->pdgId();
-            provenance = GenTools::provenance(*match, *genParticles);
-            provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
-            provenanceConversion = GenTools::provenanceConversion(*match, *genParticles);
-        } else{
-            matchIsPrompt = false;
-            matchPdgId = 0;
-            provenanceCompressed = 4;
-            provenance = 18;
-            provenanceConversion = 99;
-        }
-    }
+    template <typename Lepton> void fillMatchingVars(const Lepton&);
 
     //return values
+    unsigned genLIndex() {return genLindex;}
+    // unsigned genPhIndex() {return genPhindex;}
     int pdgIdMatch() const {return matchPdgId; }
     bool promptMatch() const {return matchIsPrompt;}
     unsigned getProvenance() const {return provenance;}
@@ -58,6 +45,8 @@ class GenMatching{
 
     bool considerForMatching(const reco::Candidate&, const reco::GenParticle&, const bool differentId = false) const;
     bool sameParticle(const reco::Candidate&, const reco::GenParticle&) const;
+    unsigned genLindex;
+    // unsigned genPhindex;
     int matchPdgId;
     bool matchIsPrompt;
     unsigned provenance;

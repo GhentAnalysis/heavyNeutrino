@@ -20,6 +20,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
@@ -32,7 +33,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
-#include "heavyNeutrino/multilep/interface/TriggerAnalyzer.h"
+//#include "heavyNeutrino/multilep/interface/TriggerAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
@@ -109,6 +110,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
         edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
         edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
+        edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> trigObjToken;
         edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
         edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
         edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
@@ -126,7 +128,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
         virtual void endJob() override;
 
-        TriggerAnalyzer*  triggerAnalyzer;
+        //TriggerAnalyzer*  triggerAnalyzer;
         LeptonAnalyzer*   leptonAnalyzer;
         PhotonAnalyzer*   photonAnalyzer;
         JetAnalyzer*      jetAnalyzer;
@@ -141,8 +143,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         unsigned long _lumiBlock;
         unsigned long _eventNb;
         unsigned      _nVertex;                                                                          //Event variables
-double        _met;                                                                              //met kinematics
-    double        _metPhi;
+        double        _met;                                                                              //met kinematics
+        double        _metPhi;
         double        _metJECDown;
         double        _metPhiJECDown;
         double        _metJECUp;
@@ -152,7 +154,6 @@ double        _met;                                                             
         double        _metUnclUp;
         double        _metPhiUnclUp;
         double        _metSignificance;
-
 };
 #endif
 
