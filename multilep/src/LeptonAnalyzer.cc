@@ -221,8 +221,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lEleInvMinusPInv[_nL] =   -1;
 	  
 	  
-    if (fabs(_dxy[_nL])> 0.02) ++_nGoodDisplaced; 
-    if (mu.pt() > 22 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) {
+    if (mu.pt() >  3 && std::abs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced; 
+    if (mu.pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) {
       ++_nGoodLeading;
       _lHasTrigger[_nL] = matchSingleTrigger(false, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
     }
@@ -257,10 +257,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lEleSuperClusterOverP[_nL] = ele->eSuperClusterOverP();
     _lEleEcalEnergy[_nL]= ele->ecalEnergy();
     _lElefull5x5SigmaIetaIeta[_nL] = ele->full5x5_sigmaIetaIeta();
-    _lEleDEtaInSeed[_nL] = fabs(dEtaInSeed(&*ele));
-    _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] = fabs(ele->deltaPhiSuperClusterTrackAtVtx());
+    _lEleDEtaInSeed[_nL] = std::abs(dEtaInSeed(&*ele));
+    _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] = std::abs(ele->deltaPhiSuperClusterTrackAtVtx());
     _lElehadronicOverEm[_nL] = ele->hadronicOverEm();
-    _lEleInvMinusPInv[_nL] = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+    _lEleInvMinusPInv[_nL] = std::abs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
 
     fillLeptonKinVars(*ele);
     //fillLeptonGenVars(ele->genParticle());
@@ -296,8 +296,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lSimExtType[_nL]    = -1; 
     _lSimFlavour[_nL]    = -1; 
 	  
-    if(fabs(_dxy[_nL])>0.02) ++_nGoodDisplaced; 
-    if(ele->pt() > 22 && fabs(_dxy[_nL]) < 0.05 && fabs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) {
+    if(ele->pt() >  7 && std::abs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced; 
+    if(ele->pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) {
       ++_nGoodLeading;
       _lHasTrigger[_nL] = matchSingleTrigger(true, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
     }
@@ -727,8 +727,8 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec) const {
   // if(!elec.hasTrackDetails())                                                            return false;
   // if(elec.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS)>2) return false;
   // if(!elec.passConversionVeto())                                                         return false;  
-  // if(fabs(_dxy[_nL])>0.05)                                                               return false;
-  // if(fabs(_dz[_nL])>0.1)                                                                 return false;
+  // if(std::abs(_dxy[_nL])>0.05)                                                               return false;
+  // if(std::abs(_dz[_nL])>0.1)                                                                 return false;
   // if(_relIso[_nL]>1)                                                                     return false;
   if(elec.gsfTrack().isNull())     return false; 
   if(elec.pt()<5.)                 return false;
@@ -771,7 +771,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     //Make skimmed "close jet" collection
     std::vector<pat::Jet> selectedJetsAll;
     for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+        if( jet->pt() > 5 && std::abs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
     }
     // Find closest selected jet
     unsigned closestIndex = 0;
@@ -818,8 +818,8 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
                 TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
                 double daughterDeltaR            = trackVec.DeltaR(jV);
                 bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
-                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
-                    && fabs(daughterTrack.dxy(vertex.position())) < 17;
+                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && std::abs(daughterTrack.dz(vertex.position())) < 17
+                    && std::abs(daughterTrack.dxy(vertex.position())) < 17;
                 if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
             }
         }
