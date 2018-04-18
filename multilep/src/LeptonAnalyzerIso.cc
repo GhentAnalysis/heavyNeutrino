@@ -9,8 +9,13 @@
 #include "TTree.h"
 
 
-double LeptonAnalyzer::getRelIso04(const pat::Muon& mu, const double rho) const{ //Note: effective area correction is used instead of delta-beta correction
-    double puCorr = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
+double LeptonAnalyzer::getRelIso04(const pat::Muon& mu, const double rho, const bool DeltaBeta) const{ //Note: effective area correction is used instead of delta-beta correction
+    double puCorr;
+    if(!DeltaBeta){
+        puCorr = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta())*(0.4*0.4/(0.3*0.3));
+    } else{
+        puCorr = 0.5*mu.pfIsolationR04().sumPUPt;
+    }
     double absIso = mu.pfIsolationR04().sumChargedHadronPt + std::max(0., mu.pfIsolationR04().sumNeutralHadronEt + mu.pfIsolationR04().sumPhotonEt - puCorr);
     return absIso/mu.pt();
 }
@@ -32,7 +37,7 @@ double LeptonAnalyzer::getRelIso(const reco::RecoCandidate& ptcl, edm::Handle<pa
         double coneSize, double rho, const bool onlyCharged) const{
     bool deltaBeta   = false;
     double deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);
-    if(ptcl.isElectron() and fabs(ptcl.superCluster()->eta() >1.479)){ deadcone_ch = 0.015;  deadcone_pu = 0.015; deadcone_ph = 0.08; deadcone_nh = 0;}
+    if(ptcl.isElectron() and fabs(ptcl.superCluster()->eta()) >1.479){ deadcone_ch = 0.015;  deadcone_pu = 0.015; deadcone_ph = 0.08; deadcone_nh = 0;}
     else if(ptcl.isMuon())                                           { deadcone_ch = 0.0001; deadcone_pu = 0.01;  deadcone_ph = 0.01; deadcone_nh = 0.01;}
 
     double iso_nh(0.); double iso_ch(0.);
