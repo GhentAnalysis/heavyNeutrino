@@ -23,6 +23,11 @@ class JetAnalyzer {
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
     double   _jetPt_JECDown[nJets_max];
+    double   _jetPt_Uncorrected[nJets_max];
+    double   _jetPt_L1[nJets_max];
+    double   _jetPt_L2[nJets_max];
+    double   _jetPt_L3[nJets_max];
+    double   _jetPt_L2L3[nJets_max];
     double   _jetEta[nJets_max];
     double   _jetPhi[nJets_max];
     double   _jetE[nJets_max];
@@ -35,6 +40,12 @@ class JetAnalyzer {
     bool    _jetIsLoose[nJets_max];
     bool    _jetIsTight[nJets_max];
     bool    _jetIsTightLepVeto[nJets_max];
+    double _jetChargedHadronFraction[nJets_max];
+    double _jetNeutralHadronFraction[nJets_max];
+    double _jetNeutralEmFraction[nJets_max];
+    double _jetChargedEmFraction[nJets_max];
+    double _jetHFHadronFraction[nJets_max];
+    double _jetHFEmFraction[nJets_max];
 
     double        _met;                                                                              //met kinematics
     double        _metPhi;
