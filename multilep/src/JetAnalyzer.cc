@@ -24,6 +24,14 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetPt",                     &_jetPt,                    "_jetPt[_nJets]/D");
     outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
     outputTree->Branch("_jetPt_JECDown",             &_jetPt_JECDown,            "_jetPt_JECDown[_nJets]/D");
+    outputTree->Branch("_jetPt_Uncorrected",         &_jetPt_Uncorrected,        "_jetPt_Uncorrected[_nJets]/D");
+    outputTree->Branch("_jetPt_L1",                  &_jetPt_L1,                 "_jetPt_L1[_nJets]/D");
+    outputTree->Branch("_jetPt_L2",                  &_jetPt_L2,                 "_jetPt_L2[_nJets]/D");
+    outputTree->Branch("_jetPt_L3",                  &_jetPt_L3,                 "_jetPt_L3[_nJets]/D");
+    if(multilepAnalyzer->isData){
+        outputTree->Branch("_jetPt_L2L3",                &_jetPt_L2L3,               "_jetPt_L2L3[_nJets]/D");
+    }
+
     outputTree->Branch("_jetEta",                    &_jetEta,                   "_jetEta[_nJets]/D");
     outputTree->Branch("_jetPhi",                    &_jetPhi,                   "_jetPhi[_nJets]/D");
     outputTree->Branch("_jetE",                      &_jetE,                     "_jetE[_nJets]/D");
@@ -36,6 +44,13 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetIsLoose",                &_jetIsLoose,               "_jetIsLoose[_nJets]/i");
     outputTree->Branch("_jetIsTight",                &_jetIsTight,               "_jetIsTight[_nJets]/i");
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/i");
+
+    outputTree->Branch("_jetNeutralHadronFraction",  &_jetNeutralHadronFraction, "_jetNeutralHadronFraction[_nJets]/D");
+    outputTree->Branch("_jetChargedHadronFraction",  &_jetChargedHadronFraction, "_jetChargedHadronFraction[_nJets]/D");
+    outputTree->Branch("_jetNeutralEmFraction",      &_jetNeutralEmFraction,     "_jetNeutralEmFraction[_nJets]/D");
+    outputTree->Branch("_jetChargedEmFraction",      &_jetChargedEmFraction,     "_jetChargedEmFraction[_nJets]/D");
+    outputTree->Branch("_jetHFHadronFraction",       &_jetHFHadronFraction,      "_jetHFHadronFraction[_nJets]/D");
+    outputTree->Branch("_jetHFEmFraction",           &_jetHFEmFraction,          "_jetHFEmFraction[_nJets]/D");
 
     outputTree->Branch("_met",                          &_met,                          "_met/D");
     outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
@@ -125,6 +140,14 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         if(maxpT <= 25) continue;
 
         _jetPt_JECDown[_nJets]            = _jetPt[_nJets]*(1-unc);
+        _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
+        _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
+        _jetPt_L2[_nJets]                 = jet.correctedP4("L2Relative").Pt();
+        _jetPt_L3[_nJets]                 = jet.correctedP4("L3Absolute").Pt();
+        if(multilepAnalyzer->isData){
+            _jetPt_L2L3[_nJets]               = jet.correctedP4("L2L3Residual").Pt();
+        }
+
         _jetPt_JECUp[_nJets]              = _jetPt[_nJets]*(1+unc);
         _jetEta[_nJets]                   = jet.eta();
         _jetPhi[_nJets]                   = jet.phi();
@@ -138,6 +161,13 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetDeepCsv_c[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probc");
         _jetDeepCsv_bb[_nJets]            = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
         _jetHadronFlavor[_nJets]          = jet.hadronFlavour();
+
+        _jetNeutralHadronFraction[_nJets] = jet.neutralHadronEnergyFraction();
+        _jetChargedHadronFraction[_nJets] = jet.chargedHadronEnergyFraction();
+        _jetNeutralEmFraction[_nJets] = jet.neutralEmEnergyFraction();
+        _jetChargedEmFraction[_nJets] = jet.chargedEmEnergyFraction();
+        _jetHFHadronFraction[_nJets] = jet.HFHadronEnergyFraction();
+        _jetHFEmFraction[_nJets] = jet.HFEMEnergyFraction();
 
         ++_nJets;
     }
