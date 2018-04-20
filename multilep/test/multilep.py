@@ -7,15 +7,20 @@ def getJSON(is2017):
     else: return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
 # Default arguments
-outputFile      = 'trilepTree_M_2_V_0p01_m_10x.root'
+nEvents         = -1
 inputFile       = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_100.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_103.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_105.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_101.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_102.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_104.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_107.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_108.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_109.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_10.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_106.root"
 
-nEvents         = -1
-#outputFile      = 'trilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
-                                 # dilep     --> skim two leptons
-                                 # singlelep --> skim one lepton
-                                 # ttg       --> skim two leptons + one photon
-                                 # fakerate  --> not implemented
+###                            ###
+### Skim from output file name ###
+###                            ###
+# trilep      --> skim three leptons (basic pt/eta criteria)
+# displtrilep --> skim three leptons (basic pt/eta criteria)
+# dilep       --> skim two leptons
+# singlelep   --> skim one lepton
+# ttg         --> skim two leptons + one photon
+# fakerate    --> not implemented
+#outputFile      = 'displtrilep_ccc.root'
+outputFile      = 'prova2.root'
 
 def getVal(arg):
     return arg.split('=')[-1]
@@ -40,14 +45,17 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 100
 # Unscheduled mode makes no difference for us
 #process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
-process.source       = cms.Source("PoolSource", fileNames = cms.untracked.vstring(inputFile.split(",")), duplicateCheckMode = cms.untracked.string('noDuplicateCheck'))
+process.source       = cms.Source("PoolSource", 
+                                  fileNames = cms.untracked.vstring(inputFile.split(",")), 
+                                  duplicateCheckMode = cms.untracked.string('noDuplicateCheck')
+                                  )
 process.options      = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is2017: process.GlobalTag.globaltag = '92X_dataRun2_2017Repro_v4'   
-elif is2017:            process.GlobalTag.globaltag = '93X_upgrade2023_realistic_v3'
+if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_v6'   
+elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v13'
 elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
@@ -69,7 +77,7 @@ process.goodOfflinePrimaryVertices.filter = cms.bool(False)                     
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 from heavyNeutrino.multilep.egmSequence_cff import addElectronAndPhotonSequence
-addJetSequence(process, isData)
+addJetSequence(process, isData, is2017)
 addElectronAndPhotonSequence(process)
 
 #
@@ -80,6 +88,9 @@ process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
 for module in [process.BadPFMuonFilter, process.BadChargedCandidateFilter]:
   module.muons        = cms.InputTag("slimmedMuons")
   module.PFCandidates = cms.InputTag("packedPFCandidates")
+
+process.BadPFMuonFilter.filter = cms.bool(False)
+process.BadChargedCandidateFilter.filter = cms.bool(False)
 
 #clean 2016 data met from spurious muons and ECAL slew rate
 metCollection = "slimmedMETs"
@@ -94,10 +105,15 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   genParticles                  = cms.InputTag("prunedGenParticles"),
   muons                         = cms.InputTag("slimmedMuons"),
   muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
+  muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreas_cone03_Muons_Fall17.txt'),
   electrons                     = cms.InputTag("slimmedElectrons"),
   electronsEffectiveAreas       = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'), # WARNING this is spring 15, following SUSY-standard, i.e. not the most up-to-date values
+  electronsEffectiveAreasFall17 = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_92X.txt'),
+
   electronsMva                  = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
   electronsMvaHZZ               = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
+  electronMvaFall17Iso          = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"),
+  electronMvaFall17NoIso        = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"),
   electronsCutBasedVeto         = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto"),
   electronsCutBasedLoose        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
   electronsCutBasedMedium       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
@@ -106,6 +122,21 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   leptonMvaWeightsEle           = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_BDTG.weights.xml"),
   leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH_BDTG.weights.xml"),
   leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH_BDTG.weights.xml"),   
+  leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_leptonMva_tZqTTV.weights.xml"),
+  leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/ele_leptonMva_tZqTTV.weights.xml"),
+  # leptonMvaWeightsMuSUSY16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml"),
+  # leptonMvaWeightsEleSUSY16     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml"),
+  # leptonMvaWeightsMuttH16       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml"),
+  # leptonMvaWeightsElettH16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH16_BDTG.weights.xml"),   
+  # leptonMvaWeightsMuSUSY17      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml"),
+  # leptonMvaWeightsEleSUSY17     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml"),
+  # leptonMvaWeightsMuttH17       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml"),
+  # leptonMvaWeightsElettH17      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml"),   
+  # leptonMvaWeightsEletZqTTV16   = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV16_BDTG.weights.xml"),
+  # leptonMvaWeightsMutZqTTV16    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV16_BDTG.weights.xml"),
+  # leptonMvaWeightsEletZqTTV17   = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml"),
+  # leptonMvaWeightsMutZqTTV17    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml"),
+  JECtxtPath                    = cms.FileInPath("heavyNeutrino/multilep/data/JEC/dummy.txt"), 
   photons                       = cms.InputTag("slimmedPhotons"),
   photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfChargedHadrons_90percentBased.txt'),
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased.txt'),
@@ -123,18 +154,19 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag(metCollection),
   jets                          = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
-  jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
-  jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
-  jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
+  #jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
+  #jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
+  #jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
   jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt"),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),
-  triggerObjets                 = cms.InputTag("selectedPatTrigger"),
-  SingleEleTriggers             = cms.untracked.vstring(),
-  SingleMuoTriggers             = cms.untracked.vstring(),
-  SingleEleTriggers2017         = cms.untracked.vstring(),
-  SingleMuoTriggers2017         = cms.untracked.vstring(),
-  recoResults                   = cms.InputTag("TriggerResults::RECO"),
+  triggerObjects                = cms.InputTag("selectedPatTrigger"),
+  SingleEleTriggers             = cms.vstring(),
+  SingleMuoTriggers             = cms.vstring(),
+  SingleEleTriggers2017         = cms.vstring(),
+  SingleMuoTriggers2017         = cms.vstring(),
+  #recoResultsPrimary            = cms.InputTag("TriggerResults::PAT"),
+  #recoResultsSecondary          = cms.InputTag("TriggerResults::RECO"),
   badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
   badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),

@@ -33,7 +33,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
-//#include "heavyNeutrino/multilep/interface/TriggerAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/TriggerAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
@@ -128,7 +128,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
         virtual void endJob() override;
 
-        //TriggerAnalyzer*  triggerAnalyzer;
+        TriggerAnalyzer*  triggerAnalyzer;
         LeptonAnalyzer*   leptonAnalyzer;
         PhotonAnalyzer*   photonAnalyzer;
         JetAnalyzer*      jetAnalyzer;
@@ -154,6 +154,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         double        _metUnclUp;
         double        _metPhiUnclUp;
         double        _metSignificance;
+
+        bool          useTriggerAnalyzer;
 };
 #endif
 
