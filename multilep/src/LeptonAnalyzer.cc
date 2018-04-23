@@ -448,6 +448,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         TLorentzVector jV(lepAwareJet.Px(), lepAwareJet.Py(), lepAwareJet.Pz(), lepAwareJet.E());
         _ptRatio[_nL]       = l.Pt()/lepAwareJet.Pt();
         _ptRel[_nL]         = lV.Perp((jV - lV).Vect());
+        cout << "for Tom, closest jet pt and eta: " << lepAwareJet.Pt() << " "  << lepAwareJet.Eta() << " " << lepAwareJet.Phi() << endl;
         _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
         _closestJetDeepCsv_b[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
