@@ -25,7 +25,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
   outputTree->Branch("_weight",        &_weight,        "_weight/D");
   outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
   outputTree->Branch("_ctauHN",        &_ctauHN,        "_ctauHN/D");
-  outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/b");
+  outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/i");
   outputTree->Branch("_lheWeight",     &_lheWeight,     "_lheWeight[_nLheWeights]/D");
 }
 

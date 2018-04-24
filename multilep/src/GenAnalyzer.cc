@@ -17,11 +17,11 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
     multilepAnalyzer(multilepAnalyzer){};
 
 void GenAnalyzer::beginJob(TTree* outputTree){
-    outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/b");
-    outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/b");
+    outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/i");
+    outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/i");
     outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
     outputTree->Branch("_gen_metPhi",                &_gen_metPhi,                "_gen_metPhi/D");
-    outputTree->Branch("_gen_nPh",                   &_gen_nPh,                   "_gen_nPh/b");
+    outputTree->Branch("_gen_nPh",                   &_gen_nPh,                   "_gen_nPh/i");
     outputTree->Branch("_gen_phStatus",              &_gen_phStatus,              "_gen_phStatus[_gen_nPh]/i");
     outputTree->Branch("_gen_phPt",                  &_gen_phPt,                  "_gen_phPt[_gen_nPh]/D");
     outputTree->Branch("_gen_phEta",                 &_gen_phEta,                 "_gen_phEta[_gen_nPh]/D");
@@ -31,7 +31,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_phIsPrompt",            &_gen_phIsPrompt,            "_gen_phIsPrompt[_gen_nPh]/O");
     outputTree->Branch("_gen_phMinDeltaR",           &_gen_phMinDeltaR,           "_gen_phMinDeltaR[_gen_nPh]/D");
     outputTree->Branch("_gen_phPassParentage",       &_gen_phPassParentage,       "_gen_phPassParentage[_gen_nPh]/O");
-    outputTree->Branch("_gen_nL",                    &_gen_nL,                    "_gen_nL/b");
+    outputTree->Branch("_gen_nL",                    &_gen_nL,                    "_gen_nL/i");
     outputTree->Branch("_gen_lPt",                   &_gen_lPt,                   "_gen_lPt[_gen_nL]/D");
     outputTree->Branch("_gen_lEta",                  &_gen_lEta,                  "_gen_lEta[_gen_nL]/D");
     outputTree->Branch("_gen_lPhi",                  &_gen_lPhi,                  "_gen_lPhi[_gen_nL]/D");
