@@ -73,7 +73,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
 
 std::string JEC::getJECName(const unsigned long runNumber){
     if(!is2017){
-        return "Summer16_23Sep2016" + getJECRunName(runNumber);
+        return "Summer16_07Aug2017" + getJECRunName(runNumber);
     } else{
         return "Fall17_17Nov2017" + getJECRunName(runNumber);
     }
