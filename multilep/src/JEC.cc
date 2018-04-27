@@ -11,15 +11,12 @@ JEC::~JEC(){}
 
 void JEC::updateJEC(const unsigned long runNumber){
     if(getJECName(runNumber) != currentJEC){
-        std::cout << "currentJEC = " << currentJEC << std::endl;
         currentJEC = getJECName(runNumber);
-        std::cout << " new JEC = " << currentJEC << std::endl;
         setJEC(getJECName(runNumber) );
     }
 }
 
 void JEC::setJEC(const std::string& JECName){
-    std::cout << "setting JEC" << std::endl;
     std::vector< JetCorrectorParameters > JECParameters;
     JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L1FastJet_AK4PFchs.txt") );
     JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2Relative_AK4PFchs.txt") );
