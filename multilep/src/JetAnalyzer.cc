@@ -102,11 +102,17 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
         _jetPt_JECDown[_nJets]            = _jetPt[_nJets]*(1-unc);
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
+        /*
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
         _jetPt_L2[_nJets]                 = jet.correctedP4("L2Relative").Pt();
         _jetPt_L3[_nJets]                 = jet.correctedP4("L3Absolute").Pt();
+        */
+        _jetPt_L1[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L1FastJet");
+        _jetPt_L2[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L2Relative");
+        _jetPt_L3[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L3Absolute");
+
         if(multilepAnalyzer->isData){
-            _jetPt_L2L3[_nJets]               = jet.correctedP4("L2L3Residual").Pt();
+            _jetPt_L2L3[_nJets]           = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(),"L2L3Residual");
         }
 
         _jetPt_JECUp[_nJets]              = _jetPt[_nJets]*(1+unc);
