@@ -40,8 +40,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
             }
             else if(runNumber < 276812) jecName = "BCD";
             else if(runNumber < 278809) jecName = "EF";
-            else if(runNumber < 280385) jecName = "GV";
-            else if(runNumber < 294645) jecName = "H";
+            else if(runNumber < 294645) jecName = "GH";
             jecName += version2016;
         } else {
             if(runNumber < 297020){
