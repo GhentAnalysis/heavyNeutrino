@@ -28,17 +28,23 @@ class GenMatching{
     unsigned getProvenance() const {return provenance;}
     unsigned getProvenanceCompressed() const{ return provenanceCompressed; }
     unsigned getProvenanceConversion() const{ return provenanceConversion; }
+    double getMatchPt() const{ return matchPt; }
+    double getMatchEta() const{ return matchEta; }
+    double getMatchPhi() const{ return matchPhi; }
+    double getMatchVertexX() const{ return matchXvtx; }
+    double getMatchVertexY() const{ return matchYvtx; }
+    double getMatchVertexZ() const{ return matchZvtx; }
 
   private:
     multilep* multilepAnalyzer;
     edm::Handle<std::vector<reco::GenParticle>> genParticles;
     const reco::GenParticle* geometricMatch(const reco::Candidate&, const bool differentId = false) const;
 
-    template<typename Lepton> const reco::GenParticle* findGenMatch(const Lepton& lepton) const{
+    template<typename Lepton> const reco::GenParticle* findGenMatch(const Lepton& lepton, const bool allowallids = false) const{
         const reco::GenParticle* match = lepton.genParticle();
         //short circuit assumed here!
-        if(match == nullptr || match->pdgId() != lepton.pdgId()){
-            return geometricMatch(lepton);
+        if(match == nullptr || (allowallids==false && match->pdgId()!=lepton.pdgId())){
+	    return geometricMatch(lepton, allowallids);
         }
         return match;
     }
@@ -52,5 +58,12 @@ class GenMatching{
     unsigned provenance;
     unsigned provenanceCompressed;
     unsigned provenanceConversion;
+    double matchPt;
+    double matchEta;
+    double matchPhi;
+    double matchXvtx;
+    double matchYvtx;
+    double matchZvtx;
+    bool allowMatchToAllIds;
 };
 #endif

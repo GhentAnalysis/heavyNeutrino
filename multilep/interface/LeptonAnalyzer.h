@@ -191,6 +191,12 @@ class LeptonAnalyzer {
     unsigned _lProvenance[nL_max];                                                                    
     unsigned _lProvenanceCompressed[nL_max];
     unsigned _lProvenanceConversion[nL_max];
+    double _lMatchPt[nL_max];
+    double _lMatchEta[nL_max];
+    double _lMatchPhi[nL_max];
+    double _lMatchVertexX[nL_max];
+    double _lMatchVertexY[nL_max];
+    double _lMatchVertexZ[nL_max];
 
 
     std::vector<std::string> singleEleTrigs, singleMuoTrigs;

@@ -3,7 +3,9 @@
 #include "heavyNeutrino/multilep/interface/GenParticleManager.h"
 #include "TLorentzVector.h" 
 
-GenMatching::GenMatching(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer): multilepAnalyzer(multilepAnalyzer){};
+GenMatching::GenMatching(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer): multilepAnalyzer(multilepAnalyzer){
+    allowMatchToAllIds = iConfig.existsAs<bool>("allowMatchingToAllIds") ? iConfig.getParameter<bool>("allowMatchingToAllIds") : false;
+};
 
 void GenMatching::setGenParticles(const edm::Event& iEvent){
     iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
@@ -11,7 +13,7 @@ void GenMatching::setGenParticles(const edm::Event& iEvent){
 
 //fill match variables
 template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco) {
-  const reco::GenParticle* match = findGenMatch(reco);
+  const reco::GenParticle* match = findGenMatch(reco, allowMatchToAllIds);
   if(match != nullptr){
     //genLindex = genPhindex = 0;
     genLindex = 0;
@@ -23,6 +25,12 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
     matchPdgId = match->pdgId();
     provenance = GenTools::provenance(*match, *genParticles);
     provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
+    matchPt = match->pt();
+    matchEta = match->eta();
+    matchPhi = match->phi();
+    matchXvtx = match->vertex().x();
+    matchYvtx = match->vertex().y();
+    matchZvtx = match->vertex().z();
   } else{
     genLindex = multilepAnalyzer->genAnalyzer->gen_nL_max; // out of range
     // genPhindex = multilepAnalyzer->genAnalyzer->gen_nPh_max; // out of range
@@ -30,6 +38,12 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
     matchPdgId = 0;
     provenanceCompressed = 4;
     provenance = 18;
+    matchPt = 0.;
+    matchEta = 0.;
+    matchPhi = 0.;
+    matchXvtx = 0.;
+    matchYvtx = 0.;
+    matchZvtx = 0.;
   }
 }
 

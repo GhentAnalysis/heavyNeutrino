@@ -126,6 +126,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
     outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
     outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
+    outputTree->Branch("_lMatchPt",                   &_lMatchPt,                     "_lMatchPt[_nL]/D");
+    outputTree->Branch("_lMatchEta",                  &_lMatchEta,                    "_lMatchEta[_nL]/D");
+    outputTree->Branch("_lMatchPhi",                  &_lMatchPhi,                    "_lMatchPhi[_nL]/D");
+    outputTree->Branch("_lMatchVertexX",              &_lMatchVertexX,                "_lMatchVertexX[_nL]/D");
+    outputTree->Branch("_lMatchVertexY",              &_lMatchVertexY,                "_lMatchVertexY[_nL]/D");
+    outputTree->Branch("_lMatchVertexZ",              &_lMatchVertexZ,                "_lMatchVertexZ[_nL]/D");
   }
 }
 
@@ -647,6 +653,12 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
     _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
+    _lMatchPt[_nL] = genMatcher->getMatchPt();
+    _lMatchEta[_nL] = genMatcher->getMatchEta();
+    _lMatchPhi[_nL] = genMatcher->getMatchPhi();
+    _lMatchVertexX[_nL] = genMatcher->getMatchVertexX();
+    _lMatchVertexY[_nL] = genMatcher->getMatchVertexY();
+    _lMatchVertexZ[_nL] = genMatcher->getMatchVertexZ();
 }
 
 
