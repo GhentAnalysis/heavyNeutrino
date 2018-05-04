@@ -642,7 +642,6 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lGenIndex[_nL] = genMatcher->genLIndex();
     _lIsPrompt[_nL] = genMatcher->promptMatch();
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
-    _lMomPdgId[_nL] = genMatcher->pdgIdMom();
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
     _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
