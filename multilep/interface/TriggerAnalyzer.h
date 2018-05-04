@@ -26,7 +26,7 @@ class TriggerAnalyzer {
     multilep* multilepAnalyzer;
 
     void indexFlags(const edm::Event&, edm::Handle<edm::TriggerResults>&, std::vector<TString>&);
-    void getResults(const edm::Event&, edm::Handle<edm::TriggerResults>&, std::vector<TString>&, bool);
+    void getResults(const edm::Event&, edm::Handle<edm::TriggerResults>&, std::vector<TString>&, const bool);
 
     void initList(std::vector<TString>&, TString);
     std::vector<TString> getAllFlags();

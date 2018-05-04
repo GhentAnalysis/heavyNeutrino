@@ -24,16 +24,11 @@ void JEC::setJEC(const std::string& JECName){
     if(isData) JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2L3Residual_AK4PFchs.txt") );
     jetCorrector.reset(new FactorizedJetCorrector(JECParameters) );
     jetUncertainties.reset(new JetCorrectionUncertainty(path + JECName + "_Uncertainty_AK4PFchs.txt") );
-
-    //set up L1RC corrector for met correction
-    std::vector<JetCorrectorParameters> JECParametersL1C;
-    JECParametersL1C.push_back(JetCorrectorParameters( path + JECName + "_L1RC_AK4PFchs.txt") );
-    L1CCorrector.reset(new FactorizedJetCorrector(JECParameters) );
 }
    
 std::string JEC::getJECRunName(const unsigned long runNumber){
     ///////////////////////////
-    static const std::string version2016 = "V4";
+    static const std::string version2016 = "_V9";
     static const std::string version2017 = "_V6";
     //////////////////////////
     std::string jecName;
@@ -45,8 +40,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
             }
             else if(runNumber < 276812) jecName = "BCD";
             else if(runNumber < 278809) jecName = "EF";
-            else if(runNumber < 280385) jecName = "GV";
-            else if(runNumber < 294645) jecName = "H";
+            else if(runNumber < 294645) jecName = "GH";
             jecName += version2016;
         } else {
             if(runNumber < 297020){
@@ -78,7 +72,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
 
 std::string JEC::getJECName(const unsigned long runNumber){
     if(!is2017){
-        return "Summer16_23Sep2016" + getJECRunName(runNumber);
+        return "Summer16_07Aug2017" + getJECRunName(runNumber);
     } else{
         return "Fall17_17Nov2017" + getJECRunName(runNumber);
     }
@@ -90,15 +84,6 @@ std::vector<float> JEC::getSubCorrections(double rawPt, double eta, double rho, 
     jetCorrector->setJetA(area);
     jetCorrector->setJetPt(rawPt); 
     std::vector< float > corrections = jetCorrector->getSubCorrections();
-    return corrections;
-}
-
-std::vector<float> JEC::getL1CCorrections(double rawPt, double eta, double rho, double area){
-    L1CCorrector->setJetEta(eta);
-    L1CCorrector->setRho(rho);
-    L1CCorrector->setJetA(area);
-    L1CCorrector->setJetPt(rawPt); 
-    std::vector< float > corrections = L1CCorrector->getSubCorrections();
     return corrections;
 }
 
@@ -125,13 +110,11 @@ double JEC::jetUncertainty(double pt, double eta){
 std::pair<double, double> JEC::getMETCorrectionPxPy(double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area){
 
     std::vector< float > corrections = getSubCorrections(rawPt, rawEta, rho, area); 
-    std::vector< float > L1CCorrections = getL1CCorrections(rawPt, rawEta, rho, area); 
-    
-    //double l1corrpt   = rawMuonSubtractedPt*corrections.front(); // l1fastjet corrections were pushed pack first
-    double l1corrpt   = rawMuonSubtractedPt*L1CCorrections.front();
+
+    double l1corrpt   = rawMuonSubtractedPt*corrections.front(); // l1fastjet corrections were pushed pack first
     double fullcorrpt = rawMuonSubtractedPt*corrections.back();  // full corrections are the last in the vector
     // the corretions for the MET are the difference between l1fastjet and the full corrections on the jet!
-    if(emf > 0.9 or fullcorrpt < 15.) return {0., 0.}; // skip jets with EMF > 0.9
+    if(emf > 0.9 or fullcorrpt < 15. || (fabs(rawEta) > 9.9) ) return {0., 0.}; // skip jets with EMF > 0.9
     
     std::pair<double, double> corr = {px(l1corrpt - fullcorrpt, phi), py(l1corrpt - fullcorrpt, phi)};
     return corr; 

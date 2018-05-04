@@ -59,6 +59,20 @@ if [[ -z "$output" ]]; then
         output=${output%%/}
         #set output directory to default 
     fi
+    #add run labels for data
+    if [[ $input == *"Run2017"* ]] || [[ $input == *"Run2016"* ]]; then
+        echo "passed IF"
+        if [[ $input == *"Run2017"* ]]; then
+            output=${output}/Run2017
+        else 
+            output=${output}/Run2016
+        fi
+        for era in B C D E F G H; do
+            if [[ $input == *"Run2016${era}"* ]] || [[ $input == *"Run2017${era}"* ]]; then
+                output=${output}${era}
+            fi
+        done
+    fi
     echo "OUTPUT = $output"
     output=~/public/heavyNeutrino/${output}    
 fi
@@ -90,8 +104,8 @@ while read f; do
     fileCount=$((fileCount + 1))
     #submit a job for every few files, as specified in the input
     if (( $fileCount % $filesPerJob == 0 )) || (( $fileCount == 1 ))
-        then if (( $fileCount % $filesPerJob == 0 ));
-            then fileList="${fileList%,}" #remove trailing comma from fileList
+        then if (( $fileCount % $filesPerJob == 0 )); then
+            #then fileList="${fileList%,}" #remove trailing comma from fileList
             #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
             #submit job
             submitJob $submit
@@ -109,8 +123,8 @@ while read f; do
     echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=${output}/${skim}_Job_${fileCount}.root events=-1 > ${output}/logs/Job_${fileCount}.txt 2> ${output}/errs/Job_${fileCount}.txt" >> $submit
 done < fileList.txt
 if (( $fileCount % $filesPerJob != 0 )); then
-    fileList="${fileList%,}" #remove trailing comma from fileList
-    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/${skim}_Job_${jobCount}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
+    #fileList="${fileList%,}" #remove trailing comma from fileList
+    #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/${skim}_Job_${jobCount}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
     #submit job
     submitJob $submit
     #cat $submit

@@ -52,10 +52,11 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
+
     //initialize jec txt files
     std::string dirtyHack = "dummy.txt";
     std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
-    jec             = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
+    jec = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
 }
 
 multilep::~multilep(){
@@ -71,9 +72,11 @@ multilep::~multilep(){
 
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
+
     //Initialize tree with event info
 
     outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
+    nVertices  = fs->make<TH1D>("nVertices", "Number of vertices", 120, 0, 120);
 
     //Set all branches of the outputTree
     outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
@@ -95,17 +98,22 @@ void multilep::beginJob(){
 
     _runNb = 0;
 }
+
 // ------------ method called for each lumi block ---------
 void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
     if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
     _lumiBlock = (unsigned long) iLumi.id().luminosityBlock();
 }
+
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
+
     // HLT results could have different size/order in new run, so look up again de index positions
     if(useTriggerAnalyzer) triggerAnalyzer->reIndex = true;
     //update JEC 
     _runNb = (unsigned long) iRun.id().run();
+
+    //update JEC 
     jec->updateJEC(_runNb);
 }
 
@@ -118,6 +126,12 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
     if(!vertices->size()) return;                                      // don't consider 0 vertex events
 
+
+    //extract number of vertices 
+    nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
+    if(_nVertex == 0) return;                                      //Don't consider 0 vertex events
+
+    if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
                                                                        // also needs to run before leptonAnalyzer to save gen-matching info...
 
@@ -132,7 +146,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     _runNb     = (unsigned long) iEvent.id().run();
     _lumiBlock = (unsigned long) iEvent.id().luminosityBlock();
     _eventNb   = (unsigned long) iEvent.id().event();
-    _nVertex   = vertices->size();
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
@@ -164,8 +177,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     
     if(skim == "FR" and nJetBackToBack == 0) return;
     
-    
-    
     //store calculated event info in root tree
     outputTree->Fill();
 }
@@ -178,6 +189,7 @@ void multilep::endJob(){
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void multilep::fillDescriptions(edm::ConfigurationDescriptions& descriptions){
+
     //The following says we do not know what parameters are allowed so do no validation
     // Please change this to state exactly what you do use, even if it is no parameters
     edm::ParameterSetDescription desc;

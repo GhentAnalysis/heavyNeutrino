@@ -138,10 +138,12 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon, LeptonMvaHelper* mvaH
             _ptRel[_nL],
             _ptRatio[_nL],
             _closestJetCsvV2[_nL],
+            _closestJetDeepCsv_b[_nL] + _closestJetDeepCsv_bb[_nL],
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
             _relIso[_nL],
+            _relIso0p4[_nL],
             muon.segmentCompatibility()
             );
 }
@@ -155,13 +157,15 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron, LeptonMvaHelp
             _ptRel[_nL],
             _ptRatio[_nL],
             _closestJetCsvV2[_nL],
+            _closestJetDeepCsv_b[_nL] + _closestJetDeepCsv_bb[_nL],
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
             _relIso[_nL],
+            _relIso0p4[_nL],
             _lElectronMva[_nL],
-            _lElectronMvaHZZ[_nL]
+            _lElectronMvaHZZ[_nL],
+            _lElectronMvaFall17NoIso[_nL]
             );
 }
-
 

@@ -79,7 +79,7 @@ bool GenMatching::considerForMatching(const reco::Candidate& reco, const reco::G
             return false;
         } else {
             //allow matching to photons
-            return (abs(gen.pdgId()) == 22);
+            if (abs(gen.pdgId()) != 22) return false;
         }
     }
     if(abs(reco.pdgId()) == 15 && abs(gen.pdgId()) == 15) return gen.status() == 2 && gen.isLastCopy();

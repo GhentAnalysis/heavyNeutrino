@@ -108,7 +108,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<double>                            rhoToken;
         edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
-        edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
+        edm::EDGetTokenT<edm::TriggerResults>               recoResultsPrimaryToken;                     //MET filter information
+        edm::EDGetTokenT<edm::TriggerResults>               recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
         edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
         edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> trigObjToken;
         edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
@@ -156,6 +157,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         double        _metSignificance;
 
         bool          useTriggerAnalyzer;
+        TH1D* nVertices;                                                                                 //Histogram with number of vertices
 };
 #endif
 

@@ -54,6 +54,7 @@ class GenMatching{
     unsigned genLindex;
     // unsigned genPhindex;
     int matchPdgId;
+    int momPdgId;
     bool matchIsPrompt;
     unsigned provenance;
     unsigned provenanceCompressed;

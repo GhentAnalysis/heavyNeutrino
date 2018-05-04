@@ -518,9 +518,6 @@ void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
 	  }
    }	
 }
-
-
-
 // Fill the arrays of displaced vertices and leptons 
 void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, unsigned iL_minus,
 					      const TransientVertex& dvtx,
@@ -650,6 +647,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lGenIndex[_nL] = genMatcher->genLIndex();
     _lIsPrompt[_nL] = genMatcher->promptMatch();
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
+    _lMomPdgId[_nL] = genMatcher->pdgIdMom();
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
     _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
@@ -783,7 +781,9 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     //Make skimmed "close jet" collection
     std::vector<pat::Jet> selectedJetsAll;
     for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        if( jet->pt() > 5 && std::abs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+        double jetPt = jet->pt()*multilepAnalyzer->jec->jetCorrection(jet->correctedP4("Uncorrected").Pt(), jet->correctedP4("Uncorrected").Eta(), rho, jet->jetArea(), jecLevel); 
+        if( jetPt > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+        //if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
     }
     // Find closest selected jet
     unsigned closestIndex = 0;
@@ -799,20 +799,21 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
     } else {
+        
         double totalJEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), jecLevel);
         double l1JEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), "L1FastJet");
+        TLorentzVector l1Jet;
+        l1Jet.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt()*l1JEC, jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E()*l1JEC);
+        TLorentzVector l(lepton.px(), lepton.py(), lepton.pz(), lepton.energy());
+        float JEC = totalJEC/l1JEC;
+        TLorentzVector lepAwareJet = (l1Jet - l)*JEC + l;
+        
         /*
         auto  l1Jet       = jet.correctedP4("L1FastJet");
         float JEC         = jet.p4().E()/l1Jet.E();
         auto  l           = lepton.p4();
         auto  lepAwareJet = (l1Jet - l)*JEC + l;
         */
-        TLorentzVector l1Jet;
-        l1Jet.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt()*l1JEC, jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E()*l1JEC);
-        float JEC = totalJEC/l1JEC;
-        TLorentzVector l(lepton.px(), lepton.py(), lepton.pz(), lepton.energy());
-        TLorentzVector lepAwareJet = (l1Jet - l)*JEC + l;
-
 
         TLorentzVector lV(l.Px(), l.Py(), l.Pz(), l.E());
         TLorentzVector jV(lepAwareJet.Px(), lepAwareJet.Py(), lepAwareJet.Pz(), lepAwareJet.E());

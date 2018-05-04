@@ -9,8 +9,13 @@
 #include "TTree.h"
 
 
-double LeptonAnalyzer::getRelIso04(const pat::Muon& mu) const{ //Note: effective area correction is used instead of delta-beta correction
-    double puCorr = 0.5 * mu.pfIsolationR04().sumPUPt;
+double LeptonAnalyzer::getRelIso04(const pat::Muon& mu, const double rho, const bool DeltaBeta) const{ //Note: effective area correction is used instead of delta-beta correction
+    double puCorr;
+    if(!DeltaBeta){
+        puCorr = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta())*(0.4*0.4/(0.3*0.3));
+    } else{
+        puCorr = 0.5*mu.pfIsolationR04().sumPUPt;
+    }
     double absIso = mu.pfIsolationR04().sumChargedHadronPt + std::max(0., mu.pfIsolationR04().sumNeutralHadronEt + mu.pfIsolationR04().sumPhotonEt - puCorr);
     return absIso/mu.pt();
 }
