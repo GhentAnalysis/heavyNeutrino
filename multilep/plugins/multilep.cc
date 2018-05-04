@@ -127,12 +127,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
     if(!vertices->size()) return;                                      // don't consider 0 vertex events
 
-
-    //extract number of vertices 
-    nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
-    if(_nVertex == 0) return;                                      //Don't consider 0 vertex events
-
-    if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
                                                                        // also needs to run before leptonAnalyzer to save gen-matching info...
 
