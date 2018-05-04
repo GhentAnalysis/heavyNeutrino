@@ -12,9 +12,6 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     singleEleTrigs(multilepAnalyzer->is2017 ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2017") : iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers")),
     singleMuoTrigs(multilepAnalyzer->is2017 ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2017") : iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers"))
 {
-leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig, 0);     //SUSY
-    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, 1);     //TTH
-    leptonMvaComputertZqTTV = new LeptonMvaHelper(iConfig, 2);  //tZq/TTV
     if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
     if(multilepAnalyzer->isData){
         jecLevel = "L2L3Residual";
