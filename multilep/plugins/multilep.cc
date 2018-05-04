@@ -42,7 +42,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 {
     useTriggerAnalyzer = iConfig.existsAs<edm::InputTag>("recoResults");
     if(useTriggerAnalyzer) {
-      recoResultsToken = consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("recoResults"));
+        recoResultsToken = consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("recoResults"));
+
       triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
       prescalesToken = consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"));
    }
