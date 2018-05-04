@@ -21,8 +21,6 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
-  delete leptonMvaComputerSUSY;
-  delete leptonMvaComputerTTH;
   if(!multilepAnalyzer->isData) delete genMatcher;
 }
 
