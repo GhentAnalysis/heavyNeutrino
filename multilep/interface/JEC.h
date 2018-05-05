@@ -20,7 +20,7 @@ class to apply JEC from txt files
 
 class JEC {
     public:
-        JEC(const std::string& JECpath, const bool dataSample, const bool fall17Sample);
+        JEC(const std::string& JECpath, const bool dataSample, const bool fall17Sample, const double forMETJetPtLevel);
         ~JEC();
 
         void updateJEC(const unsigned long);
@@ -35,6 +35,7 @@ class JEC {
         bool isData;
         bool is2017;
         std::string currentJEC; 
+        double jetPtThreshold;
 
         std::shared_ptr<FactorizedJetCorrector> jetCorrector;
         std::shared_ptr<JetCorrectionUncertainty> jetUncertainties;

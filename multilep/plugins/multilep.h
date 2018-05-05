@@ -116,7 +116,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                isData;
         bool                                                is2017;
         bool                                                isSUSY;
-        //std::string                                         jecPath;
+        std::string                                         jecPath;
+        double                                              jetPtThreshold;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
@@ -132,7 +133,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         JetAnalyzer*      jetAnalyzer;
         LheAnalyzer*      lheAnalyzer;
         SUSYMassAnalyzer* susyMassAnalyzer;
-        //JEC*              jec; 
+        JEC*              jec; 
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;
