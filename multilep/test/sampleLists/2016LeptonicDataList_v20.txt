@@ -1,0 +1,126 @@
+#2016 data
+
+############
+#Single Muon
+############
+
+##origninal Moriond17 rereco
+#dilep:/SingleMuon/Run2016B-03Feb2017_ver1-v1/MINIAOD
+#dilep:/SingleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD
+#dilep:/SingleMuon/Run2016C-03Feb2017-v1/MINIAOD
+#dilep:/SingleMuon/Run2016D-03Feb2017-v1/MINIAOD
+#dilep:/SingleMuon/Run2016E-03Feb2017-v1/MINIAOD
+#dilep:/SingleMuon/Run2016F-03Feb2017-v1/MINIAOD
+#dilep:/SingleMuon/Run2016G-03Feb2017-v1/MINIAOD
+#dilep:/SingleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD
+#dilep:/SingleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD
+
+#legacy rereco
+dilep:/SingleMuon/Run2016B-07Aug17_ver1-v1/MINIAOD
+dilep:/SingleMuon/Run2016B-07Aug17_ver2-v1/MINIAOD
+dilep:/SingleMuon/Run2016C-07Aug17-v1/MINIAOD
+dilep:/SingleMuon/Run2016D-07Aug17-v1/MINIAOD
+dilep:/SingleMuon/Run2016E-07Aug17-v1/MINIAOD
+dilep:/SingleMuon/Run2016F-07Aug17-v1/MINIAOD
+dilep:/SingleMuon/Run2016G-07Aug17-v1/MINIAOD
+dilep:/SingleMuon/Run2016H-07Aug17-v1/MINIAOD
+
+################
+#Single Electron
+################
+
+##original Moriond17 rereco
+#dilep:/SingleElectron/Run2016B-03Feb2017_ver1-v1/MINIAOD
+#dilep:/SingleElectron/Run2016B-03Feb2017_ver2-v2/MINIAOD
+#dilep:/SingleElectron/Run2016C-03Feb2017-v1/MINIAOD
+#dilep:/SingleElectron/Run2016D-03Feb2017-v1/MINIAOD
+#dilep:/SingleElectron/Run2016E-03Feb2017-v1/MINIAOD
+#dilep:/SingleElectron/Run2016F-03Feb2017-v1/MINIAOD
+#dilep:/SingleElectron/Run2016G-03Feb2017-v1/MINIAOD
+#dilep:/SingleElectron/Run2016H-03Feb2017_ver2-v1/MINIAOD
+#dilep:/SingleElectron/Run2016H-03Feb2017_ver3-v1/MINIAOD
+
+#legacy rereco
+dilep:/SingleElectron/Run2016B-07Aug17_ver1-v1/MINIAOD
+dilep:/SingleElectron/Run2016B-07Aug17_ver2-v2/MINIAOD
+dilep:/SingleElectron/Run2016C-07Aug17-v1/MINIAOD
+dilep:/SingleElectron/Run2016D-07Aug17-v1/MINIAOD
+dilep:/SingleElectron/Run2016E-07Aug17-v1/MINIAOD
+dilep:/SingleElectron/Run2016F-07Aug17-v1/MINIAOD
+dilep:/SingleElectron/Run2016G-07Aug17-v1/MINIAOD
+dilep:/SingleElectron/Run2016H-07Aug17-v1/MINIAOD
+
+############
+#Double Muon
+############
+
+##original Moriond17 rereco
+#dilep:/DoubleMuon/Run2016B-03Feb2017_ver1-v1/MINIAOD
+#dilep:/DoubleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD
+#dilep:/DoubleMuon/Run2016C-03Feb2017-v1/MINIAOD
+#dilep:/DoubleMuon/Run2016D-03Feb2017-v1/MINIAOD
+#dilep:/DoubleMuon/Run2016E-03Feb2017-v1/MINIAOD
+#dilep:/DoubleMuon/Run2016F-03Feb2017-v1/MINIAOD
+#dilep:/DoubleMuon/Run2016G-03Feb2017-v1/MINIAOD
+#dilep:/DoubleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD
+#dilep:/DoubleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD
+
+#legacy rereco
+dilep:/DoubleMuon/Run2016B-07Aug17_ver1-v1/MINIAOD
+dilep:/DoubleMuon/Run2016B-07Aug17_ver2-v1/MINIAOD
+dilep:/DoubleMuon/Run2016C-07Aug17-v1/MINIAOD
+dilep:/DoubleMuon/Run2016D-07Aug17-v1/MINIAOD
+dilep:/DoubleMuon/Run2016E-07Aug17-v1/MINIAOD
+dilep:/DoubleMuon/Run2016F-07Aug17-v1/MINIAOD
+dilep:/DoubleMuon/Run2016G-07Aug17-v1/MINIAOD
+dilep:/DoubleMuon/Run2016H-07Aug17-v1/MINIAOD
+
+##########
+#Double EG
+##########
+
+##original Moriond17 rereco
+#dilep:/DoubleEG/Run2016B-03Feb2017_ver1-v1/MINIAOD
+#dilep:/DoubleEG/Run2016B-03Feb2017_ver2-v2/MINIAOD
+#dilep:/DoubleEG/Run2016C-03Feb2017-v1/MINIAOD
+#dilep:/DoubleEG/Run2016D-03Feb2017-v1/MINIAOD
+#dilep:/DoubleEG/Run2016E-03Feb2017-v1/MINIAOD
+#dilep:/DoubleEG/Run2016F-03Feb2017-v1/MINIAOD
+#dilep:/DoubleEG/Run2016G-03Feb2017-v1/MINIAOD
+#dilep:/DoubleEG/Run2016H-03Feb2017_ver2-v1/MINIAOD
+#dilep:/DoubleEG/Run2016H-03Feb2017_ver3-v1/MINIAOD
+
+#legacy rereco
+dilep:/DoubleEG/Run2016B-07Aug17_ver1-v1/MINIAOD
+dilep:/DoubleEG/Run2016B-07Aug17_ver2-v2/MINIAOD
+dilep:/DoubleEG/Run2016C-07Aug17-v1/MINIAOD
+dilep:/DoubleEG/Run2016D-07Aug17-v1/MINIAOD
+dilep:/DoubleEG/Run2016E-07Aug17-v1/MINIAOD
+dilep:/DoubleEG/Run2016F-07Aug17-v1/MINIAOD
+dilep:/DoubleEG/Run2016G-07Aug17-v1/MINIAOD
+dilep:/DoubleEG/Run2016H-07Aug17-v1/MINIAOD
+
+########
+#Muon EG
+########
+
+##original Moriond17 rereco
+#dilep:/MuonEG/Run2016B-03Feb2017_ver1-v1/MINIAOD
+#dilep:/MuonEG/Run2016B-03Feb2017_ver2-v2/MINIAOD
+#dilep:/MuonEG/Run2016C-03Feb2017-v1/MINIAOD
+#dilep:/MuonEG/Run2016D-03Feb2017-v1/MINIAOD
+#dilep:/MuonEG/Run2016E-03Feb2017-v1/MINIAOD
+#dilep:/MuonEG/Run2016F-03Feb2017-v1/MINIAOD
+#dilep:/MuonEG/Run2016G-03Feb2017-v1/MINIAOD
+#dilep:/MuonEG/Run2016H-03Feb2017_ver2-v1/MINIAOD
+#dilep:/MuonEG/Run2016H-03Feb2017_ver3-v1/MINIAOD
+
+#legacy rereco
+dilep:/MuonEG/Run2016B-07Aug17_ver1-v1/MINIAOD
+dilep:/MuonEG/Run2016B-07Aug17_ver2-v1/MINIAOD
+dilep:/MuonEG/Run2016C-07Aug17-v1/MINIAOD
+dilep:/MuonEG/Run2016D-07Aug17-v1/MINIAOD
+dilep:/MuonEG/Run2016E-07Aug17-v1/MINIAOD
+dilep:/MuonEG/Run2016F-07Aug17-v1/MINIAOD
+dilep:/MuonEG/Run2016G-07Aug17-v1/MINIAOD
+dilep:/MuonEG/Run2016H-07Aug17-v1/MINIAOD
