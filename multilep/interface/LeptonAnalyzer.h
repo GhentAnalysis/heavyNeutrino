@@ -146,10 +146,8 @@ class LeptonAnalyzer {
     unsigned _lNumberOfValidPixelHits[nL_max];
     unsigned _muNumberInnerHits[nL_max];
     unsigned _lTrackerLayersWithMeasurement[nL_max];
-    double _lMuTime[nL_max];
-    double _lMuRPCTime[nL_max];
-    double _lMuNDoFTime[nL_max];
-    double _lMuErrTime[nL_max];
+    bool _VetoMuTime[nL_max];
+    
 
 	
   /////// ele ID variabels
