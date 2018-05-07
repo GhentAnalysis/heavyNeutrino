@@ -186,9 +186,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	  
      const reco::MuonTime cmb = mu.time();
      const reco::MuonTime rpc = mu.rpcTime();  
-	enum reco::MuonTime::Direction cmbDir = cmb.Direction ();
-	enum reco::MuonTime::Direction rpcDir = rpc.Direction ();
+	enum  cmbDir = cmb.reco::MuonTime::Direction ();
+	enum  rpcDir = rpc.reco::MuonTime::Direction ();
 	
+	/*  switch(RED) {
+        case RED:   std::cout << "red\n"; break;
+        case GREEN: std::cout << "green\n"; break;
+        case BLUE:  std::cout << "blue\n"; break;
+    }*/
 		//csc + dt
 	  	_lMuTimenDof[_nL] = cmb.nDof;
 		if (cmbDir== -1) {
