@@ -73,12 +73,15 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/i");
   outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/i");
   outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/i");
-  outputTree->Branch("_lMuTime",                      &_lMuTime,                      "_lMuTime[_nL]/D");
-  outputTree->Branch("_lMuRPCTime",                   &_lMuRPCTime,                   "_lMuRPCTime[_nL]/D");
-  outputTree->Branch("_lMuNDoFTime",                  &_lMuNDoFTime,                  "_lMuNDoFTime[_nL]/D");
-  outputTree->Branch("_lMuErrTime",                   &_lMuErrTime,                   "_lMuErrTime[_nL]/D");
 
-	
+ 	
+  outputTree->Branch("_lMuTime",                    &_lMuTime,         "_lMuTime[_nL]/D");
+  outputTree->Branch("_lMuTimeErr",                 &_lMuTimeErr,         "_lMuTimeErr[_nL]/D");
+  outputTree->Branch("_lMuRPCTime",                 &_lMuRPCTime,         "_lMuRPCTime[_nL]/D");
+  outputTree->Branch("_lMuRPCTimeErr",              &_lMuRPCTimeErr,         "_lMuRPCTimeErr[_nL]/D");	
+  outputTree->Branch("_lMuTimenDof",                 &_lMuTimenDof,                 "_lMuTimenDof[_nL]/I");		
+  outputTree->Branch("_lMuRPCTimenDof",                 &_lMuRPCTimenDof,                 "_lMuRPCTimenDof[_nL]/I");		
+
   outputTree->Branch("_lEleIsEB",                     &_lEleIsEB ,                    "_lEleIsEB[_nL]/O");
   outputTree->Branch("_lEleIsEE",                     &_lEleIsEE ,                    "_lEleIsEE[_nL]/O");
   outputTree->Branch("_lEleSuperClusterOverP",        &_lEleSuperClusterOverP ,       "_lEleSuperClusterOverP[_nL]/D");
@@ -180,6 +183,43 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
     _lPFMuon[_nL]=  mu.isPFMuon();
+	  
+     const reco::MuonTime& cmb = mu.Time();
+     const reco::MuonTime& rpc = mu.rpcTime();  
+	//csc + dt
+	  _lMuTimenDof[_nL] = cmb->nDof;
+	 if (cmb-> Direction () == OutsideIn) {
+		 _lMuTime[_nL] = cmb->timeAtIpOutIn;
+		 _lMuTimeErr[_nL] = cmb->timeAtIpOutInErr;
+	 }
+	  if (cmb-> Direction () == InsideOut) {
+		 _lMuTime[_nL] = cmb->timeAtIpInOut;
+		 _lMuTimeErr[_nL] = cmb->timeAtIpInOutErr;
+	 }
+	  if (cmb-> Direction () == Undefined) {
+		 _lMuTime[_nL] = 999999;
+		 _lMuTimeErr[_nL] = 999999;
+	 }
+	  //RPC
+	  _lMuRPCTimenDof[_nL] = rpc->nDof;
+	 if (rpc-> Direction () == OutsideIn) {
+		 _lMuRPCTime[_nL] = rpc->timeAtIpOutIn;
+		 _lMuRPCTimeErr[_nL] = rpc->timeAtIpOutInErr;
+	 }
+	  if (rpc-> Direction () == InsideOut) {
+		 _lMuRPCTime[_nL] = rpc->timeAtIpInOut;
+		 _lMuRPCTimeErr[_nL] = rpc->timeAtIpInOutErr;
+	 }
+	  if (rpc-> Direction () == Undefined) {
+		 _lMuRPCTime[_nL] = 999999;
+		 _lMuRPCTimeErr[_nL] = 999999;
+	 }
+	  
+	
+	
+	  
+	  
+    
 
     fillLeptonImpactParameters(mu, primaryVertex);
 
@@ -253,6 +293,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
     
+	  
+	  
+	  _lMuRPCTimenDof[_nL] = -1;
+	  _lMuTimenDof[_nL] = -1;
+	  _lMuRPCTime[_nL] = -1;
+	  _lMuRPCTimeErr[_nL] = -1;
+	  _lMuTime[_nL] = -1;
+	  _lMuTimeErr[_nL] = -1;
+	
+	  
+	  
+	  
     _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] = 0; // cannot be -1 !!
     fillLeptonImpactParameters(*ele, primaryVertex);
