@@ -191,7 +191,11 @@ class LeptonAnalyzer {
     // Index in the gen-particle list
     unsigned _lGenIndex[nL_max];
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
-    int _lMatchPdgId[nL_max];
+    bool _lIsPromptFinalState[nL_max];                                                                          //MC-truth variables
+    bool _lIsPromptDecayed[nL_max];                                                                          //MC-truth variables
+
+	
+	int _lMatchPdgId[nL_max];
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];                                                                    
     unsigned _lProvenanceCompressed[nL_max];
