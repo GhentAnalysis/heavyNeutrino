@@ -59,6 +59,8 @@ class GenMatching{
     int matchPdgId;
     int momPdgId;
     bool matchIsPrompt;
+ bool matchIsPromptFinalState;
+    bool matchIsPromptDecayed;
     unsigned provenance;
     unsigned provenanceCompressed;
     unsigned provenanceConversion;
