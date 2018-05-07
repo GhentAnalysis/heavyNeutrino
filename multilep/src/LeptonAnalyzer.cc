@@ -73,6 +73,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nL]/i");
   outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/i");
   outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/i");
+  outputTree->Branch("_lMuTime",                      &_lMuTime,                      "_lMuTime[_nL]/D");
+  outputTree->Branch("_lMuRPCTime",                   &_lMuRPCTime,                   "_lMuRPCTime[_nL]/D");
+  outputTree->Branch("_lMuNDoFTime",                  &_lMuNDoFTime,                  "_lMuNDoFTime[_nL]/D");
+  outputTree->Branch("_lMuErrTime",                   &_lMuErrTime,                   "_lMuErrTime[_nL]/D");
+
+	
   outputTree->Branch("_lEleIsEB",                     &_lEleIsEB ,                    "_lEleIsEB[_nL]/O");
   outputTree->Branch("_lEleIsEE",                     &_lEleIsEE ,                    "_lEleIsEE[_nL]/O");
   outputTree->Branch("_lEleSuperClusterOverP",        &_lEleSuperClusterOverP ,       "_lEleSuperClusterOverP[_nL]/D");
