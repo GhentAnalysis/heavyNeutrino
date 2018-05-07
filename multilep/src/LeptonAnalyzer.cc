@@ -195,25 +195,25 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 		    _lMuTime[_nL] = cmb.timeAtIpOutIn;
 		    _lMuTimeErr[_nL] = cmb.timeAtIpOutInErr;
 		}
-		if (cmbDir == InsideOut) {
+		if (cmbDir == 1) {
 		    _lMuTime[_nL] = cmb.timeAtIpInOut;
 		    _lMuTimeErr[_nL] = cmb.timeAtIpInOutErr;
 		}
-		if (cmb. Direction () == Undefined) {
+		if (cmbDir == 0) {
 		    _lMuTime[_nL] = 999999;
 		    _lMuTimeErr[_nL] = 999999;
 		}
 		//RPC
 		_lMuRPCTimenDof[_nL] = rpc.nDof;
-		if (rpc. Direction () == OutsideIn) {
+		if (rpcDir== -1) {
 		    _lMuRPCTime[_nL] = rpc.timeAtIpOutIn;
 		    _lMuRPCTimeErr[_nL] = rpc.timeAtIpOutInErr;
 		}
-		if (rpc. Direction () == InsideOut) {
+		if (rpcDir== 1) {
 		    _lMuRPCTime[_nL] = rpc.timeAtIpInOut;
 		    _lMuRPCTimeErr[_nL] = rpc.timeAtIpInOutErr;
 		}
-		if (rpc. Direction () == Undefined) {
+		if (rpcDir== 0) {
 		    _lMuRPCTime[_nL] = 999999;
 		    _lMuRPCTimeErr[_nL] = 999999;
 		}
