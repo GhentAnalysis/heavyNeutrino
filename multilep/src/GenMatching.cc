@@ -22,6 +22,9 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
     // for(; genPhindex<multilepAnalyzer->genAnalyzer->gen_nPh_max; ++genPhindex)
     //     if(multilepAnalyzer->genAnalyzer->_gen_phRefs[genPhindex]==match) break;
     matchIsPrompt = isPrompt(reco, *match);
+    matchIsPromptFinalState = isPromptFinalState(reco, *match);
+    matchIsPromptDecayed = isPromptDecayed(reco, *match);
+
     matchPdgId = match->pdgId();
     provenance = GenTools::provenance(*match, *genParticles);
     provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
