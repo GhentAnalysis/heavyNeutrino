@@ -15,6 +15,9 @@ class GenMatching{
 
     //check if given reco candidate is prompt
     bool isPrompt(const reco::Candidate&, const reco::GenParticle&) const;
+    bool isPromptFinalState(const reco::Candidate&, const reco::GenParticle&) const;
+    bool isPromptDecayed(const reco::Candidate&, const reco::GenParticle&) const;
+
     void setGenParticles(const edm::Event&);    
 
     //fill match variables
