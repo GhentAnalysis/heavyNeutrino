@@ -101,12 +101,10 @@ bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle&
     return false;
 }
 bool GenMatching::isPromptFinalState(const reco::Candidate& reco, const reco::GenParticle& match) const{
-    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPromptFinalState(match, *genParticles);
-    return false;
+    return GenTools::isPromptFinalState(match, *genParticles);
 }
 bool GenMatching::isPromptDecayed(const reco::Candidate& reco, const reco::GenParticle& match) const{
-    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPromptDecayed(match, *genParticles);
-    return false;
+    return GenTools::isPromptDecayed(match, *genParticles);
 }
 
 /********************************************************
