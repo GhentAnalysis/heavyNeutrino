@@ -54,6 +54,10 @@ namespace GenTools{
 
     //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
     bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    bool isPromptFinalState(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    bool isPromptDecayed(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+
+    
     //find the minimum deltaR between a reco particle and all genparticles
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
     //get CMSSW gen match for lepton
