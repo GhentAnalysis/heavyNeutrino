@@ -38,6 +38,9 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
     genLindex = multilepAnalyzer->genAnalyzer->gen_nL_max; // out of range
     // genPhindex = multilepAnalyzer->genAnalyzer->gen_nPh_max; // out of range
     matchIsPrompt = false;
+    matchIsPromptFinalState = false;
+    matchIsPromptDecayed = false;
+
     matchPdgId = 0;
     provenanceCompressed = 4;
     provenance = 18;
