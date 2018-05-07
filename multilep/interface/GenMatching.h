@@ -25,6 +25,9 @@ class GenMatching{
     // unsigned genPhIndex() {return genPhindex;}
     int pdgIdMatch() const {return matchPdgId; }
     bool promptMatch() const {return matchIsPrompt;}
+    bool promptFinalStateMatch() const {return matchIsPromptFinalState;}
+    bool promptDecayedMatch() const {return matchIsPromptDecayed;}
+
     unsigned getProvenance() const {return provenance;}
     unsigned getProvenanceCompressed() const{ return provenanceCompressed; }
     unsigned getProvenanceConversion() const{ return provenanceConversion; }
