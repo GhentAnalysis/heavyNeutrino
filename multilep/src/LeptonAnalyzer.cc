@@ -196,9 +196,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }*/
 		//csc + dt
 	  	_lMuTimenDof[_nL] = cmb.nDof;
-		if (mu.reco::MuonTime::Direction () == -1) {
-		    _lMuTime[_nL] = cmb.timeAtIpOutIn;
-		    _lMuTimeErr[_nL] = cmb.timeAtIpOutInErr;
+		if (mu.reco::MuonTime::Direction () == reco::MuonTime::outsideIn) 
+			_lMuTime[_nL] = cmb.timeAtIpOutIn;
+		    	_lMuTimeErr[_nL] = cmb.timeAtIpOutInErr;
 		}
 		if (cmbDir == 1) {
 		    _lMuTime[_nL] = cmb.timeAtIpInOut;
