@@ -118,6 +118,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   if(!multilepAnalyzer->isData){
     outputTree->Branch("_lGenIndex",                  &_lGenIndex,                    "_lGenIndex[_nL]/i");
     outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
+    outputTree->Branch("_lIsPromptFinalState",        &_lIsPromptFinalState,          "_lIsPromptFinalState[_nL]/O");
+    outputTree->Branch("_lIsPromptDecayed",           &_lIsPromptDecayed,             "_lIsPromptDecayed[_nL]/O");
     outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
     outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
     outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
@@ -641,6 +643,9 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     genMatcher->fillMatchingVars(lepton);
     _lGenIndex[_nL] = genMatcher->genLIndex();
     _lIsPrompt[_nL] = genMatcher->promptMatch();
+    _lIsPromptFinalState[_nL] = genMatcher->promptFinalStateMatch();
+    _lIsPromptDecayed[_nL] = genMatcher->promptDecayedMatch();
+
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
