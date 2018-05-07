@@ -204,13 +204,9 @@ bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::Ge
     return (gen.isPromptFinalState() || gen.isPromptDecayed());
 }
 bool GenTools::isPromptFinalState(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
-    const reco::GenParticle* mom = getMother(gen, genParticles);
-    if(abs(mom->pdgId()) == 15 && mom->isPromptDecayed()) return true;
     return (gen.isPromptFinalState() );
 }
 bool GenTools::isPromptDecayed(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
-    const reco::GenParticle* mom = getMother(gen, genParticles);
-    if(abs(mom->pdgId()) == 15 && mom->isPromptDecayed()) return true;
     return (gen.isPromptDecayed());
 }
 
