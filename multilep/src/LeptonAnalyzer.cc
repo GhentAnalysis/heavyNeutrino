@@ -196,7 +196,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }*/
 		//csc + dt
 	  	_lMuTimenDof[_nL] = cmb.nDof;
-		if (mu.reco::MuonTime::Direction () == reco::MuonTime::outsideIn) 
+		if (cmb.Direction () == -1) 
 			_lMuTime[_nL] = cmb.timeAtIpOutIn;
 		    	_lMuTimeErr[_nL] = cmb.timeAtIpOutInErr;
 		}
