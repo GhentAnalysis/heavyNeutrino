@@ -191,11 +191,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	
 		//csc + dt
 	  	_lMuTimenDof[_nL] = cmb.nDof;
-		if (cmb. Direction () == -1) {
+		if (cmbDir== -1) {
 		    _lMuTime[_nL] = cmb.timeAtIpOutIn;
 		    _lMuTimeErr[_nL] = cmb.timeAtIpOutInErr;
 		}
-		if (cmb. Direction () == InsideOut) {
+		if (cmbDir == InsideOut) {
 		    _lMuTime[_nL] = cmb.timeAtIpInOut;
 		    _lMuTimeErr[_nL] = cmb.timeAtIpInOutErr;
 		}
