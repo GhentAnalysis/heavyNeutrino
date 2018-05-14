@@ -109,7 +109,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
     edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken, mets);
     //to apply JEC from txt files
-    //edm::Handle<double> rho;                            iEvent.getByToken(multilepAnalyzer->rhoToken,            rho);
+    edm::Handle<double> rho;                            iEvent.getByToken(multilepAnalyzer->rhoToken,            rho);
 
     _nJets = 0;
 
@@ -175,15 +175,15 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
-    _met             = met.pt();
-    _metPhi          = met.phi();
+    //_met             = met.pt();
+    //_metPhi          = met.phi();
     /*
     std::cout << "~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "met = " << _met << std::endl;
     std::cout << "txt corrected met = " << multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first << std::endl;
     */
-    //_met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
-    //_metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
+    _met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
+    _metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
 
     //raw met values
     _rawmet= met.uncorPt();
