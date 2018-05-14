@@ -17,7 +17,7 @@ class GenAnalyzer {
   friend GenMatching;
 
   private:
-    static const unsigned gen_nL_max = 30;
+    static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
    
     unsigned    _ttgEventType;
