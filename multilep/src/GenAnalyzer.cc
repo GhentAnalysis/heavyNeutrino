@@ -76,7 +76,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
 	   if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
             if(_gen_nL != gen_nL_max){
-		 std::cout<<   p.pt()<<" -  "<<p.eta()<<" . "<<p.phi()<<std::endl;
+		 std::cout<<   p.pt()<<" -  "<<p.eta()<<" . "<<p.phi()<<" . "<< p.charge()<<" --> "<<p.pdgId()<<std::endl;
 		    
 	        _gen_lRefs[_gen_nL]     = &p;
                 _gen_lPt[_gen_nL]       = p.pt();
