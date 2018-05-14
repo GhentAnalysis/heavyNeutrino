@@ -76,21 +76,31 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
 	   if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
             if(_gen_nL != gen_nL_max){
+		 std::cout<<   p.pt()<<" -  "<<p.eta()<<" . "<<p.phi()<<std::endl;
+		    
 	        _gen_lRefs[_gen_nL]     = &p;
                 _gen_lPt[_gen_nL]       = p.pt();
                 _gen_lEta[_gen_nL]      = p.eta();
                 _gen_lPhi[_gen_nL]      = p.phi();
                 _gen_lE[_gen_nL]        = p.energy();
                 _gen_lCharge[_gen_nL]   = p.charge();
+		    std::cout<<"before prompt"<<std::endl;
                 _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
-                _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
-		_gen_vertex_x[_gen_nL]  = p.vertex().x();
+                		    std::cout<<"before mathoer"<<std::endl;
+
+		    _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
+		      std::cout<<"before vertex"<<std::endl;
+
+		    _gen_vertex_x[_gen_nL]  = p.vertex().x();
 		_gen_vertex_y[_gen_nL]  = p.vertex().y();
 		_gen_vertex_z[_gen_nL]  = p.vertex().z();
+		      std::cout<<"before chain"<<std::endl;
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
+		    		      std::cout<<"before parenatge"<<std::endl;
+
                 _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
 
                 if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
