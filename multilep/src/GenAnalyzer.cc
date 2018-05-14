@@ -72,12 +72,15 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 
         //store generator level lepton info
-              //  if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
+	    /* 
+	    normal case!!!!
+	     //  if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
+
+	    */
 
 	   if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
-		   if (p.pdgId()== 2212) continue;
+	 if (p.pdgId()== 2212) continue;
             if(_gen_nL != gen_nL_max){
-		 std::cout<<   p.pt()<<" -  "<<p.eta()<<" . "<<p.phi()<<"   . "<< p.charge()<<" --> "<<p.pdgId()<<std::endl;
 		    
 	        _gen_lRefs[_gen_nL]     = &p;
                 _gen_lPt[_gen_nL]       = p.pt();
@@ -85,22 +88,17 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lPhi[_gen_nL]      = p.phi();
                 _gen_lE[_gen_nL]        = p.energy();
                 _gen_lCharge[_gen_nL]   = p.charge();
-		    std::cout<<"before prompt"<<std::endl;
                 _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
-                		    std::cout<<"before mathoer"<<std::endl;
 
 		    _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
-		      std::cout<<"before vertex"<<std::endl;
 
 		    _gen_vertex_x[_gen_nL]  = p.vertex().x();
 		_gen_vertex_y[_gen_nL]  = p.vertex().y();
 		_gen_vertex_z[_gen_nL]  = p.vertex().z();
-		      std::cout<<"before chain"<<std::endl;
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
-		    		      std::cout<<"before parenatge"<<std::endl;
 
                 _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
 
