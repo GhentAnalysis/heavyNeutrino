@@ -72,7 +72,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 
         //store generator level lepton info
-        if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
+        if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
             if(_gen_nL != gen_nL_max){
 	        _gen_lRefs[_gen_nL]     = &p;
                 _gen_lPt[_gen_nL]       = p.pt();
