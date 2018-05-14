@@ -68,7 +68,7 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
-    //delete jec;
+    delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -105,7 +105,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     triggerAnalyzer->reIndex = true;
     //update JEC 
     _runNb = (unsigned long) iRun.id().run();
-    //jec->updateJEC(_runNb);
+    jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------
