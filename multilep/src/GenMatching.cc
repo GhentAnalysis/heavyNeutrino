@@ -67,7 +67,7 @@ const reco::GenParticle* GenMatching::geometricMatch(const reco::Candidate& reco
             }
         }
     } 
-    if(minDeltaR > 0.3){
+    if(minDeltaR > 0.2){
         if(!differentId){
             match = geometricMatch(reco, true);
         } else{
