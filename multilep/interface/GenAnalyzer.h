@@ -41,6 +41,7 @@ class GenAnalyzer {
 
     //Generator leptons
     unsigned _gen_nL;
+  double   _gen_pdgID[gen_nL_max];
     double   _gen_lPt[gen_nL_max];
     double   _gen_lEta[gen_nL_max];
     double   _gen_lPhi[gen_nL_max];
