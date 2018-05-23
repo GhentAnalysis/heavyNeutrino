@@ -32,7 +32,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_phMinDeltaR",           &_gen_phMinDeltaR,           "_gen_phMinDeltaR[_gen_nPh]/D");
     outputTree->Branch("_gen_phPassParentage",       &_gen_phPassParentage,       "_gen_phPassParentage[_gen_nPh]/O");
     outputTree->Branch("_gen_nL",                    &_gen_nL,                    "_gen_nL/i");
-    outputTree->Branch("_gen_pdgID",                    &_gen_pdgID,                    "_gen_pdgID/D");
+    outputTree->Branch("_gen_pdgID",                 &_gen_pdgID,                 "_gen_pdgID[_gen_nL]/D");
     outputTree->Branch("_gen_lPt",                   &_gen_lPt,                   "_gen_lPt[_gen_nL]/D");
     outputTree->Branch("_gen_lEta",                  &_gen_lEta,                  "_gen_lEta[_gen_nL]/D");
     outputTree->Branch("_gen_lPhi",                  &_gen_lPhi,                  "_gen_lPhi[_gen_nL]/D");
