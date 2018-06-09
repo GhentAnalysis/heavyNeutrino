@@ -190,15 +190,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         //fillLeptonGenVars(mu.genParticle());
         if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
-	fillLeptonTrackVariables(mu, packedCands, primaryVertex);
+	    fillLeptonTrackVariables(mu, packedCands, primaryVertex);
 
-	std::vector<reco::Track> vertex_tracks;
-	vertex_tracks.push_back(*mu.bestTrack());
-	fillLeptonVtxVariables(mu, packedCands, vertex_tracks);
-	_lVtxpos_PVdxy[_nL] = sqrt((_lVtxpos_x[_nL] - primaryVertex.x())*(_lVtxpos_x[_nL] - primaryVertex.x()) + (_lVtxpos_y[_nL] - primaryVertex.y())*(_lVtxpos_y[_nL] - primaryVertex.y()));
-	_lVtxpos_BSdxy[_nL] = sqrt((_lVtxpos_x[_nL] - beamspot->x0())*(_lVtxpos_x[_nL] - beamspot->x0()) + (_lVtxpos_y[_nL] - beamspot->y0())*(_lVtxpos_y[_nL] - beamspot->y0()));
-	_lVtxpos_PVdz[_nL] = fabs(_lVtxpos_z[_nL] - primaryVertex.z());
-	_lVtxpos_BSdz[_nL] = fabs(_lVtxpos_z[_nL] - beamspot->z0());
+	    std::vector<reco::Track> vertex_tracks;
+	    vertex_tracks.push_back(*mu.bestTrack());
+	    fillLeptonVtxVariables(mu, packedCands, vertex_tracks);
+	    _lVtxpos_PVdxy[_nL] = sqrt((_lVtxpos_x[_nL] - primaryVertex.x())*(_lVtxpos_x[_nL] - primaryVertex.x()) + (_lVtxpos_y[_nL] - primaryVertex.y())*(_lVtxpos_y[_nL] - primaryVertex.y()));
+	    _lVtxpos_BSdxy[_nL] = sqrt((_lVtxpos_x[_nL] - beamspot->x0())*(_lVtxpos_x[_nL] - beamspot->x0()) + (_lVtxpos_y[_nL] - beamspot->y0())*(_lVtxpos_y[_nL] - beamspot->y0()));
+	    _lVtxpos_PVdz[_nL] = fabs(_lVtxpos_z[_nL] - primaryVertex.z());
+	    _lVtxpos_BSdz[_nL] = fabs(_lVtxpos_z[_nL] - beamspot->z0());
 
         _lFlavor[_nL]        = 1;
         _lMuonSegComp[_nL]    = mu.segmentCompatibility();
@@ -249,15 +249,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         //fillLeptonGenVars(ele->genParticle());
         if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
-	fillLeptonTrackVariables(*ele, packedCands, primaryVertex);
+	    fillLeptonTrackVariables(*ele, packedCands, primaryVertex);
 	
-	std::vector<reco::Track> vertex_tracks;
-	vertex_tracks.push_back(*ele->gsfTrack());
-	fillLeptonVtxVariables(*ele, packedCands, vertex_tracks); 
-	_lVtxpos_PVdxy[_nL] = sqrt((_lVtxpos_x[_nL] - primaryVertex.x())*(_lVtxpos_x[_nL] - primaryVertex.x()) + (_lVtxpos_y[_nL] - primaryVertex.y())*(_lVtxpos_y[_nL] - primaryVertex.y()));
-	_lVtxpos_BSdxy[_nL] = sqrt((_lVtxpos_x[_nL] - beamspot->x0())*(_lVtxpos_x[_nL] - beamspot->x0()) + (_lVtxpos_y[_nL] - beamspot->y0())*(_lVtxpos_y[_nL] - beamspot->y0()));
-	_lVtxpos_PVdz[_nL] = fabs(_lVtxpos_z[_nL] - primaryVertex.z());
-	_lVtxpos_BSdz[_nL] = fabs(_lVtxpos_z[_nL] - beamspot->z0());
+	    std::vector<reco::Track> vertex_tracks;
+	    vertex_tracks.push_back(*ele->gsfTrack());
+	    fillLeptonVtxVariables(*ele, packedCands, vertex_tracks); 
+	    _lVtxpos_PVdxy[_nL] = sqrt((_lVtxpos_x[_nL] - primaryVertex.x())*(_lVtxpos_x[_nL] - primaryVertex.x()) + (_lVtxpos_y[_nL] - primaryVertex.y())*(_lVtxpos_y[_nL] - primaryVertex.y()));
+	    _lVtxpos_BSdxy[_nL] = sqrt((_lVtxpos_x[_nL] - beamspot->x0())*(_lVtxpos_x[_nL] - beamspot->x0()) + (_lVtxpos_y[_nL] - beamspot->y0())*(_lVtxpos_y[_nL] - beamspot->y0()));
+	    _lVtxpos_PVdz[_nL] = fabs(_lVtxpos_z[_nL] - primaryVertex.z());
+	    _lVtxpos_BSdz[_nL] = fabs(_lVtxpos_z[_nL] - beamspot->z0());
 
         _lFlavor[_nL]          = 0;
         _lEtaSC[_nL]           = ele->superCluster()->eta();
@@ -662,6 +662,7 @@ void LeptonAnalyzer::fillNutauTrackVariables(const reco::GenParticle& gen_tau, e
     }
 }
 
+
 TransientVertex LeptonAnalyzer::constructKalmanVertex(std::vector<reco::Track>& tracks){
     MagneticField *bfield = new OAEParametrizedMagneticField("3_8T");
     std::vector<reco::TransientTrack> ttks;
@@ -672,36 +673,50 @@ TransientVertex LeptonAnalyzer::constructKalmanVertex(std::vector<reco::Track>& 
     return vtxFitter.vertex(ttks);
 }
 
+
 void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::PackedCandidate>>& packedCands, std::vector<reco::Track>& tracks){
+    //Start from packedCandidate collection (= PF objects)
     std::vector<pat::PackedCandidate> packedCandidates;
     for(auto cand = packedCands->cbegin(); cand != packedCands->cend(); ++cand){
         packedCandidates.push_back(*cand);
     }
+
+    //Construct a lorentzvector of the lepton
     auto lep = lepton.p4();
     unsigned n_lepton = 0;
     TLorentzVector lepVec(lep.px(), lep.py(), lep.pz(), lep.E());
+    
+
+    std::cout << std::endl << "LEPTON eta:" << lepton.eta() << ", phi:" << lepton.phi() << ", dz:" << _dz[_nL] << ", dxy:" << _dxy[_nL] << std::endl;
+    //Find the tracks that we wish to include for the KalmanVertexFitter
     for(unsigned j = 0; j < packedCandidates.size(); ++j){
-	if(packedCandidates[j].hasTrackDetails()){
-	    const reco::Track& candTrack = packedCandidates[j].pseudoTrack();
-	    TLorentzVector trackVec(candTrack.px(), candTrack.py(), candTrack.pz(), candTrack.p());
-	    double leptondeltaR = trackVec.DeltaR(lepVec);
-	    bool goodTrack		= leptondeltaR < 0.4 &&
-				  candTrack.charge() != 0 &&
-				  //candTrack.hitPattern().numberOfValidHits() > 7 &&
-				  //candTrack.hitPattern().numberOfValidPixelHits() > 1 &&
-				  candTrack.normalizedChi2() < 5 &&
-				  //fabs(candTrack.dz(vertex.position())) < 17 &&
-				  //fabs(candTrack.dxy(vertex.position())) < 17 &&
-				  candTrack.pt() > 1;
-	    bool is_lepton		= (fabs(lepVec.Pt() - trackVec.Pt()) < 1 &&
-				  leptondeltaR < 0.05 &&
-				  (lepton.isElectron() || lepton.isMuon()))
-				  ||
-				  (fabs(lepVec.Pt() - trackVec.Pt()) < 0.1 &&
-				  leptondeltaR < 0.05);
-	    if(is_lepton) ++n_lepton;
-	    if(goodTrack && !is_lepton) tracks.push_back(candTrack);
-	}
+	    if(packedCandidates[j].hasTrackDetails()){
+	        const reco::Track& candTrack = packedCandidates[j].pseudoTrack();
+	        TLorentzVector trackVec(candTrack.px(), candTrack.py(), candTrack.pz(), candTrack.p());
+	        double leptondeltaR = trackVec.DeltaR(lepVec);
+	        
+            bool goodTrack =  leptondeltaR < 0.4 &&
+	    			          candTrack.charge() != 0 &&
+	    			          //candTrack.hitPattern().numberOfValidHits() > 7 &&
+	    			          //candTrack.hitPattern().numberOfValidPixelHits() > 1 &&
+	    			          candTrack.normalizedChi2() < 5 &&
+	    			          //fabs(candTrack.dz(vertex.position())) < 17 &&
+	    			          //fabs(candTrack.dxy(vertex.position())) < 17 &&
+	    			          candTrack.pt() > 1 &&
+                              fabs(_dxy[_nL] - packedCandidates[j].dxy()) < 1 &&
+                              fabs(_dz[_nL] - packedCandidates[j].dz()) < 5;
+	        bool is_lepton =  (fabs(lepVec.Pt() - trackVec.Pt()) < 1 &&
+	    			          leptondeltaR < 0.05 &&
+	    			          (lepton.isElectron() || lepton.isMuon()))
+	    			          ||
+	    			          (fabs(lepVec.Pt() - trackVec.Pt()) < 0.1 &&
+	    			          leptondeltaR < 0.05);
+	        if(is_lepton) ++n_lepton;
+	        if(goodTrack && !is_lepton){
+                tracks.push_back(candTrack);
+                std::cout << "TRACK eta:" << candTrack.eta() << ", phi:" << candTrack.phi() << ", dz:" << packedCandidates[j].dz() << ", dxy:" << packedCandidates[j].dxy() << std::endl;
+            }
+	    }
     }
     if(tracks.size() < 2 || n_lepton != 1) return;
     try{
