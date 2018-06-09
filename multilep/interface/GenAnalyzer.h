@@ -48,6 +48,9 @@ class GenAnalyzer {
     unsigned _gen_lFlavor[gen_nL_max];
     int      _gen_lCharge[gen_nL_max];
     int      _gen_lMomPdg[gen_nL_max];
+    double   _gen_vertex_x[gen_nL_max];
+    double   _gen_vertex_y[gen_nL_max];
+    double   _gen_vertex_z[gen_nL_max];
     bool     _gen_lIsPrompt[gen_nL_max];
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
@@ -66,6 +69,9 @@ class GenAnalyzer {
     double   _gen_NEta;
     double   _gen_NPhi;
     double   _gen_NE;
+    double   _gen_Nvertex_x;
+    double   _gen_Nvertex_y;
+    double   _gen_Nvertex_z;
     unsigned _gen_nNdaughters;
     unsigned _gen_Ndaughters_pdg[gen_n_max];
     unsigned _gen_nstatus23;
