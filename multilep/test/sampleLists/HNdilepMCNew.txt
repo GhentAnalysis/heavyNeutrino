@@ -1,0 +1,14 @@
+#list of MC datasets to run over using submitAll.py 
+
+#HN samesign signal datasets
+#prompt:
+dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/prompt/HeavyNeutrino_lljj_M-1_V-0.022360679775_mu_massiveAndCKM_LO
+
+#displaced:
+dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_lljj_M-1_V-0.022360679775_2l_massiveAndCKM_LO
+dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_lljj_M-1_V-0.022360679775_e_massiveAndCKM_LO
+dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_lljj_M-1_V-0.022360679775_mu_massiveAndCKM_LO
+dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_lljj_M-1_V-0.01_mu_massiveAndCKM_LO
+dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_lljj_M-1_V-0.0141421356237_mu_massiveAndCKM_LO
+dilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_lljj_M-1_V-0.0173205080757_e_massiveAndCKM_LO
+
