@@ -72,7 +72,7 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
         }
         reader[0]->AddVariable("segmentCompatibility", &LepGood_segmentCompatibility);
         if(!is2017){
-            reader[1]->AddVariable("electronMva", &LepGood_mvaIdSpring16GP);
+            reader[1]->AddVariable("electronMvaSpring16GP", &LepGood_mvaIdSpring16GP);
         } else{
             reader[1]->AddVariable("electronMvaFall17NoIso", &LepGood_mvaIdFall17noIso);
         }
