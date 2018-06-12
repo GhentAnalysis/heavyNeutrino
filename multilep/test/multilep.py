@@ -23,7 +23,12 @@ def getJSON(is2017):
 #inputFile       = '/store/data/Run2017B/DoubleMuon/MINIAOD/17Nov2017-v1/30000/3800AFDD-20D6-E711-87D6-02163E019D17.root'
 #inputFile       = '/store/mc/RunIIFall17MiniAOD/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/20000/02A1FA28-F1F9-E711-AFB2-002590E3A0FC.root'
 #inputFile       = '/store/data/Run2017F/DoubleMuon/MINIAOD/17Nov2017-v1/50000/009DC3A2-A7DE-E711-99F7-02163E013717.root'
-inputFile       = '/store/mc/RunIIFall17MiniAOD/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/50000/004C666D-C0E0-E711-AADB-0CC47A6C183A.root'
+#inputFile       = '/store/mc/RunIIFall17MiniAOD/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/50000/004C666D-C0E0-E711-AADB-0CC47A6C183A.root'
+#inputFile       = '/store/mc/RunIIFall17MiniAOD/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/20000/02A1FA28-F1F9-E711-AFB2-002590E3A0FC.root'
+#inputFile       = '/store/mc/RunIIFall17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/00000/0695D53A-EEF4-E711-99BD-02163E019C44.root'
+#inputFile       = '/store/mc/RunIIFall17MiniAOD/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v2/60000/0857E231-22EF-E711-BEAC-FA163E2DB7A6.root'
+#inputFile       = '/store/mc/RunIIFall17MiniAOD/ZZTo4L_13TeV_powheg_pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v2/60000/063DA70C-EADA-E711-8493-008CFAFBF7C8.root'
+inputFile       = '/store/data/Run2017F/SingleMuon/MINIAOD/17Nov2017-v1/00000/3E7C07F9-E6F1-E711-841A-0CC47A4C8E46.root'
 nEvents         = 1000
 outputFile      = 'singlelep.root'   # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
@@ -67,7 +72,7 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_v6'
+if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_ReReco_EOY17_v6'
 elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v13'
 elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
@@ -169,7 +174,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
   isSUSY                        = cms.untracked.bool(isSUSY),
-  jetPtThreshold                = cms.untracked.double(60.0),
+  jetPtThreshold                = cms.untracked.double(15.0),
 
 )
 

@@ -98,7 +98,7 @@ class JetAnalyzer {
     double        _rawmetPhiUnclUp;
 
     //correction level for JEC
-    //std::string jecLevel;
+    std::string jecLevel;
 
 
     multilep* multilepAnalyzer;

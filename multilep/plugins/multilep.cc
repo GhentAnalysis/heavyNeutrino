@@ -73,6 +73,7 @@ multilep::~multilep(){
 
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
+
     //Initialize tree with event info
 
     outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
@@ -94,17 +95,23 @@ void multilep::beginJob(){
 
     _runNb = 0;
 }
+
 // ------------ method called for each lumi block ---------
 void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
     if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
     _lumiBlock = (unsigned long) iLumi.id().luminosityBlock();
 }
+
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
+
     // HLT results could have different size/order in new run, so look up again de index positions
     triggerAnalyzer->reIndex = true;
-    //update JEC 
+
+    //get Run number
     _runNb = (unsigned long) iRun.id().run();
+
+    //update JEC 
     jec->updateJEC(_runNb);
 }
 
@@ -142,6 +149,7 @@ void multilep::endJob(){
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void multilep::fillDescriptions(edm::ConfigurationDescriptions& descriptions){
+
     //The following says we do not know what parameters are allowed so do no validation
     // Please change this to state exactly what you do use, even if it is no parameters
     edm::ParameterSetDescription desc;
