@@ -142,8 +142,10 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
+    /*
     _met             = met.pt();
     _metPhi          = met.phi();
+    */
     _met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
     _metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
     //raw met values
