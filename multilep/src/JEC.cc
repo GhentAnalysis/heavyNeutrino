@@ -28,7 +28,7 @@ void JEC::setJEC(const std::string& JECName){
    
 std::string JEC::getJECRunName(const unsigned long runNumber){
     ///////////////////////////
-    static const std::string version2016 = "V4";
+    static const std::string version2016 = "_V9";
     static const std::string version2017 = "_V6";
     //////////////////////////
     std::string jecName;
@@ -40,8 +40,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
             }
             else if(runNumber < 276812) jecName = "BCD";
             else if(runNumber < 278809) jecName = "EF";
-            else if(runNumber < 280385) jecName = "GV";
-            else if(runNumber < 294645) jecName = "H";
+            else if(runNumber < 294645) jecName = "GH";
             jecName += version2016;
         } else {
             if(runNumber < 297020){
@@ -73,7 +72,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
 
 std::string JEC::getJECName(const unsigned long runNumber){
     if(!is2017){
-        return "Summer16_23Sep2016" + getJECRunName(runNumber);
+        return "Summer16_07Aug2017" + getJECRunName(runNumber);
     } else{
         return "Fall17_17Nov2017" + getJECRunName(runNumber);
     }
@@ -153,6 +152,6 @@ std::pair<double, double> JEC::correctedMETAndPhi(const pat::MET& met, const std
         corrMETy += corr.second;
     }
     double correctedMET = sqrt(corrMETx*corrMETx + corrMETy*corrMETy);
-    double correctedMETPhi = atan2(corrMETx, corrMETy);
+    double correctedMETPhi = atan2(corrMETy, corrMETx);
     return {correctedMET, correctedMETPhi};
 }

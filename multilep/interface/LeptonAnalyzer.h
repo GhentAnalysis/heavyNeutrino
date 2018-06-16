@@ -67,7 +67,8 @@ class LeptonAnalyzer {
     int _lCharge[nL_max];
 
     double _relIso[nL_max];                                                                          //lepton isolation variables
-    double _relIso0p4[nL_max];                                                                          //lepton isolation variables
+    double _relIso0p4[nL_max];                                                                       //lepton isolation variables
+    double _relIso0p4MuDeltaBeta[nL_max];                                                            //lepton isolation variables
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];                                                              
     
@@ -151,6 +152,7 @@ class LeptonAnalyzer {
     double _leptonMvaSUSY17[nL_max];                                                                       //lepton MVA used in ewkino analysis
     double _leptonMvaTTH17[nL_max];
     double _leptonMvatZqTTV16[nL_max];
+    double _leptonMvatZqTTV17[nL_max];
 
     bool _lHNLoose[nL_max];                                                                          //analysis specific lepton selection decisions
     bool _lHNFO[nL_max];
@@ -169,6 +171,7 @@ class LeptonAnalyzer {
 
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
+    int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];                                                                    
     unsigned _lProvenanceCompressed[nL_max];
     unsigned _lProvenanceConversion[nL_max];
@@ -197,7 +200,7 @@ class LeptonAnalyzer {
 
     double getRelIso03(const pat::Muon&, const double) const;
     double getRelIso03(const pat::Electron&, const double) const;
-    double getRelIso04(const pat::Muon& mu, const double) const;
+    double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta = false) const;
     double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged = false) const;
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged = false) const;
 
@@ -241,6 +244,7 @@ class LeptonAnalyzer {
     LeptonMvaHelper* leptonMvaComputerSUSY17;
     LeptonMvaHelper* leptonMvaComputerTTH17;
     LeptonMvaHelper* leptonMvaComputertZqTTV16;
+    LeptonMvaHelper* leptonMvaComputertZqTTV17;
 
     //for generator matching
     GenMatching* genMatcher;

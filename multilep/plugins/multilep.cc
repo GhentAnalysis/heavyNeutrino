@@ -33,7 +33,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     rhoToken(                         consumes<double>(                           iConfig.getParameter<edm::InputTag>("rho"))),
     metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
     jetToken(                         consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
-    recoResultsToken(                 consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResults"))),
+    recoResultsPrimaryToken(          consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsPrimary"))),
+    recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
@@ -41,8 +42,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
-    //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
+    jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -51,12 +52,11 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
-    /*
+
     //initialize jec txt files
     std::string dirtyHack = "dummy.txt";
     std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
-    jec             = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
-    */
+    jec = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
 }
 
 multilep::~multilep(){
@@ -67,11 +67,12 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
-    //delete jec;
+    delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
+
     //Initialize tree with event info
 
     outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
@@ -93,18 +94,24 @@ void multilep::beginJob(){
 
     _runNb = 0;
 }
+
 // ------------ method called for each lumi block ---------
 void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
     if(isSUSY) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
     _lumiBlock = (unsigned long) iLumi.id().luminosityBlock();
 }
+
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
+
     // HLT results could have different size/order in new run, so look up again de index positions
     triggerAnalyzer->reIndex = true;
-    //update JEC 
+
+    //get Run number
     _runNb = (unsigned long) iRun.id().run();
-    //jec->updateJEC(_runNb);
+
+    //update JEC 
+    jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------
@@ -140,6 +147,7 @@ void multilep::endJob(){
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void multilep::fillDescriptions(edm::ConfigurationDescriptions& descriptions){
+
     //The following says we do not know what parameters are allowed so do no validation
     // Please change this to state exactly what you do use, even if it is no parameters
     edm::ParameterSetDescription desc;

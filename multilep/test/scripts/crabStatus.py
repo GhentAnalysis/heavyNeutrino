@@ -91,7 +91,7 @@ jobsToResubmit = []
 raiseMemoryLimit = False
 for job in jobs:
   if job['Exit code'] in ['50660']: raiseMemoryLimit = True
-  if job['Exit code'] in ['-1','83','60311','60318','8001','8002','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662', '8010', '50665']: jobsToResubmit.append(job['Job'])
+  if job['Exit code'] in ['-1','83','60311','60318','8001','8002','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662', '8010', '50665', '255', '127', '50513', '1', '8003', '71', '7002', '65']: jobsToResubmit.append(job['Job'])
   if job['State'] == 'failed' and job['Exit code'] == '0':                                  jobsToResubmit.append(job['Job'])
   if job['State'] == 'failed' and job['Exit code'] == '-1':                                 jobsToResubmit.append(job['Job'])
   if 'failed' in job['Exit code']:                                                          jobsToResubmit.append(job['Job'])
@@ -100,4 +100,4 @@ for job in jobs:
 if len(jobsToResubmit) > 0:
   print "Resubmitting " + jobsToCrabList(jobsToResubmit)
   if len(args) > 0: os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxmemory=4000' if raiseMemoryLimit else '') + " " +  args[0])
-  else:             os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxmemory=4000' if raiseMemoryLimit else '') + " --siteblacklist=T2_US_Wisconsin,T2_US_Vanderbilt,T2_CH_CERN,T2_BE_IIHE,T2_IT_Rome,T2_BR_SPRACE")
+  else:             os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxmemory=4000' if raiseMemoryLimit else '') + " --siteblacklist=T2_US_Wisconsin,T2_US_Vanderbilt,T2_CH_CERN,T2_BE_IIHE,T2_IT_Rome,T2_BR_SPRACE,T2_FR_CCIN2P3,T2_US_UCSD")

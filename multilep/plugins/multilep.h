@@ -108,7 +108,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<double>                            rhoToken;
         edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
-        edm::EDGetTokenT<edm::TriggerResults>               recoResultsToken;                            //MET filter information
+        edm::EDGetTokenT<edm::TriggerResults>               recoResultsPrimaryToken;                     //MET filter information
+        edm::EDGetTokenT<edm::TriggerResults>               recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
         edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
         edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
         edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
@@ -117,7 +118,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                isData;
         bool                                                is2017;
         bool                                                isSUSY;
-        //std::string                                         jecPath;
+        std::string                                         jecPath;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
@@ -133,7 +134,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         JetAnalyzer*      jetAnalyzer;
         LheAnalyzer*      lheAnalyzer;
         SUSYMassAnalyzer* susyMassAnalyzer;
-        //JEC*              jec; 
+        JEC*              jec; 
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;
