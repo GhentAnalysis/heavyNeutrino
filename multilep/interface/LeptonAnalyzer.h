@@ -92,6 +92,7 @@ class LeptonAnalyzer {
     unsigned _Nutau_TrackMult_pt1[nL_max];
     unsigned _Nutau_TrackMult_pt5[nL_max];
 
+    bool     _lVtx_valid[nL_max];
     double   _lVtxpos_x[nL_max];
     double   _lVtxpos_y[nL_max];
     double   _lVtxpos_z[nL_max];

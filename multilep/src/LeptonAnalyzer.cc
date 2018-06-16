@@ -115,6 +115,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_TrackMult_noIP_pt5",        	&_TrackMult_noIP_pt5,        	"_TrackMult_noIP_pt5[_nLight]/i");
     outputTree->Branch("_Nutau_TrackMult_pt1",      	&_Nutau_TrackMult_pt1,		"_Nutau_TrackMult_pt1[_nL]/i");
     outputTree->Branch("_Nutau_TrackMult_pt5",      	&_Nutau_TrackMult_pt5,		"_Nutau_TrackMult_pt5[_nL]/i");
+    outputTree->Branch("_lVtx_valid",			&_lVtx_valid,			"_lVtx_valid[_nLight]/O");
     outputTree->Branch("_lVtxpos_x",			&_lVtxpos_x,			"_lVtxpos_x[_nLight]/D");
     outputTree->Branch("_lVtxpos_y",			&_lVtxpos_y,			"_lVtxpos_y[_nLight]/D");
     outputTree->Branch("_lVtxpos_z",			&_lVtxpos_z,			"_lVtxpos_z[_nLight]/D");
@@ -685,9 +686,8 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
     auto lep = lepton.p4();
     unsigned n_lepton = 0;
     TLorentzVector lepVec(lep.px(), lep.py(), lep.pz(), lep.E());
-    
+    //std::cout << std::endl << "LEPTON eta:" << lepton.eta() << ", phi:" << lepton.phi() << ", dz:" << _dz[_nL] << ", dxy:" << _dxy[_nL] << std::endl;
 
-    std::cout << std::endl << "LEPTON eta:" << lepton.eta() << ", phi:" << lepton.phi() << ", dz:" << _dz[_nL] << ", dxy:" << _dxy[_nL] << std::endl;
     //Find the tracks that we wish to include for the KalmanVertexFitter
     for(unsigned j = 0; j < packedCandidates.size(); ++j){
 	    if(packedCandidates[j].hasTrackDetails()){
@@ -714,27 +714,28 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
 	        if(is_lepton) ++n_lepton;
 	        if(goodTrack && !is_lepton){
                 tracks.push_back(candTrack);
-                std::cout << "TRACK eta:" << candTrack.eta() << ", phi:" << candTrack.phi() << ", dz:" << packedCandidates[j].dz() << ", dxy:" << packedCandidates[j].dxy() << std::endl;
+                //std::cout << "TRACK eta:" << candTrack.eta() << ", phi:" << candTrack.phi() << ", dz:" << packedCandidates[j].dz() << ", dxy:" << packedCandidates[j].dxy() << std::endl;
             }
 	    }
     }
+    _lVtx_valid[_nL] = false;
     if(tracks.size() < 2 || n_lepton != 1) return;
-    try{
     TransientVertex vtx = constructKalmanVertex(tracks);
-    _lVtxpos_x[_nL] = vtx.position().x();
-    _lVtxpos_y[_nL] = vtx.position().y();
-    _lVtxpos_z[_nL] = vtx.position().z();
-    _lVtxpos_cxx[_nL] = vtx.positionError().cxx();
-    _lVtxpos_cyy[_nL] = vtx.positionError().cyy();
-    _lVtxpos_czz[_nL] = vtx.positionError().czz();
-    _lVtxpos_cyx[_nL] = vtx.positionError().cyx();
-    _lVtxpos_czy[_nL] = vtx.positionError().czy();
-    _lVtxpos_czx[_nL] = vtx.positionError().czx();
-    _lVtxpos_df[_nL] = vtx.degreesOfFreedom();
-    _lVtxpos_chi2[_nL] = vtx.totalChiSquared();
-    _lVtxpos_ntracks[_nL] = tracks.size();
-    //std::cout << "track size: " << tracks.size() << std::endl;
-    } catch(...){}
+    _lVtx_valid[_nL] = vtx.isValid();
+    if(vtx.isValid()){
+        _lVtxpos_x[_nL] = vtx.position().x();
+        _lVtxpos_y[_nL] = vtx.position().y();
+        _lVtxpos_z[_nL] = vtx.position().z();
+        _lVtxpos_cxx[_nL] = vtx.positionError().cxx();
+        _lVtxpos_cyy[_nL] = vtx.positionError().cyy();
+        _lVtxpos_czz[_nL] = vtx.positionError().czz();
+        _lVtxpos_cyx[_nL] = vtx.positionError().cyx();
+        _lVtxpos_czy[_nL] = vtx.positionError().czy();
+        _lVtxpos_czx[_nL] = vtx.positionError().czx();
+        _lVtxpos_df[_nL] = vtx.degreesOfFreedom();
+        _lVtxpos_chi2[_nL] = vtx.totalChiSquared();
+        _lVtxpos_ntracks[_nL] = tracks.size();
+    }
 }
 
 
