@@ -153,6 +153,6 @@ std::pair<double, double> JEC::correctedMETAndPhi(const pat::MET& met, const std
         corrMETy += corr.second;
     }
     double correctedMET = sqrt(corrMETx*corrMETx + corrMETy*corrMETy);
-    double correctedMETPhi = atan2(corrMETx, corrMETy);
+    double correctedMETPhi = atan2(corrMETy, corrMETx);
     return {correctedMET, correctedMETPhi};
 }
