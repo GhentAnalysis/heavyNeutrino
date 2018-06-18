@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 
 #function to return JSON file
 def getJSON(is2017):
-    if is2017: return "Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"
+    if is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
     else: return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
 # Default arguments
