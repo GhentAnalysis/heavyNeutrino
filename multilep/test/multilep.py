@@ -173,31 +173,31 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 ## Single triggers for matching
 if 'FR' in process.blackJackAndHookers.skim:
     process.blackJackAndHookers.SingleEleTriggers.extend([
-        "HLT_v*"
-    ])
+            "HLT_v*"
+            ])
     process.blackJackAndHookers.SingleMuoTriggers.extend([
-        "HLT_v*"
-    ])
+            "HLT_v*"
+            ])
     process.blackJackAndHookers.SingleEleTriggers2017.extend([
-        "HLT_v*"
-    ])
+            "HLT_v*"
+            ])
     process.blackJackAndHookers.SingleMuoTriggers2017.extend([
-        "HLT_v*"
-    ])
+            "HLT_v*"
+            ])
 else:
     process.blackJackAndHookers.SingleEleTriggers.extend([
-        "HLT_Ele27_WPTight_Gsf_v*"
-    ])
+            "HLT_Ele27_WPTight_Gsf_v*"
+            ])
     process.blackJackAndHookers.SingleMuoTriggers.extend([
-        "HLT_IsoMu24_v*", 
-        "HLT_IsoTkMu24_v*" 
-    ])
+            "HLT_IsoMu24_v*", 
+            "HLT_IsoTkMu24_v*" 
+            ])
     process.blackJackAndHookers.SingleEleTriggers2017.extend([
-        "HLT_Ele32_WPTight_Gsf_v*"
-    ])
+            "HLT_Ele32_WPTight_Gsf_v*"
+            ])
     process.blackJackAndHookers.SingleMuoTriggers2017.extend([
-        "HLT_IsoMu27_v*"
-    ])
+            "HLT_IsoMu27_v*"
+            ])
 
 
 if isData:
