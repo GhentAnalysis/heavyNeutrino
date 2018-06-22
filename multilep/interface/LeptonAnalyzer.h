@@ -75,7 +75,7 @@ class LeptonAnalyzer {
     double _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex 
     double _lDisplaced[nV_max][24];      // array of the displaced lepton momenta and positions at the displaced vertex
 
-    bool _lHasTrigger[nL_max];                                                                       //trigger matching
+    unsigned _lHasTrigger[nL_max];                                                                   //trigger matching
 
     double _lPt[nL_max];                                                                             //lepton kinematics
     double _lEta[nL_max];
@@ -243,13 +243,13 @@ class LeptonAnalyzer {
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose);
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
 
-    bool matchSingleTrigger(bool, double, double, const edm::TriggerNames&, 
-			    edm::Handle<pat::TriggerObjectStandAloneCollection>);
+    unsigned matchSingleTrigger(bool, double, double, const edm::TriggerNames&, 
+	         	        edm::Handle<pat::TriggerObjectStandAloneCollection>);
 
     // To synchronize lepton selection
     bool passElectronPreselection(const pat::Electron&) const;
     bool passMuonPreselection(const pat::Muon&) const;
-  bool passTauPreselection(const pat::Tau&, unsigned) const;
+    bool passTauPreselection(const pat::Tau&, unsigned) const;
 
     // In leptonAnalyzerIso.cc
     double getRelIso03(const pat::Muon&, const double) const;
