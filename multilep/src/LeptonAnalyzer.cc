@@ -36,7 +36,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");
   outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");
   outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");
-  outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/O");
+  outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/i");
   outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
   outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
   outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
@@ -256,12 +256,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	  
 	  
     if (mu.pt() >  3 && std::abs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced; 
-    if (mu.pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) ) {
+    if (mu.pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) )
       ++_nGoodLeading;
-      _lHasTrigger[_nL] = matchSingleTrigger(false, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
+
+    if(multilepAnalyzer->skim == "FR" ||
+       (mu.pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.3 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) )) {
+        _lHasTrigger[_nL] = matchSingleTrigger(false, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
     }
     else {
-      _lHasTrigger[_nL] = false;
+        _lHasTrigger[_nL] = 0;
     }
 
     ++_nMu;
@@ -343,14 +346,17 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lSimFlavour[_nL]    = -1; 
 	  
     if(ele->pt() >  7 && std::abs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced; 
-    if(ele->pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) {
+    if(ele->pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto())
       ++_nGoodLeading;
-      _lHasTrigger[_nL] = matchSingleTrigger(true, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
+
+    if(multilepAnalyzer->skim == "FR" ||
+       (ele->pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto()) ) {
+        _lHasTrigger[_nL] = matchSingleTrigger(true, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
     }
     else {
-      _lHasTrigger[_nL] = false;
+        _lHasTrigger[_nL] = 0;
     }
-
+	  
     ++_nEle;
     ++_nL;
     ++_nLight;
@@ -883,20 +889,24 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     }
 }
 
-bool LeptonAnalyzer::matchSingleTrigger(bool isele, double aeta, double aphi, 
+unsigned LeptonAnalyzer::matchSingleTrigger(bool isele, double aeta, double aphi, 
 					const edm::TriggerNames &names, 
 					edm::Handle<pat::TriggerObjectStandAloneCollection> objs) {
+  unsigned trigmask(0);
   for(pat::TriggerObjectStandAlone iobj : *objs) { // NOTE: not const nor by reference, because we need to 'unpackPathNames'
     if(reco::deltaR(iobj.eta(), iobj.phi(), aeta, aphi)<0.15) {
       iobj.unpackPathNames(names);
       std::vector<std::string> &singletrigs = isele ? singleEleTrigs : singleMuoTrigs;
+      int ipath(-1);
       for(std::string& itrig : singletrigs) {
+	++ipath;
 	if(iobj.hasPathName(itrig.c_str(), true, true)) {
-	  return true;
+	  trigmask |= (1<<ipath);
+	  //return true; // do not return, because we need the list of all paths that fired!
 	}
       }
     }
   }
 
-  return false;
+  return trigmask;
 }
