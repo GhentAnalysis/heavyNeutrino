@@ -781,7 +781,8 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec) const {
   // if(!elec.passConversionVeto())                                                         return false;  
   // if(std::abs(_dxy[_nL])>0.05)                                                               return false;
   // if(std::abs(_dz[_nL])>0.1)                                                                 return false;
-  // if(_relIso[_nL]>1)                                                                     return false;
+  // if(_relIso[_nL]>1)        
+  if(getRelIso03(*elec, *rho) > 2) return false; 
   if(elec.gsfTrack().isNull())     return false; 
   if(elec.pt()<5.)                 return false;
   if(std::abs(elec.eta())>2.5)     return false;
@@ -801,6 +802,7 @@ bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon) const {
   // if(!muon.hasTrackDetails())                        return false;
   // if(_relIso[_nL]>1)                                 return false;
   // if(!_lPOGLoose[_nL])                               return false;
+  if(getRelIso03(muon, *rho) > 2) return false; 
   if(!muon.isPFMuon())         return false;
   if(muon.pt()<3)              return false;
   if(std::abs(muon.eta())>2.4) return false;
