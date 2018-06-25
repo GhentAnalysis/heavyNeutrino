@@ -80,6 +80,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nL]/i");
   outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nL]/i");
 
+	
+outputTree->Branch("_muDTStationsWithValidHits",&_muDTStationsWithValidHits,"_muDTStationsWithValidHits[_nL]/I");
+outputTree->Branch("_muCSCStationsWithValidHits",&_muCSCStationsWithValidHits,"_muCSCStationsWithValidHits[_nL]/I");
+outputTree->Branch("_muRPCStationsWithValidHits",&_muRPCStationsWithValidHits,"_muRPCStationsWithValidHits[_nL]/I");
+outputTree->Branch("_muMuonStationsWithValidHits",&_muMuonStationsWithValidHits,"_muMuonStationsWithValidHits[_nL]/I");
+	
  	
   outputTree->Branch("_lMuTime",                    &_lMuTime,         "_lMuTime[_nL]/D");
   outputTree->Branch("_lMuTimeErr",                 &_lMuTimeErr,         "_lMuTimeErr[_nL]/D");
@@ -258,6 +264,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lpassConversionVeto[_nL] = false;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
+	  
+    _muDTStationsWithValidHits[_nL] = mu.bestTrack->hitPattern().dtStationsWithValidHits();
+    _muCSCStationsWithValidHits[_nL] = mu.bestTrack->hitPattern().cscStationsWithValidHits();
+    _muRPCStationsWithValidHits[_nL] = mu.bestTrack->hitPattern().rpcStationsWithValidHits();
+    _muMuonStationsWithValidHits[_nL] = mu.bestTrack->hitPattern().muonStationsWithValidHits();
+
+       
     
     _lEleIsEB [_nL] = false;
     _lEleIsEE[_nL] = false;
@@ -358,6 +371,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lSimType[_nL]       = -1; 
     _lSimExtType[_nL]    = -1; 
     _lSimFlavour[_nL]    = -1; 
+	  
+     _muDTStationsWithValidHits[_nL] = -1;
+    _muCSCStationsWithValidHits[_nL] = -1;
+    _muRPCStationsWithValidHits[_nL] = -1;
+    _muMuonStationsWithValidHits[_nL] = -1;
+
+     
 	  
     if(ele->pt() >  7 && std::abs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced; 
     if(ele->pt() > 22 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.3 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto())
