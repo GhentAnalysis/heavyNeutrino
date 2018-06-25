@@ -790,7 +790,7 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec) const {
   // if(_relIso[_nL]>1)        
   if(getRelIso03(*elec, *rho) > 2) return false; 
   if(elec.gsfTrack().isNull())     return false; 
-  if(elec.pt()<5.)                 return false;
+  if(elec.pt()<10.)                 return false;
   if(std::abs(elec.eta())>2.5)     return false;
   if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&elec)) return false;
   if(eleMuOverlap(elec, _lPFMuon)) return false; // overlap muon-electron deltaR<0.05
@@ -810,7 +810,8 @@ bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon) const {
   // if(!_lPOGLoose[_nL])                               return false;
   if(getRelIso03(muon, *rho) > 2) return false; 
   if(!muon.isPFMuon())         return false;
-  if(muon.pt()<3)              return false;
+  if(!muon.isLooseMuon())      return false;
+  if(muon.pt()<5)              return false;
   if(std::abs(muon.eta())>2.4) return false;
 
   return true;
