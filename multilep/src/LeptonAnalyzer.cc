@@ -278,7 +278,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	    }
     }	    
 	    
-    medium_temporary =  mu.segmentCompatibility()  > (goodGlb ? 0.303 : 0.451));
+    medium_temporary =  mu.segmentCompatibility()  > (goodGlb ? 0.303 : 0.451);
     if ( mu.isLooseMuon()) _lPOGMedium[_nL] = medium_temporary;
 	 
 	
