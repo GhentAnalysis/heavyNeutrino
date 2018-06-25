@@ -282,7 +282,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     if ( mu.isLooseMuon()) _lPOGMedium[_nL] = medium_temporary;
 	 
 	
-std::cout<<_lPOGMedium[_nL]<<" .  "<<mu.isMediumMuon()<<std::endl;
+//std::cout<<_lPOGMedium[_nL]<<" .  "<<mu.isMediumMuon()<<std::endl;
 	  
 	  
 	  
