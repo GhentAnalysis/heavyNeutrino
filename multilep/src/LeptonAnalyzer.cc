@@ -411,7 +411,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
   for(const pat::Muon& mu_1 : *muons){ // for muons
     // Check if muon passes minimum criteria
-    if(passMuonPreselection(mu_1)==false) continue;
+    if(passMuonPreselection(mu_1, *rho)==false) continue;
     iMu_plus++;
     //+++++++++++++++    mu+
     if (mu_1.charge() < 0) continue;
@@ -421,7 +421,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     iMu_minus_mu=0;
     for(const pat::Muon& mu_2 : *muons){ 
       // Check if muon passes minimum criteria
-      if(passMuonPreselection(mu_2)==false) continue;
+      if(passMuonPreselection(mu_2, *rho)==false) continue;
       iMu_minus_mu++;
       if (mu_2.charge() > 0) continue;  // only opposite charge
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
@@ -440,7 +440,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     iE_minus_mu=_nMu;
     for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
       // Check if electron passes minimum criteria
-      if(passElectronPreselection(*ele_2)==false) continue;
+      if(passElectronPreselection(*ele_2, *rho)==false) continue;
       iE_minus_mu++; // it is already _nMu
       if(ele_2->charge() > 0) continue; // only opposite charge
       const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
@@ -462,7 +462,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
   for(auto ele_1 = electrons->begin(); ele_1 != electrons->end(); ++ele_1){ // for electrons
     // Check if electron passes minimum criteria
-    if(passElectronPreselection(*ele_1)==false) continue;
+    if(passElectronPreselection(*ele_1, *rho)==false) continue;
     iE_plus++;
     //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue;
@@ -472,7 +472,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     iMu_minus_e=0;
     for(const pat::Muon& mu_2 : *muons){ 
       // Check if muon passes minimum criteria
-      if(passMuonPreselection(mu_2)==false) continue;
+      if(passMuonPreselection(mu_2, *rho)==false) continue;
       iMu_minus_e++;
       if (mu_2.charge() > 0) continue;  // only opposite charge
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
@@ -492,7 +492,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     iE_minus_e=_nMu;
     for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
       // Check if electron passes minimum criteria
-      if(passElectronPreselection(*ele_2)==false) continue;
+      if(passElectronPreselection(*ele_2, *rho)==false) continue;
       iE_minus_e++;
       if(ele_2->charge() > 0) continue; // only opposite charge
       const reco::Track&  tk_2 =  *ele_2->gsfTrack();  
