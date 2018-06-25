@@ -265,13 +265,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     bool goodGlb= false;
     if (mu.isLooseMuon()){
 	if (272728 <= iEvent.run() && iEvent.run() <= 278808)    {
-		 goodGlb = mu.isGlobalMuon() &&  mu.innerTrack()->validFraction() < 0.49 &&
+		 goodGlb = mu.isGlobalMuon() &&  mu.innerTrack()->validFraction() > 0.49 &&
 	    		mu.globalTrack()->normalizedChi2() < 3. && 
 	    		mu.combinedQuality().chi2LocalPosition < 12. && 
 	    		mu.combinedQuality().trkKink < 20.;	    
 	}
 	  else {
-		  goodGlb = mu.isGlobalMuon() &&  mu.innerTrack()->validFraction() < 0.8 &&
+		  goodGlb = mu.isGlobalMuon() &&  mu.innerTrack()->validFraction() > 0.8 &&
 	    		mu.globalTrack()->normalizedChi2() < 3. && 
 	    		mu.combinedQuality().chi2LocalPosition < 12. && 
 	    		mu.combinedQuality().trkKink < 20.; 
@@ -282,7 +282,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     if ( mu.isLooseMuon()) _lPOGMedium[_nL] = medium_temporary;
 	 
 	
-std::cout<<_lPOGMedium[_nL]<<" .  "<<mu.isMediumMuon()<<std::endl;
+//std::cout<<_lPOGMedium[_nL]<<" .  "<<mu.isMediumMuon()<<std::endl;
 	  
 	  
 	  
