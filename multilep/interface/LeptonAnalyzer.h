@@ -156,6 +156,12 @@ class LeptonAnalyzer {
     unsigned _lTrackerLayersWithMeasurement[nL_max];
 	
    
+    int _muDTStationsWithValidHits[nL_max] ;
+    int _muCSCStationsWithValidHits[nL_max] ;
+    int _muRPCStationsWithValidHits[nL_max] ;
+    int _muMuonStationsWithValidHits[nL_max] ;	
+	
+	
     double _lMuTime[nL_max];
     double _lMuTimeErr[nL_max];
     double _lMuRPCTime[nL_max];
