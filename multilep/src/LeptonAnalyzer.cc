@@ -178,7 +178,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   //loop over muons
   for(const pat::Muon& mu : *muons){
     // Check if muon passes minimum criteria
-    if(passMuonPreselection(mu)==false) continue;
+    if(passMuonPreselection(mu, *rho)==false) continue;
 
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
@@ -228,7 +228,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lFlavor[_nL]        = 1;
     _muonSegComp[_nL]    = mu.segmentCompatibility();
     _relIso[_nL]         = getRelIso03(mu, *rho);   // Isolation variables
-if (_relIso[_nL] > 2) continue;
     _lSimType[_nL]       = mu.simType();
     _lSimExtType[_nL]    = mu.simExtType();
     _lSimFlavour[_nL]    = mu.simFlavour();
@@ -275,7 +274,7 @@ if (_relIso[_nL] > 2) continue;
   // Loop over electrons (note: using iterator we can easily get the ref too)
   for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
     // Check if electron passes minimum criteria
-    if(passElectronPreselection(*ele)==false) continue;
+    if(passElectronPreselection(*ele, *rho)==false) continue;
 
     auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
@@ -319,7 +318,6 @@ if (_relIso[_nL] > 2) continue;
     _lFlavor[_nL]      = 0;
     _lEtaSC[_nL]       = ele->superCluster()->eta();
     _relIso[_nL]       = getRelIso03(*ele, *rho);
-	if (_relIso[_nL] > 2) continue;
     _lElectronMva[_nL] = (*electronsMva)[electronRef];
     _lElectronPassEmu[_nL] = passTriggerEmulationDoubleEG(&*ele);
     _lElectronMvaHZZ[_nL]       = (*electronsMvaHZZ)[electronRef];
@@ -402,7 +400,7 @@ if (_relIso[_nL] > 2) continue;
    */
   // (Why double??) 
 	
-	/*
+	
   unsigned iMu_plus=0;
   unsigned iMu_minus_mu=0;
   unsigned iMu_minus_e=0;
@@ -510,7 +508,7 @@ if (_relIso[_nL] > 2) continue;
     }// end loop e+
   }//end electrons
 
-	*/
+	
 	
 	
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3 || _nGoodLeading < 1 || _nGoodDisplaced < 2) ) return false;
@@ -765,7 +763,7 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
 }
 
 // To synchronize lepton selection
-bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec) const {
+bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const double rho) const {
   //// Copied from the electron loop
   // if(!elec.hasTrackDetails())                                                            return false;
   // if(elec.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS)>2) return false;
@@ -774,6 +772,7 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec) const {
   // if(std::abs(_dz[_nL])>0.1)                                                                 return false;
   // if(_relIso[_nL]>1)        
   if(elec.gsfTrack().isNull())     return false; 
+  if (getRelIso03(elec, rho) > 2);  return false;
   if(elec.pt()<10.)                 return false;
   if(std::abs(elec.eta())>2.5)     return false;
   if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&elec)) return false;
@@ -782,7 +781,7 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec) const {
   return true;
 }
 //
-bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon) const {
+bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon, const double rho) const {
   //// Copied from the muon loop
   // if(muon.innerTrack().isNull())                     return false;
   // if(!(muon.isTrackerMuon() || muon.isGlobalMuon())) return false;
@@ -794,6 +793,7 @@ bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon) const {
   // if(!_lPOGLoose[_nL])                               return false;
   if(!muon.isPFMuon())         return false;
   if(!muon.isLooseMuon())      return false;
+  if (getRelIso03(muon, rho) > 2);  return false;
   if(muon.pt()<5)              return false;
   if(std::abs(muon.eta())>2.4) return false;
 
