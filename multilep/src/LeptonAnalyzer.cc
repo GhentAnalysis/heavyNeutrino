@@ -265,10 +265,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lpassConversionVeto[_nL] = false;
     _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
 	  
-    _muDTStationsWithValidHits[_nL] = mu.bestTrack->hitPattern().dtStationsWithValidHits();
-    _muCSCStationsWithValidHits[_nL] = mu.bestTrack->hitPattern().cscStationsWithValidHits();
-    _muRPCStationsWithValidHits[_nL] = mu.bestTrack->hitPattern().rpcStationsWithValidHits();
-    _muMuonStationsWithValidHits[_nL] = mu.bestTrack->hitPattern().muonStationsWithValidHits();
+    _muDTStationsWithValidHits[_nL] = mu.bestTrack()->hitPattern().dtStationsWithValidHits();
+    _muCSCStationsWithValidHits[_nL] = mu.bestTrack()->hitPattern().cscStationsWithValidHits();
+    _muRPCStationsWithValidHits[_nL] = mu.bestTrack()->hitPattern().rpcStationsWithValidHits();
+    _muMuonStationsWithValidHits[_nL] = mu.bestTrack()->hitPattern().muonStationsWithValidHits();
 
        
     
