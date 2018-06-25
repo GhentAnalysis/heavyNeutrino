@@ -26,6 +26,12 @@ LeptonAnalyzer::~LeptonAnalyzer(){
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_nL",                           &_nL,                           "_nL/i");
+  outputTree->Branch("_pvX",                           &_pvX,                           "_pvX/D");
+  outputTree->Branch("_pvY",                           &_pvY,                           "_pvY/D");
+  outputTree->Branch("_pvZ",                           &_pvZ,                           "_pvZ/D");
+  outputTree->Branch("_pvXErr",                           &_pvXErr,                           "_pvXErr/D");
+  outputTree->Branch("_pvYErr",                           &_pvYErr,                           "_pvYErr/D");
+  outputTree->Branch("_pvZErr",                           &_pvZErr,                           "_pvZErr/D");
   outputTree->Branch("_nMu",                          &_nMu,                          "_nMu/i");
   outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/i");
   outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/i");
@@ -177,6 +183,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
   //loop over muons
   for(const pat::Muon& mu : *muons){
+	  if (_nL == 0){
+		  _pvX= primaryVertex.x();
+		  _pvXErr = primaryVertex.xError();
+		  _pvY= primaryVertex.y();
+		  _pvYErr = primaryVertex.yError();
+		  _pvZ= primaryVertex.z();
+		  _pvZErr = primaryVertex.zError();
+		  
+		  
+	  }
     // Check if muon passes minimum criteria
     if(passMuonPreselection(mu, *rho)==false) continue;
 
