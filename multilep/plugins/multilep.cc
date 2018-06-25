@@ -171,6 +171,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     }
     
     if(skim == "FR" and nJetBackToBack == 0) return;
+    if(skim == "FR" and leptonAnalyzer->_lHasTrigger[0] < 1 ) return;
     
     //store calculated event info in root tree
     outputTree->Fill();
