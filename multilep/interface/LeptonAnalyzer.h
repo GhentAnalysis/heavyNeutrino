@@ -247,8 +247,8 @@ class LeptonAnalyzer {
 	         	        edm::Handle<pat::TriggerObjectStandAloneCollection>);
 
     // To synchronize lepton selection
-    bool passElectronPreselection(const pat::Electron&) const;
-    bool passMuonPreselection(const pat::Muon&) const;
+    bool passElectronPreselection(const pat::Electron&, const double rho) const;
+    bool passMuonPreselection(const pat::Muon&, const double rho) const;
     bool passTauPreselection(const pat::Tau&, unsigned) const;
 
     // In leptonAnalyzerIso.cc
