@@ -401,6 +401,8 @@ if (_relIso[_nL] > 2) continue;
    * refitting vertices displaced *********************************************************** 
    */
   // (Why double??) 
+	
+	/*
   unsigned iMu_plus=0;
   unsigned iMu_minus_mu=0;
   unsigned iMu_minus_e=0;
@@ -432,12 +434,7 @@ if (_relIso[_nL] > 2) continue;
       }
       else {   
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	/*std::cout << "              1: "
-		  << (mu_1.innerTrack().isNull() ? "OUT" : "TRK")
-		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
-		  << (mu_2.innerTrack().isNull() ? "OUT" : "TRK")
-		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;*/
+	
       }
     }// end loop mu-
           
@@ -456,12 +453,7 @@ if (_relIso[_nL] > 2) continue;
       } 
       else {
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	/*std::cout << "              1: "
-		  << (mu_1.innerTrack().isNull() ? "OUT" : "TRK")
-		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
-		  << "GSF"
-		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;*/
+	
       }
     }// end loop e-
   }//end loop mu
@@ -493,12 +485,7 @@ if (_relIso[_nL] > 2) continue;
       } 
       else {
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	/*std::cout << "              1: "
-		  << "GSF"
-		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
-		  << (mu_2.innerTrack().isNull() ? "OUT" : "TRK")
-		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;*/
+	
       } 
     }// end loop mu-
     
@@ -518,16 +505,14 @@ if (_relIso[_nL] > 2) continue;
       } 
       else {
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
-	/*std::cout << "              1: "
-		  << "GSF"
-		  << " (" << tk_1.eta() << ", " << tk_1.phi() << ", " << tk_1.pt() << "); 2: "
-		  << "GSF"
-		  << " (" << tk_2.eta() << ", " << tk_2.phi() << ", " << tk_2.pt() << ")"
-		  << std::endl;*/
+	
       }
     }// end loop e+
   }//end electrons
 
+	*/
+	
+	
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3 || _nGoodLeading < 1 || _nGoodDisplaced < 2) ) return false;
   if(multilepAnalyzer->skim == "trilep"      and (_nLight < 3 || _nGoodLeading < 1                       ) ) return false;
   if(multilepAnalyzer->skim == "displtrilep" and (_nLight < 3 || _nGoodLeading < 1 || _nGoodDisplaced < 2) ) return false;
