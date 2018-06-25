@@ -258,8 +258,34 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : 0); // cannot be -1 !!!
     _lPOGVeto[_nL]   = mu.isLooseMuon();
     _lPOGLoose[_nL]  = mu.isLooseMuon();
-    if ( mu.isLooseMuon()) _lPOGMedium[_nL] = mu.isMediumMuon();
+    //if ( mu.isLooseMuon()) _lPOGMedium[_nL] = mu.isMediumMuon();
     if ( mu.isLooseMuon()) _lPOGTight[_nL]  = mu.isTightMuon(primaryVertex);
+	  
+    bool  medium_temporary=false;
+    bool goodGlb= false;
+    if (mu.isLooseMuon()){
+	if (272728 <= iEvent.run() && iEvent.run() <= 278808)    {
+		 goodGlb = mu.isGlobalMuon() &&  mu.innerTrack()->validFraction() < 0.49 &&
+	    		mu.globalTrack()->normalizedChi2() < 3. && 
+	    		mu.combinedQuality().chi2LocalPosition < 12. && 
+	    		mu.combinedQuality().trkKink < 20.;	    
+	}
+	  else {
+		  goodGlb = mu.isGlobalMuon() &&  mu.innerTrack()->validFraction() < 0.8 &&
+	    		mu.globalTrack()->normalizedChi2() < 3. && 
+	    		mu.combinedQuality().chi2LocalPosition < 12. && 
+	    		mu.combinedQuality().trkKink < 20.; 
+	    }
+    }	    
+	    
+    medium_temporary =  mu.segmentCompatibility()  > (goodGlb ? 0.303 : 0.451));
+    if ( mu.isLooseMuon()) _lPOGMedium[_nL] = medium_temporary;
+	 
+	
+
+	  
+	  
+	  
  
     _eleNumberInnerHitsMissing[_nL] =-1;
     _lpassConversionVeto[_nL] = false;
@@ -358,6 +384,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lPOGMedium[_nL]   = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
 
+	  
+	  
+	  
+	  
+	  
+	  
+	  
     //muon variables
     _lGlobalMuon[_nL] = false;
     _lTrackerMuon[_nL]= false;
