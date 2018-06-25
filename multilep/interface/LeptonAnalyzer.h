@@ -56,11 +56,20 @@ class LeptonAnalyzer {
     static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
     static const unsigned nV_max      = 50;   
   
-    unsigned _nL;                                                                                    //number of leptons
+    unsigned _nL;  //number of leptons
     unsigned _nMu;
     unsigned _nEle;
     unsigned _nLight;
-    unsigned _nTau;          
+    unsigned _nTau;
+	
+	double _pvX;
+	double _pvY;
+	double _pvZ;
+	double _pvXErr;
+	double _pvYErr;
+	double _pvZErr;
+	
+	
     unsigned _nVFit;                     // number vertices re-fitted
     unsigned _nGoodLeading;              // number vertices re-fitted
     unsigned _nGoodDisplaced;
