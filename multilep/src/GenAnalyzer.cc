@@ -85,7 +85,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 		    
 	        _gen_lRefs[_gen_nL]     = &p;
 		  _gen_pdgID[_gen_nL]  = p.pdgId();
-		    std::cout<<"pdg: "<<p.pdgId()<<" .  "<< _gen_pdgID[_gen_nL]<<std::endl;
+		   // std::cout<<"pdg: "<<p.pdgId()<<" .  "<< _gen_pdgID[_gen_nL]<<std::endl;
                 _gen_lPt[_gen_nL]       = p.pt();
                 _gen_lEta[_gen_nL]      = p.eta();
                 _gen_lPhi[_gen_nL]      = p.phi();
