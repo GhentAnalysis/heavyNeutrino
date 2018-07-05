@@ -15,7 +15,7 @@ class multilep;
 class JetAnalyzer {
   friend class multilep;
   private:
-    JetCorrectionUncertainty jecUnc;
+    JetCorrectionUncertainty* jecUnc;
 
     static const unsigned nJets_max = 20;
 
@@ -27,7 +27,6 @@ class JetAnalyzer {
     double   _jetPt_L1[nJets_max];
     double   _jetPt_L2[nJets_max];
     double   _jetPt_L3[nJets_max];
-    double   _jetPt_L2L3[nJets_max];
     double   _jetEta[nJets_max];
     double   _jetPhi[nJets_max];
     double   _jetE[nJets_max];
@@ -62,7 +61,7 @@ class JetAnalyzer {
     double        _metSignificance;
 
     //correction level for JEC
-    std::string jecLevel;
+    //std::string jecLevel;
 
 
     multilep* multilepAnalyzer;
@@ -73,7 +72,7 @@ class JetAnalyzer {
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
-    ~JetAnalyzer(){};
+    ~JetAnalyzer();
     
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&);

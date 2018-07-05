@@ -41,8 +41,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
-    jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
+    //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -52,10 +52,12 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
 
+    /*
     //initialize jec txt files
     std::string dirtyHack = "dummy.txt";
     std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
     jec = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
+    */
 }
 
 multilep::~multilep(){
@@ -66,7 +68,7 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
-    delete jec;
+    //delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -110,7 +112,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     _runNb = (unsigned long) iRun.id().run();
 
     //update JEC 
-    jec->updateJEC(_runNb);
+    //jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------

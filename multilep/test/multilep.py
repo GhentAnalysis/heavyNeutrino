@@ -57,8 +57,8 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_v6'   
 elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v13'
-elif isData:            process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
-else:                   process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
+elif isData:            process.GlobalTag.globaltag = '94X_dataRun2_v10'
+else:                   process.GlobalTag.globaltag = '94X_mcRun2_asymptotic_v3'
 
 #
 # Vertex collection
@@ -146,7 +146,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   #jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
   #jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
   #jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
-  jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/Summer16_23Sep2016V3_MC_Uncertainty_AK4PFchs.txt"),
+  jecUncertaintyFile16          = cms.FileInPath("heavyNeutrino/multilep/data/JEC/Summer16_07Aug2017_V9_MC_Uncertainty_AK4PFchs.txt"),
+  jecUncertaintyFile17          = cms.FileInPath("heavyNeutrino/multilep/data/JEC/Fall17_17Nov2017_V6_MC_Uncertainty_AK4PFchs.txt"),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),
   recoResultsPrimary            = cms.InputTag("TriggerResults::PAT"),
