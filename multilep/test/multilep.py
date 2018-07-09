@@ -29,7 +29,9 @@ def getJSON(is2017):
 #inputFile       = '/store/mc/RunIIFall17MiniAOD/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v2/60000/0857E231-22EF-E711-BEAC-FA163E2DB7A6.root'
 #inputFile       = '/store/mc/RunIIFall17MiniAOD/ZZTo4L_13TeV_powheg_pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v2/60000/063DA70C-EADA-E711-8493-008CFAFBF7C8.root'
 #inputFile       = '/store/data/Run2017F/SingleMuon/MINIAOD/17Nov2017-v1/00000/3E7C07F9-E6F1-E711-841A-0CC47A4C8E46.root'
-inputFile       = '/store/data/Run2016D/DoubleMuon/MINIAOD/03Feb2017-v1/100000/52779EE0-F4ED-E611-BF87-70106F49CD3C.root'
+#inputFile       = '/store/data/Run2016D/DoubleMuon/MINIAOD/03Feb2017-v1/100000/52779EE0-F4ED-E611-BF87-70106F49CD3C.root'
+#inputFile       = '/store/mc/RunIISummer17MiniAOD/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/92X_upgrade2017_realistic_v10-v1/90000/FE1118B0-A192-E711-A33C-90B11C064AD8.root'
+inputFile       = 'file:///user/ikhvastu/CMSSW_9_4_4/src/heavyNeutrino/multilep/test/pickevents_data_275309_124_152717842.root'
 nEvents         = 1000
 outputFile      = 'singlelep.root'   # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
