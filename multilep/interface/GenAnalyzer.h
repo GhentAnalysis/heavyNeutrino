@@ -58,10 +58,6 @@ class GenAnalyzer {
     //Generator HT (needed when merging HT binned sample with inclusive one)
     double _gen_HT;
     
-    //Generator W
-    unsigned _gen_nW;
-    unsigned _gen_WMomPdg[gen_n_max];
-    unsigned _gen_nWfromN;
 
     //Generator quarks
     unsigned _gen_nN;
@@ -80,7 +76,7 @@ class GenAnalyzer {
     unsigned _gen_status23_pdg[gen_n_max];
     unsigned _gen_status23_fromN_pdg[gen_n_max];
     unsigned _gen_status23_fromW_pdg[gen_n_max];
-    unsigned _gen_nq23;
+    unsigned _gen_nq;
     double   _gen_qPt[gen_n_max];
     double   _gen_qEta[gen_n_max];
     double   _gen_qPhi[gen_n_max];

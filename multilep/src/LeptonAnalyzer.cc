@@ -105,37 +105,41 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
     outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
     outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
-    outputTree->Branch("_TrackMult_pt0",        	&_TrackMult_pt0,        	"_TrackMult_pt0[_nLight]/i");
-    outputTree->Branch("_TrackMult_pt1",        	&_TrackMult_pt1,        	"_TrackMult_pt1[_nL]/i");
-    outputTree->Branch("_TrackMult_pt2",        	&_TrackMult_pt2,        	"_TrackMult_pt2[_nLight]/i");
-    outputTree->Branch("_TrackMult_pt3",        	&_TrackMult_pt3,        	"_TrackMult_pt3[_nLight]/i");
-    outputTree->Branch("_TrackMult_pt4",        	&_TrackMult_pt4,        	"_TrackMult_pt4[_nLight]/i");
-    outputTree->Branch("_TrackMult_pt5",        	&_TrackMult_pt5,        	"_TrackMult_pt5[_nL]/i");
+    outputTree->Branch("_TrackMult_pt0",        	    &_TrackMult_pt0,        	    "_TrackMult_pt0[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt1",        	    &_TrackMult_pt1,        	    "_TrackMult_pt1[_nL]/i");
+    outputTree->Branch("_TrackMult_pt2",        	    &_TrackMult_pt2,        	    "_TrackMult_pt2[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt3",        	    &_TrackMult_pt3,        	    "_TrackMult_pt3[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt4",        	    &_TrackMult_pt4,        	    "_TrackMult_pt4[_nLight]/i");
+    outputTree->Branch("_TrackMult_pt5",        	    &_TrackMult_pt5,        	    "_TrackMult_pt5[_nL]/i");
     outputTree->Branch("_TrackMult_noIP_pt0",        	&_TrackMult_noIP_pt0,        	"_TrackMult_noIP_pt0[_nLight]/i");
     outputTree->Branch("_TrackMult_noIP_pt1",        	&_TrackMult_noIP_pt1,        	"_TrackMult_noIP_pt1[_nLight]/i");
     outputTree->Branch("_TrackMult_noIP_pt2",        	&_TrackMult_noIP_pt2,        	"_TrackMult_noIP_pt2[_nLight]/i");
     outputTree->Branch("_TrackMult_noIP_pt3",        	&_TrackMult_noIP_pt3,        	"_TrackMult_noIP_pt3[_nLight]/i");
     outputTree->Branch("_TrackMult_noIP_pt4",        	&_TrackMult_noIP_pt4,        	"_TrackMult_noIP_pt4[_nLight]/i");
     outputTree->Branch("_TrackMult_noIP_pt5",        	&_TrackMult_noIP_pt5,        	"_TrackMult_noIP_pt5[_nLight]/i");
-    outputTree->Branch("_Nutau_TrackMult_pt1",      	&_Nutau_TrackMult_pt1,		"_Nutau_TrackMult_pt1[_nL]/i");
-    outputTree->Branch("_Nutau_TrackMult_pt5",      	&_Nutau_TrackMult_pt5,		"_Nutau_TrackMult_pt5[_nL]/i");
-    outputTree->Branch("_lVtx_valid",			&_lVtx_valid,			"_lVtx_valid[_nLight]/O");
-    outputTree->Branch("_lVtxpos_x",			&_lVtxpos_x,			"_lVtxpos_x[_nLight]/D");
-    outputTree->Branch("_lVtxpos_y",			&_lVtxpos_y,			"_lVtxpos_y[_nLight]/D");
-    outputTree->Branch("_lVtxpos_z",			&_lVtxpos_z,			"_lVtxpos_z[_nLight]/D");
-    outputTree->Branch("_lVtxpos_cxx",			&_lVtxpos_cxx,			"_lVtxpos_cxx[_nLight]/D");
-    outputTree->Branch("_lVtxpos_cyy",			&_lVtxpos_cyy,			"_lVtxpos_cyy[_nLight]/D");
-    outputTree->Branch("_lVtxpos_czz",			&_lVtxpos_czz,			"_lVtxpos_czz[_nLight]/D");
-    outputTree->Branch("_lVtxpos_cyx",			&_lVtxpos_cyx,			"_lVtxpos_cyx[_nLight]/D");
-    outputTree->Branch("_lVtxpos_czy",			&_lVtxpos_czy,			"_lVtxpos_czy[_nLight]/D");
-    outputTree->Branch("_lVtxpos_czx",			&_lVtxpos_czx,			"_lVtxpos_czx[_nLight]/D");
-    outputTree->Branch("_lVtxpos_df",			&_lVtxpos_df,			"_lVtxpos_df[_nLight]/D");
-    outputTree->Branch("_lVtxpos_chi2",			&_lVtxpos_chi2,			"_lVtxpos_chi2[_nLight]/D");
-    outputTree->Branch("_lVtxpos_ntracks",		&_lVtxpos_ntracks,		"_lVtxpos_ntracks[_nLight]/i");
-    outputTree->Branch("_lVtxpos_PVdxy",		&_lVtxpos_PVdxy,		"_lVtxpos_PVdxy[_nLight]/D");
-    outputTree->Branch("_lVtxpos_BSdxy",		&_lVtxpos_BSdxy,		"_lVtxpos_BSdxy[_nLight]/D");
-    outputTree->Branch("_lVtxpos_PVdz",			&_lVtxpos_PVdz,			"_lVtxpos_PVdz[_nLight]/D");
-    outputTree->Branch("_lVtxpos_BSdz",			&_lVtxpos_BSdz,			"_lVtxpos_BSdz[_nLight]/D");
+    outputTree->Branch("_Nutau_TrackMult_pt1",      	&_Nutau_TrackMult_pt1,		    "_Nutau_TrackMult_pt1[_nL]/i");
+    outputTree->Branch("_Nutau_TrackMult_pt5",      	&_Nutau_TrackMult_pt5,		    "_Nutau_TrackMult_pt5[_nL]/i");
+    outputTree->Branch("_lVtx_valid",			        &_lVtx_valid,			        "_lVtx_valid[_nLight]/O");
+    outputTree->Branch("_lVtxpos_x",			        &_lVtxpos_x,			        "_lVtxpos_x[_nLight]/D");
+    outputTree->Branch("_lVtxpos_y",			        &_lVtxpos_y,			        "_lVtxpos_y[_nLight]/D");
+    outputTree->Branch("_lVtxpos_z",			        &_lVtxpos_z,			        "_lVtxpos_z[_nLight]/D");
+    outputTree->Branch("_lVtxpos_cxx",			        &_lVtxpos_cxx,			        "_lVtxpos_cxx[_nLight]/D");
+    outputTree->Branch("_lVtxpos_cyy",			        &_lVtxpos_cyy,			        "_lVtxpos_cyy[_nLight]/D");
+    outputTree->Branch("_lVtxpos_czz",			        &_lVtxpos_czz,			        "_lVtxpos_czz[_nLight]/D");
+    outputTree->Branch("_lVtxpos_cyx",			        &_lVtxpos_cyx,			        "_lVtxpos_cyx[_nLight]/D");
+    outputTree->Branch("_lVtxpos_czy",			        &_lVtxpos_czy,			        "_lVtxpos_czy[_nLight]/D");
+    outputTree->Branch("_lVtxpos_czx",			        &_lVtxpos_czx,			        "_lVtxpos_czx[_nLight]/D");
+    outputTree->Branch("_lVtxpos_df",			        &_lVtxpos_df,			        "_lVtxpos_df[_nLight]/D");
+    outputTree->Branch("_lVtxpos_chi2",			        &_lVtxpos_chi2,			        "_lVtxpos_chi2[_nLight]/D");
+    outputTree->Branch("_lVtxpos_ntracks",		        &_lVtxpos_ntracks,		        "_lVtxpos_ntracks[_nLight]/i");
+    outputTree->Branch("_lVtxpos_PVdxy",		        &_lVtxpos_PVdxy,		        "_lVtxpos_PVdxy[_nLight]/D");
+    outputTree->Branch("_lVtxpos_BSdxy",		        &_lVtxpos_BSdxy,		        "_lVtxpos_BSdxy[_nLight]/D");
+    outputTree->Branch("_lVtxpos_PVdz",			        &_lVtxpos_PVdz,			        "_lVtxpos_PVdz[_nLight]/D");
+    outputTree->Branch("_lVtxpos_BSdz",			        &_lVtxpos_BSdz,			        "_lVtxpos_BSdz[_nLight]/D");
+    outputTree->Branch("_lVtxpos_maxdxy_valid",         &_lVtxpos_maxdxy_valid,         "_lVtxpos_maxdxy_valid[_nLight]/D");
+    outputTree->Branch("_lVtxpos_maxdz_valid",          &_lVtxpos_maxdz_valid,          "_lVtxpos_maxdz_valid[_nLight]/D");
+    outputTree->Branch("_lVtxpos_maxdxy_Notvalid",      &_lVtxpos_maxdxy_Notvalid,      "_lVtxpos_maxdxy_Notvalid[_nLight]/D");
+    outputTree->Branch("_lVtxpos_maxdz_Notvalid",       &_lVtxpos_maxdz_Notvalid,       "_lVtxpos_maxdz_Notvalid[_nLight]/D");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");  
@@ -695,9 +699,11 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
     //Construct a lorentzvector of the lepton
     auto lep = lepton.p4();
     unsigned n_lepton = 0;
+    double max_lep_track_dxy = 0;
+    double max_lep_track_dz  = 0;
     TLorentzVector lepVec(lep.px(), lep.py(), lep.pz(), lep.E());
     //std::cout << std::endl << "LEPTON eta:" << lepton.eta() << ", phi:" << lepton.phi() << ", dz:" << _dz[_nL] << ", dxy:" << _dxy[_nL] << std::endl;
-
+    
     //Find the tracks that we wish to include for the KalmanVertexFitter
     for(unsigned j = 0; j < packedCandidates.size(); ++j){
 	    if(packedCandidates[j].hasTrackDetails()){
@@ -724,27 +730,41 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
 	        if(is_lepton) ++n_lepton;
 	        if(goodTrack && !is_lepton){
                 tracks.push_back(candTrack);
+                if(fabs(_dxy[_nL] - packedCandidates[j].dxy()) > max_lep_track_dxy) max_lep_track_dxy = fabs(_dxy[_nL] - packedCandidates[j].dxy());
+                if(fabs(_dz[_nL] - packedCandidates[j].dz()) > max_lep_track_dz) max_lep_track_dz = fabs(_dz[_nL] - packedCandidates[j].dz());
                 //std::cout << "TRACK eta:" << candTrack.eta() << ", phi:" << candTrack.phi() << ", dz:" << packedCandidates[j].dz() << ", dxy:" << packedCandidates[j].dxy() << std::endl;
             }
 	    }
     }
-    _lVtx_valid[_nL] = false;
-    if(tracks.size() < 2 || n_lepton != 1) return;
-    TransientVertex vtx = constructKalmanVertex(tracks);
-    _lVtx_valid[_nL] = vtx.isValid();
-    if(vtx.isValid()){
-        _lVtxpos_x[_nL] = vtx.position().x();
-        _lVtxpos_y[_nL] = vtx.position().y();
-        _lVtxpos_z[_nL] = vtx.position().z();
-        _lVtxpos_cxx[_nL] = vtx.positionError().cxx();
-        _lVtxpos_cyy[_nL] = vtx.positionError().cyy();
-        _lVtxpos_czz[_nL] = vtx.positionError().czz();
-        _lVtxpos_cyx[_nL] = vtx.positionError().cyx();
-        _lVtxpos_czy[_nL] = vtx.positionError().czy();
-        _lVtxpos_czx[_nL] = vtx.positionError().czx();
-        _lVtxpos_df[_nL] = vtx.degreesOfFreedom();
-        _lVtxpos_chi2[_nL] = vtx.totalChiSquared();
-        _lVtxpos_ntracks[_nL] = tracks.size();
+    if(tracks.size() < 2 || n_lepton != 1){
+        _lVtx_valid[_nL] = false;
+        return;
+    }else {
+        TransientVertex vtx = constructKalmanVertex(tracks);
+        _lVtx_valid[_nL]        = vtx.isValid();
+        if(vtx.isValid()){
+            _lVtxpos_x[_nL]                 = vtx.position().x();
+            _lVtxpos_y[_nL]                 = vtx.position().y();
+            _lVtxpos_z[_nL]                 = vtx.position().z();
+            _lVtxpos_cxx[_nL]               = vtx.positionError().cxx();
+            _lVtxpos_cyy[_nL]               = vtx.positionError().cyy();
+            _lVtxpos_czz[_nL]               = vtx.positionError().czz();
+            _lVtxpos_cyx[_nL]               = vtx.positionError().cyx();
+            _lVtxpos_czy[_nL]               = vtx.positionError().czy();
+            _lVtxpos_czx[_nL]               = vtx.positionError().czx();
+            _lVtxpos_df[_nL]                = vtx.degreesOfFreedom();
+            _lVtxpos_chi2[_nL]              = vtx.totalChiSquared();
+            _lVtxpos_ntracks[_nL]           = tracks.size();
+            _lVtxpos_maxdxy_valid[_nL]      = max_lep_track_dxy;
+            _lVtxpos_maxdz_valid[_nL]       = max_lep_track_dz;
+            _lVtxpos_maxdxy_Notvalid[_nL]   = -1;
+            _lVtxpos_maxdz_Notvalid[_nL]    = -1;
+        }else {
+            _lVtxpos_maxdxy_valid[_nL]      = -1;
+            _lVtxpos_maxdz_valid[_nL]       = -1;
+            _lVtxpos_maxdxy_Notvalid[_nL]   = max_lep_track_dxy;
+            _lVtxpos_maxdz_Notvalid[_nL]    = max_lep_track_dz;
+        }
     }
 }
 
