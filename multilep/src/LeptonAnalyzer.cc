@@ -431,18 +431,36 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetCsvV2[_nL] = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
         _closestJetDeepCsv_b[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+
         //compute selected track multiplicity of closest jet
         _selectedTrackMult[_nL] = 0;
         for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
             const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
             if(daughter->hasTrackDetails()){
                 const reco::Track& daughterTrack = daughter->pseudoTrack();
+                bool goodTrackFit = (daughterTrack.charge() != 0) && 
+                    (daughterTrack.hitPattern().numberOfValidHits() > 7) &&
+                    (daughterTrack.hitPattern().numberOfValidPixelHits() > 1) && 
+                    (daughterTrack.normalizedChi2() < 5);
+
+                if( !goodTrackFit ) continue;
+
+                bool trackFromPV = ( fabs(daughterTrack.dz(vertex.position())) < 17 ) &&
+                    ( fabs(daughterTrack.dxy(vertex.position())) < 0.2 );
+
+                if( !trackFromPV ) continue;
+
+                //distance from jet core
                 TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-                double daughterDeltaR            = trackVec.DeltaR(jV);
-                bool goodTrack                   = daughterTrack.pt() > 1 && daughterTrack.charge() != 0 && daughterTrack.hitPattern().numberOfValidHits() > 7
-                    && daughterTrack.hitPattern().numberOfValidPixelHits() > 1 && daughterTrack.normalizedChi2() < 5 && fabs(daughterTrack.dz(vertex.position())) < 17
-                    && fabs(daughterTrack.dxy(vertex.position())) < 0.2;
-                if(daughterDeltaR < 0.4 && daughter->fromPV() > 1 && goodTrack) ++_selectedTrackMult[_nL];
+                double daughterDeltaR = trackVec.DeltaR(jV);
+
+                bool goodTrack = (daughterTrack.pt() > 1) && 
+                        (daughterDeltaR < 0.4) && 
+                        (daughter->fromPV() > 1);
+
+                if(goodTrack){
+                    ++_selectedTrackMult[_nL];
+                }
             }
         }
     }
