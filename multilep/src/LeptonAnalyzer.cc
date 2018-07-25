@@ -190,7 +190,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lPOGLoose[_nL]      = mu.isLooseMuon();
         _lPOGMedium[_nL]     = mu.isMediumMuon();
         _lPOGTight[_nL]      = mu.isTightMuon(primaryVertex);
-        std::cout << "Let's check output of 2 functions: " << mu.passed(mu.CutBasedIdMedium) << " " << mu.isMediumMuon() << std::endl;
+        //std::cout << "Let's check output of 2 functions: " << mu.passed(mu.CutBasedIdMedium) << " " << mu.isMediumMuon() << std::endl;
 
         _leptonMvaSUSY16[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY16);
         _leptonMvaTTH16[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH16);
