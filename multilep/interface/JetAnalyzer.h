@@ -30,6 +30,8 @@ class JetAnalyzer {
     double   _jetEta[nJets_max];
     double   _jetPhi[nJets_max];
     double   _jetE[nJets_max];
+    double   _jetE_JECDown[nJets_max];
+    double   _jetE_JECUp[nJets_max];
     double   _jetCsvV2[nJets_max];
     double   _jetDeepCsv_udsg[nJets_max];
     double   _jetDeepCsv_b[nJets_max];

@@ -30,8 +30,8 @@ JetAnalyzer::~JetAnalyzer(){
 void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/b");
     outputTree->Branch("_jetPt",                     &_jetPt,                    "_jetPt[_nJets]/D");
-    outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
     outputTree->Branch("_jetPt_JECDown",             &_jetPt_JECDown,            "_jetPt_JECDown[_nJets]/D");
+    outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
     outputTree->Branch("_jetPt_Uncorrected",         &_jetPt_Uncorrected,        "_jetPt_Uncorrected[_nJets]/D");
     outputTree->Branch("_jetPt_L1",                  &_jetPt_L1,                 "_jetPt_L1[_nJets]/D");
     outputTree->Branch("_jetPt_L2",                  &_jetPt_L2,                 "_jetPt_L2[_nJets]/D");
@@ -40,6 +40,8 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetEta",                    &_jetEta,                   "_jetEta[_nJets]/D");
     outputTree->Branch("_jetPhi",                    &_jetPhi,                   "_jetPhi[_nJets]/D");
     outputTree->Branch("_jetE",                      &_jetE,                     "_jetE[_nJets]/D");
+    outputTree->Branch("_jetE_JECDown",              &_jetE_JECDown,             "_jetE_JECDown[_nJets]/D");
+    outputTree->Branch("_jetE_JECUp",                &_jetE_JECUp,               "_jetE_JECUp[_nJets]/D");
     outputTree->Branch("_jetCsvV2",                  &_jetCsvV2,                 "_jetCsvV2[_nJets]/D");
     outputTree->Branch("_jetDeepCsv_udsg",           &_jetDeepCsv_udsg,          "_jetDeepCsv_udsg[_nJets]/D");
     outputTree->Branch("_jetDeepCsv_b",              &_jetDeepCsv_b,             "_jetDeepCsv_b[_nJets]/D");
@@ -106,8 +108,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         double maxpT = (1+unc)*_jetPt[_nJets];
         if(maxpT <= 25) continue;
 
-        _jetPt_JECDown[_nJets]            = _jetPt[_nJets]*(1-unc);
-        _jetPt_JECUp[_nJets]              = _jetPt[_nJets]*(1+unc);
+        _jetPt_JECDown[_nJets]            = _jetPt[_nJets]*(1 - unc);
+        _jetPt_JECUp[_nJets]              = _jetPt[_nJets]*(1 + unc);
 
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
@@ -123,6 +125,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetPhi[_nJets]                   = jet.phi();
         //_jetE[_nJets]                     = jet.correctedP4("Uncorrected").E()*corrTxt;
         _jetE[_nJets]                     = jet.energy();
+        _jetE_JECDown[_nJets]             = _jetE[_nJets]*(1 - unc);
+        _jetE_JECUp[_nJets]               = _jetE[_nJets]*(1 + unc);
 
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
