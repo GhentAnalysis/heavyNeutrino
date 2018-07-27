@@ -26,6 +26,9 @@ class LheAnalyzer {
     unsigned _nLheWeights;
     double _lheWeight[110];
 
+    unsigned _nPsWeights;
+    double _psWeight[14];
+
     multilep* multilepAnalyzer;
 
   public:
