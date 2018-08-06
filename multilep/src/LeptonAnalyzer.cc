@@ -408,7 +408,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     //std::cout << "end leptonanalyzer" << std::endl;
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
-    if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2){ std::cout << "failed" << std::endl; return false;}
+    if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
     if(multilepAnalyzer->skim == "ttg"       &&  _nLight < 2) return false;
     if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
     if(multilepAnalyzer->skim == "FR" &&  _nLight < 1) return false;
@@ -748,10 +748,8 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
     _lVtxpos_maxdxy[_nL]            = 0;
     _lVtxpos_maxdz[_nL]             = 0;
     _lVtxpos_ntracks[_nL]           = tracks.size();
-    std::cout << "ntracks: " << tracks.size() << std::endl;
     if(tracks.size() < 2 || n_lepton != 1){
         _lVtx_valid[_nL] = false;
-        //_lVtxpos_ntracks[_nL]           = tracks.size();
         return;
     }else {
         TransientVertex vtx = constructKalmanVertex(tracks);
@@ -770,7 +768,6 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
             _lVtxpos_czx[_nL]               = vtx.positionError().czx();
             _lVtxpos_df[_nL]                = vtx.degreesOfFreedom();
             _lVtxpos_chi2[_nL]              = vtx.totalChiSquared();
-            //_lVtxpos_ntracks[_nL]           = tracks.size();
         }
     }
 }

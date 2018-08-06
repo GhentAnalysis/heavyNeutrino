@@ -13,6 +13,8 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
@@ -84,6 +86,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<LHEEventProduct>                   lheEventInfoToken;
         edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken;
         edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 
+        edm::EDGetTokenT<std::vector<pat::PackedGenParticle>>packedGenParticleToken;
         edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
         edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
         edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;

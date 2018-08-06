@@ -1,6 +1,8 @@
 //include CMSSW classes
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#include "DataFormats/Candidate/interface/Candidate.h"
 
 //include ROOT classes
 #include "TLorentzVector.h"
@@ -87,8 +89,13 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
+    edm::Handle<std::vector<pat::PackedGenParticle>> packedGenParticles; iEvent.getByToken(multilepAnalyzer->packedGenParticleToken, packedGenParticles);
     //std::cout << "begin genanalyzer" << std::endl;
     if(!genParticles.isValid()) return;
+    if(!packedGenParticles.isValid()) return;
+    for(const pat::PackedGenParticle& packed : *packedGenParticles){
+        //std::cout << "pdgid: " << packed.pdgId() << " and status: " << packed.status() << std::endl;
+    }
 
     _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
     _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
