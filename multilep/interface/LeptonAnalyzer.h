@@ -110,10 +110,8 @@ class LeptonAnalyzer {
     double   _lVtxpos_BSdxy[nL_max];
     double   _lVtxpos_PVdz[nL_max];
     double   _lVtxpos_BSdz[nL_max];
-    double   _lVtxpos_maxdxy_valid[nL_max];
-    double   _lVtxpos_maxdz_valid[nL_max];
-    double   _lVtxpos_maxdxy_Notvalid[nL_max];
-    double   _lVtxpos_maxdz_Notvalid[nL_max];
+    double   _lVtxpos_maxdxy[nL_max];
+    double   _lVtxpos_maxdz[nL_max];
 
     double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];

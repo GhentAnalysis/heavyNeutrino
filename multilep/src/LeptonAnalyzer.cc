@@ -136,10 +136,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lVtxpos_BSdxy",		        &_lVtxpos_BSdxy,		        "_lVtxpos_BSdxy[_nLight]/D");
     outputTree->Branch("_lVtxpos_PVdz",			        &_lVtxpos_PVdz,			        "_lVtxpos_PVdz[_nLight]/D");
     outputTree->Branch("_lVtxpos_BSdz",			        &_lVtxpos_BSdz,			        "_lVtxpos_BSdz[_nLight]/D");
-    outputTree->Branch("_lVtxpos_maxdxy_valid",         &_lVtxpos_maxdxy_valid,         "_lVtxpos_maxdxy_valid[_nLight]/D");
-    outputTree->Branch("_lVtxpos_maxdz_valid",          &_lVtxpos_maxdz_valid,          "_lVtxpos_maxdz_valid[_nLight]/D");
-    outputTree->Branch("_lVtxpos_maxdxy_Notvalid",      &_lVtxpos_maxdxy_Notvalid,      "_lVtxpos_maxdxy_Notvalid[_nLight]/D");
-    outputTree->Branch("_lVtxpos_maxdz_Notvalid",       &_lVtxpos_maxdz_Notvalid,       "_lVtxpos_maxdz_Notvalid[_nLight]/D");
+    outputTree->Branch("_lVtxpos_maxdxy",         &_lVtxpos_maxdxy,         "_lVtxpos_maxdxy[_nLight]/D");
+    outputTree->Branch("_lVtxpos_maxdz",          &_lVtxpos_maxdz,          "_lVtxpos_maxdz[_nLight]/D");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");  
@@ -736,12 +734,30 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
             }
 	    }
     }
+    _lVtxpos_x[_nL]                 = 0;
+    _lVtxpos_y[_nL]                 = 0;
+    _lVtxpos_z[_nL]                 = 0;
+    _lVtxpos_cxx[_nL]               = 0;
+    _lVtxpos_cyy[_nL]               = 0;
+    _lVtxpos_czz[_nL]               = 0;
+    _lVtxpos_cyx[_nL]               = 0;
+    _lVtxpos_czy[_nL]               = 0;
+    _lVtxpos_czx[_nL]               = 0;
+    _lVtxpos_df[_nL]                = 0;
+    _lVtxpos_chi2[_nL]              = 0;
+    _lVtxpos_maxdxy[_nL]            = 0;
+    _lVtxpos_maxdz[_nL]             = 0;
+    _lVtxpos_ntracks[_nL]           = tracks.size();
+    std::cout << "ntracks: " << tracks.size() << std::endl;
     if(tracks.size() < 2 || n_lepton != 1){
         _lVtx_valid[_nL] = false;
+        //_lVtxpos_ntracks[_nL]           = tracks.size();
         return;
     }else {
         TransientVertex vtx = constructKalmanVertex(tracks);
-        _lVtx_valid[_nL]        = vtx.isValid();
+        _lVtx_valid[_nL]                = vtx.isValid();
+        _lVtxpos_maxdxy[_nL]            = max_lep_track_dxy;
+        _lVtxpos_maxdz[_nL]             = max_lep_track_dz;
         if(vtx.isValid()){
             _lVtxpos_x[_nL]                 = vtx.position().x();
             _lVtxpos_y[_nL]                 = vtx.position().y();
@@ -754,16 +770,7 @@ void LeptonAnalyzer::fillLeptonVtxVariables(const reco::Candidate& lepton, edm::
             _lVtxpos_czx[_nL]               = vtx.positionError().czx();
             _lVtxpos_df[_nL]                = vtx.degreesOfFreedom();
             _lVtxpos_chi2[_nL]              = vtx.totalChiSquared();
-            _lVtxpos_ntracks[_nL]           = tracks.size();
-            _lVtxpos_maxdxy_valid[_nL]      = max_lep_track_dxy;
-            _lVtxpos_maxdz_valid[_nL]       = max_lep_track_dz;
-            _lVtxpos_maxdxy_Notvalid[_nL]   = -1;
-            _lVtxpos_maxdz_Notvalid[_nL]    = -1;
-        }else {
-            _lVtxpos_maxdxy_valid[_nL]      = -1;
-            _lVtxpos_maxdz_valid[_nL]       = -1;
-            _lVtxpos_maxdxy_Notvalid[_nL]   = max_lep_track_dxy;
-            _lVtxpos_maxdz_Notvalid[_nL]    = max_lep_track_dz;
+            //_lVtxpos_ntracks[_nL]           = tracks.size();
         }
     }
 }
