@@ -215,6 +215,7 @@ class LeptonAnalyzer {
 
     // Index in the gen-particle list
     unsigned _lGenIndex[nL_max];
+    unsigned _lMatchType[nL_max];
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     bool _lIsPromptFinalState[nL_max];                                                                          //MC-truth variables
     bool _lIsPromptDecayed[nL_max];                                                                          //MC-truth variables
@@ -246,6 +247,8 @@ class LeptonAnalyzer {
 				  const reco::Track&, const reco::Track&);
 
     //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
+    template <typename Lepton> void fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton,
+						      const reco::GenParticle* match = nullptr, unsigned mtchtype = 6);
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
@@ -253,7 +256,7 @@ class LeptonAnalyzer {
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
     void fillLeptonIsoVars(const pat::Muon& mu, const double rho);
     void fillLeptonIsoVars(const pat::Electron& ele, const double rho);
-    double tau_dz(const pat::Tau&, const reco::Vertex::Point&);  
+    double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;  
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose);
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
@@ -264,7 +267,7 @@ class LeptonAnalyzer {
     // To synchronize lepton selection
     bool passElectronPreselection(const pat::Electron&, const double rho) const;
     bool passMuonPreselection(const pat::Muon&, const double rho) const;
-    bool passTauPreselection(const pat::Tau&, unsigned) const;
+    bool passTauPreselection(const pat::Tau&, const reco::Vertex::Point&) const;
 
     // In leptonAnalyzerIso.cc
     double getRelIso03(const pat::Muon&, const double) const;

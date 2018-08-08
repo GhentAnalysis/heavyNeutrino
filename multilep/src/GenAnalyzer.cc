@@ -63,59 +63,59 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     // for(unsigned ig=0; ig<gen_nPh_max; ++ig) _gen_phRefs[ig] = nullptr;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
-        //Calculate generator level MET
-        if(p.status() == 1){
-            if(abs(p.pdgId()) == 12 || abs(p.pdgId()) == 14 || abs(p.pdgId()) == 16 || (multilepAnalyzer->isSUSY &&  abs(p.pdgId()) == 1000022) ){
-                TLorentzVector nuVect;
-                nuVect.SetPtEtaPhiE(p.pt(), p.eta(), p.phi(), p.energy());
-                genMetVector += nuVect;
-            }
-        }
+      //Calculate generator level MET
+      if(p.status() == 1){
+	if(std::abs(p.pdgId()) == 12 || std::abs(p.pdgId()) == 14 || std::abs(p.pdgId()) == 16 || (multilepAnalyzer->isSUSY &&  std::abs(p.pdgId()) == 1000022) ){
+	  TLorentzVector nuVect;
+	  nuVect.SetPtEtaPhiE(p.pt(), p.eta(), p.phi(), p.energy());
+	  genMetVector += nuVect;
+	}
+      }
 
-        //store generator level lepton info
-	    /* 
-	    normal case!!!!
-	     //  if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
+      //store generator level lepton info
+      /* 
+	 normal case!!!!
+	 //  if((p.status() == 1 && (std::abs(p.pdgId()) == 11 || std::abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && std::abs(p.pdgId()) == 15)){
+	 
+	 */
 
-	    */
-
-	   if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
-	 if (p.pdgId()== 2212) continue;
-            if(_gen_nL != gen_nL_max){
+      if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && std::abs(p.pdgId()) == 15)){
+	if(p.pdgId()== 2212) continue;
+	if(_gen_nL != gen_nL_max){
 		    
-	        _gen_lRefs[_gen_nL]     = &p;
-		  _gen_pdgID[_gen_nL]  = p.pdgId();
-		   // std::cout<<"pdg: "<<p.pdgId()<<" .  "<< _gen_pdgID[_gen_nL]<<std::endl;
-                _gen_lPt[_gen_nL]       = p.pt();
-                _gen_lEta[_gen_nL]      = p.eta();
-                _gen_lPhi[_gen_nL]      = p.phi();
-                _gen_lE[_gen_nL]        = p.energy();
-                _gen_lCharge[_gen_nL]   = p.charge();
-                _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
+	  _gen_lRefs[_gen_nL]     = &p;
+	  _gen_pdgID[_gen_nL]  = p.pdgId();
+	  // std::cout<<"pdg: "<<p.pdgId()<<" .  "<< _gen_pdgID[_gen_nL]<<std::endl;
+	  _gen_lPt[_gen_nL]       = p.pt();
+	  _gen_lEta[_gen_nL]      = p.eta();
+	  _gen_lPhi[_gen_nL]      = p.phi();
+	  _gen_lE[_gen_nL]        = p.energy();
+	  _gen_lCharge[_gen_nL]   = p.charge();
+	  _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
+	  
+	  _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
+	  
+	  _gen_vertex_x[_gen_nL]  = p.vertex().x();
+	  _gen_vertex_y[_gen_nL]  = p.vertex().y();
+	  _gen_vertex_z[_gen_nL]  = p.vertex().z();
+	  
+	  std::set<int> decayChain;
+	  GenTools::setDecayChain(p, *genParticles, decayChain);
+	  _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
+	  
+	  _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
+	  
+	  if(std::abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
+	  else if(std::abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
+	  else                          _gen_lFlavor[_gen_nL] = 2;
+	  
+	  ++_gen_nL;
+          
+	}
+      }
 
-		    _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
-
-		    _gen_vertex_x[_gen_nL]  = p.vertex().x();
-		_gen_vertex_y[_gen_nL]  = p.vertex().y();
-		_gen_vertex_z[_gen_nL]  = p.vertex().z();
-
-                std::set<int> decayChain;
-                GenTools::setDecayChain(p, *genParticles, decayChain);
-                _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
-
-                _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
-
-                if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
-                else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
-                else                          _gen_lFlavor[_gen_nL] = 2;
-
-                ++_gen_nL;
-                
-            }
-        }
-
-        //store generator level photon info
-        if((p.status() == 1 || p.status() == 71) && abs(p.pdgId()) == 22){
+      //store generator level photon info
+      if((p.status() == 1 || p.status() == 71) && std::abs(p.pdgId()) == 22){
             if(_gen_nPh != gen_nPh_max){
 	        // _gen_phRefs[_gen_nPh]           = &p;
                 _gen_phStatus[_gen_nPh]        = p.status();
@@ -142,7 +142,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     _gen_HT = 0;
     for(const reco::GenParticle& p: *genParticles){
         if(p.status() == 23){
-            if(abs(p.pdgId()) > 0 && abs(p.pdgId()) < 7){
+            if(std::abs(p.pdgId()) > 0 && std::abs(p.pdgId()) < 7){
                 _gen_HT += p.pt();
             }
         }
@@ -161,7 +161,7 @@ unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genPart
         if(p->pdgId()!=22)        continue;
         type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles with generator level cuts
         if(p->pt()<ptCut)         continue;
-        if(fabs(p->eta())>etaCut) continue;
+        if(std::abs(p->eta())>etaCut) continue;
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
         std::set<int> decayChain;
@@ -172,13 +172,13 @@ unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genPart
 
         // Everything below is *signal*
         const reco::GenParticle* mom = GenTools::getMother(*p, genParticles);
-        if(std::find_if(decayChain.cbegin(), decayChain.cend(), [](const int entry) { return abs(entry) == 24; }) != decayChain.cend() ){
-            if(abs(mom->pdgId()) == 24)     type = std::max(type, 6);      // Type 6: photon directly from W or decay products which are part of ME
-            else if(abs(mom->pdgId()) <= 6) type = std::max(type, 4);      // Type 4: photon from quark from W (photon from pythia, rarely)
+        if(std::find_if(decayChain.cbegin(), decayChain.cend(), [](const int entry) { return std::abs(entry) == 24; }) != decayChain.cend() ){
+            if(std::abs(mom->pdgId()) == 24)     type = std::max(type, 6);      // Type 6: photon directly from W or decay products which are part of ME
+            else if(std::abs(mom->pdgId()) <= 6) type = std::max(type, 4);      // Type 4: photon from quark from W (photon from pythia, rarely)
             else                            type = std::max(type, 5);      // Type 5: photon from lepton from W (photon from pythia)
         } else {
-            if(abs(mom->pdgId()) == 6)      type = std::max(type, 7);      // Type 7: photon from top
-            else if(abs(mom->pdgId()) == 5) type = std::max(type, 3);      // Type 3: photon from b
+            if(std::abs(mom->pdgId()) == 6)      type = std::max(type, 7);      // Type 7: photon from top
+            else if(std::abs(mom->pdgId()) == 5) type = std::max(type, 3);      // Type 3: photon from b
             else                            type = std::max(type, 8);      // Type 8: photon from ME
         }
     }

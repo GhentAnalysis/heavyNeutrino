@@ -10,6 +10,15 @@ class multilep;
 
 class GenMatching{
   public:
+    typedef std::pair<const reco::GenParticle*, unsigned>   GenTypeMatch;
+    typedef std::pair<const reco::GenParticle*, float>      GenDrMatch;
+    typedef std::vector<GenDrMatch>                         GenDrMatches;
+    typedef std::pair<const reco::Candidate*, GenDrMatches> LepToGenDrMatches;
+    typedef std::vector<LepToGenDrMatches>                  LepToGenDrMatchesVector;
+    typedef std::pair<const reco::Candidate*, GenTypeMatch> LepToGenTypeMatch;
+    typedef std::vector<LepToGenTypeMatch>                  LepToGenTypeMatchVector;
+    //typedef std::vector<LepToGenTypeMatch>::const_iterator LGTvec_ci;
+
     GenMatching(const edm::ParameterSet& iConfig, multilep*);
     ~GenMatching(){};
 
@@ -18,14 +27,28 @@ class GenMatching{
     bool isPromptFinalState(const reco::Candidate&, const reco::GenParticle&) const;
     bool isPromptDecayed(const reco::Candidate&, const reco::GenParticle&) const;
 
-    void setGenParticles(const edm::Event&);    
+    void resetGenMatchingVector() {recogenmatchlist.clear();}
+    void setGenParticles(const edm::Event&);
+    void setPatParticles(std::vector<const pat::Electron*> &eleVec,
+			 std::vector<const pat::Muon*    > &muoVec,
+			 std::vector<const pat::Tau*     > &tauVec) {     
+      patElectrons = eleVec;
+      patMuons     = muoVec;
+      patTaus      = tauVec;
+   }
+
+    void matchGenToReco();
+    template <typename Lepton> void individualGenToRecoMatch(const Lepton*, LepToGenDrMatchesVector&);
+    const reco::GenParticle* returnGenMatch(const reco::Candidate*, unsigned&) const;
 
     //fill match variables
+    template <typename Lepton> void fillMatchingVars(const Lepton&, const reco::GenParticle*, unsigned, const unsigned lepcnt = 0);
     template <typename Lepton> void fillMatchingVars(const Lepton&);
 
     //return values
     unsigned genLIndex() {return genLindex;}
     // unsigned genPhIndex() {return genPhindex;}
+    unsigned typeMatch() {return matchType;}
     int pdgIdMatch() const {return matchPdgId; }
     bool promptMatch() const {return matchIsPrompt;}
     bool promptFinalStateMatch() const {return matchIsPromptFinalState;}
@@ -44,6 +67,11 @@ class GenMatching{
   private:
     multilep* multilepAnalyzer;
     edm::Handle<std::vector<reco::GenParticle>> genParticles;
+    std::vector<const pat::Electron*> patElectrons;
+    std::vector<const pat::Muon*    > patMuons;
+    std::vector<const pat::Tau*     > patTaus;
+
+    LepToGenTypeMatchVector recogenmatchlist;
     const reco::GenParticle* geometricMatch(const reco::Candidate&, const bool differentId = false) const;
 
     template<typename Lepton> const reco::GenParticle* findGenMatch(const Lepton& lepton, const bool allowallids = false) const{
@@ -59,10 +87,11 @@ class GenMatching{
     bool sameParticle(const reco::Candidate&, const reco::GenParticle&) const;
     unsigned genLindex;
     // unsigned genPhindex;
+    unsigned matchType;
     int matchPdgId;
     int momPdgId;
     bool matchIsPrompt;
- bool matchIsPromptFinalState;
+    bool matchIsPromptFinalState;
     bool matchIsPromptDecayed;
     unsigned provenance;
     unsigned provenanceCompressed;

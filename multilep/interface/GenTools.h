@@ -30,6 +30,7 @@ namespace GenTools{
     const reco::GenParticle* getFirstMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //return decay chain for a particle;
+    //void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list, std::vector<int> *vect = nullptr);
     void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
     //scan decay chain for certain types of particles
     bool bosonInChain(const std::set<int>&);

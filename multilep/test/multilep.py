@@ -8,9 +8,12 @@ def getJSON(is2017):
 
 # Default arguments
 nEvents         = 1000
-#inputFile       = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_100.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_103.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_105.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_101.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_102.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_104.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_107.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_108.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_109.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_10.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_trilepton_M-2_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_106.root"
-#inputFile       = '/store/data/Run2016D/DoubleMuon/MINIAOD/03Feb2017-v1/100000/52779EE0-F4ED-E611-BF87-70106F49CD3C.root'
-inputFile       ='/store/data/Run2016C/SingleMuon/MINIAOD/07Aug17-v1/50000/9AC69D07-967F-E711-8489-001E677923A6.root'
+## TTbar
+inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/70000/A03D5CD4-04C8-E611-8199-02163E019B3D.root"
+## DY
+#inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/90000/CA5B0759-7EE5-E611-A6AB-0025905A6126.root"
+#inputFile       = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_12.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_13.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_14.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_18.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_2.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_29.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_31.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_35.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_38.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_4.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_40.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_41.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_43.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_48.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_49.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_50.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_55.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_57.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_58.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_60.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_61.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_68.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_69.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_73.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_78.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_8.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_86.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_87.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_88.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_9.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_92.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_94.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_95.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_97.root,file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-5_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_98.root"
+
 ###                            ###
 ### Skim from output file name ###
 ###                            ###
@@ -20,7 +23,7 @@ inputFile       ='/store/data/Run2016C/SingleMuon/MINIAOD/07Aug17-v1/50000/9AC69
 # singlelep   --> skim one lepton
 # ttg         --> skim two leptons + one photon
 # fakerate    --> not implemented
-outputFile      = 'FR.root'
+outputFile      = 'trilep_00.root'
 
 def getVal(arg):
     return arg.split('=')[-1]
@@ -94,7 +97,7 @@ process.BadChargedCandidateFilter.filter = cms.bool(False)
 
 #clean 2016 data met from spurious muons and ECAL slew rate
 metCollection = "slimmedMETs"
-#if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean" #No longer needed for new rereco
+if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean"
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -103,23 +106,27 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   lheEventInfo                  = cms.InputTag("externalLHEProducer"),
   pileUpInfo                    = cms.InputTag("slimmedAddPileupInfo"),
   genParticles                  = cms.InputTag("prunedGenParticles"),
-  allowMatchingToAllIds         = cms.bool(True),
+  allowMatchingToAllIds         = cms.bool(False),
   muons                         = cms.InputTag("slimmedMuons"),
   muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
   muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreas_cone03_Muons_Fall17.txt'),
   electrons                     = cms.InputTag("slimmedElectrons"),
-  electronsEffectiveAreas       = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'), # WARNING this is spring 15, following SUSY-standard, i.e. not the most up-to-date values
+  # WARNING this is spring 15, following SUSY-standard, i.e. not the most up-to-date values
+  electronsEffectiveAreas       = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'),
   electronsEffectiveAreasFall17 = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_92X.txt'),
 
   electronsMva                  = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
   electronsMvaHZZ               = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
-  electronMvaFall17Iso          = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"),
-  electronMvaFall17NoIso        = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"),
+  # electronMvaFall17Iso          = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"),
+  # electronMvaFall17NoIso        = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"),
   electronsCutBasedVeto         = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto"),
   electronsCutBasedLoose        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
   electronsCutBasedMedium       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
   electronsCutBasedTight        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
- 
+  # leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH_BDTG.weights.xml"),
+  # leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH_BDTG.weights.xml"),   
+  # leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_leptonMva_tZqTTV.weights.xml"),
+  # leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/ele_leptonMva_tZqTTV.weights.xml"),
   # leptonMvaWeightsMuSUSY16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml"),
   # leptonMvaWeightsEleSUSY16     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml"),
   # leptonMvaWeightsMuttH16       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml"),
@@ -157,6 +164,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),
   triggerObjects                = cms.InputTag("selectedPatTrigger"),
+  #triggerObjects                = cms.InputTag("slimmedPatTrigger"),
   SingleEleTriggers             = cms.vstring(),
   SingleMuoTriggers             = cms.vstring(),
   SingleEleTriggers2017         = cms.vstring(),
@@ -170,6 +178,9 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   is2017                        = cms.untracked.bool(is2017),
   isSUSY                        = cms.untracked.bool(isSUSY)
 )
+
+## Change trigger-object label for signal
+if 'HeavyNeutrino' in inputFile: process.blackJackAndHookers.triggerObjects = cms.InputTag("slimmedPatTrigger")
 
 ## Single triggers for matching
 if 'FR' in outputFile:

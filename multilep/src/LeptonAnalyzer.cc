@@ -138,6 +138,7 @@ outputTree->Branch("_muMuonStationsWithValidHits",&_muMuonStationsWithValidHits,
  
   if(!multilepAnalyzer->isData){
     outputTree->Branch("_lGenIndex",                  &_lGenIndex,                    "_lGenIndex[_nL]/i");
+    outputTree->Branch("_lMatchType",                 &_lMatchType,                   "_lMatchType[_nL]/i");
     outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
     outputTree->Branch("_lIsPromptFinalState",        &_lIsPromptFinalState,          "_lIsPromptFinalState[_nL]/O");
     outputTree->Branch("_lIsPromptDecayed",           &_lIsPromptDecayed,             "_lIsPromptDecayed[_nL]/O");
@@ -171,6 +172,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   iSetup.get<IdealMagneticFieldRecord>().get(_bField);
   iSetup.get<TrackingComponentsRecord>().get("SteppingHelixPropagatorAny", _shProp);
 
+
+  //std::cout << "--------------------------------- Event " << iEvent.id().event() << " ---------------------------------" << std::endl;
+
+
   _nL     = 0;
   _nLight = 0;
   _nMu    = 0;
@@ -184,59 +189,106 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   unsigned counter_index_leptons   = 0;
   //int counter_number_vertices = 0;
 
-  //set up generator matching
-  if(!multilepAnalyzer->isData) genMatcher->setGenParticles(iEvent);
+  // Reco primary vertex coordinates and uncertainties
+  _pvX    = primaryVertex.x();
+  _pvXErr = primaryVertex.xError();
+  _pvY    = primaryVertex.y();
+  _pvYErr = primaryVertex.yError();
+  _pvZ    = primaryVertex.z();
+  _pvZErr = primaryVertex.zError();		  
+
+  //
+  // Need to create a new collection of selected leptons (for new reco-gen matching)
+  std::vector<const pat::Muon*    > selmuons;
+  std::vector<const pat::Electron*> selelectrons;
+  std::vector<const pat::Tau*     > seltaus;
+  // dirty trick for electrons...
+  std::vector<unsigned int> selelepos;
+
+  //unsigned debugcnt = 0;
 
   //loop over muons
   for(const pat::Muon& mu : *muons){
-	  if (_nL == 0){
-		  _pvX= primaryVertex.x();
-		  _pvXErr = primaryVertex.xError();
-		  _pvY= primaryVertex.y();
-		  _pvYErr = primaryVertex.yError();
-		  _pvZ= primaryVertex.z();
-		  _pvZErr = primaryVertex.zError();
-		  
-		  
-	  }
     // Check if muon passes minimum criteria
-    if(passMuonPreselection(mu, *rho)==false) continue;
+    if(passMuonPreselection(mu, *rho)) {
+      selmuons.push_back(&mu);
+    }
+  }
+
+  unsigned int elepos = 0;
+  for(const pat::Electron& ele : *electrons){
+    // Check if electron passes minimum criteria
+    if(passElectronPreselection(ele, *rho)) {
+      selelectrons.push_back(&ele);
+      selelepos.push_back(elepos);
+    }
+    ++elepos;
+  }
+
+  for(const pat::Tau& tau : *taus){
+    // Check if tau passes minimum criteria
+    if(passTauPreselection(tau, primaryVertex.position())) {
+      seltaus.push_back(&tau);
+    }
+  }
+
+
+  // Now NEW GEN-RECO matching
+  if(!multilepAnalyzer->isData) {
+    // Reset recogenmatchlist
+    genMatcher->resetGenMatchingVector();
+
+    // Pass the GenParticle collection to genMatcher
+    genMatcher->setGenParticles(iEvent);
+
+    // Pass the selected pat::Lepton collections to genMatcher
+    genMatcher->setPatParticles(selelectrons, selmuons, seltaus);
+
+    // Now run the RECO-GEN matching
+    genMatcher->matchGenToReco();
+  }
+
+  // OLD:
+  // //loop over muons
+  // for(const pat::Muon& mu : *muons){
+  //   // Check if muon passes minimum criteria
+  //   if(passMuonPreselection(mu, *rho)==false) continue;
+  //
+  // NEW:
+  // Loop over SELECTED muons
+  for(const pat::Muon* muptr : selmuons) {
+    const pat::Muon& mu = (*muptr);
 
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
     _lPFMuon[_nL]=  mu.isPFMuon();
 	  
-     const reco::MuonTime cmb = mu.time();
-     const reco::MuonTime rpc = mu.rpcTime();  
+    const reco::MuonTime cmb = mu.time();
+    const reco::MuonTime rpc = mu.rpcTime();  
 	
-		//csc + dt
-	  	_lMuTimenDof[_nL] = cmb.nDof;
+    //csc + dt
+    _lMuTimenDof[_nL] = cmb.nDof;
 		
-	        _lMuTime[_nL] = cmb.timeAtIpInOut;
-	        _lMuTimeErr[_nL] = cmb.timeAtIpInOutErr;
+    _lMuTime[_nL] = cmb.timeAtIpInOut;
+    _lMuTimeErr[_nL] = cmb.timeAtIpInOutErr;
 		
-		//RPC
-		_lMuRPCTimenDof[_nL] = rpc.nDof;
+    //RPC
+    _lMuRPCTimenDof[_nL] = rpc.nDof;
 		
-		_lMuRPCTime[_nL] = rpc.timeAtIpInOut;
-                _lMuRPCTimeErr[_nL] = rpc.timeAtIpInOutErr;
+    _lMuRPCTime[_nL] = rpc.timeAtIpInOut;
+    _lMuRPCTimeErr[_nL] = rpc.timeAtIpInOutErr;
 		
-	  
-	
-	
-	  
-	  
-    
-
     fillLeptonImpactParameters(mu, primaryVertex);
 
     fillLeptonKinVars(mu);
     fillLeptonIsoVars(mu, *rho);
-    if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
+    if(!multilepAnalyzer->isData) {
+      unsigned muomatchtype;
+      const reco::GenParticle *muomatch = genMatcher->returnGenMatch(muptr, muomatchtype);
+      fillLeptonGenVars(genMatcher, mu, muomatch, muomatchtype);
+    }
 
-        fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
-	
-
+    fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
     _lGlobalMuon[_nL] = mu.isGlobalMuon();
     _lTrackerMuon[_nL]= mu.isTrackerMuon();
     _lInnerTrackValidFraction[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->validFraction()  : -1;
@@ -326,27 +378,30 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     ++_nLight;
   }
 
+  // OLD:
   // Loop over electrons (note: using iterator we can easily get the ref too)
-  for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
-    // Check if electron passes minimum criteria
-    if(passElectronPreselection(*ele, *rho)==false) continue;
+  // for(auto ele = electrons->begin(); ele != electrons->end(); ++ele){
+  //   // Check if electron passes minimum criteria
+  //   if(passElectronPreselection(*ele, *rho)==false) continue;
+  //
+  // NEW:
+  // Loop over SELECTED electrons (note: we get the ref from the selelepos vector...)
+  for(size_t iele=0; iele<selelectrons.size(); ++iele) {
+    //unsigned debugele = 0;
 
-    auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, (ele - electrons->begin()));
+    const pat::Electron *ele = selelectrons[iele];
+    auto electronRef = edm::Ref<std::vector<pat::Electron>>(electrons, selelepos[iele]);
+
     counter_index_leptons++  ;                               // unique index to identify the 2 tracks for each vertex
     _lIndex[_nL] = counter_index_leptons;
-    
-	  
-	  
-	  _lMuRPCTimenDof[_nL] = -1;
-	  _lMuTimenDof[_nL] = -1;
-	  _lMuRPCTime[_nL] = -1;
-	  _lMuRPCTimeErr[_nL] = -1;
-	  _lMuTime[_nL] = -1;
-	  _lMuTimeErr[_nL] = -1;
-	
-	  
-	  
-	  
+
+    _lMuRPCTimenDof[_nL] = -1;
+    _lMuTimenDof[_nL] = -1;
+    _lMuRPCTime[_nL] = -1;
+    _lMuRPCTimeErr[_nL] = -1;
+    _lMuTime[_nL] = -1;
+    _lMuTimeErr[_nL] = -1;
+
     _eleNumberInnerHitsMissing[_nL]=ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
     _muNumberInnerHits[_nL] = 0; // cannot be -1 !!
     fillLeptonImpactParameters(*ele, primaryVertex);
@@ -366,8 +421,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lEleInvMinusPInv[_nL] = std::abs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
 
     fillLeptonKinVars(*ele);
-    //fillLeptonGenVars(ele->genParticle());
-    if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
+    if(!multilepAnalyzer->isData) {
+      unsigned elematchtype;
+      const reco::GenParticle *elematch = genMatcher->returnGenMatch(ele, elematchtype);
+      fillLeptonGenVars(genMatcher, *ele, elematch, elematchtype);
+    }
 
     fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
     _lFlavor[_nL]      = 0;
@@ -384,13 +442,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _lPOGMedium[_nL]   = (*electronsCutBasedMedium)[electronRef];
     _lPOGTight[_nL]    = (*electronsCutBasedTight)[electronRef];             // Actually in SUS-17-001 we applied addtionaly lostHists==0, probably not a big impact
 
-	  
-	  
-	  
-	  
-	  
-	  
-	  
     //muon variables
     _lGlobalMuon[_nL] = false;
     _lTrackerMuon[_nL]= false;
@@ -410,7 +461,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _muRPCStationsWithValidHits[_nL] = -1;
     _muMuonStationsWithValidHits[_nL] = -1;
 
-     
 	  
     if(ele->pt() >  7 && std::abs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced; 
     if((*electronsCutBasedMedium)[electronRef] && ele->pt() > 27 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.2 && !ele->gsfTrack().isNull() && _eleNumberInnerHitsMissing[_nL] <=2 && ele->passConversionVeto())
@@ -429,16 +479,25 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     ++_nLight;
   }
 
-  //loop over taus
-  for(const pat::Tau& tau : *taus){
-    // Check if tau passes minimum criteria
-    if(passTauPreselection(tau, _nL)==false) continue;
+  // OLD:
+  // //loop over taus
+  // for(const pat::Tau& tau : *taus){
+  //   // Check if tau passes minimum criteria
+  //   if(passTauPreselection(tau, primaryVertex.position())==false) continue;
+  //
+  // NEW:
+  // Loop over SELECTED taus
+  for(const pat::Tau* tauptr : seltaus) {
+    const pat::Tau& tau = (*tauptr);
 
     fillLeptonKinVars(tau);
-    //fillLeptonGenVars(tau.genParticle());
-    if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
-    fillLeptonImpactParameters(tau, primaryVertex);
+    if(!multilepAnalyzer->isData) {
+      unsigned taumatchtype;
+      const reco::GenParticle *taumatch = genMatcher->returnGenMatch(tauptr, taumatchtype);
+      fillLeptonGenVars(genMatcher, tau, taumatch, taumatchtype);
+    }
 
+    fillLeptonImpactParameters(tau, primaryVertex);
     _lFlavor[_nL]  = 2;
     _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                        //Light lepton vetos
     _tauEleVeto[_nL] = tau.tauID("againstElectronLooseMVA6");
@@ -467,9 +526,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   /*
    * refitting vertices displaced *********************************************************** 
    */
-  // (Why double??) 
-	
-	
   unsigned iMu_plus=0;
   unsigned iMu_minus_mu=0;
   unsigned iMu_minus_e=0;
@@ -478,9 +534,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   unsigned iE_minus_e=_nMu;
   cleanDileptonVertexArrays(_nVFit);
 
-  for(const pat::Muon& mu_1 : *muons){ // for muons
-    // Check if muon passes minimum criteria
-    if(passMuonPreselection(mu_1, *rho)==false) continue;
+  // OLD:
+  // for(const pat::Muon& mu_1 : *muons){ // for muons
+  //   // Check if muon passes minimum criteria
+  //   if(passMuonPreselection(mu_1, *rho)==false) continue;
+  //
+  // NEW:
+  for(const pat::Muon* muptr_1 : selmuons){ // for muons
+    const pat::Muon& mu_1 = (*muptr_1);
+
     iMu_plus++;
     //+++++++++++++++    mu+
     if (mu_1.charge() < 0) continue;
@@ -488,9 +550,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     // ------------------  loop mu-
     iMu_minus_mu=0;
-    for(const pat::Muon& mu_2 : *muons){ 
-      // Check if muon passes minimum criteria
-      if(passMuonPreselection(mu_2, *rho)==false) continue;
+
+    // OLD:
+    // for(const pat::Muon& mu_2 : *muons){ 
+    //   // Check if muon passes minimum criteria
+    //   if(passMuonPreselection(mu_2, *rho)==false) continue;
+    //
+    // NEW:
+    for(const pat::Muon* muptr_2 : selmuons){ 
+      const pat::Muon& mu_2 = (*muptr_2);
+
       iMu_minus_mu++;
       if (mu_2.charge() > 0) continue;  // only opposite charge
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
@@ -507,9 +576,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           
     // ------------------  loop e-
     iE_minus_mu=_nMu;
-    for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
-      // Check if electron passes minimum criteria
-      if(passElectronPreselection(*ele_2, *rho)==false) continue;
+
+    // OLD:
+    // for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
+    //   // Check if electron passes minimum criteria
+    //   if(passElectronPreselection(*ele_2, *rho)==false) continue;
+    //
+    // NEW:
+    for(const pat::Electron* ele_2 : selelectrons){ 
+
       iE_minus_mu++; // it is already _nMu
       if(ele_2->charge() > 0) continue; // only opposite charge
       const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
@@ -529,9 +604,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   iE_plus=_nMu;
   iE_minus_e=_nMu;
 
-  for(auto ele_1 = electrons->begin(); ele_1 != electrons->end(); ++ele_1){ // for electrons
-    // Check if electron passes minimum criteria
-    if(passElectronPreselection(*ele_1, *rho)==false) continue;
+  // OLD:
+  // for(auto ele_1 = electrons->begin(); ele_1 != electrons->end(); ++ele_1){ // for electrons
+  //   // Check if electron passes minimum criteria
+  //   if(passElectronPreselection(*ele_1, *rho)==false) continue;
+  //
+  // NEW:
+  for(const pat::Electron* ele_1 : selelectrons){ 
+
     iE_plus++;
     //+++++++++++++++++++++ e+
     if(ele_1->charge() < 0) continue;
@@ -539,9 +619,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     //------------------  loop mu+
     iMu_minus_e=0;
-    for(const pat::Muon& mu_2 : *muons){ 
-      // Check if muon passes minimum criteria
-      if(passMuonPreselection(mu_2, *rho)==false) continue;
+
+    // OLD:
+    // for(const pat::Muon& mu_2 : *muons){ 
+    //   // Check if muon passes minimum criteria
+    //   if(passMuonPreselection(mu_2, *rho)==false) continue;
+    //
+    // NEW:
+    for(const pat::Muon* muptr_2 : selmuons){ 
+      const pat::Muon& mu_2 = (*muptr_2);
+
       iMu_minus_e++;
       if (mu_2.charge() > 0) continue;  // only opposite charge
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
@@ -559,9 +646,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     
     //------------------  loop e+
     iE_minus_e=_nMu;
-    for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
-      // Check if electron passes minimum criteria
-      if(passElectronPreselection(*ele_2, *rho)==false) continue;
+
+    // OLD:
+    // for(auto ele_2 = electrons->begin(); ele_2 != electrons->end(); ++ele_2){
+    //   // Check if electron passes minimum criteria
+    //   if(passElectronPreselection(*ele_2, *rho)==false) continue;
+    //
+    // NEW:
+    for(const pat::Electron* ele_2 : selelectrons){ 
+
       iE_minus_e++;
       if(ele_2->charge() > 0) continue; // only opposite charge
       const reco::Track&  tk_2 =  *ele_2->gsfTrack();  
@@ -577,9 +670,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }// end loop e+
   }//end electrons
 
-	
-	
-	
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3 || _nGoodLeading < 1 || _nGoodDisplaced < 2) ) return false;
   if(multilepAnalyzer->skim == "trilep"      and (_nLight < 3 || _nGoodLeading < 1                       ) ) return false;
   if(multilepAnalyzer->skim == "displtrilep" and (_nLight < 3 || _nGoodLeading < 1 || _nGoodDisplaced < 2) ) return false;
@@ -740,9 +830,40 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
   _ecalPFClusterIso[_nL]= ele.ecalPFClusterIso();
   _hcalPFClusterIso[_nL]= ele.hcalPFClusterIso();
 }
+
+// Fill match variables
+//
+// (1) to be used with matchGenToReco()
+template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher,
+								  const Lepton& lepton,
+								  const reco::GenParticle* match,
+								  unsigned mtchtype              ) {
+    //        << genMatcher << " - " << &lepton << " - " << match << " - " << mtchtype << std::endl;
+    genMatcher->fillMatchingVars(lepton, match, mtchtype, _nL);
+    //	      << genMatcher << " - " << &lepton << " - " << match << " - " << mtchtype << std::endl;
+    _lGenIndex[_nL] = genMatcher->genLIndex();
+    _lMatchType[_nL] = genMatcher->typeMatch();
+    _lIsPrompt[_nL] = genMatcher->promptMatch();
+    _lIsPromptFinalState[_nL] = genMatcher->promptFinalStateMatch();
+    _lIsPromptDecayed[_nL] = genMatcher->promptDecayedMatch();
+
+    _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
+    _lProvenance[_nL] = genMatcher->getProvenance();
+    _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
+    _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
+    _lMatchPt[_nL] = genMatcher->getMatchPt();
+    _lMatchEta[_nL] = genMatcher->getMatchEta();
+    _lMatchPhi[_nL] = genMatcher->getMatchPhi();
+    _lMatchVertexX[_nL] = genMatcher->getMatchVertexX();
+    _lMatchVertexY[_nL] = genMatcher->getMatchVertexY();
+    _lMatchVertexZ[_nL] = genMatcher->getMatchVertexZ();
+}
+//
+// (2) to be used with findGenMatch()
 template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher){
     genMatcher->fillMatchingVars(lepton);
     _lGenIndex[_nL] = genMatcher->genLIndex();
+    _lMatchType[_nL] = genMatcher->typeMatch();
     _lIsPrompt[_nL] = genMatcher->promptMatch();
     _lIsPromptFinalState[_nL] = genMatcher->promptFinalStateMatch();
     _lIsPromptDecayed[_nL] = genMatcher->promptDecayedMatch();
@@ -826,13 +947,15 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco:
 }
 
 //Function returning tau dz
-double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex){
+double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex) const {
   const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
   return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
 }
 
 // To synchronize lepton selection
 bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const double rho) const {
+  // return true;
+
   //// Copied from the electron loop
   // if(!elec.hasTrackDetails())                                                            return false;
   // if(elec.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS)>2) return false;
@@ -841,16 +964,18 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const d
   // if(std::abs(_dz[_nL])>0.1)                                                                 return false;
   // if(_relIso[_nL]>1)        
   if(elec.gsfTrack().isNull())     return false; 
-  if (getRelIso03(elec, rho) > 1.5)  return false;
+  if(getRelIso03(elec, rho) > ((multilepAnalyzer->skim=="FR") ? 2.0 : 1.5))  return false;
   if(elec.pt()<10.)                 return false;
   if(std::abs(elec.eta())>2.5)     return false;
   if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&elec)) return false;
-  if(eleMuOverlap(elec, _lPFMuon)) return false; // overlap muon-electron deltaR<0.05
+  if(eleMuOverlap(elec, _lPFMuon)) return false; // overlap muon-electron deltaR<0.05 // --> _lPFMuon is not used!!!
 
   return true;
 }
 //
 bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon, const double rho) const {
+  // return true;
+
   //// Copied from the muon loop
   // if(muon.innerTrack().isNull())                     return false;
   // if(!(muon.isTrackerMuon() || muon.isGlobalMuon())) return false;
@@ -869,12 +994,14 @@ bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon, const double rh
   return true;
 }
 //
-bool LeptonAnalyzer::passTauPreselection(const pat::Tau& tauh, unsigned taupos) const {
+bool LeptonAnalyzer::passTauPreselection(const pat::Tau& tauh, const reco::Vertex::Point& vertex) const {
+  // return true;
+
   //// Copied from the tau loop
   if(tauh.pt()<20.)                   return false; // Minimum pt for tau reconstruction
   if(std::abs(tauh.eta())>2.3)        return false;
   if(!tauh.tauID("decayModeFinding")) return false;
-  if(_dz[taupos]<0.4)                 return false; // tau dz cut used in ewkino
+  if(tau_dz(tauh, vertex)<0.4)        return false; // tau dz cut used in ewkino
 
   return true;
 }
