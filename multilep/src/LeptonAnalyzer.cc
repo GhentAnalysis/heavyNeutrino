@@ -987,7 +987,7 @@ bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon, const double rh
   // if(!_lPOGLoose[_nL])                               return false;
   if(!muon.isPFMuon())         return false;
   if(!muon.isLooseMuon())      return false;
-  if (getRelIso03(muon, rho) > 1.1)  return false;
+  if (getRelIso03(muon, rho) > 2)  return false;
   if(muon.pt()<5)              return false;
   if(std::abs(muon.eta())>2.4) return false;
 
