@@ -68,6 +68,26 @@ class GenAnalyzer {
     double   _gen_Nvertex_x;
     double   _gen_Nvertex_y;
     double   _gen_Nvertex_z;
+
+    unsigned _gen_nNPackedDtrs;
+    double   _gen_NPackedDtrsPt[gen_ndtr_max];
+    double   _gen_NPackedDtrsEta[gen_ndtr_max];
+    double   _gen_NPackedDtrsPhi[gen_ndtr_max];
+    double   _gen_NPackedDtrsE[gen_ndtr_max];
+    int      _gen_NPackedDtrsPdgId[gen_ndtr_max];
+    int      _gen_NPackedDtrsCharge[gen_ndtr_max];
+    int      matches[gen_ndtr_max];
+    double   _gen_NPackedDtrsmineta[gen_ndtr_max];
+    double   _gen_NPackedDtrsminphi[gen_ndtr_max];
+    double   _gen_NPackedDtrsminpt[gen_ndtr_max];
+    double   _gen_NPackedDtrs_matchPt[gen_ndtr_max];
+    double   _gen_NPackedDtrs_matchEta[gen_ndtr_max];
+    double   _gen_NPackedDtrs_matchPhi[gen_ndtr_max];
+    double   _gen_NPackedDtrs_matchE[gen_ndtr_max];
+    double   _gen_NPackedDtrs_matchdxy[gen_ndtr_max];
+    double   _gen_NPackedDtrs_matchdz[gen_ndtr_max];
+    int      _gen_NPackedDtrs_matchcharge[gen_ndtr_max];
+
     unsigned _gen_nNdaughters;
     unsigned _gen_Ndaughters_pdg[gen_n_max];
     unsigned _gen_nstatus23;
@@ -76,11 +96,13 @@ class GenAnalyzer {
     unsigned _gen_status23_pdg[gen_n_max];
     unsigned _gen_status23_fromN_pdg[gen_n_max];
     unsigned _gen_status23_fromW_pdg[gen_n_max];
+    
     unsigned _gen_nq;
     double   _gen_qPt[gen_n_max];
     double   _gen_qEta[gen_n_max];
     double   _gen_qPhi[gen_n_max];
     double   _gen_qE[gen_n_max];
+    
     unsigned _gen_nq1dtr;
     int	     _gen_q1dtr_status[gen_ndtr_max];
     int	     _gen_q1dtr_pdgid[gen_ndtr_max];
@@ -106,6 +128,8 @@ class GenAnalyzer {
     bool     inMotherList(std::vector<int>& list, int i);
     unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
+    bool     isAncestor(const reco::Candidate*, const reco::Candidate*);
+    void     getMatchingPackedPFCandidateInfo(const pat::PackedGenParticle&, edm::Handle<std::vector<pat::PackedCandidate>>&);
 
     multilep* multilepAnalyzer;
 

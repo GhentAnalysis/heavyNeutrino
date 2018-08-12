@@ -57,6 +57,26 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_Nvertex_x",		   	   &_gen_Nvertex_x,			    "_gen_Nvertex_x/D");
   outputTree->Branch("_gen_Nvertex_y",		   	   &_gen_Nvertex_y,			    "_gen_Nvertex_y/D");
   outputTree->Branch("_gen_Nvertex_z",		   	   &_gen_Nvertex_z,			    "_gen_Nvertex_z/D");
+
+  outputTree->Branch("_gen_nNPackedDtrs",		   &_gen_nNPackedDtrs,			"_gen_nNPackedDtrs/b");
+  outputTree->Branch("_gen_NPackedDtrsPt",		   &_gen_NPackedDtrsPt,			"_gen_NPackedDtrsPt[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrsEta",		   &_gen_NPackedDtrsEta,		"_gen_NPackedDtrsEta[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrsPhi",		   &_gen_NPackedDtrsPhi,		"_gen_NPackedDtrsPhi[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrsE",		   &_gen_NPackedDtrsE,			"_gen_NPackedDtrsE[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrsPdgId",      &_gen_NPackedDtrsPdgId,	    "_gen_NPackedDtrsPdgId[_gen_nNPackedDtrs]/I");
+  outputTree->Branch("_gen_NPackedDtrsCharge",     &_gen_NPackedDtrsCharge,	    "_gen_NPackedDtrsCharge[_gen_nNPackedDtrs]/I");
+  outputTree->Branch("matches",                    &matches,	                "matches[_gen_nNPackedDtrs]/I");
+  outputTree->Branch("_gen_NPackedDtrsmineta",     &_gen_NPackedDtrsmineta,	    "_gen_NPackedDtrsmineta[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrsminphi",     &_gen_NPackedDtrsminphi,	    "_gen_NPackedDtrsminphi[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrsminpt",      &_gen_NPackedDtrsminpt,	    "_gen_NPackedDtrsminpt[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrs_matchPt",   &_gen_NPackedDtrs_matchPt,	"_gen_NPackedDtrs_matchPt[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrs_matchEta",  &_gen_NPackedDtrs_matchEta,	"_gen_NPackedDtrs_matchEta[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrs_matchPhi",  &_gen_NPackedDtrs_matchPhi,	"_gen_NPackedDtrs_matchPhi[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrs_matchE",    &_gen_NPackedDtrs_matchE,	"_gen_NPackedDtrs_matchE[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrs_matchdxy",  &_gen_NPackedDtrs_matchdxy,	"_gen_NPackedDtrs_matchdxy[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrs_matchdz",   &_gen_NPackedDtrs_matchdz,	"_gen_NPackedDtrs_matchdz[_gen_nNPackedDtrs]/D");
+  outputTree->Branch("_gen_NPackedDtrs_matchcharge",&_gen_NPackedDtrs_matchcharge,"_gen_NPackedDtrs_matchcharge[_gen_nNPackedDtrs]/I");
+  
   outputTree->Branch("_gen_nNdaughters",	       &_gen_nNdaughters,		    "_gen_nNdaughters/b");
   outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	    "_gen_Ndaughters_pdg[_gen_nNdaughters]/i");
   outputTree->Branch("_gen_nstatus23",		       &_gen_nstatus23,		        "_gen_nstatus23/b");
@@ -65,11 +85,13 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_status23_pdg",	       &_gen_status23_pdg,		    "_gen_status23_pdg[_gen_nstatus23]/I");
   outputTree->Branch("_gen_status23_fromN_pdg",    &_gen_status23_fromN_pdg, 	"_gen_status23_fromN_pdg[_gen_nstatus23_fromN]/i");
   outputTree->Branch("_gen_status23_fromW_pdg",    &_gen_status23_fromW_pdg, 	"_gen_status23_fromW_pdg[_gen_nstatus23_fromW]/i");
+  
   outputTree->Branch("_gen_nq",		               &_gen_nq,			        "_gen_nq/b");
   outputTree->Branch("_gen_qPt",		           &_gen_qPt,			        "_gen_qPt[_gen_nq]/D");
   outputTree->Branch("_gen_qEta",		           &_gen_qEta,			        "_gen_qEta[_gen_nq]/D");
   outputTree->Branch("_gen_qPhi",		           &_gen_qPhi,			        "_gen_qPhi[_gen_nq]/D");
   outputTree->Branch("_gen_qE",		   	           &_gen_qE,			        "_gen_qE[_gen_nq]/D");
+ 
   outputTree->Branch("_gen_nq1dtr",		           &_gen_nq1dtr,		        "_gen_nq1dtr/b");
   outputTree->Branch("_gen_q1dtr_status",	       &_gen_q1dtr_status,		    "_gen_q1dtr_status[_gen_nq1dtr]/I");
   outputTree->Branch("_gen_q1dtr_pdgid",	       &_gen_q1dtr_pdgid,		    "_gen_q1dtr_pdgid[_gen_nq1dtr]/I");
@@ -90,17 +112,16 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 void GenAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
     edm::Handle<std::vector<pat::PackedGenParticle>> packedGenParticles; iEvent.getByToken(multilepAnalyzer->packedGenParticleToken, packedGenParticles);
+    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
     //std::cout << "begin genanalyzer" << std::endl;
     if(!genParticles.isValid()) return;
     if(!packedGenParticles.isValid()) return;
-    for(const pat::PackedGenParticle& packed : *packedGenParticles){
-        //std::cout << "pdgid: " << packed.pdgId() << " and status: " << packed.status() << std::endl;
-    }
 
     _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
     _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
 
     _gen_nN = 0;
+    _gen_nNPackedDtrs = 0;
     _gen_nNdaughters = 0;
     _gen_nstatus23 = 0;
     _gen_nstatus23_fromN = 0;
@@ -165,7 +186,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 ++_gen_nPh;
             } 
         }
-	    // HNL
+	
+        // HNL
         if(abs(p.pdgId()) == 9900012 && p.isLastCopy()){
 	        _gen_NPt  = p.pt();
 	        _gen_NEta = p.eta();
@@ -175,6 +197,22 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
             _gen_Nvertex_y = p.vertex().y();
             _gen_Nvertex_z = p.vertex().z();
             ++_gen_nN;
+
+            // get info on packed genparticle daughters from HNL ( = all status 1 genparticles)
+            for(const pat::PackedGenParticle& packed : *packedGenParticles){
+                const reco::Candidate * motherInPrunedCollection = packed.mother(0);
+                if(packed.pt() > 0.4 && packed.charge() != 0 && motherInPrunedCollection != nullptr && isAncestor( &p , motherInPrunedCollection)){
+                    _gen_NPackedDtrsPt[_gen_nNPackedDtrs]       = packed.pt();
+                    _gen_NPackedDtrsEta[_gen_nNPackedDtrs]      = packed.eta();
+                    _gen_NPackedDtrsPhi[_gen_nNPackedDtrs]      = packed.phi();
+                    _gen_NPackedDtrsE[_gen_nNPackedDtrs]        = packed.energy();
+                    _gen_NPackedDtrsPdgId[_gen_nNPackedDtrs]    = packed.pdgId();
+                    _gen_NPackedDtrsCharge[_gen_nNPackedDtrs]   = packed.charge();
+                    //find track in PF jet matching to this genparticle, to get its information
+                    getMatchingPackedPFCandidateInfo(packed, packedCands);                 
+                    _gen_nNPackedDtrs++;
+                }
+            }
         }
 	    // daughters of HNL
         if(abs(getMotherPdgId(p, *genParticles)) == 9900012){
@@ -387,3 +425,52 @@ unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genPart
 
     return type;
 }
+
+bool GenAnalyzer::isAncestor(const reco::Candidate* ancestor, const reco::Candidate * particle)
+{
+    //particle is already the ancestor
+    if(ancestor == particle ) return true;
+
+    //otherwise loop on mothers, if any and return true if the ancestor is found
+    for(size_t i=0;i< particle->numberOfMothers();i++){
+        if(isAncestor(ancestor,particle->mother(i))) return true;
+    }
+
+    //if we did not return yet, then particle and ancestor are not relatives
+    return false;
+}
+
+
+void GenAnalyzer::getMatchingPackedPFCandidateInfo(const pat::PackedGenParticle &packed, edm::Handle<std::vector<pat::PackedCandidate>>& packedCands){
+    //std::vector<pat::PackedCandidate> packedCandidates;
+    
+    matches[_gen_nNPackedDtrs]                      = 0;
+    _gen_NPackedDtrsmineta[_gen_nNPackedDtrs]       = 0.5;
+    _gen_NPackedDtrsminphi[_gen_nNPackedDtrs]       = 0.5;
+    _gen_NPackedDtrsminpt[_gen_nNPackedDtrs]        = 2;
+    _gen_NPackedDtrs_matchPt[_gen_nNPackedDtrs]     = 0;
+    _gen_NPackedDtrs_matchEta[_gen_nNPackedDtrs]    = 0;
+    _gen_NPackedDtrs_matchPhi[_gen_nNPackedDtrs]    = 0;
+    _gen_NPackedDtrs_matchE[_gen_nNPackedDtrs]      = 0;
+    _gen_NPackedDtrs_matchdxy[_gen_nNPackedDtrs]    = 0;
+    _gen_NPackedDtrs_matchdz[_gen_nNPackedDtrs]     = 0;
+    _gen_NPackedDtrs_matchcharge[_gen_nNPackedDtrs] = 0;
+
+    for(auto cand = packedCands->cbegin(); cand != packedCands->cend(); ++cand){
+        if(cand->charge() != 0 and fabs(packed.eta() - cand->eta()) < 0.05 and fabs(packed.phi() - cand->phi()) < 0.05 and fabs(packed.pt() - cand->pt()) < 2){
+            if(fabs(packed.eta() - cand->eta()) < _gen_NPackedDtrsmineta[_gen_nNPackedDtrs] and (fabs(packed.phi() - cand->phi()) < _gen_NPackedDtrsminphi[_gen_nNPackedDtrs] or fabs(packed.pt() - cand->pt()) < _gen_NPackedDtrsminpt[_gen_nNPackedDtrs])){
+                _gen_NPackedDtrsminpt[_gen_nNPackedDtrs]        = fabs(packed.pt() - cand->pt());
+                _gen_NPackedDtrsmineta[_gen_nNPackedDtrs]       = fabs(packed.eta() - cand->eta());
+                _gen_NPackedDtrsminphi[_gen_nNPackedDtrs]       = fabs(packed.phi() - cand->phi());
+                _gen_NPackedDtrs_matchPt[_gen_nNPackedDtrs]     = cand->pt();
+                _gen_NPackedDtrs_matchEta[_gen_nNPackedDtrs]    = cand->eta();
+                _gen_NPackedDtrs_matchPhi[_gen_nNPackedDtrs]    = cand->phi();
+                _gen_NPackedDtrs_matchE[_gen_nNPackedDtrs]      = cand->energy();
+                _gen_NPackedDtrs_matchdxy[_gen_nNPackedDtrs]    = cand->dxy();
+                _gen_NPackedDtrs_matchdz[_gen_nNPackedDtrs]     = cand->dz();
+                _gen_NPackedDtrs_matchcharge[_gen_nNPackedDtrs] = cand->charge();
+            }
+            matches[_gen_nNPackedDtrs]++;
+        }
+    }
+} 
