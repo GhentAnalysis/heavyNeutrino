@@ -23,6 +23,11 @@ class JetAnalyzer {
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
     double   _jetPt_JECDown[nJets_max];
+    double   _jetSmearedPt[nJets_max];
+    double   _jetSmearedPt_JECDown[nJets_max];
+    double   _jetSmearedPt_JECUp[nJets_max];
+    double   _jetSmearedPt_JERDown[nJets_max];
+    double   _jetSmearedPt_JERUp[nJets_max];
     double   _jetPt_Uncorrected[nJets_max];
     double   _jetPt_L1[nJets_max];
     double   _jetPt_L2[nJets_max];
@@ -30,8 +35,6 @@ class JetAnalyzer {
     double   _jetEta[nJets_max];
     double   _jetPhi[nJets_max];
     double   _jetE[nJets_max];
-    double   _jetE_JECDown[nJets_max];
-    double   _jetE_JECUp[nJets_max];
     double   _jetCsvV2[nJets_max];
     double   _jetDeepCsv_udsg[nJets_max];
     double   _jetDeepCsv_b[nJets_max];
