@@ -107,17 +107,17 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         //find smeared equivalents of nominal jet 
         auto jetSmearedIt = jetsSmeared->begin();
         for(auto j = jetsSmeared->cbegin(); j != jetsSmeared->cend(); ++j){ 
-            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *j) ) jetSmearedIt = j;
+            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedIt) ) jetSmearedIt = j;
         }
 
         auto jetSmearedUpIt = jetsSmearedUp->begin();
         for(auto j = jetsSmearedUp->cbegin(); j != jetsSmearedUp->cend(); ++j){ 
-            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *j) )  jetSmearedUpIt = j;
+            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedUpIt) )  jetSmearedUpIt = j;
         }
 
         auto jetSmearedDownIt = jetsSmearedDown->begin();
         for(auto j = jetsSmearedDown->cbegin(); j != jetsSmearedDown->cend(); ++j){ 
-            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *j) )  jetSmearedDownIt = j;
+            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedDownIt) )  jetSmearedDownIt = j;
         }
 
         //txt based JEC
