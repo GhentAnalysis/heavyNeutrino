@@ -21,6 +21,7 @@ class LheAnalyzer {
 
     TH1D*  hCounter;
     TH1D*  lheCounter;
+    TH1D*  psCounter;
     TH1D*  nTrueInteractions;
 
     unsigned _nLheWeights;

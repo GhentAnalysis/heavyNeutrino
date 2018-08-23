@@ -20,6 +20,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     if(multilepAnalyzer->isData) return;
     hCounter   = fs->make<TH1D>("hCounter",   "Events counter",    1,  0,1);
     lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",       110,0,110);
+    psCounter = fs->make<TH1D>("psCounter", "Lhe weights",        14,0,14);
 
     unsigned nTrueBins;
     if(multilepAnalyzer->is2017) nTrueBins = 100;
@@ -87,6 +88,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     _nPsWeights = std::min( (unsigned) 14, (unsigned) psWeights.size() );
     for(unsigned ps = 0; ps < _nPsWeights; ++ps){
         _psWeight[ps] = psWeights[ps]/_weight;
+        psCounter->Fill( ps + 0.5, _psWeight[ps]*_weight);
     }
 }
 
