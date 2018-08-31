@@ -78,20 +78,6 @@ class LeptonAnalyzer {
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
     unsigned _selectedTrackMult[nL_max];
-    unsigned _TrackMult_pt0[nL_max];
-    unsigned _TrackMult_pt1[nL_max];
-    unsigned _TrackMult_pt2[nL_max];
-    unsigned _TrackMult_pt3[nL_max];
-    unsigned _TrackMult_pt4[nL_max];
-    unsigned _TrackMult_pt5[nL_max];
-    unsigned _TrackMult_noIP_pt0[nL_max];
-    unsigned _TrackMult_noIP_pt1[nL_max];
-    unsigned _TrackMult_noIP_pt2[nL_max];
-    unsigned _TrackMult_noIP_pt3[nL_max];
-    unsigned _TrackMult_noIP_pt4[nL_max];
-    unsigned _TrackMult_noIP_pt5[nL_max];
-    unsigned _Nutau_TrackMult_pt1[nL_max];
-    unsigned _Nutau_TrackMult_pt5[nL_max];
 
     bool     _lVtx_valid[nL_max];
     double   _lVtxpos_x[nL_max];
@@ -127,7 +113,7 @@ class LeptonAnalyzer {
     bool _lElectronChargeConst[nL_max];
     unsigned _lElectronMissingHits[nL_max];
      
-    bool _lEleIsEB [nL_max];                                                                         //electron specific variables for displaced electron ID
+    bool _lEleIsEB[nL_max];                                                                         //electron specific variables for displaced electron ID
     bool _lEleIsEE[nL_max];
     double _lEleSuperClusterOverP[nL_max];
     double _lEleEcalEnergy[nL_max];
@@ -217,8 +203,6 @@ class LeptonAnalyzer {
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
-    void fillLeptonTrackVariables(const reco::Candidate&, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&);
-    void fillNutauTrackVariables(const reco::GenParticle&, edm::Handle<std::vector<pat::PackedCandidate>>&, const reco::Vertex&);
     void fillLeptonVtxVariables(const reco::Candidate&, edm::Handle<std::vector<pat::PackedCandidate>>&, std::vector<reco::Track>&);
 
     // In leptonAnalyzerIso,cc
