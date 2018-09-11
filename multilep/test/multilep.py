@@ -17,10 +17,11 @@ def getJSON(is2017):
 #inputFile       = "root://cmsxrootd.fnal.gov///store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = "root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/80000/C0EC0176-2ABE-E611-99E3-0025904C51D8.root'
-inputFile        = '/store/data/Run2016E/SingleMuon/MINIAOD/07Aug17-v1/110000/00A51C60-CE80-E711-8B18-0025905A6060.root'
+#inputFile        = '/store/data/Run2016E/SingleMuon/MINIAOD/07Aug17-v1/110000/00A51C60-CE80-E711-8B18-0025905A6060.root'
+inputFile       = '/store/data/Run2017F/SingleMuon/MINIAOD/17Nov2017-v1/00000/3E7C07F9-E6F1-E711-841A-0CC47A4C8E46.root'
 
 nEvents         = 1000
-outputFile      = 'dilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
+outputFile      = 'noskim.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
                                  # ttg       --> skim two leptons + one photon
@@ -170,5 +171,6 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadChargedCandidateFilter *
                      process.egmSequence *
                      process.jetSequence *  
-                     (process.fullPatMetSequenceModifiedMET if is2017 else process.jetSequence) *
+                     #(process.fullPatMetSequenceModifiedMET if is2017 else process.fullPatMetSequence) *
+                     process.fullPatMetSequence *
                      process.blackJackAndHookers)

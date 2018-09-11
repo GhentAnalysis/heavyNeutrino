@@ -76,9 +76,11 @@ def addJetSequence(process, isData, is2017):
   # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
   from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
 
+  print( "isData = {}".format( isData) )
+  print( "is2017 = {}".format( is2017) )
   runMetCorAndUncFromMiniAOD (
     process,
     isData = isData, # false for MC
-    fixEE2017 = is2017,
-    postfix = "ModifiedMET" if is2017 else ""
+    fixEE2017 = is2017
+    #postfix = "ModifiedMET" if is2017 else ""
   )
