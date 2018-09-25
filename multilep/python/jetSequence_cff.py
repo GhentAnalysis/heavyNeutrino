@@ -78,7 +78,7 @@ def addJetSequence(process, isData, is2017):
 
   runMetCorAndUncFromMiniAOD (
     process,
-    isData = isData, # false for MC
-    fixEE2017 = is2017
-    #postfix = "ModifiedMET" if is2017 else ""
+    isData = isData,
+    fixEE2017 = is2017,
+    fixEE2017Params = {'userawPt': True, 'PtThreshold':50.0, 'MinEtaThreshold':2.65, 'MaxEtaThreshold': 3.139}
   )
