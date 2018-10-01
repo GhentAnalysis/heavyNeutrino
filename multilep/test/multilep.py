@@ -10,8 +10,10 @@ def getJSON(is2017):
 #inputFile	= '/store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/AABE3103-4FD5-E611-91BA-02163E01314F.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/prompt/HeavyNeutrino_lljj_M-5_V-0.01_mu_onshell_pre2017_NLO/heavyNeutrino_10.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_lljj_M-3_V-0.00836660026534_e_onshell_pre2017_leptonFirst_NLO/heavyNeutrino_10.root'
-inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_lljj_M-7_V-0.00244948974278_mu_onshell_pre2017_leptonFirst_NLO/heavyNeutrino_10.root'
-
+#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/HeavyNeutrino_lljj_M-7_V-0.00244948974278_mu_onshell_pre2017_leptonFirst_NLO/heavyNeutrino_10.root'
+inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018/displaced/HeavyNeutrino_lljj_M-5_V-0.00707106781187_mu_massiveAndCKM_LO/heavyNeutrino_10.root'
+#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018/displaced/HeavyNeutrino_lljj_M-2_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_10.root'
+ 
 
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/QCD_Pt-50to80_EMEnriched_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00A9113F-15D6-E611-9142-047D7B881D3A.root'
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/90000/003658EE-77E6-E611-ACB1-7CD30ABD295A.root'
@@ -26,7 +28,7 @@ inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Mo
 #inputFile       = "root://cmsxrootd.fnal.gov///store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = "root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/80000/C0EC0176-2ABE-E611-99E3-0025904C51D8.root'
-nEvents         = 2000
+nEvents         = 5000
 outputFile      = 'dilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton

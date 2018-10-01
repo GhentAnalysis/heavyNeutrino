@@ -4,13 +4,9 @@
 #normal use: "./extractXsec.sh HNL_list.txt"
 outputpath="/user/bvermass/heavyNeutrino/Dileptonprompt/CMSSW_9_4_0/src/samesign_Analysis/xsecs_HNL/" #output in samesign_analysis directory
 
-#were all HNL cross sections will be put
+#where all HNL cross sections will be put
 xsec_list="${outputpath}HNL_Xsec_List.txt"
-if [[ -e ${xsec_list} ]]; then#check if it exists already
-    rm ${xsec_list}
-fi
-touch ${xsec_list}
-
+> $xsec_list
 #sample path of collection of HNL samples (use HNL_list.txt)
 #line="/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/prompt/"
 while IFS='' read -r line || [[ -n "$line" ]]; do #read line per line from input text file

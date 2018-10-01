@@ -5,6 +5,7 @@ from multilep import getJSON
 
 datasetsFile    = sys.argv[1]                                                                             # Input file with datasets
 productionLabel = os.path.basename(datasetsFile.split('/')[-1].split('.')[0])                             # Label to keep track of the tuple version (is taken from the name of the above input file)
+#outDir          = '/pnfs/iihe/cms/store/user/' + os.environ['USER'] + '/heavyNeutrino'                                 # Output directory in case of local submission
 outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'                                 # Output directory in case of local submission
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
@@ -12,6 +13,7 @@ datasets        = [dataset.split()[0] for dataset in datasets if dataset and not
 submitLocal     = ""
 #Use third argument to specify the number of jobs per file
 filesPerJob     = 10
+print 'initialized voms-proxy-init --voms cms?'
 
 if len(sys.argv) > 2:
     submitLocal = sys.argv[2]

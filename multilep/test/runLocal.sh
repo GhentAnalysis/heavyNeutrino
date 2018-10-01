@@ -77,8 +77,8 @@ if [[ -z "$output" ]]; then
     output=~/public/heavyNeutrino/${output}    
 fi
 
-#make output directory structure if needed
-mkdir -p $output
+#get outputdirectory for pnfs, same directory name as in personal storage except for 'public'
+outputpnfs=/pnfs/iihe/cms/store/user/bvermass/${output#*public/}
 
 #initialize filesPerJob to a default value if the argument is unspecified
 if [[ -z "$filesPerJob" ]]; then
@@ -90,6 +90,7 @@ fi
 mkdir -p $output
 mkdir -p ${output}/errs
 mkdir -p ${output}/logs
+gfal-mkdir -p srm://maite.iihe.ac.be:8443${outputpnfs}
 
 #make list of all files in input sample
 fileList $input
@@ -121,6 +122,7 @@ while read f; do
         exportProxy $submit
     fi
     echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=${output}/${skim}_Job_${fileCount}.root events=-1 > ${output}/logs/Job_${fileCount}.txt 2> ${output}/errs/Job_${fileCount}.txt" >> $submit
+    echo "gfal-copy -p -f -t 5000 file://${output}/${skim}_Job_${fileCount}.root srm://maite.iihe.ac.be:8443${outputpnfs}/${skim}_Job_${fileCount}.root" >> $submit
 done < fileList.txt
 if (( $fileCount % $filesPerJob != 0 )); then
     #fileList="${fileList%,}" #remove trailing comma from fileList

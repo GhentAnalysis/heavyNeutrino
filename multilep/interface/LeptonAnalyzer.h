@@ -98,6 +98,18 @@ class LeptonAnalyzer {
     double   _lVtxpos_BSdz[nL_max];
     double   _lVtxpos_maxdxy[nL_max];
     double   _lVtxpos_maxdz[nL_max];
+    double   _lVtxpos_mindxy[nL_max];
+    double   _lVtxpos_mindz[nL_max];
+    double   _lVtxpos_mindR[nL_max];
+    double   _lVtxpos_maxdR[nL_max];
+    double   _lVtxpos_dRcut[nL_max];
+    double   _lVtxpos_trackPt[nL_max][20];
+    double   _lVtxpos_trackEta[nL_max][20];
+    double   _lVtxpos_trackPhi[nL_max][20];
+    double   _lVtxpos_trackE[nL_max][20];
+    double   _lVtxpos_trackdR[nL_max][20];
+    double   _lVtxpos_trackdxy[nL_max][20];
+    double   _lVtxpos_trackdz[nL_max][20];
 
     double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];
@@ -188,7 +200,7 @@ class LeptonAnalyzer {
     //for kalman vertex fit
     edm::ESHandle<MagneticField> _bField;
     edm::ESHandle<Propagator> _shProp;
-    TransientVertex constructKalmanVertex(std::vector<reco::Track>&);
+    TransientVertex constructKalmanVertex(std::vector<reco::Track>&, MagneticField*);
 
     //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher);
@@ -203,7 +215,7 @@ class LeptonAnalyzer {
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
-    void fillLeptonVtxVariables(const reco::Candidate&, edm::Handle<std::vector<pat::PackedCandidate>>&, std::vector<reco::Track>&);
+    void fillLeptonVtxVariables(edm::Handle<std::vector<pat::PackedCandidate>>&, std::vector<reco::Track>&);
 
     // In leptonAnalyzerIso,cc
 

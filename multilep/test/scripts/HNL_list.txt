@@ -1,4 +1,1 @@
-/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/prompt/
-/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17/displaced/
-/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/prompt/
-/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/
+/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018/displaced/
