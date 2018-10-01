@@ -2,16 +2,29 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
+//include c++ library classes
+#include <algorithm>
+
 JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
-    jecUnc((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile")).fullPath()),
     multilepAnalyzer(multilepAnalyzer)
 {
+    /*
     if(multilepAnalyzer->isData){
         jecLevel = "L2L3Residual";
     } else {
         jecLevel = "L3Absolute";
     }
+    */
+    if(multilepAnalyzer->is2017){
+        jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile17")).fullPath());
+    } else {
+        jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile16")).fullPath());
+    }
 };
+
+JetAnalyzer::~JetAnalyzer(){
+    delete jecUnc;
+}
 
 // Note that here only the uncertainty is saved, the Up and Down variations still need to be calculated later, probably easier to do on python level
 // Also b-tagging up/down is easier on python level (see https://github.com/GhentAnalysis/StopsDilepton/blob/leptonSelectionUpdate_80X/tools/python/btagEfficiency.py)
@@ -20,15 +33,17 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/b");
     outputTree->Branch("_jetPt",                     &_jetPt,                    "_jetPt[_nJets]/D");
-    outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
     outputTree->Branch("_jetPt_JECDown",             &_jetPt_JECDown,            "_jetPt_JECDown[_nJets]/D");
+    outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
+    outputTree->Branch("_jetSmearedPt",              &_jetSmearedPt,             "_jetSmearedPt[_nJets]/D");
+    outputTree->Branch("_jetSmearedPt_JECDown",      &_jetSmearedPt_JECDown,     "_jetSmearedPt_JECDown[_nJets]/D");
+    outputTree->Branch("_jetSmearedPt_JECUp",        &_jetSmearedPt_JECUp,       "_jetSmearedPt_JECUp[_nJets]/D");
+    outputTree->Branch("_jetSmearedPt_JERDown",      &_jetSmearedPt_JERDown,     "_jetSmearedPt_JERDown[_nJets]/D");
+    outputTree->Branch("_jetSmearedPt_JERUp",        &_jetSmearedPt_JERUp,       "_jetSmearedPt_JERUp[_nJets]/D");
     outputTree->Branch("_jetPt_Uncorrected",         &_jetPt_Uncorrected,        "_jetPt_Uncorrected[_nJets]/D");
     outputTree->Branch("_jetPt_L1",                  &_jetPt_L1,                 "_jetPt_L1[_nJets]/D");
     outputTree->Branch("_jetPt_L2",                  &_jetPt_L2,                 "_jetPt_L2[_nJets]/D");
     outputTree->Branch("_jetPt_L3",                  &_jetPt_L3,                 "_jetPt_L3[_nJets]/D");
-    if(multilepAnalyzer->isData){
-        outputTree->Branch("_jetPt_L2L3",                &_jetPt_L2L3,               "_jetPt_L2L3[_nJets]/D");
-    }
 
     outputTree->Branch("_jetEta",                    &_jetEta,                   "_jetEta[_nJets]/D");
     outputTree->Branch("_jetPhi",                    &_jetPhi,                   "_jetPhi[_nJets]/D");
@@ -78,18 +93,18 @@ void JetAnalyzer::beginJob(TTree* outputTree){
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //std::cout << "begin jetanalyzer" << std::endl;
     edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
+    edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
+    edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
+    edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
     edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken, mets);
 
     //to apply JEC from txt files
     edm::Handle<double> rho;                            iEvent.getByToken(multilepAnalyzer->rhoToken,            rho);
 
     _nJets = 0;
-    //_nDaughters = 0;
-    //std::cout << "ok1" << std::endl;
-    //for(auto jetSmeared = jetsSmeared->begin(); jetSmeared != jetsSmeared->end(); ++jetSmeared){
-    //std::cout << "ok1.5" << std::endl;
-    for(auto& jet : *jets){
-        if(_nJets == nJets_max) break;// or _nDaughters == nDaughters_max) break;
+
+    for(const auto& jet : *jets){
+        if(_nJets == nJets_max) break;
 
     	//std::cout << "ok1.55" << std::endl;
         //only store loose jets 
@@ -106,42 +121,69 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetIsTight[_nJets] = jetIsTight(jet, multilepAnalyzer->is2017);
     	//std::cout << "ok1.58" << std::endl;
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017);
-    	//std::cout << "ok1.6" << std::endl;
-    
-        //jecUnc.setJetEta(jet.eta());
-        //jecUnc.setJetPt(jet.pt());
-        //double unc = jecUnc.getUncertainty(true);
+
+        //find smeared equivalents of nominal jet 
+        auto jetSmearedIt = jetsSmeared->begin();
+        for(auto j = jetsSmeared->cbegin(); j != jetsSmeared->cend(); ++j){ 
+            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedIt) ) jetSmearedIt = j;
+        }
+
+        auto jetSmearedUpIt = jetsSmearedUp->begin();
+        for(auto j = jetsSmearedUp->cbegin(); j != jetsSmearedUp->cend(); ++j){ 
+            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedUpIt) )  jetSmearedUpIt = j;
+        }
+
+        auto jetSmearedDownIt = jetsSmearedDown->begin();
+        for(auto j = jetsSmearedDown->cbegin(); j != jetsSmearedDown->cend(); ++j){ 
+            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedDownIt) )  jetSmearedDownIt = j;
+        }
 
         //txt based JEC
-        double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
-        _jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
-        double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], jet.eta());
-        //extract uncertainty based on corrected jet pt!
-        //
-        //_jetPt[_nJets] = jet.pt();
-        double maxpT = (1+unc)*_jetPt[_nJets];
+        //double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
+        //_jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
+        //double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], jet.eta());
+
+
+        //nominal jet pt and uncertainties         
+        jecUnc->setJetEta(jet.eta());
+        jecUnc->setJetPt(jet.pt());
+        double unc = jecUnc->getUncertainty(true);
+
+        _jetPt[_nJets] = jet.pt();
+        _jetPt_JECDown[_nJets] = _jetPt[_nJets]*(1 - unc);
+        _jetPt_JECUp[_nJets] = _jetPt[_nJets]*(1 + unc);
+
+        //smeared jet pt and uncertainties 
+        jecUnc->setJetEta(jetSmearedIt->eta());
+        jecUnc->setJetPt(jetSmearedIt->pt());
+        double uncSmeared = jecUnc->getUncertainty(true);
+        _jetSmearedPt[_nJets] = jetSmearedIt->pt();
+        _jetSmearedPt_JECDown[_nJets] = _jetPt[_nJets]*( 1. - uncSmeared );
+        _jetSmearedPt_JECUp[_nJets] = _jetPt[_nJets]*( 1. + uncSmeared );
+        _jetSmearedPt_JERDown[_nJets] = jetSmearedDownIt->pt();
+        _jetSmearedPt_JERUp[_nJets] = jetSmearedUpIt->pt();
+
+        //find maximum of all pT variations
+        std::vector<double> ptVector = {_jetPt[_nJets], _jetPt_JECDown[_nJets], _jetPt_JECUp[_nJets],
+            _jetSmearedPt[_nJets], _jetSmearedPt_JECDown[_nJets], _jetSmearedPt_JECUp[_nJets], _jetSmearedPt_JERDown[_nJets],  _jetSmearedPt_JERUp[_nJets]};
+        double maxpT = *( std::max_element( ptVector.cbegin(), ptVector.cend() ) );
         if(maxpT <= 25) continue;
 
-        _jetPt_JECDown[_nJets]            = _jetPt[_nJets]*(1-unc);
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
-        /*
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
         _jetPt_L2[_nJets]                 = jet.correctedP4("L2Relative").Pt();
         _jetPt_L3[_nJets]                 = jet.correctedP4("L3Absolute").Pt();
-        */
+        /*
         _jetPt_L1[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L1FastJet");
         _jetPt_L2[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L2Relative");
         _jetPt_L3[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L3Absolute");
+        */
 
-        if(multilepAnalyzer->isData){
-            _jetPt_L2L3[_nJets]           = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(),"L2L3Residual");
-        }
-
-        _jetPt_JECUp[_nJets]              = _jetPt[_nJets]*(1+unc);
         _jetEta[_nJets]                   = jet.eta();
         _jetPhi[_nJets]                   = jet.phi();
         //_jetE[_nJets]                     = jet.correctedP4("Uncorrected").E()*corrTxt;
         _jetE[_nJets]                     = jet.energy();
+
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
         //new DeepFlavour tagger
@@ -175,12 +217,12 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
-    /*
     _met             = met.pt();
     _metPhi          = met.phi();
-    */
+    /*
     _met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
     _metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
+    */
     //raw met values
     _metRaw = met.uncorPt();
     _metRawPhi = met.uncorPhi();

@@ -75,5 +75,10 @@ def addJetSequence(process, isData, is2017):
 
   # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
   from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
-  #from heavyNeutrino.multilep.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-  runMetCorAndUncFromMiniAOD(process, isData=isData)
+
+  runMetCorAndUncFromMiniAOD (
+    process,
+    isData = isData
+    #fixEE2017 = is2017,   #uncomment these if they are fixed in master!! ('fixEE2017' is currently not a variable in the declaration of the function runMetCorAndUncFromMiniAOD in the master branch)
+    #fixEE2017Params = {'userawPt': True, 'PtThreshold':50.0, 'MinEtaThreshold':2.65, 'MaxEtaThreshold': 3.139}
+  )

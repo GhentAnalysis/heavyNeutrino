@@ -20,6 +20,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     if(multilepAnalyzer->isData) return;
     hCounter   = fs->make<TH1D>("hCounter",   "Events counter",    1,  0,1);
     lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",       110,0,110);
+    psCounter = fs->make<TH1D>("psCounter", "Lhe weights",        14,0,14);
 
     unsigned nTrueBins;
     if(multilepAnalyzer->is2017) nTrueBins = 100;
@@ -32,6 +33,8 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     outputTree->Branch("_ctauHN",        &_ctauHN,        "_ctauHN/D");
     outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/b");
     outputTree->Branch("_lheWeight",     &_lheWeight,     "_lheWeight[_nLheWeights]/D");
+    outputTree->Branch("_nPsWeights",    &_nPsWeights,    "_nPsWeights/b");
+    outputTree->Branch("_psWeight",      &_psWeight,      "_psWeight[_nPsWeights]/D");
 }
 
 void LheAnalyzer::analyze(const edm::Event& iEvent){
@@ -54,6 +57,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
         return;
     }
 
+
     // See http://home.thep.lu.se/~leif/LHEF/classLHEF_1_1HEPEUP.html for more detailes
     int nParticles = lheEventInfo->hepeup().NUP;
 
@@ -73,10 +77,18 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     }
 
     //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
-    _nLheWeights = std::min(110, (int) lheEventInfo->weights().size()); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,... 
+    _nLheWeights = std::min( (unsigned) 110, (unsigned) lheEventInfo->weights().size()); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,... 
     for(unsigned i = 0; i < _nLheWeights; ++i){
         _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
         lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
+    }
+
+    //some tests for PS weight extraction
+    const std::vector<double>& psWeights = genEventInfo->weights();
+    _nPsWeights = std::min( (unsigned) 14, (unsigned) psWeights.size() );
+    for(unsigned ps = 0; ps < _nPsWeights; ++ps){
+        _psWeight[ps] = psWeights[ps]/_weight;
+        psCounter->Fill( ps + 0.5, _psWeight[ps]*_weight);
     }
 }
 

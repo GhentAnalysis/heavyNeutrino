@@ -34,6 +34,9 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     rhoToken(                         consumes<double>(                           iConfig.getParameter<edm::InputTag>("rho"))),
     metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
     jetToken(                         consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
+    jetSmearedToken(                  consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
+    jetSmearedUpToken(                consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
+    jetSmearedDownToken(              consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
     recoResultsPrimaryToken(          consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsPrimary"))),
     recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
@@ -43,8 +46,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
-    jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
+    //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
@@ -54,10 +57,12 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
 
+    /*
     //initialize jec txt files
     std::string dirtyHack = "dummy.txt";
     std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
     jec = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
+    */
 }
 
 multilep::~multilep(){
@@ -68,7 +73,7 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
-    delete jec;
+    //delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -112,13 +117,12 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     _runNb = (unsigned long) iRun.id().run();
 
     //update JEC 
-    jec->updateJEC(_runNb);
+    //jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
-    edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
 
