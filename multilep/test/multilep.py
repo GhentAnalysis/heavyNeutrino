@@ -191,5 +191,7 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadChargedCandidateFilter *
                      process.egmSequence *
                      process.jetSequence *
-                     process.fullPatMetSequence *
+                     #process.fullPatMetSequence *
+                     process.basicJetsForMETModifiedEMthreshold *
+                     process.fullPatMetSequenceModifiedEMthreshold *
                      process.blackJackAndHookers)

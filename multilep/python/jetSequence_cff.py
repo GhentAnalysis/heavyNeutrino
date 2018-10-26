@@ -76,4 +76,17 @@ def addJetSequence(process, isData, is2017):
   # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
   from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
   #from heavyNeutrino.multilep.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-  runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True)
+  #runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True) #, postfix = "ModifiedMET")
+  process.basicJetsForMETModifiedEMthreshold = cms.EDProducer("PATJetCleanerForType1MET",
+          src = cms.InputTag("slimmedJets"),
+          jetCorrEtaMax = cms.double(9.9),
+          jetCorrLabel = cms.InputTag("L3Absolute"),
+          jetCorrLabelRes = cms.InputTag("L2L3Residual"),
+          offsetCorrLabel = cms.InputTag("L1FastJet"),
+          skipEM = cms.bool(True),
+          skipEMfractionThreshold = cms.double(0.9), #-> I have changed the default from 0.9 to 0.3.
+          skipMuonSelection = cms.string(''),
+          skipMuons = cms.bool(True),
+          type1JetPtThreshold = cms.double(15.0)
+          )
+  runMetCorAndUncFromMiniAOD(process, isData=isData, jetCollUnskimmed = cms.InputTag("basicJetsForMetModifiedEMthreshold"), postfix = "ModifiedEMthreshold")
