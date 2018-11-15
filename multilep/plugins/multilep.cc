@@ -43,6 +43,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
     badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
+    secondaryVerticesToken(           consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("secondaryVertices"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
@@ -89,6 +90,12 @@ void multilep::beginJob(){
     outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
+    outputTree->Branch("_BS_x",                          &_BS_x,                          "_BS_x/D");
+    outputTree->Branch("_BS_y",                          &_BS_y,                          "_BS_y/D");
+    outputTree->Branch("_BS_z",                          &_BS_z,                          "_BS_z/D");
+    outputTree->Branch("_PV_x",                          &_PV_x,                          "_PV_x/D");
+    outputTree->Branch("_PV_y",                          &_PV_y,                          "_PV_y/D");
+    outputTree->Branch("_PV_z",                          &_PV_z,                          "_PV_z/D");
 
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
@@ -122,7 +129,18 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
-    edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
+    edm::Handle<std::vector<reco::Vertex>> vertices;    iEvent.getByToken(vtxToken, vertices);
+    edm::Handle<reco::BeamSpot> beamspot;               iEvent.getByToken(beamSpotToken, beamspot);
+    
+    _BS_x = beamspot->x0();
+    _BS_y = beamspot->y0();
+    _BS_z = beamspot->z0();
+
+    const reco::Vertex primaryVertex = *(vertices->begin());
+    _PV_x = primaryVertex.x();
+    _PV_y = primaryVertex.y();
+    _PV_z = primaryVertex.z();
+    
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
 

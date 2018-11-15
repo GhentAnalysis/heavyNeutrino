@@ -29,7 +29,7 @@ inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Mo
 #inputFile       = "root://cmsxrootd.fnal.gov///store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = "root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/80000/C0EC0176-2ABE-E611-99E3-0025904C51D8.root'
-nEvents         = 5000
+nEvents         = 500
 outputFile      = 'dilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
@@ -107,6 +107,8 @@ process.BadChargedCandidateFilter.filter = cms.bool(False)
 metCollection = "slimmedMETs"
 #if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean" #No longer needed for new rereco
 
+process.load('HNL.DisplacedAdaptiveVertexFinder.displacedInclusiveVertexing_cff')
+
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   offlineBeamSpot		= cms.InputTag("offlineBeamSpot"),
@@ -172,6 +174,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   recoResultsSecondary          = cms.InputTag("TriggerResults::RECO"),
   badPFMuonFilter               = cms.InputTag("BadPFMuonFilter"),
   badChargedCandFilter          = cms.InputTag("BadChargedCandidateFilter"),
+  secondaryVertices             = cms.InputTag("displacedInclusiveSecondaryVertices"),
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
@@ -189,4 +192,5 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.egmSequence *
                      process.jetSequence *  
                      process.fullPatMetSequence *
+                     process.displacedInclusiveVertexing *
                      process.blackJackAndHookers)

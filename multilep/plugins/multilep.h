@@ -117,6 +117,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
         edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
         edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
+        edm::EDGetTokenT<std::vector<reco::Vertex>>         secondaryVerticesToken;
         std::string                                         skim;
         bool                                                isData;
         bool                                                is2017;
@@ -146,6 +147,12 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         unsigned long _lumiBlock;
         unsigned long _eventNb;
         unsigned      _nVertex;                                                                          //Event variables
+        double _BS_x;
+        double _BS_y;
+        double _BS_z;
+        double _PV_x;
+        double _PV_y;
+        double _PV_z;
 
         TH1D* nVertices;                                                                                 //Histogram with number of vertices
 };

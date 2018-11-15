@@ -1,6 +1,8 @@
 <use name="root"/>
 <use name="FWCore/Framework"/>
 <use name="FWCore/ParameterSet"/>
+<use name="DataFormats/TrackReco"/>
+<use name="DataFormats/GsfTrackReco"/>
 <use name="DataFormats/VertexReco"/>
 <use name="DataFormats/MuonReco"/>
 <use name="DataFormats/EgammaReco"/>
