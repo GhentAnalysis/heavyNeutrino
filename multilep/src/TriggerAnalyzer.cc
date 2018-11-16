@@ -143,7 +143,7 @@ bool TriggerAnalyzer::passCombinedFlagAND(TString combinedFlag){
   return true;
 }
 
-void TriggerAnalyzer::analyze(const edm::Event& iEvent){
+bool TriggerAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<edm::TriggerResults> recoResultsPrimary;   iEvent.getByToken(multilepAnalyzer->recoResultsPrimaryToken,   recoResultsPrimary);
   edm::Handle<edm::TriggerResults> recoResultsSecondary; iEvent.getByToken(multilepAnalyzer->recoResultsSecondaryToken, recoResultsSecondary);
   edm::Handle<edm::TriggerResults> triggerResults;       iEvent.getByToken(multilepAnalyzer->triggerToken,              triggerResults);
@@ -171,7 +171,9 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
     if(combinedFlag.first.Contains("MET")) flag[combinedFlag.first] = passCombinedFlagAND(combinedFlag.first);
     else                                   flag[combinedFlag.first] = passCombinedFlagOR(combinedFlag.first);
   }
-  //std::cout << "end trigger analyzer" << std::endl;
+  if(flag["HLT_IsoMu24"] or flag["HLT_IsoTkMu24"]) return true;
+  else return false;
+
 }
 
 /*

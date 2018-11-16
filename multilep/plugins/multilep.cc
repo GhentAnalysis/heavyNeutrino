@@ -152,7 +152,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
     if(!photonAnalyzer->analyze(iEvent)) return;
-    triggerAnalyzer->analyze(iEvent);
+    if(!triggerAnalyzer->analyze(iEvent)) return;
     jetAnalyzer->analyze(iEvent);
 
     //determine event number run number and luminosity block

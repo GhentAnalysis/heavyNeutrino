@@ -404,10 +404,31 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // pass muon trigger
     // starting from highest pt muon, find a tight muon
     // starting below that, find loose muon with a vtx with displacement of 0.05cm
-    //for(unsigned i = 0; i < _nL; i++){
-    //    std::cout << "lep flavor and pt: " << _lFlavor[i] << " " << _lPt[i] << std::endl;
-    //    
-    //}std::cout << std::endl;
+    bool tightmuon = false;
+    unsigned i_tight = -1;
+    for(unsigned i = 0; i < _nLight; i++){
+        std::cout << "lep flavor, pt, eta, pogtight: " << _lFlavor[i] << " " << _lPt[i] << " " << _lEta[i] << " " << _lPOGTight[i] << std::endl;
+        if(_lFlavor[i] == 1 and _lPt[i] > 25 and fabs(_lEta[i]) < 2.4 and _lPOGTight[i]){
+            tightmuon = true;
+            i_tight = i;
+            break;
+        }
+    }std::cout << std::endl;
+    if(!tightmuon) return false;
+
+    //displaced muon with vertex match
+    bool displmuon = false;
+    for(unsigned i = 0; i < _nLight; i++){
+        std::cout << "lep flavor, pt, eta, pogloose, vtx match: " << _lFlavor[i] << " " << _lPt[i] << " " << _lEta[i] << " " << _lPOGLoose[i] << " " << _lIVF_match[i] << std::endl;
+        if(_lFlavor[i] != 1 or _lIVF_match[i] == -1 or i == i_tight or _lPt[i] > _lPt[i_tight]) continue;
+        double PVSVdist = sqrt((primaryVertex.x() - _IVF_x[_lIVF_match[i]])*(primaryVertex.x() - _IVF_x[_lIVF_match[i]]) + (primaryVertex.y() - _IVF_y[_lIVF_match[i]])*(primaryVertex.y() - _IVF_y[_lIVF_match[i]]) + (primaryVertex.z() - _IVF_z[_lIVF_match[i]])*(primaryVertex.z() - _IVF_z[_lIVF_match[i]]));
+        if(_lFlavor[i] == 1 and _lPt[i] > 5 and fabs(_lEta[i]) < 2.4 and _lPOGLoose[i] and PVSVdist > 0.05){
+            displmuon = true;
+            break;
+        }
+    }std::cout << std::endl;
+    if(!displmuon) return false;
+
 
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
