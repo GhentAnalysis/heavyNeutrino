@@ -14,6 +14,7 @@
 #include "MagneticField/Engine/interface/MagneticField.h"
 #include "MagneticField/ParametrizedEngine/src/OAEParametrizedMagneticField.h"
 #include "TrackPropagation/SteppingHelixPropagator/interface/SteppingHelixPropagator.h"
+#include "TrackingTools/PatternTools/interface/TransverseImpactPointExtrapolator.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 #include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
 #include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
@@ -239,12 +240,14 @@ class LeptonAnalyzer {
 
     edm::ESHandle<MagneticField> _bField;
     edm::ESHandle<Propagator> _shProp;
+    mutable TransverseImpactPointExtrapolator* _gsfProp;
     TransientVertex dileptonVertex(const reco::Track&, const reco::Track&);
     void cleanDileptonVertexArrays(unsigned);
 
     void fillDileptonVertexArrays(unsigned, unsigned, unsigned,
 				  const TransientVertex&,
-				  const reco::Track&, const reco::Track&);
+				  const reco::Track&, const reco::Track&,
+				  bool, bool);
 
     //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
     template <typename Lepton> void fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton,
