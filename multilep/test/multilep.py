@@ -7,7 +7,7 @@ def getJSON(is2017):
     else: return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
 # Default arguments
-nEvents         = 1000
+nEvents         = -1
 ## TTbar
 inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/70000/A03D5CD4-04C8-E611-8199-02163E019B3D.root"
 ## DY
@@ -97,7 +97,7 @@ process.BadChargedCandidateFilter.filter = cms.bool(False)
 
 #clean 2016 data met from spurious muons and ECAL slew rate
 metCollection = "slimmedMETs"
-if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean"
+#if (not is2017) and isData : metCollection = "slimmedMETsMuEGClean"
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -180,7 +180,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 )
 
 ## Change trigger-object label for signal
-if 'HeavyNeutrino' in inputFile: process.blackJackAndHookers.triggerObjects = cms.InputTag("slimmedPatTrigger")
+#if 'HeavyNeutrino' in inputFile: process.blackJackAndHookers.triggerObjects = cms.InputTag("slimmedPatTrigger")
 
 ## Single triggers for matching
 if 'FR' in outputFile:
