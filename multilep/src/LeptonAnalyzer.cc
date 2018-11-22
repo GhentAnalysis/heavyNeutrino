@@ -3,6 +3,8 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 #include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
+#include "TrackingTools/GeomPropagators/interface/AnalyticalPropagator.h"
+#include "TrackingTools/GsfTools/interface/GsfPropagatorAdapter.h"
 #include "TLorentzVector.h"
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
@@ -171,6 +173,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   edm::Handle<pat::TriggerObjectStandAloneCollection> trigObjs; iEvent.getByToken(multilepAnalyzer->trigObjToken,           trigObjs);
   iSetup.get<IdealMagneticFieldRecord>().get(_bField);
   iSetup.get<TrackingComponentsRecord>().get("SteppingHelixPropagatorAny", _shProp);
+  GsfPropagatorAdapter gsfPropagator(AnalyticalPropagator(&(*_bField), anyDirection));
+  _gsfProp = new TransverseImpactPointExtrapolator(gsfPropagator);
 
 
   //std::cout << "--------------------------------- Event " << iEvent.id().event() << " ---------------------------------" << std::endl;
@@ -565,8 +569,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(dilvtx.isValid()) { 
-	fillDileptonVertexArrays(_nVFit, iMu_plus, iMu_minus_mu, dilvtx, tk_1, tk_2);
-	++_nVFit;   
+	fillDileptonVertexArrays(_nVFit, iMu_plus, iMu_minus_mu, dilvtx, tk_1, tk_2, false, false);
+	++_nVFit;
       }
       else {   
 	std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl; 
@@ -590,7 +594,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(dilvtx.isValid()) { 
-	fillDileptonVertexArrays(_nVFit, iMu_plus, iE_minus_mu, dilvtx, tk_1, tk_2);
+	fillDileptonVertexArrays(_nVFit, iMu_plus, iE_minus_mu, dilvtx, tk_1, tk_2, false, true);
 	++_nVFit;   
       } 
       else {
@@ -634,7 +638,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(dilvtx.isValid()) { 
-	fillDileptonVertexArrays(_nVFit, iE_plus, iMu_minus_e, dilvtx, tk_1, tk_2);
+	fillDileptonVertexArrays(_nVFit, iE_plus, iMu_minus_e, dilvtx, tk_1, tk_2, true, false);
 	++_nVFit;
       } 
       else {
@@ -660,7 +664,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       const reco::Track&  tk_2 =  *ele_2->gsfTrack();  
       TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
       if(dilvtx.isValid()) { 
-	fillDileptonVertexArrays(_nVFit, iE_plus, iE_minus_e, dilvtx, tk_1, tk_2);
+	fillDileptonVertexArrays(_nVFit, iE_plus, iE_minus_e, dilvtx, tk_1, tk_2, true, true);
 	++_nVFit;   
       } 
       else {
@@ -709,7 +713,8 @@ void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
 // Fill the arrays of displaced vertices and leptons 
 void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, unsigned iL_minus,
 					      const TransientVertex& dvtx,
-					      const reco::Track& tk1, const reco::Track& tk2) {
+					      const reco::Track& tk1, const reco::Track& tk2,
+					      bool isEle1, bool isEle2) {
   _vertices[nVFit][0]  = iL_plus*100 + iL_minus;
   _vertices[nVFit][1]  = dvtx.position().x();
   _vertices[nVFit][2]  = dvtx.position().y();
@@ -730,7 +735,13 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, 
   GlobalTrajectoryParameters l1gtp(l1r, l1p, tk1.charge(), _bField.product()); 
   CurvilinearTrajectoryError l1cov(tk1.covariance());
   FreeTrajectoryState l1fts(l1gtp, l1cov);
-  FreeTrajectoryState l1newfts = _shProp->propagate(l1fts, vtxpos);
+  FreeTrajectoryState l1newfts;
+  if(isEle1) {
+    l1newfts = *(_gsfProp->extrapolate(l1fts, vtxpos).freeState());
+  }
+  else {
+    l1newfts = _shProp->propagate(l1fts, vtxpos);
+  }
   if(!l1newfts.hasCurvilinearError()) { // instead of isValid()... 
     std::cout << "Propagation of L1 to dilepton vertex (" << _vertices[nVFit][0] << ") failed!" << std::endl;
     //return false;
@@ -758,7 +769,13 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, 
   GlobalTrajectoryParameters l2gtp(l2r, l2p, tk2.charge(), _bField.product()); 
   CurvilinearTrajectoryError l2cov(tk2.covariance());
   FreeTrajectoryState l2fts(l2gtp, l2cov);
-  FreeTrajectoryState l2newfts = _shProp->propagate(l2fts, vtxpos);
+  FreeTrajectoryState l2newfts;
+  if(isEle2) {
+    l2newfts = *(_gsfProp->extrapolate(l2fts, vtxpos).freeState());
+  }
+  else {
+    l2newfts = _shProp->propagate(l2fts, vtxpos);
+  }
   if(!l2newfts.hasCurvilinearError()) { // instead of isValid()... 
     std::cout << "Propagation of L2 to dilepton vertex (" << _vertices[nVFit][0] << ") failed!" << std::endl;
     //return false;
@@ -965,7 +982,7 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const d
   // if(_relIso[_nL]>1)        
   if(elec.gsfTrack().isNull())     return false; 
   if(getRelIso03(elec, rho) > ((multilepAnalyzer->skim=="FR") ? 2.0 : 1.5))  return false;
-  if(elec.pt()<10.)                 return false;
+  if(elec.pt()<7.)                 return false;
   if(std::abs(elec.eta())>2.5)     return false;
   if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&elec)) return false;
   if(eleMuOverlap(elec, _lPFMuon)) return false; // overlap muon-electron deltaR<0.05 // --> _lPFMuon is not used!!!
