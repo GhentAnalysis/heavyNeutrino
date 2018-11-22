@@ -1017,8 +1017,8 @@ bool LeptonAnalyzer::passTauPreselection(const pat::Tau& tauh, const reco::Verte
   //// Copied from the tau loop
   if(tauh.pt()<20.)                   return false; // Minimum pt for tau reconstruction
   if(std::abs(tauh.eta())>2.3)        return false;
-  if(!tauh.tauID("decayModeFinding")) return false;
-  if(tau_dz(tauh, vertex)<0.4)        return false; // tau dz cut used in ewkino
+  //if(!tauh.tauID("decayModeFinding")) return false;
+  if(tau_dz(tauh, vertex)<2.)        return false; // tau dz cut used in ewkino
 
   return true;
 }
