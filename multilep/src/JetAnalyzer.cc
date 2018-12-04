@@ -15,7 +15,7 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
         jecLevel = "L3Absolute";
     }
     */
-    if(multilepAnalyzer->is2017){
+    if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018){
         jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile17")).fullPath());
     } else {
         jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile16")).fullPath());
@@ -99,10 +99,10 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         if(_nJets == nJets_max) break;
 
         //only store loose jets 
-        _jetIsLoose[_nJets] = jetIsLoose(jet, multilepAnalyzer->is2017);
+        _jetIsLoose[_nJets] = jetIsLoose(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
         if(!_jetIsLoose[_nJets]) continue;
-        _jetIsTight[_nJets] = jetIsTight(jet, multilepAnalyzer->is2017);
-        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017);
+        _jetIsTight[_nJets] = jetIsTight(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
+        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
 
         //find smeared equivalents of nominal jet 
         auto jetSmearedIt = jetsSmeared->begin();
@@ -215,7 +215,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     return true;
 }
 
-bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
+bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017, const bool is2018) const{
 
     if(fabs(jet.eta()) <= 2.7){
         if(jet.neutralHadronEnergyFraction() >=  0.99) return false;
@@ -224,45 +224,45 @@ bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
         if(fabs(jet.eta()) <= 2.4){
             if(jet.chargedHadronEnergyFraction() <= 0) return false;
             if(jet.chargedMultiplicity() <= 0) return false;
-            if( !is2017 && ( jet.chargedEmEnergyFraction() >= 0.99 ) ) return false;
+            if( !(is2017 || is2018) && ( jet.chargedEmEnergyFraction() >= 0.99 ) ) return false;
         }
 
     } else if(fabs(jet.eta()) <= 3.0){
         if(jet.neutralHadronEnergyFraction() >= 0.98) return false;
-        if( !is2017 && (jet.neutralEmEnergyFraction() <= 0.01) ) return false;
-        if( is2017 && (jet.neutralEmEnergyFraction() <= 0.02) ) return false;
+        if( !(is2017 || is2018) && (jet.neutralEmEnergyFraction() <= 0.01) ) return false;
+        if( (is2017 || is2018) && (jet.neutralEmEnergyFraction() <= 0.02) ) return false;
         if(jet.neutralMultiplicity() <= 2) return false;
 
     } else {
         if(jet.neutralEmEnergyFraction() >= 0.90) return false;
         if(jet.neutralMultiplicity() <= 10) return false;
-        if(is2017 && jet.neutralHadronEnergyFraction() <= 0.02) return false;
+        if( (is2017 || is2018) && jet.neutralHadronEnergyFraction() <= 0.02) return false;
     }
 
     return true;
 }
 
-bool JetAnalyzer::jetIsTight(const pat::Jet& jet, const bool is2017) const{
-    if( !jetIsLoose(jet, is2017) ) return false;
+bool JetAnalyzer::jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const{
+    if( !jetIsLoose(jet, is2017, is2018) ) return false;
 
     if(fabs(jet.eta()) <= 2.7){
         if(jet.neutralHadronEnergyFraction() >= 0.9) return false;
         if(jet.neutralEmEnergyFraction() >= 0.9) return false;
 
     } else if(fabs(jet.eta()) <= 3.0){
-        if(is2017 && jet.neutralEmEnergyFraction() >= 0.99) return false;   
+        if( (is2017 || is2018) && jet.neutralEmEnergyFraction() >= 0.99) return false;   
     }
     return true;
 }
 
-bool JetAnalyzer::jetIsTightLepVeto(const pat::Jet& jet, const bool is2017) const{
-    if( !jetIsTight(jet, is2017) ) return false;
+bool JetAnalyzer::jetIsTightLepVeto(const pat::Jet& jet, const bool is2017, const bool is2018) const{
+    if( !jetIsTight(jet, is2017, is2018) ) return false;
     if(fabs(jet.eta()) <= 2.7){
         if( jet.chargedMuEnergyFraction() >= 0.8 ) return false;
         
         if(fabs(jet.eta()) <= 2.4){
-            if(is2017 && (jet.chargedEmEnergyFraction() >= 0.8) ) return false;
-            if(!is2017 && (jet.chargedEmEnergyFraction() >= 0.9) ) return false;
+            if( (is2017 || is2018) && (jet.chargedEmEnergyFraction() >= 0.8) ) return false;
+            if( !(is2017 || is2018) && (jet.chargedEmEnergyFraction() >= 0.9) ) return false;
         }
     }
     return true;

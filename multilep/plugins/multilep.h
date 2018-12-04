@@ -115,6 +115,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         std::string                                         skim;
         bool                                                isData;
         bool                                                is2017;
+        bool                                                is2018;
         bool                                                isSUSY;
         //std::string                                         jecPath;
 

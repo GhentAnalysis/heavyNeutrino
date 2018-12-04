@@ -11,9 +11,9 @@
 
 TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
   multilepAnalyzer(multilepAnalyzer){
-
+  allFlags["hlt_pfmet"] = {"HLT_PFMET120_PFMHT120_IDTight"};
   //2017 data and MC   
-  if(multilepAnalyzer->is2017){
+  if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018){
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
                                   "Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_ecalBadCalibFilter",                             //for Moriond 2018 superTightHalo -> TightHalo
                                   "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};      // Duplicate muons still missing in mAOD, not sure how to get those in
@@ -150,7 +150,7 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<bool> badPFMuonFilter;
   edm::Handle<bool> badChCandFilter;
 
-  if(!multilepAnalyzer->is2017){
+  if(   !(multilepAnalyzer->is2017 || multilepAnalyzer->is2018)   ){
     iEvent.getByToken(multilepAnalyzer->badPFMuonFilterToken,  badPFMuonFilter);
     iEvent.getByToken(multilepAnalyzer->badChCandFilterToken,  badChCandFilter);
   }
@@ -162,7 +162,7 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   reIndex = false;
  
   // These met filters are to be applied on-the-fly in 2016 samples
-  if(! multilepAnalyzer->is2017){
+  if(    !(multilepAnalyzer->is2017 || multilepAnalyzer->is2018)   ){
     flag["Flag_BadPFMuonFilter"] = *badPFMuonFilter;
     flag["Flag_BadChargedCandidateFilter"] = *badChCandFilter;
   }

@@ -5,7 +5,7 @@
 #include "heavyNeutrino/multilep/interface/JEC.h"
 
 JEC::JEC(const std::string& JECPath, bool dataSample, bool fall17Sample):
-    path(JECPath), isData(dataSample), is2017(fall17Sample) , currentJEC("none") {}
+    path(JECPath), isData(dataSample), is2017(fall17Sample), is2018(fall17Sample), currentJEC("none") {}
 
 JEC::~JEC(){}
 
@@ -33,7 +33,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
     //////////////////////////
     std::string jecName;
     if(isData){
-        if(!is2017){
+        if(  !(is2017 || is2018)  ){
             if (runNumber < 271658){
                 jecName = "A";
                 std::cerr << "no JEC available for 2016 run A, seems like JSON file is not applied!" << std::endl;
@@ -61,7 +61,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
         jecName += "_DATA";
         return jecName;
     } else{
-        if(!is2017){
+        if(  !(is2017 || is2018)  ){
             jecName = version2016;
         } else{
             jecName = version2017;
@@ -71,7 +71,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
 }
 
 std::string JEC::getJECName(const unsigned long runNumber){
-    if(!is2017){
+    if(  !(is2017 || is2018)  ){
         return "Summer16_07Aug2017" + getJECRunName(runNumber);
     } else{
         return "Fall17_17Nov2017" + getJECRunName(runNumber);

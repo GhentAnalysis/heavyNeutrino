@@ -71,9 +71,9 @@ class JetAnalyzer {
 
     multilep* multilepAnalyzer;
 
-    bool jetIsLoose(const pat::Jet& jet, const bool is2017) const;
-    bool jetIsTight(const pat::Jet& jet, const bool is2017) const;
-    bool jetIsTightLepVeto(const pat::Jet& jet, const bool is2017) const;
+    bool jetIsLoose(const pat::Jet& jet, const bool is2017, const bool is2018) const;
+    bool jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const;
+    bool jetIsTightLepVeto(const pat::Jet& jet, const bool is2017, const bool is2018) const;
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

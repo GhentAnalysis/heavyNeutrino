@@ -23,7 +23,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     psCounter = fs->make<TH1D>("psCounter", "Lhe weights",        14,0,14);
 
     unsigned nTrueBins;
-    if(multilepAnalyzer->is2017) nTrueBins = 100;
+    if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018) nTrueBins = 100;
     else nTrueBins = 50;
     nTrueInteractions = fs->make<TH1D>("nTrueInteractions",  "nTrueInteractions", nTrueBins,0,nTrueBins);
 

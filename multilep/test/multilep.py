@@ -1,9 +1,22 @@
+#####################################################################################
+'''
+25th Oct 2018
+
+Modified getJSON and year to read 2018 data 
+Using the same condition for Jet Correction in 2017
+Just to work with 2018, use : is2017 = 'Run2018' in dataset
+'''
+#####################################################################################
+
+
+
 import sys, os
 import FWCore.ParameterSet.Config as cms
 
 #function to return JSON file
-def getJSON(is2017):
+def getJSON(is2017, is2018):
     if is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
+    elif is2018: return "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"
     else: return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
 # Default arguments
@@ -17,11 +30,14 @@ def getJSON(is2017):
 #inputFile       = "root://cmsxrootd.fnal.gov///store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = "root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/80000/C0EC0176-2ABE-E611-99E3-0025904C51D8.root'
-inputFile        = '/store/data/Run2016E/SingleMuon/MINIAOD/07Aug17-v1/110000/00A51C60-CE80-E711-8B18-0025905A6060.root'
+#inputFile        = '/store/data/Run2016E/SingleMuon/MINIAOD/07Aug17-v1/110000/00A51C60-CE80-E711-8B18-0025905A6060.root'
 #inputFile       = '/store/data/Run2017F/SingleMuon/MINIAOD/17Nov2017-v1/00000/3E7C07F9-E6F1-E711-841A-0CC47A4C8E46.root'
+inputFile		= '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0CC8EDCD-FD64-E811-BCA8-02163E01A020.root'
+#inputFile		='/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
 
-nEvents         = 1000
-outputFile      = 'noskim.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
+
+nEvents         = 5000
+outputFile      = 'noskim18.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
                                  # ttg       --> skim two leptons + one photon
@@ -39,6 +55,7 @@ for i in range(1,len(sys.argv)):
 
 isData = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
+is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile
 isSUSY = "SMS-T" in inputFile
 
 process = cms.Process("BlackJackAndHookers")
@@ -57,7 +74,9 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_v6'   
+elif isData and is2018: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v6'
 elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v14'
+elif is2018:            process.GlobalTag.globaltag = '102X_upgrade2018_realistic_v12'
 elif isData:            process.GlobalTag.globaltag = '94X_dataRun2_v10'
 else:                   process.GlobalTag.globaltag = '94X_mcRun2_asymptotic_v3'
 
@@ -73,7 +92,7 @@ process.goodOfflinePrimaryVertices.filter = cms.bool(False)                     
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 from heavyNeutrino.multilep.egmSequence_cff import addElectronAndPhotonSequence
-addJetSequence(process, isData, is2017)
+addJetSequence(process, isData, is2017, is2018)
 addElectronAndPhotonSequence(process)
 
 #
@@ -158,13 +177,14 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
+  is2018                        = cms.untracked.bool(is2018),
   isSUSY                        = cms.untracked.bool(isSUSY),
 
 )
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017)).getVLuminosityBlockRange()
+  process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017, is2018)).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadPFMuonFilter *
