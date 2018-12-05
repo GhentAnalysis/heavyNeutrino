@@ -90,6 +90,7 @@ class LeptonAnalyzer {
 
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
     bool _tauEleVeto[nL_max];
+    bool _decayModeFinding[nL_max];                      
     bool _decayModeFindingNew[nL_max];                      
     bool _tauVLooseMvaNew[nL_max];                                                                      //"old tau id's will be stored in the POG id definitions (vloose := veto), however very tight is stored separately
     bool _tauLooseMvaNew[nL_max];
