@@ -544,7 +544,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   //   if(passMuonPreselection(mu_1, *rho)==false) continue;
   //
   // NEW:
-	/*
+	
 	
 	
   for(const pat::Muon* muptr_1 : selmuons){ // for muons
@@ -677,7 +677,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }// end loop e+
   }//end electrons
 	
-	*/
+	
 
   //if(multilepAnalyzer->skim == "trilep"    and (_nLight < 3 || _nGoodLeading < 1 || _nGoodDisplaced < 2) ) return false;
   if(multilepAnalyzer->skim == "trilep"      and (_nLight < 3 || _nGoodLeading < 1                       ) ) return false;
