@@ -20,6 +20,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     if(multilepAnalyzer->isData) return;
     hCounter   = fs->make<TH1D>("hCounter",   "Events counter",    1,  0,1);
     lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",       110,0,110);
+    tauCounter = fs->make<TH1D>("tauCounter", "Number of taus",    3,  0,3);
 
     unsigned nTrueBins;
     if(multilepAnalyzer->is2017) nTrueBins = 100;
@@ -30,6 +31,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     outputTree->Branch("_weight",        &_weight,        "_weight/D");
     outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
     outputTree->Branch("_ctauHN",        &_ctauHN,        "_ctauHN/D");
+    outputTree->Branch("_nLheTau",       &_nTau,          "_nLheTau/b");
     outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/b");
     outputTree->Branch("_lheWeight",     &_lheWeight,     "_lheWeight[_nLheWeights]/D");
 }
@@ -43,11 +45,12 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 
     _nTrueInt = pileUpInfo->begin()->getTrueNumInteractions(); // getTrueNumInteractions is the same for all bunch crossings
     _weight   = genEventInfo->weight();
-    hCounter->Fill(0.5,    _weight);
+    hCounter->Fill(0.5, _weight);
     nTrueInteractions->Fill(_nTrueInt, _weight);
 
     _lheHTIncoming = 0.;
     _ctauHN = 0.;
+    _nTau = 0;
 
     if(!lheEventInfo.isValid()){
         _nLheWeights = 0;
@@ -70,7 +73,10 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 
         if(hasIncomingMother and status==1 and quarkOrGluon) _lheHTIncoming += pt;
         if(pdgId==9900012)                                   _ctauHN         = lheEventInfo->hepeup().VTIMUP[i];
+        if(abs(pdgId)==15) ++_nTau;
     }
+
+    tauCounter->Fill(_nTau, _weight);
 
     //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
     _nLheWeights = std::min(110, (int) lheEventInfo->weights().size()); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,... 

@@ -21,9 +21,11 @@ class LheAnalyzer {
 
     TH1D*  hCounter;
     TH1D*  lheCounter;
+    TH1D*  tauCounter;
     TH1D*  nTrueInteractions;
 
     unsigned _nLheWeights;
+    unsigned _nTau;
     double _lheWeight[110];
 
     multilep* multilepAnalyzer;
