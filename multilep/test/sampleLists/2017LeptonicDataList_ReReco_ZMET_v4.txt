@@ -1,0 +1,15 @@
+#2017 data
+
+#DoubleMuon
+singlelep:/DoubleMuon/Run2017B-17Nov2017-v1/MINIAOD
+singlelep:/DoubleMuon/Run2017C-17Nov2017-v1/MINIAOD
+singlelep:/DoubleMuon/Run2017D-17Nov2017-v1/MINIAOD
+singlelep:/DoubleMuon/Run2017E-17Nov2017-v1/MINIAOD
+singlelep:/DoubleMuon/Run2017F-17Nov2017-v1/MINIAOD
+
+#DoubleEG
+singlelep:/DoubleEG/Run2017B-17Nov2017-v1/MINIAOD
+singlelep:/DoubleEG/Run2017C-17Nov2017-v1/MINIAOD
+singlelep:/DoubleEG/Run2017D-17Nov2017-v1/MINIAOD
+singlelep:/DoubleEG/Run2017E-17Nov2017-v1/MINIAOD
+singlelep:/DoubleEG/Run2017F-17Nov2017-v1/MINIAOD

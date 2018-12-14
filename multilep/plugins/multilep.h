@@ -102,6 +102,10 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<std::vector<pat::PackedCandidate>> packedCandidatesToken;                       //particle collection used to calculate isolation variables
         edm::EDGetTokenT<double>                            rhoToken;
         edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
+        edm::EDGetTokenT<std::vector<pat::MET>>             metToken1;
+        edm::EDGetTokenT<std::vector<pat::MET>>             metToken2;
+        edm::EDGetTokenT<std::vector<pat::MET>>             metToken3;
+        edm::EDGetTokenT<std::vector<pat::MET>>             metToken4;
         edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
         edm::EDGetTokenT<edm::TriggerResults>               recoResultsPrimaryToken;                     //MET filter information
         edm::EDGetTokenT<edm::TriggerResults>               recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)

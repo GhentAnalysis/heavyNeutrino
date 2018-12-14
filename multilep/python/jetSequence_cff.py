@@ -74,9 +74,9 @@ def addJetSequence(process, isData, is2017):
       process.jetSequence *= jetSmearing
 
   # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
-  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
   #from heavyNeutrino.multilep.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
   #runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True) #, postfix = "ModifiedMET")
+
   process.basicJetsForMETModifiedEMthreshold = cms.EDProducer("PATJetCleanerForType1MET",
           src = cms.InputTag("slimmedJets"),
           jetCorrEtaMax = cms.double(9.9),
@@ -84,9 +84,18 @@ def addJetSequence(process, isData, is2017):
           jetCorrLabelRes = cms.InputTag("L2L3Residual"),
           offsetCorrLabel = cms.InputTag("L1FastJet"),
           skipEM = cms.bool(True),
-          skipEMfractionThreshold = cms.double(0.9), #-> I have changed the default from 0.9 to 0.3.
-          skipMuonSelection = cms.string(''),
+          skipEMfractionThreshold = cms.double(0.9),
+          skipMuonSelection = cms.string('isGlobalMuon | isStandAloneMuon'),
           skipMuons = cms.bool(True),
           type1JetPtThreshold = cms.double(15.0)
           )
-  runMetCorAndUncFromMiniAOD(process, isData=isData, jetCollUnskimmed = cms.InputTag("basicJetsForMetModifiedEMthreshold"), postfix = "ModifiedEMthreshold")
+  """
+  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
+  runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True, jetCollUnskimmed = cms.InputTag("basicJetsForMETModifiedEMthreshold")) #, postfix = "Modified")
+  """
+  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+  runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True, skipEMfractionParam=cms.double(0.9))
+  runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True, skipEMfractionParam=cms.double(0.93), postfix="0p93")
+  runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True, skipEMfractionParam=cms.double(0.85), postfix="0p85")
+  runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True, skipEMfractionParam=cms.double(0.96), postfix="0p96")
+  runMetCorAndUncFromMiniAOD(process, isData=isData, fixEE2017=True, skipEMfractionParam=cms.double(1.00), postfix="1p00")

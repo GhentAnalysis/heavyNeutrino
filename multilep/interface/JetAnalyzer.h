@@ -47,6 +47,11 @@ class JetAnalyzer {
     double _jetHFEmFraction[nJets_max];
 
     double        _met;                                                                              //met kinematics
+    double        _met0p85;                                                                              //met kinematics
+    double        _met0p93;
+    double        _met0p96;
+    double        _met1p00;
+
     double        _metJECDown;
     double        _metJECUp;
     double        _metJetResDown;
@@ -63,6 +68,11 @@ class JetAnalyzer {
     double        _metUnclUp_sm;
 
     double        _metPhi;
+    double        _metPhi0p85;
+    double        _metPhi0p93;
+    double        _metPhi0p96;
+    double        _metPhi1p00;
+
     double        _metPhiJECDown;
     double        _metPhiJECUp;
     double        _metPhiJetResDown;

@@ -58,6 +58,11 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetHFEmFraction",           &_jetHFEmFraction,          "_jetHFEmFraction[_nJets]/D");
 
     outputTree->Branch("_met",                          &_met,                          "_met/D");
+    outputTree->Branch("_met0p85",                      &_met0p85,                      "_met0p85/D");
+    outputTree->Branch("_met0p93",                      &_met0p93,                      "_met0p93/D");
+    outputTree->Branch("_met0p96",                      &_met0p96,                      "_met0p96/D");
+    outputTree->Branch("_met1p00",                      &_met1p00,                      "_met1p00/D");
+
     outputTree->Branch("_metJECDown",                   &_metJECDown,                   "_metJECDown/D");
     outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
     outputTree->Branch("_metJetResDown",                &_metJetResDown,                "_metJetResDown/D");
@@ -66,6 +71,11 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
 
     outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
+    outputTree->Branch("_metPhi0p85",                   &_metPhi0p85,                   "_metPhi0p85/D");
+    outputTree->Branch("_metPhi0p93",                   &_metPhi0p93,                   "_metPhi0p93/D");
+    outputTree->Branch("_metPhi0p96",                   &_metPhi0p96,                   "_metPhi0p96/D");
+    outputTree->Branch("_metPhi1p00",                   &_metPhi1p00,                   "_metPhi1p00/D");
+
     outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
     outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
     outputTree->Branch("_metPhiJetResDown",             &_metPhiJetResDown,             "_metPhiJetResDown/D");
@@ -113,6 +123,10 @@ void JetAnalyzer::beginJob(TTree* outputTree){
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
     edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken, mets);
+    edm::Handle<std::vector<pat::MET>> mets1;           iEvent.getByToken(multilepAnalyzer->metToken1, mets1);
+    edm::Handle<std::vector<pat::MET>> mets2;           iEvent.getByToken(multilepAnalyzer->metToken2, mets2);
+    edm::Handle<std::vector<pat::MET>> mets3;           iEvent.getByToken(multilepAnalyzer->metToken3, mets3);
+    edm::Handle<std::vector<pat::MET>> mets4;           iEvent.getByToken(multilepAnalyzer->metToken4, mets4);
 
     //to apply JEC from txt files
     edm::Handle<double> rho;                            iEvent.getByToken(multilepAnalyzer->rhoToken,            rho);
@@ -182,8 +196,22 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
+    const pat::MET& met1 = (*mets1).front();
+    const pat::MET& met2 = (*mets2).front();
+    const pat::MET& met3 = (*mets3).front();
+    const pat::MET& met4 = (*mets4).front();
+
     _met             = met.pt();
+    _met0p85         = met1.pt();
+    _met0p93         = met2.pt();
+    _met0p96         = met3.pt();
+    _met1p00         = met4.pt();
+
     _metPhi          = met.phi();
+    _metPhi0p85      = met1.phi();
+    _metPhi0p93      = met2.phi();
+    _metPhi0p96      = met3.phi();
+    _metPhi1p00      = met4.phi();
     /*
     _met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
     _metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;

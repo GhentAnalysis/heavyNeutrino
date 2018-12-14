@@ -33,6 +33,10 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     packedCandidatesToken(            consumes<std::vector<pat::PackedCandidate>>(iConfig.getParameter<edm::InputTag>("packedCandidates"))),
     rhoToken(                         consumes<double>(                           iConfig.getParameter<edm::InputTag>("rho"))),
     metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
+    metToken1(                        consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met1"))),
+    metToken2(                        consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met2"))),
+    metToken3(                        consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met3"))),
+    metToken4(                        consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met4"))),
     jetToken(                         consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
     recoResultsPrimaryToken(          consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsPrimary"))),
     recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
@@ -121,6 +125,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
+    //edm::Handle<std::vector<pat::MET>> mets1;        iEvent.getByToken(metToken1, mets1);
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
 
