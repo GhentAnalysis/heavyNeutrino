@@ -36,7 +36,7 @@ inputFile		= '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0
 #inputFile		='/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
 
 
-nEvents         = 5000
+nEvents         = 1000
 outputFile      = 'noskim18.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons
                                  # singlelep --> skim one lepton
@@ -73,9 +73,12 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_v6'   
-elif isData and is2018: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v6'
-elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v14'
+if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_v11'   
+elif isData and is2018 and 'PromptReco' not in inputFile: 
+	process.GlobalTag.globaltag = '102X_dataRun2_Sep2018Rereco_v1'
+elif isData and is2018 and 'PromptReco' in inputFile: 
+	process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v11'
+elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v17'
 elif is2018:            process.GlobalTag.globaltag = '102X_upgrade2018_realistic_v12'
 elif isData:            process.GlobalTag.globaltag = '94X_dataRun2_v10'
 else:                   process.GlobalTag.globaltag = '94X_mcRun2_asymptotic_v3'

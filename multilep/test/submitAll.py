@@ -11,7 +11,7 @@ datasets        = [dataset.split()[0] for dataset in datasets if dataset and not
 #check if call asked for local submission
 submitLocal     = ""
 #Use third argument to specify the number of jobs per file
-filesPerJob     = 20
+filesPerJob     = 10
 
 if len(sys.argv) > 2:
     submitLocal = sys.argv[2]
