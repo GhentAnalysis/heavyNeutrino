@@ -1,6 +1,6 @@
 
-cmsrel CMSSW_9_4_10
-cd CMSSW_9_4_10/src
+cmsrel CMSSW_9_4_12
+cd CMSSW_9_4_12/src
 cmsenv
 git cms-init
 
