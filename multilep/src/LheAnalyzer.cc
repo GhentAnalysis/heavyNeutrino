@@ -1,7 +1,7 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-#include <math.h> 
+#include <math.h>
 #include <algorithm>
 
 /*
@@ -69,7 +69,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
         long pdgId             = lheEventInfo->hepeup().IDUP[i];
         double px              = lheEventInfo->hepeup().PUP[i][0];
         double py              = lheEventInfo->hepeup().PUP[i][1];
-        double pt              = std::sqrt(px*px+py*py); 
+        double pt              = std::sqrt(px*px+py*py);
         int mother1            = lheEventInfo->hepeup().MOTHUP[i].first-1;                                                 // MOTHUP starts counting at 1
         int mother2            = lheEventInfo->hepeup().MOTHUP[i].second-1;
         bool hasIncomingMother = lheEventInfo->hepeup().ISTUP[mother1]==-1 and lheEventInfo->hepeup().ISTUP[mother2]==-1;  // Status -1 means mother is incoming
@@ -83,9 +83,9 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     tauCounter->Fill(_nTau, _weight);
 
     //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
-    _nLheWeights = std::min( (unsigned) 110, (unsigned) lheEventInfo->weights().size()); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,... 
+    _nLheWeights = std::min( (unsigned) 110, (unsigned) lheEventInfo->weights().size()); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,...
     for(unsigned i = 0; i < _nLheWeights; ++i){
-        _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP(); 
+        _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP();
         lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
     }
 
