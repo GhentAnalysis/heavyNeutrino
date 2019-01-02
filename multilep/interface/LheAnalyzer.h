@@ -28,6 +28,21 @@ class LheAnalyzer {
     unsigned _nTau;
     double _lheWeight[110];
 
+    unsigned _nPsWeights;
+    double _psWeight[14];
+
+    static const unsigned nLhe_max = 20;  // maximum number of LHE particles stored (the exact number of LHE particles will typically be the same for all events of a given process)
+    unsigned              _nLheParticles;
+    int                   _lheStatus[nLhe_max];
+    int                   _lhePdgId[nLhe_max];
+    int                   _lheMother1[nLhe_max];
+    int                   _lheMother2[nLhe_max];
+    float                 _lhePt[nLhe_max];
+    float                 _lheEta[nLhe_max];
+    float                 _lhePhi[nLhe_max];
+    float                 _lheE[nLhe_max];
+    float                 _lheMass[nLhe_max];
+
     multilep* multilepAnalyzer;
 
   public:
