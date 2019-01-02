@@ -6,8 +6,7 @@ The tuplizer itself is entirely contained in the multilep directory.
 # Set-up instructions (master branch)
 ```
 wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/master/setup.sh
-chmod +x setup.sh
-./setup.sh
+source setup.sh
 ```
 
 

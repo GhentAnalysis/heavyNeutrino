@@ -2,7 +2,7 @@
 RELEASE=CMSSW_9_4_12
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
-if [[ $CMSSW_BASE == *$RELEASE ]]; then
+if [[ $CMSSW_BASE == *$RELEASE ]] && [[ -d $CMSSW_BASE ]]; then
   echo "Setting up heavyNeutrino package in current release: $CMSSW_BASE"
   cd $CMSSW_BASE/src
 else
