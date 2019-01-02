@@ -2,14 +2,14 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "TLorentzVector.h"
-#include <math.h>
-#include <algorithm>
 
 /*
  * Accessing LHE information
  * lheHTIncoming could be used to get the low HT bin for HT-binned samples, e.g. DY
  * Might consider skimming directly here for such samples
  * Also saving the ctau of the heavy neutrino
+ * If the storeLheParticles boolean is set, most of the LHE particle information is stored to the tree
+ * Also keeping track of LHE taus in the event [to be used in case this is run on a sample where pythia decays all taus leptonically]
  */
 LheAnalyzer::LheAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer)
@@ -17,17 +17,16 @@ LheAnalyzer::LheAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 
 
 void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
-    //Counter to determine effect of pdf and scale uncertainties on the MC cross section
     if(multilepAnalyzer->isData) return;
-    hCounter   = fs->make<TH1D>("hCounter",   "Events counter",    1,  0,1);
-    lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",       110,0,110);
-    psCounter  = fs->make<TH1D>("psCounter", "Lhe weights",        14,0,14);
-    tauCounter = fs->make<TH1D>("tauCounter", "Number of taus",    3,  0,3);
+    hCounter   = fs->make<TH1D>("hCounter",   "Events counter", 1, 0, 1);
+    lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",    110, 0, 110); //Counter to determine effect of pdf and scale uncertainties on the MC cross section
+    psCounter  = fs->make<TH1D>("psCounter",  "Lhe weights",    14, 0, 14);
+    tauCounter = fs->make<TH1D>("tauCounter", "Number of taus", 3, 0, 3);
 
     unsigned nTrueBins;
     if(multilepAnalyzer->is2017) nTrueBins = 100;
     else nTrueBins = 50;
-    nTrueInteractions = fs->make<TH1D>("nTrueInteractions",  "nTrueInteractions", nTrueBins,0,nTrueBins);
+    nTrueInteractions = fs->make<TH1D>("nTrueInteractions", "nTrueInteractions", nTrueBins, 0, nTrueBins);
 
     outputTree->Branch("_nTrueInt",      &_nTrueInt,      "_nTrueInt/F");
     outputTree->Branch("_weight",        &_weight,        "_weight/D");
@@ -114,7 +113,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     _nPsWeights = std::min( (unsigned) 14, (unsigned) psWeights.size() );
     for(unsigned ps = 0; ps < _nPsWeights; ++ps){
         _psWeight[ps] = psWeights[ps]/_weight;
-        psCounter->Fill( ps + 0.5, _psWeight[ps]*_weight);
+        psCounter->Fill(ps + 0.5, _psWeight[ps]*_weight);
     }
 }
 
