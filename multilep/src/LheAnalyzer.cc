@@ -1,6 +1,7 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
+#include "TLorentzVector.h"
 #include <math.h>
 #include <algorithm>
 
@@ -37,6 +38,19 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     outputTree->Branch("_lheWeight",     &_lheWeight,     "_lheWeight[_nLheWeights]/D");
     outputTree->Branch("_nPsWeights",    &_nPsWeights,    "_nPsWeights/b");
     outputTree->Branch("_psWeight",      &_psWeight,      "_psWeight[_nPsWeights]/D");
+
+    if(multilepAnalyzer->storeLheParticles){
+      outputTree->Branch("_nLheParticles", &_nLheParticles, "_nLheParticles/b");
+      outputTree->Branch("_lheStatus",     &_lheStatus,     "_lheStatus[_nLheParticles]/I");
+      outputTree->Branch("_lhePdgId",      &_lhePdgId,      "_lhePdgId[_nLheParticles]/I");
+      outputTree->Branch("_lheMother1",    &_lheMother1,    "_lheMother1[_nLheParticles]/I");
+      outputTree->Branch("_lheMother2",    &_lheMother2,    "_lheMother2[_nLheParticles]/I");
+      outputTree->Branch("_lhePt",         &_lhePt,         "_lhePt[_nLheParticles]/F");
+      outputTree->Branch("_lheEta",        &_lheEta,        "_lheEta[_nLheParticles]/F");
+      outputTree->Branch("_lhePhi",        &_lhePhi,        "_lhePhi[_nLheParticles]/F");
+      outputTree->Branch("_lheE",          &_lheE,          "_lheE[_nLheParticles]/F");
+      outputTree->Branch("_lheMass",       &_lheMass,       "_lheMass[_nLheParticles]/F");
+    }
 }
 
 void LheAnalyzer::analyze(const edm::Event& iEvent){
@@ -62,22 +76,28 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 
 
     // See http://home.thep.lu.se/~leif/LHEF/classLHEF_1_1HEPEUP.html for more detailes
-    int nParticles = lheEventInfo->hepeup().NUP;
-
-    for(int i = 0; i < nParticles; ++i){
-        int  status            = lheEventInfo->hepeup().ISTUP[i];
-        long pdgId             = lheEventInfo->hepeup().IDUP[i];
+    _nLheParticles = lheEventInfo->hepeup().NUP;
+    for(unsigned int i = 0; i < _nLheParticles; ++i){
+        _lheStatus[i]          = lheEventInfo->hepeup().ISTUP[i];
+        _lhePdgId[i]           = lheEventInfo->hepeup().IDUP[i];
+        _lheMother1[i]         = lheEventInfo->hepeup().MOTHUP[i].first-1;
+        _lheMother2[i]         = lheEventInfo->hepeup().MOTHUP[i].second-1;
         double px              = lheEventInfo->hepeup().PUP[i][0];
         double py              = lheEventInfo->hepeup().PUP[i][1];
-        double pt              = std::sqrt(px*px+py*py);
-        int mother1            = lheEventInfo->hepeup().MOTHUP[i].first-1;                                                 // MOTHUP starts counting at 1
-        int mother2            = lheEventInfo->hepeup().MOTHUP[i].second-1;
-        bool hasIncomingMother = lheEventInfo->hepeup().ISTUP[mother1]==-1 and lheEventInfo->hepeup().ISTUP[mother2]==-1;  // Status -1 means mother is incoming
-        bool quarkOrGluon      = (pdgId==21 or (abs(pdgId)>0 and abs(pdgId) < 7));
+        double pz              = lheEventInfo->hepeup().PUP[i][2];
+        _lheE[i]               = lheEventInfo->hepeup().PUP[i][3];
+        _lheMass[i]            = lheEventInfo->hepeup().PUP[i][4];
+        TLorentzVector vector  = TLorentzVector(px, py, pz, _lheE[i]);
+        _lhePt[i]              = vector.Et();
+        _lheEta[i]             = vector.Eta();
+        _lhePhi[i]             = vector.Phi();
 
-        if(hasIncomingMother and status==1 and quarkOrGluon) _lheHTIncoming += pt;
-        if(pdgId==9900012)                                   _ctauHN         = lheEventInfo->hepeup().VTIMUP[i];
-        if(abs(pdgId)==15) ++_nTau;
+        bool hasIncomingMother = lheEventInfo->hepeup().ISTUP[_lheMother1[i]]==-1 and lheEventInfo->hepeup().ISTUP[_lheMother2[i]]==-1;  // Status -1 means mother is incoming
+        bool quarkOrGluon      = (_lhePdgId[i]==21 or (abs(_lhePdgId[i])>0 and abs(_lhePdgId[i]) < 7));
+
+        if(hasIncomingMother and _lheStatus[i]==1 and quarkOrGluon) _lheHTIncoming += _lhePt[i]; // To be used when an inclusive MC sample needs to be combined with HT-splitted samples
+        if(_lhePdgId[i]==9900012 or _lhePdgId[i]==9990012) _ctauHN = lheEventInfo->hepeup().VTIMUP[i]; // the Heavy Neutrino lifetime
+        if(abs(_lhePdgId[i])==15) ++_nTau;
     }
 
     tauCounter->Fill(_nTau, _weight);
