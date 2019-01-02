@@ -44,7 +44,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
+    storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
     //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
