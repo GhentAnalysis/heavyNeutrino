@@ -12,7 +12,7 @@ def addJetSequence(process, isData, is2017, is2018):
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
-  if not (is2017 or is2018):
+  if not (is2017 or is2018): # TODO: this if statement can be removed, as the "else" should work for the legacy 2016 miniAOD
     updateJetCollection(
       process,
       jetSource = cms.InputTag('slimmedJets'),
@@ -24,7 +24,7 @@ def addJetSequence(process, isData, is2017, is2018):
         'pfDeepCSVJetTags:probb',
         'pfDeepCSVJetTags:probc',
         'pfDeepCSVJetTags:probbb',
-        'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
+       #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
       ]
     )
   else: 
