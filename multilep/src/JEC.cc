@@ -1,10 +1,10 @@
 /*
-   implementation of JEC class
-   */
+ * implementation of JEC class
+ */
 
 #include "heavyNeutrino/multilep/interface/JEC.h"
 
-JEC::JEC(const std::string& JECPath, bool dataSample, bool fall17Sample):
+JEC::JEC(const std::string& JECPath, bool dataSample, bool fall17Sample): // need fall2018Sample ?
     path(JECPath), isData(dataSample), is2017(fall17Sample), is2018(fall17Sample), currentJEC("none") {}
 
 JEC::~JEC(){}
@@ -33,7 +33,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
     //////////////////////////
     std::string jecName;
     if(isData){
-        if(  !(is2017 || is2018)  ){
+        if(!(is2017 || is2018)){
             if (runNumber < 271658){
                 jecName = "A";
                 std::cerr << "no JEC available for 2016 run A, seems like JSON file is not applied!" << std::endl;
@@ -57,24 +57,18 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
                 std::cerr << "no JEC available for 2017 runs G-H, they are not 13 TeV data! Seems like JSON file is not applied" << std::endl;
             }
             jecName += version2017;
-        }
-        jecName += "_DATA";
-        return jecName;
+        }  // I assume we'll need some 2018 stuff here
+        return (jecName + "_DATA");
     } else{
-        if(  !(is2017 || is2018)  ){
-            jecName = version2016;
-        } else{
-            jecName = version2017;
-        }
+        if(!(is2017 || is2018)) jecName = version2016; // I assume we'll need a specifc 2018 line here
+        else                    jecName = version2017;
         return (jecName + "_MC");
     }
 }
 
 std::string JEC::getJECName(const unsigned long runNumber){
-    if(  !(is2017 || is2018)  ){
-        return "Summer16_07Aug2017" + getJECRunName(runNumber);
-    } else{
-        return "Fall17_17Nov2017" + getJECRunName(runNumber);
+    if(!(is2017 || is2018)) return "Summer16_07Aug2017" + getJECRunName(runNumber); // I assume we'll need a specifc 2018 line here
+    else                    return "Fall17_17Nov2017" + getJECRunName(runNumber);
     }
 }
 
