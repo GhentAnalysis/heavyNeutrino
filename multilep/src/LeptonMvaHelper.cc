@@ -3,6 +3,9 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include <cmath>
 
+// TODO: clean-up of this class, maybe get rid of older trainings
+// the is2018 boolean is kind of useless currently, there's no 2018 training done yet
+
 //Default constructor
 //This will set up both MVA readers and book the correct variables
 LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigned typeNumber, const bool sampleIs2017): //0 : SUSY , 1: ttH, 2: tZq/TTV
