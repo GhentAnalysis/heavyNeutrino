@@ -11,7 +11,6 @@
 
 TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
   multilepAnalyzer(multilepAnalyzer){
-  allFlags["hlt_pfmet"] = {"HLT_PFMET120_PFMHT120_IDTight"};
   //2017 data and MC   
   if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018){
     allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
