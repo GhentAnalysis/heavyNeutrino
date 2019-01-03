@@ -20,9 +20,6 @@ def getJSON(is2017, is2018):
     else: return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
 # Default arguments
-#inputFile       = '/store/mc/RunIISummer16MiniAODv2/QCD_Pt-50to80_EMEnriched_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00A9113F-15D6-E611-9142-047D7B881D3A.root'
-#inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/90000/003658EE-77E6-E611-ACB1-7CD30ABD295A.root'
-#inputFile        = '/store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/AABE3103-4FD5-E611-91BA-02163E01314F.root'
 #inputFile       = 'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2017F/DoubleMuon/MINIAOD/17Nov2017-v1/70000/E4B6F7A1-7BDE-E711-8C42-02163E019DE8.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/prompt/HeavyNeutrino_trilepton_M-100_V-0.01_2l_NLO/heavyNeutrino_1.root'
 #inputFile       = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
@@ -30,18 +27,18 @@ def getJSON(is2017, is2018):
 #inputFile       = "root://cmsxrootd.fnal.gov///store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = "root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/80000/C0EC0176-2ABE-E611-99E3-0025904C51D8.root'
-#inputFile        = '/store/data/Run2016E/SingleMuon/MINIAOD/07Aug17-v1/110000/00A51C60-CE80-E711-8B18-0025905A6060.root'
+#inputFile       = '/store/data/Run2016E/SingleMuon/MINIAOD/07Aug17-v1/110000/00A51C60-CE80-E711-8B18-0025905A6060.root'
 #inputFile       = '/store/data/Run2017F/SingleMuon/MINIAOD/17Nov2017-v1/00000/3E7C07F9-E6F1-E711-841A-0CC47A4C8E46.root'
-inputFile		= '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0CC8EDCD-FD64-E811-BCA8-02163E01A020.root'
-#inputFile		='/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
+#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018/displaced/HeavyNeutrino_lljj_M-1_V-0.212367605816_e_massiveAndCKM_LO/heavyNeutrino_1.root'
+inputFile        = '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0CC8EDCD-FD64-E811-BCA8-02163E01A020.root'
+#inputFile       ='/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
 
-
-nEvents         = 1000
-outputFile      = 'noskim18.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
-                                 # dilep     --> skim two leptons
-                                 # singlelep --> skim one lepton
-                                 # ttg       --> skim two leptons + one photon
-                                 # fakerate  --> not implemented
+nEvents          = 1000
+outputFile       = 'noskim18.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
+                                       # dilep     --> skim two leptons
+                                       # singlelep --> skim one lepton
+                                       # ttg       --> skim two leptons + one photon
+                                       # fakerate  --> not implemented
 
 def getVal(arg):
     return arg.split('=')[-1]
@@ -73,15 +70,13 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if   isData and is2017: process.GlobalTag.globaltag = '94X_dataRun2_v11'   
-elif isData and is2018 and 'PromptReco' not in inputFile: 
-	process.GlobalTag.globaltag = '102X_dataRun2_Sep2018Rereco_v1'
-elif isData and is2018 and 'PromptReco' in inputFile: 
-	process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v11'
-elif is2017:            process.GlobalTag.globaltag = '94X_mc2017_realistic_v17'
-elif is2018:            process.GlobalTag.globaltag = '102X_upgrade2018_realistic_v12'
-elif isData:            process.GlobalTag.globaltag = '94X_dataRun2_v10'
-else:                   process.GlobalTag.globaltag = '94X_mcRun2_asymptotic_v3'
+if   isData and is2017:                                   process.GlobalTag.globaltag = '94X_dataRun2_v11'   
+elif isData and is2018 and 'PromptReco' not in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Sep2018Rereco_v1'
+elif isData and is2018 and 'PromptReco' in inputFile:   	process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v11'
+elif is2017:                                              process.GlobalTag.globaltag = '94X_mc2017_realistic_v17'
+elif is2018:                                              process.GlobalTag.globaltag = '102X_upgrade2018_realistic_v12'
+elif isData:                                              process.GlobalTag.globaltag = '94X_dataRun2_v10'
+else:                                                     process.GlobalTag.globaltag = '94X_mcRun2_asymptotic_v3'
 
 #
 # Vertex collection
@@ -127,7 +122,6 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   electrons                     = cms.InputTag("slimmedElectrons"),
   electronsEffectiveAreas       = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'), # WARNING this is spring 15, following SUSY-standard, i.e. not the most up-to-date values
   electronsEffectiveAreasFall17 = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_92X.txt'),
-
   electronsMva                  = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
   electronsMvaHZZ               = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
   electronMvaFall17Iso          = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"),
@@ -182,7 +176,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   is2017                        = cms.untracked.bool(is2017),
   is2018                        = cms.untracked.bool(is2018),
   isSUSY                        = cms.untracked.bool(isSUSY),
-
+  storeLheParticles             = cms.untracked.bool(False),
 )
 
 if isData:

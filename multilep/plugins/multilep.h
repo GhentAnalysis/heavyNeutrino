@@ -117,6 +117,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                is2017;
         bool                                                is2018;
         bool                                                isSUSY;
+        bool                                                storeLheParticles;
         //std::string                                         jecPath;
 
         virtual void beginJob() override;

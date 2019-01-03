@@ -65,7 +65,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
         allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
     }
 
-    allFlags["passTrigger_e"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT", "HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_IsoMu22", "HLT_IsoTkMu22"};                                                    // HN 1l triggers
+    allFlags["passTrigger_e"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT"};
     allFlags["passTrigger_m"]      = {"HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"};
     allFlags["passTrigger_ee"]     = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
                                "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
