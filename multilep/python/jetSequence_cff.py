@@ -19,14 +19,14 @@ def addJetSequence(process, isData, is2017, is2018):
       jetSource = cms.InputTag('slimmedJets'),
       labelName = 'UpdatedJEC',
       jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
-        btagDiscriminators = [
-          'pfCombinedSecondaryVertexV2BJetTags',
-          'pfDeepCSVJetTags:probudsg', # DeepCSV twiki: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
-          'pfDeepCSVJetTags:probb',
-          'pfDeepCSVJetTags:probc',
-          'pfDeepCSVJetTags:probbb',
-          #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
-        ]
+      btagDiscriminators = [
+        'pfCombinedSecondaryVertexV2BJetTags',
+        'pfDeepCSVJetTags:probudsg', # DeepCSV twiki: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
+        'pfDeepCSVJetTags:probb',
+        'pfDeepCSVJetTags:probc',
+        'pfDeepCSVJetTags:probbb',
+        #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
+      ]
     )
   else: 
     updateJetCollection(
