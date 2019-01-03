@@ -36,20 +36,7 @@ def addJetSequence(process, isData, is2017, is2018):
       jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
     ) 
 
-  if os.environ['CMSSW_BASE'].count('CMSSW_9') or os.environ['CMSSW_BASE'].count('CMSSW_10'):   
-    # From CMSSW_9_X, the patAlgosToolsTask contains the whole updateJetCollection sequence
-    process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
-  else:
-    process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
-                                       process.pfImpactParameterTagInfosUpdatedJEC *
-                                       process.pfSecondaryVertexTagInfosUpdatedJEC *
-                                       process.pfCombinedSecondaryVertexV2BJetTagsUpdatedJEC *
-                                       process.patJetCorrFactorsTransientCorrectedUpdatedJEC *
-                                       process.pfInclusiveSecondaryVertexFinderTagInfosUpdatedJEC *
-                                       process.pfDeepCSVTagInfosUpdatedJEC *
-                                       process.pfDeepCSVJetTagsUpdatedJEC *
-                                       process.updatedPatJetsTransientCorrectedUpdatedJEC *
-                                       process.selectedUpdatedPatJetsUpdatedJEC)
+  process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
 
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
@@ -73,7 +60,7 @@ def addJetSequence(process, isData, is2017, is2018):
       process.jetSequence *= jetSmearing
 
   # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
-  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
+  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
   
   runMetCorAndUncFromMiniAOD(process,
     isData = isData,
