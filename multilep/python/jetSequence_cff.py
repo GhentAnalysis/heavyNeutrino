@@ -25,7 +25,7 @@ def addJetSequence(process, isData, is2017, is2018):
         'pfDeepCSVJetTags:probb',
         'pfDeepCSVJetTags:probc',
         'pfDeepCSVJetTags:probbb',
-        #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
+        'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
       ]
     )
   else: 
@@ -41,7 +41,7 @@ def addJetSequence(process, isData, is2017, is2018):
     process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
   else:
     process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
-                                  process.pfImpactParameterTagInfosUpdatedJEC *
+                                       process.pfImpactParameterTagInfosUpdatedJEC *
                                        process.pfSecondaryVertexTagInfosUpdatedJEC *
                                        process.pfCombinedSecondaryVertexV2BJetTagsUpdatedJEC *
                                        process.patJetCorrFactorsTransientCorrectedUpdatedJEC *
@@ -72,16 +72,16 @@ def addJetSequence(process, isData, is2017, is2018):
       setattr(process, 'slimmedJetsCorrectedAndSmeared'+j, jetSmearing)
       process.jetSequence *= jetSmearing
 
-  #Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
+  # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
   from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
   
 
   if is2017:
-    runMetCorAndUncFromMiniAOD (process,
+    runMetCorAndUncFromMiniAOD(process,
       isData = isData,
       fixEE2017 = is2017,
       fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139} 
-      )
+    )
   elif is2018:
     runMetCorAndUncFromMiniAOD (process,
       isData = isData,
