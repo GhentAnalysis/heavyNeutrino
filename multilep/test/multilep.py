@@ -76,7 +76,7 @@ process.goodOfflinePrimaryVertices.filter = cms.bool(False)                     
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 from heavyNeutrino.multilep.egmSequence_cff import addElectronAndPhotonSequence
-addJetSequence(process, isData, is2017, is2018)
+addJetSequence(process, isData, is2017)
 addElectronAndPhotonSequence(process)
 
 #

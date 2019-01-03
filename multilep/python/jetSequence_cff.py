@@ -1,10 +1,9 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-def addJetSequence(process, isData, is2017, is2018):
+def addJetSequence(process, isData, is2017):
   #
   # Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
-  # Has (at time of writing) no effect (Moriond2017 miniAOD contains latest JEC)
   #
   process.load('JetMETCorrections.Configuration.JetCorrectors_cff')
   process.load('Configuration.StandardSequences.MagneticField_cff')  # needed for pfImpactParameterTagInfos
@@ -12,28 +11,12 @@ def addJetSequence(process, isData, is2017, is2018):
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
-  if not (is2017 or is2018): # TODO: this if statement can be removed, as the "else" should work for the legacy 2016 miniAOD
-    updateJetCollection(
-      process,
-      jetSource = cms.InputTag('slimmedJets'),
-      labelName = 'UpdatedJEC',
-      jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
-      btagDiscriminators = [
-        'pfCombinedSecondaryVertexV2BJetTags',
-        'pfDeepCSVJetTags:probudsg', # DeepCSV twiki: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
-        'pfDeepCSVJetTags:probb',
-        'pfDeepCSVJetTags:probc',
-        'pfDeepCSVJetTags:probbb',
-       #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
-      ]
-    )
-  else: 
-    updateJetCollection(
-      process,
-      jetSource = cms.InputTag('slimmedJets'),
-      labelName = 'UpdatedJEC',
-      jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
-    ) 
+  updateJetCollection(
+    process,
+    jetSource = cms.InputTag('slimmedJets'),
+    labelName = 'UpdatedJEC',
+    jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
+  )
 
   process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
 
@@ -58,10 +41,11 @@ def addJetSequence(process, isData, is2017, is2018):
       setattr(process, 'slimmedJetsCorrectedAndSmeared'+j, jetSmearing)
       process.jetSequence *= jetSmearing
 
-  # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
+  # Propagate JEC to MET (need to add fullPatMetSequence to path)
+  # https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_or_10
   from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
   runMetCorAndUncFromMiniAOD(process,
     isData = isData,
-    fixEE2017 = (is2017 or is2018),
-    fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139} 
+    fixEE2017 = is2017,
+    fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139}
   )
