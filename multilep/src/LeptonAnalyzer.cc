@@ -5,7 +5,7 @@
 #include "TLorentzVector.h"
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
-    multilepAnalyzer(multilepAnalyzer), 
+    multilepAnalyzer(multilepAnalyzer),
     electronsEffectiveAreas( (multilepAnalyzer->is2017 || multilepAnalyzer->is2018)? (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas")).fullPath() ),
     muonsEffectiveAreas    ( (multilepAnalyzer->is2017 || multilepAnalyzer->is2018)? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
@@ -94,7 +94,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauIsoMVADBdR03oldDMwLT",      &_tauIsoMVADBdR03oldDMwLT,      "_tauIsoMVADBdR03oldDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVADBdR03newDMwLT",      &_tauIsoMVADBdR03newDMwLT,      "_tauIsoMVADBdR03newDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWnewDMwLT",          &_tauIsoMVAPWnewDMwLT,          "_tauIsoMVAPWnewDMwLT[_nL]/D");
-    outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D"); 
+    outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D");
     outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
     outputTree->Branch("_relIso0p4",                    &_relIso0p4,                    "_relIso0p4[_nLight]/D");
     outputTree->Branch("_relIso0p4MuDeltaBeta",         &_relIso0p4MuDeltaBeta,         "_relIso0p4MuDeltaBeta[_nMu]/D");
@@ -108,7 +108,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
-    outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");  
+    outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");
     if(!multilepAnalyzer->isData){
         outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
@@ -167,8 +167,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
 
         _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
-        _relIso0p4[_nL]      = getRelIso04(mu, *rho);                                                     
-        _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, true);                                                     
+        _relIso0p4[_nL]      = getRelIso04(mu, *rho);
+        _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, true);
         _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false);
         _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
@@ -280,7 +280,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lPOGTight[_nL] = tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT");
         _tauVTightMvaOld[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBoldDMwLT");
 
-        _decayModeFindingNew[_nL] = tau.tauID("decayModeFindingNewDMs");                           //new Tau ID 
+        _decayModeFindingNew[_nL] = tau.tauID("decayModeFindingNewDMs");                           //new Tau ID
         _tauVLooseMvaNew[_nL] = tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT");
         _tauLooseMvaNew[_nL] = tau.tauID("byLooseIsolationMVArun2v1DBnewDMwLT");
         _tauMediumMvaNew[_nL] = tau.tauID("byMediumIsolationMVArun2v1DBnewDMwLT");
@@ -293,7 +293,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _tauIsoMVADBdR03oldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1DBoldDMwLTraw");
         _tauIsoMVADBdR03newDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1DBnewDMwLTraw");
         _tauIsoMVAPWnewDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWnewDMwLTraw");
-        _tauIsoMVAPWoldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWoldDMwLTraw"); 
+        _tauIsoMVAPWoldDMwLT[_nL] = tau.tauID("byIsolationMVArun2v1PWoldDMwLTraw");
 
         _lEwkLoose[_nL] = isEwkLoose(tau);
         _lEwkFO[_nL]    = isEwkFO(tau);
@@ -392,7 +392,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     //Make skimmed "close jet" collection
     std::vector<pat::Jet> selectedJetsAll;
     for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        //double jetPt = jet->pt()*multilepAnalyzer->jec->jetCorrection(jet->correctedP4("Uncorrected").Pt(), jet->correctedP4("Uncorrected").Eta(), rho, jet->jetArea(), jecLevel); 
+        //double jetPt = jet->pt()*multilepAnalyzer->jec->jetCorrection(jet->correctedP4("Uncorrected").Pt(), jet->correctedP4("Uncorrected").Eta(), rho, jet->jetArea(), jecLevel);
         //if( jetPt > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
         if( jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
     }
@@ -410,7 +410,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
     } else {
-        /*    
+        /*
         double totalJEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), jecLevel);
         double l1JEC = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), rho, jet.jetArea(), "L1FastJet");
         TLorentzVector l1Jet;
@@ -438,9 +438,9 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
             const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
             if(daughter->hasTrackDetails()){
                 const reco::Track& daughterTrack = daughter->pseudoTrack();
-                bool goodTrackFit = (daughterTrack.charge() != 0) && 
+                bool goodTrackFit = (daughterTrack.charge() != 0) &&
                     (daughterTrack.hitPattern().numberOfValidHits() > 7) &&
-                    (daughterTrack.hitPattern().numberOfValidPixelHits() > 1) && 
+                    (daughterTrack.hitPattern().numberOfValidPixelHits() > 1) &&
                     (daughterTrack.normalizedChi2() < 5);
 
                 if( !goodTrackFit ) continue;
@@ -454,8 +454,8 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
                 TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
                 double daughterDeltaR = trackVec.DeltaR(jV);
 
-                bool goodTrack = (daughterTrack.pt() > 1) && 
-                        (daughterDeltaR < 0.4) && 
+                bool goodTrack = (daughterTrack.pt() > 1) &&
+                        (daughterDeltaR < 0.4) &&
                         (daughter->fromPV() > 1);
 
                 if(goodTrack){
