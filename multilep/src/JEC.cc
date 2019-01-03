@@ -1,5 +1,6 @@
 /*
  * implementation of JEC class
+ * TODO: keep an eye on https://twiki.cern.ch/twiki/bin/view/CMS/JECDataMC#Recommended_for_Data to see when 2018 JEC become available
  */
 
 #include "heavyNeutrino/multilep/interface/JEC.h"
@@ -30,19 +31,15 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
     ///////////////////////////
     static const std::string version2016 = "_V9";
     static const std::string version2017 = "_V6";
+    static const std::string version2018 = "_V6"; // TODO
     //////////////////////////
     std::string jecName;
     if(isData){
-        if(!(is2017 || is2018)){
-            if (runNumber < 271658){
-                jecName = "A";
-                std::cerr << "no JEC available for 2016 run A, seems like JSON file is not applied!" << std::endl;
-            }
-            else if(runNumber < 276812) jecName = "BCD";
-            else if(runNumber < 278809) jecName = "EF";
-            else if(runNumber < 294645) jecName = "GH";
-            jecName += version2016;
-        } else {
+        if(is2018){
+            std::cout << "no JEC available/inmplemented for 2018! Check multilep/src/JEC.cc, currently as a test taking 2017GH" << std::endl;
+            jecName = "_GH"; //TODO
+            jecName += version2018;
+        } else if(is2017){
             if(runNumber < 297020){
                 jecName = "A";
                 std::cerr << "no JEC available for 2017 run A, seems like JSON file is not applied!" << std::endl;
@@ -57,19 +54,29 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
                 std::cerr << "no JEC available for 2017 runs G-H, they are not 13 TeV data! Seems like JSON file is not applied" << std::endl;
             }
             jecName += version2017;
-        }  // I assume we'll need some 2018 stuff here
+        } else {
+            if (runNumber < 271658){
+                jecName = "A";
+                std::cerr << "no JEC available for 2016 run A, seems like JSON file is not applied!" << std::endl;
+            }
+            else if(runNumber < 276812) jecName = "BCD";
+            else if(runNumber < 278809) jecName = "EF";
+            else if(runNumber < 294645) jecName = "GH";
+            jecName += version2016;
+        }
         return (jecName + "_DATA");
     } else{
-        if(!(is2017 || is2018)) jecName = version2016; // I assume we'll need a specifc 2018 line here
-        else                    jecName = version2017;
+        if(is2018)      jecName = version2018;
+        else if(is2017) jecName = version2017;
+        else            jecName = version2016;
         return (jecName + "_MC");
     }
 }
 
 std::string JEC::getJECName(const unsigned long runNumber){
-    if(!(is2017 || is2018)) return "Summer16_07Aug2017" + getJECRunName(runNumber); // I assume we'll need a specifc 2018 line here
-    else                    return "Fall17_17Nov2017" + getJECRunName(runNumber);
-    }
+    if(is2018)      return "Fall17_17Nov2017" + getJECRunName(runNumber); //TODO
+    else if(is2017) return "Fall17_17Nov2017" + getJECRunName(runNumber);
+    else            return "Summer16_07Aug2017" + getJECRunName(runNumber);
 }
 
 std::vector<float> JEC::getSubCorrections(double rawPt, double eta, double rho, double area){

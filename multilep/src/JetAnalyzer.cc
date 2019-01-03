@@ -9,17 +9,15 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
     multilepAnalyzer(multilepAnalyzer)
 {
     /*
-    if(multilepAnalyzer->isData){
-        jecLevel = "L2L3Residual";
-    } else {
-        jecLevel = "L3Absolute";
-    }
+    if(multilepAnalyzer->isData) jecLevel = "L2L3Residual";
+    else                         jecLevel = "L3Absolute";
     */
-    if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018){
-        jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile17")).fullPath());
-    } else {
-        jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile16")).fullPath());
-    }
+    std::string jecFile;
+    if(multilepAnalyzer->is2018)      jecFile = "jecUncertaintyFile17"; // TODO: update when 2018 JEC become available
+    else if(multilepAnalyzer->is2017) jecFile = "jecUncertaintyFile17";
+    else                              jecFile = "jecUncertaintyFile16";
+
+    jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>(jecFile)).fullPath());
 };
 
 JetAnalyzer::~JetAnalyzer(){
