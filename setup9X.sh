@@ -1,5 +1,5 @@
 # Setup script for branch: master
-RELEASE=CMSSW_10_2_9
+RELEASE=CMSSW_9_4_12
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
 if [[ $CMSSW_BASE == *$RELEASE ]] && [[ -d $CMSSW_BASE ]]; then
@@ -15,7 +15,8 @@ fi
 # The git commands
 git cms-init
 git clone https://github.com/GhentAnalysis/heavyNeutrino
-git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X #for EE noise fix of 2017 MET
+git cms-merge-topic cms-met:METFixEE2017_949_v2 #for EE noise fix of 2017 MET
+# For the 10_2_X branch:    git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X 
 
 # Compile and move into package
 scram b -j 10
