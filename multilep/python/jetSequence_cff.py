@@ -12,7 +12,6 @@ def addJetSequence(process, isData, is2017, is2018):
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
-
   if not (is2017 or is2018):
     updateJetCollection(
       process,
@@ -61,7 +60,6 @@ def addJetSequence(process, isData, is2017, is2018):
 
   # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
   from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-  
   runMetCorAndUncFromMiniAOD(process,
     isData = isData,
     fixEE2017 = (is2017 or is2018),
