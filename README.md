@@ -15,10 +15,17 @@ wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/master/setup9
 source setup9X.sh
 ```
 
-# Running a test job
+# The cmsRun executable
 ```
 cd heavyNeutrino/multilep/test
 cmsRun multilep.py
+```
+
+# Running test jobs
+Preferably ran before an important git push:
+```
+cd heavyNeutrino/multilep/test/testing
+./runTests.py
 ```
 
 # Mass production of tuples
