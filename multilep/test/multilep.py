@@ -1,12 +1,6 @@
 import sys, os
 import FWCore.ParameterSet.Config as cms
 
-#function to return JSON file
-def getJSON(is2017, is2018):
-    if is2018:   return "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"
-    elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
-    else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
-
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
 #inputFile      = 'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2017F/DoubleMuon/MINIAOD/17Nov2017-v1/70000/E4B6F7A1-7BDE-E711-8C42-02163E019DE8.root'
 #inputFile      = "root://xrootd-cms.infn.it///store/mc/RunIISummer16MiniAODv2/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/18589842-DCBD-E611-B8BF-0025905A48D8.root"
@@ -163,9 +157,15 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   storeLheParticles             = cms.untracked.bool(False),
 )
 
+def getJSON(is2017, is2018):
+    jsonDir = os.path.expandvars('$CMSSW_BASE/src/heavyNeutrino/multilep/data/JSON')
+    if is2018:   return os.path.join(jsonDir, "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt")
+    elif is2017: return os.path.join(jsonDir, "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt")
+    else:        return os.path.join(jsonDir, "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt")
+
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  process.source.lumisToProcess = LumiList.LumiList(filename = "../data/JSON/" + getJSON(is2017, is2018)).getVLuminosityBlockRange()
+  process.source.lumisToProcess = LumiList.LumiList(filename = getJSON(is2017, is2018)).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.BadPFMuonFilter *
