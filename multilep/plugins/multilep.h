@@ -110,8 +110,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<edm::TriggerResults>               recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
         edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
         edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
-        edm::EDGetTokenT<bool>                              badPFMuonFilterToken;                        //MET filter not stored in miniAOD
-        edm::EDGetTokenT<bool>                              badChCandFilterToken;                        //MET filter not stored in miniAOD
         std::string                                         skim;
         bool                                                isData;
         bool                                                is2017;
