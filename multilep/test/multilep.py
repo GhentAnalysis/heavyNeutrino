@@ -149,8 +149,6 @@ if isData:
   process.source.lumisToProcess = LumiList.LumiList(filename = getJSON(is2017, is2018)).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
-                     process.BadPFMuonFilter *
-                     process.BadChargedCandidateFilter *
                      process.egmSequence *
                      process.jetSequence *
                      process.fullPatMetSequence *
