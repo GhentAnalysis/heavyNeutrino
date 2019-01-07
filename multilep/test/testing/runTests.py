@@ -20,8 +20,8 @@ def extractFile(name):
     try:
       for b in object.GetListOfBranches():
         if b.GetName() in ignoreBranches: continue
-        object.Draw(b.GetName() + ' >> temp')
-        temp = ROOT.gDirectory.Get('temp')
+        object.Draw(b.GetName() + ' >> temp'+b.GetName())
+        temp = ROOT.gDirectory.Get('temp'+b.GetName())
         data[b.GetName()] = (temp.GetMean(), temp.GetRMS())
     except:
       data[key.GetName()] = (object.GetMean(), object.GetRMS())
@@ -32,12 +32,18 @@ def compare(logger, name):
   newData = extractFile(name + '.root')
   refData = extractFile(name + '-ref.root')
 
+  def compatible(tuple1, tuple2):
+    return all([(abs(x-y)/x < 0.0001 if abs(x) > 0 else (abs(x-y)<0.0001)) for x,y in zip(tuple1, tuple2)])
+
   new     = sorted([i for i in newData if i not in refData])
   removed = sorted([i for i in refData if i not in newData])
-  changed = sorted([i for i in refData if i in newData and refData[i] != newData[i]])
+  changed = sorted([i for i in refData if i in newData and not compatible(refData[i], newData[i])])
   if len(new):      logger.write('   New: '     + ','.join(new) + '\n')
   if len(removed):  logger.write('   Removed: ' + ','.join(removed) + '\n')
   if len(changed):  logger.write('   Changed: ' + ','.join(changed) + '\n')
+  if len(changed):  logger.write('   Changed:\n')
+  for c in changed:
+    logger.write('      %-30s mean: %-25s rms: %-25s\n' % (c, '%8.4f --> %8.4f' % (newData[c][0], refData[c][0]), '%8.4f --> %8.4f' % (newData[c][1], refData[c][1])))
 
 # Compile
 print system('eval `scram runtime -sh`;cd $CMSSW_BASE/src;scram b -j 10')
