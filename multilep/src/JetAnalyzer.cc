@@ -185,7 +185,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     _metPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp);
     _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
     _metPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+
     //significance of met
+    //note: this is the only one variable which changed between 94X and 102X see https://github.com/cms-sw/cmssw/commit/f7aacfd2ffaac9899ea07d0355afe49bb10a0aeb
     _metSignificance = met.metSignificance();
 
 

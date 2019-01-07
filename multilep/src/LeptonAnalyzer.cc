@@ -257,6 +257,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {&_lEtaSC}) std::fill_n(*array, _nMu, 0.);
     for(auto array : {&_lElectronMva, &_lElectronMvaHZZ, &_lElectronMvaFall17Iso, &_lElectronMvaFall17NoIso}) std::fill_n(*array, _nMu, 0.);
     for(auto array : {&_lElectronPassEmu, &_lElectronPassConvVeto, &_lElectronChargeConst}) std::fill_n(*array, _nMu, false);
+    for(auto array : {&_lPOGLooseWOIso, &_lPOGMediumWOIso, &_lPOGTightWOIso}) std::fill_n(*array, _nMu, false);
     for(auto array : {&_lElectronMissingHits}) std::fill_n(*array, _nMu, 0.);
 
     //loop over taus
@@ -437,20 +438,21 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
             const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
             if(daughter->hasTrackDetails()){
                 const reco::Track& daughterTrack = daughter->pseudoTrack();
-                if(daughterTrack.pt() < 1)                                  continue;
+                if(daughterTrack.pt() <= 1)                                 continue;
                 if(daughterTrack.charge() == 0)                             continue;
                 if(daughter->fromPV() < 2)                                  continue;
                 if(daughterTrack.hitPattern().numberOfValidHits() < 8)      continue;
                 if(daughterTrack.hitPattern().numberOfValidPixelHits() < 2) continue;
-                if(daughterTrack.normalizedChi2() > 5)                      continue;
-                if(fabs(daughterTrack.dz(vertex.position())) > 17)          continue;
-                if(fabs(daughterTrack.dxy(vertex.position())) > 0.2)        continue;
+                if(daughterTrack.normalizedChi2() >= 5)                     continue;
+                if(fabs(daughterTrack.dz(vertex.position())) >= 17)         continue;
+                if(fabs(daughterTrack.dxy(vertex.position())) >= 0.2)       continue;
+
 
                 //distance from jet core
                 TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
                 double daughterDeltaR = trackVec.DeltaR(jV);
 
-                if(daughterDeltaR < 0.4) ++_selectedTrackMult[_nL];
+                if(daughterDeltaR <= 0.4) ++_selectedTrackMult[_nL];
             }
         }
     }

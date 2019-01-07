@@ -16,6 +16,7 @@ inputFile       = '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00
 
 # Other default arguments
 nEvents         = 1000
+extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
@@ -29,9 +30,10 @@ def getVal(arg):
 # Loop over arguments
 for i in range(1,len(sys.argv)):
     print "[arg "+str(i)+"] : ", sys.argv[i]
-    if "outputFile"  in sys.argv[i]: outputFile = getVal(sys.argv[i])
-    elif "inputFile" in sys.argv[i]: inputFile  = getVal(sys.argv[i])
-    elif "events"    in sys.argv[i]: nEvents    = int(getVal(sys.argv[i]))
+    if "outputFile"     in sys.argv[i]: outputFile   = getVal(sys.argv[i])
+    elif "inputFile"    in sys.argv[i]: inputFile    = getVal(sys.argv[i])
+    elif "extraContent" in sys.argv[i]: extraContent = getVal(sys.argv[i])
+    elif "events"       in sys.argv[i]: nEvents      = int(getVal(sys.argv[i]))
 
 isData = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
@@ -135,7 +137,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   is2017                        = cms.untracked.bool(is2017),
   is2018                        = cms.untracked.bool(is2018),
   isSUSY                        = cms.untracked.bool(isSUSY),
-  storeLheParticles             = cms.untracked.bool(False),
+  storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
 )
 
 def getJSON(is2017, is2018):
