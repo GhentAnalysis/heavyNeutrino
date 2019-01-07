@@ -22,7 +22,7 @@ def addJetSequence(process, isData, is2017):
 
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
-  # Run three times the SmeredPATJetProducer for nominal, up and down variations
+  # Run three times the SmearedPATJetProducer for nominal, up and down variations
   #
   if not isData:
     for (i, j) in [(0, ''), (-1, 'Down'), (1, 'Up')]:
