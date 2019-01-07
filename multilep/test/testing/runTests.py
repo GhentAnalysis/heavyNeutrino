@@ -69,7 +69,7 @@ with open('tests.log', 'w') as logFile:
         logFile.write('   ' + line + '\n')
 
   # Tests files to run
-  runTest('Run2018-17Sep2018',    'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/00000/07BAF903-860E-6B4D-BF65-D9CAFC9C03D9.root')
+  runTest('Run2018-17Sep2018',    'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root')
   runTest('Run2018-PromptReco',   'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root')
   runTest('Run2017-31March2017',  'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root')
   runTest('Run2016-17Jul2018',    'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root')
