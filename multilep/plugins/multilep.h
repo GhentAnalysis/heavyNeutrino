@@ -40,7 +40,6 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
-//#include "heavyNeutrino/multilep/interface/JEC.h"
 
 //
 // class declaration
@@ -116,7 +115,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                is2018;
         bool                                                isSUSY;
         bool                                                storeLheParticles;
-        //std::string                                         jecPath;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
@@ -132,7 +130,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         JetAnalyzer*      jetAnalyzer;
         LheAnalyzer*      lheAnalyzer;
         SUSYMassAnalyzer* susyMassAnalyzer;
-        //JEC*              jec; 
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;
