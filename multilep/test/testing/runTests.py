@@ -40,7 +40,7 @@ def compare(logger, name):
   if len(changed):  logger.write('   Changed: ' + ','.join(changed) + '\n')
 
 # Compile
-system('scram b -j 10')
+print system('eval `scram runtime -sh`;cd $CMSSW_BASE/src;scram b -j 10')
 
 # Starting the test
 with open('tests.log', 'w') as logFile:
@@ -48,10 +48,10 @@ with open('tests.log', 'w') as logFile:
 
   def runTest(name, testFile):
     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
-    command = 'cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=10'
+    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=10 extraContent=storeLheParticles'
     logFile.write('Running test: ' + name)
     try:    
-      out = system(command)
+      system(command)
       system('mv noskim.root ' + name + '.root')
       logFile.write( ' --> OK\n')
       compare(logFile, name)
