@@ -13,6 +13,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   multilepAnalyzer(multilepAnalyzer){
 
   // MET Filters: first add common ones for 2016, 2017, 2018
+  // MET filter are taken in AND (based on the occurence of 'MET' in the allFlags key)
   // References: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#Analysis_Recommendations_for_ana
   allFlags["passMETFilters"] = {"Flag_goodVertices", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter",  "Flag_EcalDeadCellTriggerPrimitiveFilter",
                                 "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"};
@@ -30,6 +31,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   }
 
   // Triggers, grouped per year
+  // Triggers are taken in OR
   // WARNING/TODO: this is currently a placeholder using the 2017 triggers, please check before starting analysis
   // Also for the other years the triggers might be checked and optimized in detail, could use https://tomc.web.cern.ch/tomc/triggerPrescales to check prescales
   if(multilepAnalyzer->is2018){
