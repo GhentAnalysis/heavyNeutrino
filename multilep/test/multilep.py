@@ -141,14 +141,14 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 )
 
 def getJSON(is2017, is2018):
-    jsonDir = os.path.expandvars('$CMSSW_BASE/src/heavyNeutrino/multilep/data/JSON')
-    if is2018:   return os.path.join(jsonDir, "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt")
-    elif is2017: return os.path.join(jsonDir, "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt")
-    else:        return os.path.join(jsonDir, "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt")
+    if is2018:   return "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"
+    elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
+    else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
-  process.source.lumisToProcess = LumiList.LumiList(filename = getJSON(is2017, is2018)).getVLuminosityBlockRange()
+  jsonDir = os.path.expandvars('$CMSSW_BASE/src/heavyNeutrino/multilep/data/JSON')
+  process.source.lumisToProcess = LumiList.LumiList(filename = os.path.join(jsonDir, getJSON(is2017, is2018))).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.egmSequence *
