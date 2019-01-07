@@ -1,21 +1,11 @@
-commit d1da46ad047b769818042814a34e68ab87997f13
+commit a14d5f6ef4c58519687c5f87c54e66dfe511ee35
 Author: tomc <tomc@cern.ch>
-Date:   Mon Jan 7 17:34:43 2019 +0100
+Date:   Mon Jan 7 17:58:53 2019 +0100
 
-    New test run: see tests.log
-diff --git a/multilep/test/testing/runTests.py b/multilep/test/testing/runTests.py
-index 8bd1b11..17177e8 100755
---- a/multilep/test/testing/runTests.py
-+++ b/multilep/test/testing/runTests.py
-@@ -50,7 +50,7 @@ print system('eval `scram runtime -sh`;cd $CMSSW_BASE/src;scram b -j 10')
- 
- # Starting the test
- with open('tests.log', 'w') as logFile:
--  logFile.write(system('git log -n 1;git diff'))
-+  logFile.write(system("git log -n 1;git diff -- . ':(exclude)*.log'"))
- 
-   def runTest(name, testFile):
-     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
+    Small layout change in runTests.py
+diff --git a/multilep/test/testing/Autumn18MiniAOD-ref.root b/multilep/test/testing/Autumn18MiniAOD-ref.root
+index 1c774d6..de0e11b 100644
+Binary files a/multilep/test/testing/Autumn18MiniAOD-ref.root and b/multilep/test/testing/Autumn18MiniAOD-ref.root differ
 
 --------------------------------------------------------------------------------------------------
 
