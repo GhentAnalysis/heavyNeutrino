@@ -54,13 +54,6 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
-
-    /*
-    //initialize jec txt files
-    std::string dirtyHack = "dummy.txt";
-    std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
-    jec = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
-    */
 }
 
 multilep::~multilep(){
@@ -78,7 +71,6 @@ multilep::~multilep(){
 void multilep::beginJob(){
 
     //Initialize tree with event info
-
     outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
     nVertices  = fs->make<TH1D>("nVertices", "Number of vertices", 120, 0, 120);
 
@@ -113,9 +105,6 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
     //get Run number
     _runNb = (unsigned long) iRun.id().run();
-
-    //update JEC 
-    //jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------
