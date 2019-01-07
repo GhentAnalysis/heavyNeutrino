@@ -39,13 +39,12 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
-    badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
-    badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
     is2018(                                                                       iConfig.getUntrackedParameter<bool>("is2018")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
+    storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
     //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);

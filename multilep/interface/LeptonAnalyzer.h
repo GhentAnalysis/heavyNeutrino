@@ -41,7 +41,7 @@ class LeptonAnalyzer {
     EffectiveAreas electronsEffectiveAreas;
     EffectiveAreas muonsEffectiveAreas;
 
-    static const unsigned nL_max      = 20;                                                          //maximum number of particles stored
+    static const unsigned nL_max = 20;                                                               //maximum number of particles stored
     unsigned _nL;                                                                                    //number of leptons
     unsigned _nMu;
     unsigned _nEle;
@@ -61,8 +61,8 @@ class LeptonAnalyzer {
     double _relIso0p4[nL_max];                                                                       //lepton isolation variables
     double _relIso0p4MuDeltaBeta[nL_max];                                                            //lepton isolation variables
     double _miniIso[nL_max];
-    double _miniIsoCharged[nL_max];                                                              
-    
+    double _miniIsoCharged[nL_max];
+
     double _ptRel[nL_max];                                                                           //variables related to closest jet
     double _ptRatio[nL_max];
     double _closestJetCsvV2[nL_max];
@@ -79,7 +79,7 @@ class LeptonAnalyzer {
     float _lElectronMvaHZZ[nL_max];
     float _lElectronMvaFall17Iso[nL_max];
     float _lElectronMvaFall17NoIso[nL_max];
-    bool _lElectronPassEmu[nL_max];                                                                  
+    bool _lElectronPassEmu[nL_max];
     bool _lElectronPassConvVeto[nL_max];
     bool _lElectronChargeConst[nL_max];
     unsigned _lElectronMissingHits[nL_max];
@@ -90,7 +90,7 @@ class LeptonAnalyzer {
 
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
     bool _tauEleVeto[nL_max];
-    bool _decayModeFindingNew[nL_max];                      
+    bool _decayModeFindingNew[nL_max];
     bool _tauVLooseMvaNew[nL_max];                                                                      //"old tau id's will be stored in the POG id definitions (vloose := veto), however very tight is stored separately
     bool _tauLooseMvaNew[nL_max];
     bool _tauMediumMvaNew[nL_max];
@@ -131,7 +131,7 @@ class LeptonAnalyzer {
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
     int _lMomPdgId[nL_max];
-    unsigned _lProvenance[nL_max];                                                                    
+    unsigned _lProvenance[nL_max];
     unsigned _lProvenanceCompressed[nL_max];
     unsigned _lProvenanceConversion[nL_max];
 
@@ -167,14 +167,14 @@ class LeptonAnalyzer {
     bool  passingElectronMvaTightSusy(const pat::Electron*, double) const;
     bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double) const;
     bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue) const;
-  
+
     bool  isHNLoose(const pat::Electron& lepton) const;                                                     //check HNL id definitions
     bool  isHNLoose(const pat::Muon& lepton) const;
     bool  isHNFO(const pat::Electron& lepton) const;
     bool  isHNFO(const pat::Muon& lepton) const;
     bool  isHNTight(const pat::Electron& lepton) const;
     bool  isHNTight(const pat::Muon& lepton) const;
-    
+
     bool isEwkLoose(const pat::Muon&) const;
     bool isEwkLoose(const pat::Electron&) const;
     bool isEwkLoose(const pat::Tau&) const;
@@ -187,7 +187,7 @@ class LeptonAnalyzer {
 
     double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);                                                            //compute ewkino lepton MVA
     double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
-    
+
     //for lepton MVA calculation
     LeptonMvaHelper* leptonMvaComputerSUSY16;
     LeptonMvaHelper* leptonMvaComputerTTH16;
@@ -198,9 +198,6 @@ class LeptonAnalyzer {
 
     //for generator matching
     GenMatching* genMatcher;
-
-    //for JEC from txt
-    std::string jecLevel;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

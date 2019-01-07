@@ -11,77 +11,87 @@
 
 TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
   multilepAnalyzer(multilepAnalyzer){
-  allFlags["hlt_pfmet"] = {"HLT_PFMET120_PFMHT120_IDTight"};
-  //2017 data and MC   
-  if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018){
-    allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters
-                                  "Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_ecalBadCalibFilter",                             //for Moriond 2018 superTightHalo -> TightHalo
-                                  "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"}; //, "Flag_badMuons", "Flag_duplicateMuons"};      // Duplicate muons still missing in mAOD, not sure how to get those in
-    //met filters only to be applied on fullsim and data
-    if(!multilepAnalyzer->isSUSY){
-        allFlags["passMETFilters"].push_back("Flag_globalTightHalo2016Filter");
-    }
-    //extra filters only to be applied on data:
-    if(multilepAnalyzer->isData){
-        allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
-    }
 
-    allFlags["passTrigger_m"]         = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
+  // MET Filters: first add common ones for 2016, 2017, 2018
+  // References: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#Analysis_Recommendations_for_ana
+  allFlags["passMETFilters"] = {"Flag_goodVertices", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter",  "Flag_EcalDeadCellTriggerPrimitiveFilter",
+                                "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"};
 
-    allFlags["passTrigger_e"]         = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele38_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
+  if(!multilepAnalyzer->isSUSY){ // This one is only for data and fullSIM, not for fastSim
+    allFlags["passMETFilters"].push_back("Flag_globalSuperTightHalo2016Filter");
+  }
 
-    allFlags["passTrigger_mm"]        = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
-                                  "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8", "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8"};
+  if(multilepAnalyzer->isData){ // This one is only to be applied on data
+    allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
+  }
 
-    allFlags["passTrigger_em"]        = {"HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
-                                  "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"};
+  if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018){ // This one is only for 2017 and 2018 data
+    allFlags["passMETFilters"].push_back("Flag_ecalBadCalibFilter"); // TODO: this filter is incomplete, need to reimplement this by hand following https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#How_to_run_the_Bad_Charged_Hadro
+  }
 
-    allFlags["passTrigger_ee"]        = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
+  // Triggers, grouped per year
+  // WARNING/TODO: this is currently a placeholder using the 2017 triggers, please check before starting analysis
+  // Also for the other years the triggers might be checked and optimized in detail, could use https://tomc.web.cern.ch/tomc/triggerPrescales to check prescales
+  if(multilepAnalyzer->is2018){
+    allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
+    allFlags["passTrigger_e"]   = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele38_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
+    allFlags["passTrigger_t"]   = {"HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr"};
 
-                                    //Is it useful to also store MediumChargedIso and TightChargedIso versions of these tau triggers?
-    allFlags["passTrigger_et"]        = {"HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1"};
+    allFlags["passTrigger_mm"]  = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                   "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8", "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8"};
+    allFlags["passTrigger_em"]  = {"HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                   "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"};
+    allFlags["passTrigger_ee"]  = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
+    allFlags["passTrigger_et"]  = {"HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1"}; //Is it useful to also store MediumChargedIso and TightChargedIso versions of these tau triggers?
+    allFlags["passTrigger_mt"]  = {"HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1", "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1",
+                                   "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1",
+                                   "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1"};
 
-    allFlags["passTrigger_mt"]        = {"HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1", "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1", 
-                                  "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1",
-                                  "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1"}; 
+    allFlags["passTrigger_mmm"] = {"HLT_TripleMu_10_5_5_DZ", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ", "TripleMu_12_10_5"};
+    allFlags["passTrigger_emm"] = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
+    allFlags["passTrigger_eem"] = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
+    allFlags["passTrigger_eee"] = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
 
-    allFlags["passTrigger_t"]         = {"HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr"};
+  } else if(multilepAnalyzer->is2017){
+    allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
+    allFlags["passTrigger_e"]   = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele38_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
+    allFlags["passTrigger_t"]   = {"HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr"};
 
-    allFlags["passTrigger_mmm"]       = {"HLT_TripleMu_10_5_5_DZ", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ", "TripleMu_12_10_5"};
-    allFlags["passTrigger_emm"]       = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
-    allFlags["passTrigger_eem"]       = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
-    allFlags["passTrigger_eee"]       = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
+    allFlags["passTrigger_mm"]  = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                   "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8", "HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8"};
+    allFlags["passTrigger_em"]  = {"HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                   "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"};
+    allFlags["passTrigger_ee"]  = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
+    allFlags["passTrigger_et"]  = {"HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1"}; //Is it useful to also store MediumChargedIso and TightChargedIso versions of these tau triggers?
+    allFlags["passTrigger_mt"]  = {"HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1", "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1",
+                                   "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1",
+                                   "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1"};
 
-  //2016 data and MC
+    allFlags["passTrigger_mmm"] = {"HLT_TripleMu_10_5_5_DZ", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ", "TripleMu_12_10_5"};
+    allFlags["passTrigger_emm"] = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
+    allFlags["passTrigger_eem"] = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
+    allFlags["passTrigger_eee"] = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
+
   } else {
-    allFlags["passMETFilters"] = {"Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter",                // MET filters (if legacy mAOD vbecomes available, copy the filters listed for 2017)
-                                  "Flag_goodVertices", "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"};
-    //met filters only to be applied on fullsim and data
-    if(!multilepAnalyzer->isSUSY){
-        allFlags["passMETFilters"].push_back("Flag_globalTightHalo2016Filter");
-    }
-    //extra filters only to be applied on data:
-    if(multilepAnalyzer->isData){
-        allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
-    }
+    allFlags["passTrigger_e"]   = {"HLT_Ele27_WPTight_Gsf", "HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT"};
+    allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"};
 
-    allFlags["passTrigger_e"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT", "HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_IsoMu22", "HLT_IsoTkMu22"};                                                    // HN 1l triggers
-    allFlags["passTrigger_m"]      = {"HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"};
-    allFlags["passTrigger_ee"]     = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
-                               "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
-    allFlags["passTrigger_em"]     = {"HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
-                               "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",
-                               "HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL"};
-    allFlags["passTrigger_mm"]     = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",
-                               "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL",
-                               "HLT_Mu30_TkMu11"};
-    allFlags["passTrigger_et"]     = {"HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1", "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30", "HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1",
-                               "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20"};
-    allFlags["passTrigger_mt"]     = {"HLT_IsoMu19_eta2p1_LooseIsoPFTau20"};
-    allFlags["passTrigger_eee"]    = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};
-    allFlags["passTrigger_eem"]    = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL"};
-    allFlags["passTrigger_emm"]    = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL"};
-    allFlags["passTrigger_mmm"]    = {"HLT_TripleMu_12_10_5"};
+    allFlags["passTrigger_ee"]  = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                   "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW"};
+    allFlags["passTrigger_em"]  = {"HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                   "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",
+                                   "HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL"};
+    allFlags["passTrigger_mm"]  = {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",
+                                   "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL",
+                                   "HLT_Mu30_TkMu11"};
+    allFlags["passTrigger_et"]  = {"HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1", "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30", "HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1",
+                                   "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20"};
+    allFlags["passTrigger_mt"]  = {"HLT_IsoMu19_eta2p1_LooseIsoPFTau20"};
+
+    allFlags["passTrigger_eee"] = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};
+    allFlags["passTrigger_eem"] = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL"};
+    allFlags["passTrigger_emm"] = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL"};
+    allFlags["passTrigger_mmm"] = {"HLT_TripleMu_12_10_5"};
   }
 }
 
@@ -150,22 +160,11 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<bool> badPFMuonFilter;
   edm::Handle<bool> badChCandFilter;
 
-  if(   !(multilepAnalyzer->is2017 || multilepAnalyzer->is2018)   ){
-    iEvent.getByToken(multilepAnalyzer->badPFMuonFilterToken,  badPFMuonFilter);
-    iEvent.getByToken(multilepAnalyzer->badChCandFilterToken,  badChCandFilter);
-  }
-
   // Get all flags
   getResults(iEvent, triggerResults,                                                               triggersToSave, true);
   getResults(iEvent, recoResultsPrimary.failedToGet() ? recoResultsSecondary : recoResultsPrimary, filtersToSave,  false);
 
   reIndex = false;
- 
-  // These met filters are to be applied on-the-fly in 2016 samples
-  if(    !(multilepAnalyzer->is2017 || multilepAnalyzer->is2018)   ){
-    flag["Flag_BadPFMuonFilter"] = *badPFMuonFilter;
-    flag["Flag_BadChargedCandidateFilter"] = *badChCandFilter;
-  }
 
   for(auto& combinedFlag : allFlags){
     if(combinedFlag.first.Contains("MET")) flag[combinedFlag.first] = passCombinedFlagAND(combinedFlag.first);
@@ -209,7 +208,7 @@ void TriggerAnalyzer::getResults(const edm::Event& iEvent, edm::Handle<edm::Trig
   if(reIndex) indexFlags(iEvent, results, toSave);
 
   for(TString t : toSave){
-    if(index[t] == -1) flag[t] = false; 
+    if(index[t] == -1) flag[t] = false;
     else               flag[t] = results->accept(index[t]);
   }
 

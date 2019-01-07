@@ -1,0 +1,40 @@
+commit 99f646799b6ebf578542f3868499c55677e4b6bb
+Author: tomc <tomc@cern.ch>
+Date:   Fri Jan 4 15:02:05 2019 +0100
+
+    making this work even if the cmsRun is called from other directory
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2018-17Sep2018 --> FAILED
+Output:   ----- Begin Fatal Exception 04-Jan-2019 15:47:49 CET-----------------------
+   An exception of category 'ConditionDatabase' occurred while
+      [0] Constructing the EventProcessor
+      [1] Constructing ESSource: class=PoolDBESSource label='GlobalTag'
+   Exception Message:
+   Global Tag "102X_dataRun2_Sep2018Rereco_v1 " has not been found in the database. from GTProxy::load 
+   ----- End Fatal Exception -------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2018-PromptReco --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2017-31March2017 --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2016-17Jul2018 --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Autumn18MiniAOD --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Fall17MiniAODv2 --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Summer16MiniAODv3 --> OK
