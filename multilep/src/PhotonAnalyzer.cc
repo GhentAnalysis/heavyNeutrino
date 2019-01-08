@@ -98,11 +98,6 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         _phEtaSC[_nPh]                      = photon->superCluster()->eta();
         _phPhi[_nPh]                        = photon->phi();
         _phE[_nPh]                          = photon->energy();
-        _phECorr[_nPh]                      = photon->userFloat("ecalEcalPostCorr");
-        _phEScaleUp[_nPh]                   = photon->userFloat("energyScaleUp");
-        _phEScaleDown[_nPh]                 = photon->userFloat("energyScaleDown");
-        _phEResUp[_nPh]                     = photon->userFloat("energySigmaUp");
-        _phEResDown[_nPh]                   = photon->userFloat("energySigmaDown");
         _phCutBasedLoose[_nPh]              = (*photonsCutBasedLoose)[photonRef];
         _phCutBasedMedium[_nPh]             = (*photonsCutBasedMedium)[photonRef];
         _phCutBasedTight[_nPh]              = (*photonsCutBasedTight)[photonRef];
