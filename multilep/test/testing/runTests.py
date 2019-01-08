@@ -72,9 +72,9 @@ with open('tests.log', 'w') as logFile:
   runTest('Run2018-PromptReco',   'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root')
   runTest('Run2017-31March2017',  'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root')
   runTest('Run2016-17Jul2018',    'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root')
-  runTest('Autumn18MiniAOD',      'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/00707922-8E6F-3042-A709-2DD4DB9AEDED.root')
-  runTest('Fall17MiniAODv2',      'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root')
-  runTest('Summer16MiniAODv3',    'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root')
+  runTest('Autumn18MiniAOD',      'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root')
+  runTest('Fall17MiniAODv2',      'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root')
+  runTest('Summer16MiniAODv3',    'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root')
 
 system('git add *ref.root')
 system('git add runTests.py')
