@@ -266,12 +266,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
         // Currently only available for 2016/2017
         if(!multilepAnalyzer->is2018){
-          _lPtCorr[_nL]                 = ele->pt()*ele->userFloat("energyEcalTrkPostCorr")/ele->energy();
+          _lPtCorr[_nL]                 = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
           _lPtScaleUp[_nL]              = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
           _lPtScaleDown[_nL]            = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
           _lPtResUp[_nL]                = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
           _lPtResDown[_nL]              = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
-          _lECorr[_nL]                  = ele->userFloat("energyEcalTrkPostCorr");
+          _lECorr[_nL]                  = ele->userFloat("ecalTrkEnergyPostCorr");
           _lEScaleUp[_nL]               = ele->userFloat("energyScaleUp");
           _lEScaleDown[_nL]             = ele->userFloat("energyScaleDown");
           _lEResUp[_nL]                 = ele->userFloat("energySigmaUp");
