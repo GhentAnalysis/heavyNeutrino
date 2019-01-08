@@ -105,12 +105,24 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");
     if(!multilepAnalyzer->isData){
-        outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
-        outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
-        outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
-        outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
-        outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
-        outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
+      outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
+      outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
+      outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
+      outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
+      outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
+      outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
+    }
+    if(!multilepAnalyzer->is2018){
+      outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nL]/D");
+      outputTree->Branch("_lPtScaleUp",                 &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
+      outputTree->Branch("_lPtScaleDown",               &_lPtScaleDown,                 "_lPtScaleDown[_nLight]/D");
+      outputTree->Branch("_lPtResUp",                   &_lPtResUp,                     "_lPtResUp[_nLight]/D");
+      outputTree->Branch("_lPtResDown",                 &_lPtResDown,                   "_lPtResDown[_nLight]/D");
+      outputTree->Branch("_lECorr",                     &_lECorr,                       "_lECorr[_nLight]/D");
+      outputTree->Branch("_lEScaleUp",                  &_lEScaleUp,                    "_lEScaleUp[_nLight]/D");
+      outputTree->Branch("_lEScaleDown",                &_lEScaleDown,                  "_lEScaleDown[_nLight]/D");
+      outputTree->Branch("_lEResUp",                    &_lEResUp,                      "_lEResUp[_nLight]/D");
+      outputTree->Branch("_lEResDown",                  &_lEResDown,                    "_lEResDown[_nLight]/D");
     }
 }
 
@@ -140,7 +152,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     //set up generator matching
     if(!multilepAnalyzer->isData) genMatcher->setGenParticles(iEvent);
 
-    //loop over muons
+    // loop over muons
+    // muons need to be run first, because some ID's need to calculate a muon veto for electrons
     for(const pat::Muon& mu : *muons){
         if(_nL == nL_max)                              break;
         if(mu.innerTrack().isNull())                   continue;
@@ -208,8 +221,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
-        _lFlavor[_nL]          = 0;
-        _lEtaSC[_nL]           = ele->superCluster()->eta();
+        _lFlavor[_nL]                   = 0;
+        _lEtaSC[_nL]                    = ele->superCluster()->eta();
 
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
         _relIso0p4[_nL]                 = getRelIso(*ele, packedCands, 0.4, *rho, false);
@@ -248,6 +261,23 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lEwkFO[_nL]                    = isEwkFO(*ele);
         _lEwkTight[_nL]                 = isEwkTight(*ele);
 
+        // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
+        // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
+        // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
+        // Currently only available for 2016/2017
+        if(!multilepAnalyzer->is2018){
+          _lPtCorr[_nL]                 = ele->pt()*ele->userFloat("energyEcalTrkPostCorr")/ele->energy();
+          _lPtScaleUp[_nL]              = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
+          _lPtScaleDown[_nL]            = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
+          _lPtResUp[_nL]                = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
+          _lPtResDown[_nL]              = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
+          _lECorr[_nL]                  = ele->userFloat("energyEcalTrkPostCorr");
+          _lEScaleUp[_nL]               = ele->userFloat("energyScaleUp");
+          _lEScaleDown[_nL]             = ele->userFloat("energyScaleDown");
+          _lEResUp[_nL]                 = ele->userFloat("energySigmaUp");
+          _lEResDown[_nL]               = ele->userFloat("energySigmaDown");
+        }
+
         ++_nEle;
         ++_nL;
         ++_nLight;
@@ -259,6 +289,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {&_lElectronPassEmu, &_lElectronPassConvVeto, &_lElectronChargeConst}) std::fill_n(*array, _nMu, false);
     for(auto array : {&_lPOGLooseWOIso, &_lPOGMediumWOIso, &_lPOGTightWOIso}) std::fill_n(*array, _nMu, false);
     for(auto array : {&_lElectronMissingHits}) std::fill_n(*array, _nMu, 0.);
+    for(auto array : {&_lPtCorr, &_lPtScaleUp, &_lPtScaleDown, &_lPtResUp, &_lPtResDown}) std::fill_n(*array, _nMu, 0.);
+    for(auto array : {&_lECorr, &_lEScaleUp, &_lEScaleDown, &_lEResUp, &_lEResDown}) std::fill_n(*array, _nMu, 0.);
 
     //loop over taus
     for(const pat::Tau& tau : *taus){

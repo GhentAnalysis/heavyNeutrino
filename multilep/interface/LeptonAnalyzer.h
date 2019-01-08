@@ -49,10 +49,20 @@ class LeptonAnalyzer {
     unsigned _nTau;
 
     double _lPt[nL_max];                                                                             //lepton kinematics
+    double _lPtCorr[nL_max];
+    double _lPtScaleUp[nL_max];
+    double _lPtScaleDown[nL_max];
+    double _lPtResUp[nL_max];
+    double _lPtResDown[nL_max];
     double _lEta[nL_max];
     double _lEtaSC[nL_max];
     double _lPhi[nL_max];
     double _lE[nL_max];
+    double _lECorr[nL_max];
+    double _lEScaleUp[nL_max];
+    double _lEScaleDown[nL_max];
+    double _lEResUp[nL_max];
+    double _lEResDown[nL_max];
 
     unsigned _lFlavor[nL_max];                                                                       //lepton flavor and charge
     int _lCharge[nL_max];
