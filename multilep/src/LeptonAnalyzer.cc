@@ -403,31 +403,7 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
     return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
 }
 
-//Check if electron overlaps with loose muon
-bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose) const{
-    TLorentzVector eleV(ele.px(), ele.py(), ele.pz(), ele.energy());
-    for(unsigned m = 0; m < _nMu; ++m){
-        if(loose[m]){
-            TLorentzVector muV;
-            muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
-            if(eleV.DeltaR(muV) < 0.05) return true;
-        }
-    }
-    return false;
-}
 
-//Check if tau overlaps with light lepton
-bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose) const{
-    TLorentzVector tauV(tau.px(), tau.py(), tau.pz(), tau.energy());
-    for(unsigned l = 0; l < _nLight; ++l){
-        if(loose[l]){
-            TLorentzVector lightV;
-            lightV.SetPtEtaPhiE(_lPt[l], _lEta[l], _lPhi[l], _lE[l]);
-            if(tauV.DeltaR(lightV) < 0.4) return true;
-        }
-    }
-    return false;
-}
 
 
 void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex, const double rho){

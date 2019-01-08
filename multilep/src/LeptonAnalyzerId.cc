@@ -5,7 +5,36 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
+#include "TLorentzVector.h"
 #include "TTree.h"
+
+/*
+ * Overlap of electrons with loose muons
+ * Overlap of taus with loose electrons or muons
+ */
+bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose) const{
+    TLorentzVector eleV(ele.px(), ele.py(), ele.pz(), ele.energy());
+    for(unsigned m = 0; m < _nMu; ++m){
+        if(loose[m]){
+            TLorentzVector muV;
+            muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
+            if(eleV.DeltaR(muV) < 0.05) return true;
+        }
+    }
+    return false;
+}
+
+bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose) const{
+    TLorentzVector tauV(tau.px(), tau.py(), tau.pz(), tau.energy());
+    for(unsigned l = 0; l < _nLight; ++l){
+        if(loose[l]){
+            TLorentzVector lightV;
+            lightV.SetPtEtaPhiE(_lPt[l], _lEta[l], _lPhi[l], _lE[l]);
+            if(tauV.DeltaR(lightV) < 0.4) return true;
+        }
+    }
+    return false;
+}
 
 /*
  * Manual electron Summer16 cut-based id without isolation
