@@ -119,12 +119,12 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
         // Currently only available for 2016/2017
         if(!multilepAnalyzer->is2018){
-          _phPtCorr[_nPh]                   = photon->pt()*photon->userFloat("ecalEcalPostCorr")/photon->energy();
+          _phPtCorr[_nPh]                   = photon->pt()*photon->userFloat("ecalEnergyPostCorr")/photon->energy();
           _phPtScaleUp[_nPh]                = photon->pt()*photon->userFloat("energyScaleUp")/photon->energy();
           _phPtScaleDown[_nPh]              = photon->pt()*photon->userFloat("energyScaleDown")/photon->energy();
           _phPtResUp[_nPh]                  = photon->pt()*photon->userFloat("energySigmaUp")/photon->energy();
           _phPtResDown[_nPh]                = photon->pt()*photon->userFloat("energySigmaDown")/photon->energy();
-          _phECorr[_nPh]                    = photon->userFloat("ecalEcalPostCorr");
+          _phECorr[_nPh]                    = photon->userFloat("ecalEnergyPostCorr");
           _phEScaleUp[_nPh]                 = photon->userFloat("energyScaleUp");
           _phEScaleDown[_nPh]               = photon->userFloat("energyScaleDown");
           _phEResUp[_nPh]                   = photon->userFloat("energySigmaUp");
