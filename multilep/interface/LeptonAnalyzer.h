@@ -134,10 +134,6 @@ class LeptonAnalyzer {
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
 
-    bool _lPOGLooseWOIso[nL_max];
-    bool _lPOGMediumWOIso[nL_max];
-    bool _lPOGTightWOIso[nL_max];
-
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
     int _lMomPdgId[nL_max];
@@ -157,7 +153,6 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
 
     // In leptonAnalyzerIso,cc
-
     double getRelIso03(const pat::Muon&, const double) const;
     double getRelIso03(const pat::Electron&, const double) const;
     double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta = false) const;
@@ -165,10 +160,6 @@ class LeptonAnalyzer {
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged = false) const;
 
     // In LeptonAnalyzerId.cc
-    float dEtaInSeed(const pat::Electron*) const;
-    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*) const;
-    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*) const;
-    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*) const;
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately
     float slidingCut(float, float, float) const;
     bool  passingElectronMvaHZZ(const pat::Electron*, double) const;
