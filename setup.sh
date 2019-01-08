@@ -23,6 +23,7 @@ fi
 git cms-init
 git clone https://github.com/$gitUser/heavyNeutrino
 git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X # for EE noise fix of 2017 MET
+git cms-merge-topic cms-egamma:EgammaID_1023                     # for Fall17_V2 EGamma id's
 git cms-merge-topic cms-egamma:EgammaPostRecoTools               # making the egamma postreco sequence available
 cd $CMSSW_BASE/src/heavyNeutrino
 git checkout --track origin/$BRANCH
