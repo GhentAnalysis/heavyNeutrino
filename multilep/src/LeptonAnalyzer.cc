@@ -113,7 +113,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
     }
     if(!multilepAnalyzer->is2018){
-      outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nL]/D");
+      outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nLight]/D");
       outputTree->Branch("_lPtScaleUp",                 &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
       outputTree->Branch("_lPtScaleDown",               &_lPtScaleDown,                 "_lPtScaleDown[_nLight]/D");
       outputTree->Branch("_lPtResUp",                   &_lPtResUp,                     "_lPtResUp[_nLight]/D");
