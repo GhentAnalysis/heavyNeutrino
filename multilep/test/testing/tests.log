@@ -1,47 +1,33 @@
-commit 80861b4c069f0d469c13094c5ca9a0b5d5d8b8a6
+commit a9f9c2aac1488fb81edfdceabf892851bb6b4555
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 9 14:56:05 2019 +0100
+Date:   Wed Jan 9 15:18:02 2019 +0100
 
-    Temporary fix
+    Remove useless and confusing code which really does nothing except for being included and being there
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
-   Removed: _lElectronMva,_lElectronMvaHZZ
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
-   Removed: _lElectronMva,_lElectronMvaHZZ
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
-   Removed: _lElectronMva,_lElectronMvaHZZ
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
-   Removed: _lElectronMva,_lElectronMvaHZZ
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
-   Removed: _lElectronMva,_lElectronMvaHZZ
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
-   Removed: _lElectronMva,_lElectronMvaHZZ
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
-   Removed: _lElectronMva,_lElectronMvaHZZ
