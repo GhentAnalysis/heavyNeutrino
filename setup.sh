@@ -1,41 +1,21 @@
-if [[ $CMSSW_VERSION == *CMSSW_8* ]]
-then
-  # CMSSW_8_0_X checkout
-  git checkout CMSSW_8_0_X
-  eval `scram runtime -sh`
+
+# If the release is already available using cmsenv, use it, otherwise set up a new one
+if [[ $CMSSW_BASE == *$RELEASE ]] && [[ -d $CMSSW_BASE ]]; then
+  echo "Setting up heavyNeutrino package in current release: $CMSSW_BASE"
   cd $CMSSW_BASE/src
-
-  # First EGM smearing
-  git cms-merge-topic cms-egamma:EGM_gain_v1
-  cd EgammaAnalysis/ElectronTools/data
-  git clone -b Moriond17_gainSwitch_unc https://github.com/ECALELFS/ScalesSmearings.git 
-  cd -
-
-  # Setup for new electron and photon MVA
-  git cms-merge-topic ikrav:egm_id_80X_v3_photons
-
 else
-  # CMSSW_9_4_X checkout
+  scram project CMSSW $RELEASE
+  cd $RELEASE/src
   eval `scram runtime -sh`
-  cd $CMSSW_BASE/src
-  git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
-  git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
-  scram b -j 10
-
-  # Setting up new photon ID
-  cd $CMSSW_BASE/external
-  cd slc6_amd64_gcc630/
-  git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
-  cd data/RecoEgamma/PhotonIdentification/data
-  git checkout CMSSW_9_4_0_pre3_TnP
-  cd $CMSSW_BASE/external
-  cd slc6_amd64_gcc630/
-  git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
-  cd data/RecoEgamma/ElectronIdentification/data
-  git checkout CMSSW_9_4_0_pre3_TnP
-  cd $CMSSW_BASE/src
-
+  echo "Creating release for heavyNeutrino package: $CMSSW_BASE"
 fi
 
-# Finally, compile
+# The git commands
+git cms-init
+git clone https://github.com/GhentAnalysis/heavyNeutrino
+git cms-merge-topic cms-met:METFixEE2017_949_v2 #for EE noise fix of 2017 MET
+
+# Compile and move into package
 scram b -j 10
+cd $CMSSW_BASE/src/heavyNeutrino
+echo "Setup finished"

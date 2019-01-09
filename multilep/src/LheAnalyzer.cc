@@ -20,6 +20,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     if(multilepAnalyzer->isData) return;
     hCounter   = fs->make<TH1D>("hCounter",   "Events counter", 1, 0, 1);
     lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",    110, 0, 110); //Counter to determine effect of pdf and scale uncertainties on the MC cross section
+    psCounter  = fs->make<TH1D>("psCounter",  "Lhe weights",    14, 0, 14);
     tauCounter = fs->make<TH1D>("tauCounter", "Number of taus", 3, 0, 3);
 
     unsigned nTrueBins;
@@ -104,6 +105,14 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     for(unsigned i = 0; i < _nLheWeights; ++i){
         _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP();
         lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
+    }
+
+    //some tests for PS weight extraction
+    const std::vector<double>& psWeights = genEventInfo->weights();
+    _nPsWeights = std::min( (unsigned) 14, (unsigned) psWeights.size() );
+    for(unsigned ps = 0; ps < _nPsWeights; ++ps){
+        _psWeight[ps] = psWeights[ps]/_weight;
+        psCounter->Fill(ps + 0.5, _psWeight[ps]*_weight);
     }
 }
 

@@ -44,8 +44,6 @@
 #include "TLorentzVector.h"
 #include "heavyNeutrino/multilep/interface/JEC.h"
 
-//Temporary for JEC test, remove later
-#include "JetMETCorrections/JetCorrector/interface/JetCorrector.h"
 
 //
 // class declaration
@@ -58,7 +56,7 @@ class GenAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
 class GenMatching;
-class JEC;
+//class JEC;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::WatchRuns, edm::one::SharedResources> {
     //Define other analyzers as friends
@@ -108,6 +106,9 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<double>                            rhoToken;
         edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedUpToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedDownToken;
         edm::EDGetTokenT<edm::TriggerResults>               recoResultsPrimaryToken;                     //MET filter information
         edm::EDGetTokenT<edm::TriggerResults>               recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
         edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
@@ -120,9 +121,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                isData;
         bool                                                is2017;
         bool                                                isSUSY;
-        std::string                                         jecPath;
         bool                                                storeLheParticles;
-        //std::string                                         jecPath;
+        std::string                                         jecPath;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
@@ -138,7 +138,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         JetAnalyzer*      jetAnalyzer;
         LheAnalyzer*      lheAnalyzer;
         SUSYMassAnalyzer* susyMassAnalyzer;
-        JEC*              jec; 
+        //JEC*              jec; 
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;

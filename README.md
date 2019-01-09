@@ -13,6 +13,13 @@ git clone https://github.com/GhentAnalysis/heavyNeutrino
 cd heavyNeutrino
 git checkout displaced
 ./setup.sh
+In order to have a working copy, following the instructions below which sets up the needed CMSSW release and dependency packages.
+The tuplizer itself is entirely contained in the multilep directory.
+
+# Set-up instructions (master branch)
+```
+wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/master/setup.sh
+source setup.sh
 ```
 
 # Running a test job
