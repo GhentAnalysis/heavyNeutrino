@@ -1,82 +1,88 @@
-commit c950902332cdee02ac4fbfe2b3a0536964bd45d4
+commit c125530065282992d2a698e2779d9c50d7b21b24
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 9 17:15:26 2019 +0100
+Date:   Wed Jan 9 17:16:39 2019 +0100
 
-    Trying to introduce recommended effective areas for electrons, while keeping compatibility with leptonMva trainings
-
---------------------------------------------------------------------------------------------------
-
-Running test: Run2018-17Sep2018 --> FAILED
-Output:   ----- Begin Fatal Exception 09-Jan-2019 17:15:38 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.SyntaxError'>
-   invalid syntax (multilep.py, line 96)
-   ----- End Fatal Exception -------------------------------------------------
+    typo
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2018-PromptReco --> FAILED
-Output:   ----- Begin Fatal Exception 09-Jan-2019 17:15:39 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.SyntaxError'>
-   invalid syntax (multilep.py, line 96)
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2018-17Sep2018 --> OK
+   Changed:
+      _lHNLoose                                          mean:   0.7981 -->   0.8077     rms:   0.4014 -->   0.3941    
+      _leptonMvaSUSY17                                   mean:   0.2818 -->   0.2818     rms:   0.8937 -->   0.8936    
+      _leptonMvaTTH17                                    mean:   0.2922 -->   0.2923     rms:   0.8768 -->   0.8767    
+      _leptonMvatZqTTV17                                 mean:   0.2421 -->   0.2422     rms:   0.9133 -->   0.9132    
+      _miniIso                                           mean:   0.3882 -->   0.3877     rms:   1.0083 -->   1.0067    
+      _relIso                                            mean:   0.4284 -->   0.4273     rms:   1.0321 -->   1.0291    
+      _relIso0p4                                         mean:   0.5817 -->   0.5797     rms:   1.2781 -->   1.2714    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2017-31March2017 --> FAILED
-Output:   ----- Begin Fatal Exception 09-Jan-2019 17:15:39 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.SyntaxError'>
-   invalid syntax (multilep.py, line 96)
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2018-PromptReco --> OK
+   Changed:
+      _miniIso                                           mean:   0.1729 -->   0.1728     rms:   0.5101 -->   0.5098    
+      _relIso                                            mean:   0.2020 -->   0.2020     rms:   0.5747 -->   0.5743    
+      _relIso0p4                                         mean:   0.2447 -->   0.2446     rms:   0.6177 -->   0.6169    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2016-17Jul2018 --> FAILED
-Output:   ----- Begin Fatal Exception 09-Jan-2019 17:15:40 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.SyntaxError'>
-   invalid syntax (multilep.py, line 96)
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2017-31March2017 --> OK
+   Changed:
+      _leptonMvaSUSY16                                   mean:  -0.4267 -->  -0.4264     rms:   0.8198 -->   0.8200    
+      _leptonMvaSUSY17                                   mean:  -0.4391 -->  -0.4388     rms:   0.8258 -->   0.8263    
+      _leptonMvaTTH16                                    mean:  -0.3961 -->  -0.3960     rms:   0.8299 -->   0.8302    
+      _leptonMvaTTH17                                    mean:  -0.4243 -->  -0.4241     rms:   0.8216 -->   0.8220    
+      _leptonMvatZqTTV16                                 mean:  -0.4582 -->  -0.4578     rms:   0.8551 -->   0.8552    
+      _miniIso                                           mean:   0.8971 -->   0.8952     rms:   1.3858 -->   1.3839    
+      _relIso                                            mean:   0.5622 -->   0.5578     rms:   0.9897 -->   0.9853    
+      _relIso0p4                                         mean:   1.1388 -->   1.1315     rms:   1.7336 -->   1.7252    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Autumn18MiniAOD --> FAILED
-Output:   ----- Begin Fatal Exception 09-Jan-2019 17:15:40 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.SyntaxError'>
-   invalid syntax (multilep.py, line 96)
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2016-17Jul2018 --> OK
+   Changed:
+      _lHNLoose                                          mean:   0.4302 -->   0.4535     rms:   0.4951 -->   0.4978    
+      _lHNTight                                          mean:   0.1163 -->   0.1279     rms:   0.3206 -->   0.3340    
+      _leptonMvaSUSY16                                   mean:  -0.5467 -->  -0.5454     rms:   0.7521 -->   0.7536    
+      _leptonMvaSUSY17                                   mean:  -0.5683 -->  -0.5665     rms:   0.7510 -->   0.7532    
+      _leptonMvaTTH16                                    mean:  -0.5371 -->  -0.5360     rms:   0.7624 -->   0.7638    
+      _leptonMvaTTH17                                    mean:  -0.5585 -->  -0.5570     rms:   0.7449 -->   0.7474    
+      _leptonMvatZqTTV16                                 mean:  -0.6228 -->  -0.6210     rms:   0.7162 -->   0.7189    
+      _leptonMvatZqTTV17                                 mean:  -0.6807 -->  -0.6783     rms:   0.6406 -->   0.6428    
+      _miniIso                                           mean:   1.0980 -->   1.0895     rms:   1.3723 -->   1.3672    
+      _relIso                                            mean:   1.4017 -->   1.3816     rms:   1.8450 -->   1.8366    
+      _relIso0p4                                         mean:   1.5515 -->   1.5177     rms:   2.0078 -->   1.9895    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Fall17MiniAODv2 --> FAILED
-Output:   ----- Begin Fatal Exception 09-Jan-2019 17:15:41 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.SyntaxError'>
-   invalid syntax (multilep.py, line 96)
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _leptonMvaSUSY16                                   mean:   0.4470 -->   0.4471     rms:   0.7029 -->   0.7027    
+      _leptonMvaSUSY17                                   mean:   0.3913 -->   0.3914     rms:   0.7340 -->   0.7341    
+      _leptonMvaTTH16                                    mean:   0.4857 -->   0.4858     rms:   0.6951 -->   0.6952    
+      _leptonMvatZqTTV16                                 mean:   0.3716 -->   0.3710     rms:   0.7515 -->   0.7521    
+      _leptonMvatZqTTV17                                 mean:   0.3294 -->   0.3297     rms:   0.7646 -->   0.7647    
+      _miniIso                                           mean:   0.2974 -->   0.2969     rms:   0.7590 -->   0.7581    
+      _relIso                                            mean:   0.3608 -->   0.3595     rms:   0.9297 -->   0.9278    
+      _relIso0p4                                         mean:   0.4532 -->   0.4510     rms:   1.1017 -->   1.0981    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Summer16MiniAODv3 --> FAILED
-Output:   ----- Begin Fatal Exception 09-Jan-2019 17:15:42 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.SyntaxError'>
-   invalid syntax (multilep.py, line 96)
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _leptonMvaSUSY17                                   mean:   0.6202 -->   0.6207     rms:   0.5841 -->   0.5839    
+      _leptonMvaTTH16                                    mean:   0.7121 -->   0.7125     rms:   0.5395 -->   0.5393    
+      _leptonMvaTTH17                                    mean:   0.6495 -->   0.6501     rms:   0.5555 -->   0.5552    
+      _leptonMvatZqTTV16                                 mean:   0.6259 -->   0.6267     rms:   0.6005 -->   0.6004    
+      _leptonMvatZqTTV17                                 mean:   0.5624 -->   0.5629     rms:   0.6351 -->   0.6346    
+      _miniIso                                           mean:   0.1310 -->   0.1307     rms:   0.5414 -->   0.5409    
+      _relIso                                            mean:   0.1248 -->   0.1240     rms:   0.3937 -->   0.3919    
+      _relIso0p4                                         mean:   0.1970 -->   0.1961     rms:   0.6184 -->   0.6163    
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _miniIso                                           mean:   0.0986 -->   0.0983     rms:   0.5274 -->   0.5253    
+      _relIso                                            mean:   0.1488 -->   0.1467     rms:   0.6427 -->   0.6338    
+      _relIso0p4                                         mean:   0.2094 -->   0.2058     rms:   0.8415 -->   0.8248    
