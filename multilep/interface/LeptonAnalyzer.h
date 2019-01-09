@@ -85,8 +85,9 @@ class LeptonAnalyzer {
     double _3dIP[nL_max];
     double _3dIPSig[nL_max];
 
-    float _lElectronMva[nL_max];                                                                     //electron specific variables
-    float _lElectronMvaHZZ[nL_max];
+    float _lElectronMvaSummer16GP[nL_max];                                                           // OLD
+    float _lElectronMvaSummer16HZZ[nL_max];                                                          // OLD
+    float _lElectronMvaFall17v1NoIso[nL_max];                                                        // OLD
     float _lElectronMvaFall17Iso[nL_max];
     float _lElectronMvaFall17NoIso[nL_max];
     bool _lElectronPassEmu[nL_max];
