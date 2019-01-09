@@ -23,10 +23,20 @@ class PhotonAnalyzer {
 
         unsigned _nPh;
         double   _phPt[nPhoton_max];
+        double   _phPtCorr[nPhoton_max];
+        double   _phPtScaleUp[nPhoton_max];
+        double   _phPtScaleDown[nPhoton_max];
+        double   _phPtResUp[nPhoton_max];
+        double   _phPtResDown[nPhoton_max];
         double   _phEta[nPhoton_max];
         double   _phEtaSC[nPhoton_max];
         double   _phPhi[nPhoton_max];
         double   _phE[nPhoton_max];
+        double   _phECorr[nPhoton_max];
+        double   _phEScaleUp[nPhoton_max];
+        double   _phEScaleDown[nPhoton_max];
+        double   _phEResUp[nPhoton_max];
+        double   _phEResDown[nPhoton_max];
         bool     _phCutBasedLoose[nPhoton_max];
         bool     _phCutBasedMedium[nPhoton_max];
         bool     _phCutBasedTight[nPhoton_max];
@@ -36,7 +46,6 @@ class PhotonAnalyzer {
         double   _phNeutralHadronIsolation[nPhoton_max];
         double   _phPhotonIsolation[nPhoton_max];
         double   _phSigmaIetaIeta[nPhoton_max];
-        double   _phSigmaIetaIphi[nPhoton_max];
         double   _phHadronicOverEm[nPhoton_max];
         bool     _phPassElectronVeto[nPhoton_max];
         bool     _phHasPixelSeed[nPhoton_max];

@@ -1,62 +1,38 @@
 #include "../interface/LeptonAnalyzer.h"
-#include "FWCore/ParameterSet/interface/FileInPath.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-
-#include "TTree.h"
+#include "TLorentzVector.h"
 
 /*
- * Manual electron Summer16 cut-based id without isolation
- * Based on https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedLeptonAnalyzerRun2#Offline_selection_criteria
+ * Overlap of electrons with loose muons
+ * Overlap of taus with loose electrons or muons
  */
-float LeptonAnalyzer::dEtaInSeed(const pat::Electron* ele) const{
-    if(ele->superCluster().isNonnull() and ele->superCluster()->seed().isNonnull()) return ele->deltaEtaSuperClusterTrackAtVtx() - ele->superCluster()->eta() + ele->superCluster()->seed()->eta();
-    else                                                                            return std::numeric_limits<float>::max();
+bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose) const{
+    TLorentzVector eleV(ele.px(), ele.py(), ele.pz(), ele.energy());
+    for(unsigned m = 0; m < _nMu; ++m){
+        if(loose[m]){
+            TLorentzVector muV;
+            muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
+            if(eleV.DeltaR(muV) < 0.05) return true;
+        }
+    }
+    return false;
 }
 
-bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron* ele) const{
-    if(!(ele->isEB() or ele->isEE()))                                                               return false;
-    float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
-    if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.11    : 0.0314 ))          return false;
-    if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00477 : 0.00868))          return false;
-    if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.222   : 0.213  ))          return false;
-    if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.298   : 0.101  ))          return false;
-    if(eInvMinusPInv                                 >= (ele->isEB() ? 0.241   : 0.14   ))          return false;
-    if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) >  1)   return false;
-    if(!ele->passConversionVeto())                                                                  return false;
-    return true;
+bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose) const{
+    TLorentzVector tauV(tau.px(), tau.py(), tau.pz(), tau.energy());
+    for(unsigned l = 0; l < _nLight; ++l){
+        if(loose[l]){
+            TLorentzVector lightV;
+            lightV.SetPtEtaPhiE(_lPt[l], _lEta[l], _lPhi[l], _lE[l]);
+            if(tauV.DeltaR(lightV) < 0.4) return true;
+        }
+    }
+    return false;
 }
 
-bool LeptonAnalyzer::isMediumCutBasedElectronWithoutIsolation(const pat::Electron* ele) const{
-    if(!(ele->isEB() or ele->isEE()))                                                               return false;
-    float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
-    if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998    : 0.0298 ))       return false;
-    if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00311    : 0.00609))       return false;
-    if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.103      : 0.045  ))       return false;
-    if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.253      : 0.0878  ))      return false;
-    if(eInvMinusPInv                                 >= (ele->isEB() ? 0.134      : 0.13   ))       return false;
-    if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) >  1)   return false;
-    if(!ele->passConversionVeto())                                                                  return false;
-    return true;
-}
-
-bool LeptonAnalyzer::isTightCutBasedElectronWithoutIsolation(const pat::Electron* ele) const{
-    if(!(ele->isEB() or ele->isEE())) return false;
-    float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
-    if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998 : 0.0292))           return false;
-    if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00308 : 0.00605))          return false;
-    if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.0816  : 0.0394))           return false;
-    if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.0414  : 0.0641))           return false;
-    if(eInvMinusPInv                                 >= (ele->isEB() ? 0.0129  : 0.0129))           return false;
-    if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) >  1)   return false;
-    if(!ele->passConversionVeto())                                                                  return false;
-    return true;
-}
-
-// Trigger emulation for single electron triggers is available in VID
-// Trigger emulation for double electron triggers with CaloIdL_TrackIdL_IsoVL:
+/*
+ * Trigger emulation for single electron triggers is available in VID
+ * Trigger emulation for double electron triggers with CaloIdL_TrackIdL_IsoVL (is certainly outdated for everything past 2016)
+ */
 bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele, const bool hOverE) const{
     float eInvMinusPInv =  (1.0 - ele->eSuperClusterOverP())/ele->correctedEcalEnergy();
     if(ele->full5x5_sigmaIetaIeta()                >= (ele->isEB() ? 0.011 : 0.030)) return false;
@@ -69,7 +45,7 @@ bool LeptonAnalyzer::passTriggerEmulationDoubleEG(const pat::Electron* ele, cons
 }
 
 /*
- * SUSY POG MVA definitions
+ * SUSY POG MVA definitions [still here for dependencies in HN and EWK ID's, NEVER use them in new analyses]
  */
 float LeptonAnalyzer::slidingCut(float pt, float low, float high) const{
     float slope = (high - low)/10.;
@@ -89,13 +65,6 @@ bool LeptonAnalyzer::passingElectronMvaLooseSusy(const pat::Electron* ele, doubl
     else                               return mvaValue > slidingCut(ele->pt(), -0.81, -0.95);
 }
 
-bool LeptonAnalyzer::passingElectronMvaMediumSusy(const pat::Electron* ele, double mvaValue) const{
-    if(ele->pt() < 10)                 return false; 
-    if(fabs(ele->eta()) < 0.8)         return mvaValue > slidingCut(ele->pt(), -0.86, -0.86);
-    else if (fabs(ele->eta()) < 1.479) return mvaValue > slidingCut(ele->pt(), -0.85, -0.85);
-    else                               return mvaValue > slidingCut(ele->pt(), -0.81, -0.81);
-}
-
 bool LeptonAnalyzer::passingElectronMvaTightSusy(const pat::Electron* ele, double mvaValue) const{
     if(ele->pt() < 10)                 return false; 
     if(fabs(ele->eta()) < 0.8)         return mvaValue > slidingCut(ele->pt(),  0.77,  0.52);
@@ -104,7 +73,7 @@ bool LeptonAnalyzer::passingElectronMvaTightSusy(const pat::Electron* ele, doubl
 }
 
 /*
- * Own HeavyNeutrino FO tune
+ * Own HeavyNeutrino FO tune [tuned on a very old electronMva, do NOT use them for new analyses]
  */
 bool LeptonAnalyzer::passingElectronMvaHeavyNeutrinoFO(const pat::Electron* ele, double mvaValue) const{
     if(ele->pt() < 10)                 return false; 
@@ -113,7 +82,7 @@ bool LeptonAnalyzer::passingElectronMvaHeavyNeutrinoFO(const pat::Electron* ele,
 }
 
 /*
- * Ewkino FO tune
+ * Ewkino FO tune [tuned on a very old electronMva, do NOT use them for new analyses]
  */
 bool LeptonAnalyzer::passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue) const{
     if(ele->pt() < 10)               return false;
@@ -152,14 +121,14 @@ bool LeptonAnalyzer::isHNFO(const pat::Electron& lepton) const{
     if(fabs(_3dIPSig[_nL]) >= 4)                                                                        return false;
     if(lepton.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) != 0)     return false;
     if(!passTriggerEmulationDoubleEG(&lepton))                                                          return false;
-    if(!passingElectronMvaHeavyNeutrinoFO(&lepton, _lElectronMva[_nL]))                                 return false;
+    if(!passingElectronMvaHeavyNeutrinoFO(&lepton, _lElectronMvaSummer16GP[_nL]))                       return false; // TODO: consider replacing this by somethinig better
     return true;
 }
 
 bool LeptonAnalyzer::isHNTight(const pat::Electron& lepton) const{
-    if(!_lHNFO[_nL])                                              return false;
-    if(_relIso[_nL] >= 0.1)                                       return false;
-    if(!passingElectronMvaTightSusy(&lepton, _lElectronMva[_nL])) return false;
+    if(!_lHNFO[_nL])                                                        return false;
+    if(_relIso[_nL] >= 0.1)                                                 return false;
+    if(!passingElectronMvaTightSusy(&lepton, _lElectronMvaSummer16GP[_nL])) return false; // TODO: consider replacing this by something better
     return true;
 }
 
@@ -203,9 +172,9 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron, LeptonMvaHelp
             _dz[_nL],
             _relIso[_nL],
             _relIso0p4[_nL],
-            _lElectronMva[_nL],
-            _lElectronMvaHZZ[_nL],
-            _lElectronMvaFall17NoIso[_nL]
+            _lElectronMvaSummer16GP[_nL],
+            _lElectronMvaSummer16HZZ[_nL],
+            _lElectronMvaFall17v1NoIso[_nL]
             );
 }
 
@@ -222,7 +191,7 @@ bool LeptonAnalyzer::isEwkLoose(const pat::Electron& lep) const{
     if(_lPt[_nL] <= 7 || fabs(_lEta[_nL]) >= 2.5)                                                   return false;
     if(lep.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 1)     return false;
     if(eleMuOverlap(lep, _lEwkLoose))                                                               return false;
-    return passingElectronMvaLooseSusy(&lep, _lElectronMva[_nL], _lElectronMvaHZZ[_nL]);
+    return passingElectronMvaLooseSusy(&lep, _lElectronMvaSummer16GP[_nL], _lElectronMvaSummer16HZZ[_nL]); // TODO: consider replacing this by something better
 }
 
 bool LeptonAnalyzer::isEwkLoose(const pat::Tau& tau) const{
@@ -249,7 +218,7 @@ bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep) const{
         ptCone *= 0.85/_ptRatio[_nL];
     }
     if(ptCone >= 30 && lep.hadronicOverEm() >= (lep.isEB() ? 0.10  : 0.07) )                        return false;
-    return _leptonMvaSUSY16[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMva[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
+    return _leptonMvaSUSY16[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMvaSummer16GP[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
 }
 
 bool LeptonAnalyzer::isEwkFO(const pat::Tau& tau) const{

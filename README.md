@@ -9,12 +9,6 @@ wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/master/setup.
 source setup.sh
 ```
 
-# Set-up instructions (master branch on CMSSW 9X)
-```
-wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/master/setup9X.sh
-source setup9X.sh
-```
-
 # The cmsRun executable
 ```
 cd heavyNeutrino/multilep/test

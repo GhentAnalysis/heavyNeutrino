@@ -14,7 +14,6 @@
 //include other parts of the framework
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
-#include "heavyNeutrino/multilep/interface/LeptonIdHelper.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
 
 //include ROOT classes
@@ -32,7 +31,6 @@ class GenMatching;
 
 class LeptonAnalyzer {
   //Friend classes and functions
-  friend class LeptonIdHelper;
   friend class multilep;
   private:
     //this has to come before the effective areas as their initialization depends on it!
@@ -49,16 +47,28 @@ class LeptonAnalyzer {
     unsigned _nTau;
 
     double _lPt[nL_max];                                                                             //lepton kinematics
+    double _lPtCorr[nL_max];
+    double _lPtScaleUp[nL_max];
+    double _lPtScaleDown[nL_max];
+    double _lPtResUp[nL_max];
+    double _lPtResDown[nL_max];
     double _lEta[nL_max];
     double _lEtaSC[nL_max];
     double _lPhi[nL_max];
     double _lE[nL_max];
+    double _lECorr[nL_max];
+    double _lEScaleUp[nL_max];
+    double _lEScaleDown[nL_max];
+    double _lEResUp[nL_max];
+    double _lEResDown[nL_max];
 
     unsigned _lFlavor[nL_max];                                                                       //lepton flavor and charge
     int _lCharge[nL_max];
 
     double _relIso[nL_max];                                                                          //lepton isolation variables
     double _relIso0p4[nL_max];                                                                       //lepton isolation variables
+    double _relIsoOld[nL_max];                                                                       //lepton isolation variables, not stored
+    double _relIso0p4Old[nL_max];                                                                    //lepton isolation variables, not stored
     double _relIso0p4MuDeltaBeta[nL_max];                                                            //lepton isolation variables
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];
@@ -75,8 +85,9 @@ class LeptonAnalyzer {
     double _3dIP[nL_max];
     double _3dIPSig[nL_max];
 
-    float _lElectronMva[nL_max];                                                                     //electron specific variables
-    float _lElectronMvaHZZ[nL_max];
+    float _lElectronMvaSummer16GP[nL_max];                                                           // OLD
+    float _lElectronMvaSummer16HZZ[nL_max];                                                          // OLD
+    float _lElectronMvaFall17v1NoIso[nL_max];                                                        // OLD
     float _lElectronMvaFall17Iso[nL_max];
     float _lElectronMvaFall17NoIso[nL_max];
     bool _lElectronPassEmu[nL_max];
@@ -124,10 +135,6 @@ class LeptonAnalyzer {
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
 
-    bool _lPOGLooseWOIso[nL_max];
-    bool _lPOGMediumWOIso[nL_max];
-    bool _lPOGTightWOIso[nL_max];
-
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
     int _lMomPdgId[nL_max];
@@ -147,18 +154,13 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
 
     // In leptonAnalyzerIso,cc
-
     double getRelIso03(const pat::Muon&, const double) const;
     double getRelIso03(const pat::Electron&, const double) const;
-    double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta = false) const;
-    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged = false) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged = false) const;
+    double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta=false) const;
+    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged=false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false) const;
 
     // In LeptonAnalyzerId.cc
-    float dEtaInSeed(const pat::Electron*) const;
-    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*) const;
-    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*) const;
-    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*) const;
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately
     float slidingCut(float, float, float) const;
     bool  passingElectronMvaHZZ(const pat::Electron*, double) const;

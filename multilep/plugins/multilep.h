@@ -80,24 +80,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 
         edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
         edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaHZZToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaFall17IsoToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              eleMvaFall17NoIsoToken;
-        edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedVetoToken;
-        edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedLooseToken;
-        edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedMediumToken;
-        edm::EDGetTokenT<edm::ValueMap<bool>>               eleCutBasedTightToken;
         edm::EDGetTokenT<std::vector<pat::Tau>>             tauToken;
         edm::EDGetTokenT<std::vector<pat::Photon>>          photonToken;
-        edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedLooseToken;
-        edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedMediumToken;
-        edm::EDGetTokenT<edm::ValueMap<bool>>               photonCutBasedTightToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              photonMvaToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              photonChargedIsolationToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              photonNeutralHadronIsolationToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              photonPhotonIsolationToken;
-        edm::EDGetTokenT<edm::ValueMap<float>>              photonFull5x5SigmaIEtaIPhiToken;
         edm::EDGetTokenT<std::vector<pat::PackedCandidate>> packedCandidatesToken;                       //particle collection used to calculate isolation variables
         edm::EDGetTokenT<double>                            rhoToken;
         edm::EDGetTokenT<std::vector<pat::MET>>             metToken;

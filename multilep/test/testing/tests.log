@@ -1,11 +1,8 @@
-commit a14d5f6ef4c58519687c5f87c54e66dfe511ee35
+commit 4bab616a6eaddd40741f3e9341d7114e5b676b93
 Author: tomc <tomc@cern.ch>
-Date:   Mon Jan 7 17:58:53 2019 +0100
+Date:   Wed Jan 9 17:37:05 2019 +0100
 
-    Small layout change in runTests.py
-diff --git a/multilep/test/testing/Autumn18MiniAOD-ref.root b/multilep/test/testing/Autumn18MiniAOD-ref.root
-index 1c774d6..de0e11b 100644
-Binary files a/multilep/test/testing/Autumn18MiniAOD-ref.root and b/multilep/test/testing/Autumn18MiniAOD-ref.root differ
+    clean-up
 
 --------------------------------------------------------------------------------------------------
 
@@ -18,10 +15,16 @@ Running test: Run2018-PromptReco --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   Changed:
+      _leptonMvatZqTTV16                                 mean:  -0.4580 -->  -0.4582     rms:   0.8544 -->   0.8551    
+      _leptonMvatZqTTV17                                 mean:  -0.4484 -->  -0.4482     rms:   0.8476 -->   0.8482    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   Changed:
+      _leptonMvatZqTTV16                                 mean:  -0.6242 -->  -0.6228     rms:   0.7141 -->   0.7162    
+      _leptonMvatZqTTV17                                 mean:  -0.6855 -->  -0.6807     rms:   0.6341 -->   0.6406    
 
 --------------------------------------------------------------------------------------------------
 
@@ -30,6 +33,9 @@ Running test: Autumn18MiniAOD --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _leptonMvatZqTTV16                                 mean:   0.6258 -->   0.6259     rms:   0.6004 -->   0.6005    
+      _leptonMvatZqTTV17                                 mean:   0.5622 -->   0.5624     rms:   0.6350 -->   0.6351    
 
 --------------------------------------------------------------------------------------------------
 
