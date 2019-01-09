@@ -1,103 +1,42 @@
-commit 95ecd45b52e574a286a97037e72e9174214ffd09
+commit 4bab616a6eaddd40741f3e9341d7114e5b676b93
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 9 17:32:55 2019 +0100
+Date:   Wed Jan 9 17:37:05 2019 +0100
 
-    Simply use recommended electron effective areas for all IDs, effects seem to be negligible anyway
-
---------------------------------------------------------------------------------------------------
-
-Running test: Run2018-17Sep2018 --> FAILED
-Output:   09-Jan-2019 17:33:21 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root
-   09-Jan-2019 17:33:21 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root
-   09-Jan-2019 17:33:30 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root
-   ----- Begin Fatal Exception 09-Jan-2019 17:33:30 CET-----------------------
-   An exception of category 'Configuration' occurred while
-      [0] Constructing the EventProcessor
-      [1] Constructing module: class=multilep label='blackJackAndHookers'
-   Exception Message:
-   MissingParameter: Parameter 'electronsEffectiveAreasOld' not found.
-   ----- End Fatal Exception -------------------------------------------------
+    clean-up
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2018-PromptReco --> FAILED
-Output:   09-Jan-2019 17:33:41 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root
-   09-Jan-2019 17:33:41 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root
-   09-Jan-2019 17:33:52 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root
-   ----- Begin Fatal Exception 09-Jan-2019 17:33:52 CET-----------------------
-   An exception of category 'Configuration' occurred while
-      [0] Constructing the EventProcessor
-      [1] Constructing module: class=multilep label='blackJackAndHookers'
-   Exception Message:
-   MissingParameter: Parameter 'electronsEffectiveAreasOld' not found.
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2018-17Sep2018 --> OK
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2017-31March2017 --> FAILED
-Output:   09-Jan-2019 17:34:02 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root
-   09-Jan-2019 17:34:02 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root
-   09-Jan-2019 17:34:11 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root
-   ----- Begin Fatal Exception 09-Jan-2019 17:34:11 CET-----------------------
-   An exception of category 'Configuration' occurred while
-      [0] Constructing the EventProcessor
-      [1] Constructing module: class=multilep label='blackJackAndHookers'
-   Exception Message:
-   MissingParameter: Parameter 'electronsEffectiveAreasOld' not found.
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2018-PromptReco --> OK
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2016-17Jul2018 --> FAILED
-Output:   09-Jan-2019 17:34:29 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root
-   09-Jan-2019 17:34:30 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root
-   09-Jan-2019 17:34:38 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root
-   ----- Begin Fatal Exception 09-Jan-2019 17:34:38 CET-----------------------
-   An exception of category 'Configuration' occurred while
-      [0] Constructing the EventProcessor
-      [1] Constructing module: class=multilep label='blackJackAndHookers'
-   Exception Message:
-   MissingParameter: Parameter 'electronsEffectiveAreasOld' not found.
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2017-31March2017 --> OK
+   Changed:
+      _leptonMvatZqTTV16                                 mean:  -0.4580 -->  -0.4582     rms:   0.8544 -->   0.8551    
+      _leptonMvatZqTTV17                                 mean:  -0.4484 -->  -0.4482     rms:   0.8476 -->   0.8482    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Autumn18MiniAOD --> FAILED
-Output:   09-Jan-2019 17:35:05 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
-   09-Jan-2019 17:35:05 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
-   09-Jan-2019 17:35:13 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
-   ----- Begin Fatal Exception 09-Jan-2019 17:35:13 CET-----------------------
-   An exception of category 'Configuration' occurred while
-      [0] Constructing the EventProcessor
-      [1] Constructing module: class=multilep label='blackJackAndHookers'
-   Exception Message:
-   MissingParameter: Parameter 'electronsEffectiveAreasOld' not found.
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2016-17Jul2018 --> OK
+   Changed:
+      _leptonMvatZqTTV16                                 mean:  -0.6242 -->  -0.6228     rms:   0.7141 -->   0.7162    
+      _leptonMvatZqTTV17                                 mean:  -0.6855 -->  -0.6807     rms:   0.6341 -->   0.6406    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Fall17MiniAODv2 --> FAILED
-Output:   09-Jan-2019 17:35:20 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root
-   09-Jan-2019 17:35:21 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root
-   09-Jan-2019 17:35:28 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root
-   ----- Begin Fatal Exception 09-Jan-2019 17:35:28 CET-----------------------
-   An exception of category 'Configuration' occurred while
-      [0] Constructing the EventProcessor
-      [1] Constructing module: class=multilep label='blackJackAndHookers'
-   Exception Message:
-   MissingParameter: Parameter 'electronsEffectiveAreasOld' not found.
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Autumn18MiniAOD --> OK
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Summer16MiniAODv3 --> FAILED
-Output:   09-Jan-2019 17:35:36 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root
-   09-Jan-2019 17:35:36 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root
-   09-Jan-2019 17:35:43 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root
-   ----- Begin Fatal Exception 09-Jan-2019 17:35:44 CET-----------------------
-   An exception of category 'Configuration' occurred while
-      [0] Constructing the EventProcessor
-      [1] Constructing module: class=multilep label='blackJackAndHookers'
-   Exception Message:
-   MissingParameter: Parameter 'electronsEffectiveAreasOld' not found.
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _leptonMvatZqTTV16                                 mean:   0.6258 -->   0.6259     rms:   0.6004 -->   0.6005    
+      _leptonMvatZqTTV17                                 mean:   0.5622 -->   0.5624     rms:   0.6350 -->   0.6351    
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Summer16MiniAODv3 --> OK
