@@ -92,9 +92,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         _phCutBasedLoose[_nPh]              = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-loose");
         _phCutBasedMedium[_nPh]             = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-medium");
         _phCutBasedTight[_nPh]              = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-tight");
-        _phMva[_nPh]                        = photon->userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values");
-        std::cout << "Temporary using Fall17 v1p1 photon values, the v2 values will become available really soon" << std::endl;
-//        _phMva[_nPh]                        = photon->userFloat("PhotonMVAEstimatorRunIIFall17v2Values");
+        _phMva[_nPh]                        = photon->userFloat("PhotonMVAEstimatorRunIIFall17v2Values");
 
         _phRandomConeChargedIsolation[_nPh] = randomConeIsoUnCorr < 0 ? -1 : std::max(0., randomConeIsoUnCorr - rhoCorrCharged); // keep -1 when randomConeIso algorithm failed
         _phChargedIsolation[_nPh]           = std::max(0., photon->userFloat("phoChargedIsolation") - rhoCorrCharged);
