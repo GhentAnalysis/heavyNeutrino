@@ -37,7 +37,6 @@ class LeptonAnalyzer {
     multilep* multilepAnalyzer;
 
     EffectiveAreas electronsEffectiveAreas;
-    EffectiveAreas electronsEffectiveAreasOld;
     EffectiveAreas muonsEffectiveAreas;
 
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
