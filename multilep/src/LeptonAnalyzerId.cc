@@ -170,8 +170,8 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron, LeptonMvaHelp
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
-            _relIso[_nL],
-            _relIso0p4[_nL],
+            _relIsoOld[_nL], // using old effectiveAreas
+            _relIso0p4Old[_nL], // using old effectiveAreas
             _lElectronMvaSummer16GP[_nL],
             _lElectronMvaSummer16HZZ[_nL],
             _lElectronMvaFall17v1NoIso[_nL]

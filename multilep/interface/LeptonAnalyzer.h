@@ -37,6 +37,7 @@ class LeptonAnalyzer {
     multilep* multilepAnalyzer;
 
     EffectiveAreas electronsEffectiveAreas;
+    EffectiveAreas electronsEffectiveAreasOld;
     EffectiveAreas muonsEffectiveAreas;
 
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
@@ -67,6 +68,8 @@ class LeptonAnalyzer {
 
     double _relIso[nL_max];                                                                          //lepton isolation variables
     double _relIso0p4[nL_max];                                                                       //lepton isolation variables
+    double _relIsoOld[nL_max];                                                                       //lepton isolation variables, not stored
+    double _relIso0p4Old[nL_max];                                                                    //lepton isolation variables, not stored
     double _relIso0p4MuDeltaBeta[nL_max];                                                            //lepton isolation variables
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];
@@ -153,10 +156,10 @@ class LeptonAnalyzer {
 
     // In leptonAnalyzerIso,cc
     double getRelIso03(const pat::Muon&, const double) const;
-    double getRelIso03(const pat::Electron&, const double) const;
-    double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta = false) const;
-    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged = false) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged = false) const;
+    double getRelIso03(const pat::Electron&, const double, bool oldEffAreas=false) const;
+    double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta=false) const;
+    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged=false, bool oldEffAreas=false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false, bool oldEffAreas=false) const;
 
     // In LeptonAnalyzerId.cc
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately

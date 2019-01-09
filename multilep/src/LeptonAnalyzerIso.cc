@@ -17,15 +17,17 @@ double LeptonAnalyzer::getRelIso03(const pat::Muon& mu, const double rho) const{
     return absIso/mu.pt();
 }
 
-double LeptonAnalyzer::getRelIso03(const pat::Electron& ele, const double rho) const{
-    double puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
+double LeptonAnalyzer::getRelIso03(const pat::Electron& ele, const double rho, bool oldEffAreas) const{
+    double puCorr;
+    if(oldEffAreas) puCorr = rho*electronsEffectiveAreasOld.getEffectiveArea(ele.superCluster()->eta());
+    else            puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
     double absIso = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - puCorr);
     return absIso/ele.pt();
 }
 
 
 double LeptonAnalyzer::getRelIso(const reco::RecoCandidate& ptcl, edm::Handle<pat::PackedCandidateCollection> pfcands,
-        double coneSize, double rho, const bool onlyCharged) const{
+        double coneSize, double rho, const bool onlyCharged, bool oldEffAreas) const{
     bool deltaBeta   = false;
     double deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);
     if(ptcl.isElectron() and fabs(ptcl.superCluster()->eta()) >1.479){ deadcone_ch = 0.015;  deadcone_pu = 0.015; deadcone_ph = 0.08; deadcone_nh = 0;}
@@ -55,7 +57,8 @@ double LeptonAnalyzer::getRelIso(const reco::RecoCandidate& ptcl, edm::Handle<pa
     if(ptcl.isMuon()){
         puCorr = rho*muonsEffectiveAreas.getEffectiveArea(ptcl.eta());
     } else{
-        puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
+        if(oldEffAreas) puCorr = rho*electronsEffectiveAreasOld.getEffectiveArea(ptcl.superCluster()->eta());
+        else            puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
     }
 
     double iso;
@@ -68,10 +71,10 @@ double LeptonAnalyzer::getRelIso(const reco::RecoCandidate& ptcl, edm::Handle<pa
 
 
 double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Handle<pat::PackedCandidateCollection> pfcands,
-        double r_iso_min, double r_iso_max, double kt_scale, double rho, const bool onlyCharged) const{
+        double r_iso_min, double r_iso_max, double kt_scale, double rho, const bool onlyCharged, bool oldEffAreas) const{
     //compute the miniIsolation cone
     double max_pt = kt_scale/r_iso_min;
     double min_pt = kt_scale/r_iso_max;
     double r_iso  = kt_scale/std::max(std::min(ptcl.pt(), max_pt), min_pt);
-    return getRelIso(ptcl, pfcands, r_iso, rho, onlyCharged);
+    return getRelIso(ptcl, pfcands, r_iso, rho, onlyCharged, oldEffAreas);
 }
