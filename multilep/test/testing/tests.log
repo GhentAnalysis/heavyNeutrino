@@ -1,33 +1,61 @@
-commit a9f9c2aac1488fb81edfdceabf892851bb6b4555
+commit b8f06f2a37a30c9f69dd076c907f7f9f28a95df9
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 9 15:18:02 2019 +0100
+Date:   Wed Jan 9 16:25:43 2019 +0100
 
-    Remove useless and confusing code which really does nothing except for being included and being there
+    Fall17_V2 soon becoming available after merge of https://github.com/cms-egamma/cmssw/pull/30
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   Changed:
+      _lElectronMvaFall17Iso                             mean:  -0.9996 -->  -0.9962     rms:   0.0009 -->   0.0032    
+      _lElectronMvaFall17NoIso                           mean:  -0.9929 -->  -0.9916     rms:   0.0151 -->   0.0116    
+      _phMva                                             mean:  -0.8551 -->  -0.8290     rms:   0.3824 -->   0.3970    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   Changed:
+      _lElectronMvaFall17Iso                             mean:  -0.9995 -->  -0.9944     rms:   0.0003 -->   0.0049    
+      _lElectronMvaFall17NoIso                           mean:  -0.9995 -->  -0.9929     rms:   0.0005 -->   0.0064    
+      _phMva                                             mean:  -0.6441 -->  -0.6372     rms:   0.6108 -->   0.5779    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   Changed:
+      _lElectronMvaFall17Iso                             mean:  -0.1413 -->  -0.2972     rms:   0.9224 -->   0.8478    
+      _lElectronMvaFall17NoIso                           mean:  -0.0138 -->  -0.1760     rms:   0.9537 -->   0.8571    
+      _phMva                                             mean:  -0.5298 -->  -0.4446     rms:   0.6497 -->   0.7025    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   Changed:
+      _lElectronMvaFall17Iso                             mean:  -0.4009 -->  -0.4906     rms:   0.8296 -->   0.7697    
+      _lElectronMvaFall17NoIso                           mean:  -0.2013 -->  -0.3819     rms:   0.8830 -->   0.7710    
+      _phMva                                             mean:  -0.6492 -->  -0.5615     rms:   0.5715 -->   0.6273    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _lElectronMvaFall17Iso                             mean:   0.3972 -->   0.3096     rms:   0.6390 -->   0.6014    
+      _lElectronMvaFall17NoIso                           mean:   0.4111 -->   0.2745     rms:   0.6175 -->   0.6097    
+      _phMva                                             mean:   0.1578 -->   0.2698     rms:   0.7043 -->   0.7034    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _lElectronMvaFall17Iso                             mean:   0.3640 -->   0.3344     rms:   0.5573 -->   0.5144    
+      _lElectronMvaFall17NoIso                           mean:   0.3687 -->   0.2992     rms:   0.5466 -->   0.4858    
+      _phMva                                             mean:   0.2028 -->   0.2636     rms:   0.7478 -->   0.7686    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _lElectronMvaFall17Iso                             mean:  -0.9944 -->  -0.9668     rms:   0.0070 -->   0.0618    
+      _lElectronMvaFall17NoIso                           mean:  -0.9821 -->  -0.9497     rms:   0.0340 -->   0.0848    
+      _phMva                                             mean:  -0.6351 -->  -0.5798     rms:   0.5678 -->   0.6009    
