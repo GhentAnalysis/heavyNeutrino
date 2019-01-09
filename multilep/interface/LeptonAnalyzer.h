@@ -14,7 +14,6 @@
 //include other parts of the framework
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
-#include "heavyNeutrino/multilep/interface/LeptonIdHelper.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
 
 //include ROOT classes
@@ -32,7 +31,6 @@ class GenMatching;
 
 class LeptonAnalyzer {
   //Friend classes and functions
-  friend class LeptonIdHelper;
   friend class multilep;
   private:
     //this has to come before the effective areas as their initialization depends on it!
