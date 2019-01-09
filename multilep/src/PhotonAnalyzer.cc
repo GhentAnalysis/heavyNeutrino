@@ -31,7 +31,6 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_phNeutralHadronIsolation",           &_phNeutralHadronIsolation,       "_phNeutralHadronIsolation[_nPh]/D");
     outputTree->Branch("_phPhotonIsolation",                  &_phPhotonIsolation,              "_phPhotonIsolation[_nPh]/D");
     outputTree->Branch("_phSigmaIetaIeta",                    &_phSigmaIetaIeta,                "_phSigmaIetaIeta[_nPh]/D");
-    outputTree->Branch("_phSigmaIetaIphi",                    &_phSigmaIetaIphi,                "_phSigmaIetaIphi[_nPh]/D");
     outputTree->Branch("_phHadronicOverEm",                   &_phHadronicOverEm,               "_phHadronicOverEm[_nPh]/D");
     outputTree->Branch("_phPassElectronVeto",                 &_phPassElectronVeto,             "_phPassElectronVeto[_nPh]/O");
     outputTree->Branch("_phHasPixelSeed",                     &_phHasPixelSeed,                 "_phHasPixelSeed[_nPh]/O");
@@ -63,14 +62,6 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
 
 bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Photon>> photons;                   iEvent.getByToken(multilepAnalyzer->photonToken,                       photons);
-    edm::Handle<edm::ValueMap<bool>> photonsCutBasedLoose;           iEvent.getByToken(multilepAnalyzer->photonCutBasedLooseToken,          photonsCutBasedLoose);
-    edm::Handle<edm::ValueMap<bool>> photonsCutBasedMedium;          iEvent.getByToken(multilepAnalyzer->photonCutBasedMediumToken,         photonsCutBasedMedium);
-    edm::Handle<edm::ValueMap<bool>> photonsCutBasedTight;           iEvent.getByToken(multilepAnalyzer->photonCutBasedTightToken,          photonsCutBasedTight);
-    edm::Handle<edm::ValueMap<float>> photonsMva;                    iEvent.getByToken(multilepAnalyzer->photonMvaToken,                    photonsMva);
-    edm::Handle<edm::ValueMap<float>> photonsChargedIsolation;       iEvent.getByToken(multilepAnalyzer->photonChargedIsolationToken,       photonsChargedIsolation);
-    edm::Handle<edm::ValueMap<float>> photonsNeutralHadronIsolation; iEvent.getByToken(multilepAnalyzer->photonNeutralHadronIsolationToken, photonsNeutralHadronIsolation);
-    edm::Handle<edm::ValueMap<float>> photonsPhotonIsolation;        iEvent.getByToken(multilepAnalyzer->photonPhotonIsolationToken,        photonsPhotonIsolation);
-    edm::Handle<edm::ValueMap<float>> photonsFull5x5SigmaIEtaIPhi;   iEvent.getByToken(multilepAnalyzer->photonFull5x5SigmaIEtaIPhiToken,   photonsFull5x5SigmaIEtaIPhi);
     edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
     edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(multilepAnalyzer->vtxToken,                          vertices);
     edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
@@ -98,18 +89,19 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         _phEtaSC[_nPh]                      = photon->superCluster()->eta();
         _phPhi[_nPh]                        = photon->phi();
         _phE[_nPh]                          = photon->energy();
-        _phCutBasedLoose[_nPh]              = (*photonsCutBasedLoose)[photonRef];
-        _phCutBasedMedium[_nPh]             = (*photonsCutBasedMedium)[photonRef];
-        _phCutBasedTight[_nPh]              = (*photonsCutBasedTight)[photonRef];
-        _phMva[_nPh]                        = (*photonsMva)[photonRef];
+        _phCutBasedLoose[_nPh]              = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-loose");
+        _phCutBasedMedium[_nPh]             = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-medium");
+        _phCutBasedTight[_nPh]              = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-tight");
+        _phMva[_nPh]                        = photon->userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values");
+        std::cout << "Temporary using Fall17 v1p1 photon values, the v2 values will become available really soon" << std::endl;
+//        _phMva[_nPh]                        = photon->userFloat("PhotonMVAEstimatorRunIIFall17v2Values");
 
         _phRandomConeChargedIsolation[_nPh] = randomConeIsoUnCorr < 0 ? -1 : std::max(0., randomConeIsoUnCorr - rhoCorrCharged); // keep -1 when randomConeIso algorithm failed
-        _phChargedIsolation[_nPh]           = std::max(0., (*photonsChargedIsolation)[photonRef] - rhoCorrCharged);
-        _phNeutralHadronIsolation[_nPh]     = std::max(0., (*photonsNeutralHadronIsolation)[photonRef] - rhoCorrNeutral);
-        _phPhotonIsolation[_nPh]            = std::max(0., (*photonsPhotonIsolation)[photonRef] - rhoCorrPhotons);
+        _phChargedIsolation[_nPh]           = std::max(0., photon->userFloat("phoChargedIsolation") - rhoCorrCharged);
+        _phNeutralHadronIsolation[_nPh]     = std::max(0., photon->userFloat("phoNeutralHadronIsolation") - rhoCorrNeutral);
+        _phPhotonIsolation[_nPh]            = std::max(0., photon->userFloat("phoPhotonIsolation") - rhoCorrPhotons);
 
         _phSigmaIetaIeta[_nPh]              = photon->full5x5_sigmaIetaIeta();
-        _phSigmaIetaIphi[_nPh]              = (*photonsFull5x5SigmaIEtaIPhi)[photonRef];
         _phHadronicOverEm[_nPh]             = photon->hadronicOverEm();
         _phPassElectronVeto[_nPh]           = photon->passElectronVeto();
         _phHasPixelSeed[_nPh]               = photon->hasPixelSeed();
