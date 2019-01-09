@@ -214,8 +214,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
         _relIso0p4[_nL]                 = getRelIso(*ele, packedCands, 0.4, *rho, false);
-        _relIsoOld[_nL]                 = getRelIso03(*ele, *rho, true);                        // not stored, used to stay compatible for leptonMva
-        _relIso0p4Old[_nL]              = getRelIso(*ele, packedCands, 0.4, *rho, false, true); // not stored, used to stay compatible for leptonMva
         _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);
         _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
         _lElectronMvaSummer16GP[_nL]    = ele->userFloat("ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"); // OLD, do not use it

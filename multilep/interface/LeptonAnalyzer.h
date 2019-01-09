@@ -156,10 +156,10 @@ class LeptonAnalyzer {
 
     // In leptonAnalyzerIso,cc
     double getRelIso03(const pat::Muon&, const double) const;
-    double getRelIso03(const pat::Electron&, const double, bool oldEffAreas=false) const;
+    double getRelIso03(const pat::Electron&, const double) const;
     double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta=false) const;
-    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged=false, bool oldEffAreas=false) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false, bool oldEffAreas=false) const;
+    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged=false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false) const;
 
     // In LeptonAnalyzerId.cc
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately
