@@ -176,7 +176,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
-  isSUSY                        = cms.untracked.bool(isSUSY)
+  isSUSY                        = cms.untracked.bool(isSUSY),
+  storeLheParticles             = cms.untracked.bool(False),
 )
 
 ## Change trigger-object label for signal
