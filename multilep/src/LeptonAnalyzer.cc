@@ -166,17 +166,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
         _relIso0p4[_nL]      = getRelIso04(mu, *rho);
         _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, true);
-        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false);
+        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false); // TODO: check how this compares with the MiniIsoLoose,etc... booleans
         _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
         _lHNLoose[_nL]       = isHNLoose(mu);                                                       // ID variables
         _lHNFO[_nL]          = isHNFO(mu);                                                          // don't change order, they rely on above variables
         _lHNTight[_nL]       = isHNTight(mu);
 
-        _lPOGVeto[_nL]       = mu.isLooseMuon();
-        _lPOGLoose[_nL]      = mu.isLooseMuon();
-        _lPOGMedium[_nL]     = mu.isMediumMuon();
-        _lPOGTight[_nL]      = mu.isTightMuon(primaryVertex);
+        _lPOGVeto[_nL]       = mu.passed(reco::Muon::CutBasedIdLoose); // no veto available, so we take loose here
+        _lPOGLoose[_nL]      = mu.passed(reco::Muon::CutBasedIdLoose);
+        _lPOGMedium[_nL]     = mu.passed(reco::Muon::CutBasedIdMedium);
+        _lPOGTight[_nL]      = mu.passed(reco::Muon::CutBasedIdTight);
+        // TODO: consider to add muon MVA
 
         _leptonMvaSUSY16[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY16);
         _leptonMvaTTH16[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH16);
