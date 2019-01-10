@@ -55,6 +55,7 @@ namespace GenTools{
     unsigned provenanceConversion(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 
     bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&); //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
+    bool passParentage(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
 
     //get CMSSW gen match for lepton

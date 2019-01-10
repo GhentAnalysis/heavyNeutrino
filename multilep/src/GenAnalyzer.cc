@@ -70,18 +70,15 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         //store generator level lepton info
         if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
             if(_gen_nL != gen_nL_max){
-                _gen_lPt[_gen_nL]       = p.pt();
-                _gen_lEta[_gen_nL]      = p.eta();
-                _gen_lPhi[_gen_nL]      = p.phi();
-                _gen_lE[_gen_nL]        = p.energy();
-                _gen_lCharge[_gen_nL]   = p.charge();
-                _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
-                _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
-
-                std::set<int> decayChain;
-                GenTools::setDecayChain(p, *genParticles, decayChain);
+                _gen_lPt[_gen_nL]       =      p.pt();
+                _gen_lEta[_gen_nL]           = p.eta();
+                _gen_lPhi[_gen_nL]           = p.phi();
+                _gen_lE[_gen_nL]             = p.energy();
+                _gen_lCharge[_gen_nL]        = p.charge();
+                _gen_lIsPrompt[_gen_nL]      = GenTools::isPrompt(p, *genParticles);
+                _gen_lMomPdg[_gen_nL]        = GenTools::getMother(p, *genParticles)->pdgId();
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
-                _gen_lPassParentage[_gen_nL] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
+                _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
 
                 if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
                 else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
@@ -101,9 +98,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_phIsPrompt[_gen_nPh]      = p.isPromptFinalState();
                 _gen_phMomPdg[_gen_nPh]        = GenTools::getMother(p, *genParticles)->pdgId();
                 _gen_phMinDeltaR[_gen_nPh]     = GenTools::getMinDeltaR(p, *genParticles);
-                std::set<int> decayChain;
-                GenTools::setDecayChain(p, *genParticles, decayChain);
-                _gen_phPassParentage[_gen_nPh] = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37);
+                _gen_phPassParentage[_gen_nPh] = GenTools::passParentage(p, *genParticles);
                 ++_gen_nPh;
             } 
         }
@@ -137,18 +132,14 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         if(fabs(p->eta())>etaCut) continue;
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
-        std::set<int> decayChain;
-        GenTools::setDecayChain(*p, genParticles, decayChain);
-        if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  continue;
-        if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) continue;
-        if(GenTools::getMinDeltaR(*p, genParticles) < 0.2)                          continue;
-        if(not GenTools::hasOnlyIncomingGluonsInChain(*p, genParticles))            continue;
-
-
+        if(GenTools::getMinDeltaR(*p, genParticles) < 0.2) continue;
+        if(not GenTools::passParentage(*p, genParticles))  continue;
 
         // Everything below is *signal*
+        std::set<int> decayChain;
+        GenTools::setDecayChain(*p, genParticles, decayChain);
         const reco::GenParticle* mom = GenTools::getMother(*p, genParticles);
-        if(std::find_if(decayChain.cbegin(), decayChain.cend(), [](const int entry) { return abs(entry) == 24; }) != decayChain.cend() ){
+        if(std::any_of(decayChain.cbegin(), decayChain.cend(), [](const int entry){ return abs(entry) == 24;})){
             if(abs(mom->pdgId()) == 24)     type = std::max(type, 6);      // Type 6: photon directly from W or decay products which are part of ME
             else if(abs(mom->pdgId()) <= 6) type = std::max(type, 4);      // Type 4: photon from quark from W (photon from pythia, rarely)
             else                            type = std::max(type, 5);      // Type 5: photon from lepton from W (photon from pythia)

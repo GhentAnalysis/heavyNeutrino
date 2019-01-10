@@ -122,6 +122,7 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
         }
         if(tauInChain(decayChain))    return W_B_T_L;
         else                          return W_B_L;
+      }
       if(cMesonInChain(decayChain)){
         if(tauInChain(decayChain))    return W_C_T_L;
         else                          return W_C_L;
@@ -138,7 +139,7 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
       if(tauInChain(decayChain))      return B_T_L;
       else                            return B_L;
     }
-    if(cMesonInChain(decayChain))
+    if(cMesonInChain(decayChain)){
       if(tauInChain(decayChain))      return C_T_L;
       else                            return C_L;
     }
@@ -194,6 +195,17 @@ bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::Ge
     return (gen.isPromptFinalState() || gen.isPromptDecayed());
 }
 
+/*
+ * Check if only quarks, leptons, bosons or incoming gluons are in the parentagelist
+ */
+bool GenTools::passParentage(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    std::set<int> decayChain;
+    setDecayChain(gen, genParticles, decayChain);
+    if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  return false;
+    if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) return false;
+    if(not GenTools::hasOnlyIncomingGluonsInChain(gen, genParticles))           return false;
+    return true;
+}
 
 /*
  * Minimum deltaR between a gen particle and other gen particles with pt > ptCut
