@@ -150,7 +150,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     _eventNb   = (unsigned long) iEvent.id().event();
     //determine the met of the event and its uncertainties
     //nominal MET value
-    const pat::MET& met = (*met).front();
+    const pat::MET& met = (*mets).front();
     _met             = met.pt();
     _metPhi          = met.phi();
     //met values with uncertainties varied up and down
