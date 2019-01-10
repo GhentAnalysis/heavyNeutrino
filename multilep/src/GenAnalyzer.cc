@@ -57,9 +57,11 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     _gen_nPh = 0;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
+        int absId = abs(p.pdgId());
+
         //Calculate generator level MET
         if(p.status() == 1){
-            if(abs(p.pdgId()) == 12 || abs(p.pdgId()) == 14 || abs(p.pdgId()) == 16 || (multilepAnalyzer->isSUSY &&  abs(p.pdgId()) == 1000022) ){
+            if(absId == 12 or absId == 14 or absId == 16 or absId == 1000022){
                 TLorentzVector nuVect;
                 nuVect.SetPtEtaPhiE(p.pt(), p.eta(), p.phi(), p.energy());
                 genMetVector += nuVect;
@@ -67,9 +69,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 
         //store generator level lepton info
-        if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
+        if((p.status() == 1 and (absId == 11 or absId == 13)) and (p.status() == 2 and p.isLastCopy() and absId == 15)){
             if(_gen_nL != gen_nL_max){
-                _gen_lPt[_gen_nL]       =      p.pt();
+                _gen_lPt[_gen_nL]            = p.pt();
                 _gen_lEta[_gen_nL]           = p.eta();
                 _gen_lPhi[_gen_nL]           = p.phi();
                 _gen_lE[_gen_nL]             = p.energy();
@@ -87,7 +89,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 
         //store generator level photon info
-        if((p.status() == 1 || p.status() == 71) && abs(p.pdgId()) == 22){
+        if((p.status() == 1 or p.status() == 71) and abdId == 22){
             if(_gen_nPh != gen_nPh_max){
                 _gen_phStatus[_gen_nPh]        = p.status();
                 _gen_phPt[_gen_nPh]            = p.pt();
@@ -109,7 +111,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
 
 /*
- * Some event categorization in order to understand/debug/apply overlap removal for TTGamma <--> TTJets and similar
+ * Some event categorization in order to understand/debug/apply overlap removal for TTGamma <--> TTJets and similar photon samples
  */
 unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const{
     int type = 0;
