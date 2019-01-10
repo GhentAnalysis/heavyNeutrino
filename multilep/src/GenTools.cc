@@ -40,7 +40,7 @@ bool GenTools::bBaryonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::bMesonInChain(const std::set<int>& chain){
-   return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return mod >= 500 && mod < 600; }) != chain.cend();
+   return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return mod >= 500 && mod < 600;});
 }
 
 bool GenTools::cBaryonInChain(const std::set<int>& chain){
@@ -48,7 +48,7 @@ bool GenTools::cBaryonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::cMesonInChain(const std::set<int>& chain){
-    return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return mod >= 400 && mod < 500; }) != chain.cend();
+    return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return mod >= 400 && mod < 500;});
 }
 
 bool GenTools::sBaryonInChain(const std::set<int>& chain){
@@ -56,16 +56,16 @@ bool GenTools::sBaryonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::lightMesonInChain(const std::set<int>& chain){
-    return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return (mod >= 100 && mod < 400) || entry == 21; }) != chain.cend();
+    return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return (mod >= 100 && mod < 400) || entry == 21;});
 }
 
 bool GenTools::lightBaryonInChain(const std::set<int>& chain){
-    return std::find_if(chain.cbegin(), chain.cend(), 
-            [](const int entry){ 
-                if(abs(entry) == 2212) return false; // useless? there are no protons saved in the chain
+    return std::any_of(chain.cbegin(), chain.cend(),
+            [](const int entry){
+                if(abs(entry) == 2212) return false; // useless? there are no protons saved in the chain; actually those wo do appear you want to have here
                 unsigned red = (abs(entry)/1000)%10; 
                 return (red == 1 || red == 2); 
-            }) != chain.cend();
+            });
 }
 
 bool GenTools::pi0InChain(const std::set<int>& chain){
@@ -115,52 +115,38 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
     setDecayChain(gen, genParticles, decayChain);
     //first consider decays involving a boson
     if(bosonInChain(decayChain)){
-        if(bMesonInChain(decayChain)){
-            if(cMesonInChain(decayChain)){
-                if(tauInChain(decayChain)){
-                    return W_B_C_T_L;
-                }
-                return W_B_C_L;
-            } else if(tauInChain(decayChain)){
-                return W_B_T_L;
-            }
-            return W_B_L;
-        } else if(cMesonInChain(decayChain)){
-            if(tauInChain(decayChain)){
-                return W_C_T_L;
-            }
-            return W_C_L;
-        } else if(udsInChain(decayChain)){
-            return pi_0;
-        } else if(tauInChain(decayChain)){
-            return W_T_L;
-        }
-        return W_L;
-    } else if(bMesonInChain(decayChain)){
+      if(bMesonInChain(decayChain)){
         if(cMesonInChain(decayChain)){
-            if(tauInChain(decayChain)){
-                return B_C_T_L;
-            }
-            return B_C_L;
-        } else if(tauInChain(decayChain)){
-            return B_T_L;
+          if(tauInChain(decayChain))  return W_B_C_T_L;
+          else                        return W_B_C_L;
         }
-        return B_L;
-   } else if(cMesonInChain(decayChain)){
-        if(tauInChain(decayChain)){
-            return C_T_L;
-        }
-        return C_L;
-   } else if(bBaryonInChain(decayChain)){
-       return B_Baryon;
-   } else if(cBaryonInChain(decayChain)){
-       return C_Baryon;
-   } else if(udsInChain(decayChain)){
-       return pi_0;
-   } else if(photonInChain(decayChain)){
-       return photon_;
-   }
-   return F_L;
+        if(tauInChain(decayChain))    return W_B_T_L;
+        else                          return W_B_L;
+      if(cMesonInChain(decayChain)){
+        if(tauInChain(decayChain))    return W_C_T_L;
+        else                          return W_C_L;
+      }
+      if(udsInChain(decayChain))      return pi_0;
+      if(tauInChain(decayChain))      return W_T_L;
+      else                            return W_L;
+    }
+    if(bMesonInChain(decayChain)){
+      if(cMesonInChain(decayChain)){
+        if(tauInChain(decayChain))    return B_C_T_L;
+        else                          return B_C_L;
+      }
+      if(tauInChain(decayChain))      return B_T_L;
+      else                            return B_L;
+    }
+    if(cMesonInChain(decayChain))
+      if(tauInChain(decayChain))      return C_T_L;
+      else                            return C_L;
+    }
+    if(bBaryonInChain(decayChain))    return B_Baryon;
+    if(cBaryonInChain(decayChain))    return C_Baryon;
+    if(udsInChain(decayChain))        return pi_0;
+    if(photonInChain(decayChain))     return photon_;
+    return F_L;
 }
 
 unsigned GenTools::provenanceCompressed(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
@@ -169,7 +155,7 @@ unsigned GenTools::provenanceCompressed(const reco::GenParticle& gen, const std:
     if(bMesonInChain(decayChain) || bBaryonInChain(decayChain) ) return 1;          //lepton from heavy flavor decay
     if(cMesonInChain(decayChain) || cBaryonInChain(decayChain) ) return 2;          //lepton from c flavor decay
     if(bosonInChain(decayChain) ) return 0;                                         //lepton from boson
-    if(!decayChain.empty()) return 3;                                               //light flavor fake ????
+    if(!decayChain.empty()) return 3;                                               //light flavor fake
     return 4;                                                                       //unkown origin
 }
 
