@@ -31,7 +31,7 @@ namespace GenTools{
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //return decay chain for a particle;
     void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
-    void setDecayChainVector(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::vector<int>& list);
+    bool hasOnlyIncomingGluonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
 
     //scan decay chain for certain types of particles
     bool bosonInChain(const std::set<int>&);
@@ -55,7 +55,6 @@ namespace GenTools{
     unsigned provenanceConversion(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 
     bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&); //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
-    bool parentGluonIsIncoming(std::vector<int>& list); // Note works with list, to be adapted for set? or to switch everything to list?
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
 
     //get CMSSW gen match for lepton

@@ -136,28 +136,13 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         if(p->pt()<ptCut)         continue;
         if(fabs(p->eta())>etaCut) continue;
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
-/*
+
         std::set<int> decayChain;
         GenTools::setDecayChain(*p, genParticles, decayChain);
         if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  continue;
         if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) continue;
-*/
-        std::vector<int> decayChain;
-        GenTools::setDecayChainVector(*p, genParticles, decayChain);
-        if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)      continue;
-        if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37)     continue;
-
-        bool fromDecayGluon = false;
-        for(auto d : decayChain){
-          if(d==21 and not GenTools::parentGluonIsIncoming(decayChain)) fromDecayGluon = true;
-        }
-        if(fromDecayGluon){
-          for(auto d : decayChain) std::cout << d << " ";
-          std::cout << "\t" << GenTools::parentGluonIsIncoming(decayChain) << std::endl;
-          continue;
-        }
-
         if(GenTools::getMinDeltaR(*p, genParticles) < 0.2)                          continue;
+        if(not GenTools::hasOnlyIncomingGluonsInChain(*p, genParticles))            continue;
 
 
 

@@ -20,13 +20,20 @@ void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<rec
     if(gen.numberOfMothers() > 0) setDecayChain(genParticles[gen.motherRef(0).key()], genParticles, list);
 }
 
-void GenTools::setDecayChainVector(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::vector<int>& list){
-    if((list.empty() or gen.pdgId()!=list.back()) and gen.pdgId() != 2212) list.push_back(gen.pdgId());
-    if(gen.numberOfMothers() > 1) setDecayChainVector(genParticles[gen.motherRef(1).key()], genParticles, list);
-    if(gen.numberOfMothers() > 0) setDecayChainVector(genParticles[gen.motherRef(0).key()], genParticles, list);
+bool GenTools::hasOnlyIncomingGluonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    if(gen.pdgId()==21){
+      std::set<int> decayChain;
+      GenTools::setDecayChain(gen, genParticles, decayChain);
+      if(std::find_if(decayChain.cbegin(), decayChain.cend(), [](const int entry){ return abs(entry) < 7;}) != decayChain.cend()){
+        return false; // found a gluon with a quark in the decay chain
+      }
+    }
+    if(gen.numberOfMothers() > 1 and not hasOnlyIncomingGluonsInChain(genParticles[gen.motherRef(1).key()], genParticles)) return false;
+    if(gen.numberOfMothers() > 0 and not hasOnlyIncomingGluonsInChain(genParticles[gen.motherRef(0).key()], genParticles)) return false;
+    return true;
 }
 
-bool GenTools::bosonInChain(const std::set<int>& chain){
+bool GenTools::bosonInChain(const std::set<int>& chain){ // what is the point of finding a majorana HN here?
    return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry) > 22 && abs(entry) < 26) || (abs(entry) == 9900012); }) != chain.cend();
 }
  
@@ -57,7 +64,7 @@ bool GenTools::lightMesonInChain(const std::set<int>& chain){
 bool GenTools::lightBaryonInChain(const std::set<int>& chain){
     return std::find_if(chain.cbegin(), chain.cend(), 
             [](const int entry){ 
-                if(abs(entry) == 2212) return false;
+                if(abs(entry) == 2212) return false; // useless? there are no protons saved in the chain
                 unsigned red = (abs(entry)/1000)%10; 
                 return (red == 1 || red == 2); 
             }) != chain.cend();
@@ -79,9 +86,6 @@ bool GenTools::udsInChain(const std::set<int>& chain){
     if(sBaryonInChain(chain))       return true;
     if(lightMesonInChain(chain))    return true;
     if(lightBaryonInChain(chain))   return true;
-    /*
-     to consider protons here too? 
-    */
     return false;
 }
 
@@ -167,7 +171,7 @@ unsigned GenTools::provenanceCompressed(const reco::GenParticle& gen, const std:
     if(bMesonInChain(decayChain) || bBaryonInChain(decayChain) ) return 1;          //lepton from heavy flavor decay
     if(cMesonInChain(decayChain) || cBaryonInChain(decayChain) ) return 2;          //lepton from c flavor decay
     if(bosonInChain(decayChain) ) return 0;                                         //lepton from boson
-    if(!decayChain.empty()) return 3;                                               //light flavor fake
+    if(!decayChain.empty()) return 3;                                               //light flavor fake ????
     return 4;                                                                       //unkown origin
 }
 
@@ -206,20 +210,6 @@ bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::Ge
     return (gen.isPromptFinalState() || gen.isPromptDecayed());
 }
 
-
-/*
- * Returns true if an incoming gluon is found in the parental chain
- * (i.e. ignore gluons which have top, W-boson or Z-boson as parent)
- * Works for top-process [might need a more general implementation]
- */
-bool GenTools::parentGluonIsIncoming(std::vector<int>& list){
-  bool gluonEncountered = false;
-  for(auto d : list){
-    if(d==21) gluonEncountered = true;
-    if(gluonEncountered and (abs(d)==6 or d==23 or d==24)) return false;
-  }
-  return true;
-}
 
 /*
  * Minimum deltaR between a gen particle and other gen particles with pt > ptCut

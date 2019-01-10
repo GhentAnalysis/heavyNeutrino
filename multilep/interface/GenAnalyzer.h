@@ -50,7 +50,7 @@ class GenAnalyzer {
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
 
-    //Generator HT (needed when merging HT binned sample with inclusive one)
+    //Generator HT (needed when merging HT binned sample with inclusive one) // <-- I hope this has never been used for merging HT binned samples
     double _gen_HT;
 
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
