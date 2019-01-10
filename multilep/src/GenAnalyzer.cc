@@ -50,8 +50,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     if(!genParticles.isValid()) return;
 
-    _ttgEventType = ttgEventType(*genParticles, 13., 3.0);
-    _zgEventType  = ttgEventType(*genParticles, 10., 2.6);
+    // TODO: when applying overlap for new photon samples: check the pt and eta cuts of the photon
+    _ttgEventType = overlapEventType(*genParticles, 13., 3.0); // for TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8
+    _zgEventType  = overlapEventType(*genParticles, 15., 2.6); // for ZGToLLG_01J_5f_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8
 
     _gen_nL = 0;
     _gen_nPh = 0;
@@ -124,9 +125,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
 
 /*
- * Some event categorization in order to understand/debug/apply overlap removal for TTG <--> TTJets
+ * Some event categorization in order to understand/debug/apply overlap removal for TTGamma <--> TTJets and similar
  */
-unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const{
+unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const{
     int type = 0;
     for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
         if(p->status()<0)         continue;
@@ -135,12 +136,30 @@ unsigned GenAnalyzer::ttgEventType(const std::vector<reco::GenParticle>& genPart
         if(p->pt()<ptCut)         continue;
         if(fabs(p->eta())>etaCut) continue;
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
-
+/*
         std::set<int> decayChain;
         GenTools::setDecayChain(*p, genParticles, decayChain);
         if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  continue;
         if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) continue;
+*/
+        std::vector<int> decayChain;
+        GenTools::setDecayChainVector(*p, genParticles, decayChain);
+        if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)      continue;
+        if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37)     continue;
+
+        bool fromDecayGluon = false;
+        for(auto d : decayChain){
+          if(d==21 and not GenTools::parentGluonIsIncoming(decayChain)) fromDecayGluon = true;
+        }
+        if(fromDecayGluon){
+          for(auto d : decayChain) std::cout << d << " ";
+          std::cout << "\t" << GenTools::parentGluonIsIncoming(decayChain) << std::endl;
+          continue;
+        }
+
         if(GenTools::getMinDeltaR(*p, genParticles) < 0.2)                          continue;
+
+
 
         // Everything below is *signal*
         const reco::GenParticle* mom = GenTools::getMother(*p, genParticles);

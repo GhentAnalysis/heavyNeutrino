@@ -20,6 +20,12 @@ void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<rec
     if(gen.numberOfMothers() > 0) setDecayChain(genParticles[gen.motherRef(0).key()], genParticles, list);
 }
 
+void GenTools::setDecayChainVector(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::vector<int>& list){
+    if((list.empty() or gen.pdgId()!=list.back()) and gen.pdgId() != 2212) list.push_back(gen.pdgId());
+    if(gen.numberOfMothers() > 1) setDecayChainVector(genParticles[gen.motherRef(1).key()], genParticles, list);
+    if(gen.numberOfMothers() > 0) setDecayChainVector(genParticles[gen.motherRef(0).key()], genParticles, list);
+}
+
 bool GenTools::bosonInChain(const std::set<int>& chain){
    return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry) > 22 && abs(entry) < 26) || (abs(entry) == 9900012); }) != chain.cend();
 }

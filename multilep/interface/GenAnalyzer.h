@@ -53,8 +53,7 @@ class GenAnalyzer {
     //Generator HT (needed when merging HT binned sample with inclusive one)
     double _gen_HT;
 
-    //Functions to find the mother of a gen particle
-    unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
+    unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
 
     multilep* multilepAnalyzer;
