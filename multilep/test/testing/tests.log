@@ -1,8 +1,8 @@
-commit aa4c0079e7bc31c93f3a318108e909a72b3d970b
+commit e64d2cf513bfe4c2837ee91014502f62d07ffad9
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 10 16:14:30 2019 +0100
+Date:   Thu Jan 10 16:43:12 2019 +0100
 
-    Make one function to obtain the passParentage boolean, fix some branckets in the provenance function (see unwanted changes in test before)
+    Make meson functions more safe (i.e. do not accidently tag a baryon as meson)
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,22 +23,14 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   Changed:
-      _gen_lPassParentage                                mean:   0.9214 -->   0.9253     rms:   0.2691 -->   0.2628    
-      _lProvenance                                       mean:   8.2979 -->  17.1064     rms:   8.0888 -->   0.9800    
+   Removed: _gen_HT
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Changed:
-      _gen_lPassParentage                                mean:   0.8795 -->   0.8879     rms:   0.3256 -->   0.3154    
-      _gen_phPassParentage                               mean:   0.5378 -->   0.5458     rms:   0.4986 -->   0.4979    
-      _lProvenance                                       mean:   7.0500 -->  17.2200     rms:   7.9491 -->   0.9755    
+   Removed: _gen_HT
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Changed:
-      _gen_lPassParentage                                mean:   0.8894 -->   0.8941     rms:   0.3136 -->   0.3077    
-      _gen_phPassParentage                               mean:   0.7471 -->   0.7586     rms:   0.4347 -->   0.4279    
-      _lProvenance                                       mean:  10.5909 -->  17.3030     rms:   8.1862 -->   0.9530    
+   Removed: _gen_HT
