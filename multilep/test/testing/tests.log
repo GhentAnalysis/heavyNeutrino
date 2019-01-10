@@ -1,8 +1,8 @@
-commit e64d2cf513bfe4c2837ee91014502f62d07ffad9
+commit c7f93e06ac30cdaea022ce4e767406d67e907cd4
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 10 16:43:12 2019 +0100
+Date:   Thu Jan 10 17:19:05 2019 +0100
 
-    Make meson functions more safe (i.e. do not accidently tag a baryon as meson)
+    typo
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,14 +23,50 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   Removed: _gen_HT
+   Changed:
+      _gen_lCharge                                       mean:   0.0000 -->  -0.0059     rms:   0.0000 -->   1.0000    
+      _gen_lE                                            mean:   0.0000 -->  54.8966     rms:   0.0000 --> 123.3528    
+      _gen_lEta                                          mean:   0.0000 -->  -0.1022     rms:   0.0000 -->   2.9701    
+      _gen_lFlavor                                       mean:   0.0000 -->   0.4283     rms:   0.0000 -->   0.7183    
+      _gen_lIsPrompt                                     mean:   0.0000 -->   0.4381     rms:   0.0000 -->   0.4962    
+      _gen_lMinDeltaR                                    mean:   0.0000 -->   2.3641     rms:   0.0000 -->   2.0194    
+      _gen_lMomPdg                                       mean:   0.0000 --> 765.5344     rms:   0.0000 --> 1047.6920   
+      _gen_lPassParentage                                mean:   0.0000 -->   0.9214     rms:   0.0000 -->   0.2691    
+      _gen_lPhi                                          mean:   0.0000 -->  -0.0905     rms:   0.0000 -->   1.7907    
+      _gen_lPt                                           mean:   0.0000 -->  16.0972     rms:   0.0000 -->  27.4531    
+      _gen_nL                                            mean:   0.0000 -->   5.0900     rms:   0.0000 -->   2.7499    
+      _phMatchMCLeptonAN15165                            mean:  -1.0000 -->  -0.1414     rms:   0.0000 -->   1.2805    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Removed: _gen_HT
+   Changed:
+      _gen_lCharge                                       mean:   0.0000 -->  -0.0021     rms:   0.0000 -->   1.0000    
+      _gen_lE                                            mean:   0.0000 --> 119.7990     rms:   0.0000 --> 288.9037    
+      _gen_lEta                                          mean:   0.0000 -->   0.4350     rms:   0.0000 -->   2.8746    
+      _gen_lFlavor                                       mean:   0.0000 -->   0.5243     rms:   0.0000 -->   0.7611    
+      _gen_lIsPrompt                                     mean:   0.0000 -->   0.4905     rms:   0.0000 -->   0.4999    
+      _gen_lMinDeltaR                                    mean:   0.0000 -->   3.2259     rms:   0.0000 -->   2.6665    
+      _gen_lMomPdg                                       mean:   0.0000 --> 705.5962     rms:   0.0000 --> 1056.5494   
+      _gen_lPassParentage                                mean:   0.0000 -->   0.8795     rms:   0.0000 -->   0.3256    
+      _gen_lPhi                                          mean:   0.0000 -->   0.0743     rms:   0.0000 -->   1.8321    
+      _gen_lPt                                           mean:   0.0000 -->  16.9477     rms:   0.0000 -->  23.3485    
+      _gen_nL                                            mean:   0.0000 -->   4.7300     rms:   0.0000 -->   2.3616    
+      _phMatchMCLeptonAN15165                            mean:  -1.0000 -->   0.2097     rms:   0.0000 -->   0.7435    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Removed: _gen_HT
+   Changed:
+      _gen_lCharge                                       mean:   0.0000 -->   0.0024     rms:   0.0000 -->   1.0000    
+      _gen_lE                                            mean:   0.0000 --> 161.9292     rms:   0.0000 --> 330.0607    
+      _gen_lEta                                          mean:   0.0000 -->   0.3142     rms:   0.0000 -->   3.1145    
+      _gen_lFlavor                                       mean:   0.0000 -->   0.5082     rms:   0.0000 -->   0.5093    
+      _gen_lIsPrompt                                     mean:   0.0000 -->   0.4706     rms:   0.0000 -->   0.4991    
+      _gen_lMinDeltaR                                    mean:   0.0000 -->   2.8255     rms:   0.0000 -->   1.4667    
+      _gen_lMomPdg                                       mean:   0.0000 --> 822.4071     rms:   0.0000 --> 1063.5092   
+      _gen_lPassParentage                                mean:   0.0000 -->   0.8894     rms:   0.0000 -->   0.3136    
+      _gen_lPhi                                          mean:   0.0000 -->  -0.1524     rms:   0.0000 -->   1.7460    
+      _gen_lPt                                           mean:   0.0000 -->  22.8508     rms:   0.0000 -->  28.7758    
+      _gen_nL                                            mean:   0.0000 -->   4.2500     rms:   0.0000 -->   2.1184    
+      _phMatchMCLeptonAN15165                            mean:  -1.0000 -->  -0.6500     rms:   0.0000 -->   1.3143    
