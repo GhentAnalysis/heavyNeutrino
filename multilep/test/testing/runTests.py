@@ -49,7 +49,7 @@ print system('eval `scram runtime -sh`;cd $CMSSW_BASE/src;scram b -j 10')
 
 # Starting the test
 with open('tests.log', 'w') as logFile:
-  logFile.write(system("git log -n 1;git diff -- . ':(exclude)*.log'"))
+  logFile.write(system("eval `scram runtime -sh`;git log -n 1;git diff -- . ':(exclude)*.log'"))
 
   def runTest(name, testFile):
     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
