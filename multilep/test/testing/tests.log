@@ -1,8 +1,8 @@
-commit 51d03ebff0f1fa33cdfd4cd16e41360b9973bd71
+commit 8877f9145cf520b692fcf1c546e90bbaf3b89f9b
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 9 17:52:59 2019 +0100
+Date:   Thu Jan 10 17:37:05 2019 +0100
 
-    fix
+    fix passParentage in photon matching + clean-up
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,11 +23,26 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   Removed: _phMatchMCLeptonAN15165,_phMatchMCPhotonAN15165
+   Changed:
+      _phTTGMatchCategory                                mean:   1.9267 -->   1.9319     rms:   1.1044 -->   1.0287    
+      _phTTGMatchEta                                     mean:  -0.3869 -->  -0.0874     rms:   2.5614 -->   2.0379    
+      _phTTGMatchPt                                      mean:  29.6048 -->  27.8528     rms:  27.6051 -->  27.5553    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   Removed: _phMatchMCLeptonAN15165,_phMatchMCPhotonAN15165
+   Changed:
+      _phTTGMatchCategory                                mean:   2.3871 -->   2.4839     rms:   0.9220 -->   0.8180    
+      _phTTGMatchEta                                     mean:  -1.2373 -->  -0.4801     rms:   3.3275 -->   2.1003    
+      _phTTGMatchPt                                      mean:  26.8576 -->  22.6818     rms:  19.6712 -->  20.8323    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Removed: _phMatchMCLeptonAN15165,_phMatchMCPhotonAN15165
+   Changed:
+      _phTTGMatchCategory                                mean:   3.3000 -->   3.2000     rms:   0.9000 -->   0.8718    
+      _phTTGMatchEta                                     mean:  -2.7577 -->  -1.4170     rms:   4.4073 -->   3.2036    
+      _phTTGMatchPt                                      mean:  18.0530 -->  19.4048     rms:  17.4330 -->  16.1304    

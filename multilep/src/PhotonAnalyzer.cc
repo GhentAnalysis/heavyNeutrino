@@ -36,8 +36,6 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_phHasPixelSeed",                     &_phHasPixelSeed,                 "_phHasPixelSeed[_nPh]/O");
     if(!multilepAnalyzer->isData){
       outputTree->Branch("_phIsPrompt",                       &_phIsPrompt,                     "_phIsPrompt[_nPh]/O");
-      outputTree->Branch("_phMatchMCPhotonAN15165",           &_phMatchMCPhotonAN15165,         "_phMatchMCPhotonAN15165[_nPh]/I");
-      outputTree->Branch("_phMatchMCLeptonAN15165",           &_phMatchMCLeptonAN15165,         "_phMatchMCLeptonAN15165[_nPh]/I");
       outputTree->Branch("_phTTGMatchCategory",               &_phTTGMatchCategory,             "_phTTGMatchCategory[_nPh]/I");
       outputTree->Branch("_phTTGMatchPt",                     &_phTTGMatchPt,                   "_phTTGMatchPt[_nPh]/D");
       outputTree->Branch("_phTTGMatchEta",                    &_phTTGMatchEta,                  "_phTTGMatchEta[_nPh]/D");
@@ -123,7 +121,6 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
 
         if(!multilepAnalyzer->isData){
             fillPhotonGenVars(photon->genParticle());
-            matchAN15165(*photon, genParticles);
             matchCategory(*photon, genParticles);
         }
         ++_nPh;
@@ -185,34 +182,8 @@ double PhotonAnalyzer::randomConeIso(double eta, edm::Handle<std::vector<pat::Pa
     return chargedIsoSum;
 }
 
-// First stage of matching definition as used in AN-15-165
-// Further selection in the matching can be applied on tuple-level
-// Note: accessing GenAnalyzer variables, which should run before the PhotonAnalyzer
-void PhotonAnalyzer::matchAN15165(const pat::Photon& photon, edm::Handle<std::vector<reco::GenParticle>>& genParticles){
-    _phMatchMCPhotonAN15165[_nPh] = -1;
-    for(unsigned i=0; i < multilepAnalyzer->genAnalyzer->_gen_nPh; ++i){
-        double pt  = multilepAnalyzer->genAnalyzer->_gen_phPt[i];
-        double eta = multilepAnalyzer->genAnalyzer->_gen_phEta[i];
-        double phi = multilepAnalyzer->genAnalyzer->_gen_phPhi[i];
-        if((pt-photon.pt())/pt > 1.) continue;
-        if(deltaR(eta, phi, photon.eta(), photon.phi()) > 0.2) continue;
-        _phMatchMCPhotonAN15165[_nPh] = (int)i;
-        break;
-    }
 
-    _phMatchMCLeptonAN15165[_nPh] = -1;
-    for(unsigned i=0; i < multilepAnalyzer->genAnalyzer->_gen_nL; ++i){
-        double pt  = multilepAnalyzer->genAnalyzer->_gen_lPt[i];
-        double eta = multilepAnalyzer->genAnalyzer->_gen_lEta[i];
-        double phi = multilepAnalyzer->genAnalyzer->_gen_lPhi[i];
-        if((pt-photon.pt())/pt > 1.) continue;
-        if(deltaR(eta, phi, photon.eta(), photon.phi()) > 0.2) continue;
-        _phMatchMCLeptonAN15165[_nPh] = (int)i;
-        break;
-    }
-}
-
-// New matching, abandoning the two stage matching, following https://indico.cern.ch/event/686540/contributions/2816395/attachments/1578345/2493189/Dec20_TTGammaChanges.pdf
+// Photon matching as used in TOP-18-010, following https://indico.cern.ch/event/686540/contributions/2816395/attachments/1578345/2493189/Dec20_TTGammaChanges.pdf
 void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::vector<reco::GenParticle>>& genParticles){
     enum matchCategory {UNDEFINED, GENUINE, MISIDELE, HADRONICPHOTON, HADRONICFAKE};
     _phTTGMatchCategory[_nPh] = UNDEFINED;
@@ -224,7 +195,7 @@ void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::v
 
     for(auto& p : *genParticles){
       if(p.status()!=1 and p.status()!=71)  continue;
-      if((p.pt()-photon.pt())/p.pt() > 0.5) continue;
+      if(fabs(p.pt()-photon.pt())/p.pt() > 0.5) continue;
       float myDeltaR = deltaR(p.eta(), p.phi(), photon.eta(), photon.phi());
       if(myDeltaR > 0.1 or myDeltaR > minDeltaR) continue;
       minDeltaR  = myDeltaR;
@@ -234,9 +205,7 @@ void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::v
     if(matched){
       _phTTGMatchPt[_nPh]  = matched->pt();
       _phTTGMatchEta[_nPh] = matched->eta();
-      std::set<int> decayChain;
-      GenTools::setDecayChain(*matched, *genParticles, decayChain);
-      bool passParentage = !(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37 or *(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37); 
+      bool passParentage   = GenTools::passParentage(*matched, *genParticles);
       float minOtherDeltaR = GenTools::getMinDeltaR(*matched, *genParticles);
       if(matched and matched->pdgId() == 22){
         if(passParentage and minOtherDeltaR > 0.2)       _phTTGMatchCategory[_nPh] = GENUINE;

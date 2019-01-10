@@ -31,6 +31,8 @@ namespace GenTools{
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //return decay chain for a particle;
     void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
+    bool hasOnlyIncomingGluonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
+
     //scan decay chain for certain types of particles
     bool bosonInChain(const std::set<int>&);
     bool bBaryonInChain(const std::set<int>&);
@@ -52,10 +54,10 @@ namespace GenTools{
     //check whether photon comes from ME in conversion
     unsigned provenanceConversion(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 
-    //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
-    bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    //find the minimum deltaR between a reco particle and all genparticles
-    double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
+    bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&); //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
+    bool passParentage(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
+    double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
+
     //get CMSSW gen match for lepton
     template<typename Lepton> const reco::GenParticle* getCMSSWGenMatch(const Lepton& lepton){
         return lepton.genParticle();
