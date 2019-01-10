@@ -1,8 +1,8 @@
-commit 1189c468990a924c7be0c935084db4a79421ab63
+commit 399015190254dca6dcba5c99c6eb0efdbfb5c25b
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 10 15:07:19 2019 +0100
+Date:   Thu Jan 10 15:29:49 2019 +0100
 
-    New implementation to check if the gluons in the decay chain are only from the incoming type (and not emitted from a quark)
+    Keep it simple
 
 --------------------------------------------------------------------------------------------------
 
@@ -27,9 +27,6 @@ Running test: Autumn18MiniAOD --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Changed:
-      _ttgEventType                                      mean:   1.1100 -->   1.1700     rms:   1.1304 -->   1.3195    
-      _zgEventType                                       mean:   1.0600 -->   1.1200     rms:   1.1119 -->   1.3060    
 
 --------------------------------------------------------------------------------------------------
 
