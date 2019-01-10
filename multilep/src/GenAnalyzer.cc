@@ -89,7 +89,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 
         //store generator level photon info
-        if((p.status() == 1 or p.status() == 71) and abdId == 22){
+        if((p.status() == 1 or p.status() == 71) and absId == 22){
             if(_gen_nPh != gen_nPh_max){
                 _gen_phStatus[_gen_nPh]        = p.status();
                 _gen_phPt[_gen_nPh]            = p.pt();
