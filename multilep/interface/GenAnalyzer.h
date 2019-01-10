@@ -4,16 +4,12 @@
 #include "FWCore/Framework/interface/Event.h"
 
 #include "heavyNeutrino/multilep/plugins/multilep.h"
-#include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 
 #include "TTree.h"
 
 class multilep;
-class PhotonAnalyzer;
 class GenAnalyzer {
   //class friends
-  friend PhotonAnalyzer;
-
   private:
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;

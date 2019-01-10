@@ -201,6 +201,7 @@ bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::Ge
 bool GenTools::passParentage(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     std::set<int> decayChain;
     setDecayChain(gen, genParticles, decayChain);
+    if(decayChain.size()==0)                                                    return true;
     if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  return false;
     if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) return false;
     if(not GenTools::hasOnlyIncomingGluonsInChain(gen, genParticles))           return false;

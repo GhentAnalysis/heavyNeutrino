@@ -81,9 +81,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
 
-                if(abs(p.pdgId()) == 11)      _gen_lFlavor[_gen_nL] = 0;
-                else if(abs(p.pdgId()) == 13) _gen_lFlavor[_gen_nL] = 1;
-                else                          _gen_lFlavor[_gen_nL] = 2;
+                if(absId == 11)      _gen_lFlavor[_gen_nL] = 0;
+                else if(absId == 13) _gen_lFlavor[_gen_nL] = 1;
+                else                 _gen_lFlavor[_gen_nL] = 2;
                 ++_gen_nL;
             }
         }
