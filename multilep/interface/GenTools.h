@@ -52,10 +52,10 @@ namespace GenTools{
     //check whether photon comes from ME in conversion
     unsigned provenanceConversion(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 
-    //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
-    bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    //find the minimum deltaR between a reco particle and all genparticles
-    double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles);
+    bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&); //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
+    bool parentGluonIsIncoming(std::vector<int>& list); // Note works with list, to be adapted for set? or to switch everything to list?
+    double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
+
     //get CMSSW gen match for lepton
     template<typename Lepton> const reco::GenParticle* getCMSSWGenMatch(const Lepton& lepton){
         return lepton.genParticle();
