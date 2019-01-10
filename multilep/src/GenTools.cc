@@ -40,7 +40,7 @@ bool GenTools::bBaryonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::bMesonInChain(const std::set<int>& chain){
-   return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return mod >= 500 && mod < 600;});
+   return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%10000; return mod >= 500 && mod < 600;});
 }
 
 bool GenTools::cBaryonInChain(const std::set<int>& chain){
@@ -48,7 +48,7 @@ bool GenTools::cBaryonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::cMesonInChain(const std::set<int>& chain){
-    return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return mod >= 400 && mod < 500;});
+    return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%10000; return mod >= 400 && mod < 500;});
 }
 
 bool GenTools::sBaryonInChain(const std::set<int>& chain){
@@ -56,7 +56,7 @@ bool GenTools::sBaryonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::lightMesonInChain(const std::set<int>& chain){
-    return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%1000; return (mod >= 100 && mod < 400) || entry == 21;});
+    return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ unsigned mod = abs(entry)%10000; return (mod >= 100 && mod < 400) || entry == 21;});
 }
 
 bool GenTools::lightBaryonInChain(const std::set<int>& chain){
