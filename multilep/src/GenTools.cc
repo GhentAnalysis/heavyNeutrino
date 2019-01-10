@@ -22,23 +22,21 @@ void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<rec
 
 bool GenTools::hasOnlyIncomingGluonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     if(gen.pdgId()==21){
-      std::set<int> decayChain;
-      GenTools::setDecayChain(gen, genParticles, decayChain);
-      if(std::find_if(decayChain.cbegin(), decayChain.cend(), [](const int entry){ return abs(entry) < 7;}) != decayChain.cend()){
-        return false; // found a gluon with a quark in the decay chain
-      }
+      std::set<int> chain;
+      GenTools::setDecayChain(gen, genParticles, chain);
+      if(std::any_of(chain.cbegin(), chain.cend(), [](const int entry){return abs(entry) < 7;})) return false; // found a gluon with a quark in the decay chain
     }
     if(gen.numberOfMothers() > 1 and not hasOnlyIncomingGluonsInChain(genParticles[gen.motherRef(1).key()], genParticles)) return false;
     if(gen.numberOfMothers() > 0 and not hasOnlyIncomingGluonsInChain(genParticles[gen.motherRef(0).key()], genParticles)) return false;
     return true;
 }
 
-bool GenTools::bosonInChain(const std::set<int>& chain){ // what is the point of finding a majorana HN here?
-   return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry) > 22 && abs(entry) < 26) || (abs(entry) == 9900012); }) != chain.cend();
+bool GenTools::bosonInChain(const std::set<int>& chain){ // what is the point of finding a majorana HN here? and why not Dirac HN?
+   return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry) > 22 && abs(entry) < 26) || (abs(entry) == 9900012);});
 }
  
 bool GenTools::bBaryonInChain(const std::set<int>& chain){
-   return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry)/1000)%10 == 5; }) != chain.cend();
+   return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry)/1000)%10 == 5;});
 }
 
 bool GenTools::bMesonInChain(const std::set<int>& chain){
@@ -46,7 +44,7 @@ bool GenTools::bMesonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::cBaryonInChain(const std::set<int>& chain){
-   return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){return (abs(entry)/1000)%10 == 4; }) != chain.cend();
+   return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry)/1000)%10 == 4;});
 }
 
 bool GenTools::cMesonInChain(const std::set<int>& chain){
@@ -54,7 +52,7 @@ bool GenTools::cMesonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::sBaryonInChain(const std::set<int>& chain){
-    return std::find_if(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry)/1000)%10 == 3; }) != chain.cend(); 
+    return std::any_of(chain.cbegin(), chain.cend(), [](const int entry){ return (abs(entry)/1000)%10 == 3;});
 }
 
 bool GenTools::lightMesonInChain(const std::set<int>& chain){
@@ -71,15 +69,15 @@ bool GenTools::lightBaryonInChain(const std::set<int>& chain){
 }
 
 bool GenTools::pi0InChain(const std::set<int>& chain){
-    return chain.find(111) != chain.cend();  
+    return chain.count(111);
 }
 
 bool GenTools::photonInChain(const std::set<int>& chain){
-    return chain.find(22) != chain.cend();
+    return chain.count(22);
 }
 
 bool GenTools::tauInChain(const std::set<int>& chain){
-    return chain.find(15) != chain.cend() || chain.find(-15) != chain.cend();
+    return chain.count(15) or chain.count(-15);
 }
 
 bool GenTools::udsInChain(const std::set<int>& chain){
