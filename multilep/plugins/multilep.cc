@@ -43,7 +43,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
-    storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
+    storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles")),
     jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
     useTriggerAnalyzer = iConfig.existsAs<edm::InputTag>("recoResults");
