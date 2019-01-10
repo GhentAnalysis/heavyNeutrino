@@ -1,8 +1,8 @@
-commit 51d03ebff0f1fa33cdfd4cd16e41360b9973bd71
+commit f617f2bcaf604a48081eae71c04646579e0ee306
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 9 17:52:59 2019 +0100
+Date:   Thu Jan 10 10:54:13 2019 +0100
 
-    fix
+    Takin over function for incoming gluon and correct minDeltaR for genparticles from CMSSW_8_X branch
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,11 +23,26 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _gen_lMinDeltaR                                    mean:   2.3641 -->   6.7614     rms:   2.0194 -->   4.3131    
+      _gen_phMinDeltaR                                   mean:   0.7354 -->   6.8013     rms:   1.0208 -->   4.3461    
+      _phTTGMatchCategory                                mean:   1.9319 -->   1.7330     rms:   1.0287 -->   1.0166    
+      _ttgEventType                                      mean:   6.8000 -->   7.3400     rms:   2.4000 -->   1.8773    
+      _zgEventType                                       mean:   6.8000 -->   7.3400     rms:   2.4000 -->   1.8773    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _gen_lMinDeltaR                                    mean:   3.2259 -->   6.9875     rms:   2.6665 -->   4.1583    
+      _gen_phMinDeltaR                                   mean:   1.2918 -->   8.7707     rms:   2.1973 -->   3.1430    
+      _phTTGMatchCategory                                mean:   2.4839 -->   2.1290     rms:   0.8180 -->   1.0078    
+      _ttgEventType                                      mean:   1.1700 -->   1.2300     rms:   1.3195 -->   1.4823    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _gen_lMinDeltaR                                    mean:   2.8255 -->   7.7122     rms:   1.4667 -->   3.4204    
+      _gen_phMinDeltaR                                   mean:   0.7366 -->   9.4626     rms:   1.1111 -->   2.1129    
+      _phTTGMatchCategory                                mean:   3.2000 -->   3.1000     rms:   0.8718 -->   0.9950    
