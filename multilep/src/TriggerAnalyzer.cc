@@ -13,7 +13,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   multilepAnalyzer(multilepAnalyzer){
 
   // MET Filters: first add common ones for 2016, 2017, 2018
-  // MET filter are taken in AND (based on the occurence of 'MET' in the allFlags key)
+  // MET filter are taken in AND (based on the occurence of capitalized 'MET' in the allFlags key)
   // References: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#Analysis_Recommendations_for_ana
   allFlags["passMETFilters"] = {"Flag_goodVertices", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter",  "Flag_EcalDeadCellTriggerPrimitiveFilter",
                                 "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"};
@@ -32,7 +32,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
 
   // Triggers, grouped per year
   // Triggers are taken in OR
-  // WARNING/TODO: this is currently a placeholder using the 2017 triggers, please check before starting analysis
+  // WARNING/TODO: the 2018 year is currently a placeholder using the 2017 triggers, please check before starting analysis
   // Also for the other years the triggers might be checked and optimized in detail, could use https://tomc.web.cern.ch/tomc/triggerPrescales to check prescales
   if(multilepAnalyzer->is2018){
     allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
@@ -94,6 +94,9 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["passTrigger_eem"] = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL"};
     allFlags["passTrigger_emm"] = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL"};
     allFlags["passTrigger_mmm"] = {"HLT_TripleMu_12_10_5"};
+
+    allFlags["passTrigger_met"] = {"HLT_MET200", "HLT_MET250", "HLT_MET300", "HLT_MET600", "HLT_MET700", "HLT_PFMET300", "HLT_PFMET400",        // MET cross triggers as used for TTGamma 2016
+                                   "HLT_PFMET500", "HLT_PFMET600", "HLT_PFMET170_HBHECleaned", "HLT_PFMET170_HBHE_BeamHaloCleaned", "HLT_PFMET120_PFMHT120_IDTight"}
   }
 }
 
