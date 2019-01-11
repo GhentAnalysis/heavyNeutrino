@@ -4,7 +4,7 @@
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
     genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
-    genLumiInfoToken(                 consumes<GenLumiInfoHeader, edm::InLumi>(   iConfig.getParameter<edm::InputTag>("genEventInfo"))), //NOT SURE IF THIS WILL WORK, CHECK!
+    genLumiInfoToken(                 consumes<GenLumiInfoHeader, edm::InLumi>(   iConfig.getParameter<edm::InputTag>("genEventInfo"))),
     lheEventInfoToken(                consumes<LHEEventProduct>(                  iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
     pileUpToken(                      consumes<std::vector<PileupSummaryInfo>>(   iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
     genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
@@ -29,8 +29,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     is2018(                                                                       iConfig.getUntrackedParameter<bool>("is2018")),
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
-    //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
+    if(is2017 or is2018) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
     photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
@@ -48,7 +48,6 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
-    //delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -83,12 +82,8 @@ void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm
 
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
-
-    // HLT results could have different size/order in new run, so look up again de index positions
-    triggerAnalyzer->reIndex = true;
-
-    //get Run number
     _runNb = (unsigned long) iRun.id().run();
+    triggerAnalyzer->reIndex = true;                                   // HLT results could have different size/order in new run, so look up again the index positions
 }
 
 // ------------ method called for each event  ------------
@@ -100,35 +95,16 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     //extract number of vertices 
     _nVertex = vertices->size();
     nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
-    if(_nVertex == 0) return;                                      //Don't consider 0 vertex events
+    if(_nVertex == 0) return;                                          //Don't consider 0 vertex events
 
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
-    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
-    if(!photonAnalyzer->analyze(iEvent)) return;
+    if(!photonAnalyzer->analyze(iEvent))                       return;
+    if(!jetAnalyzer->analyze(iEvent))                          return;
+    if(!isData) genAnalyzer->analyze(iEvent);
     triggerAnalyzer->analyze(iEvent);
-    jetAnalyzer->analyze(iEvent);
 
-    //determine event number run number and luminosity block
-    _eventNb   = (unsigned long) iEvent.id().event();
-
-    //store calculated event info in root tree
-    outputTree->Fill();
-}
-
-
-// ------------ method called once each job just after ending the event loop  ------------
-void multilep::endJob(){
-
-}
-
-// ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
-void multilep::fillDescriptions(edm::ConfigurationDescriptions& descriptions){
-
-    //The following says we do not know what parameters are allowed so do no validation
-    // Please change this to state exactly what you do use, even if it is no parameters
-    edm::ParameterSetDescription desc;
-    desc.setUnknown();
-    descriptions.addDefault(desc);
+    _eventNb   = (unsigned long) iEvent.id().event();                  //determine event number run number and luminosity block
+    outputTree->Fill();                                                //store calculated event info in root tree
 }
 
 //define this as a plug-in
