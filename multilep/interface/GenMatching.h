@@ -52,15 +52,11 @@ class GenMatching{
 
     template<typename Lepton> const reco::GenParticle* findGenMatch(const Lepton& lepton) const{
         const reco::GenParticle* match = lepton.genParticle();
-        //short circuit assumed here!
-        if(match == nullptr || match->pdgId() != lepton.pdgId()){
-            return geometricMatch(lepton);
-        }
-        return match;
+        if(match and match->pdgId() == lepton.pdgId()) return match;                  // Take the match found by genParticle() if it exists and its pdgId is the same
+        else                                           return geometricMatch(lepton); // Else do geometric match
     }
 
     bool considerForMatching(const reco::Candidate&, const reco::GenParticle&, const bool differentId = false) const;
-    bool sameParticle(const reco::Candidate&, const reco::GenParticle&) const;
     int matchPdgId;
     int momPdgId;
     bool matchIsPrompt;

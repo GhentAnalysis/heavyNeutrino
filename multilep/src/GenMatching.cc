@@ -23,32 +23,18 @@ const reco::GenParticle* GenMatching::geometricMatch(const reco::Candidate& reco
         }
     } 
     if(minDeltaR > 0.2){
-        if(!differentId){
-            match = geometricMatch(reco, true);
-        } else{
-            //no decent match found!
-            return nullptr;
-        }
+      if(!differentId) match = geometricMatch(reco, true);
+      else             return nullptr;
     }
     return match;
 }
 
 bool GenMatching::considerForMatching(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId) const{
-    //if gen particle is not of same as reco particle
-    if(!sameParticle(reco, gen)){
-        if(!differentId){
-            return false;
-        } else {
-            //allow matching to photons
-            if (abs(gen.pdgId()) != 22) return false;
-        }
+    if(abs(gen.pdgId()) != 22 or !differentId){                //if genparticle is not a photon, or differentId=false
+      if(abs(reco.pdgId()) != abs(gen.pdgId())) return false;  //only consider if gen particle has same pdgId as reco particle
     }
     if(abs(reco.pdgId()) == 15 && abs(gen.pdgId()) == 15) return gen.status() == 2 && gen.isLastCopy();
     return gen.status() == 1;
-}
-
-bool GenMatching::sameParticle(const reco::Candidate& reco, const reco::GenParticle& gen) const{
-    return ( abs(reco.pdgId()) == abs(gen.pdgId()) );
 }
 
 bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
