@@ -52,7 +52,6 @@ class GenAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
 class GenMatching;
-//class JEC;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::WatchRuns, edm::one::SharedResources> {
     //Define other analyzers as friends
@@ -68,10 +67,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         explicit multilep(const edm::ParameterSet&);
         ~multilep();
 
-        static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-        GenAnalyzer*     genAnalyzer;                                                                    //Public because the photonAnalyzer uses some of its helper functions
     private:
-        // Define EDgetTokens to read data from events
         edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
         edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
         edm::EDGetTokenT<GenLumiInfoHeader>                 genLumiInfoToken;
@@ -102,26 +98,28 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
-        virtual void endLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override {}
         virtual void beginRun(const edm::Run&, edm::EventSetup const&) override;
-        virtual void endRun(const edm::Run&, edm::EventSetup const&) override {}
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
-        virtual void endJob() override;
+
+        virtual void endRun(const edm::Run&, edm::EventSetup const&) override {}                         //Unused functions
+        virtual void endLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override {}
+        virtual void endJob() override {};
 
         TriggerAnalyzer*  triggerAnalyzer;
         LeptonAnalyzer*   leptonAnalyzer;
         PhotonAnalyzer*   photonAnalyzer;
         JetAnalyzer*      jetAnalyzer;
         LheAnalyzer*      lheAnalyzer;
+        GenAnalyzer*      genAnalyzer;
         SUSYMassAnalyzer* susyMassAnalyzer;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;
 
-        unsigned long _runNb;                                                                            //event labels
+        unsigned long _runNb;
         unsigned long _lumiBlock;
         unsigned long _eventNb;
-        unsigned      _nVertex;                                                                          //Event variables
+        unsigned      _nVertex;
 
         TH1D* nVertices;                                                                                 //Histogram with number of vertices
 };
