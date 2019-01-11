@@ -1,7 +1,7 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
-#include "heavyNeutrino/multilep/interface/GenMatching.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
+#include "heavyNeutrino/multilep/interface/GenTools.h"
 #include "TLorentzVector.h"
 #include <algorithm>
 
@@ -17,7 +17,6 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     leptonMvaComputerTTH17    = new LeptonMvaHelper(iConfig, 1, true);  // TTH
     leptonMvaComputertZqTTV16 = new LeptonMvaHelper(iConfig, 2, false); // tZq/TTV
     leptonMvaComputertZqTTV17 = new LeptonMvaHelper(iConfig, 2, true);  // tZq/TTV
-    if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer);
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
@@ -27,7 +26,6 @@ LeptonAnalyzer::~LeptonAnalyzer(){
     delete leptonMvaComputerSUSY17;
     delete leptonMvaComputerTTH17;
     delete leptonMvaComputertZqTTV17;
-    if(!multilepAnalyzer->isData) delete genMatcher;
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
@@ -132,15 +130,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
     edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
   //edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetSmearedToken,                   jets);  // Are we sure we do not want the smeared jets here???
+    edm::Handle<std::vector<reco::GenParticle>> genParticles;        iEvent.getByToken(multilepAnalyzer->genParticleToken,                  genParticles);
 
     _nL     = 0;
     _nLight = 0;
     _nMu    = 0;
     _nEle   = 0;
     _nTau   = 0;
-
-    //set up generator matching
-    if(!multilepAnalyzer->isData) genMatcher->setGenParticles(iEvent);
 
     // loop over muons
     // muons need to be run first, because some ID's need to calculate a muon veto for electrons
@@ -155,7 +151,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(_dxy[_nL]) > 0.05)                     continue;
         if(fabs(_dz[_nL]) > 0.1)                       continue;
         fillLeptonKinVars(mu);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, genMatcher);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, *genParticles);
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
 
         _lFlavor[_nL]        = 1;
@@ -206,7 +202,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(_dxy[_nL]) > 0.05)                                                                      continue;
         if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
         fillLeptonKinVars(*ele);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, genMatcher);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, *genParticles);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
         _lFlavor[_nL]                   = 0;
@@ -284,7 +280,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(tau.eta()) > 2.3) continue;
         //if(!tau.tauID("decayModeFinding")) continue;
         fillLeptonKinVars(tau);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
         fillLeptonImpactParameters(tau, primaryVertex);
         if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino  --> is this a standard cut? reference?
 
@@ -344,14 +340,16 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
     _lCharge[_nL] = lepton.charge();
 }
 
-template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher){
-    genMatcher->fillMatchingVars(lepton);
-    _lIsPrompt[_nL]             = genMatcher->promptMatch();
-    _lMatchPdgId[_nL]           = genMatcher->pdgIdMatch();
-    _lMomPdgId[_nL]             = genMatcher->pdgIdMom();
-    _lProvenance[_nL]           = genMatcher->getProvenance();
-    _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
-    _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
+template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
+    const reco::GenParticle* match = lepton.genParticle();
+    if(!match or match->pdgId() != lepton.pdgId()) match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
+
+    _lIsPrompt[_nL]             = match and (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) and GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
+    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
+    _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
+    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
+    _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
+    _lMomPdgId[_nL]             = match ? (GenTools::getMother(*match, genParticles))->pdgId() : 0;
 }
 
 

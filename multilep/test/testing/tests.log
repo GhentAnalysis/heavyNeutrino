@@ -1,45 +1,42 @@
-commit 3bb8b5f1334123f8e0121ea23dfb964ad023c3f6
+commit 04b25c36d0483b0d23a936bdf7eb9adc5accfa93
 Author: tomc <tomc@cern.ch>
-Date:   Fri Jan 11 12:44:08 2019 +0100
+Date:   Fri Jan 11 18:40:12 2019 +0100
 
-    implementation of the updated ecalBadCalibReducedMINIAODFilter
+    Thosw two got mixed up, fixing it and restoring all values again to the old behaviour
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _HLT_MET200,_HLT_MET200_prescale,_HLT_MET250,_HLT_MET250_prescale,_HLT_MET300,_HLT_MET300_prescale,_HLT_MET600,_HLT_MET600_prescale,_HLT_MET700,_HLT_MET700_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET170_HBHECleaned,_HLT_PFMET170_HBHECleaned_prescale,_HLT_PFMET170_HBHE_BeamHaloCleaned,_HLT_PFMET170_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET300,_HLT_PFMET300_prescale,_HLT_PFMET400,_HLT_PFMET400_prescale,_HLT_PFMET500,_HLT_PFMET500_prescale,_HLT_PFMET600,_HLT_PFMET600_prescale,_passTrigger_met
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
+   Changed:
+      _lProvenanceCompressed                             mean:   0.2553 -->   0.4894     rms:   0.8945 -->   1.1523    
+      _lProvenanceConversion                             mean:  90.6667 -->   3.5957     rms:  27.3241 -->  18.2974    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
+   Changed:
+      _lProvenanceCompressed                             mean:   0.1900 -->   0.2200     rms:   0.8330 -->   0.8784    
+      _lProvenanceConversion                             mean:  98.0200 -->   4.9500     rms:   9.7509 -->  21.5765    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _HLT_MET200,_HLT_MET200_prescale,_HLT_MET250,_HLT_MET250_prescale,_HLT_MET300,_HLT_MET300_prescale,_HLT_MET600,_HLT_MET600_prescale,_HLT_MET700,_HLT_MET700_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET170_HBHECleaned,_HLT_PFMET170_HBHECleaned_prescale,_HLT_PFMET170_HBHE_BeamHaloCleaned,_HLT_PFMET170_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET300,_HLT_PFMET300_prescale,_HLT_PFMET400,_HLT_PFMET400_prescale,_HLT_PFMET500,_HLT_PFMET500_prescale,_HLT_PFMET600,_HLT_PFMET600_prescale,_passTrigger_met
+   Changed:
+      _lProvenanceCompressed                             mean:   0.1515 -->   1.4242     rms:   0.7123 -->   1.5232    
+      _lProvenanceConversion                             mean:  97.5303 -->   3.0303     rms:  11.8491 -->  16.9670    

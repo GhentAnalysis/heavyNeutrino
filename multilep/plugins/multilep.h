@@ -39,7 +39,6 @@
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
-#include "heavyNeutrino/multilep/interface/GenMatching.h"
 
 //
 // class declaration
@@ -51,7 +50,6 @@ class JetAnalyzer;
 class GenAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
-class GenMatching;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::WatchRuns, edm::one::SharedResources> {
     //Define other analyzers as friends
@@ -62,7 +60,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
     friend GenAnalyzer;
     friend LheAnalyzer;
     friend SUSYMassAnalyzer;
-    friend GenMatching;
     public:
         explicit multilep(const edm::ParameterSet&);
         ~multilep();
