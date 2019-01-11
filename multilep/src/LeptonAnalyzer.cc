@@ -347,8 +347,8 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lIsPrompt[_nL]             = match and (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) and GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
     _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
-    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles);
-    _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles, _lIsPrompt[_nL]);
+    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
+    _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
     _lMomPdgId[_nL]             = match ? (GenTools::getMother(*match, genParticles))->pdgId() : 0;
 }
 

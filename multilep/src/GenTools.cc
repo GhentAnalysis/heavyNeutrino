@@ -152,7 +152,8 @@ unsigned GenTools::provenance(const reco::GenParticle* gen, const std::vector<re
     return F_L;
 }
 
-unsigned GenTools::provenanceCompressed(const reco::GenParticle* gen, const std::vector<reco::GenParticle>& genParticles){
+unsigned GenTools::provenanceCompressed(const reco::GenParticle* gen, const std::vector<reco::GenParticle>& genParticles, bool isPrompt){
+    if(isPrompt) return 0; // This was how it was also defined in the old GenMatching code
     if(!gen) return 4;
 
     std::set<int> decayChain;
@@ -164,13 +165,12 @@ unsigned GenTools::provenanceCompressed(const reco::GenParticle* gen, const std:
     return 4;                                                                       //unkown origin
 }
 
-unsigned GenTools::provenanceConversion(const reco::GenParticle* photon, const std::vector<reco::GenParticle>& genParticles, bool isPrompt){
+unsigned GenTools::provenanceConversion(const reco::GenParticle* photon, const std::vector<reco::GenParticle>& genParticles){
     //https://hypernews.cern.ch/HyperNews/CMS/get/susy-interpretations/192.html
     //99: not a photon
-    //0: direct prompt photon (prompt and delta R with ME parton > 0.05) or a promp lepton [this is how it was and still is implemented, I would assume 99 makes more sense for the second category]
+    //0: direct prompt photon (prompt and delta R with ME parton > 0.05)
     //1: fragmentation photon (prompt and delta R with ME parton < 0.05)
     //2: non-prompt photon
-    if(isPrompt)                         return 0;
     if(!photon or photon->pdgId() != 22) return 99;
     if(!photon->isPromptFinalState())    return 2;
     if(photon->pt() < 10)                return 1;
