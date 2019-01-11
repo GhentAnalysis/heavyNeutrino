@@ -12,7 +12,7 @@ const reco::GenParticle* GenMatching::geometricMatch(const reco::Candidate& reco
     reco::GenParticle const* match = nullptr;
     TLorentzVector recoV(reco.px(), reco.py(), reco.pz(), reco.energy());
     double minDeltaR = 99999.;
-    for(std::vector<reco::GenParticle>::const_iterator genIt = genParticles->cbegin(); genIt != genParticles->cend(); ++genIt){
+    for(auto genIt = genParticles->cbegin(); genIt != genParticles->cend(); ++genIt){
         if(considerForMatching(reco, *genIt, differentId) ){
             TLorentzVector genV(genIt->px(), genIt->py(), genIt->pz(), genIt->energy());
             double deltaR = recoV.DeltaR(genV);
@@ -35,9 +35,4 @@ bool GenMatching::considerForMatching(const reco::Candidate& reco, const reco::G
     }
     if(abs(reco.pdgId()) == 15 && abs(gen.pdgId()) == 15) return gen.status() == 2 && gen.isLastCopy();
     return gen.status() == 1;
-}
-
-bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
-    if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPrompt(match, *genParticles);
-    return false;
 }

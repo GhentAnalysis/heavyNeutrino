@@ -347,11 +347,11 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 
 template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher, const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* match = genMatcher->findGenMatch(lepton);
-    _lIsPrompt[_nL]             = match ? genMatcher->isPrompt(lepton, *match) : false;
+    _lIsPrompt[_nL]             = match and (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) and GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
-    _lProvenance[_nL]           = match ? GenTools::provenance(*match, genParticles) : 18;
-    _lProvenanceCompressed[_nL] = match ? (_lIsPrompt[_nL] ? 0 : GenTools::provenanceCompressed(*match, genParticles)) : 4;
-    _lProvenanceConversion[_nL] = match ? GenTools::provenanceConversion(*match, genParticles) : 99;
+    _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
+    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles);
+    _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
     _lMomPdgId[_nL]             = match ? (GenTools::getMother(*match, genParticles))->pdgId() : 0;
 }
 

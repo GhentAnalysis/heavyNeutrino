@@ -110,9 +110,11 @@ enum decayType {
     F_L
 };
 
-unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+unsigned GenTools::provenance(const reco::GenParticle* gen, const std::vector<reco::GenParticle>& genParticles){
+    if(!gen) return F_L; 
+
     std::set<int> decayChain;
-    setDecayChain(gen, genParticles, decayChain);
+    setDecayChain(*gen, genParticles, decayChain);
     //first consider decays involving a boson
     if(bosonInChain(decayChain)){
       if(bMesonInChain(decayChain)){
@@ -150,9 +152,11 @@ unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<re
     return F_L;
 }
 
-unsigned GenTools::provenanceCompressed(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+unsigned GenTools::provenanceCompressed(const reco::GenParticle* gen, const std::vector<reco::GenParticle>& genParticles){
+    if(!gen) return 4;
+
     std::set<int> decayChain;
-    setDecayChain(gen, genParticles, decayChain);
+    setDecayChain(*gen, genParticles, decayChain);
     if(bMesonInChain(decayChain) || bBaryonInChain(decayChain) ) return 1;          //lepton from heavy flavor decay
     if(cMesonInChain(decayChain) || cBaryonInChain(decayChain) ) return 2;          //lepton from c flavor decay
     if(bosonInChain(decayChain) ) return 0;                                         //lepton from boson
@@ -160,17 +164,17 @@ unsigned GenTools::provenanceCompressed(const reco::GenParticle& gen, const std:
     return 4;                                                                       //unkown origin
 }
 
-unsigned GenTools::provenanceConversion(const reco::GenParticle& photon, const std::vector<reco::GenParticle>& genParticles) {
+unsigned GenTools::provenanceConversion(const reco::GenParticle* photon, const std::vector<reco::GenParticle>& genParticles) {
     //https://hypernews.cern.ch/HyperNews/CMS/get/susy-interpretations/192.html
     //99: not a photon
     //0: direct prompt photon (prompt and delta R with ME parton > 0.05)
     //1: fragmentation photon (prompt and delta R with ME parton < 0.05)
     //2: non-prompt photon
-    if (photon.pdgId() != 22) return 99;
-    if (!photon.isPromptFinalState()) return 2;
-    if (photon.pt() < 10) return 1;
+    if (!photon or photon->pdgId() != 22) return 99;
+    if (!photon->isPromptFinalState()) return 2;
+    if (photon->pt() < 10) return 1;
 
-    TLorentzVector photonVec(photon.px(), photon.py(), photon.pz(), photon.energy() );
+    TLorentzVector photonVec(photon->px(), photon->py(), photon->pz(), photon->energy() );
     for(auto& parton : genParticles){
 
         //only compare photon to ME partons
