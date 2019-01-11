@@ -30,6 +30,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
 {
+    if(is2017 or is2018) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
     photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
