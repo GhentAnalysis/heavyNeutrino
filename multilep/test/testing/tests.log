@@ -1,48 +1,45 @@
-commit 8877f9145cf520b692fcf1c546e90bbaf3b89f9b
+commit 3bb8b5f1334123f8e0121ea23dfb964ad023c3f6
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 10 17:37:05 2019 +0100
+Date:   Fri Jan 11 12:44:08 2019 +0100
 
-    fix passParentage in photon matching + clean-up
+    implementation of the updated ecalBadCalibReducedMINIAODFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   New: _updated_ecalBadCalibFilter
+   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   New: _updated_ecalBadCalibFilter
+   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   New: _updated_ecalBadCalibFilter
+   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   New: _HLT_MET200,_HLT_MET200_prescale,_HLT_MET250,_HLT_MET250_prescale,_HLT_MET300,_HLT_MET300_prescale,_HLT_MET600,_HLT_MET600_prescale,_HLT_MET700,_HLT_MET700_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET170_HBHECleaned,_HLT_PFMET170_HBHECleaned_prescale,_HLT_PFMET170_HBHE_BeamHaloCleaned,_HLT_PFMET170_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET300,_HLT_PFMET300_prescale,_HLT_PFMET400,_HLT_PFMET400_prescale,_HLT_PFMET500,_HLT_PFMET500_prescale,_HLT_PFMET600,_HLT_PFMET600_prescale,_passTrigger_met
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   Removed: _phMatchMCLeptonAN15165,_phMatchMCPhotonAN15165
-   Changed:
-      _phTTGMatchCategory                                mean:   1.9267 -->   1.9319     rms:   1.1044 -->   1.0287    
-      _phTTGMatchEta                                     mean:  -0.3869 -->  -0.0874     rms:   2.5614 -->   2.0379    
-      _phTTGMatchPt                                      mean:  29.6048 -->  27.8528     rms:  27.6051 -->  27.5553    
+   New: _updated_ecalBadCalibFilter
+   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Removed: _phMatchMCLeptonAN15165,_phMatchMCPhotonAN15165
-   Changed:
-      _phTTGMatchCategory                                mean:   2.3871 -->   2.4839     rms:   0.9220 -->   0.8180    
-      _phTTGMatchEta                                     mean:  -1.2373 -->  -0.4801     rms:   3.3275 -->   2.1003    
-      _phTTGMatchPt                                      mean:  26.8576 -->  22.6818     rms:  19.6712 -->  20.8323    
+   New: _updated_ecalBadCalibFilter
+   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Removed: _phMatchMCLeptonAN15165,_phMatchMCPhotonAN15165
-   Changed:
-      _phTTGMatchCategory                                mean:   3.3000 -->   3.2000     rms:   0.9000 -->   0.8718    
-      _phTTGMatchEta                                     mean:  -2.7577 -->  -1.4170     rms:   4.4073 -->   3.2036    
-      _phTTGMatchPt                                      mean:  18.0530 -->  19.4048     rms:  17.4330 -->  16.1304    
+   New: _HLT_MET200,_HLT_MET200_prescale,_HLT_MET250,_HLT_MET250_prescale,_HLT_MET300,_HLT_MET300_prescale,_HLT_MET600,_HLT_MET600_prescale,_HLT_MET700,_HLT_MET700_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET170_HBHECleaned,_HLT_PFMET170_HBHECleaned_prescale,_HLT_PFMET170_HBHE_BeamHaloCleaned,_HLT_PFMET170_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET300,_HLT_PFMET300_prescale,_HLT_PFMET400,_HLT_PFMET400_prescale,_HLT_PFMET500,_HLT_PFMET500_prescale,_HLT_PFMET600,_HLT_PFMET600_prescale,_passTrigger_met
