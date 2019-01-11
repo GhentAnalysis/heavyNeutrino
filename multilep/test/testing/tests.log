@@ -1,45 +1,33 @@
-commit 3bb8b5f1334123f8e0121ea23dfb964ad023c3f6
+commit aeab92cf014fff48790702d7bfe346aa20cec309
 Author: tomc <tomc@cern.ch>
-Date:   Fri Jan 11 12:44:08 2019 +0100
+Date:   Fri Jan 11 15:15:45 2019 +0100
 
-    implementation of the updated ecalBadCalibReducedMINIAODFilter
+    Keep it simple
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _HLT_MET200,_HLT_MET200_prescale,_HLT_MET250,_HLT_MET250_prescale,_HLT_MET300,_HLT_MET300_prescale,_HLT_MET600,_HLT_MET600_prescale,_HLT_MET700,_HLT_MET700_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET170_HBHECleaned,_HLT_PFMET170_HBHECleaned_prescale,_HLT_PFMET170_HBHE_BeamHaloCleaned,_HLT_PFMET170_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET300,_HLT_PFMET300_prescale,_HLT_PFMET400,_HLT_PFMET400_prescale,_HLT_PFMET500,_HLT_PFMET500_prescale,_HLT_PFMET600,_HLT_PFMET600_prescale,_passTrigger_met
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _updated_ecalBadCalibFilter
-   Removed: _Flag_ecalBadCalibFilter
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _HLT_MET200,_HLT_MET200_prescale,_HLT_MET250,_HLT_MET250_prescale,_HLT_MET300,_HLT_MET300_prescale,_HLT_MET600,_HLT_MET600_prescale,_HLT_MET700,_HLT_MET700_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET170_HBHECleaned,_HLT_PFMET170_HBHECleaned_prescale,_HLT_PFMET170_HBHE_BeamHaloCleaned,_HLT_PFMET170_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET300,_HLT_PFMET300_prescale,_HLT_PFMET400,_HLT_PFMET400_prescale,_HLT_PFMET500,_HLT_PFMET500_prescale,_HLT_PFMET600,_HLT_PFMET600_prescale,_passTrigger_met
