@@ -1,8 +1,8 @@
-commit cf053b6ac6b3a1193e18dcc9c5f2651e3315f054
+commit e5226bd3647bce10e97643b9bcb7d4573e8a7698
 Author: tomc <tomc@cern.ch>
-Date:   Fri Jan 11 17:00:28 2019 +0100
+Date:   Fri Jan 11 17:45:54 2019 +0100
 
-    Keep it simple, part 3
+    Keep it simple, part 4 (and revert the behaviour of provenanceConversion to what was in there before part3, even though it is strange)
 
 --------------------------------------------------------------------------------------------------
 
@@ -24,16 +24,16 @@ Running test: Run2016-17Jul2018 --> OK
 
 Running test: Autumn18MiniAOD --> OK
    Changed:
-      _lProvenanceCompressed                             mean:   0.4894 -->   0.2553     rms:   1.1523 -->   0.8945    
+      _lProvenanceConversion                             mean:   3.5957 -->  90.6667     rms:  18.2974 -->  27.3241    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
    Changed:
-      _lProvenanceCompressed                             mean:   0.2200 -->   0.1900     rms:   0.8784 -->   0.8330    
+      _lProvenanceConversion                             mean:   4.9500 -->  98.0200     rms:  21.5765 -->   9.7509    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
    Changed:
-      _lProvenanceCompressed                             mean:   1.4242 -->   0.1515     rms:   1.5232 -->   0.7123    
+      _lProvenanceConversion                             mean:   3.0303 -->  97.5303     rms:  16.9670 -->  11.8491    
