@@ -17,51 +17,17 @@ class GenMatching{
     bool isPrompt(const reco::Candidate&, const reco::GenParticle&) const;
     void setGenParticles(const edm::Event&);    
 
-    //fill match variables
-    template <typename Lepton> void fillMatchingVars(const Lepton& reco){
-        const reco::GenParticle* match = findGenMatch(reco);
-        if(match != nullptr){
-            matchIsPrompt = isPrompt(reco, *match);
-            matchPdgId = match->pdgId();
-            provenance = GenTools::provenance(*match, *genParticles);
-            provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
-            provenanceConversion = GenTools::provenanceConversion(*match, *genParticles);
-            momPdgId = ( GenTools::getMother(*match, *genParticles) )->pdgId();
-        } else{
-            matchIsPrompt = false;
-            matchPdgId = 0;
-            provenanceCompressed = 4;
-            provenance = 18;
-            provenanceConversion = 99;
-            momPdgId = 0;
-        }
-    }
-
-    //return values
-    int pdgIdMatch() const { return matchPdgId; }
-    int pdgIdMom() const { return momPdgId; }
-    bool promptMatch() const { return matchIsPrompt; }
-    unsigned getProvenance() const { return provenance; }
-    unsigned getProvenanceCompressed() const{ return provenanceCompressed; }
-    unsigned getProvenanceConversion() const{ return provenanceConversion; }
-
-  private:
-    multilep* multilepAnalyzer;
-    edm::Handle<std::vector<reco::GenParticle>> genParticles;
-    const reco::GenParticle* geometricMatch(const reco::Candidate&, const bool differentId = false) const;
-
     template<typename Lepton> const reco::GenParticle* findGenMatch(const Lepton& lepton) const{
         const reco::GenParticle* match = lepton.genParticle();
         if(match and match->pdgId() == lepton.pdgId()) return match;                  // Take the match found by genParticle() if it exists and its pdgId is the same
         else                                           return geometricMatch(lepton); // Else do geometric match
     }
 
+
+  private:
+    multilep* multilepAnalyzer;
+    edm::Handle<std::vector<reco::GenParticle>> genParticles;
+    const reco::GenParticle* geometricMatch(const reco::Candidate&, const bool differentId = false) const;
     bool considerForMatching(const reco::Candidate&, const reco::GenParticle&, const bool differentId = false) const;
-    int matchPdgId;
-    int momPdgId;
-    bool matchIsPrompt;
-    unsigned provenance;
-    unsigned provenanceCompressed;
-    unsigned provenanceConversion;
 };
 #endif

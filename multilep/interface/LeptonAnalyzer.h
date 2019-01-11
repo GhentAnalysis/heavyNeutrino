@@ -142,8 +142,7 @@ class LeptonAnalyzer {
     unsigned _lProvenanceCompressed[nL_max];
     unsigned _lProvenanceConversion[nL_max];
 
-    //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
-    template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher);
+    template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher, const std::vector<reco::GenParticle>& genParticles);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
