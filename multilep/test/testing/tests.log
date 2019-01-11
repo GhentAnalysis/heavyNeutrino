@@ -1,8 +1,8 @@
-commit 87614dd3df2e56433754a9d6c2b80b0de0fdfff7
+commit cf053b6ac6b3a1193e18dcc9c5f2651e3315f054
 Author: tomc <tomc@cern.ch>
-Date:   Fri Jan 11 16:00:00 2019 +0100
+Date:   Fri Jan 11 17:00:28 2019 +0100
 
-    Keep it simple, part 2
+    Keep it simple, part 3
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,11 +23,17 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _lProvenanceCompressed                             mean:   0.4894 -->   0.2553     rms:   1.1523 -->   0.8945    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _lProvenanceCompressed                             mean:   0.2200 -->   0.1900     rms:   0.8784 -->   0.8330    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _lProvenanceCompressed                             mean:   1.4242 -->   0.1515     rms:   1.5232 -->   0.7123    
