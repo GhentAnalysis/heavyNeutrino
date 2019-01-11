@@ -23,6 +23,10 @@ class GenMatching{
         if(match != nullptr){
             matchIsPrompt = isPrompt(reco, *match);
             matchPdgId = match->pdgId();
+            matchPt = match->pt();
+            matchEta = match->eta();
+            matchPhi = match->phi();
+            matchE = match->energy();
             provenance = GenTools::provenance(*match, *genParticles);
             provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
             provenanceConversion = GenTools::provenanceConversion(*match, *genParticles);
@@ -39,6 +43,10 @@ class GenMatching{
 
     //return values
     int pdgIdMatch() const { return matchPdgId; }
+    int ptMatch() const { return matchPt; }
+    int etaMatch() const { return matchEta; }
+    int phiMatch() const { return matchPhi; }
+    int energyMatch() const { return matchE; }
     int pdgIdMom() const { return momPdgId; }
     bool promptMatch() const { return matchIsPrompt; }
     unsigned getProvenance() const { return provenance; }
@@ -62,6 +70,10 @@ class GenMatching{
     bool considerForMatching(const reco::Candidate&, const reco::GenParticle&, const bool differentId = false) const;
     bool sameParticle(const reco::Candidate&, const reco::GenParticle&) const;
     int matchPdgId;
+    double matchPt;
+    double matchEta;
+    double matchPhi;
+    double matchE;
     int momPdgId;
     bool matchIsPrompt;
     unsigned provenance;

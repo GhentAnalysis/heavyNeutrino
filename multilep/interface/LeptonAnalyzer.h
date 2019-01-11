@@ -91,6 +91,7 @@ class LeptonAnalyzer {
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
     bool _tauEleVeto[nL_max];
     bool _decayModeFinding[nL_max];                      
+    int _tauDecayMode[nL_max];                      
     bool _decayModeFindingNew[nL_max];                      
     bool _tauVLooseMvaNew[nL_max];                                                                      //"old tau id's will be stored in the POG id definitions (vloose := veto), however very tight is stored separately
     bool _tauLooseMvaNew[nL_max];
@@ -131,6 +132,10 @@ class LeptonAnalyzer {
 
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     int _lMatchPdgId[nL_max];
+    double _lMatchPt[nL_max];
+    double _lMatchEta[nL_max];
+    double _lMatchPhi[nL_max];
+    double _lMatchE[nL_max];
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];                                                                    
     unsigned _lProvenanceCompressed[nL_max];

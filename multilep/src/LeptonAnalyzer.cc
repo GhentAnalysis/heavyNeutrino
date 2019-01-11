@@ -81,6 +81,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lPOGTightWOIso",               &_lPOGTightWOIso,               "_lPOGTightWOIso[_nLight]/O");
     outputTree->Branch("_tauMuonVeto",                  &_tauMuonVeto,                  "_tauMuonVeto[_nL]/O");
     outputTree->Branch("_tauEleVeto",                   &_tauEleVeto,                   "_tauEleVeto[_nL]/O");
+    outputTree->Branch("_tauDecayMode",                 &_tauDecayMode,                 "_tauDecayMode[_nL]/I");
     outputTree->Branch("_decayModeFinding",             &_decayModeFinding,             "_decayModeFinding[_nL]/O");
     outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
     outputTree->Branch("_tauVLooseMvaNew",              &_tauVLooseMvaNew,              "_tauVLooseMvaNew[_nL]/O");
@@ -113,6 +114,10 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     if(!multilepAnalyzer->isData){
         outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
+        outputTree->Branch("_lMatchPt",                	  &_lMatchPt,                  	  "_lMatchPt[_nL]/D");
+        outputTree->Branch("_lMatchEta",                  &_lMatchEta,                    "_lMatchEta[_nL]/D");
+        outputTree->Branch("_lMatchPhi",                  &_lMatchPhi,                    "_lMatchPhi[_nL]/D");
+        outputTree->Branch("_lMatchE",                	  &_lMatchE,                  	  "_lMatchE[_nL]/D");
         outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
         outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
         outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
@@ -269,9 +274,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         //fillLeptonGenVars(tau.genParticle());
         if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, genMatcher);
         fillLeptonImpactParameters(tau, primaryVertex);
-        if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
+        //if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino
 
         _lFlavor[_nL]  = 2;
+        _tauDecayMode[_nL] = tau.decayMode();
         _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
         _tauEleVeto[_nL] = tau.tauID("againstElectronLooseMVA6");
 
@@ -324,6 +330,10 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     genMatcher->fillMatchingVars(lepton);
     _lIsPrompt[_nL] = genMatcher->promptMatch();
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
+    _lMatchPt[_nL] = genMatcher->ptMatch();
+    _lMatchEta[_nL] = genMatcher->etaMatch();
+    _lMatchPhi[_nL] = genMatcher->phiMatch();
+    _lMatchE[_nL] = genMatcher->energyMatch();
     _lMomPdgId[_nL] = genMatcher->pdgIdMom();
     _lProvenance[_nL] = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();

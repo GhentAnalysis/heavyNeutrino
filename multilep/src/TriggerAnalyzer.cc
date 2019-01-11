@@ -67,6 +67,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
 
     allFlags["passTrigger_e"]      = {"HLT_Ele27_WPTight_Gsf", "HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT"};
     allFlags["passTrigger_m"]      = {"HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"};
+    allFlags["passTrigger_mAN094"]      = {"HLT_IsoMu22", "HLT_IsoTkMu22", "HLT_IsoMu22_eta2p1", "HLT_IsoTkMu22_eta2p1"};
     allFlags["passTrigger_ee"]     = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
                                "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"};
     allFlags["passTrigger_em"]     = {"HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
@@ -82,6 +83,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["passTrigger_eem"]    = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL"};
     allFlags["passTrigger_emm"]    = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL"};
     allFlags["passTrigger_mmm"]    = {"HLT_TripleMu_12_10_5"};
+    allFlags["passTrigger_tt"]     = {"HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg"};
   }
 }
 
