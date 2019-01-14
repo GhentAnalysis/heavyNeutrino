@@ -6,6 +6,10 @@
 #include "TrackingTools/TrajectoryParametrization/interface/GlobalTrajectoryParameters.h"
 #include "TrackingTools/PatternTools/interface/TwoTrackMinimumDistance.h"
 #include "TLorentzVector.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer), 
@@ -213,8 +217,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     //set up generator matching
     if(!multilepAnalyzer->isData) genMatcher->setGenParticles(iEvent);
 
-    std::cout << std::endl << std::endl << std::endl << "=== EVENT ===" << std::endl;
-    std::cout << "sec vertices size: " << (*secVertices).size() << std::endl;
+    //std::cout << std::endl << std::endl << std::endl << "=== EVENT ===" << std::endl;
+    //std::cout << "sec vertices size: " << (*secVertices).size() << std::endl;
     fillAllIVFVariables(*secVertices);
 
     //loop over muons
@@ -398,41 +402,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         ++_nTau;
         ++_nL;
     }
+    
+    
+    //Preselection of one POGMedium lepton with most of the cuts (in order to reduce file size of the root tuples)
+    bool tightlepton = false;
+    for(unsigned i = 0; i < _nLight; i++){
+        if(_lFlavor[i] == 0 and _lPt[i] > 24 and fabs(_lEta[i]) < 2.5 and _lPOGMedium[i] and _relIso[i] > 0.1 and fabs(_dxy[i]) < 0.05 and _3dIPSig[i] < 4) tightlepton = true;
+        if(_lFlavor[i] == 1 and _lPt[i] > 24 and fabs(_lEta[i]) < 2.4 and _lPOGMedium[i] and _relIso[i] > 0.1 and fabs(_dxy[i]) < 0.05 and _3dIPSig[i] < 4) tightlepton = true;
+    }
+    
+
     //std::cout << "end leptonanalyzer" << std::endl;
-
-    //temporary selection for comparison with Mohamed's code:
-    // pass muon trigger
-    // starting from highest pt muon, find a tight muon
-    // starting below that, find loose muon with a vtx with displacement of 0.05cm
-    bool tightmuon = false;
-    unsigned i_tight = -1;
-    for(unsigned i = 0; i < _nLight; i++){
-        std::cout << "lep flavor, pt, eta, pogtight: " << _lFlavor[i] << " " << _lPt[i] << " " << _lEta[i] << " " << _lPOGTight[i] << std::endl;
-        if(_lFlavor[i] == 1 and _lPt[i] > 25 and fabs(_lEta[i]) < 2.4 and _lPOGTight[i]){
-            tightmuon = true;
-            i_tight = i;
-            break;
-        }
-    }std::cout << std::endl;
-    if(!tightmuon) return false;
-
-    //displaced muon with vertex match
-    bool displmuon = false;
-    for(unsigned i = 0; i < _nLight; i++){
-        std::cout << "lep flavor, pt, eta, pogloose, vtx match: " << _lFlavor[i] << " " << _lPt[i] << " " << _lEta[i] << " " << _lPOGLoose[i] << " " << _lIVF_match[i] << std::endl;
-        if(_lFlavor[i] != 1 or _lIVF_match[i] == -1 or i == i_tight or _lPt[i] > _lPt[i_tight]) continue;
-        double PVSVdist = sqrt((primaryVertex.x() - _IVF_x[_lIVF_match[i]])*(primaryVertex.x() - _IVF_x[_lIVF_match[i]]) + (primaryVertex.y() - _IVF_y[_lIVF_match[i]])*(primaryVertex.y() - _IVF_y[_lIVF_match[i]]) + (primaryVertex.z() - _IVF_z[_lIVF_match[i]])*(primaryVertex.z() - _IVF_z[_lIVF_match[i]]));
-        if(_lFlavor[i] == 1 and _lPt[i] > 5 and fabs(_lEta[i]) < 2.4 and _lPOGLoose[i] and PVSVdist > 0.05){
-            displmuon = true;
-            break;
-        }
-    }std::cout << std::endl;
-    if(!displmuon) return false;
-
-
-
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
-    if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
+    if(multilepAnalyzer->skim == "dilep"     &&  (_nLight < 2 || !tightlepton)) return false;
     if(multilepAnalyzer->skim == "ttg"       &&  _nLight < 2) return false;
     if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
     if(multilepAnalyzer->skim == "FR" &&  _nLight < 1) return false;
@@ -827,7 +809,6 @@ void LeptonAnalyzer::fillMatchingIVFVariables(const pat::Electron& electron){
         for(unsigned i_track = 0; i_track < _IVF_ntracks[i_vtx]; i_track++){
             for(edm::Ref<pat::PackedCandidateCollection> cand : electron.associatedPackedPFCandidates()){
                 if(fabs(cand->pt() - _IVF_trackpt[i_vtx][i_track]) < 0.001 and fabs(cand->eta() - _IVF_tracketa[i_vtx][i_track]) < 0.1 and cand->charge() != 0){
-                    std::cout << "match!" << std::endl;
                     _lIVF_match[_nLight] = i_vtx; 
                 }
             }

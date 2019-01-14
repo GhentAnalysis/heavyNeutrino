@@ -171,8 +171,9 @@ bool TriggerAnalyzer::analyze(const edm::Event& iEvent){
     if(combinedFlag.first.Contains("MET")) flag[combinedFlag.first] = passCombinedFlagAND(combinedFlag.first);
     else                                   flag[combinedFlag.first] = passCombinedFlagOR(combinedFlag.first);
   }
-  if(flag["HLT_IsoMu24"] or flag["HLT_IsoTkMu24"]) return true;
-  else return false;
+  //if(flag["HLT_IsoMu24"] or flag["HLT_IsoTkMu24"]) return true;
+  //else return false
+  return true;
 
 }
 
