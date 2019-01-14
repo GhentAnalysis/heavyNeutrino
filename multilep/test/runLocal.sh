@@ -24,13 +24,15 @@ submitJob(){
 }
 
 ##################################
-#Change to your proxy!
-proxy=/user/wverbeke/x509up_u20640
+#Add your proxy!
 ##################################
-
-if ! [[ $proxy = *"$USER"* ]]; then
-    echo "Change path to proxy in RunLocal.sh before submitting jobs!"
-    exit 1
+if [[ $USER == "tutran" ]]; then
+  proxy=/user/tutran/private/x509up_u23068
+elif [[ $USER == "wverbeke" ]]; then
+  proxy=/user/wverbeke/x509up_u20640
+else
+  echo "Add your proxy in RunLocal.sh before submitting jobs!"
+  exit 1
 fi
 
 exportProxy(){

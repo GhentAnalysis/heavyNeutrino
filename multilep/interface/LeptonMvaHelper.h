@@ -13,7 +13,8 @@ class LeptonMvaHelper{
     private:
         unsigned type; //0 = SUSY , 1 = ttH , 2 = tZqttV
         bool is2017;
-        std::shared_ptr<TMVA::Reader> reader[2]; //First entry is for muons, second one for electrons 
+        bool is2018;
+        std::shared_ptr<TMVA::Reader> reader[2]; //First entry is for muons, second one for electrons
         float LepGood_pt,                       //Variables used in MVA computation
         LepGood_eta,
         LepGood_jetNDauChargedMVASel,

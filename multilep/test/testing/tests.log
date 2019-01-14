@@ -1,0 +1,42 @@
+commit 04b25c36d0483b0d23a936bdf7eb9adc5accfa93
+Author: tomc <tomc@cern.ch>
+Date:   Fri Jan 11 18:40:12 2019 +0100
+
+    Thosw two got mixed up, fixing it and restoring all values again to the old behaviour
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2018-17Sep2018 --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2018-PromptReco --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2017-31March2017 --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2016-17Jul2018 --> OK
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _lProvenanceCompressed                             mean:   0.2553 -->   0.4894     rms:   0.8945 -->   1.1523    
+      _lProvenanceConversion                             mean:  90.6667 -->   3.5957     rms:  27.3241 -->  18.2974    
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _lProvenanceCompressed                             mean:   0.1900 -->   0.2200     rms:   0.8330 -->   0.8784    
+      _lProvenanceConversion                             mean:  98.0200 -->   4.9500     rms:   9.7509 -->  21.5765    
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _lProvenanceCompressed                             mean:   0.1515 -->   1.4242     rms:   0.7123 -->   1.5232    
+      _lProvenanceConversion                             mean:  97.5303 -->   3.0303     rms:  11.8491 -->  16.9670    

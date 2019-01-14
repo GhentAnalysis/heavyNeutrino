@@ -1,11 +1,9 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-def addJetSequence(process, isData, is2017):
-
+def addJetSequence(process, isData, is2017, is2018):
   #
   # Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
-  # Has (at time of writing) no effect (Moriond2017 miniAOD contains latest JEC)
   #
   process.load('JetMETCorrections.Configuration.JetCorrectors_cff')
   process.load('Configuration.StandardSequences.MagneticField_cff')  # needed for pfImpactParameterTagInfos
@@ -13,72 +11,71 @@ def addJetSequence(process, isData, is2017):
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
+  updateJetCollection(
+    process,
+    jetSource = cms.InputTag('slimmedJets'),
+    labelName = 'UpdatedJEC',
+    jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
+  )
 
-  if not is2017 :
-    updateJetCollection(
-      process,
-      jetSource = cms.InputTag('slimmedJets'),
-      labelName = 'UpdatedJEC',
-      jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
-      # DeepCSV twiki: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
-      btagDiscriminators = [
-        'pfCombinedSecondaryVertexV2BJetTags',
-        'pfDeepCSVJetTags:probudsg',
-        'pfDeepCSVJetTags:probb',
-        'pfDeepCSVJetTags:probc',
-        'pfDeepCSVJetTags:probbb',
-       #'pfDeepCSVJetTags:probcc', # not available in CMSSW_9_X_Y, also not really needed for us
-      ]
-     )
-  else: 
-     updateJetCollection(
-       process,
-       jetSource = cms.InputTag('slimmedJets'),
-       labelName = 'UpdatedJEC',
-       jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
-    ) 
-
-  if os.environ['CMSSW_BASE'].count('CMSSW_9'):                                                                     # From CMSSW_9_X, the patAlgosToolsTask contains the whole updateJetCollection sequence
-    process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
-  else:
-    process.jetSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
-                                       process.pfImpactParameterTagInfosUpdatedJEC *
-                                       process.pfSecondaryVertexTagInfosUpdatedJEC *
-                                       process.pfCombinedSecondaryVertexV2BJetTagsUpdatedJEC *
-                                       process.patJetCorrFactorsTransientCorrectedUpdatedJEC *
-                                       process.pfInclusiveSecondaryVertexFinderTagInfosUpdatedJEC *
-                                       process.pfDeepCSVTagInfosUpdatedJEC *
-                                       process.pfDeepCSVJetTagsUpdatedJEC *
-                                       process.updatedPatJetsTransientCorrectedUpdatedJEC *
-                                       process.selectedUpdatedPatJetsUpdatedJEC)
+  process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
 
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
-  # Run three times the SmeredPATJetProducer for nominal, up and down variations
+  # Run three times the SmearedPATJetProducer for nominal, up and down variations
   #
   if not isData:
     for (i, j) in [(0, ''), (-1, 'Down'), (1, 'Up')]:
       jetSmearing = cms.EDProducer('SmearedPATJetProducer',
-            src          = cms.InputTag('selectedUpdatedPatJetsUpdatedJEC'),
-            enabled      = cms.bool(True),
-            rho          = cms.InputTag("fixedGridRhoFastjetAll"),
-            algo         = cms.string('AK4PFchs'),
-            algopt       = cms.string('AK4PFchs_pt'),
-            genJets      = cms.InputTag('slimmedGenJets'),
-            dRMax        = cms.double(0.2),
-            dPtMaxFactor = cms.double(3),
-            debug        = cms.untracked.bool(False),
-            variation    = cms.int32(i),
+        src          = cms.InputTag('selectedUpdatedPatJetsUpdatedJEC'),
+        enabled      = cms.bool(True),
+        rho          = cms.InputTag("fixedGridRhoFastjetAll"),
+        algo         = cms.string('AK4PFchs'),
+        algopt       = cms.string('AK4PFchs_pt'),
+        genJets      = cms.InputTag('slimmedGenJets'),
+        dRMax        = cms.double(0.2),
+        dPtMaxFactor = cms.double(3),
+        debug        = cms.untracked.bool(False),
+        variation    = cms.int32(i),
       )
       setattr(process, 'slimmedJetsCorrectedAndSmeared'+j, jetSmearing)
       process.jetSequence *= jetSmearing
 
-  # Propagate JEC to MET (need to add fullPatMetSequence to path) (maybe good to add here link to a twiki page, if it exist)
-  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD   # currently broken
-
-  runMetCorAndUncFromMiniAOD (
-    process,
+  # Propagate JEC to MET (need to add fullPatMetSequence to path)
+  # https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_or_10
+  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+  runMetCorAndUncFromMiniAOD(process,
     isData = isData,
     fixEE2017 = is2017,
-    fixEE2017Params = {'userawPt': True, 'PtThreshold':50.0, 'MinEtaThreshold':2.65, 'MaxEtaThreshold': 3.139}
+    fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139}
   )
+
+  #
+  # To get updated ecalBadCalibReducedMINIAODFilter
+  # See https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#How_to_run_ecal_BadCalibReducedM
+  # Recipe is preliminary, i.e. recommended to check for updates
+  #
+  if(is2017 or is2018):
+    process.load('RecoMET.METFilters.ecalBadCalibFilter_cfi')
+
+    baddetEcallist = cms.vuint32(
+        [872439604,872422825,872420274,872423218,
+         872423215,872416066,872435036,872439336,
+         872420273,872436907,872420147,872439731,
+         872436657,872420397,872439732,872439339,
+         872439603,872422436,872439861,872437051,
+         872437052,872420649,872422436,872421950,
+         872437185,872422564,872421566,872421695,
+         872421955,872421567,872437184,872421951,
+         872421694,872437056,872437057,872437313])
+
+
+    process.ecalBadCalibReducedMINIAODFilter = cms.EDFilter("EcalBadCalibFilter",
+        EcalRecHitSource = cms.InputTag("reducedEgamma:reducedEERecHits"),
+        ecalMinEt        = cms.double(50.),
+        baddetEcal       = baddetEcallist,
+        taggingMode      = cms.bool(True),
+        debug            = cms.bool(False)
+        )
+
+    process.jetSequence *= process.ecalBadCalibReducedMINIAODFilter

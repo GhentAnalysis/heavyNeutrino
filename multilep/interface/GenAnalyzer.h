@@ -4,16 +4,12 @@
 #include "FWCore/Framework/interface/Event.h"
 
 #include "heavyNeutrino/multilep/plugins/multilep.h"
-#include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 
 #include "TTree.h"
 
 class multilep;
-class PhotonAnalyzer;
 class GenAnalyzer {
   //class friends
-  friend PhotonAnalyzer;
-
   private:
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
@@ -50,11 +46,7 @@ class GenAnalyzer {
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
 
-    //Generator HT (needed when merging HT binned sample with inclusive one)
-    double _gen_HT;
-
-    //Functions to find the mother of a gen particle
-    unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
+    unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
 
     multilep* multilepAnalyzer;

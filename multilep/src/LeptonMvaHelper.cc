@@ -3,10 +3,13 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include <cmath>
 
+// TODO: clean-up of this class, maybe get rid of older trainings
+// the is2018 boolean is kind of useless currently, there's no 2018 training done yet
+
 //Default constructor
 //This will set up both MVA readers and book the correct variables
 LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigned typeNumber, const bool sampleIs2017): //0 : SUSY , 1: ttH, 2: tZq/TTV
-    type(typeNumber), is2017(sampleIs2017)
+    type(typeNumber), is2017(sampleIs2017), is2018(sampleIs2017)
 {
     for(unsigned i = 0; i < 2; ++i){
         //Set up Mva reader 
@@ -21,7 +24,7 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
             reader[i]->AddVariable( "LepGood_miniRelIsoCharged", &LepGood_miniRelIsoCharged );
             reader[i]->AddVariable( "LepGood_miniRelIsoNeutral", &LepGood_miniRelIsoNeutral );
             reader[i]->AddVariable( "LepGood_jetPtRelv2", &LepGood_jetPtRelv2 );
-            if(!is2017){
+            if(  !(is2017 || is2018) ){
                 reader[i]->AddVariable( "min(LepGood_jetPtRatiov2,1.5)", &LepGood_jetPtRatio );
                 reader[i]->AddVariable( "max(LepGood_jetBTagCSV,0)", &LepGood_jetBTagCSV );
             } else{
@@ -36,7 +39,7 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
         //Book specific muon variables
         reader[0]->AddVariable("LepGood_segmentCompatibility", &LepGood_segmentCompatibility);
 
-        if(!is2017){
+        if( !(is2017 || is2018) ){
             //Read Mva weights
             if(type == 0){ //SUSY weights used by default
                 //Book specific electron variables
@@ -49,11 +52,11 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
             reader[1]->AddVariable("LepGood_mvaIdFall17noIso", &LepGood_mvaIdFall17noIso);
         }
         if(type == 0){
-            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsMuSUSY") + (is2017 ? "17" : "16") ).fullPath());
-            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsEleSUSY") + (is2017 ? "17" : "16") ).fullPath());
+            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsMuSUSY") + ( (is2017 || is2018)? "17" : "16") ).fullPath());
+            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsEleSUSY") + ((is2017 || is2018) ? "17" : "16") ).fullPath());
         } else{
-            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsMuttH") + (is2017 ? "17" : "16") ).fullPath());
-            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsElettH") + (is2017 ? "17" : "16") ).fullPath());
+            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsMuttH") + ((is2017 || is2018) ? "17" : "16") ).fullPath());
+            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsElettH") + ((is2017 || is2018) ? "17" : "16") ).fullPath());
         }
     } else{
         for(unsigned i = 0; i < 2; ++i){
@@ -71,12 +74,12 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
             reader[i]->AddVariable( "dz", &LepGood_dz);
         }
         reader[0]->AddVariable("segmentCompatibility", &LepGood_segmentCompatibility);
-        if(!is2017){
+        if(  !(is2017 || is2018)  ){
             reader[1]->AddVariable("electronMvaSpring16GP", &LepGood_mvaIdSpring16GP);
         } else{
             reader[1]->AddVariable("electronMvaFall17NoIso", &LepGood_mvaIdFall17noIso);
         }
-        if(!is2017){
+        if(  !(is2017 || is2018)  ){
             reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMutZqTTV16").fullPath());
             reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEletZqTTV16").fullPath());
         } else{
@@ -99,14 +102,14 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
     LepGood_miniRelIsoNeutral = miniIsoNeutral;
     LepGood_jetPtRelv2 = ptRel;
     LepGood_jetPtRatio = std::min(ptRatio, 1.5);
-    if(is2017 || type  >= 2){
+    if( is2017 || is2018 || type  >= 2){
         LepGood_jetBTagCSV = std::max( (std::isnan(closestJetDeepCsv) ? 0. : closestJetDeepCsv) , 0.);
     } else{
         LepGood_jetBTagCSV = std::max(closestJetCsv, 0.);
     }
     LepGood_relIso0p4 = relIso0p4;
     //use relIso for closest jet when no close jet for 2017 SUSY and ttH mvas
-    if(is2017 && type < 2){
+    if( (is2017 || is2018) && type < 2){
         LepGood_jetPtRatio = 1 + relIso0p4;
         bool goodBTag = (closestJetDeepCsv > -5.) || !std::isnan(closestJetDeepCsv);
         LepGood_jetPtRatio = goodBTag*std::min(ptRatio, 1.5) + (!goodBTag)/(1 + relIso0p4);
