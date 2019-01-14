@@ -13,6 +13,7 @@ setCMSSW(){
 
 #function to submit a job and catch invalid credentials
 submitJob(){
+    #cat $1
     qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
     while grep "Invalid credential" outputCheck.txt; do
         echo "Invalid credential caught, resubmitting"
@@ -90,7 +91,7 @@ fi
 mkdir -p $output
 mkdir -p ${output}/errs
 mkdir -p ${output}/logs
-gfal-mkdir -p srm://maite.iihe.ac.be:8443${outputpnfs}
+#gfal-mkdir -p srm://maite.iihe.ac.be:8443${outputpnfs}
 
 #make list of all files in input sample
 fileList $input
