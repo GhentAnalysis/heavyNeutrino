@@ -987,7 +987,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
 // (1) to be used with matchGenToReco()
 template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const reco::GenParticle* match, unsigned mtchtype){
     //        << genMatcher << " - " << &lepton << " - " << match << " - " << mtchtype << std::endl;
-    genMatcher->fillMatchingVars(lepton, match, mtchtype, _nL);
+    genMatcher->fillMatchingVars(lepton, match, mtchtype);
     //        << genMatcher << " - " << &lepton << " - " << match << " - " << mtchtype << std::endl;
     _lGenIndex[_nL] = genMatcher->genLIndex();
     _lMatchType[_nL] = genMatcher->typeMatch();

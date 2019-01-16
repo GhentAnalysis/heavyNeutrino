@@ -152,83 +152,49 @@ const reco::GenParticle* GenMatching::returnGenMatch(const reco::Candidate* recl
 // Fill match variables
 //
 // (1) to be used with matchGenToReco()
-template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco, const reco::GenParticle* match, unsigned mtchtype, const unsigned lepcnt) {
+template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco, const reco::GenParticle* match, unsigned mtchtype){
   if(match != nullptr) {
     genLindex = 0;
     for(; genLindex<multilepAnalyzer->genAnalyzer->gen_nL_max; ++genLindex) {
       if(multilepAnalyzer->genAnalyzer->_gen_lRefs[genLindex]==match) break;
     }
-    matchType = mtchtype;
-    matchIsPrompt = isPrompt(reco, *match);
+    matchType               = mtchtype;
+    matchIsPrompt           = isPrompt(reco, *match);
     matchIsPromptFinalState = match->isPromptFinalState();
-    matchIsPromptDecayed = match->isPromptDecayed();
+    matchIsPromptDecayed    = match->isPromptDecayed();
 
-    matchPdgId = match->pdgId();
-    provenance = GenTools::provenance(match, *genParticles);
-    provenanceCompressed = GenTools::provenanceCompressed(match, *genParticles, matchIsPrompt);
-    matchPt = match->pt();
-    matchEta = match->eta();
-    matchPhi = match->phi();
-    matchXvtx = match->vertex().x();
-    matchYvtx = match->vertex().y();
-    matchZvtx = match->vertex().z();
+    matchPdgId              = match->pdgId();
+    provenance              = GenTools::provenance(match, *genParticles);
+    provenanceCompressed    = GenTools::provenanceCompressed(match, *genParticles, matchIsPrompt);
+    matchPt                 = match->pt();
+    matchEta                = match->eta();
+    matchPhi                = match->phi();
+    matchXvtx               = match->vertex().x();
+    matchYvtx               = match->vertex().y();
+    matchZvtx               = match->vertex().z();
   } else {
-    genLindex = multilepAnalyzer->genAnalyzer->gen_nL_max; // out of range
-    matchType = 6;
-    matchIsPrompt = false;
+    genLindex               = multilepAnalyzer->genAnalyzer->gen_nL_max; // out of range
+    matchType               = mtchtype==5 ? 7 : 6;
+    matchIsPrompt           = false;
     matchIsPromptFinalState = false;
-    matchIsPromptDecayed = false;
+    matchIsPromptDecayed    = false;
 
-    matchPdgId = 0;
-    provenanceCompressed = 4;
-    provenance = 18;
-    matchPt = 0.;
-    matchEta = 0.;
-    matchPhi = 0.;
-    matchXvtx = 0.;
-    matchYvtx = 0.;
-    matchZvtx = 0.;
+    matchPdgId              = 0;
+    provenanceCompressed    = 4;
+    provenance              = 18;
+    matchPt                 = 0.;
+    matchEta                = 0.;
+    matchPhi                = 0.;
+    matchXvtx               = 0.;
+    matchYvtx               = 0.;
+    matchZvtx               = 0.;
   }
 }
 //
 // (2) to be used with findGenMatch()
-template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco) {
+template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco){
   const reco::GenParticle* match = findGenMatch(reco, allowMatchToAllIds);
-  if(match != nullptr){
-    genLindex = 0;
-    for(; genLindex<multilepAnalyzer->genAnalyzer->gen_nL_max; ++genLindex)
-      if(multilepAnalyzer->genAnalyzer->_gen_lRefs[genLindex]==match) break;
-    matchType = 5;
-    matchIsPrompt = isPrompt(reco, *match);
-    matchIsPromptFinalState = match->isPromptFinalState();
-    matchIsPromptDecayed = match->isPromptDecayed();
-
-    matchPdgId = match->pdgId();
-    provenance = GenTools::provenance(match, *genParticles);
-    provenanceCompressed = GenTools::provenanceCompressed(match, *genParticles, matchIsPrompt);
-    matchPt = match->pt();
-    matchEta = match->eta();
-    matchPhi = match->phi();
-    matchXvtx = match->vertex().x();
-    matchYvtx = match->vertex().y();
-    matchZvtx = match->vertex().z();
-  } else{
-    genLindex = multilepAnalyzer->genAnalyzer->gen_nL_max; // out of range
-    matchType = 7;
-    matchIsPrompt = false;
-    matchIsPromptFinalState = false;
-    matchIsPromptDecayed = false;
-
-    matchPdgId = 0;
-    provenanceCompressed = 4;
-    provenance = 18;
-    matchPt = 0.;
-    matchEta = 0.;
-    matchPhi = 0.;
-    matchXvtx = 0.;
-    matchYvtx = 0.;
-    matchZvtx = 0.;
-  }
+  fillMatchingVars(reco, match, 5);
 }
 
 bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
@@ -250,9 +216,9 @@ collect2: error: ld returned 1 exit status
    into the header file GenMatching.h. But this conflicts with using multilepAnalyzer 
    inside method fillMatchingVars(...) (error: invalid use of incomplete type 'class multilep')
 ********************************************************/
-template void GenMatching::fillMatchingVars<pat::Muon>(pat::Muon const&, reco::GenParticle const*, unsigned, unsigned const);
-template void GenMatching::fillMatchingVars<pat::Electron>(pat::Electron const&, reco::GenParticle const*, unsigned, unsigned const);
-template void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&, reco::GenParticle const*, unsigned, unsigned const);
+template void GenMatching::fillMatchingVars<pat::Muon>(pat::Muon const&, reco::GenParticle const*, unsigned);
+template void GenMatching::fillMatchingVars<pat::Electron>(pat::Electron const&, reco::GenParticle const*, unsigned);
+template void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&, reco::GenParticle const*, unsigned);
 
 /********************************************************
    Declare explicitly all the specific instances of
