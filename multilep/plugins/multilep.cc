@@ -1,5 +1,5 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
-
+#include "TLorentzVector.h"                               // displaced specific
 
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
@@ -72,7 +72,7 @@ void multilep::beginJob(){
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
     jetAnalyzer->beginJob(outputTree);
-    
+
     _runNb = 0;
 }
 
@@ -90,11 +90,9 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
-    
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
-    if(!vertices->size()) return;                                      // don't consider 0 vertex events
 
     //extract number of vertices 
     _nVertex = vertices->size();
@@ -107,21 +105,18 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(!isData) genAnalyzer->analyze(iEvent);
     triggerAnalyzer->analyze(iEvent);
 
-    _eventNb   = (unsigned long) iEvent.id().event();
-    
-    TLorentzVector lepton1;
-    TLorentzVector jet1;
-    double nJetBackToBack=0;
-    double njet=0;
-    njet = jetAnalyzer->_nJets;
-    lepton1.SetPtEtaPhiE(leptonAnalyzer->_lPt[0],leptonAnalyzer->_lEta[0],leptonAnalyzer->_lPhi[0],leptonAnalyzer->_lE[0]);
-    for (int k =0; k < njet; k ++){
-        jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
-        if (jet1.DeltaR(lepton1) > 1) nJetBackToBack++;
+    _eventNb   = (unsigned long) iEvent.id().event();                  //determine event number run number and luminosity block
+
+    if(skim == "FR"){ // note it simply runs over the saved _nJets, I assume some selection (especially pt) is wanted here; anyway better to implement this little piece in the analysis code which makes use of it
+      TLorentzVector lepton, jet;
+      int nJetBackToBack=0;
+      lepton.SetPtEtaPhiE(leptonAnalyzer->_lPt[0], leptonAnalyzer->_lEta[0], leptonAnalyzer->_lPhi[0], leptonAnalyzer->_lE[0]);
+      for(unsigned k =0; k < jetAnalyzer->_nJets; ++k){
+        jet.SetPtEtaPhiE(jetAnalyzer->_jetPt[k], jetAnalyzer->_jetEta[k], jetAnalyzer->_jetPhi[k], jetAnalyzer->_jetE[k]);
+        if(jet.DeltaR(lepton) > 1) nJetBackToBack++;
+      }
+      if(nJetBackToBack == 0) return;
     }
-    
-    if(skim == "FR" and nJetBackToBack == 0) return;
-    if(skim == "FR" and leptonAnalyzer->_lHasTrigger[0] < 1 ) return;  // TODO: why is this not simply implemented in leptonAnalyzer?????
     
     outputTree->Fill();                                                //store calculated event info in root tree
 }

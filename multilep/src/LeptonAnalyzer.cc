@@ -802,7 +802,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     if(multilepAnalyzer->skim == "dilep"       and _nLight <  2) return false;
     if(multilepAnalyzer->skim == "ttg"         and _nLight <  2) return false;
     if(multilepAnalyzer->skim == "singlelep"   and _nLight <  1) return false;
-    if(multilepAnalyzer->skim == "FR"          and _nLight != 1) return false;
+    if(multilepAnalyzer->skim == "FR"          and _nLight != 1 and _lHasTrigger[0] < 1) return false; // TODO: this _lHasTrigger[0] seems to be an unsigned but the name sounds as if it is a boolean, in which case "not _lHasTrigger" would make more sense
 
     return true;
 }

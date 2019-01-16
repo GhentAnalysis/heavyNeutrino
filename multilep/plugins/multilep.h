@@ -20,7 +20,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
-#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h" // displaced specific
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
@@ -41,7 +41,6 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h" // displaced specific
-#include "TLorentzVector.h"                               // displaced specific (shouldn't this be in the .cc instead????)
 #include "heavyNeutrino/multilep/interface/JEC.h"         // displaced specific (????)
 
 //Temporary for JEC test, remove later
