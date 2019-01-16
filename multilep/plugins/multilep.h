@@ -41,10 +41,6 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenMatching.h" // displaced specific
-#include "heavyNeutrino/multilep/interface/JEC.h"         // displaced specific (????)
-
-//Temporary for JEC test, remove later
-#include "JetMETCorrections/JetCorrector/interface/JetCorrector.h" // displaced specific (?????)
 
 //
 // class declaration
@@ -102,7 +98,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                is2017;
         bool                                                is2018;
         bool                                                isSUSY;
-        std::string                                         jecPath;
         bool                                                storeLheParticles;
 
         virtual void beginJob() override;

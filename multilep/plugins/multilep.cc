@@ -29,7 +29,6 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
     is2018(                                                                       iConfig.getUntrackedParameter<bool>("is2018")),
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
-    jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath()),
     storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
 {
     if(is2017 or is2018) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
