@@ -66,10 +66,5 @@ namespace GenTools{
     bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     bool isPromptFinalState(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     bool isPromptDecayed(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-
-    //get CMSSW gen match for lepton (displaced specific ???)
-    template<typename Lepton> const reco::GenParticle* getCMSSWGenMatch(const Lepton& lepton){
-        return lepton.genParticle();
-    }
 }
 #endif
