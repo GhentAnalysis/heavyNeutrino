@@ -1,8 +1,8 @@
-commit 9b27e5cf28f4accd661942cf5023a088667eff8d
+commit 8ddf0bfc7859d77bab7dab25aefc936fb079e403
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 16 18:19:40 2019 +0100
+Date:   Wed Jan 16 18:34:16 2019 +0100
 
-    Simplify: the geomatricMatch exists already in GenTools (also used by master branch) so don't keep it a second time in GenMatching (which is only there for the displaced branch
+    Keep it simple
 
 --------------------------------------------------------------------------------------------------
 
