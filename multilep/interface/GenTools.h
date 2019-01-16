@@ -60,5 +60,6 @@ namespace GenTools{
 
     const reco::GenParticle* geometricMatch(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles, const bool differentId=false);
     bool considerForMatching(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId);
+
 }
 #endif
