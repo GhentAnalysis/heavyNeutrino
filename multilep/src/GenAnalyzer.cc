@@ -17,11 +17,11 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
     multilepAnalyzer(multilepAnalyzer){};
 
 void GenAnalyzer::beginJob(TTree* outputTree){
-    outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/b");
-    outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/b");
+    outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/i");
+    outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/i");
     outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
     outputTree->Branch("_gen_metPhi",                &_gen_metPhi,                "_gen_metPhi/D");
-    outputTree->Branch("_gen_nPh",                   &_gen_nPh,                   "_gen_nPh/b");
+    outputTree->Branch("_gen_nPh",                   &_gen_nPh,                   "_gen_nPh/i");
     outputTree->Branch("_gen_phStatus",              &_gen_phStatus,              "_gen_phStatus[_gen_nPh]/i");
     outputTree->Branch("_gen_phPt",                  &_gen_phPt,                  "_gen_phPt[_gen_nPh]/D");
     outputTree->Branch("_gen_phEta",                 &_gen_phEta,                 "_gen_phEta[_gen_nPh]/D");
@@ -31,7 +31,8 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_phIsPrompt",            &_gen_phIsPrompt,            "_gen_phIsPrompt[_gen_nPh]/O");
     outputTree->Branch("_gen_phMinDeltaR",           &_gen_phMinDeltaR,           "_gen_phMinDeltaR[_gen_nPh]/D");
     outputTree->Branch("_gen_phPassParentage",       &_gen_phPassParentage,       "_gen_phPassParentage[_gen_nPh]/O");
-    outputTree->Branch("_gen_nL",                    &_gen_nL,                    "_gen_nL/b");
+    outputTree->Branch("_gen_nL",                    &_gen_nL,                    "_gen_nL/i");
+    outputTree->Branch("_gen_pdgID",                 &_gen_pdgID,                 "_gen_pdgID[_gen_nL]/D");
     outputTree->Branch("_gen_lPt",                   &_gen_lPt,                   "_gen_lPt[_gen_nL]/D");
     outputTree->Branch("_gen_lEta",                  &_gen_lEta,                  "_gen_lEta[_gen_nL]/D");
     outputTree->Branch("_gen_lPhi",                  &_gen_lPhi,                  "_gen_lPhi[_gen_nL]/D");
@@ -39,6 +40,9 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/i");
     outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
     outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
+    outputTree->Branch("_gen_vertex_x",              &_gen_vertex_x,              "_gen_vertex_x[_gen_nL]/D");
+    outputTree->Branch("_gen_vertex_y",              &_gen_vertex_y,              "_gen_vertex_y[_gen_nL]/D");
+    outputTree->Branch("_gen_vertex_z",              &_gen_vertex_z,              "_gen_vertex_z[_gen_nL]/D");
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
@@ -55,6 +59,9 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    //for(unsigned ig=0; ig<(gen_nL_max+gen_nPh_max); ++ig) _gen_refs[ig] = nullptr;
+    for(unsigned ig=0; ig<gen_nL_max ; ++ig) _gen_lRefs[ig]  = nullptr;
+    // for(unsigned ig=0; ig<gen_nPh_max; ++ig) _gen_phRefs[ig] = nullptr;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
         int absId = abs(p.pdgId());
@@ -70,7 +77,11 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
         //store generator level lepton info
         if((p.status() == 1 and (absId == 11 or absId == 13)) and (p.status() == 2 and p.isLastCopy() and absId == 15)){
+    //    if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && std::abs(p.pdgId()) == 15)){  // TODO: confusing, strange code in displaced branch; if there is a good reason to use it instead of the above, make a good comment
+    //        if(p.pdgId()== 2212) continue;
             if(_gen_nL != gen_nL_max){
+                _gen_lRefs[_gen_nL]          = &p;
+                _gen_pdgID[_gen_nL]          = p.pdgId();
                 _gen_lPt[_gen_nL]            = p.pt();
                 _gen_lEta[_gen_nL]           = p.eta();
                 _gen_lPhi[_gen_nL]           = p.phi();
@@ -80,6 +91,10 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lMomPdg[_gen_nL]        = GenTools::getMother(p, *genParticles)->pdgId();
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
+
+                _gen_vertex_x[_gen_nL]       = p.vertex().x();
+                _gen_vertex_y[_gen_nL]       = p.vertex().y();
+                _gen_vertex_z[_gen_nL]       = p.vertex().z();
 
                 if(absId == 11)      _gen_lFlavor[_gen_nL] = 0;
                 else if(absId == 13) _gen_lFlavor[_gen_nL] = 1;
@@ -91,6 +106,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         //store generator level photon info
         if((p.status() == 1 or p.status() == 71) and absId == 22){
             if(_gen_nPh != gen_nPh_max){
+             // _gen_phRefs[_gen_nPh]          = &p;
                 _gen_phStatus[_gen_nPh]        = p.status();
                 _gen_phPt[_gen_nPh]            = p.pt();
                 _gen_phEta[_gen_nPh]           = p.eta();
@@ -120,7 +136,7 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         if(p->pdgId()!=22)        continue;
         type = std::max(type, 1);                                                            // Type 1: final state photon found in genparticles with generator level cuts
         if(p->pt()<ptCut)         continue;
-        if(fabs(p->eta())>etaCut) continue;
+        if(std::abs(p->eta())>etaCut) continue;
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
         if(GenTools::getMinDeltaR(*p, genParticles) < 0.2) continue;
@@ -135,8 +151,8 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
             else if(abs(mom->pdgId()) <= 6) type = std::max(type, 4);      // Type 4: photon from quark from W (photon from pythia, rarely)
             else                            type = std::max(type, 5);      // Type 5: photon from lepton from W (photon from pythia)
         } else {
-            if(abs(mom->pdgId()) == 6)      type = std::max(type, 7);      // Type 7: photon from top
-            else if(abs(mom->pdgId()) == 5) type = std::max(type, 3);      // Type 3: photon from b
+            if(std::abs(mom->pdgId()) == 6)      type = std::max(type, 7);      // Type 7: photon from top
+            else if(std::abs(mom->pdgId()) == 5) type = std::max(type, 3);      // Type 3: photon from b
             else                            type = std::max(type, 8);      // Type 8: photon from ME
         }
     }

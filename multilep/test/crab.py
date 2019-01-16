@@ -33,7 +33,7 @@ config.section_('Data')
 config.Data.inputDataset               = dataset
 config.Data.unitsPerJob                = 300 if 'SIM' in dataset else 50
 config.Data.splitting                  = 'LumiBased'
-config.Data.outLFNDirBase              = '/store/user/' + os.environ['USER'] + '/heavyNeutrino/'
+config.Data.outLFNDirBase              = '/store/user/' + os.environ['USER'] + '/heavyNeutrino/' + productionLabel + '/'
 config.Data.publication                = False
 config.Data.lumiMask                   = lumiMask if not 'SIM' in dataset else None
 config.Data.allowNonValidInputDataset = True #allow unfinished samples (production) to be processed

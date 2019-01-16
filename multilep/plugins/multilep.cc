@@ -23,11 +23,13 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
+    trigObjToken(                consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
     is2018(                                                                       iConfig.getUntrackedParameter<bool>("is2018")),
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
+    jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath()),
     storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
 {
     if(is2017 or is2018) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
@@ -70,7 +72,7 @@ void multilep::beginJob(){
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
     jetAnalyzer->beginJob(outputTree);
-
+    
     _runNb = 0;
 }
 
@@ -88,22 +90,39 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
+    
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
     if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
     if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
+    if(!vertices->size()) return;                                      // don't consider 0 vertex events
 
     //extract number of vertices 
     _nVertex = vertices->size();
     nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
     if(_nVertex == 0) return;                                          //Don't consider 0 vertex events
 
-    if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
+    if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
     if(!photonAnalyzer->analyze(iEvent))                       return;
     if(!jetAnalyzer->analyze(iEvent))                          return;
     if(!isData) genAnalyzer->analyze(iEvent);
     triggerAnalyzer->analyze(iEvent);
 
-    _eventNb   = (unsigned long) iEvent.id().event();                  //determine event number run number and luminosity block
+    _eventNb   = (unsigned long) iEvent.id().event();
+    
+    TLorentzVector lepton1;
+    TLorentzVector jet1;
+    double nJetBackToBack=0;
+    double njet=0;
+    njet = jetAnalyzer->_nJets;
+    lepton1.SetPtEtaPhiE(leptonAnalyzer->_lPt[0],leptonAnalyzer->_lEta[0],leptonAnalyzer->_lPhi[0],leptonAnalyzer->_lE[0]);
+    for (int k =0; k < njet; k ++){
+        jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
+        if (jet1.DeltaR(lepton1) > 1) nJetBackToBack++;
+    }
+    
+    if(skim == "FR" and nJetBackToBack == 0) return;
+    if(skim == "FR" and leptonAnalyzer->_lHasTrigger[0] < 1 ) return;  // TODO: why is this not simply implemented in leptonAnalyzer?????
+    
     outputTree->Fill();                                                //store calculated event info in root tree
 }
 

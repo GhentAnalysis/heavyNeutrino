@@ -8,10 +8,13 @@
 #include "TTree.h"
 
 class multilep;
+class GenMatching;
 class GenAnalyzer {
   //class friends
+  friend GenMatching;
+
   private:
-    static const unsigned gen_nL_max = 20;
+    static const unsigned gen_nL_max = 50;
     static const unsigned gen_nPh_max = 10;
    
     unsigned    _ttgEventType;
@@ -35,6 +38,7 @@ class GenAnalyzer {
 
     //Generator leptons
     unsigned _gen_nL;
+  double   _gen_pdgID[gen_nL_max];
     double   _gen_lPt[gen_nL_max];
     double   _gen_lEta[gen_nL_max];
     double   _gen_lPhi[gen_nL_max];
@@ -42,11 +46,21 @@ class GenAnalyzer {
     unsigned _gen_lFlavor[gen_nL_max];
     int      _gen_lCharge[gen_nL_max];
     int      _gen_lMomPdg[gen_nL_max];
+    double   _gen_vertex_x[gen_nL_max];
+    double   _gen_vertex_y[gen_nL_max];
+    double   _gen_vertex_z[gen_nL_max];
     bool     _gen_lIsPrompt[gen_nL_max];
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
 
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
+    // Array of pointers to genLeptons (NOT saved in the tree!)
+    // (only charged leptons for now, no photons)
+    //const reco::GenParticle* _gen_refs[gen_nL_max+gen_nPh_max];
+    const reco::GenParticle* _gen_lRefs[gen_nL_max];
+    // const reco::GenParticle* _gen_phRefs[gen_nPh_max];
+
+    //Functions to find the mother of a gen particle
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
 
     multilep* multilepAnalyzer;

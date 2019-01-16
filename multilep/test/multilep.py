@@ -13,6 +13,7 @@ inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles
 nEvents         = 1000
 extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
+                                # displtrilep --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
                                 # ttg       --> skim two light leptons + one photon
@@ -41,7 +42,7 @@ process = cms.Process("BlackJackAndHookers")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
-process.source       = cms.Source("PoolSource", fileNames = cms.untracked.vstring(inputFile.split(",")))
+process.source       = cms.Source("PoolSource", fileNames = cms.untracked.vstring(inputFile.split(",")), duplicateCheckMode = cms.untracked.string('noDuplicateCheck'))
 process.options      = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
@@ -51,6 +52,12 @@ if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dat
 elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018Rereco_v1' if isData else '102X_upgrade2018_realistic_v12'
 elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'               if isData else '94X_mc2017_realistic_v17'
 else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'               if isData else '94X_mcRun2_asymptotic_v3'
+
+#
+# TrackingComponentsRecord 
+#
+process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+process.load('TrackPropagation.SteppingHelixPropagator.SteppingHelixPropagatorAny_cfi')
 
 #
 # Vertex collection
@@ -78,6 +85,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   lheEventInfo                  = cms.InputTag("externalLHEProducer"),
   pileUpInfo                    = cms.InputTag("slimmedAddPileupInfo"),
   genParticles                  = cms.InputTag("prunedGenParticles"),
+  allowMatchingToAllIds         = cms.bool(False),
   muons                         = cms.InputTag("slimmedMuons"),
   muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'), # TODO: check if muon POG has updates on effective areas
   muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreas_cone03_Muons_Fall17.txt'), # TODO
@@ -114,6 +122,11 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   triggers                      = cms.InputTag("TriggerResults::HLT"),
   recoResultsPrimary            = cms.InputTag("TriggerResults::PAT"),
   recoResultsSecondary          = cms.InputTag("TriggerResults::RECO"),
+  triggerObjects                = cms.InputTag("selectedPatTrigger"),  # displaced specific
+  SingleEleTriggers             = cms.vstring(),                       # displaced specific
+  SingleMuoTriggers             = cms.vstring(),                       # displaced specific
+  SingleEleTriggers2017         = cms.vstring(),                       # displaced specific
+  SingleMuoTriggers2017         = cms.vstring(),                       # displaced specific
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
@@ -126,6 +139,23 @@ def getJSON(is2017, is2018):
     if is2018:   return "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"
     elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
     else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+)
+
+## Change trigger-object label for signal
+#if 'HeavyNeutrino' in inputFile: process.blackJackAndHookers.triggerObjects = cms.InputTag("slimmedPatTrigger")
+
+## Single triggers for matching
+if 'FR' in outputFile:
+    process.blackJackAndHookers.SingleEleTriggers.extend(["HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v*", "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"])
+    process.blackJackAndHookers.SingleMuoTriggers.extend(["HLT_Mu3_PFJet40_v*", "HLT_Mu8_v*", "HLT_Mu17_v*"])
+    process.blackJackAndHookers.SingleEleTriggers2017.extend(["HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v*", "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"])
+    process.blackJackAndHookers.SingleMuoTriggers2017.extend(["HLT_Mu3_PFJet40_v*", "HLT_Mu8_v*", "HLT_Mu17_v*"])
+else:
+    process.blackJackAndHookers.SingleEleTriggers.extend(["HLT_Ele27_WPTight_Gsf_v*"])
+    process.blackJackAndHookers.SingleMuoTriggers.extend(["HLT_IsoMu24_v*", "HLT_IsoTkMu24_v*"])
+    process.blackJackAndHookers.SingleEleTriggers2017.extend(["HLT_Ele32_WPTight_Gsf_v*"])
+    process.blackJackAndHookers.SingleMuoTriggers2017.extend(["HLT_IsoMu27_v*"])
+
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList

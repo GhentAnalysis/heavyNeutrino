@@ -8,7 +8,7 @@
 bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose) const{
     TLorentzVector eleV(ele.px(), ele.py(), ele.pz(), ele.energy());
     for(unsigned m = 0; m < _nMu; ++m){
-        if(loose[m]){
+        if(_lPOGLoose[m]){                   // changed from HNL loose
             TLorentzVector muV;
             muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
             if(eleV.DeltaR(muV) < 0.05) return true;
@@ -27,6 +27,54 @@ bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose) con
         }
     }
     return false;
+}
+
+
+float LeptonAnalyzer::dEtaInSeed(const pat::Electron* ele) const{
+    if(ele->superCluster().isNonnull() and ele->superCluster()->seed().isNonnull()) return ele->deltaEtaSuperClusterTrackAtVtx() - ele->superCluster()->eta() + ele->superCluster()->seed()->eta();
+    else                                                                            return std::numeric_limits<float>::max();
+}
+
+bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron* ele) const{
+  if(not (ele->isEB() or ele->isEE())) return false;
+
+  float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+  if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.11    : 0.0314 ))       return false;
+  if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00477 : 0.00868))       return false;
+  if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.222   : 0.213  ))       return false;
+  if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.298   : 0.101  ))       return false;
+  if(eInvMinusPInv                                 >= (ele->isEB() ? 0.241   : 0.14   ))       return false;
+  //if(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) >  1)    return false;
+  //if(not ele->passConversionVeto())                                                            return false;
+  return true;
+}
+  
+
+
+bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron* ele) const {
+    if(!(ele->isEB() or ele->isEE()))                                                            return false;
+    float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+    if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.11    : 0.0314 ))          return false;
+    if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00477 : 0.00868))          return false;
+    if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.222   : 0.213  ))          return false;
+    if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.298   : 0.101  ))          return false;
+    if(eInvMinusPInv                                 >= (ele->isEB() ? 0.241   : 0.14   ))          return false;
+    if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) >  1)   return false;
+    if(!ele->passConversionVeto())                                                                  return false;
+    return true;
+}
+
+bool LeptonAnalyzer::isMediumCutBasedElectronWithoutIsolation(const pat::Electron* ele) const{
+    if(!(ele->isEB() or ele->isEE()))                                                               return false;
+    float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+    if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998    : 0.0298 ))       return false;
+    if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00311    : 0.00609))       return false;
+    if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.103      : 0.045  ))       return false;
+    if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.253      : 0.0878  ))      return false;
+    if(eInvMinusPInv                                 >= (ele->isEB() ? 0.134      : 0.13   ))       return false;
+    if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) >  1)   return false;
+    if(!ele->passConversionVeto())                                                                  return false;
+    return true;
 }
 
 /*
@@ -240,4 +288,3 @@ bool LeptonAnalyzer::isEwkTight(const pat::Electron& lep) const{
 bool LeptonAnalyzer::isEwkTight(const pat::Tau& tau) const{
     return _lEwkFO[_nL] && _lPOGTight[_nL];
 }
-
