@@ -17,15 +17,12 @@ class GenMatching{
     typedef std::vector<LepToGenDrMatches>                  LepToGenDrMatchesVector;
     typedef std::pair<const reco::Candidate*, GenTypeMatch> LepToGenTypeMatch;
     typedef std::vector<LepToGenTypeMatch>                  LepToGenTypeMatchVector;
-    //typedef std::vector<LepToGenTypeMatch>::const_iterator LGTvec_ci;
 
     GenMatching(const edm::ParameterSet& iConfig, multilep*);
     ~GenMatching(){};
 
     //check if given reco candidate is prompt
     bool isPrompt(const reco::Candidate&, const reco::GenParticle&) const;
-    bool isPromptFinalState(const reco::Candidate&, const reco::GenParticle&) const;
-    bool isPromptDecayed(const reco::Candidate&, const reco::GenParticle&) const;
 
     void resetGenMatchingVector() {recogenmatchlist.clear();}
     void setGenParticles(const edm::Event&);
@@ -70,19 +67,16 @@ class GenMatching{
     std::vector<const pat::Tau*     > patTaus;
 
     LepToGenTypeMatchVector recogenmatchlist;
-    const reco::GenParticle* geometricMatch(const reco::Candidate&, const bool differentId = false) const;
 
     template<typename Lepton> const reco::GenParticle* findGenMatch(const Lepton& lepton, const bool allowallids = false) const{
         const reco::GenParticle* match = lepton.genParticle();
         //short circuit assumed here!
         if(match == nullptr || (allowallids==false && match->pdgId()!=lepton.pdgId())){
-          return geometricMatch(lepton, allowallids);
+          return GenTools::geometricMatch(lepton, *genParticles, allowallids);
         }
         return match;
     }
 
-    bool considerForMatching(const reco::Candidate&, const reco::GenParticle&, const bool differentId = false) const;
-    bool sameParticle(const reco::Candidate&, const reco::GenParticle&) const;
     unsigned genLindex;
     // unsigned genPhindex;
     unsigned matchType;
