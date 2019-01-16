@@ -139,7 +139,6 @@ def getJSON(is2017, is2018):
     if is2018:   return "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"
     elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
     else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
-)
 
 ## Change trigger-object label for signal
 #if 'HeavyNeutrino' in inputFile: process.blackJackAndHookers.triggerObjects = cms.InputTag("slimmedPatTrigger")
