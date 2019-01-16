@@ -212,9 +212,9 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
     matchType = mtchtype;
     matchIsPrompt = isPrompt(reco, *match);
     //std::cout << " ~~~ DEBUG: ELE (gen - fill - FULL match) -- after isPrompt: " << matchIsPrompt << std::endl;
-    matchIsPromptFinalState = isPromptFinalState(reco, *match);
+    matchIsPromptFinalState = match->isPromptFinalState();
     //std::cout << " ~~~ DEBUG: ELE (gen - fill - FULL match) -- after isPromptFinalState: " << matchIsPromptFinalState << std::endl;
-    matchIsPromptDecayed = isPromptDecayed(reco, *match);
+    matchIsPromptDecayed = match->isPromptDecayed();
     //std::cout << " ~~~ DEBUG: ELE (gen - fill - FULL match) -- after isPromptDecayed: " << matchIsPromptDecayed << std::endl;
 
     matchPdgId = match->pdgId();
@@ -270,8 +270,8 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
     //     if(multilepAnalyzer->genAnalyzer->_gen_phRefs[genPhindex]==match) break;
     matchType = 5;
     matchIsPrompt = isPrompt(reco, *match);
-    matchIsPromptFinalState = isPromptFinalState(reco, *match);
-    matchIsPromptDecayed = isPromptDecayed(reco, *match);
+    matchIsPromptFinalState = match->isPromptFinalState();
+    matchIsPromptDecayed = match->isPromptDecayed();
 
     matchPdgId = match->pdgId();
     provenance = GenTools::provenance(match, *genParticles);
@@ -348,12 +348,6 @@ bool GenMatching::sameParticle(const reco::Candidate& reco, const reco::GenParti
 bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
     if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPrompt(match, *genParticles);
     return false;
-}
-bool GenMatching::isPromptFinalState(const reco::Candidate& reco, const reco::GenParticle& match) const{
-    return GenTools::isPromptFinalState(match, *genParticles);
-}
-bool GenMatching::isPromptDecayed(const reco::Candidate& reco, const reco::GenParticle& match) const{
-    return GenTools::isPromptDecayed(match, *genParticles);
 }
 
 /********************************************************

@@ -30,7 +30,6 @@ namespace GenTools{
     const reco::GenParticle* getFirstMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //return decay chain for a particle;
-    //void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list, std::vector<int> *vect = nullptr);
     void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
     bool hasOnlyIncomingGluonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
 
@@ -61,10 +60,5 @@ namespace GenTools{
 
     const reco::GenParticle* geometricMatch(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles, const bool differentId=false);
     bool considerForMatching(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId);
-
-    //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
-    bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    bool isPromptFinalState(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    bool isPromptDecayed(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 }
 #endif
