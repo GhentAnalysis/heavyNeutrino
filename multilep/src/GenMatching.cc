@@ -51,22 +51,13 @@ void GenMatching::matchGenToReco() {
 
   for(auto& imatch : recogenmatches) {
     if(imatch.second.size()==0) continue;
-    //
-    // Group 1.A
-    if(imatch.second.back().second<0.5)
-      recogenmatchlist.push_back(std::make_pair(imatch.first, std::make_pair(imatch.second.back().first, 1)));
-    // Group 1.B
-    else if(imatch.second.back().second<1.5)
-      recogenmatchlist.push_back(std::make_pair(imatch.first, std::make_pair(imatch.second.back().first, 2)));
-    // Group 2
-    else if(imatch.second.back().second<2.5)
-      recogenmatchlist.push_back(std::make_pair(imatch.first, std::make_pair(imatch.second.back().first, 3)));
-    // Group 3.A
-    else if(imatch.second.back().second<3.5)
-      recogenmatchlist.push_back(std::make_pair(imatch.first, std::make_pair(imatch.second.back().first, 4)));
-    // Group 3.B
-    else
-      recogenmatchlist.push_back(std::make_pair(imatch.first, std::make_pair(imatch.second.back().first, 5)));
+    unsigned group;
+    if(imatch.second.back().second<0.5)      group = 1; // Group 1.A
+    else if(imatch.second.back().second<1.5) group = 2; // Group 1.B
+    else if(imatch.second.back().second<2.5) group = 3; // Group 2
+    else if(imatch.second.back().second<3.5) group = 4; // Group 3.A
+    else                                     group = 5; // Group 3.B
+    recogenmatchlist.push_back(std::make_pair(imatch.first, std::make_pair(imatch.second.back().first, group)));
   }
 
   return;
