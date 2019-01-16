@@ -25,7 +25,7 @@ JetAnalyzer::~JetAnalyzer(){
 // Storing here jet id variables, id itself also to be implemented at python level https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016, or maybe still here as the loose wp does not change often?
 // WARNING: the _nJets is number of stored jets (i.e. including those where JECUp/JERUp passes the cut), do not use as selection
 void JetAnalyzer::beginJob(TTree* outputTree){
-    outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/i");
+    outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/b");
     outputTree->Branch("_jetPt",                     &_jetPt,                    "_jetPt[_nJets]/D");
     outputTree->Branch("_jetPt_JECDown",             &_jetPt_JECDown,            "_jetPt_JECDown[_nJets]/D");
     outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
@@ -190,10 +190,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //note: this is the only one variable which changed between 94X and 102X see https://github.com/cms-sw/cmssw/commit/f7aacfd2ffaac9899ea07d0355afe49bb10a0aeb
     _metSignificance = met.metSignificance();
 
-
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
-//  if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false; // TODO: this is in the master branch, maybe there it also needs the case below
-    if(multilepAnalyzer->skim == "FR" and (_nJets < 1 || _jetPt[0] < 30)) return false;
+//  if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;              // this is in the master branch
+    if(multilepAnalyzer->skim == "FR" and (_nJets < 1 || _jetPt[0] < 30)) return false; // the _jetPt[0] is only ok if you do not use systematics for this skim
     return true;
 }
 
