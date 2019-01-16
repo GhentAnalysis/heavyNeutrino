@@ -122,7 +122,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   triggers                      = cms.InputTag("TriggerResults::HLT"),
   recoResultsPrimary            = cms.InputTag("TriggerResults::PAT"),
   recoResultsSecondary          = cms.InputTag("TriggerResults::RECO"),
-  triggerObjects                = cms.InputTag("selectedPatTrigger"),  # displaced specific
+  triggerObjects                = cms.InputTag("slimmedPatTrigger"),   # displaced specific --> this was "selectedPatTrigger" in the displaced branch but does not work for the tests TODO please check
   SingleEleTriggers             = cms.vstring(),                       # displaced specific
   SingleMuoTriggers             = cms.vstring(),                       # displaced specific
   SingleEleTriggers2017         = cms.vstring(),                       # displaced specific
@@ -140,8 +140,6 @@ def getJSON(is2017, is2018):
     elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
     else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
-## Change trigger-object label for signal
-#if 'HeavyNeutrino' in inputFile: process.blackJackAndHookers.triggerObjects = cms.InputTag("slimmedPatTrigger")
 
 ## Single triggers for matching
 if 'FR' in outputFile:
