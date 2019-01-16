@@ -1,8 +1,8 @@
-commit 46c7561844d0baa75ae0aff145fd5891ebb28314
+commit e9ce0a1855393e1d8954d5d3ba7bc71a3f266104
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 16 16:29:29 2019 +0100
+Date:   Wed Jan 16 17:37:25 2019 +0100
 
-    Clean up old stuff
+    Clean-up of GenTools code
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,11 +23,17 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _lProvenance                                       mean:   0.8473 -->   1.8092     rms:   3.5843 -->   5.2540    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _lProvenance                                       mean:   0.2887 -->   0.4742     rms:   1.6369 -->   2.4245    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _lProvenance                                       mean:   0.5303 -->   8.1667     rms:   3.0036 -->   8.9478    
