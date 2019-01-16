@@ -1,7 +1,7 @@
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
 #include "heavyNeutrino/multilep/interface/GenParticleManager.h"
-#include "TLorentzVector.h" 
+#include "TLorentzVector.h"
 
 GenMatching::GenMatching(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer): multilepAnalyzer(multilepAnalyzer){
     allowMatchToAllIds = iConfig.existsAs<bool>("allowMatchingToAllIds") ? iConfig.getParameter<bool>("allowMatchingToAllIds") : false;
@@ -44,9 +44,8 @@ void GenMatching::matchGenToReco() {
     } // end for(size_t imatch=0; imatch<recogenmatches.size(); ++imatch)
   } // end while
 
-  if(niter==50) {
-    std::cout << " *** WARNING[GenMatching]: reached the limit of 50 iterations, with ambig = "
-          << (ambig ? "true" : "false") << " ***" << std::endl;
+  if(niter==50){
+    std::cout << " *** WARNING[GenMatching]: reached the limit of 50 iterations, with ambig = " << (ambig ? "true" : "false") << " ***" << std::endl;
   }
 
   for(auto& imatch : recogenmatches) {
@@ -63,8 +62,7 @@ void GenMatching::matchGenToReco() {
   return;
 }
 
-template <typename Lepton>
-void GenMatching::individualGenToRecoMatch(const Lepton* lep, LepToGenDrMatchesVector& recgenmatches) {
+template <typename Lepton> void GenMatching::individualGenToRecoMatch(const Lepton* lep, LepToGenDrMatchesVector& recgenmatches){
   GenDrMatches tmpgenmatches;
 
   if(lep->genParticle()!=nullptr) {  // match by reference
@@ -87,26 +85,16 @@ void GenMatching::individualGenToRecoMatch(const Lepton* lep, LepToGenDrMatchesV
         //                  [&](const LepToGenTypeMatch& ltgtm) {return (ltgtm.second.first == &gp);});
         // if(mit==recogenmatchlist.end()) continue;
         //
-        if( gp.pdgId()==recid && gp.status()==1 ) {                // * Group 1: status 1, same PDG ID
-          if( std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2 ) {         //    * Group 1.A: status 1, same PDG ID, pT within 20%
-            tmpgenmatches.push_back(std::make_pair(&gp, rgdr));
-          }
-          else if( std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) {       //    * Group 1.B: status 1, same PDG ID, pT within 50%
-            tmpgenmatches.push_back(std::make_pair(&gp, rgdr+1.)); //      (increase DR by 1.0, to give it less priority than group 1.A)
-          }
+        if(gp.pdgId()==recid && gp.status()==1){                         // * Group 1: status 1, same PDG ID
+          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rdgr = rdgr; //    * Group 1.A: pT within 20%
+          else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rdgr += 1.;  //    * Group 1.B: pT within 50%  (increase DR by 1.0, to give it less priority than group 1.A)
         }
-        else if( std::abs(recid)==11 && gp.pdgId()==22 && 
-            (gp.isPromptFinalState() || gp.isPromptDecayed()) ) {  // * Group 2: photon conversions to electrons 
-          tmpgenmatches.push_back(std::make_pair(&gp, rgdr+2.));   //   (increase DR by 2.0, to give it less priority than group 1)
+        else if(std::abs(recid)==11 && gp.pdgId()==22 && (gp.isPromptFinalState() || gp.isPromptDecayed())) rdgr += 2.; // * Group 2: photon conversions to electrons (increase DR by 2.0, to give it less priority than group 1)
+        else if(gp.pdgId()!=recid && gp.status()==1){                    // * Group 3: status 1, different PDG ID
+          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rdgr += 3.;  //    * Group 3.A: pT within 20% (increase DR by 3.0, to give it lower priority than groups 1 and 2)
+          else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rdgr += 4.;  //    * Group 3.B: pT within 50% (increase DR by 4.0, to give it lower priority than groups 1, 2, and 3.A)
         }
-        else if( gp.pdgId()!=recid && gp.status()==1 ) {       // * Group 3: status 1, different PDG ID
-          if( std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2 ) {       //    * Group 3.A: status 1, different PDG ID, pT within 20%
-            tmpgenmatches.push_back(std::make_pair(&gp, rgdr+3.)); //      (increase DR by 3.0, to give it lower priority than groups 1 and 2)
-          }
-          else if( std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5 ) {       //    * Group 3.B: status 1, different PDG ID, pT within 20%
-            tmpgenmatches.push_back(std::make_pair(&gp, rgdr+4.)); //      (increase DR by 4.0, to give it lower priority than groups 1, 2, and 3.A)
-          }
-        }
+        tmpgenmatches.push_back(std::make_pair(&gp, rgdr));
       }
     } // end for(auto&& gp : *genParticles)
   } // end match by DR
@@ -150,36 +138,23 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
       if(multilepAnalyzer->genAnalyzer->_gen_lRefs[genLindex]==match) break;
     }
     matchType               = mtchtype;
-    matchIsPrompt           = isPrompt(reco, *match);
-    matchIsPromptFinalState = match->isPromptFinalState();
-    matchIsPromptDecayed    = match->isPromptDecayed();
-
-    matchPdgId              = match->pdgId();
-    provenance              = GenTools::provenance(match, *genParticles);
-    provenanceCompressed    = GenTools::provenanceCompressed(match, *genParticles, matchIsPrompt);
-    matchPt                 = match->pt();
-    matchEta                = match->eta();
-    matchPhi                = match->phi();
-    matchXvtx               = match->vertex().x();
-    matchYvtx               = match->vertex().y();
-    matchZvtx               = match->vertex().z();
   } else {
     genLindex               = multilepAnalyzer->genAnalyzer->gen_nL_max; // out of range
-    matchType               = mtchtype==5 ? 7 : 6;
-    matchIsPrompt           = false;
-    matchIsPromptFinalState = false;
-    matchIsPromptDecayed    = false;
-
-    matchPdgId              = 0;
-    provenanceCompressed    = 4;
-    provenance              = 18;
-    matchPt                 = 0.;
-    matchEta                = 0.;
-    matchPhi                = 0.;
-    matchXvtx               = 0.;
-    matchYvtx               = 0.;
-    matchZvtx               = 0.;
+    matchType               = mtchtype ==5 ? 7 : 6;
   }
+  matchIsPrompt           = match ? isPrompt(reco, *match) : 0;
+  matchIsPromptFinalState = match ? match->isPromptFinalState(): 0;
+  matchIsPromptDecayed    = match ? match->isPromptDecayed() : 0;
+
+  matchPdgId              = match ? match->pdgId() : 0;
+  provenance              = match ? GenTools::provenance(match, *genParticles) : 4;
+  provenanceCompressed    = match ? GenTools::provenanceCompressed(match, *genParticles, matchIsPrompt) : 18;
+  matchPt                 = match ? match->pt() : 0;
+  matchEta                = match ? match->eta() : 0;
+  matchPhi                = match ? match->phi() : 0;
+  matchXvtx               = match ? match->vertex().x() : 0;
+  matchYvtx               = match ? match->vertex().y() : 0;
+  matchZvtx               = match ? match->vertex().z() : 0;
 }
 //
 // (2) to be used with findGenMatch()
@@ -203,8 +178,8 @@ LeptonAnalyzer.cc:(.text+0xa544): undefined reference to `void GenMatching::fill
 LeptonAnalyzer.cc:(.text+0xb03c): undefined reference to `void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&, reco::GenParticle const*, unsigned int)'
 collect2: error: ld returned 1 exit status
 --------------------
-   This can also be avoided by moving the implementation of fillMatchingVars(...) 
-   into the header file GenMatching.h. But this conflicts with using multilepAnalyzer 
+   This can also be avoided by moving the implementation of fillMatchingVars(...)
+   into the header file GenMatching.h. But this conflicts with using multilepAnalyzer
    inside method fillMatchingVars(...) (error: invalid use of incomplete type 'class multilep')
 ********************************************************/
 template void GenMatching::fillMatchingVars<pat::Muon>(pat::Muon const&, reco::GenParticle const*, unsigned);
@@ -222,8 +197,8 @@ LeptonAnalyzer.cc:(.text+0x752f): undefined reference to `void GenMatching::fill
 LeptonAnalyzer.cc:(.text+0x7bd6): undefined reference to `void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&)'
 collect2: error: ld returned 1 exit status
 --------------------
-   This can also be avoided by moving the implementation of fillMatchingVars(...) 
-   into the header file GenMatching.h. But this conflicts with using multilepAnalyzer 
+   This can also be avoided by moving the implementation of fillMatchingVars(...)
+   into the header file GenMatching.h. But this conflicts with using multilepAnalyzer
    inside method fillMatchingVars(...) (error: invalid use of incomplete type 'class multilep')
 ********************************************************/
 template void GenMatching::fillMatchingVars<pat::Muon>(pat::Muon const&);
