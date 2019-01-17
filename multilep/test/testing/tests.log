@@ -1,8 +1,8 @@
-commit fdd831df89a06c9ab1b60038e32657d2769f759b
+commit 0c9a0a950abf00db4eeecffef37bc8b19c6e957e
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 17 16:04:50 2019 +0100
+Date:   Thu Jan 17 16:36:48 2019 +0100
 
-    Default initialization like in master
+    Refactoring for improved readability
 
 --------------------------------------------------------------------------------------------------
 
