@@ -278,6 +278,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // loop over muons
     // muons need to be run first, because some ID's need to calculate a muon veto for electrons
     for(const pat::Muon* muptr : selmuons) {
+        if(_nL == nL_max) break; 
         const pat::Muon& mu = (*muptr);
 
         counter_index_leptons++;                               // unique index to identify the 2 tracks for each vertex
@@ -394,6 +395,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     // Loop over electrons (note: using iterator we can easily get the ref too)
     for(size_t iele=0; iele<selelectrons.size(); ++iele){
+        if(_nL == nL_max) break; 
         const pat::Electron *ele = selelectrons[iele];
 
         fillLeptonKinVars(*ele);
@@ -536,6 +538,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     //loop over taus
     for(const pat::Tau* tauptr : seltaus) {
+        if(_nL == nL_max) break; 
         const pat::Tau& tau = (*tauptr);
 
         fillLeptonKinVars(tau);
