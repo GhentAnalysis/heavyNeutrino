@@ -5,8 +5,10 @@
 #include "TrackingTools/Records/interface/TrackingComponentsRecord.h"     // for displaced
 #include "TrackingTools/GeomPropagators/interface/AnalyticalPropagator.h" // for displaced
 #include "TrackingTools/GsfTools/interface/GsfPropagatorAdapter.h"        // for displaced
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"      // for displaced
 #include "TLorentzVector.h"
 #include <algorithm>
+
 
 // TODO: we should maybe stop indentifying effective areas by year, as they are typically more connected to a specific ID than to a specific year
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
@@ -230,9 +232,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _nGoodLeading = 0;
     _nGoodDisplaced = 0;
 
-    //bool good_leading=false; // to check 1 leading-well_isolated lepton
-    unsigned counter_index_leptons   = 0;
-
     // Reco primary vertex coordinates and uncertainties // TODO: seems to not belong in LeptonAnalyzer
     _pvX    = primaryVertex.x();
     _pvXErr = primaryVertex.xError();
@@ -280,8 +279,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(_nL == nL_max) break;
         const pat::Muon& mu = (*muptr);
 
-        counter_index_leptons++;                               // unique index to identify the 2 tracks for each vertex
-        _lIndex[_nL]  = counter_index_leptons;
+        _lIndex[_nL]  = _nL+1;
         _lPFMuon[_nL] = mu.isPFMuon();
 
         const reco::MuonTime cmb = mu.time();
@@ -390,8 +388,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         }
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
-        counter_index_leptons++;                               // unique index to identify the 2 tracks for each vertex
-        _lIndex[_nL] = counter_index_leptons;
+        _lIndex[_nL] = _nL + 1;
 
         fillLeptonImpactParameters(*ele, primaryVertex);
         fillLeptonIsoVars(*ele, *rho);
