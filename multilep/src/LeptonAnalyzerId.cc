@@ -8,7 +8,7 @@
 bool LeptonAnalyzer::eleMuOverlap(const pat::Electron& ele, const bool* loose) const{
     TLorentzVector eleV(ele.px(), ele.py(), ele.pz(), ele.energy());
     for(unsigned m = 0; m < _nMu; ++m){
-        if(_lPOGLoose[m]){                   // changed from HNL loose
+        if(loose[m]){
             TLorentzVector muV;
             muV.SetPtEtaPhiE(_lPt[m], _lEta[m], _lPhi[m], _lE[m]);
             if(eleV.DeltaR(muV) < 0.05) return true;
@@ -154,7 +154,7 @@ bool LeptonAnalyzer::isHNLoose(const pat::Electron& lepton) const{
     if(_relIso[_nL] >= 0.6)                                                                         return false;
     if(lepton.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 1)  return false;
     if(!lepton.passConversionVeto())                                                                return false;
-    if(eleMuOverlap(lepton, _lHNLoose))                                                             return false; // Always run electrons after muons because of this
+    if(eleMuOverlap(lepton, _lPOGLoose))                                                            return false; // Always run electrons after muons because of this // note: cleaned using POG loose
     return (lepton.pt() > 10);
 }
 
