@@ -3,11 +3,11 @@
        DBSCMD_HOME
        MAGIC
        MALLOC_CONF
-commit 112f94246b8ae5762f4be40394aff004ca3311af
+commit adeb7df681c5342895f53b5ce9b714d0e4a8d381
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 17 10:12:47 2019 +0100
+Date:   Thu Jan 17 11:10:45 2019 +0100
 
-    typo
+    accidentally switched default argument for provenance and provenanceCompressed in e8a6488fc181f246c6e72679791e5fbac5160285
 
 --------------------------------------------------------------------------------------------------
 
@@ -29,43 +29,16 @@ Running test: Run2016-17Jul2018 --> OK
 
 Running test: Autumn18MiniAOD --> OK
    Changed:
-      _lIsPrompt                                         mean:   0.9389 -->   0.9924     rms:   0.2395 -->   0.0870    
-      _lIsPromptFinalState                               mean:   0.8626 -->   0.9160     rms:   0.3443 -->   0.2773    
-      _lMatchEta                                         mean:   0.2688 -->   0.2677     rms:   1.2552 -->   1.2532    
-      _lMatchPdgId                                       mean:   1.9389 -->   2.1069     rms:  12.6121 -->  12.8034    
-      _lMatchPhi                                         mean:  -0.1645 -->  -0.1192     rms:   1.8541 -->   1.8585    
-      _lMatchPt                                          mean:  39.0971 -->  38.5032     rms:  35.7124 -->  35.5009    
-      _lMatchType                                        mean:   0.2595 -->   0.3817     rms:   0.9045 -->   1.1220    
-      _lProvenance                                       mean:   0.6107 -->   0.8473     rms:   2.9385 -->   3.5843    
-      _lProvenanceCompressed                             mean:   0.1374 -->   0.0305     rms:   1.5667 -->   0.3481    
+      _lProvenance                                       mean:   0.7176 -->   0.6107     rms:   3.2930 -->   2.9385    
+      _lProvenanceCompressed                             mean:   0.0305 -->   0.1374     rms:   0.3481 -->   1.5667    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Changed:
-      _lIsPrompt                                         mean:   0.9794 -->   0.9897     rms:   0.1421 -->   0.1010    
-      _lIsPromptFinalState                               mean:   0.8454 -->   0.8557     rms:   0.3616 -->   0.3514    
-      _lMatchPdgId                                       mean:  -0.3196 -->  -2.3093     rms:  12.2142 -->  24.5837    
-      _lMatchPhi                                         mean:   0.1902 -->   0.1904     rms:   1.8110 -->   1.8111    
-      _lMatchPt                                          mean:  37.3713 -->  36.9600     rms:  20.5122 -->  20.2674    
-      _lMatchType                                        mean:   0.0206 -->   0.0722     rms:   0.1421 -->   0.5025    
-      _lMatchVertexX                                     mean:  -0.0312 -->  -0.0343     rms:   0.0916 -->   0.0963    
-      _lMatchVertexY                                     mean:   0.0648 -->   0.0689     rms:   0.0899 -->   0.0988    
-      _lMatchVertexZ                                     mean:   0.7491 -->   0.7483     rms:   3.6351 -->   3.6341    
-      _lProvenance                                       mean:   0.1340 -->   0.2887     rms:   0.3407 -->   1.6369    
-      _lProvenanceCompressed                             mean:   0.0000 -->   0.0309     rms:   0.0000 -->   0.3030    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
    Changed:
-      _lMatchEta                                         mean:  -0.0068 -->  -0.0131     rms:   1.3727 -->   1.3707    
-      _lMatchPdgId                                       mean:  -1.1136 -->  -1.8030     rms:  16.0003 -->  12.8177    
-      _lMatchPhi                                         mean:  -0.1205 -->  -0.1009     rms:   1.8060 -->   1.7931    
-      _lMatchPt                                          mean:  48.2062 -->  47.8004     rms:  23.8828 -->  24.2517    
-      _lMatchType                                        mean:   0.1061 -->   0.1667     rms:   0.7412 -->   0.9548    
-      _lMatchVertexX                                     mean:   0.1033 -->   0.1025     rms:   0.0129 -->   0.0157    
-      _lMatchVertexY                                     mean:   0.1661 -->   0.1648     rms:   0.0206 -->   0.0252    
-      _lMatchVertexZ                                     mean:  -0.6990 -->  -0.6728     rms:   4.8252 -->   4.8196    
-      _lProvenance                                       mean:   0.1818 -->   0.5303     rms:   1.4659 -->   3.0036    
-      _lProvenanceCompressed                             mean:   0.3258 -->   0.1136     rms:   2.2344 -->   0.6472    
+      _lProvenance                                       mean:   0.3939 -->   0.1818     rms:   2.5871 -->   1.4659    
+      _lProvenanceCompressed                             mean:   0.1136 -->   0.3258     rms:   0.6472 -->   2.2344    
