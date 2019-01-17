@@ -1,8 +1,8 @@
-commit 1a17e6574022a019de5934a90170303fc0b3d9c9
+commit 05dc5ce8b36da536f1d292c6636b003d7196ead4
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 17 11:49:15 2019 +0100
+Date:   Thu Jan 17 13:27:15 2019 +0100
 
-    Never change something in a function when you can do it by simply changing the argument for your specific call
+    Typo
 
 --------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ Running test: Run2018-PromptReco --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   Changed:
-      _lEwkLoose                                         mean:   0.5161 -->   0.5000     rms:   0.4997 -->   0.5000    
 
 --------------------------------------------------------------------------------------------------
 
