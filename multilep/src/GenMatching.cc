@@ -86,7 +86,7 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const Lept
         // if(mit==recogenmatchlist.end()) continue;
         //
         if(gp.pdgId()==recid && gp.status()==1){                         // * Group 1: status 1, same PDG ID
-          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr = rgdr; //    * Group 1.A: pT within 20%
+          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr += 0.;  //    * Group 1.A: pT within 20%
           else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 1.;  //    * Group 1.B: pT within 50%  (increase DR by 1.0, to give it less priority than group 1.A)
         }
         else if(std::abs(recid)==11 && gp.pdgId()==22 && (gp.isPromptFinalState() || gp.isPromptDecayed())) rgdr += 2.; // * Group 2: photon conversions to electrons (increase DR by 2.0, to give it less priority than group 1)
@@ -140,15 +140,15 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
     matchType               = mtchtype;
   } else {
     genLindex               = multilepAnalyzer->genAnalyzer->gen_nL_max; // out of range
-    matchType               = mtchtype ==5 ? 7 : 6;
+    matchType               = mtchtype==5 ? 7 : 6;
   }
-  matchIsPrompt           = match ? isPrompt(reco, *match) : 0;
-  matchIsPromptFinalState = match ? match->isPromptFinalState(): 0;
-  matchIsPromptDecayed    = match ? match->isPromptDecayed() : 0;
+  matchIsPrompt           = match ? isPrompt(reco, *match) : false;
+  matchIsPromptFinalState = match ? match->isPromptFinalState(): false;
+  matchIsPromptDecayed    = match ? match->isPromptDecayed() : false;
 
   matchPdgId              = match ? match->pdgId() : 0;
-  provenance              = match ? GenTools::provenance(match, *genParticles) : 4;
-  provenanceCompressed    = match ? GenTools::provenanceCompressed(match, *genParticles, matchIsPrompt) : 18;
+  provenance              = match ? GenTools::provenance(match, *genParticles) : 18;
+  provenanceCompressed    = match ? GenTools::provenanceCompressed(match, *genParticles, matchIsPrompt) : 4;
   matchPt                 = match ? match->pt() : 0;
   matchEta                = match ? match->eta() : 0;
   matchPhi                = match ? match->phi() : 0;
