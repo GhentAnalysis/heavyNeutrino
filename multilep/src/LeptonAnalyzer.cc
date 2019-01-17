@@ -360,19 +360,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _muRPCStationsWithValidHits[_nL]  = mu.bestTrack()->hitPattern().rpcStationsWithValidHits();
         _muMuonStationsWithValidHits[_nL] = mu.bestTrack()->hitPattern().muonStationsWithValidHits();
 
-        // This stuff below is all electron stuff, consider a default initialization like in the master branch
-        _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = false;
-        _lEleIsEB [_nL] = false;
-        _lEleIsEE[_nL] = false;
-        _lEleSuperClusterOverP[_nL] =  -1;
-        _lEleEcalEnergy[_nL]=   -1;
-        _lElefull5x5SigmaIetaIeta[_nL] =   -1;
-        _lEleDEtaInSeed[_nL] =   -1;
-        _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] =   -1;
-        _lElehadronicOverEm[_nL] =   -1;
-        _lEleInvMinusPInv[_nL] =   -1;
-
-
         if (mu.isMediumMuon() && mu.pt() > 24 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.2 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) )
           ++_nGoodLeading;
 
@@ -502,6 +489,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     for(auto array : {&_lElectronMissingHits}) std::fill_n(*array, _nMu, 0.);
     for(auto array : {&_lPtCorr, &_lPtScaleUp, &_lPtScaleDown, &_lPtResUp, &_lPtResDown}) std::fill_n(*array, _nMu, 0.);
     for(auto array : {&_lECorr, &_lEScaleUp, &_lEScaleDown, &_lEResUp, &_lEResDown}) std::fill_n(*array, _nMu, 0.);
+    for(auto array : {&_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto, &_lEleIsEB, &_lEleIsEE}) std::fill_n(*array, _nMu, false);       // displaced specific
+    for(auto array : {&_lEleSuperClusterOverP, &_lEleEcalEnergy, &_lElefull5x5SigmaIetaIeta, &_lEleDEtaInSeed}) std::fill_n(*array, _nMu, -1.); // displaced speficic
+    for(auto array : {&_lEleDeltaPhiSuperClusterTrackAtVtx, &_lElehadronicOverEm, &_lEleInvMinusPInv}) std::fill_n(*array, _nMu, -1.);          // displaced soecific
 
     //loop over taus
     for(const pat::Tau* tauptr : seltaus) {
