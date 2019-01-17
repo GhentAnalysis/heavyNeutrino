@@ -29,7 +29,10 @@ bool LeptonAnalyzer::tauLightOverlap(const pat::Tau& tau, const bool* loose) con
     return false;
 }
 
-
+/*
+ * Old cut based ID with some variables switched off
+ * Recommendation to base yourself on the recommended IDs, or maybe tune one yourself, because what is the point of using official IDs if you remove half of the cuts
+ */
 float LeptonAnalyzer::dEtaInSeed(const pat::Electron* ele) const{
     if(ele->superCluster().isNonnull() and ele->superCluster()->seed().isNonnull()) return ele->deltaEtaSuperClusterTrackAtVtx() - ele->superCluster()->eta() + ele->superCluster()->seed()->eta();
     else                                                                            return std::numeric_limits<float>::max();
@@ -49,33 +52,6 @@ bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerh
   return true;
 }
   
-
-
-bool LeptonAnalyzer::isLooseCutBasedElectronWithoutIsolation(const pat::Electron* ele) const {
-    if(!(ele->isEB() or ele->isEE()))                                                            return false;
-    float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
-    if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.11    : 0.0314 ))          return false;
-    if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00477 : 0.00868))          return false;
-    if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.222   : 0.213  ))          return false;
-    if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.298   : 0.101  ))          return false;
-    if(eInvMinusPInv                                 >= (ele->isEB() ? 0.241   : 0.14   ))          return false;
-    if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) >  1)   return false;
-    if(!ele->passConversionVeto())                                                                  return false;
-    return true;
-}
-
-bool LeptonAnalyzer::isMediumCutBasedElectronWithoutIsolation(const pat::Electron* ele) const{
-    if(!(ele->isEB() or ele->isEE()))                                                               return false;
-    float eInvMinusPInv = fabs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
-    if(ele->full5x5_sigmaIetaIeta()                  >= (ele->isEB() ? 0.00998    : 0.0298 ))       return false;
-    if(fabs(dEtaInSeed(ele))                         >= (ele->isEB() ? 0.00311    : 0.00609))       return false;
-    if(fabs(ele->deltaPhiSuperClusterTrackAtVtx())   >= (ele->isEB() ? 0.103      : 0.045  ))       return false;
-    if(ele->hadronicOverEm()                         >= (ele->isEB() ? 0.253      : 0.0878  ))      return false;
-    if(eInvMinusPInv                                 >= (ele->isEB() ? 0.134      : 0.13   ))       return false;
-    if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) >  1)   return false;
-    if(!ele->passConversionVeto())                                                                  return false;
-    return true;
-}
 
 /*
  * Trigger emulation for single electron triggers is available in VID
@@ -154,7 +130,7 @@ bool LeptonAnalyzer::isHNLoose(const pat::Electron& lepton) const{
     if(_relIso[_nL] >= 0.6)                                                                         return false;
     if(lepton.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 1)  return false;
     if(!lepton.passConversionVeto())                                                                return false;
-    if(eleMuOverlap(lepton, _lPOGLoose))                                                            return false; // Always run electrons after muons because of this // note: cleaned using POG loose
+    if(eleMuOverlap(lepton, _lPOGLoose))                                                            return false; // Always run electrons after muons because of this // note: cleaned using POG loose (different from master branch)
     return (lepton.pt() > 10);
 }
 

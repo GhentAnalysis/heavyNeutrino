@@ -308,11 +308,8 @@ class LeptonAnalyzer {
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false) const;
 
  // In LeptonAnalyzerId.cc
-    float dEtaInSeed(const pat::Electron*) const;
-    bool  isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron*) const;
-    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*) const;
-    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*) const;
-    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*) const;
+    float dEtaInSeed(const pat::Electron*) const;                                                                          // displaced specific
+    bool  isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron*) const; // displaced specific
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately
     float slidingCut(float, float, float) const;
     bool  passingElectronMvaHZZ(const pat::Electron*, double) const;
