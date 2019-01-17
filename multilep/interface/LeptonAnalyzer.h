@@ -15,10 +15,8 @@
 #include "MagneticField/ParametrizedEngine/src/OAEParametrizedMagneticField.h"
 #include "TrackPropagation/SteppingHelixPropagator/interface/SteppingHelixPropagator.h"
 #include "TrackingTools/PatternTools/interface/TransverseImpactPointExtrapolator.h"
-#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 #include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
-#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
-#include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
+
 
 //include other parts of the framework
 #include "heavyNeutrino/multilep/plugins/multilep.h"
@@ -26,8 +24,8 @@
 #include "heavyNeutrino/multilep/interface/GenMatching.h"  // displaced specific
 
 //include classes for trigger match
-// #include "DataFormats/Common/interface/TriggerResults.h"
-// #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 
 //include ROOT classes
 #include "TTree.h"
@@ -55,21 +53,20 @@ class LeptonAnalyzer {
     EffectiveAreas muonsEffectiveAreas;
 
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
-    static const unsigned nV_max = 50;   
+    static const unsigned nV_max = 50;
     unsigned _nL;                                                                                    //number of leptons
     unsigned _nMu;
     unsigned _nEle;
     unsigned _nLight;
     unsigned _nTau;
-    
+
     double _pvX;
     double _pvY;
     double _pvZ;
     double _pvXErr;
     double _pvYErr;
     double _pvZErr;
-    
-    
+
     unsigned _nVFit;                     // number vertices re-fitted
     unsigned _nGoodLeading;              // number vertices re-fitted
     unsigned _nGoodDisplaced;
@@ -78,9 +75,8 @@ class LeptonAnalyzer {
     int    _lSimExtType[nL_max];
     int    _lSimFlavour[nL_max];
 
-    
     unsigned _lIndex[nL_max];            // index assigned to leptons to find back the vertices
-    double _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex 
+    double _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex
     double _lDisplaced[nV_max][24];      // array of the displaced lepton momenta and positions at the displaced vertex
 
     unsigned _lHasTrigger[nL_max];                                                                   //trigger matching
@@ -110,23 +106,23 @@ class LeptonAnalyzer {
     double _relIso0p4Old[nL_max];                                                                    //lepton isolation variables, not stored
     double _relIso0p4MuDeltaBeta[nL_max];                                                            //lepton isolation variables
     double _miniIso[nL_max];
-    double _miniIsoCharged[nL_max];    
-    double _puCorr[nL_max];     
-    double _absIso03[nL_max];   
-    double _absIso04[nL_max];                    
-    double _sumNeutralHadronEt04[nL_max];          
-    double _sumChargedHadronPt04[nL_max];         
-    double _sumPhotonEt04[nL_max];                 
-    double _sumNeutralHadronEt03[nL_max];         
-    double _sumChargedHadronPt03[nL_max];         
-    double _sumPhotonEt03[nL_max];  
+    double _miniIsoCharged[nL_max];
+    double _puCorr[nL_max];
+    double _absIso03[nL_max];
+    double _absIso04[nL_max];
+    double _sumNeutralHadronEt04[nL_max];
+    double _sumChargedHadronPt04[nL_max];
+    double _sumPhotonEt04[nL_max];
+    double _sumNeutralHadronEt03[nL_max];
+    double _sumChargedHadronPt03[nL_max];
+    double _sumPhotonEt03[nL_max];
     double _trackIso[nL_max];
     double _ecalIso[nL_max];
     double _hcalIso[nL_max];
     double _deltaBIso[nL_max];
     double _ecalPFClusterIso[nL_max];
     double _hcalPFClusterIso[nL_max];
-   
+
     double _ptRel[nL_max];                                                                           //variables related to closest jet
     double _ptRatio[nL_max];
     double _closestJetCsvV2[nL_max];
@@ -160,39 +156,33 @@ class LeptonAnalyzer {
 
     bool _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[nL_max];
     bool _lPFMuon[nL_max];
-    bool _lpassConversionVeto[nL_max];
-   
-  
-  /////// µ ID variables
+
+
+    /////// µ ID variables
     bool _lGlobalMuon[nL_max];
     bool _lTrackerMuon[nL_max];
     double _lInnerTrackValidFraction[nL_max];
     double _lGlobalTrackNormalizeChi2[nL_max];
     double _lCQChi2Position[nL_max];
     double _lCQTrackKink[nL_max];
-    double _muonSegComp[nL_max];
     unsigned _lNumberOfMatchedStation[nL_max];
     unsigned _lNumberOfValidPixelHits[nL_max];
     unsigned _muNumberInnerHits[nL_max];
     unsigned _lTrackerLayersWithMeasurement[nL_max];
-    
-   
-    int _muDTStationsWithValidHits[nL_max] ;
-    int _muCSCStationsWithValidHits[nL_max] ;
-    int _muRPCStationsWithValidHits[nL_max] ;
-    int _muMuonStationsWithValidHits[nL_max] ;    
-    
-    
+
+    int _muDTStationsWithValidHits[nL_max];
+    int _muCSCStationsWithValidHits[nL_max];
+    int _muRPCStationsWithValidHits[nL_max];
+    int _muMuonStationsWithValidHits[nL_max];
+
     double _lMuTime[nL_max];
     double _lMuTimeErr[nL_max];
     double _lMuRPCTime[nL_max];
     double _lMuRPCTimeErr[nL_max];
     int    _lMuTimenDof[nL_max];
     int    _lMuRPCTimenDof[nL_max];
-    
 
-    
-  /////// ele ID variabels
+    /////// ele ID variabels
     bool _lEleIsEB [nL_max];
     bool _lEleIsEE[nL_max];
     double _lEleSuperClusterOverP[nL_max];
@@ -202,9 +192,7 @@ class LeptonAnalyzer {
     double _lEleDeltaPhiSuperClusterTrackAtVtx[nL_max];
     double _lElehadronicOverEm[nL_max];
     double _lEleInvMinusPInv[nL_max];
-    double _eleNumberInnerHitsMissing[nL_max];
-  
-  
+
     bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
     bool _tauEleVeto[nL_max];
     bool _decayModeFindingNew[nL_max];
@@ -240,7 +228,7 @@ class LeptonAnalyzer {
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
-    
+
     // Index in the gen-particle list
     unsigned _lGenIndex[nL_max];
     unsigned _lMatchType[nL_max];
@@ -248,7 +236,7 @@ class LeptonAnalyzer {
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
     bool _lIsPromptFinalState[nL_max];                                                                          //MC-truth variables
     bool _lIsPromptDecayed[nL_max];                                                                          //MC-truth variables
-    
+
     int _lMatchPdgId[nL_max];
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];
@@ -260,7 +248,6 @@ class LeptonAnalyzer {
     double _lMatchVertexX[nL_max];
     double _lMatchVertexY[nL_max];
     double _lMatchVertexZ[nL_max];
-
 
     std::vector<std::string> singleEleTrigs, singleMuoTrigs;
 
@@ -277,9 +264,7 @@ class LeptonAnalyzer {
                   bool, bool);
 
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
-    //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
-    template <typename Lepton> void fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton,
-                              const reco::GenParticle* match = nullptr, unsigned mtchtype = 6);
+    template <typename Lepton> void fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const reco::GenParticle* match = nullptr, unsigned mtchtype = 6);
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
@@ -287,13 +272,11 @@ class LeptonAnalyzer {
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
     void fillLeptonIsoVars(const pat::Muon& mu, const double rho);
     void fillLeptonIsoVars(const pat::Electron& ele, const double rho);
-    double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;  
+    double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
-
-    unsigned matchSingleTrigger(bool, double, double, const edm::TriggerNames&, 
-                         edm::Handle<pat::TriggerObjectStandAloneCollection>);
+    unsigned matchSingleTrigger(bool, double, double, const edm::TriggerNames&, edm::Handle<pat::TriggerObjectStandAloneCollection>);
 
     // To synchronize lepton selection
     bool passElectronPreselection(const pat::Electron&, const double rho) const;
@@ -307,12 +290,9 @@ class LeptonAnalyzer {
     double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged=false) const;
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false) const;
 
- // In LeptonAnalyzerId.cc
-    float dEtaInSeed(const pat::Electron*) const;
-    bool  isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron*) const;
-    bool  isLooseCutBasedElectronWithoutIsolation(const pat::Electron*) const;
-    bool  isMediumCutBasedElectronWithoutIsolation(const pat::Electron*) const;
-    bool  isTightCutBasedElectronWithoutIsolation(const pat::Electron*) const;
+    // In LeptonAnalyzerId.cc
+    float dEtaInSeed(const pat::Electron*) const;                                                                          // displaced specific
+    bool  isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(const pat::Electron*) const; // displaced specific
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately
     float slidingCut(float, float, float) const;
     bool  passingElectronMvaHZZ(const pat::Electron*, double) const;

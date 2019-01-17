@@ -1,13 +1,8 @@
-**** Following environment variables are going to be unset.
-       DBS_CLIENT_CONFIG
-       DBSCMD_HOME
-       MAGIC
-       MALLOC_CONF
-commit adeb7df681c5342895f53b5ce9b714d0e4a8d381
+commit eac84d398b9c82a12cfce7732f8c3ddbed17d058
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 17 11:10:45 2019 +0100
+Date:   Thu Jan 17 17:26:40 2019 +0100
 
-    accidentally switched default argument for provenance and provenanceCompressed in e8a6488fc181f246c6e72679791e5fbac5160285
+    Moving/deleting includes + trying to understand why we need yet another counter
 
 --------------------------------------------------------------------------------------------------
 
@@ -28,9 +23,6 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   Changed:
-      _lProvenance                                       mean:   0.7176 -->   0.6107     rms:   3.2930 -->   2.9385    
-      _lProvenanceCompressed                             mean:   0.0305 -->   0.1374     rms:   0.3481 -->   1.5667    
 
 --------------------------------------------------------------------------------------------------
 
@@ -39,6 +31,3 @@ Running test: Fall17MiniAODv2 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Changed:
-      _lProvenance                                       mean:   0.3939 -->   0.1818     rms:   2.5871 -->   1.4659    
-      _lProvenanceCompressed                             mean:   0.1136 -->   0.3258     rms:   0.6472 -->   2.2344    
