@@ -26,8 +26,8 @@
 #include "heavyNeutrino/multilep/interface/GenMatching.h"  // displaced specific
 
 //include classes for trigger match
-// #include "DataFormats/Common/interface/TriggerResults.h"
-// #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 
 //include ROOT classes
 #include "TTree.h"
