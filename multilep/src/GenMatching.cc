@@ -86,13 +86,13 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const Lept
         // if(mit==recogenmatchlist.end()) continue;
         //
         if(gp.pdgId()==recid && gp.status()==1){                         // * Group 1: status 1, same PDG ID
-          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rdgr = rdgr; //    * Group 1.A: pT within 20%
-          else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rdgr += 1.;  //    * Group 1.B: pT within 50%  (increase DR by 1.0, to give it less priority than group 1.A)
+          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr = rgdr; //    * Group 1.A: pT within 20%
+          else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 1.;  //    * Group 1.B: pT within 50%  (increase DR by 1.0, to give it less priority than group 1.A)
         }
-        else if(std::abs(recid)==11 && gp.pdgId()==22 && (gp.isPromptFinalState() || gp.isPromptDecayed())) rdgr += 2.; // * Group 2: photon conversions to electrons (increase DR by 2.0, to give it less priority than group 1)
+        else if(std::abs(recid)==11 && gp.pdgId()==22 && (gp.isPromptFinalState() || gp.isPromptDecayed())) rgdr += 2.; // * Group 2: photon conversions to electrons (increase DR by 2.0, to give it less priority than group 1)
         else if(gp.pdgId()!=recid && gp.status()==1){                    // * Group 3: status 1, different PDG ID
-          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rdgr += 3.;  //    * Group 3.A: pT within 20% (increase DR by 3.0, to give it lower priority than groups 1 and 2)
-          else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rdgr += 4.;  //    * Group 3.B: pT within 50% (increase DR by 4.0, to give it lower priority than groups 1, 2, and 3.A)
+          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr += 3.;  //    * Group 3.A: pT within 20% (increase DR by 3.0, to give it lower priority than groups 1 and 2)
+          else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 4.;  //    * Group 3.B: pT within 50% (increase DR by 4.0, to give it lower priority than groups 1, 2, and 3.A)
         }
         tmpgenmatches.push_back(std::make_pair(&gp, rgdr));
       }
