@@ -277,7 +277,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // loop over muons
     // muons need to be run first, because some ID's need to calculate a muon veto for electrons
     for(const pat::Muon* muptr : selmuons) {
-        if(_nL == nL_max) break; 
+        if(_nL == nL_max) break;
         const pat::Muon& mu = (*muptr);
 
         counter_index_leptons++;                               // unique index to identify the 2 tracks for each vertex
@@ -360,16 +360,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _muRPCStationsWithValidHits[_nL]  = mu.bestTrack()->hitPattern().rpcStationsWithValidHits();
         _muMuonStationsWithValidHits[_nL] = mu.bestTrack()->hitPattern().muonStationsWithValidHits();
 
-        if (mu.isMediumMuon() && mu.pt() > 24 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.2 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) )
-          ++_nGoodLeading;
+        // maybe put this simply in a function in LeptonAnalyzerId.cc???
+        bool someIdWithoutName = (mu.pt() > 24 and _lPOGMedium[_nL]
+                                  and fabs(_dxy[_nL]) < 0.05 and fabs(_dz[_nL])< 0.1
+                                  and getRelIso03(mu, *rho) < 0.2
+                                  and !mu.innerTrack().isNull()
+                                  and (mu.isTrackerMuon() or mu.isGlobalMuon()));
 
-        if(multilepAnalyzer->skim == "FR" ||
-           (mu.isMediumMuon() && mu.pt() > 24 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && getRelIso03(mu, *rho) < 0.2 && !mu.innerTrack().isNull() && (mu.isTrackerMuon() || mu.isGlobalMuon()) )) {
-            _lHasTrigger[_nL] = matchSingleTrigger(false, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
-        }
-        else {
-            _lHasTrigger[_nL] = 0;
-        }
+        if(someIdWithoutName) ++_nGoodLeading;
+        if(multilepAnalyzer->skim == "FR" or someIdWithoutName) _lHasTrigger[_nL] = matchSingleTrigger(false, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
+        else                                                    _lHasTrigger[_nL] = 0;
 
         ++_nMu;
         ++_nL;
@@ -379,7 +379,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     // Loop over electrons (note: using iterator we can easily get the ref too)
     for(size_t iele=0; iele<selelectrons.size(); ++iele){
-        if(_nL == nL_max) break; 
+        if(_nL == nL_max) break;
         const pat::Electron *ele = selelectrons[iele];
 
         fillLeptonKinVars(*ele);
@@ -464,17 +464,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           _lEResDown[_nL]               = ele->userFloat("energySigmaDown");
         }
 
-        if(ele->pt() >  7 && std::abs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced;
-        if(_lPOGMedium[_nL] && ele->pt() > 27 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.2 && !ele->gsfTrack().isNull() && _lElectronMissingHits[_nL] <=2 && ele->passConversionVeto())
-          ++_nGoodLeading;
 
-        if(multilepAnalyzer->skim == "FR" ||
-           (_lPOGMedium[_nL] && ele->pt() > 27 && std::abs(_dxy[_nL]) < 0.05 && std::abs(_dz[_nL])< 0.1 && _relIso[_nL] < 0.2 && !ele->gsfTrack().isNull() && _lElectronMissingHits[_nL] <=2 && ele->passConversionVeto()) ) {
-            _lHasTrigger[_nL] = matchSingleTrigger(true, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
-        }
-        else {
-            _lHasTrigger[_nL] = 0;
-        }
+        // maybe put this simply in a function in LeptonAnalyzerId.cc???
+        bool someIdWithoutName = (ele->pt() > 27 and _lPOGMedium[_nL]
+                                  and fabs(_dxy[_nL]) < 0.05 and fabs(_dz[_nL])< 0.1
+                                  and _relIso[_nL] < 0.2
+                                  and !ele->gsfTrack().isNull()
+                                  and _lElectronMissingHits[_nL] <=2
+                                  and ele->passConversionVeto());
+
+        if(ele->pt() > 7 && fabs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced;
+        if(someIdWithoutName) ++_nGoodLeading;
+        if(multilepAnalyzer->skim == "FR" or someIdWithoutName) _lHasTrigger[_nL] = matchSingleTrigger(true, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
+        else                                                    _lHasTrigger[_nL] = 0;
 
         ++_nEle;
         ++_nL;
@@ -495,7 +497,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     //loop over taus
     for(const pat::Tau* tauptr : seltaus) {
-        if(_nL == nL_max) break; 
+        if(_nL == nL_max) break;
         const pat::Tau& tau = (*tauptr);
 
         fillLeptonKinVars(tau);
