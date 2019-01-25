@@ -129,21 +129,21 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lEleDeltaPhiSuperClusterTrackAtVtx", &_lEleDeltaPhiSuperClusterTrackAtVtx , "_lEleDeltaPhiSuperClusterTrackAtVtx[_nLight]/D"); // "
     outputTree->Branch("_lElehadronicOverEm",           &_lElehadronicOverEm ,          "_lElehadronicOverEm[_nLight]/D");          // "
     outputTree->Branch("_lEleInvMinusPInv",             &_lEleInvMinusPInv ,            "_lEleInvMinusPInv[_nLight]/D");            // "
-    outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nL]/D");                          // "
+    outputTree->Branch("_puCorr",                       &_puCorr,                       "_puCorr[_nLight]/D");                      // "
     outputTree->Branch("_absIso03",                     &_absIso03,                     "_absIso03[_nL]/D");                        // "
-    outputTree->Branch("_absIso04",                     &_absIso04,                     "_absIso04[_nL]/D");                        // "
-    outputTree->Branch("_sumNeutralHadronEt04",         &_sumNeutralHadronEt04,         "_sumNeutralHadronEt04[_nL]/D");            // "
-    outputTree->Branch("_sumChargedHadronPt04",         &_sumChargedHadronPt04,         "_sumChargedHadronPt04[_nL]/D");            // "
-    outputTree->Branch("_sumPhotonEt04",                &_sumPhotonEt04,                "_sumPhotonEt04[_nL]/D");                   // "
-    outputTree->Branch("_sumNeutralHadronEt03",         &_sumNeutralHadronEt03,         "_sumNeutralHadronEt03[_nL]/D");            // "
-    outputTree->Branch("_sumChargedHadronPt03",         &_sumChargedHadronPt03,         "_sumChargedHadronPt03[_nL]/D");            // "
-    outputTree->Branch("_sumPhotonEt03",                &_sumPhotonEt03,                "_sumPhotonEt03[_nL]/D");                   // "
-    outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nL]/D");                        // "
-    outputTree->Branch("_ecalIso",                      &_ecalIso ,                     "_ecalIso[_nL]/D");                         // "
-    outputTree->Branch("_hcalIso",                      &_hcalIso ,                     "_hcalIso[_nL]/D");                         // "
-    outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    "_deltaBIso[_nL]/D");                       // "
-    outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            "_ecalPFClusterIso[_nL]/D");                // "
-    outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            "_hcalPFClusterIso[_nL]/D");                // "
+    outputTree->Branch("_absIso04",                     &_absIso04,                     "_absIso04[_nMu]/D");                       // "
+    outputTree->Branch("_sumNeutralHadronEt04",         &_sumNeutralHadronEt04,         "_sumNeutralHadronEt04[_nMu]/D");           // "
+    outputTree->Branch("_sumChargedHadronPt04",         &_sumChargedHadronPt04,         "_sumChargedHadronPt04[_nMu]/D");           // "
+    outputTree->Branch("_sumPhotonEt04",                &_sumPhotonEt04,                "_sumPhotonEt04[_nMu]/D");                  // "
+    outputTree->Branch("_sumNeutralHadronEt03",         &_sumNeutralHadronEt03,         "_sumNeutralHadronEt03[_nLight]/D");        // "
+    outputTree->Branch("_sumChargedHadronPt03",         &_sumChargedHadronPt03,         "_sumChargedHadronPt03[_nLight]/D");        // "
+    outputTree->Branch("_sumPhotonEt03",                &_sumPhotonEt03,                "_sumPhotonEt03[_nLight]/D");               // "
+    outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nLight]/D");                    // "
+    outputTree->Branch("_ecalIso",                      &_ecalIso ,                     "_ecalIso[_nLight]/D");                     // "
+    outputTree->Branch("_hcalIso",                      &_hcalIso ,                     "_hcalIso[_nLight]/D");                     // "
+//  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    "_deltaBIso[_nLight]/D");                   // DELETED (what was been filled was effective areas-based iso, not deltaBeta)
+    outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            "_ecalPFClusterIso[_nLight]/D");            // displaced specific
+    outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            "_hcalPFClusterIso[_nLight]/D");            // "
     outputTree->Branch("_tauMuonVeto",                  &_tauMuonVeto,                  "_tauMuonVeto[_nL]/O");
     outputTree->Branch("_tauEleVeto",                   &_tauEleVeto,                   "_tauEleVeto[_nL]/O");
     outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
@@ -490,7 +490,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     for(auto array : {&_lECorr, &_lEScaleUp, &_lEScaleDown, &_lEResUp, &_lEResDown}) std::fill_n(*array, _nMu, 0.);
     for(auto array : {&_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto, &_lEleIsEB, &_lEleIsEE}) std::fill_n(*array, _nMu, false);       // displaced specific
     for(auto array : {&_lEleSuperClusterOverP, &_lEleEcalEnergy, &_lElefull5x5SigmaIetaIeta, &_lEleDEtaInSeed}) std::fill_n(*array, _nMu, -1.); // displaced speficic
-    for(auto array : {&_lEleDeltaPhiSuperClusterTrackAtVtx, &_lElehadronicOverEm, &_lEleInvMinusPInv}) std::fill_n(*array, _nMu, -1.);          // displaced soecific
+    for(auto array : {&_lEleDeltaPhiSuperClusterTrackAtVtx, &_lElehadronicOverEm, &_lEleInvMinusPInv}) std::fill_n(*array, _nMu, -1.);          // displaced specific
+    for(auto array : {&_ecalPFClusterIso, &_hcalPFClusterIso}) std::fill_n(*array, _nMu, -1.);                                                  // displaced specific
 
     //loop over taus
     for(const pat::Tau* tauptr : seltaus) {
@@ -784,44 +785,32 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
   _lCharge[_nL] = lepton.charge();
 }
 
-void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){
-  _puCorr[_nL] = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
-  double pucorr= rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
-  _absIso03 [_nL] = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - pucorr);
-  _absIso04 [_nL] = mu.pfIsolationR04().sumChargedHadronPt + std::max(0., mu.pfIsolationR04().sumNeutralHadronEt + mu.pfIsolationR04().sumPhotonEt - pucorr);
-  _sumNeutralHadronEt04 [_nL] = mu.pfIsolationR04().sumNeutralHadronEt;
-  _sumChargedHadronPt04 [_nL] = mu.pfIsolationR04().sumChargedHadronPt;
-  _sumPhotonEt04[_nL]   = mu.pfIsolationR04().sumPhotonEt ;
-  _sumNeutralHadronEt03 [_nL] = mu.pfIsolationR03().sumNeutralHadronEt;
-  _sumChargedHadronPt03 [_nL] = mu.pfIsolationR03().sumChargedHadronPt;
-  _sumPhotonEt03[_nL]    = mu.pfIsolationR03().sumPhotonEt ;
-  _trackIso[_nL]         = mu.trackIso();
-  _ecalIso[_nL]          = mu.ecalIso();
-  _hcalIso[_nL]          = mu.hcalIso();
-  _deltaBIso[_nL]        = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumPhotonEt + mu.pfIsolationR03().sumNeutralHadronEt - 0.5*pucorr);
-  _ecalPFClusterIso[_nL] =  -1.;
-  _hcalPFClusterIso[_nL] =  -1.;
-
+void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){  // TODO: is all this stuff really still needed?
+  _puCorr[_nL]               = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
+  _absIso03[_nL]             = getRelIso03(mu, rho)*mu.pt();
+  _absIso04[_nL]             = getRelIso04(mu, rho, false)*mu.pt();
+  _sumNeutralHadronEt04[_nL] = mu.pfIsolationR04().sumNeutralHadronEt;
+  _sumChargedHadronPt04[_nL] = mu.pfIsolationR04().sumChargedHadronPt;
+  _sumPhotonEt04[_nL]        = mu.pfIsolationR04().sumPhotonEt;
+  _sumNeutralHadronEt03[_nL] = mu.pfIsolationR03().sumNeutralHadronEt;
+  _sumChargedHadronPt03[_nL] = mu.pfIsolationR03().sumChargedHadronPt;
+  _sumPhotonEt03[_nL]        = mu.pfIsolationR03().sumPhotonEt;
+  _trackIso[_nL]             = mu.trackIso();
+  _ecalIso[_nL]              = mu.ecalIso();
+  _hcalIso[_nL]              = mu.hcalIso();
 }
 
-
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rho){
-  _puCorr[_nL] = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
-  double pucorr= rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
-  _absIso03 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - pucorr);
-  _absIso04 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumNeutralHadronEt + ele.pfIsolationVariables().sumPhotonEt - pucorr);
-  _sumNeutralHadronEt04 [_nL] = ele.pfIsolationVariables().sumNeutralHadronEt;
-  _sumChargedHadronPt04 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt;
-  _sumPhotonEt04[_nL]   = ele.pfIsolationVariables().sumPhotonEt ;
-  _sumNeutralHadronEt03 [_nL] = ele.pfIsolationVariables().sumNeutralHadronEt;
-  _sumChargedHadronPt03 [_nL] = ele.pfIsolationVariables().sumChargedHadronPt;
-  _sumPhotonEt03[_nL]   = ele.pfIsolationVariables().sumPhotonEt ;
-  _trackIso[_nL]        = ele.trackIso();
-  _ecalIso[_nL]         = ele.ecalIso();
-  _hcalIso[_nL]         = ele.hcalIso();
-  _deltaBIso[_nL]       = ele.pfIsolationVariables().sumChargedHadronPt + std::max(0., ele.pfIsolationVariables().sumPhotonEt +  ele.pfIsolationVariables().sumNeutralHadronEt - 0.5*pucorr);
-  _ecalPFClusterIso[_nL]= ele.ecalPFClusterIso();
-  _hcalPFClusterIso[_nL]= ele.hcalPFClusterIso();
+  _puCorr[_nL]               = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
+  _absIso03[_nL]             = getRelIso03(ele, rho)*ele.pt();
+  _sumNeutralHadronEt03[_nL] = ele.pfIsolationVariables().sumNeutralHadronEt;
+  _sumChargedHadronPt03[_nL] = ele.pfIsolationVariables().sumChargedHadronPt;
+  _sumPhotonEt03[_nL]        = ele.pfIsolationVariables().sumPhotonEt;
+  _trackIso[_nL]             = ele.trackIso();
+  _ecalIso[_nL]              = ele.ecalIso();
+  _hcalIso[_nL]              = ele.hcalIso();
+  _ecalPFClusterIso[_nL]     = ele.ecalPFClusterIso();
+  _hcalPFClusterIso[_nL]     = ele.hcalPFClusterIso();
 }
 
 // Function from master: (TODO: check how the displaced specific functions below can be more aligned with this one)
