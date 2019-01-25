@@ -827,52 +827,26 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
 }
 
 // Fill match variables
-//
-// (1) to be used with matchGenToReco()
 template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const reco::GenParticle* match, unsigned mtchtype){
-    //        << genMatcher << " - " << &lepton << " - " << match << " - " << mtchtype << std::endl;
     genMatcher->fillMatchingVars(lepton, match, mtchtype);
-    //        << genMatcher << " - " << &lepton << " - " << match << " - " << mtchtype << std::endl;
-    _lGenIndex[_nL] = genMatcher->genLIndex();
-    _lMatchType[_nL] = genMatcher->typeMatch();
-    _lIsPrompt[_nL] = genMatcher->promptMatch();
-    _lIsPromptFinalState[_nL] = genMatcher->promptFinalStateMatch();
-    _lIsPromptDecayed[_nL] = genMatcher->promptDecayedMatch();
 
-    _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
-    _lProvenance[_nL] = genMatcher->getProvenance();
+    _lGenIndex[_nL]             = genMatcher->genLIndex();
+    _lMatchType[_nL]            = genMatcher->typeMatch();
+    _lIsPrompt[_nL]             = genMatcher->promptMatch();
+    _lIsPromptFinalState[_nL]   = genMatcher->promptFinalStateMatch();
+    _lIsPromptDecayed[_nL]      = genMatcher->promptDecayedMatch();
+
+    _lMatchPdgId[_nL]           = genMatcher->pdgIdMatch();
+    _lProvenance[_nL]           = genMatcher->getProvenance();
     _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
     _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
-    _lMatchPt[_nL] = genMatcher->getMatchPt();
-    _lMatchEta[_nL] = genMatcher->getMatchEta();
-    _lMatchPhi[_nL] = genMatcher->getMatchPhi();
-    _lMatchVertexX[_nL] = genMatcher->getMatchVertexX();
-    _lMatchVertexY[_nL] = genMatcher->getMatchVertexY();
-    _lMatchVertexZ[_nL] = genMatcher->getMatchVertexZ();
+    _lMatchPt[_nL]              = genMatcher->getMatchPt();
+    _lMatchEta[_nL]             = genMatcher->getMatchEta();
+    _lMatchPhi[_nL]             = genMatcher->getMatchPhi();
+    _lMatchVertexX[_nL]         = genMatcher->getMatchVertexX();
+    _lMatchVertexY[_nL]         = genMatcher->getMatchVertexY();
+    _lMatchVertexZ[_nL]         = genMatcher->getMatchVertexZ();
 }
-//
-// (2) to be used with findGenMatch()
-template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher){
-    genMatcher->fillMatchingVars(lepton);
-    _lGenIndex[_nL] = genMatcher->genLIndex();
-    _lMatchType[_nL] = genMatcher->typeMatch();
-    _lIsPrompt[_nL] = genMatcher->promptMatch();
-    _lIsPromptFinalState[_nL] = genMatcher->promptFinalStateMatch();
-    _lIsPromptDecayed[_nL] = genMatcher->promptDecayedMatch();
-
-    _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
-    _lProvenance[_nL] = genMatcher->getProvenance();
-    _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
-    _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
-    _lMatchPt[_nL] = genMatcher->getMatchPt();
-    _lMatchEta[_nL] = genMatcher->getMatchEta();
-    _lMatchPhi[_nL] = genMatcher->getMatchPhi();
-    _lMatchVertexX[_nL] = genMatcher->getMatchVertexX();
-    _lMatchVertexY[_nL] = genMatcher->getMatchVertexY();
-    _lMatchVertexZ[_nL] = genMatcher->getMatchVertexZ();
-}
-
-
 
 /*
  * Impact parameters:

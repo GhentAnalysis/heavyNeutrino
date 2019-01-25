@@ -129,8 +129,6 @@ const reco::GenParticle* GenMatching::returnGenMatch(const reco::Candidate* recl
 
 
 // Fill match variables
-//
-// (1) to be used with matchGenToReco()
 template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco, const reco::GenParticle* match, unsigned mtchtype){
   if(match != nullptr) {
     genLindex = 0;
@@ -156,12 +154,6 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
   matchYvtx               = match ? match->vertex().y() : 0;
   matchZvtx               = match ? match->vertex().z() : 0;
 }
-//
-// (2) to be used with findGenMatch()
-template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco){
-  const reco::GenParticle* match = findGenMatch(reco, allowMatchToAllIds);
-  fillMatchingVars(reco, match, 5);
-}
 
 bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
     if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPrompt(match, *genParticles);
@@ -185,22 +177,3 @@ collect2: error: ld returned 1 exit status
 template void GenMatching::fillMatchingVars<pat::Muon>(pat::Muon const&, reco::GenParticle const*, unsigned);
 template void GenMatching::fillMatchingVars<pat::Electron>(pat::Electron const&, reco::GenParticle const*, unsigned);
 template void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&, reco::GenParticle const*, unsigned);
-
-/********************************************************
-   Declare explicitly all the specific instances of
-   template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco)
-   This is to avoid the following linking error in compilation:
---------------------
-tmp/slc6_amd64_gcc630/src/heavyNeutrino/multilep/src/heavyNeutrinomultilep/LeptonAnalyzer.o: In function `LeptonAnalyzer::analyze(edm::Event const&, edm::EventSetup const&, reco::Vertex const&)':
-LeptonAnalyzer.cc:(.text+0x696a): undefined reference to `void GenMatching::fillMatchingVars<pat::Muon>(pat::Muon const&)'
-LeptonAnalyzer.cc:(.text+0x752f): undefined reference to `void GenMatching::fillMatchingVars<pat::Electron>(pat::Electron const&)'
-LeptonAnalyzer.cc:(.text+0x7bd6): undefined reference to `void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&)'
-collect2: error: ld returned 1 exit status
---------------------
-   This can also be avoided by moving the implementation of fillMatchingVars(...)
-   into the header file GenMatching.h. But this conflicts with using multilepAnalyzer
-   inside method fillMatchingVars(...) (error: invalid use of incomplete type 'class multilep')
-********************************************************/
-template void GenMatching::fillMatchingVars<pat::Muon>(pat::Muon const&);
-template void GenMatching::fillMatchingVars<pat::Electron>(pat::Electron const&);
-template void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&);

@@ -265,7 +265,6 @@ class LeptonAnalyzer {
 
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
     template <typename Lepton> void fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const reco::GenParticle* match = nullptr, unsigned mtchtype = 6);
-    template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
