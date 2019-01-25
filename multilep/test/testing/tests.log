@@ -1,119 +1,33 @@
-commit b4c570b09dd787f204ce19483011593e66def372
+commit ce543e0ec34ddbd317321804da1191a1c31128a9
 Author: tomc <tomc@cern.ch>
-Date:   Fri Jan 25 16:51:14 2019 +0100
+Date:   Fri Jan 25 17:32:52 2019 +0100
 
-    Remove Iso04 stuff for electrons (does not exists, and was being filled with 0.3 cones instead), limit arrays to needed size, and re-use existing function when available
+    Remove redundant stuff
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   Removed: _deltaBIso
-   Changed:
-      _absIso04                                          mean:   8.3088 -->   8.5921     rms:  19.4518 -->  19.3650    
-      _ecalIso                                           mean:   2.8711 -->   2.7889     rms:   5.1336 -->   5.0796    
-      _hcalIso                                           mean:   2.9150 -->   2.8293     rms:   5.9724 -->   5.9045    
-      _puCorr                                            mean:   1.0851 -->   1.0611     rms:   0.5063 -->   0.5217    
-      _sumChargedHadronPt03                              mean:   4.3560 -->   4.2279     rms:  12.2665 -->  12.1071    
-      _sumChargedHadronPt04                              mean:   4.7745 -->   4.6341     rms:  12.5266 -->  12.3673    
-      _sumNeutralHadronEt03                              mean:   1.6590 -->   1.6102     rms:   4.0377 -->   3.9878    
-      _sumNeutralHadronEt04                              mean:   2.1693 -->   2.1055     rms:   4.2472 -->   4.2003    
-      _sumPhotonEt03                                     mean:   2.1696 -->   2.1057     rms:   5.1450 -->   5.0820    
-      _sumPhotonEt04                                     mean:   2.7814 -->   2.6996     rms:   5.6058 -->   5.5427    
-      _trackIso                                          mean:   5.3949 -->   5.2362     rms:  14.5997 -->  14.4123    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   Removed: _deltaBIso
-   Changed:
-      _absIso04                                          mean:   6.8168 -->   7.2219     rms:  17.1226 -->  17.0238    
-      _ecalIso                                           mean:   2.7277 -->   2.6768     rms:   6.0444 -->   5.9720    
-      _hcalIso                                           mean:   1.9754 -->   2.0457     rms:   2.8988 -->   2.8955    
-      _puCorr                                            mean:   1.0795 -->   1.0723     rms:   0.4274 -->   0.4304    
-      _sumChargedHadronPt03                              mean:   2.4163 -->   2.3798     rms:   5.7976 -->   5.7283    
-      _sumChargedHadronPt04                              mean:   3.1800 -->   3.1229     rms:   7.1704 -->   7.0855    
-      _sumNeutralHadronEt03                              mean:   1.0049 -->   1.0252     rms:   3.0525 -->   3.0232    
-      _sumNeutralHadronEt04                              mean:   1.4361 -->   1.4447     rms:   3.3061 -->   3.2706    
-      _sumPhotonEt03                                     mean:   3.0919 -->   3.0151     rms:   9.9662 -->   9.8416    
-      _sumPhotonEt04                                     mean:   3.6121 -->   3.5273     rms:  10.1616 -->  10.0364    
-      _trackIso                                          mean:   4.6216 -->   5.2287     rms:  10.1022 -->  10.9674    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   Removed: _deltaBIso
-   Changed:
-      _absIso04                                          mean:  13.4253 -->   5.9666     rms:  13.8186 -->   9.2064    
-      _ecalIso                                           mean:   6.0612 -->   5.7650     rms:   4.2308 -->   4.2068    
-      _hcalIso                                           mean:   4.5992 -->   4.4851     rms:   4.7893 -->   4.6391    
-      _puCorr                                            mean:   3.0445 -->   2.9897     rms:   1.1667 -->   1.2445    
-      _sumChargedHadronPt03                              mean:   4.0147 -->   4.0430     rms:   6.5491 -->   6.4133    
-      _sumChargedHadronPt04                              mean:   6.9286 -->   4.1661     rms:   5.8973 -->   6.5006    
-      _sumNeutralHadronEt03                              mean:   1.2432 -->   1.2002     rms:   2.3409 -->   2.2345    
-      _sumNeutralHadronEt04                              mean:   0.9050 -->   1.2244     rms:   1.5675 -->   2.2524    
-      _sumPhotonEt03                                     mean:   2.6934 -->   2.6018     rms:   4.2048 -->   4.0307    
-      _sumPhotonEt04                                     mean:   6.3996 -->   2.6018     rms:   9.3726 -->   4.0307    
-      _trackIso                                          mean:   4.9313 -->   4.8061     rms:   7.1155 -->   6.8873    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   Removed: _deltaBIso
-   Changed:
-      _absIso04                                          mean:   1.5180 -->  21.8364     rms:   1.2764 -->  37.6314    
-      _ecalIso                                           mean:   7.3268 -->   9.0162     rms:   9.0924 -->  11.4078    
-      _hcalIso                                           mean:   4.1911 -->   4.7050     rms:   3.7192 -->   4.2433    
-      _puCorr                                            mean:   2.9449 -->   3.0103     rms:   1.0626 -->   1.1083    
-      _sumChargedHadronPt03                              mean:   6.3516 -->   8.6932     rms:  12.4086 -->  15.2614    
-      _sumChargedHadronPt04                              mean:   1.1847 -->   8.7296     rms:   1.3795 -->  15.2428    
-      _sumNeutralHadronEt03                              mean:   1.2448 -->   1.2594     rms:   2.2603 -->   2.1373    
-      _sumNeutralHadronEt04                              mean:   0.6290 -->   1.3391     rms:   0.9412 -->   2.1302    
-      _sumPhotonEt03                                     mean:  10.4370 -->  14.1020     rms:  19.2089 -->  23.8406    
-      _sumPhotonEt04                                     mean:   1.1732 -->  14.2133     rms:   1.0173 -->  23.7807    
-      _trackIso                                          mean:  16.3781 -->  17.8619     rms:  66.5433 -->  62.5568    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   Removed: _deltaBIso
-   Changed:
-      _absIso04                                          mean:   5.8267 -->   4.2863     rms:   8.9349 -->   7.3117    
-      _ecalIso                                           mean:   5.6387 -->   5.5321     rms:   7.6573 -->   7.5358    
-      _ecalPFClusterIso                                  mean:   1.5964 -->   1.5813     rms:   5.1660 -->   5.0689    
-      _hcalIso                                           mean:   2.1106 -->   2.1543     rms:   1.9244 -->   1.9500    
-      _hcalPFClusterIso                                  mean:   0.6490 -->   0.7253     rms:   2.0233 -->   2.1002    
-      _puCorr                                            mean:   1.9972 -->   2.0171     rms:   1.3196 -->   1.3216    
-      _sumChargedHadronPt03                              mean:   0.6986 -->   0.7086     rms:   2.2123 -->   2.1724    
-      _sumChargedHadronPt04                              mean:   1.2148 -->   0.8480     rms:   3.2647 -->   2.2193    
-      _sumNeutralHadronEt03                              mean:   0.8551 -->   0.8720     rms:   1.4505 -->   1.4478    
-      _sumNeutralHadronEt04                              mean:   1.2172 -->   1.1118     rms:   1.5453 -->   1.5564    
-      _sumPhotonEt03                                     mean:   3.3781 -->   3.2989     rms:   6.6640 -->   6.5495    
-      _sumPhotonEt04                                     mean:   4.5594 -->   3.6376     rms:   8.1382 -->   6.8174    
-      _trackIso                                          mean:   1.0932 -->   1.0768     rms:   3.4644 -->   3.4013    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Removed: _deltaBIso
-   Changed:
-      _absIso04                                          mean:   2.4709 -->   2.0146     rms:   3.1137 -->   2.8773    
-      _sumChargedHadronPt04                              mean:   0.9937 -->   0.7691     rms:   1.8398 -->   1.5158    
-      _sumNeutralHadronEt04                              mean:   1.3951 -->   1.1695     rms:   2.1261 -->   1.8544    
-      _sumPhotonEt04                                     mean:   1.4150 -->   1.2837     rms:   1.8239 -->   1.4918    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Removed: _deltaBIso
-   Changed:
-      _absIso04                                          mean:   2.5306 -->   3.2967     rms:   7.0140 -->   8.3813    
-      _ecalIso                                           mean:   1.1834 -->   1.1760     rms:   2.4897 -->   2.4817    
-      _hcalIso                                           mean:   0.7221 -->   0.7166     rms:   1.8699 -->   1.8638    
-      _puCorr                                            mean:   0.8736 -->   0.8724     rms:   0.4462 -->   0.4447    
-      _sumChargedHadronPt03                              mean:   1.0262 -->   1.0184     rms:   4.8537 -->   4.8361    
-      _sumChargedHadronPt04                              mean:   1.4608 -->   1.8179     rms:   6.3337 -->   7.5822    
-      _sumNeutralHadronEt03                              mean:   0.3701 -->   0.3673     rms:   0.8195 -->   0.8170    
-      _sumNeutralHadronEt04                              mean:   0.6903 -->   0.7098     rms:   1.2168 -->   1.2218    
-      _sumPhotonEt03                                     mean:   0.9328 -->   0.9258     rms:   1.9917 -->   1.9858    
-      _sumPhotonEt04                                     mean:   1.4239 -->   1.4351     rms:   2.1636 -->   2.1565    
-      _trackIso                                          mean:   0.7632 -->   0.7763     rms:   2.2961 -->   2.2923    
