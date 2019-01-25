@@ -1,8 +1,8 @@
-commit eac84d398b9c82a12cfce7732f8c3ddbed17d058
+commit ce543e0ec34ddbd317321804da1191a1c31128a9
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 17 17:26:40 2019 +0100
+Date:   Fri Jan 25 17:32:52 2019 +0100
 
-    Moving/deleting includes + trying to understand why we need yet another counter
+    Remove redundant stuff
 
 --------------------------------------------------------------------------------------------------
 

@@ -38,7 +38,6 @@ class GenMatching{
 
     //fill match variables
     template <typename Lepton> void fillMatchingVars(const Lepton&, const reco::GenParticle*, unsigned);
-    template <typename Lepton> void fillMatchingVars(const Lepton&);
 
     //return values
     unsigned genLIndex() {return genLindex;}
