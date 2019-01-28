@@ -1,8 +1,8 @@
-commit 52041018d7d6eb34ed2eb24e735890100f854458
+commit e888239bf73965922d6de0b4e420ca59480fcea5
 Author: tomc <tomc@cern.ch>
-Date:   Mon Jan 28 12:23:51 2019 +0100
+Date:   Mon Jan 28 15:21:39 2019 +0100
 
-    Clean-up, and make sure provenanceConversion and lMomPdgId are also filled, as is the case in the master
+    Maybe we should invent for loops
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,20 +23,11 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   Changed:
-      _lMomPdgId                                         mean:  20.1679 -->   0.0000     rms:   7.8001 -->   0.0000    
-      _lProvenanceConversion                             mean:  93.0153 -->   0.0000     rms:  23.4680 -->   0.0000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Changed:
-      _lMomPdgId                                         mean:  20.0722 -->   0.0000     rms:   9.2394 -->   0.0000    
-      _lProvenanceConversion                             mean:  99.0000 -->   0.0000     rms:   0.0000 -->   0.0000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Changed:
-      _lMomPdgId                                         mean:  31.4924 -->   0.0000     rms: 190.8054 -->   0.0000    
-      _lProvenanceConversion                             mean:  99.0000 -->   0.0000     rms:   0.0000 -->   0.0000    
