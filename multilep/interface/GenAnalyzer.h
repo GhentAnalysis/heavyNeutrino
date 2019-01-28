@@ -70,5 +70,6 @@ class GenAnalyzer {
 
     void beginJob(TTree* outputTree);
     void analyze(const edm::Event&);
+    unsigned getGenLeptonIndex(const reco::GenParticle* match);
 };
 #endif

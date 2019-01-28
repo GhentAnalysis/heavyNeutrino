@@ -302,7 +302,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(!multilepAnalyzer->isData) {
           unsigned muomatchtype;
           const reco::GenParticle *muomatch = genMatcher->returnGenMatch(muptr, muomatchtype);
-          fillLeptonGenVars(genMatcher, mu, muomatch, muomatchtype);
+          fillLeptonGenVars(genMatcher, mu, *genParticles, muomatch, muomatchtype);
         }
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
         _lGlobalMuon[_nL]                   = mu.isGlobalMuon();
@@ -384,7 +384,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(!multilepAnalyzer->isData) {
           unsigned elematchtype;
           const reco::GenParticle *elematch = genMatcher->returnGenMatch(ele, elematchtype);
-          fillLeptonGenVars(genMatcher, *ele, elematch, elematchtype);
+          fillLeptonGenVars(genMatcher, *ele, *genParticles, elematch, elematchtype);
         }
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
@@ -502,7 +502,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(!multilepAnalyzer->isData) {
           unsigned taumatchtype;
           const reco::GenParticle *taumatch = genMatcher->returnGenMatch(tauptr, taumatchtype);
-          fillLeptonGenVars(genMatcher, tau, taumatch, taumatchtype);
+          fillLeptonGenVars(genMatcher, tau, *genParticles, taumatch, taumatchtype);
         }
         fillLeptonImpactParameters(tau, primaryVertex);
 
@@ -827,25 +827,24 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
 }
 
 // Fill match variables
-template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const reco::GenParticle* match, unsigned mtchtype){
-    genMatcher->fillMatchingVars(lepton, match, mtchtype);
+template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles, const reco::GenParticle* match, unsigned mtchtype){
+   // genMatcher->fillMatchingVars(lepton, match, mtchtype);
+    _lGenIndex[_nL]             = multilepAnalyzer->genAnalyzer->getGenLeptonIndex(match);
+    _lMatchType[_nL]            = match ? mtchtype : (mtchtype==5 ? 7 : 6);
+    _lIsPrompt[_nL]             = match ? genMatcher->isPrompt(lepton, *match) : false;
+    _lIsPromptFinalState[_nL]   = match ? match->isPromptFinalState(): false; 
+    _lIsPromptDecayed[_nL]      = match ? match->isPromptDecayed() : false; 
 
-    _lGenIndex[_nL]             = genMatcher->genLIndex();
-    _lMatchType[_nL]            = genMatcher->typeMatch();
-    _lIsPrompt[_nL]             = genMatcher->promptMatch();
-    _lIsPromptFinalState[_nL]   = genMatcher->promptFinalStateMatch();
-    _lIsPromptDecayed[_nL]      = genMatcher->promptDecayedMatch();
-
-    _lMatchPdgId[_nL]           = genMatcher->pdgIdMatch();
-    _lProvenance[_nL]           = genMatcher->getProvenance();
-    _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
+    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0; 
+    _lProvenance[_nL]           = match ? GenTools::provenance(match, genParticles) : 18; 
+    _lProvenanceCompressed[_nL] = match ? GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]) : 4; 
     _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
-    _lMatchPt[_nL]              = genMatcher->getMatchPt();
-    _lMatchEta[_nL]             = genMatcher->getMatchEta();
-    _lMatchPhi[_nL]             = genMatcher->getMatchPhi();
-    _lMatchVertexX[_nL]         = genMatcher->getMatchVertexX();
-    _lMatchVertexY[_nL]         = genMatcher->getMatchVertexY();
-    _lMatchVertexZ[_nL]         = genMatcher->getMatchVertexZ();
+    _lMatchPt[_nL]              = match ? match->pt() : 0; 
+    _lMatchEta[_nL]             = match ? match->eta() : 0;
+    _lMatchPhi[_nL]             = match ? match->phi() : 0;
+    _lMatchVertexX[_nL]         = match ? match->vertex().x() : 0;
+    _lMatchVertexY[_nL]         = match ? match->vertex().y() : 0;
+    _lMatchVertexZ[_nL]         = match ? match->vertex().z() : 0;
 }
 
 /*

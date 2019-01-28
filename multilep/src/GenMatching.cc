@@ -127,7 +127,7 @@ const reco::GenParticle* GenMatching::returnGenMatch(const reco::Candidate* recl
   return nullptr;
 }
 
-
+/*
 // Fill match variables
 template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco, const reco::GenParticle* match, unsigned mtchtype){
   if(match != nullptr) {
@@ -154,7 +154,7 @@ template <typename Lepton> void GenMatching::fillMatchingVars(const Lepton& reco
   matchYvtx               = match ? match->vertex().y() : 0;
   matchZvtx               = match ? match->vertex().z() : 0;
 }
-
+*/
 bool GenMatching::isPrompt(const reco::Candidate& reco, const reco::GenParticle& match) const{
     if(abs(reco.pdgId()) == abs(match.pdgId()) || match.pdgId() == 22) return GenTools::isPrompt(match, *genParticles);
     return false;
@@ -174,6 +174,7 @@ collect2: error: ld returned 1 exit status
    into the header file GenMatching.h. But this conflicts with using multilepAnalyzer
    inside method fillMatchingVars(...) (error: invalid use of incomplete type 'class multilep')
 ********************************************************/
+/*
 template void GenMatching::fillMatchingVars<pat::Muon>(pat::Muon const&, reco::GenParticle const*, unsigned);
 template void GenMatching::fillMatchingVars<pat::Electron>(pat::Electron const&, reco::GenParticle const*, unsigned);
-template void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&, reco::GenParticle const*, unsigned);
+template void GenMatching::fillMatchingVars<pat::Tau>(pat::Tau const&, reco::GenParticle const*, unsigned);*/
