@@ -708,7 +708,8 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, 
   _vertices[nVFit][10] = dvtx.degreesOfFreedom();
   _vertices[nVFit][11] = dvtx.totalChiSquared();
 
-  GlobalPoint vtxpos(_vertices[nVFit][1], _vertices[nVFit][2], _vertices[nVFit][3]);
+//  GlobalPoint vtxpos(_vertices[nVFit][1], _vertices[nVFit][2], _vertices[nVFit][3]);
+  GlobalPoint vtxpos = dvtx.position();
 
   int i = 0;
   for(auto& track : {tk1, tk2}){
