@@ -156,3 +156,12 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
 
     return type;
 }
+
+unsigned GenAnalyzer::getGenLeptonIndex(const reco::GenParticle* match){
+  if(match == nullptr) return gen_nL_max; // out of range
+  unsigned genLindex = 0;
+  for(; genLindex<gen_nL_max; ++genLindex){
+    if(_gen_lRefs[genLindex]==match) break;
+  }
+  return genLindex;
+}

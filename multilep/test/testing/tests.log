@@ -1,8 +1,8 @@
-commit ce543e0ec34ddbd317321804da1191a1c31128a9
+commit 52041018d7d6eb34ed2eb24e735890100f854458
 Author: tomc <tomc@cern.ch>
-Date:   Fri Jan 25 17:32:52 2019 +0100
+Date:   Mon Jan 28 12:23:51 2019 +0100
 
-    Remove redundant stuff
+    Clean-up, and make sure provenanceConversion and lMomPdgId are also filled, as is the case in the master
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,11 +23,20 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _lMomPdgId                                         mean:  20.1679 -->   0.0000     rms:   7.8001 -->   0.0000    
+      _lProvenanceConversion                             mean:  93.0153 -->   0.0000     rms:  23.4680 -->   0.0000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _lMomPdgId                                         mean:  20.0722 -->   0.0000     rms:   9.2394 -->   0.0000    
+      _lProvenanceConversion                             mean:  99.0000 -->   0.0000     rms:   0.0000 -->   0.0000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _lMomPdgId                                         mean:  31.4924 -->   0.0000     rms: 190.8054 -->   0.0000    
+      _lProvenanceConversion                             mean:  99.0000 -->   0.0000     rms:   0.0000 -->   0.0000    

@@ -302,7 +302,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(!multilepAnalyzer->isData) {
           unsigned muomatchtype;
           const reco::GenParticle *muomatch = genMatcher->returnGenMatch(muptr, muomatchtype);
-          fillLeptonGenVars(genMatcher, mu, muomatch, muomatchtype);
+          fillLeptonGenVars(genMatcher, mu, *genParticles, muomatch, muomatchtype);
         }
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
         _lGlobalMuon[_nL]                   = mu.isGlobalMuon();
@@ -384,7 +384,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(!multilepAnalyzer->isData) {
           unsigned elematchtype;
           const reco::GenParticle *elematch = genMatcher->returnGenMatch(ele, elematchtype);
-          fillLeptonGenVars(genMatcher, *ele, elematch, elematchtype);
+          fillLeptonGenVars(genMatcher, *ele, *genParticles, elematch, elematchtype);
         }
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
@@ -502,7 +502,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(!multilepAnalyzer->isData) {
           unsigned taumatchtype;
           const reco::GenParticle *taumatch = genMatcher->returnGenMatch(tauptr, taumatchtype);
-          fillLeptonGenVars(genMatcher, tau, taumatch, taumatchtype);
+          fillLeptonGenVars(genMatcher, tau, *genParticles, taumatch, taumatchtype);
         }
         fillLeptonImpactParameters(tau, primaryVertex);
 
@@ -813,39 +813,26 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
   _hcalPFClusterIso[_nL]     = ele.hcalPFClusterIso();
 }
 
-// Function from master: (TODO: check how the displaced specific functions below can be more aligned with this one)
-template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
-    const reco::GenParticle* match = lepton.genParticle();
-    if(!match or match->pdgId() != lepton.pdgId()) match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
-
+// Fill match variables
+template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles, const reco::GenParticle* match, unsigned mtchtype){
+    _lGenIndex[_nL]             = multilepAnalyzer->genAnalyzer->getGenLeptonIndex(match);
+    _lMatchType[_nL]            = match ? mtchtype : (mtchtype==5 ? 7 : 6);
     _lIsPrompt[_nL]             = match and (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) and GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
-    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
-    _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
-    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
+    _lIsPromptFinalState[_nL]   = match ? match->isPromptFinalState(): false; 
+    _lIsPromptDecayed[_nL]      = match ? match->isPromptDecayed() : false; 
+
+    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0; 
+    _lProvenance[_nL]           = GenTools::provenance(match, genParticles); 
+    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]); 
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
     _lMomPdgId[_nL]             = match ? (GenTools::getMother(*match, genParticles))->pdgId() : 0;
-}
 
-// Fill match variables
-template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const reco::GenParticle* match, unsigned mtchtype){
-    genMatcher->fillMatchingVars(lepton, match, mtchtype);
-
-    _lGenIndex[_nL]             = genMatcher->genLIndex();
-    _lMatchType[_nL]            = genMatcher->typeMatch();
-    _lIsPrompt[_nL]             = genMatcher->promptMatch();
-    _lIsPromptFinalState[_nL]   = genMatcher->promptFinalStateMatch();
-    _lIsPromptDecayed[_nL]      = genMatcher->promptDecayedMatch();
-
-    _lMatchPdgId[_nL]           = genMatcher->pdgIdMatch();
-    _lProvenance[_nL]           = genMatcher->getProvenance();
-    _lProvenanceCompressed[_nL] = genMatcher->getProvenanceCompressed();
-    _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
-    _lMatchPt[_nL]              = genMatcher->getMatchPt();
-    _lMatchEta[_nL]             = genMatcher->getMatchEta();
-    _lMatchPhi[_nL]             = genMatcher->getMatchPhi();
-    _lMatchVertexX[_nL]         = genMatcher->getMatchVertexX();
-    _lMatchVertexY[_nL]         = genMatcher->getMatchVertexY();
-    _lMatchVertexZ[_nL]         = genMatcher->getMatchVertexZ();
+    _lMatchPt[_nL]              = match ? match->pt() : 0; 
+    _lMatchEta[_nL]             = match ? match->eta() : 0;
+    _lMatchPhi[_nL]             = match ? match->phi() : 0;
+    _lMatchVertexX[_nL]         = match ? match->vertex().x() : 0;
+    _lMatchVertexY[_nL]         = match ? match->vertex().y() : 0;
+    _lMatchVertexZ[_nL]         = match ? match->vertex().z() : 0;
 }
 
 /*
