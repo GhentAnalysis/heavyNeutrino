@@ -694,9 +694,7 @@ void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
 
 // Fill the arrays of displaced vertices and leptons
 void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, unsigned iL_minus,
-  const TransientVertex& dvtx,
-  const reco::Track& tk1, const reco::Track& tk2,
-  bool isEle1, bool isEle2) {
+  const TransientVertex& dvtx, const reco::Track& tk1, const reco::Track& tk2, bool isEle1, bool isEle2) {
   _vertices[nVFit][0]  = iL_plus*100 + iL_minus;
   _vertices[nVFit][1]  = dvtx.position().x();
   _vertices[nVFit][2]  = dvtx.position().y();
@@ -710,40 +708,26 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, 
   _vertices[nVFit][10] = dvtx.degreesOfFreedom();
   _vertices[nVFit][11] = dvtx.totalChiSquared();
 
-  GlobalPoint  vtxpos(_vertices[nVFit][1], _vertices[nVFit][2], _vertices[nVFit][3]);
+  GlobalPoint vtxpos(_vertices[nVFit][1], _vertices[nVFit][2], _vertices[nVFit][3]);
 
-  GlobalPoint  l1r(tk1.vx(), tk1.vy(), tk1.vz());
-  GlobalVector l1p(tk1.px(), tk1.py(), tk1.pz());
-  GlobalTrajectoryParameters l1gtp(l1r, l1p, tk1.charge(), _bField.product());
-  CurvilinearTrajectoryError l1cov(tk1.covariance());
-  FreeTrajectoryState l1fts(l1gtp, l1cov);
-  FreeTrajectoryState l1newfts;
+  int i = 0;
+  for(auto& track : {tk1, tk2}){
+    GlobalPoint  globPoint(track.vx(), track.vy(), track.vz());
+    GlobalVector globVector(track.px(), track.py(), track.pz());
+    GlobalTrajectoryParameters globTrajParam(globPoint, globVector, track.charge(), _bField.product());
+    FreeTrajectoryState tempFreeTrajectoryState(globTrajParam, track.covariance());
+    FreeTrajectoryState freeTrajectoryState;
 
-  if(isEle1) l1newfts = *(_gsfProp->extrapolate(l1fts, vtxpos).freeState());
-  else       l1newfts = _shProp->propagate(l1fts, vtxpos);
+    bool isEle = (i == 0 ? isEle1 : isEle2);
+    if(isEle) freeTrajectoryState = *(_gsfProp->extrapolate(tempFreeTrajectoryState, vtxpos).freeState());
+    else      freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, vtxpos);
 
-  if(!l1newfts.hasCurvilinearError()) { // instead of isValid()...
-    std::cout << "Propagation of L1 to dilepton vertex (" << _vertices[nVFit][0] << ") failed!" << std::endl;
-    l1newfts = l1fts;
-  }
+    if(!freeTrajectoryState.hasCurvilinearError()){
+      std::cout << "Propagation of lepton to dilepton vertex (" << _vertices[nVFit][0] << ") failed!" << std::endl;
+      freeTrajectoryState = tempFreeTrajectoryState;
+    }
 
-  GlobalPoint  l2r(tk2.vx(), tk2.vy(), tk2.vz());
-  GlobalVector l2p(tk2.px(), tk2.py(), tk2.pz());
-  GlobalTrajectoryParameters l2gtp(l2r, l2p, tk2.charge(), _bField.product());
-  CurvilinearTrajectoryError l2cov(tk2.covariance());
-  FreeTrajectoryState l2fts(l2gtp, l2cov);
-  FreeTrajectoryState l2newfts;
-
-  if(isEle2) l2newfts = *(_gsfProp->extrapolate(l2fts, vtxpos).freeState());
-  else       l2newfts = _shProp->propagate(l2fts, vtxpos);
-
-  if(!l2newfts.hasCurvilinearError()) { // instead of isValid()...
-    std::cout << "Propagation of L2 to dilepton vertex (" << _vertices[nVFit][0] << ") failed!" << std::endl;
-    l2newfts = l2fts;
-  }
-
-  int i = 0;  // fill _lDisplaced[nVFit] with 2x12=24 elements structured as 3 position + 3 momentum + 3 position error + 3 momentum error
-  for(auto& freeTrajectoryState : {l1newfts, l2newfts}){
+    // fill _lDisplaced[nVFit] with 2x12=24 elements structured as 3 position + 3 momentum + 3 position error + 3 momentum error
     _lDisplaced[nVFit][i++] = freeTrajectoryState.position().x();
     _lDisplaced[nVFit][i++] = freeTrajectoryState.position().y();
     _lDisplaced[nVFit][i++] = freeTrajectoryState.position().z();
