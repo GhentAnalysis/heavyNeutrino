@@ -91,25 +91,25 @@ bool GenTools::udsInChain(const std::set<int>& chain){
 
 //enumerated type to specify decay
 enum decayType {
-  W_L,       //  0
-  W_T_L,     //  1
-  W_B_L,     //  2
-  W_B_C_L,   //  3
-  W_B_C_T_L, //  4
-  W_B_T_L,   //  5
-  W_C_L,     //  6
-  W_C_T_L,   //  7
-  B_L,       //  8
-  B_C_L,     //  9
-  B_C_T_L,   // 10
-  B_T_L,     // 11
-  C_L,       // 12
-  C_T_L,     // 13
-  B_Baryon,  // 14
-  C_Baryon,  // 15
-  pi_0,      // 16
-  photon_,   // 17
-  F_L        // 18
+    W_L,
+    W_T_L,
+    W_B_L,
+    W_B_C_L,
+    W_B_C_T_L,
+    W_B_T_L,
+    W_C_L,
+    W_C_T_L,
+    B_L,
+    B_C_L,
+    B_C_T_L,
+    B_T_L,
+    C_L,
+    C_T_L,
+    B_Baryon,
+    C_Baryon,
+    pi_0,
+    photon_,
+    F_L
 };
 
 unsigned GenTools::provenance(const reco::GenParticle* gen, const std::vector<reco::GenParticle>& genParticles){
