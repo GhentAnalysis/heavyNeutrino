@@ -150,7 +150,7 @@ class LeptonAnalyzer {
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
 
-    // In leptonAnalyzerIso,cc
+    // In leptonAnalyzerIso.cc
     double getRelIso03(const pat::Muon&, const double) const;
     double getRelIso03(const pat::Electron&, const double) const;
     double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta=false) const;

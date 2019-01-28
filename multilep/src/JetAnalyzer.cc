@@ -190,7 +190,6 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     //note: this is the only one variable which changed between 94X and 102X see https://github.com/cms-sw/cmssw/commit/f7aacfd2ffaac9899ea07d0355afe49bb10a0aeb
     _metSignificance = met.metSignificance();
 
-
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
     if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;
     return true;

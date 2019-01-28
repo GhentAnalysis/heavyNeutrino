@@ -42,7 +42,7 @@ def compare(logger, name):
   if len(removed):  logger.write('   Removed: ' + ','.join(removed) + '\n')
   if len(changed):  logger.write('   Changed:\n')
   for c in changed:
-    logger.write('      %-50s mean: %-25s rms: %-25s\n' % (c, '%8.4f --> %8.4f' % (newData[c][0], refData[c][0]), '%8.4f --> %8.4f' % (newData[c][1], refData[c][1])))
+    logger.write('      %-50s mean: %-25s rms: %-25s\n' % (c, '%8.4f --> %8.4f' % (refData[c][0], newData[c][0]), '%8.4f --> %8.4f' % (refData[c][1], newData[c][1])))
 
 # Compile
 print system('eval `scram runtime -sh`;cd $CMSSW_BASE/src;scram b -j 10')
