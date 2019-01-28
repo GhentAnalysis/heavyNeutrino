@@ -1,8 +1,8 @@
-commit ce543e0ec34ddbd317321804da1191a1c31128a9
+commit f79ac199d1fb584c83a412dd5c9be6bf815d3b5c
 Author: tomc <tomc@cern.ch>
-Date:   Fri Jan 25 17:32:52 2019 +0100
+Date:   Mon Jan 28 11:27:50 2019 +0100
 
-    Remove redundant stuff
+    Trying to refactor the code to get a more readable, easier-maintained code
 
 --------------------------------------------------------------------------------------------------
 
