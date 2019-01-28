@@ -24,7 +24,7 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     leptonMvaComputerTTH17    = new LeptonMvaHelper(iConfig, 1, true);  // TTH
     leptonMvaComputertZqTTV16 = new LeptonMvaHelper(iConfig, 2, false); // tZq/TTV
     leptonMvaComputertZqTTV17 = new LeptonMvaHelper(iConfig, 2, true);  // tZq/TTV
-    if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer); // displaced specific ??
+    if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer); // displaced specific
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
@@ -34,7 +34,7 @@ LeptonAnalyzer::~LeptonAnalyzer(){
     delete leptonMvaComputerSUSY17;
     delete leptonMvaComputerTTH17;
     delete leptonMvaComputertZqTTV17;
-    if(!multilepAnalyzer->isData) delete genMatcher; // displaced specific?
+    if(!multilepAnalyzer->isData) delete genMatcher; // displaced specific
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
@@ -673,7 +673,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
  * //--// Refit dilepton vertex:
  * Provide a transientvertex
  */
-TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const reco::Track& tk2) {
+TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const reco::Track& tk2){
   MagneticField *bfield = new OAEParametrizedMagneticField("3_8T");
   std::vector<reco::TransientTrack> ttks;
   ttks.push_back(reco::TransientTrack(tk1, bfield));
@@ -727,23 +727,6 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, 
     l1newfts = l1fts;
   }
 
-  // Position
-  _lDisplaced[nVFit][0] = l1newfts.position().x();
-  _lDisplaced[nVFit][1] = l1newfts.position().y();
-  _lDisplaced[nVFit][2] = l1newfts.position().z();
-  // Momentum
-  _lDisplaced[nVFit][3] = l1newfts.momentum().x();
-  _lDisplaced[nVFit][4] = l1newfts.momentum().y();
-  _lDisplaced[nVFit][5] = l1newfts.momentum().z();
-  // Position error
-  _lDisplaced[nVFit][6]  = (l1newfts.cartesianError().matrix())(0, 0);
-  _lDisplaced[nVFit][7]  = (l1newfts.cartesianError().matrix())(1, 1);
-  _lDisplaced[nVFit][8]  = (l1newfts.cartesianError().matrix())(2, 2);
-  // Momentum error
-  _lDisplaced[nVFit][9]  = (l1newfts.cartesianError().matrix())(3, 3);
-  _lDisplaced[nVFit][10] = (l1newfts.cartesianError().matrix())(4, 4);
-  _lDisplaced[nVFit][11] = (l1newfts.cartesianError().matrix())(5, 5);
-
   GlobalPoint  l2r(tk2.vx(), tk2.vy(), tk2.vz());
   GlobalVector l2p(tk2.px(), tk2.py(), tk2.pz());
   GlobalTrajectoryParameters l2gtp(l2r, l2p, tk2.charge(), _bField.product());
@@ -759,22 +742,24 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, 
     l2newfts = l2fts;
   }
 
-  // Position
-  _lDisplaced[nVFit][12] = l2newfts.position().x();
-  _lDisplaced[nVFit][13] = l2newfts.position().y();
-  _lDisplaced[nVFit][14] = l2newfts.position().z();
-  // Momentum
-  _lDisplaced[nVFit][15] = l2newfts.momentum().x();
-  _lDisplaced[nVFit][16] = l2newfts.momentum().y();
-  _lDisplaced[nVFit][17] = l2newfts.momentum().z();
-  // Position error
-  _lDisplaced[nVFit][18]  = (l2newfts.cartesianError().matrix())(0, 0);
-  _lDisplaced[nVFit][19]  = (l2newfts.cartesianError().matrix())(1, 1);
-  _lDisplaced[nVFit][20]  = (l2newfts.cartesianError().matrix())(2, 2);
-  // Momentum error
-  _lDisplaced[nVFit][21]  = (l2newfts.cartesianError().matrix())(3, 3);
-  _lDisplaced[nVFit][22] = (l2newfts.cartesianError().matrix())(4, 4);
-  _lDisplaced[nVFit][23] = (l2newfts.cartesianError().matrix())(5, 5);
+  int i = 0;  // fill _lDisplaced[nVFit] with 2x12=24 elements structured as 3 position + 3 momentum + 3 position error + 3 momentum error
+  for(auto& freeTrajectoryState : {l1newfts, l2newfts}){
+    _lDisplaced[nVFit][i++] = freeTrajectoryState.position().x();
+    _lDisplaced[nVFit][i++] = freeTrajectoryState.position().y();
+    _lDisplaced[nVFit][i++] = freeTrajectoryState.position().z();
+
+    _lDisplaced[nVFit][i++] = freeTrajectoryState.momentum().x();
+    _lDisplaced[nVFit][i++] = freeTrajectoryState.momentum().y();
+    _lDisplaced[nVFit][i++] = freeTrajectoryState.momentum().z();
+
+    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(0, 0); //position error
+    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(1, 1);
+    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(2, 2);
+
+    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(3, 3); // momentum error
+    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(4, 4);
+    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(5, 5);
+  }
 }
 
 void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
