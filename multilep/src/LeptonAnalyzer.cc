@@ -813,32 +813,20 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
   _hcalPFClusterIso[_nL]     = ele.hcalPFClusterIso();
 }
 
-// Function from master: (TODO: check how the displaced specific functions below can be more aligned with this one)
-template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
-    const reco::GenParticle* match = lepton.genParticle();
-    if(!match or match->pdgId() != lepton.pdgId()) match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
-
-    _lIsPrompt[_nL]             = match and (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) and GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
-    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
-    _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
-    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
-    _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
-    _lMomPdgId[_nL]             = match ? (GenTools::getMother(*match, genParticles))->pdgId() : 0;
-}
-
 // Fill match variables
 template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles, const reco::GenParticle* match, unsigned mtchtype){
-   // genMatcher->fillMatchingVars(lepton, match, mtchtype);
     _lGenIndex[_nL]             = multilepAnalyzer->genAnalyzer->getGenLeptonIndex(match);
     _lMatchType[_nL]            = match ? mtchtype : (mtchtype==5 ? 7 : 6);
-    _lIsPrompt[_nL]             = match ? genMatcher->isPrompt(lepton, *match) : false;
+    _lIsPrompt[_nL]             = match and (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) and GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
     _lIsPromptFinalState[_nL]   = match ? match->isPromptFinalState(): false; 
     _lIsPromptDecayed[_nL]      = match ? match->isPromptDecayed() : false; 
 
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0; 
-    _lProvenance[_nL]           = match ? GenTools::provenance(match, genParticles) : 18; 
-    _lProvenanceCompressed[_nL] = match ? GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]) : 4; 
-    _lProvenanceConversion[_nL] = genMatcher->getProvenanceConversion();
+    _lProvenance[_nL]           = GenTools::provenance(match, genParticles); 
+    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]); 
+    _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
+    _lMomPdgId[_nL]             = match ? (GenTools::getMother(*match, genParticles))->pdgId() : 0;
+
     _lMatchPt[_nL]              = match ? match->pt() : 0; 
     _lMatchEta[_nL]             = match ? match->eta() : 0;
     _lMatchPhi[_nL]             = match ? match->phi() : 0;
