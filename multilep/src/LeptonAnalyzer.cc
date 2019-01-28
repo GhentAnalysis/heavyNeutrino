@@ -541,74 +541,18 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
 
     /*
-     * refitting vertices displaced ***********************************************************
+     * refitting vertices displaced
+     * try all possible combinations of electrons and muons (further selections on opposite-charge is required in the fillDileptonVertexArray function)
      */
-    unsigned iMu_plus=0;
-    unsigned iMu_minus_mu=0;
-    unsigned iMu_minus_e=0;
-    unsigned iE_plus=_nMu;
-    unsigned iE_minus_mu=_nMu;
-    unsigned iE_minus_e=_nMu;
     cleanDileptonVertexArrays(_nVFit);
-
-    for(const pat::Muon* mu1 : selmuons){ // for muons
-
-      //+++++++++++++++    mu+
-      iMu_plus++;
-      if(mu1->charge() < 0) continue;
-
-      // ------------------  loop mu-
-      iMu_minus_mu=0;
-      for(const pat::Muon* mu2 : selmuons){
-
-        iMu_minus_mu++;
-        if(mu2->charge() > 0) continue;  // only opposite charge
-        fillDileptonVertexArrays(iMu_plus, iMu_minus_mu, mu1, mu2);
-      }// end loop mu-
-
-      // ------------------  loop e-
-      iE_minus_mu=_nMu;
-
-      for(const pat::Electron* ele_2 : selelectrons){
-
-        iE_minus_mu++; // it is already _nMu
-        if(ele_2->charge() > 0) continue; // only opposite charge
-        fillDileptonVertexArrays(iMu_plus, iE_minus_mu, mu1, ele_2);
-      }// end loop e-
-    }//end loop mu
-
-    iMu_minus_e=0;
-    iE_plus=_nMu;
-    iE_minus_e=_nMu;
-
-    for(const pat::Electron* ele_1 : selelectrons){
-
-      iE_plus++;
-      //+++++++++++++++++++++ e+
-      if(ele_1->charge() < 0) continue;
-
-      //------------------  loop mu+
-      iMu_minus_e=0;
-
-      for(const pat::Muon* muptr_2 : selmuons){
-        const pat::Muon& mu_2 = (*muptr_2);
-
-        iMu_minus_e++;
-        if (mu_2.charge() > 0) continue;  // only opposite charge
-        fillDileptonVertexArrays(iE_plus, iMu_minus_e, ele_1, muptr_2);
-      }// end loop mu-
-
-
-      //------------------  loop e+
-      iE_minus_e=_nMu;
-
-      for(const pat::Electron* ele_2 : selelectrons){
-        iE_minus_e++;
-        if(ele_2->charge() > 0) continue; // only opposite charge
-//        const reco::Track&  tk_2 =  *ele_2->gsfTrack();
-        fillDileptonVertexArrays(iE_plus, iE_minus_e, ele_1, ele_2);
-      }// end loop e+
-    }//end electrons
+    for(unsigned i=0; i < selmuons.size(); ++i){
+      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(i, j,      selmuons.at(i), selmuons.at(j));
+      for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(i, _nMu+j, selmuons.at(i), selelectrons.at(j));
+    }
+    for(unsigned i=0; i < selelectrons.size(); ++i){
+      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(_nMu+i, j,      selelectrons.at(i), selmuons.at(j));
+      for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(_nMu+i, _nMu+j, selelectrons.at(i), selelectrons.at(j));
+    }
 
     //Initialize with default values for those tau-only arrays which weren't filled with electrons and muons [to allow correct comparison by the test script]
     for(auto array : {&_tauMuonVeto, &_tauEleVeto, &_decayModeFindingNew, &_tauVLooseMvaNew, &_tauLooseMvaNew}) std::fill_n(*array, _nLight, false);
@@ -671,6 +615,9 @@ const reco::Track& LeptonAnalyzer::getTrack(const reco::RecoCandidate* lep){
 
 // Fill the arrays of displaced vertices and leptons
 void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minus, const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2){
+  if(lep1->charge() < 0) return; // ensure opposite charge
+  if(lep2->charge() > 0) return;
+
   const reco::Track& tk1 = getTrack(lep1);
   const reco::Track& tk2 = getTrack(lep2);
   TransientVertex dvtx = dileptonVertex(tk1, tk2);
