@@ -551,24 +551,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     unsigned iE_minus_e=_nMu;
     cleanDileptonVertexArrays(_nVFit);
 
-    for(const pat::Muon* muptr_1 : selmuons){ // for muons
-      const pat::Muon& mu_1 = (*muptr_1);
+    for(const pat::Muon* mu1 : selmuons){ // for muons
 
-      iMu_plus++;
       //+++++++++++++++    mu+
-      if (mu_1.charge() < 0) continue;
-      const reco::Track&  tk_1 = (!mu_1.innerTrack().isNull()) ? *mu_1.innerTrack () :  *mu_1.outerTrack () ;
+      iMu_plus++;
+      if(mu1->charge() < 0) continue;
 
       // ------------------  loop mu-
       iMu_minus_mu=0;
-
-      for(const pat::Muon* muptr_2 : selmuons){
-        const pat::Muon& mu_2 = (*muptr_2);
+      for(const pat::Muon* mu2 : selmuons){
 
         iMu_minus_mu++;
-        if (mu_2.charge() > 0) continue;  // only opposite charge
-        const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
-        fillDileptonVertexArrays(iMu_plus, iMu_minus_mu, tk_1, tk_2, false, false);
+        if(mu2->charge() > 0) continue;  // only opposite charge
+        fillDileptonVertexArrays(iMu_plus, iMu_minus_mu, mu1, mu2);
       }// end loop mu-
 
       // ------------------  loop e-
@@ -578,8 +573,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         iE_minus_mu++; // it is already _nMu
         if(ele_2->charge() > 0) continue; // only opposite charge
-        const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
-        fillDileptonVertexArrays(iMu_plus, iE_minus_mu, tk_1, tk_2, false, true);
+        fillDileptonVertexArrays(iMu_plus, iE_minus_mu, mu1, ele_2);
       }// end loop e-
     }//end loop mu
 
@@ -592,7 +586,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       iE_plus++;
       //+++++++++++++++++++++ e+
       if(ele_1->charge() < 0) continue;
-      const reco::Track&  tk_1 =  *ele_1->gsfTrack() ;
 
       //------------------  loop mu+
       iMu_minus_e=0;
@@ -602,8 +595,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         iMu_minus_e++;
         if (mu_2.charge() > 0) continue;  // only opposite charge
-        const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
-        fillDileptonVertexArrays(iE_plus, iMu_minus_e, tk_1, tk_2, true, false);
+        fillDileptonVertexArrays(iE_plus, iMu_minus_e, ele_1, muptr_2);
       }// end loop mu-
 
 
@@ -613,8 +605,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       for(const pat::Electron* ele_2 : selelectrons){
         iE_minus_e++;
         if(ele_2->charge() > 0) continue; // only opposite charge
-        const reco::Track&  tk_2 =  *ele_2->gsfTrack();
-        fillDileptonVertexArrays(iE_plus, iE_minus_e, tk_1, tk_2, true, true);
+//        const reco::Track&  tk_2 =  *ele_2->gsfTrack();
+        fillDileptonVertexArrays(iE_plus, iE_minus_e, ele_1, ele_2);
       }// end loop e+
     }//end electrons
 
@@ -667,11 +659,22 @@ void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
   }
 }
 
-// Fill the arrays of displaced vertices and leptons
-void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minus,
-  const reco::Track& tk1, const reco::Track& tk2, bool isEle1, bool isEle2) {
+const reco::Track& LeptonAnalyzer::getTrack(const reco::RecoCandidate* lep){
+  if(lep->isMuon()){
+    const pat::Muon* mu = dynamic_cast<const pat::Muon*>(lep);
+    if(!mu->innerTrack().isNull()) return *(mu->innerTrack());
+    else                           return *(mu->outerTrack());
+  } else {
+    return *(dynamic_cast<const pat::Electron*>(lep)->gsfTrack());
+  }
+}
 
+// Fill the arrays of displaced vertices and leptons
+void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minus, const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2){
+  const reco::Track& tk1 = getTrack(lep1);
+  const reco::Track& tk2 = getTrack(lep2);
   TransientVertex dvtx = dileptonVertex(tk1, tk2);
+
   if(!dvtx.isValid()){
     std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl;
     return;
@@ -690,17 +693,17 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minu
   _vertices[_nVFit][10] = dvtx.degreesOfFreedom();
   _vertices[_nVFit][11] = dvtx.totalChiSquared();
 
-  int i = 0;
-  for(auto& track : {tk1, tk2}){
+  int i=0;
+  for(auto lep : {lep1, lep2}){
+    const reco::Track& track = getTrack(lep);
     GlobalPoint  globPoint(track.vx(), track.vy(), track.vz());
     GlobalVector globVector(track.px(), track.py(), track.pz());
     GlobalTrajectoryParameters globTrajParam(globPoint, globVector, track.charge(), _bField.product());
     FreeTrajectoryState tempFreeTrajectoryState(globTrajParam, track.covariance());
     FreeTrajectoryState freeTrajectoryState;
 
-    bool isEle = (i == 0 ? isEle1 : isEle2);
-    if(isEle) freeTrajectoryState = *(_gsfProp->extrapolate(tempFreeTrajectoryState, dvtx.position()).freeState());
-    else      freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, dvtx.position());
+    if(lep->isMuon()) freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, dvtx.position());
+    else              freeTrajectoryState = *(_gsfProp->extrapolate(tempFreeTrajectoryState, dvtx.position()).freeState());
 
     if(!freeTrajectoryState.hasCurvilinearError()){
       std::cout << "Propagation of lepton to dilepton vertex (" << _vertices[_nVFit][0] << ") failed!" << std::endl;
