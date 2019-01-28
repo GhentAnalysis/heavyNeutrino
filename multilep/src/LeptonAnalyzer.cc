@@ -568,13 +568,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         iMu_minus_mu++;
         if (mu_2.charge() > 0) continue;  // only opposite charge
         const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
-        TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
-        if(dilvtx.isValid()){
-          fillDileptonVertexArrays(_nVFit, iMu_plus, iMu_minus_mu, dilvtx, tk_1, tk_2, false, false);
-          ++_nVFit;
-        } else {
-          std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl;
-        }
+        fillDileptonVertexArrays(iMu_plus, iMu_minus_mu, tk_1, tk_2, false, false);
       }// end loop mu-
 
       // ------------------  loop e-
@@ -585,13 +579,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         iE_minus_mu++; // it is already _nMu
         if(ele_2->charge() > 0) continue; // only opposite charge
         const reco::Track&  tk_2 =  *ele_2->gsfTrack() ;
-        TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
-        if(dilvtx.isValid()) {
-          fillDileptonVertexArrays(_nVFit, iMu_plus, iE_minus_mu, dilvtx, tk_1, tk_2, false, true);
-          ++_nVFit;
-        } else {
-          std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl;
-        }
+        fillDileptonVertexArrays(iMu_plus, iE_minus_mu, tk_1, tk_2, false, true);
       }// end loop e-
     }//end loop mu
 
@@ -615,13 +603,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         iMu_minus_e++;
         if (mu_2.charge() > 0) continue;  // only opposite charge
         const reco::Track&  tk_2 = (!mu_2.innerTrack().isNull()) ? *mu_2.innerTrack () :  *mu_2.outerTrack () ;
-        TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
-        if(dilvtx.isValid()) {
-          fillDileptonVertexArrays(_nVFit, iE_plus, iMu_minus_e, dilvtx, tk_1, tk_2, true, false);
-          ++_nVFit;
-        } else {
-          std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl;
-        }
+        fillDileptonVertexArrays(iE_plus, iMu_minus_e, tk_1, tk_2, true, false);
       }// end loop mu-
 
 
@@ -632,14 +614,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         iE_minus_e++;
         if(ele_2->charge() > 0) continue; // only opposite charge
         const reco::Track&  tk_2 =  *ele_2->gsfTrack();
-        TransientVertex dilvtx = dileptonVertex(tk_1, tk_2);
-        if(dilvtx.isValid()) {
-          fillDileptonVertexArrays(_nVFit, iE_plus, iE_minus_e, dilvtx, tk_1, tk_2, true, true);
-          ++_nVFit;
-        }
-        else {
-          std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl;
-        }
+        fillDileptonVertexArrays(iE_plus, iE_minus_e, tk_1, tk_2, true, true);
       }// end loop e+
     }//end electrons
 
@@ -693,23 +668,27 @@ void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
 }
 
 // Fill the arrays of displaced vertices and leptons
-void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, unsigned iL_minus,
-  const TransientVertex& dvtx, const reco::Track& tk1, const reco::Track& tk2, bool isEle1, bool isEle2) {
-  _vertices[nVFit][0]  = iL_plus*100 + iL_minus;
-  _vertices[nVFit][1]  = dvtx.position().x();
-  _vertices[nVFit][2]  = dvtx.position().y();
-  _vertices[nVFit][3]  = dvtx.position().z();
-  _vertices[nVFit][4]  = dvtx.positionError().cxx();
-  _vertices[nVFit][5]  = dvtx.positionError().cyy();
-  _vertices[nVFit][6]  = dvtx.positionError().czz();
-  _vertices[nVFit][7]  = dvtx.positionError().cyx();
-  _vertices[nVFit][8]  = dvtx.positionError().czy();
-  _vertices[nVFit][9]  = dvtx.positionError().czx();
-  _vertices[nVFit][10] = dvtx.degreesOfFreedom();
-  _vertices[nVFit][11] = dvtx.totalChiSquared();
+void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minus,
+  const reco::Track& tk1, const reco::Track& tk2, bool isEle1, bool isEle2) {
 
-//  GlobalPoint vtxpos(_vertices[nVFit][1], _vertices[nVFit][2], _vertices[nVFit][3]);
-  GlobalPoint vtxpos = dvtx.position();
+  TransientVertex dvtx = dileptonVertex(tk1, tk2);
+  if(!dvtx.isValid()){
+    std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl;
+    return;
+  }
+
+  _vertices[_nVFit][0]  = iL_plus*100 + iL_minus;
+  _vertices[_nVFit][1]  = dvtx.position().x();
+  _vertices[_nVFit][2]  = dvtx.position().y();
+  _vertices[_nVFit][3]  = dvtx.position().z();
+  _vertices[_nVFit][4]  = dvtx.positionError().cxx();
+  _vertices[_nVFit][5]  = dvtx.positionError().cyy();
+  _vertices[_nVFit][6]  = dvtx.positionError().czz();
+  _vertices[_nVFit][7]  = dvtx.positionError().cyx();
+  _vertices[_nVFit][8]  = dvtx.positionError().czy();
+  _vertices[_nVFit][9]  = dvtx.positionError().czx();
+  _vertices[_nVFit][10] = dvtx.degreesOfFreedom();
+  _vertices[_nVFit][11] = dvtx.totalChiSquared();
 
   int i = 0;
   for(auto& track : {tk1, tk2}){
@@ -720,31 +699,33 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned nVFit, unsigned iL_plus, 
     FreeTrajectoryState freeTrajectoryState;
 
     bool isEle = (i == 0 ? isEle1 : isEle2);
-    if(isEle) freeTrajectoryState = *(_gsfProp->extrapolate(tempFreeTrajectoryState, vtxpos).freeState());
-    else      freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, vtxpos);
+    if(isEle) freeTrajectoryState = *(_gsfProp->extrapolate(tempFreeTrajectoryState, dvtx.position()).freeState());
+    else      freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, dvtx.position());
 
     if(!freeTrajectoryState.hasCurvilinearError()){
-      std::cout << "Propagation of lepton to dilepton vertex (" << _vertices[nVFit][0] << ") failed!" << std::endl;
+      std::cout << "Propagation of lepton to dilepton vertex (" << _vertices[_nVFit][0] << ") failed!" << std::endl;
       freeTrajectoryState = tempFreeTrajectoryState;
     }
 
     // fill _lDisplaced[nVFit] with 2x12=24 elements structured as 3 position + 3 momentum + 3 position error + 3 momentum error
-    _lDisplaced[nVFit][i++] = freeTrajectoryState.position().x();
-    _lDisplaced[nVFit][i++] = freeTrajectoryState.position().y();
-    _lDisplaced[nVFit][i++] = freeTrajectoryState.position().z();
+    _lDisplaced[_nVFit][i++] = freeTrajectoryState.position().x();
+    _lDisplaced[_nVFit][i++] = freeTrajectoryState.position().y();
+    _lDisplaced[_nVFit][i++] = freeTrajectoryState.position().z();
 
-    _lDisplaced[nVFit][i++] = freeTrajectoryState.momentum().x();
-    _lDisplaced[nVFit][i++] = freeTrajectoryState.momentum().y();
-    _lDisplaced[nVFit][i++] = freeTrajectoryState.momentum().z();
+    _lDisplaced[_nVFit][i++] = freeTrajectoryState.momentum().x();
+    _lDisplaced[_nVFit][i++] = freeTrajectoryState.momentum().y();
+    _lDisplaced[_nVFit][i++] = freeTrajectoryState.momentum().z();
 
-    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(0, 0); //position error
-    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(1, 1);
-    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(2, 2);
+    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(0, 0); //position error
+    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(1, 1);
+    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(2, 2);
 
-    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(3, 3); // momentum error
-    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(4, 4);
-    _lDisplaced[nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(5, 5);
+    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(3, 3); // momentum error
+    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(4, 4);
+    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(5, 5);
   }
+
+  _nVFit++;
 }
 
 void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
