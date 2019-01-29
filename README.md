@@ -3,7 +3,7 @@ New repository for Ghent CMS analysis tuplizer framework (initially created for 
 In order to have a working copy, following the instructions below which sets up the needed CMSSW release and dependency packages.
 The tuplizer itself is entirely contained in the multilep directory.
 
-# Set-up instructions (master branch)
+# Set-up instructions (displacedLegacy branch)
 ```
 wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/displacedLegacy/setup.sh
 source setup.sh

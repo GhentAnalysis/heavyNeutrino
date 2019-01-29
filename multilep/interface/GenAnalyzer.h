@@ -8,7 +8,6 @@
 #include "TTree.h"
 
 class multilep;
-class GenMatching;
 class GenAnalyzer {
 
   private:
