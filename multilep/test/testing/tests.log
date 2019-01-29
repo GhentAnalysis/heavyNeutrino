@@ -1,8 +1,8 @@
-commit ddeda7067fb925bceeab40afbb2e335019a07e16
+commit 4756a2ca8c5aeb8f74bbb89d9ee4f0fec2c29ce0
 Author: tomc <tomc@cern.ch>
-Date:   Tue Jan 29 13:51:25 2019 +0100
+Date:   Tue Jan 29 14:24:14 2019 +0100
 
-    This one-liner should do the same, no?
+    Another easy one-liner
 
 --------------------------------------------------------------------------------------------------
 
