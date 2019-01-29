@@ -1,9 +1,12 @@
 #ifndef GenMatching_h
 #define GenMatching_h
 
-//include other parts of framework
-#include "heavyNeutrino/multilep/interface/GenTools.h"
-
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include <utility>
 
 class GenMatching{
   public:
@@ -19,7 +22,6 @@ class GenMatching{
     ~GenMatching(){};
 
     void matchGenToReco(const std::vector<reco::GenParticle>&, std::vector<const pat::Electron*>&, std::vector<const pat::Muon*>&, std::vector<const pat::Tau*>&);
-
     template <typename Lepton> void individualGenToRecoMatch(const std::vector<reco::GenParticle>& genParticles, const Lepton*, LepToGenDrMatchesVector&);
     const reco::GenParticle* returnGenMatch(const reco::Candidate*, unsigned&) const;
 

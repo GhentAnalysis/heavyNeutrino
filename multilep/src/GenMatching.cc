@@ -1,6 +1,4 @@
 #include "heavyNeutrino/multilep/interface/GenMatching.h"
-#include "heavyNeutrino/multilep/interface/GenTools.h"
-#include "heavyNeutrino/multilep/interface/GenParticleManager.h"
 #include "TLorentzVector.h"
 #include <algorithm>
 
@@ -96,7 +94,6 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
 
   // Finally, fill recgenmatches
   recgenmatches.push_back(std::make_pair(lep, tmpgenmatches));
-  return;
 }
 
 
