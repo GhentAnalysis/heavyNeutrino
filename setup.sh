@@ -1,6 +1,6 @@
-# Setup script for branch: master
+# Setup script for branch: displacedLegacy
 RELEASE=CMSSW_10_2_9
-BRANCH=master
+BRANCH=displacedLegacy
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
 if [[ $CMSSW_BASE == *$RELEASE ]] && [[ -d $CMSSW_BASE ]]; then

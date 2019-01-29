@@ -20,6 +20,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h" // displaced specific
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
@@ -39,6 +40,7 @@
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/GenMatching.h" // displaced specific
 
 //
 // class declaration
@@ -50,6 +52,7 @@ class JetAnalyzer;
 class GenAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
+class GenMatching; // displaced specific
 
 class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::WatchRuns, edm::one::SharedResources> {
     //Define other analyzers as friends
@@ -60,6 +63,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
     friend GenAnalyzer;
     friend LheAnalyzer;
     friend SUSYMassAnalyzer;
+    friend GenMatching; // displaced specific
+
     public:
         explicit multilep(const edm::ParameterSet&);
         ~multilep();
@@ -86,6 +91,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<edm::TriggerResults>               recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
         edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
         edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
+        edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> trigObjToken;
         edm::EDGetTokenT<bool>                              ecalBadCalibFilterToken;
         std::string                                         skim;
         bool                                                isData;

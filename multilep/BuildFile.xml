@@ -7,6 +7,12 @@
 <use name="CommonTools/UtilAlgos"/>
 <use name="RecoEgamma/EgammaTools"/>
 <use name="CondFormats/JetMETObjects"/>
+<use name="MagneticField/ParametrizedEngine"/>
+<use name="TrackingTools/TransientTrack"/>
+<use name="TrackingTools/Records"/>
+<use name="RecoVertex/VertexPrimitives"/>
+<use name="RecoVertex/KalmanVertexFit"/>
+<use name="RecoVertex/VertexTools"/>
 <export>
   <lib   name="1"/>
 </export>

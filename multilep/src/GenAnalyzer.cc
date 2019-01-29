@@ -32,6 +32,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_phMinDeltaR",           &_gen_phMinDeltaR,           "_gen_phMinDeltaR[_gen_nPh]/D");
     outputTree->Branch("_gen_phPassParentage",       &_gen_phPassParentage,       "_gen_phPassParentage[_gen_nPh]/O");
     outputTree->Branch("_gen_nL",                    &_gen_nL,                    "_gen_nL/b");
+    outputTree->Branch("_gen_pdgID",                 &_gen_pdgID,                 "_gen_pdgID[_gen_nL]/D");
     outputTree->Branch("_gen_lPt",                   &_gen_lPt,                   "_gen_lPt[_gen_nL]/D");
     outputTree->Branch("_gen_lEta",                  &_gen_lEta,                  "_gen_lEta[_gen_nL]/D");
     outputTree->Branch("_gen_lPhi",                  &_gen_lPhi,                  "_gen_lPhi[_gen_nL]/D");
@@ -39,6 +40,9 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/i");
     outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
     outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
+    outputTree->Branch("_gen_vertex_x",              &_gen_vertex_x,              "_gen_vertex_x[_gen_nL]/D");
+    outputTree->Branch("_gen_vertex_y",              &_gen_vertex_y,              "_gen_vertex_y[_gen_nL]/D");
+    outputTree->Branch("_gen_vertex_z",              &_gen_vertex_z,              "_gen_vertex_z[_gen_nL]/D");
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
@@ -55,6 +59,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    for(unsigned ig=0; ig<gen_nL_max ; ++ig) _gen_lRefs[ig]  = nullptr;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
         int absId = abs(p.pdgId());
@@ -70,7 +75,11 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
         //store generator level lepton info
         if((p.status() == 1 and (absId == 11 or absId == 13)) and (p.status() == 2 and p.isLastCopy() and absId == 15)){
+    //    if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && std::abs(p.pdgId()) == 15)){  // TODO: confusing, strange code in displaced branch; if there is a good reason to use it instead of the above, make a good comment
+    //        if(p.pdgId()== 2212) continue;
             if(_gen_nL != gen_nL_max){
+                _gen_lRefs[_gen_nL]          = &p;
+                _gen_pdgID[_gen_nL]          = p.pdgId();
                 _gen_lPt[_gen_nL]            = p.pt();
                 _gen_lEta[_gen_nL]           = p.eta();
                 _gen_lPhi[_gen_nL]           = p.phi();
@@ -80,6 +89,10 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lMomPdg[_gen_nL]        = GenTools::getMother(p, *genParticles)->pdgId();
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
+
+                _gen_vertex_x[_gen_nL]       = p.vertex().x();
+                _gen_vertex_y[_gen_nL]       = p.vertex().y();
+                _gen_vertex_z[_gen_nL]       = p.vertex().z();
 
                 if(absId == 11)      _gen_lFlavor[_gen_nL] = 0;
                 else if(absId == 13) _gen_lFlavor[_gen_nL] = 1;
@@ -142,4 +155,13 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
     }
 
     return type;
+}
+
+unsigned GenAnalyzer::getGenLeptonIndex(const reco::GenParticle* match){
+  if(match == nullptr) return gen_nL_max; // out of range
+  unsigned genLindex = 0;
+  for(; genLindex<gen_nL_max; ++genLindex){
+    if(_gen_lRefs[genLindex]==match) break;
+  }
+  return genLindex;
 }

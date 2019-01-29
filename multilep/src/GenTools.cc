@@ -17,7 +17,9 @@ const reco::GenParticle* GenTools::getMother(const reco::GenParticle& gen, const
 }
 
 void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){
-    if((list.empty() or list.find(gen.pdgId())==list.end()) and gen.pdgId() != 2212) list.insert(gen.pdgId());
+//  if((list.empty() or list.find(gen.pdgId())==list.end()) and gen.pdgId() != 2212) list.insert(gen.pdgId()); --> the logical case used in the master branch
+    // DO NOT ADD QUARKS AND GLUONS! (std::abs(gen.pdgId())<=6 or gen.pdgId()==21)  <----- why????????????? make sure this part never comes in the master because it would be have unwanted side effects for other analyses
+    if((list.empty() or list.find(gen.pdgId())==list.end()) and gen.pdgId()!=2212 and std::abs(gen.pdgId())>6 and gen.pdgId()!=21) list.insert(gen.pdgId());
     if(gen.numberOfMothers() > 1) setDecayChain(genParticles[gen.motherRef(1).key()], genParticles, list);
     if(gen.numberOfMothers() > 0) setDecayChain(genParticles[gen.motherRef(0).key()], genParticles, list);
 }
@@ -151,9 +153,10 @@ unsigned GenTools::provenance(const reco::GenParticle* gen, const std::vector<re
     if(cBaryonInChain(decayChain))    return C_Baryon;
     if(udsInChain(decayChain))        return pi_0;
     if(photonInChain(decayChain))     return photon_;
-    return F_L;
+    return W_L; // TODO: check this, master branch has F_L, though W_L might indeed be better as bosons are not always listed in the genparticles (and you always expect a boson somewhere in the lepton parentage)
 }
 
+// TODO: check this, again different from master branch
 unsigned GenTools::provenanceCompressed(const reco::GenParticle* gen, const std::vector<reco::GenParticle>& genParticles, bool isPrompt){
     if(isPrompt) return 0; // This was how it was also defined in the old GenMatching code
     if(!gen) return 4;
@@ -162,8 +165,10 @@ unsigned GenTools::provenanceCompressed(const reco::GenParticle* gen, const std:
     setDecayChain(*gen, genParticles, decayChain);
     if(bMesonInChain(decayChain) || bBaryonInChain(decayChain) ) return 1;          //lepton from heavy flavor decay
     if(cMesonInChain(decayChain) || cBaryonInChain(decayChain) ) return 2;          //lepton from c flavor decay
-    if(bosonInChain(decayChain) ) return 0;                                         //lepton from boson
-    if(!decayChain.empty()) return 3;                                               //light flavor fake
+//  if(bosonInChain(decayChain) ) return 0;                                         //lepton from boson
+//  if(!decayChain.empty()) return 3;                                               //light flavor fake
+    if(udsInChain(decayChain))                                   return 3;          //light flavor fake
+    if(!decayChain.empty())                                      return 0;          //prompt (boson not always in chain)
     return 4;                                                                       //unkown origin
 }
 
