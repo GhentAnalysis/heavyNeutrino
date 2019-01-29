@@ -98,7 +98,8 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
   }
 
   // Now order all the matches by DR -- note that it is always group-1 < group-2 < group-3
-  for(size_t imtch=0; imtch<tmpgenmatches.size(); ++imtch){
+  std::sort(tmpgenmatches.begin(), tmpgenmatches.end(), [](auto &left, auto &right){return left.second > right.second;}); // decreasing deltaR order (i.e. the bast match is the last)
+/*  for(size_t imtch=0; imtch<tmpgenmatches.size(); ++imtch){
     for(size_t jmtch=imtch+1; jmtch<tmpgenmatches.size(); ++jmtch){
       if(tmpgenmatches[jmtch].second>tmpgenmatches[imtch].second){ // NB: DECREASING DR order!!! (i.e. the best match is the last!!!)
         GenDrMatch auxmatch = tmpgenmatches[imtch];
@@ -106,7 +107,7 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
         tmpgenmatches[jmtch] = auxmatch;
       }
     }
-  }
+  }*/
 
   // Finally, fill recgenmatches
   recgenmatches.push_back(std::make_pair(lep, tmpgenmatches));
