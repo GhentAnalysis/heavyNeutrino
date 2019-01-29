@@ -10,8 +10,6 @@
 class multilep;
 class GenMatching;
 class GenAnalyzer {
-  //class friends
-  friend GenMatching;
 
   private:
     static const unsigned gen_nL_max = 50;
