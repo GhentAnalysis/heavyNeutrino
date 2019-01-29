@@ -1,8 +1,8 @@
-commit 82eb3b6c8a031eddaf1f2377c74956a97855ca67
+commit b28c20a483491cf703982a71766eb98451c5b03f
 Author: tomc <tomc@cern.ch>
-Date:   Tue Jan 29 12:28:45 2019 +0100
+Date:   Tue Jan 29 13:10:20 2019 +0100
 
-    Simplify the code
+    Trying to make code more readable/simplify
 
 --------------------------------------------------------------------------------------------------
 
