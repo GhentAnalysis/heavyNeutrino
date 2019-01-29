@@ -2,6 +2,7 @@
 #include "heavyNeutrino/multilep/interface/GenTools.h"
 #include "heavyNeutrino/multilep/interface/GenParticleManager.h"
 #include "TLorentzVector.h"
+#include <algorithm>
 
 GenMatching::GenMatching(const edm::ParameterSet& iConfig){
     allowMatchToAllIds = iConfig.existsAs<bool>("allowMatchingToAllIds") ? iConfig.getParameter<bool>("allowMatchingToAllIds") : false;
@@ -71,15 +72,8 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
   TLorentzVector recp4(lep->px(), lep->py(), lep->pz(), lep->energy());
   auto recid = lep->pdgId();
   for(auto& gp : genParticles){
-    // Skip if the genparticle is already matched by reference [note: this only works for those genparticle which are a reference for the leptons stored before this lepton!]
-    bool matchedbyref = false;
-    for(auto&& imatch : recogenmatchlist){
-      if(imatch.second.first == &gp){
-        matchedbyref = true;
-        break;
-      }
-    }
-    if(matchedbyref) continue;
+    // Skip if the genparticle is already matched by reference [note: this only works for those genparticles which are a reference for the leptons stored before this lepton!]
+    if(std::any_of(recogenmatchlist.begin(), recogenmatchlist.end(), [&gp](auto& match){return match.second.first == &gp;})) continue;
 
     TLorentzVector genp4(gp.px(), gp.py(), gp.pz(), gp.energy());
     double rgdr = recp4.DeltaR(genp4);
@@ -98,16 +92,7 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
   }
 
   // Now order all the matches by DR -- note that it is always group-1 < group-2 < group-3
-  std::sort(tmpgenmatches.begin(), tmpgenmatches.end(), [](auto &left, auto &right){return left.second > right.second;}); // decreasing deltaR order (i.e. the bast match is the last)
-/*  for(size_t imtch=0; imtch<tmpgenmatches.size(); ++imtch){
-    for(size_t jmtch=imtch+1; jmtch<tmpgenmatches.size(); ++jmtch){
-      if(tmpgenmatches[jmtch].second>tmpgenmatches[imtch].second){ // NB: DECREASING DR order!!! (i.e. the best match is the last!!!)
-        GenDrMatch auxmatch = tmpgenmatches[imtch];
-        tmpgenmatches[imtch] = tmpgenmatches[jmtch];
-        tmpgenmatches[jmtch] = auxmatch;
-      }
-    }
-  }*/
+  std::sort(tmpgenmatches.begin(), tmpgenmatches.end(), [](auto &left, auto &right){return left.second > right.second;}); // decreasing deltaR order (i.e. the best match is the last)
 
   // Finally, fill recgenmatches
   recgenmatches.push_back(std::make_pair(lep, tmpgenmatches));
