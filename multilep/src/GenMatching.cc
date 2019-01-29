@@ -17,8 +17,8 @@ void GenMatching::matchGenToReco(const std::vector<reco::GenParticle>& genPartic
 
   // Loop on recogenmatches (i.e. on pat::Leptons)
   bool ambig = true;
-  size_t niter = 0; // safety escape (to avoid infinite loops)
-  while(ambig && niter<50) { // keep "trimming" matches until there are no double-matched GenParticles left
+  size_t niter = 0;
+  while(ambig) { // keep "trimming" matches until there are no double-matched GenParticles left
     ++niter;
     ambig = false;
     for(size_t imatch=0; imatch<recogenmatches.size(); ++imatch) {
@@ -39,10 +39,10 @@ void GenMatching::matchGenToReco(const std::vector<reco::GenParticle>& genPartic
         }
       } // end for(size_t jmatch=imatch+1; jmatch<recogenmatches.size(); ++jmatch)
     } // end for(size_t imatch=0; imatch<recogenmatches.size(); ++imatch)
-  } // end while
-
-  if(niter==50){
-    std::cout << " *** WARNING[GenMatching]: reached the limit of 50 iterations, with ambig = " << (ambig ? "true" : "false") << " ***" << std::endl;
+    if(niter==50){ // safety escape (to avoid infinite loops)
+      std::cout << " *** WARNING[GenMatching]: reached the limit of 50 iterations, with ambig = " << (ambig ? "true" : "false") << " ***" << std::endl;
+      break;
+    }
   }
 
   for(auto& imatch : recogenmatches) {
@@ -60,46 +60,47 @@ void GenMatching::matchGenToReco(const std::vector<reco::GenParticle>& genPartic
 }
 
 template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std::vector<reco::GenParticle>& genParticles, const Lepton* lep, LepToGenDrMatchesVector& recgenmatches){
-  GenDrMatches tmpgenmatches;
-
-  if(lep->genParticle()!=nullptr) {  // match by reference
+  // If a reference to a genparticle is stored for the lepton use this
+  if(lep->genParticle()){
     recogenmatchlist.push_back(std::make_pair(lep, std::make_pair(lep->genParticle(), 0)));
+    return;
   }
-  else { // match by DR
-    TLorentzVector recp4(lep->px(), lep->py(), lep->pz(), lep->energy());
-    auto recid = lep->pdgId();
-    for(auto&& gp : genParticles) {
-      TLorentzVector genp4(gp.px(), gp.py(), gp.pz(), gp.energy());
-      double rgdr = recp4.DeltaR(genp4);
-      if(rgdr<0.2) {
-        // Skip if already matched by reference
-        // -- Match option 1 --
-        bool matchedbyref = false;
-        for(auto&& imatch : recogenmatchlist) {if(imatch.second.first == &gp) {matchedbyref = true; break;}}
-        if(matchedbyref) continue;
-        // -- Match option 2 --
-        // LGTvec_ci mit = std::find_if(recogenmatchlist.begin(), recogenmatchlist.end(),
-        //                  [&](const LepToGenTypeMatch& ltgtm) {return (ltgtm.second.first == &gp);});
-        // if(mit==recogenmatchlist.end()) continue;
-        //
-        if(gp.pdgId()==recid && gp.status()==1){                         // * Group 1: status 1, same PDG ID
-          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr += 0.;  //    * Group 1.A: pT within 20%
-          else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 1.;  //    * Group 1.B: pT within 50%  (increase DR by 1.0, to give it less priority than group 1.A)
-        }
-        else if(std::abs(recid)==11 && gp.pdgId()==22 && (gp.isPromptFinalState() || gp.isPromptDecayed())) rgdr += 2.; // * Group 2: photon conversions to electrons (increase DR by 2.0, to give it less priority than group 1)
-        else if(gp.pdgId()!=recid && gp.status()==1){                    // * Group 3: status 1, different PDG ID
-          if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr += 3.;  //    * Group 3.A: pT within 20% (increase DR by 3.0, to give it lower priority than groups 1 and 2)
-          else if(std::abs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 4.;  //    * Group 3.B: pT within 50% (increase DR by 4.0, to give it lower priority than groups 1, 2, and 3.A)
-        }
-        tmpgenmatches.push_back(std::make_pair(&gp, rgdr));
+
+  // Else use deltaR matching/groups
+  GenDrMatches tmpgenmatches;
+  TLorentzVector recp4(lep->px(), lep->py(), lep->pz(), lep->energy());
+  auto recid = lep->pdgId();
+  for(auto& gp : genParticles){
+    // Skip if the genparticle is already matched by reference [note: this only works for those genparticle which are a reference for the leptons stored before this lepton!]
+    bool matchedbyref = false;
+    for(auto&& imatch : recogenmatchlist){
+      if(imatch.second.first == &gp){
+        matchedbyref = true;
+        break;
       }
-    } // end for(auto&& gp : *genParticles)
-  } // end match by DR
+    }
+    if(matchedbyref) continue;
+
+    TLorentzVector genp4(gp.px(), gp.py(), gp.pz(), gp.energy());
+    double rgdr = recp4.DeltaR(genp4);
+    if(rgdr<0.2){
+      if(gp.pdgId()==recid && gp.status()==1){                         // * Group 1: status 1, same PDG ID
+        if(fabs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr += 0.;      //    * Group 1.A: pT within 20%
+        else if(fabs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 1.;      //    * Group 1.B: pT within 50%  (increase DR by 1.0, to give it less priority than group 1.A)
+      }
+      else if(abs(recid)==11 && gp.pdgId()==22 && (gp.isPromptFinalState() || gp.isPromptDecayed())) rgdr += 2.; // * Group 2: photon conversions to electrons (increase DR by 2.0, to give it less priority than group 1)
+      else if(gp.pdgId()!=recid && gp.status()==1){                    // * Group 3: status 1, different PDG ID
+        if(fabs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr += 3.;      //    * Group 3.A: pT within 20% (increase DR by 3.0, to give it lower priority than groups 1 and 2)
+        else if(fabs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 4.;      //    * Group 3.B: pT within 50% (increase DR by 4.0, to give it lower priority than groups 1, 2, and 3.A)
+      }
+      tmpgenmatches.push_back(std::make_pair(&gp, rgdr));
+    }
+  }
 
   // Now order all the matches by DR -- note that it is always group-1 < group-2 < group-3
-  for(size_t imtch=0; imtch<tmpgenmatches.size(); ++imtch) {
-    for(size_t jmtch=imtch+1; jmtch<tmpgenmatches.size(); ++jmtch) {
-      if(tmpgenmatches[jmtch].second>tmpgenmatches[imtch].second) { // NB: DECREASING DR order!!! (i.e. the best match is the last!!!)
+  for(size_t imtch=0; imtch<tmpgenmatches.size(); ++imtch){
+    for(size_t jmtch=imtch+1; jmtch<tmpgenmatches.size(); ++jmtch){
+      if(tmpgenmatches[jmtch].second>tmpgenmatches[imtch].second){ // NB: DECREASING DR order!!! (i.e. the best match is the last!!!)
         GenDrMatch auxmatch = tmpgenmatches[imtch];
         tmpgenmatches[imtch] = tmpgenmatches[jmtch];
         tmpgenmatches[jmtch] = auxmatch;
