@@ -627,7 +627,7 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minu
     return;
   }
 
-  _vertices[_nVFit][0]  = iL_plus*100 + iL_minus;
+  _vertices[_nVFit][0]  = iL_plus*101 + iL_minus + 1; // indices i and j stored as i*100+j, but start counting at 1 instead of 0 (historical, backwards compatibility)
   _vertices[_nVFit][1]  = dvtx.position().x();
   _vertices[_nVFit][2]  = dvtx.position().y();
   _vertices[_nVFit][3]  = dvtx.position().z();
