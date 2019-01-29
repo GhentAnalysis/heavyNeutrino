@@ -255,13 +255,11 @@ class LeptonAnalyzer {
     edm::ESHandle<MagneticField> _bField;
     edm::ESHandle<Propagator> _shProp;
     mutable TransverseImpactPointExtrapolator* _gsfProp;
-    TransientVertex dileptonVertex(const reco::Track&, const reco::Track&);
-    void cleanDileptonVertexArrays(unsigned);
+    const reco::Track& getTrack(const reco::RecoCandidate* lep);
+    TransientVertex dileptonVertex(const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2);
 
-    void fillDileptonVertexArrays(unsigned, unsigned, unsigned,
-                  const TransientVertex&,
-                  const reco::Track&, const reco::Track&,
-                  bool, bool);
+    void cleanDileptonVertexArrays(unsigned);
+    void fillDileptonVertexArrays(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
 
     template <typename Lepton> void fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles, const reco::GenParticle* match = nullptr, unsigned mtchtype = 6);
     void fillLeptonKinVars(const reco::Candidate&);
