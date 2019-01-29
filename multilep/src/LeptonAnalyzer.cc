@@ -584,11 +584,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
  * //--// Refit dilepton vertex:
  * Provide a transientvertex
  */
-TransientVertex LeptonAnalyzer::dileptonVertex(const reco::Track& tk1, const reco::Track& tk2){
+TransientVertex LeptonAnalyzer::dileptonVertex(const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2){
   MagneticField *bfield = new OAEParametrizedMagneticField("3_8T");
   std::vector<reco::TransientTrack> ttks;
-  ttks.push_back(reco::TransientTrack(tk1, bfield));
-  ttks.push_back(reco::TransientTrack(tk2, bfield));
+  ttks.push_back(reco::TransientTrack(getTrack(lep1), bfield));
+  ttks.push_back(reco::TransientTrack(getTrack(lep2), bfield));
   KalmanVertexFitter vtxFitter;
   return vtxFitter.vertex(ttks);
 }
@@ -618,10 +618,7 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minu
   if(lep1->charge() < 0) return; // ensure opposite charge
   if(lep2->charge() > 0) return;
 
-  const reco::Track& tk1 = getTrack(lep1);
-  const reco::Track& tk2 = getTrack(lep2);
-  TransientVertex dvtx = dileptonVertex(tk1, tk2);
-
+  TransientVertex dvtx = dileptonVertex(lep1, lep2);
   if(!dvtx.isValid()){
     std::cout << " *** WARNING: refitted dilepton vertex is not valid! " << std::endl;
     return;

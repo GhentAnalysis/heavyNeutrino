@@ -256,7 +256,7 @@ class LeptonAnalyzer {
     edm::ESHandle<Propagator> _shProp;
     mutable TransverseImpactPointExtrapolator* _gsfProp;
     const reco::Track& getTrack(const reco::RecoCandidate* lep);
-    TransientVertex dileptonVertex(const reco::Track&, const reco::Track&);
+    TransientVertex dileptonVertex(const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2);
 
     void cleanDileptonVertexArrays(unsigned);
     void fillDileptonVertexArrays(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
