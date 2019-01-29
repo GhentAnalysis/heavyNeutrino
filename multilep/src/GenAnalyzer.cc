@@ -8,10 +8,10 @@
 //include other parts of code 
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
+
 /*
  * Storing generator particles
  */
-
 
 GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer){};

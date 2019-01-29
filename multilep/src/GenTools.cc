@@ -1,4 +1,6 @@
 #include "heavyNeutrino/multilep/interface/GenTools.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/Math/interface/deltaR.h"
 
 //include ROOT classes
 #include "TLorentzVector.h"
