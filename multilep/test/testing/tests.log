@@ -1,8 +1,8 @@
-commit b28c20a483491cf703982a71766eb98451c5b03f
+commit ddeda7067fb925bceeab40afbb2e335019a07e16
 Author: tomc <tomc@cern.ch>
-Date:   Tue Jan 29 13:10:20 2019 +0100
+Date:   Tue Jan 29 13:51:25 2019 +0100
 
-    Trying to make code more readable/simplify
+    This one-liner should do the same, no?
 
 --------------------------------------------------------------------------------------------------
 
