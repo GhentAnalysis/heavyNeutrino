@@ -1,8 +1,8 @@
-commit 4756a2ca8c5aeb8f74bbb89d9ee4f0fec2c29ce0
+commit fff3c84665ac34586d578baaa3403ea1d00304ba
 Author: tomc <tomc@cern.ch>
-Date:   Tue Jan 29 14:24:14 2019 +0100
+Date:   Tue Jan 29 14:45:45 2019 +0100
 
-    Another easy one-liner
+    Clean-up useless genParticleManager class, and correct for hidden includes
 
 --------------------------------------------------------------------------------------------------
 
