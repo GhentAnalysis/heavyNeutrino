@@ -8,8 +8,8 @@ GenMatching::GenMatching(const edm::ParameterSet& iConfig){
 
 void GenMatching::matchGenToReco(const std::vector<reco::GenParticle>& genParticles, std::vector<const pat::Electron*>& patElectrons, std::vector<const pat::Muon*>& patMuons, std::vector<const pat::Tau*>& patTaus){
   recogenmatchlist.clear();
-  LepToGenDrMatchesVector recogenmatches;
 
+  LepToGenDrMatchesVector recogenmatches;
   for(auto iele : patElectrons) { individualGenToRecoMatch(genParticles, iele, recogenmatches); }
   for(auto imuo : patMuons    ) { individualGenToRecoMatch(genParticles, imuo, recogenmatches); }
   for(auto itau : patTaus     ) { individualGenToRecoMatch(genParticles, itau, recogenmatches); }
@@ -20,31 +20,25 @@ void GenMatching::matchGenToReco(const std::vector<reco::GenParticle>& genPartic
   while(ambig) { // keep "trimming" matches until there are no double-matched GenParticles left
     ++niter;
     ambig = false;
-    for(size_t imatch=0; imatch<recogenmatches.size(); ++imatch) {
-      size_t imtchsize = recogenmatches[imatch].second.size();
-      if(imtchsize==0) continue;
-      for(size_t jmatch=imatch+1; jmatch<recogenmatches.size(); ++jmatch) {
-        if(imtchsize==0 or recogenmatches[jmatch].second.size()==0) continue; // need to check imtchsize again (can change in between loops)
-        // Pick the best gen-matches for leptons i and j (i.e. the last in the vector)
-        if(recogenmatches[imatch].second.back().first == recogenmatches[jmatch].second.back().first) {
-          ambig = true; // there are still ambiguous matches => do another iteration
-          if(recogenmatches[imatch].second.back().second > recogenmatches[jmatch].second.back().second) {
-            recogenmatches[imatch].second.pop_back();
-            --imtchsize;
-          }
-          else {
-            recogenmatches[jmatch].second.pop_back();
-          }
+    for(size_t imatch=0; imatch<recogenmatches.size(); ++imatch){                                        // loop over leptons
+      for(size_t jmatch=imatch+1; jmatch<recogenmatches.size(); ++jmatch){                               // loop over all next leptons
+        auto& genMatchesI = recogenmatches[imatch].second;
+        auto& genMatchesJ = recogenmatches[jmatch].second;
+        if(!genMatchesI.size() or !genMatchesJ.size()) continue;                                         // skip when no matches for lepton i or j (i.e. nothing to compare/resolve here)
+        if(genMatchesI.back().first == genMatchesJ.back().first){                                        // If the current best gen-matches for leptons i and j are the same (i.e. the last in the vector)
+          ambig = true;                                                                                  // there are still ambiguous matches to the same genparticle => do another iteration
+          if(genMatchesI.back().second > genMatchesJ.back().second) genMatchesI.pop_back();              // Keep the one with best deltaR/group measure, delete the other
+          else                                                      genMatchesJ.pop_back();
         }
-      } // end for(size_t jmatch=imatch+1; jmatch<recogenmatches.size(); ++jmatch)
-    } // end for(size_t imatch=0; imatch<recogenmatches.size(); ++imatch)
-    if(niter==50){ // safety escape (to avoid infinite loops)
-      std::cout << " *** WARNING[GenMatching]: reached the limit of 50 iterations, with ambig = " << (ambig ? "true" : "false") << " ***" << std::endl;
+      }
+    }
+    if(niter==50 and ambig){ // safety escape (to avoid infinite loops --> are infinite loops even possible with the above code?)
+      std::cout << " *** WARNING[GenMatching]: reached the limit of 50 iterations" << std::endl;
       break;
     }
   }
 
-  for(auto& imatch : recogenmatches) {
+  for(auto& imatch : recogenmatches){
     if(imatch.second.size()==0) continue;
     unsigned group;
     if(imatch.second.back().second<0.5)      group = 1; // Group 1.A
@@ -70,7 +64,7 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
   TLorentzVector recp4(lep->px(), lep->py(), lep->pz(), lep->energy());
   auto recid = lep->pdgId();
   for(auto& gp : genParticles){
-    // Skip if the genparticle is already matched by reference [note: this only works for those genparticles which are a reference for the leptons stored before this lepton!]
+    // Skip if the genparticle is already matched by reference
     if(std::any_of(recogenmatchlist.begin(), recogenmatchlist.end(), [&gp](auto& match){return match.second.first == &gp;})) continue;
 
     TLorentzVector genp4(gp.px(), gp.py(), gp.pz(), gp.energy());
