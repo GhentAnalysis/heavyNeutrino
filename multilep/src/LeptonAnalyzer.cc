@@ -24,7 +24,7 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     leptonMvaComputerTTH17    = new LeptonMvaHelper(iConfig, 1, true);  // TTH
     leptonMvaComputertZqTTV16 = new LeptonMvaHelper(iConfig, 2, false); // tZq/TTV
     leptonMvaComputertZqTTV17 = new LeptonMvaHelper(iConfig, 2, true);  // tZq/TTV
-    if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig, multilepAnalyzer); // displaced specific
+    if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig); // displaced specific
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
@@ -264,12 +264,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       }
     }
 
-    // Now NEW GEN-RECO matching
-    if(!multilepAnalyzer->isData) {
-      genMatcher->resetGenMatchingVector();                          // Reset recogenmatchlist
-      genMatcher->setGenParticles(iEvent);                           // Pass the GenParticle collection to genMatcher
-      genMatcher->setPatParticles(selelectrons, selmuons, seltaus);  // Pass the selected pat::Lepton collections to genMatcher
-      genMatcher->matchGenToReco();                                  // Now run the RECO-GEN matching
+    // Run the RECO-GEN matching based on the genParticles and the selected pat::Lepton collections
+    if(!multilepAnalyzer->isData){
+      genMatcher->matchGenToReco(*genParticles, selelectrons, selmuons, seltaus);
     }
 
 

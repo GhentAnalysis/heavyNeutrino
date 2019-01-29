@@ -3,20 +3,17 @@
 #include "heavyNeutrino/multilep/interface/GenParticleManager.h"
 #include "TLorentzVector.h"
 
-GenMatching::GenMatching(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer): multilepAnalyzer(multilepAnalyzer){
+GenMatching::GenMatching(const edm::ParameterSet& iConfig){
     allowMatchToAllIds = iConfig.existsAs<bool>("allowMatchingToAllIds") ? iConfig.getParameter<bool>("allowMatchingToAllIds") : false;
 };
 
-void GenMatching::setGenParticles(const edm::Event& iEvent){
-    iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
-}
-
-void GenMatching::matchGenToReco() {
+void GenMatching::matchGenToReco(const std::vector<reco::GenParticle>& genParticles, std::vector<const pat::Electron*>& patElectrons, std::vector<const pat::Muon*>& patMuons, std::vector<const pat::Tau*>& patTaus){
+  recogenmatchlist.clear();
   LepToGenDrMatchesVector recogenmatches;
 
-  for(auto iele : patElectrons) { individualGenToRecoMatch(iele, recogenmatches); }
-  for(auto imuo : patMuons    ) { individualGenToRecoMatch(imuo, recogenmatches); }
-  for(auto itau : patTaus     ) { individualGenToRecoMatch(itau, recogenmatches); }
+  for(auto iele : patElectrons) { individualGenToRecoMatch(genParticles, iele, recogenmatches); }
+  for(auto imuo : patMuons    ) { individualGenToRecoMatch(genParticles, imuo, recogenmatches); }
+  for(auto itau : patTaus     ) { individualGenToRecoMatch(genParticles, itau, recogenmatches); }
 
   // Loop on recogenmatches (i.e. on pat::Leptons)
   bool ambig = true;
@@ -62,7 +59,7 @@ void GenMatching::matchGenToReco() {
   return;
 }
 
-template <typename Lepton> void GenMatching::individualGenToRecoMatch(const Lepton* lep, LepToGenDrMatchesVector& recgenmatches){
+template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std::vector<reco::GenParticle>& genParticles, const Lepton* lep, LepToGenDrMatchesVector& recgenmatches){
   GenDrMatches tmpgenmatches;
 
   if(lep->genParticle()!=nullptr) {  // match by reference
@@ -71,7 +68,7 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const Lept
   else { // match by DR
     TLorentzVector recp4(lep->px(), lep->py(), lep->pz(), lep->energy());
     auto recid = lep->pdgId();
-    for(auto&& gp : *genParticles) {
+    for(auto&& gp : genParticles) {
       TLorentzVector genp4(gp.px(), gp.py(), gp.pz(), gp.energy());
       double rgdr = recp4.DeltaR(genp4);
       if(rgdr<0.2) {
