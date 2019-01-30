@@ -11,9 +11,14 @@ const reco::GenParticle* GenTools::getFirstMother(const reco::GenParticle& gen, 
 
 const reco::GenParticle* GenTools::getMother(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* mom = getFirstMother(gen, genParticles);
-    if(!mom) return 0;
+    if(!mom)                             return nullptr;
     else if(mom->pdgId() == gen.pdgId()) return getMother(*mom, genParticles);
-    else return mom;
+    else                                 return mom;
+}
+
+int GenTools::getMotherPdgId(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    auto mom = getMother(gen, genParticles);
+    return (mom ? mom->pdgId() : 0);
 }
 
 void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){

@@ -23,7 +23,7 @@ class GenMatching{
 
     void matchGenToReco(const std::vector<reco::GenParticle>&, std::vector<const pat::Electron*>&, std::vector<const pat::Muon*>&, std::vector<const pat::Tau*>&);
     template <typename Lepton> void individualGenToRecoMatch(const std::vector<reco::GenParticle>& genParticles, const Lepton*, LepToGenDrMatchesVector&);
-    const reco::GenParticle* returnGenMatch(const reco::Candidate*, unsigned&) const;
+    const reco::GenParticle* returnGenMatch(const reco::Candidate&, unsigned&) const;
 
   private:
     LepToGenTypeMatchVector recogenmatchlist;

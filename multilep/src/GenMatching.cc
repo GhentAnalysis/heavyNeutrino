@@ -63,7 +63,7 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
   GenDrMatches tmpgenmatches;
   TLorentzVector recp4(lep->px(), lep->py(), lep->pz(), lep->energy());
   auto recid = lep->pdgId();
-  for(auto& gp : genParticles){
+  for(auto& gp : genParticles){ // TODO: maybe you want to exclude some genparticles of matching?? currently we match even to incoming protons
     // Skip if the genparticle is already matched by reference
     if(std::any_of(recogenmatchlist.begin(), recogenmatchlist.end(), [&gp](auto& match){return match.second.first == &gp;})) continue;
 
@@ -91,9 +91,9 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
 }
 
 
-const reco::GenParticle* GenMatching::returnGenMatch(const reco::Candidate* reclep, unsigned& mchtype) const {
+const reco::GenParticle* GenMatching::returnGenMatch(const reco::Candidate& reclep, unsigned& mchtype) const {
   for(auto&& imatch : recogenmatchlist) {
-    if(imatch.first == reclep) {
+    if(&*(imatch.first) == &reclep) {
       mchtype = imatch.second.second;
       return imatch.second.first;
     }
