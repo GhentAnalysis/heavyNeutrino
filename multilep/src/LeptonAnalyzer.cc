@@ -52,8 +52,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/i");                   // displaced specific
     outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/i");            // "
     outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/i");          // "
-    outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");             // "
-    outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");    // "
+//  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");             // DELETED (simply use your index+1 instead in case you have some crazy situation where you need your index to start from 1 instead of 0)
+    outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");    // displaced specific
     outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");  // "
     outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/i");        // "
     outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
@@ -276,7 +276,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(_nL == nL_max) break;
         const pat::Muon& mu = (*muptr);
 
-        _lIndex[_nL]  = _nL+1;
         _lPFMuon[_nL] = mu.isPFMuon();
 
         const reco::MuonTime cmb = mu.time();
@@ -377,8 +376,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         fillLeptonKinVars(*ele);
         if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, *genParticles);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
-
-        _lIndex[_nL] = _nL + 1;
 
         fillLeptonImpactParameters(*ele, primaryVertex);
         fillLeptonIsoVars(*ele, *rho);
