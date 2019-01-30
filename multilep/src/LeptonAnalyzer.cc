@@ -723,35 +723,35 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
  * For taus: dxy is pre-computed with PV it was constructed with
  */
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const reco::Vertex& vertex){
-  _dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
-  _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
-  _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
-  _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
-  _2dIP[_nL]    = ele.dB();
-  _2dIPSig[_nL] = ele.dB()/ele.edB();
+    _dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
+    _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
+    _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
+    _3dIPSig[_nL] = fabs(ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D));
+    _2dIP[_nL]    = ele.dB();
+    _2dIPSig[_nL] = ele.dB()/ele.edB();
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
-  _dxy[_nL]     = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dxy(vertex.position()) : muon.outerTrack()->dxy(vertex.position());
-  _dz[_nL]      = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dz(vertex.position()) : muon.outerTrack()->dz(vertex.position());
-  _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
-  _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
-  _2dIP[_nL]    = muon.dB();
-  _2dIPSig[_nL] = muon.dB()/muon.edB();
+    _dxy[_nL]     = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dxy(vertex.position()) : muon.outerTrack()->dxy(vertex.position());
+    _dz[_nL]      = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dz(vertex.position()) : muon.outerTrack()->dz(vertex.position());
+    _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
+    _3dIPSig[_nL] = fabs(muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D));
+    _2dIP[_nL]    = muon.dB();
+    _2dIPSig[_nL] = muon.dB()/muon.edB();
 }
 
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
-  _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
-  _dz[_nL]      = tau_dz(tau, vertex.position());
-  _3dIP[_nL]    = tau.ip3d();
-  _3dIPSig[_nL] = tau.ip3d_Sig();
+    _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
+    _dz[_nL]      = tau_dz(tau, vertex.position());
+    _3dIP[_nL]    = tau.ip3d();
+    _3dIPSig[_nL] = tau.ip3d_Sig();
 }
 
 //Function returning tau dz
-double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex) const {
-  const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
-  return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
+double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex) const{
+    const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
+    return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
 }
 
 /*
