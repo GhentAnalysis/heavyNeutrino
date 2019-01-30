@@ -296,7 +296,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         fillLeptonKinVars(mu);
         fillLeptonIsoVars(mu, *rho);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(genMatcher, mu, *genParticles);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, *genParticles);
 
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
         _lGlobalMuon[_nL]                   = mu.isGlobalMuon();
@@ -375,7 +375,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         const pat::Electron *ele = selelectrons[iele];
 
         fillLeptonKinVars(*ele);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(genMatcher, *ele, *genParticles);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, *genParticles);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
         _lIndex[_nL] = _nL + 1;
@@ -489,7 +489,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         const pat::Tau& tau = (*tauptr);
 
         fillLeptonKinVars(tau);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(genMatcher, tau, *genParticles);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
         fillLeptonImpactParameters(tau, primaryVertex);
 
         _lFlavor[_nL]                   = 2;
@@ -698,7 +698,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
 }
 
 // Fill match variables
-template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
+template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
     auto match = genMatcher->returnGenMatch(lepton, _lMatchType[_nL]);
 
     _lGenIndex[_nL]             = multilepAnalyzer->genAnalyzer->getGenLeptonIndex(match);
