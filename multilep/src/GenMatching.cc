@@ -91,9 +91,9 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
 }
 
 
-const reco::GenParticle* GenMatching::returnGenMatch(const reco::Candidate* reclep, unsigned& mchtype) const {
+const reco::GenParticle* GenMatching::returnGenMatch(const reco::Candidate& reclep, unsigned& mchtype) const {
   for(auto&& imatch : recogenmatchlist) {
-    if(imatch.first == reclep) {
+    if(&*(imatch.first) == &reclep) {
       mchtype = imatch.second.second;
       return imatch.second.first;
     }
