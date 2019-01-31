@@ -16,7 +16,7 @@ PhotonAnalyzer::PhotonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
 
 
 void PhotonAnalyzer::beginJob(TTree* outputTree){
-    outputTree->Branch("_nPh",                                &_nPh,                            "_nPh/b");
+    outputTree->Branch("_nPh",                                &_nPh,                            "_nPh/i");
     outputTree->Branch("_phPt",                               &_phPt,                           "_phPt[_nPh]/D");
     outputTree->Branch("_phEta",                              &_phEta,                          "_phEta[_nPh]/D");
     outputTree->Branch("_phEtaSC",                            &_phEtaSC,                        "_phEtaSC[_nPh]/D");

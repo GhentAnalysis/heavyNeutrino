@@ -38,7 +38,11 @@ LeptonAnalyzer::~LeptonAnalyzer(){
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
-    outputTree->Branch("_nL",                           &_nL,                           "_nL/b");
+    outputTree->Branch("_nL",                           &_nL,                           "_nL/i");
+    outputTree->Branch("_nMu",                          &_nMu,                          "_nMu/i");
+    outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/i");
+    outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/i");
+    outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/i");
     outputTree->Branch("_pvX",                          &_pvX,                          "_pvX/D");       // displaced specific [TODO: it seems these should be moved to multilep.cc or so]
     outputTree->Branch("_pvY",                          &_pvY,                          "_pvY/D");       // "
     outputTree->Branch("_pvZ",                          &_pvZ,                          "_pvZ/D");       // "
