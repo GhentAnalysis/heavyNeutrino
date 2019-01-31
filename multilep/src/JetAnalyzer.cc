@@ -25,7 +25,7 @@ JetAnalyzer::~JetAnalyzer(){
 // Storing here jet id variables, id itself also to be implemented at python level https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016, or maybe still here as the loose wp does not change often?
 // WARNING: the _nJets is number of stored jets (i.e. including those where JECUp/JERUp passes the cut), do not use as selection
 void JetAnalyzer::beginJob(TTree* outputTree){
-    outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/b");
+    outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/i");
     outputTree->Branch("_jetPt",                     &_jetPt,                    "_jetPt[_nJets]/D");
     outputTree->Branch("_jetPt_JECDown",             &_jetPt_JECDown,            "_jetPt_JECDown[_nJets]/D");
     outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
