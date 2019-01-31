@@ -1,70 +1,104 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-commit d4698400fb0a46b84f8bce1959c24d4ce9bc5173
-Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 30 18:17:49 2019 +0100
-
-    Removing useless variable
-=======
-commit e67e4708c65aedacc53776f0eda45231a5a5c2d4
-=======
 **** Following environment variables are going to be unset.
        DBS_CLIENT_CONFIG
        DBSCMD_HOME
        MAGIC
        MALLOC_CONF
-commit 404477d0e6bb38ceefe6cfcf700fcbe138df650a
->>>>>>> ghent/master
+commit fe17a8d139b0aca4f2c1ead60a1b7619896d4205
+Merge: 0e09e57 83fd9f0
 Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 31 12:53:06 2019 +0100
+Date:   Thu Jan 31 13:08:32 2019 +0100
 
-<<<<<<< HEAD
-    Same as dc8ea29086ea564734a49a3d5624ca41e6aabffb
->>>>>>> ghent/master
-=======
-    Save as unsigned instead of branch
->>>>>>> ghent/master
+    Merge char->unsigned from master
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   Removed: _lIndex
+   Changed:
+      _3dIPSig                                           mean:  10.2871 -->  63.6660     rms: 244.6926 --> 236.4888    
+      _lEwkFO                                            mean:   0.6261 -->   0.6087     rms:   0.4838 -->   0.4880    
+      _lEwkLoose                                         mean:   0.6957 -->   0.6783     rms:   0.4601 -->   0.4671    
+      _lEwkTight                                         mean:   0.5913 -->   0.5739     rms:   0.4916 -->   0.4945    
+      _leptonMvaSUSY16                                   mean:   0.2504 -->   0.2380     rms:   0.8961 -->   0.9027    
+      _leptonMvaSUSY17                                   mean:   0.2032 -->   0.2390     rms:   0.8998 -->   0.9005    
+      _leptonMvaTTH16                                    mean:   0.2581 -->   0.2649     rms:   0.8928 -->   0.8909    
+      _leptonMvaTTH17                                    mean:   0.2205 -->   0.2494     rms:   0.8901 -->   0.8854    
+      _leptonMvatZqTTV16                                 mean:   0.2318 -->   0.2440     rms:   0.9038 -->   0.9020    
+      _leptonMvatZqTTV17                                 mean:   0.1911 -->   0.2145     rms:   0.8990 -->   0.9002    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   Removed: _lIndex
+   Changed:
+      _3dIPSig                                           mean: -30.7173 -->  63.1339     rms: 279.5004 --> 274.0039    
+      _lEwkFO                                            mean:   0.6281 -->   0.6198     rms:   0.4833 -->   0.4854    
+      _lEwkLoose                                         mean:   0.7438 -->   0.7355     rms:   0.4365 -->   0.4410    
+      _lEwkTight                                         mean:   0.6116 -->   0.6033     rms:   0.4874 -->   0.4892    
+      _leptonMvaSUSY16                                   mean:   0.2761 -->   0.2577     rms:   0.8348 -->   0.8500    
+      _leptonMvaSUSY17                                   mean:   0.1827 -->   0.2650     rms:   0.8375 -->   0.8384    
+      _leptonMvaTTH16                                    mean:   0.3004 -->   0.3118     rms:   0.8376 -->   0.8400    
+      _leptonMvaTTH17                                    mean:   0.2251 -->   0.2903     rms:   0.8286 -->   0.8259    
+      _leptonMvatZqTTV16                                 mean:   0.2547 -->   0.2818     rms:   0.8425 -->   0.8483    
+      _leptonMvatZqTTV17                                 mean:   0.1827 -->   0.2376     rms:   0.8496 -->   0.8650    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   Removed: _lIndex
+   Changed:
+      _3dIPSig                                           mean:  46.3302 -->  71.2118     rms: 364.8079 --> 360.7772    
+      _lEwkLoose                                         mean:   0.4776 -->   0.4627     rms:   0.4995 -->   0.4986    
+      _leptonMvaSUSY16                                   mean:  -0.2210 -->  -0.2253     rms:   0.8633 -->   0.8668    
+      _leptonMvaSUSY17                                   mean:  -0.3106 -->  -0.2530     rms:   0.8322 -->   0.8690    
+      _leptonMvaTTH16                                    mean:  -0.1723 -->  -0.1600     rms:   0.8670 -->   0.8674    
+      _leptonMvaTTH17                                    mean:  -0.2846 -->  -0.2311     rms:   0.8338 -->   0.8650    
+      _leptonMvatZqTTV16                                 mean:  -0.2219 -->  -0.2336     rms:   0.8910 -->   0.8955    
+      _leptonMvatZqTTV17                                 mean:  -0.2393 -->  -0.2410     rms:   0.8842 -->   0.8889    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   Removed: _lIndex
+   Changed:
+      _3dIPSig                                           mean:  12.8501 --> 154.1592     rms: 397.0573 --> 366.1346    
+      _leptonMvaSUSY16                                   mean:  -0.2759 -->  -0.2971     rms:   0.8105 -->   0.8160    
+      _leptonMvaSUSY17                                   mean:  -0.4460 -->  -0.3612     rms:   0.7672 -->   0.8231    
+      _leptonMvaTTH16                                    mean:  -0.2584 -->  -0.2421     rms:   0.8111 -->   0.8136    
+      _leptonMvaTTH17                                    mean:  -0.4378 -->  -0.3640     rms:   0.7711 -->   0.8203    
+      _leptonMvatZqTTV16                                 mean:  -0.3378 -->  -0.3699     rms:   0.7893 -->   0.7869    
+      _leptonMvatZqTTV17                                 mean:  -0.4615 -->  -0.4704     rms:   0.7125 -->   0.7065    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-<<<<<<< HEAD
-   Removed: _lIndex
-=======
->>>>>>> ghent/master
+   Changed:
+      _3dIPSig                                           mean:  -3.8153 -->  11.8413     rms:  65.0996 -->  64.1272    
+      _leptonMvaSUSY16                                   mean:   0.5195 -->   0.5152     rms:   0.6356 -->   0.6419    
+      _leptonMvaSUSY17                                   mean:   0.3423 -->   0.4546     rms:   0.7346 -->   0.6852    
+      _leptonMvaTTH16                                    mean:   0.5387 -->   0.5631     rms:   0.6321 -->   0.6149    
+      _leptonMvaTTH17                                    mean:   0.3942 -->   0.4968     rms:   0.7122 -->   0.6618    
+      _leptonMvatZqTTV16                                 mean:   0.4435 -->   0.4476     rms:   0.6934 -->   0.6892    
+      _leptonMvatZqTTV17                                 mean:   0.3670 -->   0.3943     rms:   0.7249 -->   0.7203    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-<<<<<<< HEAD
-   Removed: _lIndex
-=======
->>>>>>> ghent/master
+   Changed:
+      _3dIPSig                                           mean: -20.8660 --> 100.9249     rms: 421.7788 --> 410.0572    
+      _leptonMvaSUSY16                                   mean:   0.6277 -->   0.6166     rms:   0.6070 -->   0.6158    
+      _leptonMvaSUSY17                                   mean:   0.4139 -->   0.5677     rms:   0.6808 -->   0.6332    
+      _leptonMvaTTH16                                    mean:   0.6476 -->   0.6689     rms:   0.5875 -->   0.5830    
+      _leptonMvaTTH17                                    mean:   0.4708 -->   0.6035     rms:   0.6429 -->   0.5955    
+      _leptonMvatZqTTV16                                 mean:   0.5619 -->   0.5594     rms:   0.6322 -->   0.6435    
+      _leptonMvatZqTTV17                                 mean:   0.4679 -->   0.5046     rms:   0.6658 -->   0.6685    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-<<<<<<< HEAD
-   Removed: _lIndex
-=======
->>>>>>> ghent/master
+   Changed:
+      _3dIPSig                                           mean:  -3.2618 -->   5.6763     rms:  31.3596 -->  31.0136    
+      _lEwkFO                                            mean:   0.9051 -->   0.8978     rms:   0.2931 -->   0.3029    
+      _lEwkTight                                         mean:   0.8978 -->   0.8905     rms:   0.3029 -->   0.3123    
+      _leptonMvaSUSY16                                   mean:   0.8173 -->   0.8115     rms:   0.4830 -->   0.4941    
+      _leptonMvaSUSY17                                   mean:   0.7429 -->   0.7906     rms:   0.5344 -->   0.5018    
+      _leptonMvaTTH16                                    mean:   0.8258 -->   0.8313     rms:   0.4660 -->   0.4645    
+      _leptonMvaTTH17                                    mean:   0.7670 -->   0.8076     rms:   0.5010 -->   0.4699    
+      _leptonMvatZqTTV16                                 mean:   0.7592 -->   0.7756     rms:   0.5310 -->   0.5229    
+      _leptonMvatZqTTV17                                 mean:   0.6637 -->   0.7025     rms:   0.6194 -->   0.6009    
