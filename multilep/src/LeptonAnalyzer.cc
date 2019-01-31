@@ -1128,7 +1128,7 @@ unsigned LeptonAnalyzer::matchSingleTrigger(bool isele, double aeta, double aphi
       int ipath(-1);
       for(std::string& itrig : singletrigs) {
 	++ipath;
-	if(iobj.hasPathName(itrig.c_str(), true, true)) {
+	if((iobj.hasPathName(itrig.c_str(), true, true)) || (iobj.hasPathName(itrig.c_str(), false, true)) || (iobj.hasPathName(itrig.c_str(), true, false))|| (iobj.hasPathName(itrig.c_str(), false, false))) {
 	  trigmask |= (1<<ipath);
 	  //return true; // do not return, because we need the list of all paths that fired!
 	}
