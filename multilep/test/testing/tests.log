@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 commit d4698400fb0a46b84f8bce1959c24d4ce9bc5173
 Author: tomc <tomc@cern.ch>
 Date:   Wed Jan 30 18:17:49 2019 +0100
 
     Removing useless variable
+=======
+commit e67e4708c65aedacc53776f0eda45231a5a5c2d4
+Author: tomc <tomc@cern.ch>
+Date:   Wed Jan 30 18:21:29 2019 +0100
+
+    Same as dc8ea29086ea564734a49a3d5624ca41e6aabffb
+>>>>>>> ghent/master
 
 --------------------------------------------------------------------------------------------------
 
@@ -27,14 +35,23 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+<<<<<<< HEAD
    Removed: _lIndex
+=======
+>>>>>>> ghent/master
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+<<<<<<< HEAD
    Removed: _lIndex
+=======
+>>>>>>> ghent/master
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+<<<<<<< HEAD
    Removed: _lIndex
+=======
+>>>>>>> ghent/master
