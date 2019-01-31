@@ -29,11 +29,11 @@ LeptonAnalyzer::~LeptonAnalyzer(){
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
-    outputTree->Branch("_nL",                           &_nL,                           "_nL/b");
-    outputTree->Branch("_nMu",                          &_nMu,                          "_nMu/b");
-    outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/b");
-    outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/b");
-    outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
+    outputTree->Branch("_nL",                           &_nL,                           "_nL/i");
+    outputTree->Branch("_nMu",                          &_nMu,                          "_nMu/i");
+    outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/i");
+    outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/i");
+    outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/i");
     outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
     outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
     outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");

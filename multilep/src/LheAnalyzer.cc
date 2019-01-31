@@ -29,14 +29,14 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     outputTree->Branch("_weight",        &_weight,        "_weight/D");
     outputTree->Branch("_lheHTIncoming", &_lheHTIncoming, "_lheHTIncoming/D");
     outputTree->Branch("_ctauHN",        &_ctauHN,        "_ctauHN/D");
-    outputTree->Branch("_nLheTau",       &_nTau,          "_nLheTau/b");
-    outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/b");
+    outputTree->Branch("_nLheTau",       &_nTau,          "_nLheTau/i");
+    outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/i");
     outputTree->Branch("_lheWeight",     &_lheWeight,     "_lheWeight[_nLheWeights]/D");
-    outputTree->Branch("_nPsWeights",    &_nPsWeights,    "_nPsWeights/b");
+    outputTree->Branch("_nPsWeights",    &_nPsWeights,    "_nPsWeights/i");
     outputTree->Branch("_psWeight",      &_psWeight,      "_psWeight[_nPsWeights]/D");
 
     if(multilepAnalyzer->storeLheParticles){
-      outputTree->Branch("_nLheParticles", &_nLheParticles, "_nLheParticles/b");
+      outputTree->Branch("_nLheParticles", &_nLheParticles, "_nLheParticles/i");
       outputTree->Branch("_lheStatus",     &_lheStatus,     "_lheStatus[_nLheParticles]/I");
       outputTree->Branch("_lhePdgId",      &_lhePdgId,      "_lhePdgId[_nLheParticles]/I");
       outputTree->Branch("_lheMother1",    &_lheMother1,    "_lheMother1[_nLheParticles]/I");
