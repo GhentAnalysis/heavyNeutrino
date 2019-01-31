@@ -1,8 +1,13 @@
-commit e67e4708c65aedacc53776f0eda45231a5a5c2d4
+**** Following environment variables are going to be unset.
+       DBS_CLIENT_CONFIG
+       DBSCMD_HOME
+       MAGIC
+       MALLOC_CONF
+commit 404477d0e6bb38ceefe6cfcf700fcbe138df650a
 Author: tomc <tomc@cern.ch>
-Date:   Wed Jan 30 18:21:29 2019 +0100
+Date:   Thu Jan 31 12:53:06 2019 +0100
 
-    Same as dc8ea29086ea564734a49a3d5624ca41e6aabffb
+    Save as unsigned instead of branch
 
 --------------------------------------------------------------------------------------------------
 
