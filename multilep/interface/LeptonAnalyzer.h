@@ -75,7 +75,6 @@ class LeptonAnalyzer {
     int    _lSimExtType[nL_max];
     int    _lSimFlavour[nL_max];
 
-    unsigned _lIndex[nL_max];            // index assigned to leptons to find back the vertices
     double _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex
     double _lDisplaced[nV_max][24];      // array of the displaced lepton momenta and positions at the displaced vertex
 
@@ -261,7 +260,7 @@ class LeptonAnalyzer {
     void cleanDileptonVertexArrays(unsigned);
     void fillDileptonVertexArrays(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
 
-    template <typename Lepton> void fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
+    template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);

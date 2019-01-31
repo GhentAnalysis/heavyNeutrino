@@ -52,8 +52,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/i");                   // displaced specific
     outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/i");            // "
     outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/i");          // "
-    outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");             // "
-    outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");    // "
+//  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");             // DELETED (simply use your index+1 instead in case you have some crazy situation where you need your index to start from 1 instead of 0)
+    outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");    // displaced specific
     outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");  // "
     outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/i");        // "
     outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
@@ -276,7 +276,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if(_nL == nL_max) break;
         const pat::Muon& mu = (*muptr);
 
-        _lIndex[_nL]  = _nL+1;
         _lPFMuon[_nL] = mu.isPFMuon();
 
         const reco::MuonTime cmb = mu.time();
@@ -296,7 +295,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         fillLeptonKinVars(mu);
         fillLeptonIsoVars(mu, *rho);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(genMatcher, mu, *genParticles);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, *genParticles);
 
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
         _lGlobalMuon[_nL]                   = mu.isGlobalMuon();
@@ -375,10 +374,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         const pat::Electron *ele = selelectrons[iele];
 
         fillLeptonKinVars(*ele);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(genMatcher, *ele, *genParticles);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, *genParticles);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
-
-        _lIndex[_nL] = _nL + 1;
 
         fillLeptonImpactParameters(*ele, primaryVertex);
         fillLeptonIsoVars(*ele, *rho);
@@ -489,7 +486,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         const pat::Tau& tau = (*tauptr);
 
         fillLeptonKinVars(tau);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(genMatcher, tau, *genParticles);
+        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
         fillLeptonImpactParameters(tau, primaryVertex);
 
         _lFlavor[_nL]                   = 2;
@@ -698,7 +695,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rh
 }
 
 // Fill match variables
-template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* genMatcher, const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
+template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
     auto match = genMatcher->returnGenMatch(lepton, _lMatchType[_nL]);
 
     _lGenIndex[_nL]             = multilepAnalyzer->genAnalyzer->getGenLeptonIndex(match);
@@ -726,35 +723,35 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(GenMatching* g
  * For taus: dxy is pre-computed with PV it was constructed with
  */
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const reco::Vertex& vertex){
-  _dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
-  _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
-  _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
-  _3dIPSig[_nL] = ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D);
-  _2dIP[_nL]    = ele.dB();
-  _2dIPSig[_nL] = ele.dB()/ele.edB();
+    _dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
+    _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
+    _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
+    _3dIPSig[_nL] = fabs(ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D));
+    _2dIP[_nL]    = ele.dB();
+    _2dIPSig[_nL] = ele.dB()/ele.edB();
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
-  _dxy[_nL]     = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dxy(vertex.position()) : muon.outerTrack()->dxy(vertex.position());
-  _dz[_nL]      = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dz(vertex.position()) : muon.outerTrack()->dz(vertex.position());
-  _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
-  _3dIPSig[_nL] = muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D);
-  _2dIP[_nL]    = muon.dB();
-  _2dIPSig[_nL] = muon.dB()/muon.edB();
+    _dxy[_nL]     = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dxy(vertex.position()) : muon.outerTrack()->dxy(vertex.position());
+    _dz[_nL]      = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dz(vertex.position()) : muon.outerTrack()->dz(vertex.position());
+    _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
+    _3dIPSig[_nL] = fabs(muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D));
+    _2dIP[_nL]    = muon.dB();
+    _2dIPSig[_nL] = muon.dB()/muon.edB();
 }
 
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
-  _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
-  _dz[_nL]      = tau_dz(tau, vertex.position());
-  _3dIP[_nL]    = tau.ip3d();
-  _3dIPSig[_nL] = tau.ip3d_Sig();
+    _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
+    _dz[_nL]      = tau_dz(tau, vertex.position());
+    _3dIP[_nL]    = tau.ip3d();
+    _3dIPSig[_nL] = tau.ip3d_Sig();
 }
 
 //Function returning tau dz
-double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex) const {
-  const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
-  return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
+double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& vertex) const{
+    const reco::Candidate::Point& tauVtx = tau.leadChargedHadrCand()->vertex();
+    return (tauVtx.Z() - vertex.z()) - ((tauVtx.X() - vertex.x())*tau.px()+(tauVtx.Y()-vertex.y())*tau.py())/tau.pt()*tau.pz()/tau.pt();
 }
 
 /*
