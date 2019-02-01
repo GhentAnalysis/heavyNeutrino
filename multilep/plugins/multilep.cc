@@ -54,9 +54,9 @@ multilep::multilep(const edm::ParameterSet& iConfig):
       prescalesToken = consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"));
    }
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
-    photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
+  photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
-    genAnalyzer     = new GenAnalyzer(iConfig, this);
+   genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
 
@@ -130,14 +130,14 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
-    if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
-    if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
+  if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
+   if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
     if(!vertices->size()) return;                                      // don't consider 0 vertex events
 
-    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
+  if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
                                                                        // also needs to run before leptonAnalyzer to save gen-matching info...
 
-    if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))
+   if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))
       return;            // returns false if doesn't pass skim condition, so skip event in such case
 
     if(!photonAnalyzer->analyze(iEvent)) return;
