@@ -53,6 +53,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
       triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
       prescalesToken = consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"));
    }
+    triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
     photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
@@ -70,6 +71,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 
 multilep::~multilep(){
     if(useTriggerAnalyzer) delete triggerAnalyzer;
+    delete triggerAnalyzer;
     delete leptonAnalyzer;
     delete photonAnalyzer;
     delete jetAnalyzer;
@@ -97,6 +99,7 @@ void multilep::beginJob(){
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
     if(!isData) genAnalyzer->beginJob(outputTree);
     if(useTriggerAnalyzer) triggerAnalyzer->beginJob(outputTree);
+    triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
     jetAnalyzer->beginJob(outputTree);
@@ -121,6 +124,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     if(useTriggerAnalyzer) triggerAnalyzer->reIndex = true;
     //update JEC 
     _runNb = (unsigned long) iRun.id().run();
+    triggerAnalyzer->reIndex = true;                                   // HLT results could have different size/order in new run, so look up again the index positions
 
     //update JEC 
     //jec->updateJEC(_runNb);
@@ -136,6 +140,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
                                                                        // also needs to run before leptonAnalyzer to save gen-matching info...
+    triggerAnalyzer->analyze(iEvent);
 
     if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))
       return;            // returns false if doesn't pass skim condition, so skip event in such case
