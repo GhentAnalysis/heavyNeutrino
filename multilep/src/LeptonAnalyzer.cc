@@ -991,7 +991,7 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const d
   if(getRelIso03(elec, rho) > ((multilepAnalyzer->skim=="FR") ? 2.0 : 1.5))  return false;
   if(elec.pt()<5.)                 return false;
   if(std::abs(elec.eta())>2.5)     return false;
-  if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&elec)) return false;
+  //if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&elec)) return false;
   if(eleMuOverlap(elec, _lPFMuon)) return false; // overlap muon-electron deltaR<0.05 // --> _lPFMuon is not used!!!
 
   return true;
