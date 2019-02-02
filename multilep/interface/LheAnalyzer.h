@@ -30,7 +30,7 @@ class LheAnalyzer {
     double _lheWeight[110];
 
     unsigned _nPsWeights;
-    double _psWeight[14];
+    //double _psWeight[14];
 
     static const unsigned nLhe_max = 20;  // maximum number of LHE particles stored (the exact number of LHE particles will typically be the same for all events of a given process)
     unsigned              _nLheParticles;
