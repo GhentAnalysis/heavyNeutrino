@@ -36,7 +36,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     outputTree->Branch("_nLheWeights",   &_nLheWeights,   "_nLheWeights/b");
     outputTree->Branch("_lheWeight",     &_lheWeight,     "_lheWeight[_nLheWeights]/D");
     outputTree->Branch("_nPsWeights",    &_nPsWeights,    "_nPsWeights/b");
-    outputTree->Branch("_psWeight",      &_psWeight,      "_psWeight[_nPsWeights]/D");
+    //outputTree->Branch("_psWeight",      &_psWeight,      "_psWeight[_nPsWeights]/D");
 
     if(multilepAnalyzer->storeLheParticles){
       outputTree->Branch("_nLheParticles", &_nLheParticles, "_nLheParticles/b");
@@ -110,10 +110,10 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     //some tests for PS weight extraction
     const std::vector<double>& psWeights = genEventInfo->weights();
     _nPsWeights = std::min( (unsigned) 14, (unsigned) psWeights.size() );
-    for(unsigned ps = 0; ps < _nPsWeights; ++ps){
+    /*for(unsigned ps = 0; ps < _nPsWeights; ++ps){
         _psWeight[ps] = psWeights[ps]/_weight;
         psCounter->Fill(ps + 0.5, _psWeight[ps]*_weight);
-    }
+    }*/
 }
 
 double LheAnalyzer::getWeight() const{
