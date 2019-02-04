@@ -36,7 +36,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     recoResultsPrimaryToken(          consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsPrimary"))),
     recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
-    trigObjToken(                consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
+    //trigObjToken(                consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
     badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
     badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
@@ -46,18 +46,18 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles")),
     jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
 {
-    useTriggerAnalyzer = iConfig.existsAs<edm::InputTag>("recoResults");
-    if(useTriggerAnalyzer) {
-        recoResultsToken = consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("recoResults"));
+    //useTriggerAnalyzer = iConfig.existsAs<edm::InputTag>("recoResults");
+    //if(useTriggerAnalyzer) {
+        //recoResultsToken = consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("recoResults"));
 
-      triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
-      prescalesToken = consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"));
+      //triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
+      //prescalesToken = consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"));
    }
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
-  photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
+    photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
     jetAnalyzer     = new JetAnalyzer(iConfig, this);
-   genAnalyzer     = new GenAnalyzer(iConfig, this);
+    genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
 
@@ -70,7 +70,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 }
 
 multilep::~multilep(){
-    if(useTriggerAnalyzer) delete triggerAnalyzer;
+    //if(useTriggerAnalyzer) delete triggerAnalyzer;
     delete triggerAnalyzer;
     delete leptonAnalyzer;
     delete photonAnalyzer;
@@ -98,7 +98,7 @@ void multilep::beginJob(){
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
     if(!isData) genAnalyzer->beginJob(outputTree);
-    if(useTriggerAnalyzer) triggerAnalyzer->beginJob(outputTree);
+    //if(useTriggerAnalyzer) triggerAnalyzer->beginJob(outputTree);
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
@@ -121,7 +121,7 @@ void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
     // HLT results could have different size/order in new run, so look up again de index positions
-    if(useTriggerAnalyzer) triggerAnalyzer->reIndex = true;
+    //if(useTriggerAnalyzer) triggerAnalyzer->reIndex = true;
     //update JEC 
     _runNb = (unsigned long) iRun.id().run();
     triggerAnalyzer->reIndex = true;                                   // HLT results could have different size/order in new run, so look up again the index positions
@@ -134,20 +134,20 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<pat::MET>> mets;         iEvent.getByToken(metToken, mets);
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
-  if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
-   if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
+    if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
+    if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
     if(!vertices->size()) return;                                      // don't consider 0 vertex events
 
-  if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
+    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
                                                                        // also needs to run before leptonAnalyzer to save gen-matching info...
-    triggerAnalyzer->analyze(iEvent);
 
-   if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))
+    if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))
       return;            // returns false if doesn't pass skim condition, so skip event in such case
 
     if(!photonAnalyzer->analyze(iEvent)) return;
-    if(useTriggerAnalyzer) triggerAnalyzer->analyze(iEvent);
+    //if(useTriggerAnalyzer) triggerAnalyzer->analyze(iEvent);
     jetAnalyzer->analyze(iEvent);
+    triggerAnalyzer->analyze(iEvent);
 
     //determine event number run number and luminosity block
     _runNb     = (unsigned long) iEvent.id().run();
