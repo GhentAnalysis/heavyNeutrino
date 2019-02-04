@@ -171,8 +171,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   edm::Handle<std::vector<pat::PackedCandidate>> packedCands;   iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,  packedCands);
   edm::Handle<double> rho;                                      iEvent.getByToken(multilepAnalyzer->rhoToken,               rho);
   edm::Handle<std::vector<pat::Jet>> jets;                      iEvent.getByToken(multilepAnalyzer->jetToken,               jets);
-  edm::Handle<edm::TriggerResults> trigBits;                    iEvent.getByToken(multilepAnalyzer->triggerToken,           trigBits);
-  edm::Handle<pat::TriggerObjectStandAloneCollection> trigObjs; iEvent.getByToken(multilepAnalyzer->trigObjToken,           trigObjs);
+  //edm::Handle<edm::TriggerResults> trigBits;                    iEvent.getByToken(multilepAnalyzer->triggerToken,           trigBits);
+  //edm::Handle<pat::TriggerObjectStandAloneCollection> trigObjs; iEvent.getByToken(multilepAnalyzer->trigObjToken,           trigObjs);
   iSetup.get<IdealMagneticFieldRecord>().get(_bField);
   iSetup.get<TrackingComponentsRecord>().get("SteppingHelixPropagatorAny", _shProp);
   GsfPropagatorAdapter gsfPropagator(AnalyticalPropagator(&(*_bField), anyDirection));
