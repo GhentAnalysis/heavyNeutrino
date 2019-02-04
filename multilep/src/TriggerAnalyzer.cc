@@ -123,7 +123,7 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<edm::TriggerResults> recoResultsPrimary;   iEvent.getByToken(multilepAnalyzer->recoResultsPrimaryToken,   recoResultsPrimary);
   edm::Handle<edm::TriggerResults> recoResultsSecondary; iEvent.getByToken(multilepAnalyzer->recoResultsSecondaryToken, recoResultsSecondary);
   edm::Handle<edm::TriggerResults> triggerResults;       iEvent.getByToken(multilepAnalyzer->triggerToken,              triggerResults);
-  edm::Handle<edm::TriggerResults> recoResults;          iEvent.getByToken(multilepAnalyzer->recoResultsToken,      recoResults);
+  //edm::Handle<edm::TriggerResults> recoResults;          iEvent.getByToken(multilepAnalyzer->recoResultsToken,      recoResults);
   edm::Handle<bool> badPFMuonFilter;
   edm::Handle<bool> badChCandFilter;
 
