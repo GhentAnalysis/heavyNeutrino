@@ -52,7 +52,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 
       //triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
       //prescalesToken = consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"));
-   }
+   //}
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
     photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
