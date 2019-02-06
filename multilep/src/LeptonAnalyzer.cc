@@ -79,8 +79,13 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lPOGLooseWOIso",               &_lPOGLooseWOIso,               "_lPOGLooseWOIso[_nLight]/O");
     outputTree->Branch("_lPOGMediumWOIso",              &_lPOGMediumWOIso,              "_lPOGMediumWOIso[_nLight]/O");
     outputTree->Branch("_lPOGTightWOIso",               &_lPOGTightWOIso,               "_lPOGTightWOIso[_nLight]/O");
-    outputTree->Branch("_tauMuonVeto",                  &_tauMuonVeto,                  "_tauMuonVeto[_nL]/O");
-    outputTree->Branch("_tauEleVeto",                   &_tauEleVeto,                   "_tauEleVeto[_nL]/O");
+    outputTree->Branch("_tauMuonVetoLoose",             &_tauMuonVetoLoose,        "_tauMuonVetoLoose[_nL]/O");
+    outputTree->Branch("_tauMuonVetoTight",             &_tauMuonVetoTight,        "_tauMuonVetoTight[_nL]/O");
+    outputTree->Branch("_tauEleVetoVLoose",             &_tauEleVetoVLoose,             "_tauEleVetoVLoose[_nL]/O");
+    outputTree->Branch("_tauEleVetoLoose",              &_tauEleVetoLoose,              "_tauEleVetoLoose[_nL]/O");
+    outputTree->Branch("_tauEleVetoMedium",             &_tauEleVetoMedium,             "_tauEleVetoMedium[_nL]/O");
+    outputTree->Branch("_tauEleVetoTight",              &_tauEleVetoTight,              "_tauEleVetoTight[_nL]/O");
+    outputTree->Branch("_tauEleVetoVTight",             &_tauEleVetoVTight,             "_tauEleVetoVTight[_nL]/O");
     outputTree->Branch("_tauDecayMode",                 &_tauDecayMode,                 "_tauDecayMode[_nL]/I");
     outputTree->Branch("_decayModeFinding",             &_decayModeFinding,             "_decayModeFinding[_nL]/O");
     outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
@@ -278,8 +283,13 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
         _lFlavor[_nL]  = 2;
         _tauDecayMode[_nL] = tau.decayMode();
-        _tauMuonVeto[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
-        _tauEleVeto[_nL] = tau.tauID("againstElectronLooseMVA6");
+        _tauMuonVetoLoose[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
+        _tauMuonVetoTight[_nL] = tau.tauID("againstMuonTight3");                                        //Light lepton vetos
+        _tauEleVetoVLoose[_nL] = tau.tauID("againstElectronVLooseMVA6");
+        _tauEleVetoLoose[_nL] = tau.tauID("againstElectronLooseMVA6");
+        _tauEleVetoMedium[_nL] = tau.tauID("againstElectronMediumMVA6");
+        _tauEleVetoTight[_nL] = tau.tauID("againstElectronTightMVA6");
+        _tauEleVetoVTight[_nL] = tau.tauID("againstElectronVTightMVA6");
 
         _decayModeFinding[_nL] = tau.tauID("decayModeFinding");                           //old tau ID
         _lPOGVeto[_nL] = tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT");                        

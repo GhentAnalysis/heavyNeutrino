@@ -21,8 +21,10 @@ const reco::GenParticle* GenMatching::geometricMatch(const reco::Candidate& reco
                 match = &*genIt;
             }
         }
-    } 
-    if(minDeltaR > 0.2){
+    }
+    double minval = 0.2;
+    if(abs(reco.pdgId()) == 15) minval = 0.3; 
+    if(minDeltaR > minval){
         if(!differentId){
             match = geometricMatch(reco, true);
         } else{

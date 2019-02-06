@@ -88,8 +88,13 @@ class LeptonAnalyzer {
     double _lMuonTrackPt[nL_max];
     double _lMuonTrackPtErr[nL_max];
 
-    bool _tauMuonVeto[nL_max];                                                                       //tau specific variables
-    bool _tauEleVeto[nL_max];
+    bool _tauMuonVetoLoose[nL_max];                                                                       //tau specific variables
+    bool _tauMuonVetoTight[nL_max];                                                                       //tau specific variables
+    bool _tauEleVetoVLoose[nL_max];
+    bool _tauEleVetoLoose[nL_max];
+    bool _tauEleVetoMedium[nL_max];
+    bool _tauEleVetoTight[nL_max];
+    bool _tauEleVetoVTight[nL_max];
     bool _decayModeFinding[nL_max];                      
     int _tauDecayMode[nL_max];                      
     bool _decayModeFindingNew[nL_max];                      

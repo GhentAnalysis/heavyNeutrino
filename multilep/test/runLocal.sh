@@ -25,7 +25,7 @@ submitJob(){
 
 ##################################
 #Change to your proxy!
-proxy=/user/wverbeke/x509up_u20640
+proxy=/user/lwezenbe/proxylwezenbe
 ##################################
 
 if ! [[ $proxy = *"$USER"* ]]; then
