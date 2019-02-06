@@ -15,6 +15,11 @@ class multilep;
 class TriggerAnalyzer {
   private:
 
+  friend class multilep;
+
+
+
+  
     std::map<TString, std::vector<TString>> allFlags;
     std::vector<TString> triggersToSave;
     std::vector<TString> filtersToSave;
