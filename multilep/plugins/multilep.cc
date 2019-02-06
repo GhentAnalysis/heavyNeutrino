@@ -183,7 +183,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
         if (jet1.DeltaR(lepton1) > 1) nJetBackToBack++;
     }
-    bool triggerr=triggerAnalyzer->allFlags["FR_single_lepton"];
+    bool triggerr=triggerAnalyzer->flag["FR_single_lepton"];
     if(skim == "FR" and nJetBackToBack == 0) return;
     if(skim == "FR" and !triggerr) return;
     
