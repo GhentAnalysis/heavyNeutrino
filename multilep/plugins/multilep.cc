@@ -185,7 +185,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     }
     
     if(skim == "FR" and nJetBackToBack == 0) return;
-    if(skim == "FR" and !(triggerAnalyzer->HLT_Mu8 || triggerAnalyzer->HLT_Mu17 || triggerAnalyzer->HLT_Mu3_PFJet40 || triggerAnalyzer->HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30 || triggerAnalyzer->HLT_Ele8_CaloIdM_TrackIdM_PFJet30)) return;
+    if(skim == "FR" and !FR_single_lepton) return;
     //store calculated event info in root tree
     outputTree->Fill();
 }
