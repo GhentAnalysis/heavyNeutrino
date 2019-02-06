@@ -2,6 +2,7 @@
 New repository for Ghent CMS analysis tuplizer framework (initially created for heavy neutrino analysis).
 In order to have a working copy, following the instructions below which sets up the needed CMSSW release and dependency packages.
 The tuplizer itself is entirely contained in the multilep directory.
+**Please take a moment to read the [wiki](https://github.com/GhentAnalysis/heavyNeutrino/wiki) with useful guidelines**
 
 # Set-up instructions (master branch)
 ```
