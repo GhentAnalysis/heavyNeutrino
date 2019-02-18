@@ -1,14 +1,5 @@
 #include "../interface/LeptonAnalyzer.h"
 
-#include "FWCore/ParameterSet/interface/FileInPath.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-
-#include "TTree.h"
-
-
 double LeptonAnalyzer::getRelIso04(const pat::Muon& mu, const double rho, const bool DeltaBeta) const{ //Note: effective area correction is used instead of delta-beta correction
     double puCorr;
     if(!DeltaBeta){
@@ -61,11 +52,8 @@ double LeptonAnalyzer::getRelIso(const reco::RecoCandidate& ptcl, edm::Handle<pa
     }
 
     double puCorr = 0;
-    if(ptcl.isMuon()){
-        puCorr = rho*muonsEffectiveAreas.getEffectiveArea(ptcl.eta());
-    } else{
-        puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
-    }
+    if(ptcl.isMuon()) puCorr = rho*muonsEffectiveAreas.getEffectiveArea(ptcl.eta());
+    else              puCorr = rho*electronsEffectiveAreas.getEffectiveArea(ptcl.superCluster()->eta());
 
     double iso;
     if(onlyCharged)    iso = iso_ch;
