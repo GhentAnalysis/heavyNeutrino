@@ -102,6 +102,31 @@ enum decayType {
     F_L
 };
 
+void GenTools::getNextDaughters(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){
+    for(unsigned d = 0; d < gen.numberOfDaughters(); ++d){
+        if(list.empty() or list.find(gen.pdgId())==list.end()) list.insert(genParticles[gen.daughterRef(d).key()].pdgId());
+    }      
+}
+
+bool GenTools::decayedHadronically(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    std::set<int> decayProducts;
+    std::cout << "pdg = " << gen.pdgId() << std::endl;
+    if(abs(gen.pdgId()) == 11 or abs(gen.pdgId()) == 13) return false;
+    if(abs(gen.pdgId()) == 15)  std::cout << gen.numberOfDaughters() << std::endl;
+    getNextDaughters(gen, genParticles, decayProducts);
+    for (std::set<int>::iterator it=decayProducts.begin(); it!=decayProducts.end(); ++it){
+        std::cout << ' ' << *it;
+        std::cout << '\n';
+    }
+    if(decayProducts.find(11) != decayProducts.cend() || decayProducts.find(-11) != decayProducts.cend() || decayProducts.find(13) != decayProducts.cend() || decayProducts.find(-13) != decayProducts.cend()){
+        std::cout << "false" << std::endl;
+        return false;
+    }   
+    std::cout << "true" << std::endl;
+    return true;
+    
+}
+
 unsigned GenTools::provenance(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     std::set<int> decayChain;
     setDecayChain(gen, genParticles, decayChain);

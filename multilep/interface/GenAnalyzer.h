@@ -46,6 +46,7 @@ class GenAnalyzer {
     unsigned _gen_lFlavor[gen_nL_max];
     int      _gen_lCharge[gen_nL_max];
     int      _gen_lMomPdg[gen_nL_max];
+    bool     _gen_lDecayedHadr[gen_nL_max];
     bool     _gen_lIsPrompt[gen_nL_max];
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];

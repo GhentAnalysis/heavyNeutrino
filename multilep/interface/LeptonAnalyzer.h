@@ -136,6 +136,7 @@ class LeptonAnalyzer {
     bool _lPOGTightWOIso[nL_max];
 
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
+    bool _lMatchDecayedHadr[nL_max];                                   
     int _lMatchPdgId[nL_max];
     double _lMatchPt[nL_max];
     double _lMatchEta[nL_max];

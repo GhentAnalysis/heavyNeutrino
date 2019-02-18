@@ -40,6 +40,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
     outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
+    outputTree->Branch("_gen_lDecayedHadr",          &_gen_lDecayedHadr,          "_gen_lDecayedHadr[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
     outputTree->Branch("_gen_HT",                    &_gen_HT,                    "_gen_HT/D");
@@ -69,13 +70,14 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         //store generator level lepton info
         if((p.status() == 1 && (abs(p.pdgId()) == 11 || abs(p.pdgId()) == 13)) || (p.status() == 2 && p.isLastCopy() && abs(p.pdgId()) == 15)){
             if(_gen_nL != gen_nL_max){
-                _gen_lPt[_gen_nL]       = p.pt();
-                _gen_lEta[_gen_nL]      = p.eta();
-                _gen_lPhi[_gen_nL]      = p.phi();
-                _gen_lE[_gen_nL]        = p.energy();
-                _gen_lCharge[_gen_nL]   = p.charge();
-                _gen_lIsPrompt[_gen_nL] = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
-                _gen_lMomPdg[_gen_nL]   = GenTools::getMother(p, *genParticles)->pdgId();
+                _gen_lPt[_gen_nL]               = p.pt();
+                _gen_lEta[_gen_nL]              = p.eta();
+                _gen_lPhi[_gen_nL]              = p.phi();
+                _gen_lE[_gen_nL]                = p.energy();
+                _gen_lCharge[_gen_nL]           = p.charge();
+                _gen_lIsPrompt[_gen_nL]         = GenTools::isPrompt(p, *genParticles); //(p.isPromptDecayed() || p.isPromptFinalState());
+                _gen_lMomPdg[_gen_nL]           = GenTools::getMother(p, *genParticles)->pdgId();
+                _gen_lDecayedHadr[_gen_nL]      = GenTools::decayedHadronically(p, *genParticles);
 
                 std::set<int> decayChain;
                 GenTools::setDecayChain(p, *genParticles, decayChain);

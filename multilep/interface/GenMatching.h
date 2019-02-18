@@ -27,12 +27,14 @@ class GenMatching{
             matchEta = match->eta();
             matchPhi = match->phi();
             matchE = match->energy();
+            matchDecayedHadr = GenTools::decayedHadronically(*match, *genParticles);
             provenance = GenTools::provenance(*match, *genParticles);
             provenanceCompressed = (matchIsPrompt ? 0 : GenTools::provenanceCompressed(*match, *genParticles) );
             provenanceConversion = GenTools::provenanceConversion(*match, *genParticles);
             momPdgId = ( GenTools::getMother(*match, *genParticles) )->pdgId();
         } else{
             matchIsPrompt = false;
+            matchDecayedHadr = false;
             matchPdgId = 0;
             provenanceCompressed = 4;
             provenance = 18;
@@ -49,6 +51,7 @@ class GenMatching{
     int energyMatch() const { return matchE; }
     int pdgIdMom() const { return momPdgId; }
     bool promptMatch() const { return matchIsPrompt; }
+    bool hadrDecayedMatch() const { return matchDecayedHadr; }
     unsigned getProvenance() const { return provenance; }
     unsigned getProvenanceCompressed() const{ return provenanceCompressed; }
     unsigned getProvenanceConversion() const{ return provenanceConversion; }
@@ -76,6 +79,7 @@ class GenMatching{
     double matchE;
     int momPdgId;
     bool matchIsPrompt;
+    bool matchDecayedHadr;
     unsigned provenance;
     unsigned provenanceCompressed;
     unsigned provenanceConversion;

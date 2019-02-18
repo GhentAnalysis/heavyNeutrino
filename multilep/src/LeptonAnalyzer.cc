@@ -118,6 +118,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");  
     if(!multilepAnalyzer->isData){
         outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
+        outputTree->Branch("_lMatchDecayedHadr",          &_lMatchDecayedHadr,            "_lMatchDecayedHadr[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
         outputTree->Branch("_lMatchPt",                	  &_lMatchPt,                  	  "_lMatchPt[_nL]/D");
         outputTree->Branch("_lMatchEta",                  &_lMatchEta,                    "_lMatchEta[_nL]/D");
@@ -324,6 +325,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
     if(multilepAnalyzer->skim == "ttg"       &&  _nLight < 2) return false;
     if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
+    if(multilepAnalyzer->skim == "singletau" &&  _nTau   < 1) return false;
     if(multilepAnalyzer->skim == "FR" &&  _nLight < 1) return false;
     return true;
 }
@@ -339,6 +341,7 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, GenMatching* genMatcher){
     genMatcher->fillMatchingVars(lepton);
     _lIsPrompt[_nL] = genMatcher->promptMatch();
+    _lMatchDecayedHadr[_nL] = genMatcher->hadrDecayedMatch();
     _lMatchPdgId[_nL] = genMatcher->pdgIdMatch();
     _lMatchPt[_nL] = genMatcher->ptMatch();
     _lMatchEta[_nL] = genMatcher->etaMatch();

@@ -16,7 +16,8 @@ def getJSON(is2017):
 #inputFile       = '/store/mc/RunIISummer16MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/80000/C0EC0176-2ABE-E611-99E3-0025904C51D8.root'
 #inputFile       = '/store/data/Run2016E/SingleMuon/MINIAOD/07Aug17-v1/110000/00A51C60-CE80-E711-8B18-0025905A6060.root'
 #inputFile       = '/store/data/Run2017F/SingleMuon/MINIAOD/17Nov2017-v1/00000/3E7C07F9-E6F1-E711-841A-0CC47A4C8E46.root'
-inputFile        = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018/displaced/HeavyNeutrino_lljj_M-1_V-0.212367605816_e_massiveAndCKM_LO/heavyNeutrino_1.root'
+#inputFile        = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018/displaced/HeavyNeutrino_lljj_M-1_V-0.212367605816_e_massiveAndCKM_LO/heavyNeutrino_1.root'
+inputFile        = '/store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/80000/F283191C-11C4-E611-973D-00215E2EB74E.root'
 
 nEvents         = 1000
 outputFile      = 'noskim.root'  # trilep    --> skim three leptons (basic pt/eta criteria)
