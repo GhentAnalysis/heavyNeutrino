@@ -349,6 +349,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
     if(multilepAnalyzer->skim == "singletau" &&  _nTau   < 1) return false;
     if(multilepAnalyzer->skim == "FR"        &&  _nLight < 1) return false;
+    
+    if(multilepAnalyzer->skim == "dilepWithSingletau" &&  (_nTau   < 1 || _nL  < 2)) return false;
+    if(multilepAnalyzer->skim == "trilepWithSingletau" &&  (_nTau   < 1 || _nL  < 3)) return false;
     return true;
 }
 
