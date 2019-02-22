@@ -282,7 +282,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         fillLeptonKinVars(tau);
         if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
         fillLeptonImpactParameters(tau, primaryVertex);
-        if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino  --> is this a standard cut? reference?
 
         _lFlavor[_nL]                   = 2;
         _tauMuonVeto[_nL]               = tau.tauID("againstMuonLoose3");                        //Light lepton vetos
