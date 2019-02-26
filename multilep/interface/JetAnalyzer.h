@@ -44,29 +44,15 @@ class JetAnalyzer {
     double   _jetDeepCsv_c[nJets_max];
     double   _jetDeepCsv_bb[nJets_max];
     unsigned _jetHadronFlavor[nJets_max];
-    bool    _jetIsLoose[nJets_max];
-    bool    _jetIsTight[nJets_max];
-    bool    _jetIsTightLepVeto[nJets_max];
-    double _jetChargedHadronFraction[nJets_max];
-    double _jetNeutralHadronFraction[nJets_max];
-    double _jetNeutralEmFraction[nJets_max];
-    double _jetChargedEmFraction[nJets_max];
-    double _jetHFHadronFraction[nJets_max];
-    double _jetHFEmFraction[nJets_max];
-
-    double        _met;                                                                              //met kinematics
-    double        _metPhi;
-    double        _metRaw;
-    double        _metRawPhi;
-    double        _metJECDown;
-    double        _metPhiJECDown;
-    double        _metJECUp;
-    double        _metPhiJECUp;
-    double        _metUnclDown;
-    double        _metPhiUnclDown;
-    double        _metUnclUp;
-    double        _metPhiUnclUp;
-    double        _metSignificance;
+    bool     _jetIsLoose[nJets_max];
+    bool     _jetIsTight[nJets_max];
+    bool     _jetIsTightLepVeto[nJets_max];
+    double   _jetChargedHadronFraction[nJets_max];
+    double   _jetNeutralHadronFraction[nJets_max];
+    double   _jetNeutralEmFraction[nJets_max];
+    double   _jetChargedEmFraction[nJets_max];
+    double   _jetHFHadronFraction[nJets_max];
+    double   _jetHFEmFraction[nJets_max];
 
     /*Int_t    _nDaughters;
     int      _jet_tag_for_daughters[nDaughters_max];
@@ -79,6 +65,19 @@ class JetAnalyzer {
     //correction level for JEC
     //std::string jecLevel;
 
+    double   _met;                                                                              //met kinematics
+    double   _metPhi;
+    double   _metRaw;
+    double   _metRawPhi;
+    double   _metJECDown;
+    double   _metPhiJECDown;
+    double   _metJECUp;
+    double   _metPhiJECUp;
+    double   _metUnclDown;
+    double   _metPhiUnclDown;
+    double   _metUnclUp;
+    double   _metPhiUnclUp;
+    double   _metSignificance;
 
     multilep* multilepAnalyzer;
 
@@ -89,7 +88,7 @@ class JetAnalyzer {
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
     ~JetAnalyzer();
-    
+
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&);
 };

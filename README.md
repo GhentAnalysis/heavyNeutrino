@@ -1,19 +1,26 @@
 # heavyNeutrino
 New repository for Ghent CMS analysis tuplizer framework (initially created for heavy neutrino analysis).
-In order to have a working copy, one needs to set up the CMSSW release as instructed below.
+In order to have a working copy, following the instructions below which sets up the needed CMSSW release and dependency packages.
 The tuplizer itself is entirely contained in the multilep directory.
+**Please take a moment to read the [wiki](https://github.com/GhentAnalysis/heavyNeutrino/wiki) with useful guidelines**
 
-# Set-up instructions
+# Set-up instructions (master branch)
 ```
-git clone https://github.com/GhentAnalysis/heavyNeutrino
-./setup.sh
+wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/master/setup.sh
+source setup.sh
 ```
 
-
-# Running a test job
+# The cmsRun executable
 ```
 cd heavyNeutrino/multilep/test
 cmsRun multilep.py
+```
+
+# Running test jobs
+Preferably ran before an important git push:
+```
+cd heavyNeutrino/multilep/test/testing
+./runTests.py
 ```
 
 # Mass production of tuples

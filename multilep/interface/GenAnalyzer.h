@@ -4,15 +4,11 @@
 #include "FWCore/Framework/interface/Event.h"
 
 #include "heavyNeutrino/multilep/plugins/multilep.h"
-#include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 
 #include "TTree.h"
 
 class multilep;
-class PhotonAnalyzer;
 class GenAnalyzer {
-  //class friends
-  friend PhotonAnalyzer;
 
   private:
     static const unsigned gen_nL_max = 20;
@@ -127,6 +123,8 @@ class GenAnalyzer {
     int      check_for_daughter(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     bool     inMotherList(std::vector<int>& list, int i);
     unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
+    
+    unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
     bool     isAncestor(const reco::Candidate*, const reco::Candidate*);
     void     getMatchingPackedPFCandidateInfo(const pat::PackedGenParticle&, edm::Handle<std::vector<pat::PackedCandidate>>&);

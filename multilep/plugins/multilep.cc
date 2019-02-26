@@ -5,31 +5,15 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     beamSpotToken(		      consumes<reco::BeamSpot>(			  iConfig.getParameter<edm::InputTag>("offlineBeamSpot"))),
     vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
     genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
-    genLumiInfoToken(                 consumes<GenLumiInfoHeader, edm::InLumi>(   iConfig.getParameter<edm::InputTag>("genEventInfo"))), //NOT SURE IF THIS WILL WORK, CHECK!
+    genLumiInfoToken(                 consumes<GenLumiInfoHeader, edm::InLumi>(   iConfig.getParameter<edm::InputTag>("genEventInfo"))),
     lheEventInfoToken(                consumes<LHEEventProduct>(                  iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
     pileUpToken(                      consumes<std::vector<PileupSummaryInfo>>(   iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
     genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
     packedGenParticleToken(           consumes<std::vector<pat::PackedGenParticle>>(      iConfig.getParameter<edm::InputTag>("packedGenParticles"))),
     muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
-    eleMvaToken(                      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMva"))),
-    eleMvaHZZToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronsMvaHZZ"))),
-    eleMvaFall17IsoToken(             consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17Iso"))),
-    eleMvaFall17NoIsoToken(           consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("electronMvaFall17NoIso"))),
-    eleCutBasedVetoToken(             consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedVeto"))),
-    eleCutBasedLooseToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedLoose"))),
-    eleCutBasedMediumToken(           consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedMedium"))),
-    eleCutBasedTightToken(            consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("electronsCutBasedTight"))),
     tauToken(                         consumes<std::vector<pat::Tau>>(            iConfig.getParameter<edm::InputTag>("taus"))),
     photonToken(                      consumes<std::vector<pat::Photon>>(         iConfig.getParameter<edm::InputTag>("photons"))),
-    photonCutBasedLooseToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedLoose"))),
-    photonCutBasedMediumToken(        consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedMedium"))),
-    photonCutBasedTightToken(         consumes<edm::ValueMap<bool>>(              iConfig.getParameter<edm::InputTag>("photonsCutBasedTight"))),
-    photonMvaToken(                   consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsMva"))),
-    photonChargedIsolationToken(      consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsChargedIsolation"))),
-    photonNeutralHadronIsolationToken(consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsNeutralHadronIsolation"))),
-    photonPhotonIsolationToken(       consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsPhotonIsolation"))),
-    photonFull5x5SigmaIEtaIPhiToken(  consumes<edm::ValueMap<float>>(             iConfig.getParameter<edm::InputTag>("photonsFull5x5SigmaIEtaIPhi"))),
     packedCandidatesToken(            consumes<std::vector<pat::PackedCandidate>>(iConfig.getParameter<edm::InputTag>("packedCandidates"))),
     rhoToken(                         consumes<double>(                           iConfig.getParameter<edm::InputTag>("rho"))),
     metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
@@ -41,15 +25,15 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
-    badPFMuonFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badPFMuonFilter"))),
-    badChCandFilterToken(             consumes<bool>(                             iConfig.getParameter<edm::InputTag>("badChargedCandFilter"))),
     secondaryVerticesToken(           consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("secondaryVertices"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY"))
-    //jecPath(                                                                      iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath())
+    is2018(                                                                       iConfig.getUntrackedParameter<bool>("is2018")),
+    isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
+    storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
 {
+    if(is2017 or is2018) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
     leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
     photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
@@ -57,13 +41,6 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genAnalyzer     = new GenAnalyzer(iConfig, this);
     lheAnalyzer     = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
-
-    /*
-    //initialize jec txt files
-    std::string dirtyHack = "dummy.txt";
-    std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
-    jec = new JEC(path, isData, is2017);  //dummy.txt is a dirty hack to give directory parameter in python file
-    */
 }
 
 multilep::~multilep(){
@@ -74,14 +51,12 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
-    //delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
 void multilep::beginJob(){
 
     //Initialize tree with event info
-
     outputTree = fs->make<TTree>("blackJackAndHookersTree", "blackJackAndHookersTree");
     nVertices  = fs->make<TH1D>("nVertices", "Number of vertices", 120, 0, 120);
 
@@ -116,15 +91,8 @@ void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm
 
 //------------- method called for each run -------------
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
-
-    // HLT results could have different size/order in new run, so look up again de index positions
-    triggerAnalyzer->reIndex = true;
-
-    //get Run number
     _runNb = (unsigned long) iRun.id().run();
-
-    //update JEC 
-    //jec->updateJEC(_runNb);
+    triggerAnalyzer->reIndex = true;                                   // HLT results could have different size/order in new run, so look up again the index positions
 }
 
 // ------------ method called for each event  ------------
@@ -147,35 +115,19 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     //extract number of vertices 
     _nVertex = vertices->size();
     nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
-    if(_nVertex == 0) return;                                      //Don't consider 0 vertex events
+    if(_nVertex == 0) return;                                          //Don't consider 0 vertex events
 
-    if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
-    if(!isData) genAnalyzer->analyze(iEvent);                          // needs to be run before photonAnalyzer for matching purposes
-    if(!photonAnalyzer->analyze(iEvent)) return;
-    if(!triggerAnalyzer->analyze(iEvent)) return;
-    jetAnalyzer->analyze(iEvent);
+    if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())))  return; // returns false if doesn't pass skim condition, so skip event in such case
+    if(!photonAnalyzer->analyze(iEvent))                                return;
+    if(!jetAnalyzer->analyze(iEvent))                                   return;
+    if(!isData) genAnalyzer->analyze(iEvent);                                   // needs to be run before photonAnalyzer for matching purposes
+    if(!triggerAnalyzer->analyze(iEvent))                               return;
 
     //determine event number run number and luminosity block
     _eventNb   = (unsigned long) iEvent.id().event();
 
     //store calculated event info in root tree
     outputTree->Fill();
-}
-
-
-// ------------ method called once each job just after ending the event loop  ------------
-void multilep::endJob(){
-
-}
-
-// ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
-void multilep::fillDescriptions(edm::ConfigurationDescriptions& descriptions){
-
-    //The following says we do not know what parameters are allowed so do no validation
-    // Please change this to state exactly what you do use, even if it is no parameters
-    edm::ParameterSetDescription desc;
-    desc.setUnknown();
-    descriptions.addDefault(desc);
 }
 
 //define this as a plug-in

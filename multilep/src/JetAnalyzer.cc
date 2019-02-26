@@ -8,18 +8,12 @@
 JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer)
 {
-    /*
-    if(multilepAnalyzer->isData){
-        jecLevel = "L2L3Residual";
-    } else {
-        jecLevel = "L3Absolute";
-    }
-    */
-    if(multilepAnalyzer->is2017){
-        jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile17")).fullPath());
-    } else {
-        jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile16")).fullPath());
-    }
+    std::string jecFile;
+    if(multilepAnalyzer->is2018)      jecFile = "jecUncertaintyFile17"; // TODO: update when 2018 JEC become available
+    else if(multilepAnalyzer->is2017) jecFile = "jecUncertaintyFile17";
+    else                              jecFile = "jecUncertaintyFile16";
+
+    jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>(jecFile)).fullPath());
 };
 
 JetAnalyzer::~JetAnalyzer(){
@@ -31,7 +25,7 @@ JetAnalyzer::~JetAnalyzer(){
 // Storing here jet id variables, id itself also to be implemented at python level https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016, or maybe still here as the loose wp does not change often?
 // WARNING: the _nJets is number of stored jets (i.e. including those where JECUp/JERUp passes the cut), do not use as selection
 void JetAnalyzer::beginJob(TTree* outputTree){
-    outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/b");
+    outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/i");
     outputTree->Branch("_jetPt",                     &_jetPt,                    "_jetPt[_nJets]/D");
     outputTree->Branch("_jetPt_JECDown",             &_jetPt_JECDown,            "_jetPt_JECDown[_nJets]/D");
     outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
@@ -106,82 +100,60 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     for(const auto& jet : *jets){
         if(_nJets == nJets_max) break;
 
-    	//std::cout << "ok1.55" << std::endl;
-        //only store loose jets 
-    	//std::cout << "jet pt: " << jet.pt() << std::endl;
-    	//std::cout << "jet eta: " << jet.eta() << std::endl;
-    	//std::cout << "jet phi: " << jet.phi() << std::endl;
-    	//std::cout << "jet energy: " << jet.energy() << std::endl;
-    	//std::cout << "_nJets: " << _nJets << std::endl;
-	//if(multilepAnalyzer->is2017 or !multilepAnalyzer->is2017) std::cout << "is2017 ok" << std::endl;
-        _jetIsLoose[_nJets] = jetIsLoose(jet, multilepAnalyzer->is2017);
-    	//std::cout << "ok1.56" << std::endl;
+        //only store loose jets
+        _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
         if(!_jetIsLoose[_nJets]) continue;
-    	//std::cout << "ok1.57" << std::endl;
-        _jetIsTight[_nJets] = jetIsTight(jet, multilepAnalyzer->is2017);
-    	//std::cout << "ok1.58" << std::endl;
-        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017);
+        _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
+        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
 
-        //find smeared equivalents of nominal jet 
+        //find smeared equivalents of nominal jet
         auto jetSmearedIt = jetsSmeared->begin();
-        for(auto j = jetsSmeared->cbegin(); j != jetsSmeared->cend(); ++j){ 
-            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedIt) ) jetSmearedIt = j;
+        for(auto j = jetsSmeared->cbegin(); j != jetsSmeared->cend(); ++j){
+            if(reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedIt)) jetSmearedIt = j;
         }
 
         auto jetSmearedUpIt = jetsSmearedUp->begin();
-        for(auto j = jetsSmearedUp->cbegin(); j != jetsSmearedUp->cend(); ++j){ 
-            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedUpIt) )  jetSmearedUpIt = j;
+        for(auto j = jetsSmearedUp->cbegin(); j != jetsSmearedUp->cend(); ++j){
+            if(reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedUpIt))  jetSmearedUpIt = j;
         }
 
         auto jetSmearedDownIt = jetsSmearedDown->begin();
-        for(auto j = jetsSmearedDown->cbegin(); j != jetsSmearedDown->cend(); ++j){ 
-            if( reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedDownIt) )  jetSmearedDownIt = j;
+        for(auto j = jetsSmearedDown->cbegin(); j != jetsSmearedDown->cend(); ++j){
+            if(reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedDownIt))  jetSmearedDownIt = j;
         }
 
-        //txt based JEC
-        //double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
-        //_jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
-        //double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], jet.eta());
-
-
-        //nominal jet pt and uncertainties         
+        //nominal jet pt and uncertainties
         jecUnc->setJetEta(jet.eta());
         jecUnc->setJetPt(jet.pt());
         double unc = jecUnc->getUncertainty(true);
 
-        _jetPt[_nJets] = jet.pt();
+        _jetPt[_nJets]         = jet.pt();
         _jetPt_JECDown[_nJets] = _jetPt[_nJets]*(1 - unc);
-        _jetPt_JECUp[_nJets] = _jetPt[_nJets]*(1 + unc);
+        _jetPt_JECUp[_nJets]   = _jetPt[_nJets]*(1 + unc);
 
-        //smeared jet pt and uncertainties 
+        //smeared jet pt and uncertainties
         jecUnc->setJetEta(jetSmearedIt->eta());
         jecUnc->setJetPt(jetSmearedIt->pt());
         double uncSmeared = jecUnc->getUncertainty(true);
-        _jetSmearedPt[_nJets] = jetSmearedIt->pt();
+        _jetSmearedPt[_nJets]         = jetSmearedIt->pt();
         _jetSmearedPt_JECDown[_nJets] = _jetPt[_nJets]*( 1. - uncSmeared );
-        _jetSmearedPt_JECUp[_nJets] = _jetPt[_nJets]*( 1. + uncSmeared );
+        _jetSmearedPt_JECUp[_nJets]   = _jetPt[_nJets]*( 1. + uncSmeared );
         _jetSmearedPt_JERDown[_nJets] = jetSmearedDownIt->pt();
-        _jetSmearedPt_JERUp[_nJets] = jetSmearedUpIt->pt();
+        _jetSmearedPt_JERUp[_nJets]   = jetSmearedUpIt->pt();
 
         //find maximum of all pT variations
         std::vector<double> ptVector = {_jetPt[_nJets], _jetPt_JECDown[_nJets], _jetPt_JECUp[_nJets],
             _jetSmearedPt[_nJets], _jetSmearedPt_JECDown[_nJets], _jetSmearedPt_JECUp[_nJets], _jetSmearedPt_JERDown[_nJets],  _jetSmearedPt_JERUp[_nJets]};
-        double maxpT = *( std::max_element( ptVector.cbegin(), ptVector.cend() ) );
+        double maxpT = *(std::max_element(ptVector.cbegin(), ptVector.cend()));
         if(maxpT <= 25) continue;
 
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
         _jetPt_L2[_nJets]                 = jet.correctedP4("L2Relative").Pt();
         _jetPt_L3[_nJets]                 = jet.correctedP4("L3Absolute").Pt();
-        /*
-        _jetPt_L1[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L1FastJet");
-        _jetPt_L2[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L2Relative");
-        _jetPt_L3[_nJets]                 = jet.correctedP4("Uncorrected").Pt()*multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), "L3Absolute");
-        */
 
         _jetEta[_nJets]                   = jet.eta();
         _jetPhi[_nJets]                   = jet.phi();
-        //_jetE[_nJets]                     = jet.correctedP4("Uncorrected").E()*corrTxt;
         _jetE[_nJets]                     = jet.energy();
 
         //Old csvV2 b-tagger
@@ -195,10 +167,10 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
         _jetNeutralHadronFraction[_nJets] = jet.neutralHadronEnergyFraction();
         _jetChargedHadronFraction[_nJets] = jet.chargedHadronEnergyFraction();
-        _jetNeutralEmFraction[_nJets] = jet.neutralEmEnergyFraction();
-        _jetChargedEmFraction[_nJets] = jet.chargedEmEnergyFraction();
-        _jetHFHadronFraction[_nJets] = jet.HFHadronEnergyFraction();
-        _jetHFEmFraction[_nJets] = jet.HFEMEnergyFraction();
+        _jetNeutralEmFraction[_nJets]     = jet.neutralEmEnergyFraction();
+        _jetChargedEmFraction[_nJets]     = jet.chargedEmEnergyFraction();
+        _jetHFHadronFraction[_nJets]      = jet.HFHadronEnergyFraction();
+        _jetHFEmFraction[_nJets]          = jet.HFEMEnergyFraction();
 	    
         /*for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
       	    const pat::PackedCandidate* daughter  = (const pat::PackedCandidate*) jet.daughter(d);
@@ -219,13 +191,10 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     const pat::MET& met = (*mets).front();
     _met             = met.pt();
     _metPhi          = met.phi();
-    /*
-    _met = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).first;
-    _metPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho).second;
-    */
+
     //raw met values
-    _metRaw = met.uncorPt();
-    _metRawPhi = met.uncorPhi();
+    _metRaw          = met.uncorPt();
+    _metRawPhi       = met.uncorPhi();
     //met values with uncertainties varied up and down
     _metJECDown      = met.shiftedPt(pat::MET::JetEnDown);
     _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);
@@ -235,71 +204,72 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     _metPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp);
     _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
     _metPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown);
-    //significance of met
-    _metSignificance = met.metSignificance(); 
 
+    //significance of met
+    //note: this is the only one variable which changed between 94X and 102X see https://github.com/cms-sw/cmssw/commit/f7aacfd2ffaac9899ea07d0355afe49bb10a0aeb
+    _metSignificance = met.metSignificance();
 
     //std::cout << "end jetanalyzer" << std::endl;
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
-    if(multilepAnalyzer->skim == "FR" and _nJets < 1) return false;
+    if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;
     return true;
 }
 
-bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
+/*
+ * JetID implementations, references:
+ * https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016
+ * https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017
+ * 2018, currently takes the same as 2017
+ */
 
-    //std::cout << "okisloose1" << std::endl;
+// There should be no loose Jet ID for 2017, not sure where the cuts for this below originate, so use at own risk
+bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
     if(fabs(jet.eta()) <= 2.7){
-    	//std::cout << "okislooseif1" << std::endl;
-        if(jet.neutralHadronEnergyFraction() >=  0.99) return false;
-        if(jet.neutralEmEnergyFraction() >= 0.99) return false;
+        if(jet.neutralHadronEnergyFraction() >=  0.99)               return false;
+        if(jet.neutralEmEnergyFraction() >= 0.99)                    return false;
         if(jet.chargedMultiplicity()+jet.neutralMultiplicity() <= 1) return false;
         if(fabs(jet.eta()) <= 2.4){
-            if(jet.chargedHadronEnergyFraction() <= 0) return false;
-            if(jet.chargedMultiplicity() <= 0) return false;
-            if( !is2017 && ( jet.chargedEmEnergyFraction() >= 0.99 ) ) return false;
+            if(jet.chargedHadronEnergyFraction() <= 0)               return false;
+            if(jet.chargedMultiplicity() <= 0)                       return false;
+            if(!is2017 && jet.chargedEmEnergyFraction()>= 0.99)      return false;
         }
     	//std::cout << "okislooseif1_2" << std::endl;
 
     } else if(fabs(jet.eta()) <= 3.0){
-    	//std::cout << "okislooseif2" << std::endl;
-        if(jet.neutralHadronEnergyFraction() >= 0.98) return false;
-        if( !is2017 && (jet.neutralEmEnergyFraction() <= 0.01) ) return false;
-        if( is2017 && (jet.neutralEmEnergyFraction() <= 0.02) ) return false;
-        if(jet.neutralMultiplicity() <= 2) return false;
-    	//std::cout << "okislooseif2_2" << std::endl;
+        if(jet.neutralHadronEnergyFraction() >= 0.98)                return false;
+        if(jet.neutralEmEnergyFraction() <= (is2017 ? 0.02 : 0.01))  return false;
+        if(jet.neutralMultiplicity() <= 2)                           return false;
 
     } else {
-    	//std::cout << "okislooseif3" << std::endl;
-        if(jet.neutralEmEnergyFraction() >= 0.90) return false;
-        if(jet.neutralMultiplicity() <= 10) return false;
-        if(is2017 && jet.neutralHadronEnergyFraction() <= 0.02) return false;
-    	//std::cout << "okislooseif3_2" << std::endl;
+        if(jet.neutralEmEnergyFraction() >= 0.90)                    return false;
+        if(jet.neutralMultiplicity() <= 10)                          return false;
+        if(is2017 && jet.neutralHadronEnergyFraction() <= 0.02)      return false;
     }
 
     return true;
 }
 
 bool JetAnalyzer::jetIsTight(const pat::Jet& jet, const bool is2017) const{
-    if( !jetIsLoose(jet, is2017) ) return false;
+    if(!jetIsLoose(jet, is2017))                            return false;
 
     if(fabs(jet.eta()) <= 2.7){
-        if(jet.neutralHadronEnergyFraction() >= 0.9) return false;
-        if(jet.neutralEmEnergyFraction() >= 0.9) return false;
+        if(jet.neutralHadronEnergyFraction() >= 0.9)        return false;
+        if(jet.neutralEmEnergyFraction() >= 0.9)            return false;
 
     } else if(fabs(jet.eta()) <= 3.0){
-        if(is2017 && jet.neutralEmEnergyFraction() >= 0.99) return false;   
+        if(is2017 && jet.neutralEmEnergyFraction() >= 0.99) return false;
     }
     return true;
 }
 
 bool JetAnalyzer::jetIsTightLepVeto(const pat::Jet& jet, const bool is2017) const{
-    if( !jetIsTight(jet, is2017) ) return false;
+    if(!jetIsTight(jet, is2017))                                      return false;
+
     if(fabs(jet.eta()) <= 2.7){
-        if( jet.chargedMuEnergyFraction() >= 0.8 ) return false;
-        
+        if(jet.chargedMuEnergyFraction() >= 0.8 )                     return false;
+
         if(fabs(jet.eta()) <= 2.4){
-            if(is2017 && (jet.chargedEmEnergyFraction() >= 0.8) ) return false;
-            if(!is2017 && (jet.chargedEmEnergyFraction() >= 0.9) ) return false;
+            if(jet.chargedEmEnergyFraction() >= (is2017 ? 0.8 : 0.9)) return false;
         }
     }
     return true;

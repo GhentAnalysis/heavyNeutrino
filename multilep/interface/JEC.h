@@ -34,6 +34,7 @@ class JEC {
         std::string path;
         bool isData;
         bool is2017;
+        bool is2018;
         std::string currentJEC; 
 
         std::shared_ptr<FactorizedJetCorrector> jetCorrector;
