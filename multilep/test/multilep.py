@@ -12,7 +12,7 @@ inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles
 # Other default arguments
 nEvents         = 1000
 extraContent    = ''
-outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
+outputFile      = 'dilep.root'  # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
                                 # ttg       --> skim two light leptons + one photon
