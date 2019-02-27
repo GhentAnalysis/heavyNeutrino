@@ -323,11 +323,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {&_tauIsoMVADBdR03oldDMwLT, &_tauIsoMVADBdR03newDMwLT, &_tauIsoMVAPWnewDMwLT, &_tauIsoMVAPWoldDMwLT}) std::fill_n(*array, _nLight, 0.);
 
 
-    if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
-    if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
-    if(multilepAnalyzer->skim == "ttg"       &&  _nLight < 2) return false;
-    if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
-    if(multilepAnalyzer->skim == "FR"        &&  _nLight < 1) return false;
+    if(multilepAnalyzer->skim == "trilep" && _nL < 3) return false;
+    if(multilepAnalyzer->skim == "dilep" && _nL < 2) return false;
+    if(multilepAnalyzer->skim == "ttg" && _nLight < 2) return false;
+    if(multilepAnalyzer->skim == "singlelep" && _nL < 1) return false;
+    if(multilepAnalyzer->skim == "FR" && _nLight < 1) return false;
     return true;
 }
 
