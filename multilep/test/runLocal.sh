@@ -26,12 +26,13 @@ submitJob(){
 
 ##################################
 #Add your proxy!
-proxy=/user/bvermass/x509up_u20663
 ##################################
 if [[ $USER == "tutran" ]]; then
   proxy=/user/tutran/private/x509up_u23068
 elif [[ $USER == "wverbeke" ]]; then
   proxy=/user/wverbeke/x509up_u20640
+elif [[ $USER == "bvermass" ]]; then
+  proxy=/user/bvermass/x509up_u20663
 else
   echo "Add your proxy in RunLocal.sh before submitting jobs!"
   exit 1
