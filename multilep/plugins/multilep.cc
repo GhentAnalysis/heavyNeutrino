@@ -97,8 +97,8 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
-    edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
-    edm::Handle<reco::BeamSpot> beamspot;            iEvent.getByToken(beamSpotToken, beamspot);
+    edm::Handle<std::vector<reco::Vertex>> vertices;    iEvent.getByToken(vtxToken, vertices);
+    edm::Handle<reco::BeamSpot> beamspot;               iEvent.getByToken(beamSpotToken, beamspot);
     
     _BS_x = beamspot->x0();
     _BS_y = beamspot->y0();
@@ -123,8 +123,11 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(!isData) genAnalyzer->analyze(iEvent);                                   // needs to be run before photonAnalyzer for matching purposes
     if(!triggerAnalyzer->analyze(iEvent))                               return;
 
-    _eventNb   = (unsigned long) iEvent.id().event();                   //determine event number run number and luminosity block
-    outputTree->Fill();                                                 //store calculated event info in root tree
+    //determine event number run number and luminosity block
+    _eventNb   = (unsigned long) iEvent.id().event();
+
+    //store calculated event info in root tree
+    outputTree->Fill();
 }
 
 //define this as a plug-in

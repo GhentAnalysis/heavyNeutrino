@@ -8,16 +8,14 @@ import FWCore.ParameterSet.Config as cms
 #inputFile      = '/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
 #inputFile      = '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0CC8EDCD-FD64-E811-BCA8-02163E01A020.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
-#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_lljj_M-5_V-0.00707106781187_mu_massiveAndCKM_LO/heavyNeutrino_45.root'
+inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_lljj_M-5_V-0.00707106781187_mu_massiveAndCKM_LO/heavyNeutrino_45.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_lljj_M-2_V-0.00707106781187_e_massiveAndCKM_LO/heavyNeutrino_10.root'
 #inputFile       = "root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
-#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root'
-inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root'
  
 
 
 # Other default arguments
-nEvents         = 100
+nEvents         = 1000
 extraContent    = ''
 outputFile      = 'dilep.root'     # trilep    --> skim three leptons (basic pt/eta criteria)
                                  # dilep     --> skim two leptons

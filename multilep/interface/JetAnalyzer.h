@@ -20,6 +20,8 @@ class JetAnalyzer {
     static const unsigned nJets_max = 20;
     //static const unsigned nDaughters_max = 500;
 
+    bool is2017;
+
     unsigned _nJets;
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
@@ -60,6 +62,9 @@ class JetAnalyzer {
     double   _jet_daughter_phi[nDaughters_max];
     double   _jet_daughter_energy[nDaughters_max];*/
     
+    //correction level for JEC
+    //std::string jecLevel;
+
     double   _met;                                                                              //met kinematics
     double   _metPhi;
     double   _metRaw;

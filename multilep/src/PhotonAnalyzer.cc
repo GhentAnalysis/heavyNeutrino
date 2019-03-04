@@ -59,6 +59,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
 
 
 bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
+    //std::cout << "begin photonanalyzer" << std::endl;
     edm::Handle<std::vector<pat::Photon>> photons;                   iEvent.getByToken(multilepAnalyzer->photonToken,                       photons);
     edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
     edm::Handle<std::vector<reco::Vertex>> vertices;                 iEvent.getByToken(multilepAnalyzer->vtxToken,                          vertices);
@@ -125,7 +126,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         }
         ++_nPh;
     }
-
+    //std::cout << "end photonanalyzer" << std::endl;
     if(multilepAnalyzer->skim == "ttg" and _nPh < 1) return false;
     if(multilepAnalyzer->skim == "singlephoton" and _nPh < 1) return false;
     if(multilepAnalyzer->skim == "diphoton" and _nPh < 2) return false;
@@ -167,7 +168,7 @@ double PhotonAnalyzer::randomConeIso(double eta, edm::Handle<std::vector<pat::Pa
     // Calculate chargedIsolation
     float chargedIsoSum = 0;
     for(auto& iCand : *pfcands){
-        if(iCand.hasTrackDetails()){
+        if(iCand.hasTrackDetails()){ 
             if(deltaR(eta, randomPhi, iCand.eta(), iCand.phi()) > 0.3) continue;
             if(abs(iCand.pdgId()) != 211) continue;
 
