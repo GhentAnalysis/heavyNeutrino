@@ -47,6 +47,8 @@ class LeptonAnalyzer {
     EffectiveAreas muonsEffectiveAreas;
 
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
+    static const unsigned nvtx_max    = 50;
+    static const unsigned ntrack_max  = 15;
     unsigned _nL;                                                                                    //number of leptons
     unsigned _nMu;
     unsigned _nEle;
@@ -101,16 +103,14 @@ class LeptonAnalyzer {
     double   _lKVF_chi2[nL_max];
     unsigned _lKVF_ntracks[nL_max];
     double   _lKVF_dRcut[nL_max];
-    double   _lKVF_trackPt[nL_max][20];
-    double   _lKVF_trackEta[nL_max][20];
-    double   _lKVF_trackPhi[nL_max][20];
-    double   _lKVF_trackE[nL_max][20];
-    double   _lKVF_trackdR[nL_max][20];
-    double   _lKVF_trackdxy[nL_max][20];
-    double   _lKVF_trackdz[nL_max][20];
+    double   _lKVF_trackPt[nL_max][ntrack_max];
+    double   _lKVF_trackEta[nL_max][ntrack_max];
+    double   _lKVF_trackPhi[nL_max][ntrack_max];
+    double   _lKVF_trackE[nL_max][ntrack_max];
+    double   _lKVF_trackdR[nL_max][ntrack_max];
+    double   _lKVF_trackdxy[nL_max][ntrack_max];
+    double   _lKVF_trackdz[nL_max][ntrack_max];
     
-    static const unsigned nvtx_max    = 50;
-    static const unsigned ntrack_max  = 15;
     unsigned _IVF_nvertex;
     double _IVF_x[nvtx_max];
     double _IVF_y[nvtx_max];
@@ -223,9 +223,7 @@ class LeptonAnalyzer {
     edm::ESHandle<Propagator> _shProp;
     TransientVertex constructKalmanVertex(std::vector<reco::Track>&, MagneticField*);
 
-    //void fillLeptonGenVars(const reco::Candidate&, GenMatching*);
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
-    //void fillLeptonGenVars(const reco::GenParticle*); 
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);

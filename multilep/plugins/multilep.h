@@ -124,7 +124,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         unsigned long _runNb;
         unsigned long _lumiBlock;
         unsigned long _eventNb;
-        unsigned      _nVertex;                                                                          //Event variables
+        unsigned      _nVertex;
         double _BS_x;
         double _BS_y;
         double _BS_z;
