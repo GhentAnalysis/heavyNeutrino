@@ -16,7 +16,7 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     electronsEffectiveAreas(iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas").fullPath()),
     muonsEffectiveAreas    ((multilepAnalyzer->is2017 || multilepAnalyzer->is2018)? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
     singleEleTrigs(multilepAnalyzer->is2017 ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2017") : (multilepAnalyzer->is2018 ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers"))),
-    singleMuoTrigs(multilepAnalyzer->is2017 ? iConfig.getParameter<std::vector<std::string> >("SingleMouTriggers2017") : (multilepAnalyzer->is2018 ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers"))),
+    singleMuoTrigs(multilepAnalyzer->is2017 ? iConfig.getParameter<std::vector<std::string> >("SingleMouTriggers2017") : (multilepAnalyzer->is2018 ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers")))
 {
     leptonMvaComputerSUSY16   = new LeptonMvaHelper(iConfig, 0, false); // SUSY         // TODO: all of these really needed? could use some clean-up
     leptonMvaComputerTTH16    = new LeptonMvaHelper(iConfig, 1, false); // TTH
@@ -174,8 +174,16 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_closestJetCsvV2",              &_closestJetCsvV2,              "_closestJetCsvV2[_nLight]/D");
     outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
     outputTree->Branch("_closestJEC",          &_closestJEC,          "_closestJEC[_nLight]/D");
-     outputTree->Branch("_closest_lepAwareJet",          &_closest_lepAwareJet,          "_closest_lepAwareJet[_nLight]/D");
-    outputTree->Branch("_closest_l1Jet",          &_closest_l1Jet,          "_closest_l1Jet[_nLight]/D");
+     outputTree->Branch("_closest_lepAwareJetE",          &_closest_lepAwareJetE,          "_closest_lepAwareJetE[_nLight]/D");
+     outputTree->Branch("_closest_lepAwareJetPx",          &_closest_lepAwareJetPx,          "_closest_lepAwareJetPx[_nLight]/D");
+     outputTree->Branch("_closest_lepAwareJetPy",          &_closest_lepAwareJetPy,          "_closest_lepAwareJetPy[_nLight]/D");
+     outputTree->Branch("_closest_lepAwareJetPz",          &_closest_lepAwareJetPz,          "_closest_lepAwareJetPz[_nLight]/D");
+
+    outputTree->Branch("_closest_l1JetE",          &_closest_l1JetE,          "_closest_l1JetE[_nLight]/D");
+    outputTree->Branch("_closest_l1JetPx",          &_closest_l1JetPx,          "_closest_l1JetPx[_nLight]/D");
+    outputTree->Branch("_closest_l1JetPy",          &_closest_l1JetPy,          "_closest_l1JetPy[_nLight]/D");
+    outputTree->Branch("_closest_l1JetPz",          &_closest_l1JetPz,          "_closest_l1JetPz[_nLight]/D");
+
     outputTree->Branch("_closest_lJetE",          &_closest_lJetE,          "_closest_lJetE[_nLight]/D");
     outputTree->Branch("_closest_lJetPx",          &_closest_lJetPx,          "_closest_lJetPx[_nLight]/D");
     outputTree->Branch("_closest_lJetPy",          &_closest_lJetPy,          "_closest_lJetPy[_nLight]/D");
@@ -810,8 +818,14 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL]    = 0;
         _closestJEC[_nL]           = 0;
-        _closest_lepAwareJet[_nL]  =0;
-        _closest_l1Jet[_nL]        = 0;
+        _closest_lepAwareJetE[_nL]  =0;
+        _closest_lepAwareJetPx[_nL]  =0;
+        _closest_lepAwareJetPy[_nL]  =0;
+        _closest_lepAwareJetPz[_nL]  =0;
+        _closest_l1JetE[_nL]        = 0;
+        _closest_l1JetPx[_nL]        = 0;
+        _closest_l1JetPy[_nL]        = 0;
+        _closest_l1JetPz[_nL]        = 0;
         _closest_lJetE [_nL]        = 0;
         _closest_lJetPx [_nL]        = 0;
         _closest_lJetPy [_nL]        = 0;
@@ -830,8 +844,14 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_b[_nL]  = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
         _closestJEC[_nL]           = JEC;
-        _closest_lepAwareJet[_nL]  =lepAwareJet;
-        _closest_l1Jet[_nL]        = l1Jet;
+        _closest_lepAwareJetE[_nL]  =lepAwareJet.E();
+        _closest_lepAwareJetPx[_nL]  =lepAwareJet.Px();
+        _closest_lepAwareJetPy[_nL]  =lepAwareJet.Py();
+        _closest_lepAwareJetPz[_nL]  =lepAwareJet.Pz();
+        _closest_l1JetE[_nL]        = l1Jet.E();
+        _closest_l1JetPx[_nL]        = l1Jet.Px();
+        _closest_l1JetPy[_nL]        = l1Jet.Py();
+        _closest_l1JetPz[_nL]        = l1Jet.Pz();
         _closest_lJetE [_nL]        = jet.p4().E();
         _closest_lJetPx [_nL]        = jet.p4().Px();
         _closest_lJetPy [_nL]        = jet.p4().Py();
