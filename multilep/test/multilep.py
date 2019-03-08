@@ -8,11 +8,14 @@ import FWCore.ParameterSet.Config as cms
 #inputFile      = '/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
 #inputFile      = '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0CC8EDCD-FD64-E811-BCA8-02163E01A020.root'
 inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
+#inputFile	= 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root'
+
+
 
 # Other default arguments
-nEvents         = 1000
+nEvents         = 10000
 extraContent    = ''
-outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
+outputFile      = 'trilep.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # displtrilep --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
