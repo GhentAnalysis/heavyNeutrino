@@ -550,23 +550,23 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
      * try all possible combinations of electrons and muons (further selections on opposite-charge is required in the fillDileptonVertexArray function)
      */
     cleanDileptonVertexArrays(_nVFit);
-    for(unsigned i=0; i < selmuons.size(); ++i){
+   /* for(unsigned i=0; i < selmuons.size(); ++i){
       for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays_os(i, j,      selmuons.at(i), selmuons.at(j));
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays_os(i, _nMu+j, selmuons.at(i), selelectrons.at(j));
     }
     for(unsigned i=0; i < selelectrons.size(); ++i){
       for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays_os(_nMu+i, j,      selelectrons.at(i), selmuons.at(j));
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays_os(_nMu+i, _nMu+j, selelectrons.at(i), selelectrons.at(j));
-    }
+    }*/
     
-   /* for(unsigned i=0; i < selmuons.size(); ++i){
+   for(unsigned i=0; i < selmuons.size(); ++i){
       for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(i, j,      selmuons.at(i), selmuons.at(j));
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(i, _nMu+j, selmuons.at(i), selelectrons.at(j));
     }
     for(unsigned i=0; i < selelectrons.size(); ++i){
       //for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(_nMu+i, j,      selelectrons.at(i), selmuons.at(j));
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(_nMu+i, _nMu+j, selelectrons.at(i), selelectrons.at(j));
-    }*/
+    }
 
     //Initialize with default values for those tau-only arrays which weren't filled with electrons and muons [to allow correct comparison by the test script]
     for(auto array : {&_tauMuonVeto, &_tauEleVeto, &_decayModeFindingNew, &_tauVLooseMvaNew, &_tauLooseMvaNew}) std::fill_n(*array, _nLight, false);
@@ -602,16 +602,16 @@ TransientVertex LeptonAnalyzer::dileptonVertex(const reco::RecoCandidate* lep1, 
 
 
 void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
-  /*for (int i =0; i < 50; i++){
+  for (int i =0; i < 50; i++){
     for (int j =0; j < 24 ; j++){
       if (j < 12) _vertices[i][j] = 0;
       _lDisplaced[i][j] = 0;
     }
-  }*/
-    for (int i =0; i < 50; i++){
+  }
+    /*for (int i =0; i < 50; i++){
     for (int j =0; j < 24 ; j++){
       if (j < 12) _vertices_os[i][j] = 0;
-      _lDisplaced_os[i][j] = 0;
+      _lDisplaced_os[i][j] = 0;*/
     }
   }
 }
