@@ -251,6 +251,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _nEle   = 0;
     _nTau   = 0;
     _nVFit  = 0;
+    _nVFit_os = 0;
     _nGoodLeading = 0;
     _nGoodDisplaced = 0;
 
