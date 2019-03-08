@@ -173,6 +173,13 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
     outputTree->Branch("_closestJetCsvV2",              &_closestJetCsvV2,              "_closestJetCsvV2[_nLight]/D");
     outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
+    outputTree->Branch("_closestJEC",          &_closestJEC,          "_closestJEC[_nLight]/D");
+     outputTree->Branch("_closest_lepAwareJet",          &_closest_lepAwareJet,          "_closest_lepAwareJet[_nLight]/D");
+    outputTree->Branch("_closest_l1Jet",          &_closest_l1Jet,          "_closest_l1Jet[_nLight]/D");
+    outputTree->Branch("_closest_lJetE",          &_closest_lJetE,          "_closest_lJetE[_nLight]/D");
+    outputTree->Branch("_closest_lJetPx",          &_closest_lJetPx,          "_closest_lJetPx[_nLight]/D");
+    outputTree->Branch("_closest_lJetPy",          &_closest_lJetPy,          "_closest_lJetPy[_nLight]/D");
+    outputTree->Branch("_closest_lJetPz",          &_closest_lJetPz,          "_closest_lJetPz[_nLight]/D");  
     outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
     outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
