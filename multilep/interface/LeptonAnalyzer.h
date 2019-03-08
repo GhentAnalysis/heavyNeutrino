@@ -129,8 +129,14 @@ class LeptonAnalyzer {
     double _closestJetDeepCsv_bb[nL_max];
     unsigned _selectedTrackMult[nL_max];
     double      _closestJEC[nL_max] ;
-    double     _closest_lepAwareJet[nL_max];
-    double     _closest_l1Jet[nL_max];
+    double     _closest_lepAwareJetE[nL_max];
+    double     _closest_lepAwareJetPx[nL_max];
+    double     _closest_lepAwareJetPy[nL_max];
+    double     _closest_lepAwareJetPz[nL_max];
+    double     _closest_l1JetE[nL_max];
+    double     _closest_l1JetPx[nL_max];
+    double     _closest_l1JetPy[nL_max];
+    double     _closest_l1JetPz[nL_max];
     double     _closest_lJetE [nL_max];
     double     _closest_lJetPx [nL_max] ;
     double     _closest_lJetPy [nL_max] ;
