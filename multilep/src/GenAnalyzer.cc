@@ -74,7 +74,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 
         //store generator level lepton info
-        if((p.status() == 1 and (absId == 11 or absId == 13)) and (p.status() == 2 and p.isLastCopy() and absId == 15)){
+        if((p.status() == 1 and (absId == 11 or absId == 13)) || (p.status() == 2 and p.isLastCopy() and absId == 15)){
     //    if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && std::abs(p.pdgId()) == 15)){  // TODO: confusing, strange code in displaced branch; if there is a good reason to use it instead of the above, make a good comment
     //        if(p.pdgId()== 2212) continue;
             if(_gen_nL != gen_nL_max){
