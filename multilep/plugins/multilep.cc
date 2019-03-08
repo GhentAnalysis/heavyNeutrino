@@ -106,17 +106,21 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     _eventNb   = (unsigned long) iEvent.id().event();                  //determine event number run number and luminosity block
 
-    if(skim == "FR"){ // note it simply runs over the saved _nJets, I assume some selection (especially pt) is wanted here; anyway better to implement this little piece in the analysis code which makes use of it
-      TLorentzVector lepton, jet;
-      int nJetBackToBack=0;
-      lepton.SetPtEtaPhiE(leptonAnalyzer->_lPt[0], leptonAnalyzer->_lEta[0], leptonAnalyzer->_lPhi[0], leptonAnalyzer->_lE[0]);
-      for(unsigned k =0; k < jetAnalyzer->_nJets; ++k){
-        jet.SetPtEtaPhiE(jetAnalyzer->_jetPt[k], jetAnalyzer->_jetEta[k], jetAnalyzer->_jetPhi[k], jetAnalyzer->_jetE[k]);
-        if(jet.DeltaR(lepton) > 1) nJetBackToBack++;
-      }
-      if(nJetBackToBack == 0) return;
+    TLorentzVector lepton1;
+    TLorentzVector jet1;
+    double nJetBackToBack=0;
+    double njet=0;
+    njet = jetAnalyzer->_nJets;
+    lepton1.SetPtEtaPhiE(leptonAnalyzer->_lPt[0],leptonAnalyzer->_lEta[0],leptonAnalyzer->_lPhi[0],leptonAnalyzer->_lE[0]);
+    for (int k =0; k < njet; k ++){
+        jet1.SetPtEtaPhiE(jetAnalyzer->_jetPt[k],jetAnalyzer->_jetEta[k],jetAnalyzer->_jetPhi[k],jetAnalyzer->_jetE[k]);
+        if (jet1.DeltaR(lepton1) > 1 && jetAnalyzer->_jetIsTight[k]  && jetAnalyzer->_jetPt[k] > 30) nJetBackToBack++;
     }
-    
+    bool triggerr_FR=triggerAnalyzer->flag["FR_single_lepton"];
+    bool triggerr_trilep=triggerAnalyzer->flag["passTrigger_1l"];
+    if(skim == "FR" and nJetBackToBack == 0) return;
+    if(skim == "FR" and !triggerr_FR) return;
+    if(skim == "trilep" and !triggerr_trilep)return;
     outputTree->Fill();                                                //store calculated event info in root tree
 }
 
