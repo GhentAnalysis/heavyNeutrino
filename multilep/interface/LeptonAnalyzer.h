@@ -68,6 +68,7 @@ class LeptonAnalyzer {
     double _pvZErr;
 
     unsigned _nVFit;                     // number vertices re-fitted
+    unsigned _nVFit_os;
     unsigned _nGoodLeading;              // number vertices re-fitted
     unsigned _nGoodDisplaced;
 
@@ -77,7 +78,9 @@ class LeptonAnalyzer {
 
     double _vertices[nV_max][12];        // array of the vertices: 9 variables+index for each vertex
     double _lDisplaced[nV_max][24];      // array of the displaced lepton momenta and positions at the displaced vertex
-
+    double _vertices_os[nV_max][12];        // array of the vertices: 9 variables+index for each vertex
+    double _lDisplaced_os[nV_max][24];
+  
     unsigned _lHasTrigger[nL_max];                                                                   //trigger matching
 
     double _lPt[nL_max];                                                                             //lepton kinematics
@@ -275,6 +278,7 @@ class LeptonAnalyzer {
 
     void cleanDileptonVertexArrays(unsigned);
     void fillDileptonVertexArrays(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
+    void fillDileptonVertexArrays_os(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
 
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
     void fillLeptonKinVars(const reco::Candidate&);
