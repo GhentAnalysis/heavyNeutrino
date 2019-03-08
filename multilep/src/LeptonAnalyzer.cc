@@ -53,10 +53,13 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/b");
     outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/b");
     outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
+    outputTree->Branch("_nVFit_os",                     &_nVFit_os,                     "_nVFit_os/i");                   // displaced specific
     outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/i");                   // displaced specific
     outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/i");            // "
     outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/i");          // "
 //  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");             // DELETED (simply use your index+1 instead in case you have some crazy situation where you need your index to start from 1 instead of 0)
+    outputTree->Branch("_vertices_os",                     &_vertices_os,                     "_vertices_os[_nVFit_os][12]/D");    // displaced specific
+    outputTree->Branch("_lDisplaced_os",                   &_lDisplaced_os,                   "_lDisplaced_os[_nVFit_os][24]/D");  // "
     outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");    // displaced specific
     outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");  // "
     outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/i");        // "
@@ -548,6 +551,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
      */
     cleanDileptonVertexArrays(_nVFit);
     for(unsigned i=0; i < selmuons.size(); ++i){
+      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays_os(i, j,      selmuons.at(i), selmuons.at(j));
+      for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays_os(i, _nMu+j, selmuons.at(i), selelectrons.at(j));
+    }
+    for(unsigned i=0; i < selelectrons.size(); ++i){
+      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays_os(_nMu+i, j,      selelectrons.at(i), selmuons.at(j));
+      for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays_os(_nMu+i, _nMu+j, selelectrons.at(i), selelectrons.at(j));
+    }
+    
+    for(unsigned i=0; i < selmuons.size(); ++i){
       for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(i, j,      selmuons.at(i), selmuons.at(j));
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(i, _nMu+j, selmuons.at(i), selelectrons.at(j));
     }
@@ -596,6 +608,12 @@ void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
       _lDisplaced[i][j] = 0;
     }
   }
+    for (int i =0; i < 50; i++){
+    for (int j =0; j < 24 ; j++){
+      if (j < 12) _vertices_os[i][j] = 0;
+      _lDisplaced_os[i][j] = 0;
+    }
+  }
 }
 
 const reco::Track& LeptonAnalyzer::getTrack(const reco::RecoCandidate* lep){
@@ -610,9 +628,9 @@ const reco::Track& LeptonAnalyzer::getTrack(const reco::RecoCandidate* lep){
 
 // Fill the arrays of displaced vertices and leptons
 void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minus, const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2){
-  if(lep1->charge() < 0) return; // ensure opposite charge
-  if(lep2->charge() > 0) return;
-  //if (iL_plus == iL_minus) return;
+  //if(lep1->charge() < 0) return; // ensure opposite charge
+  //if(lep2->charge() > 0) return;
+  if (iL_plus == iL_minus) return;
     
   TransientVertex dvtx = dileptonVertex(lep1, lep2);
   if(!dvtx.isValid()){
@@ -670,6 +688,72 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minu
 
   _nVFit++;
 }
+
+void LeptonAnalyzer::fillDileptonVertexArrays_os(unsigned iL_plus, unsigned iL_minus, const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2){
+  if(lep1->charge() < 0) return; // ensure opposite charge
+  if(lep2->charge() > 0) return;
+  //if (iL_plus == iL_minus) return;
+    
+  TransientVertex dvtx = dileptonVertex(lep1, lep2);
+  if(!dvtx.isValid()){
+    std::cout << " *** WARNING: refitted dilepton vertex OS is not valid! " << std::endl;
+    return;
+  }
+
+  _vertices_os[_nVFit_os][0]  = (iL_plus+1)*100 + (iL_minus+1); // indices i and j stored as i*100+j, but start counting at 1 instead of 0 (historical, backwards compatibility)
+  _vertices_os[_nVFit_os][1]  = dvtx.position().x();
+  _vertices_os[_nVFit_os][2]  = dvtx.position().y();
+  _vertices_os[_nVFit_os][3]  = dvtx.position().z();
+  _vertices_os[_nVFit_os][4]  = dvtx.positionError().cxx();
+  _vertices_os[_nVFit_os][5]  = dvtx.positionError().cyy();
+  _vertices_os[_nVFit_os][6]  = dvtx.positionError().czz();
+  _vertices_os[_nVFit_os][7]  = dvtx.positionError().cyx();
+  _vertices_os[_nVFit_os][8]  = dvtx.positionError().czy();
+  _vertices_os[_nVFit_os][9]  = dvtx.positionError().czx();
+  _vertices_os[_nVFit_os][10] = dvtx.degreesOfFreedom();
+  _vertices_os[_nVFit_os][11] = dvtx.totalChiSquared();
+
+  int i=0;
+  for(auto lep : {lep1, lep2}){
+    const reco::Track& track = getTrack(lep);
+    GlobalPoint  globPoint(track.vx(), track.vy(), track.vz());
+    GlobalVector globVector(track.px(), track.py(), track.pz());
+    GlobalTrajectoryParameters globTrajParam(globPoint, globVector, track.charge(), _bField.product());
+    FreeTrajectoryState tempFreeTrajectoryState(globTrajParam, track.covariance());
+    FreeTrajectoryState freeTrajectoryState;
+
+    if(lep->isMuon()) freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, dvtx.position());
+    else              freeTrajectoryState = *(_gsfProp->extrapolate(tempFreeTrajectoryState, dvtx.position()).freeState());
+
+    if(!freeTrajectoryState.hasCurvilinearError()){
+      std::cout << "Propagation of lepton to dilepton vertex (" << _vertices[_nVFit][0] << ") failed!" << std::endl;
+      freeTrajectoryState = tempFreeTrajectoryState;
+    }
+
+    // fill _lDisplaced[nVFit] with 2x12=24 elements structured as 3 position + 3 momentum + 3 position error + 3 momentum error
+    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.position().x();
+    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.position().y();
+    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.position().z();
+
+    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.momentum().x();
+    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.momentum().y();
+    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.momentum().z();
+
+    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(0, 0); //position error
+    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(1, 1);
+    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(2, 2);
+
+    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(3, 3); // momentum error
+    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(4, 4);
+    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(5, 5);
+  }
+
+  _nVFit_os++;
+}
+
+
+
+
 
 void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
   _lPt[_nL]     = lepton.pt();
