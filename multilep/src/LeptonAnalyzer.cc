@@ -550,14 +550,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
      * try all possible combinations of electrons and muons (further selections on opposite-charge is required in the fillDileptonVertexArray function)
      */
     cleanDileptonVertexArrays(_nVFit);
-   /* for(unsigned i=0; i < selmuons.size(); ++i){
+    for(unsigned i=0; i < selmuons.size(); ++i){
       for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays_os(i, j,      selmuons.at(i), selmuons.at(j));
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays_os(i, _nMu+j, selmuons.at(i), selelectrons.at(j));
     }
     for(unsigned i=0; i < selelectrons.size(); ++i){
       for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays_os(_nMu+i, j,      selelectrons.at(i), selmuons.at(j));
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays_os(_nMu+i, _nMu+j, selelectrons.at(i), selelectrons.at(j));
-    }*/
+    }
     
    for(unsigned i=0; i < selmuons.size(); ++i){
       for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(i, j,      selmuons.at(i), selmuons.at(j));
