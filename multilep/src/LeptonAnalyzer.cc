@@ -547,12 +547,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     for(auto array : {&_tauAgainstElectronMVA6Raw, &_tauCombinedIsoDBRaw3Hits, &_tauIsoMVAPWdR03oldDMwLT}) std::fill_n(*array, _nLight, 0.);
     for(auto array : {&_tauIsoMVADBdR03oldDMwLT, &_tauIsoMVADBdR03newDMwLT, &_tauIsoMVAPWnewDMwLT, &_tauIsoMVAPWoldDMwLT}) std::fill_n(*array, _nLight, 0.);
 
-    /* from master: [ not really good to have same skim names for differnent skims ]
-    if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
-    if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
-    if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
-    if(multilepAnalyzer->skim == "FR"        &&  _nLight < 1) return false;
-    */
 
     if(multilepAnalyzer->skim == "trilep"      and (_nLight < 3 || _nGoodLeading < 1                       ) ) return false;
     if(multilepAnalyzer->skim == "displtrilep" and (_nLight < 3 || _nGoodLeading < 1 || _nGoodDisplaced < 2) ) return false;
@@ -560,8 +554,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     if(multilepAnalyzer->skim == "dilep"       and _nLight <  2) return false;
     if(multilepAnalyzer->skim == "ttg"         and _nLight <  2) return false;
     if(multilepAnalyzer->skim == "singlelep"   and _nLight <  1) return false;
-    if(multilepAnalyzer->skim == "FR"          and _nLight != 1 and _lHasTrigger[0] < 1) return false; // TODO: this _lHasTrigger[0] seems to be an unsigned but the name sounds as if it is a boolean, in which case "not _lHasTrigger" would make more sense
-
+    if(multilepAnalyzer->skim == "FR"          and _nLight != 1 ) return false; // TODO: this _lHasTrigger[0] seems to be an unsigned but the name sounds as if it is a boolean, in which case "not _lHasTrigger" would make more sense
     return true;
 }
 
