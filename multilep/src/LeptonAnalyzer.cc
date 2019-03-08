@@ -756,7 +756,7 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
  */
 bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const double rho) const {
   if(elec.gsfTrack().isNull())                                                                    return false;
-  if(getRelIso03(elec, rho) > ((multilepAnalyzer->skim=="FR") ? 2.0 : 1.5))                       return false;
+  if(getRelIso03(elec, rho) >  1.5)                                                               return false;
   if(elec.pt()<5.)                                                                                return false;
   if(std::abs(elec.eta())>2.5)                                                                    return false;
   if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&elec)) return false; // Note: should be reviewd, especially for 2017-2018
@@ -767,7 +767,7 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const d
 bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon, const double rho) const {
   if(!muon.isPFMuon())           return false;
   if(!muon.isLooseMuon())        return false;
-  if(getRelIso03(muon, rho) > 2) return false;
+  if(getRelIso03(muon, rho) > 1.5) return false;
   if(muon.pt() < 3.)             return false;
   if(std::abs(muon.eta()) > 2.4) return false;
   return true;
@@ -776,7 +776,7 @@ bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon, const double rh
 bool LeptonAnalyzer::passTauPreselection(const pat::Tau& tau, const reco::Vertex::Point& vertex) const {
   if(tau.pt() < 20.)            return false; // Minimum pt for tau reconstruction
   if(std::abs(tau.eta()) > 2.3) return false;
-  if(tau_dz(tau, vertex) < 2.)  return false;
+  if(tau_dz(tau, vertex) > 2.)  return false;
   return true;
 }
 
