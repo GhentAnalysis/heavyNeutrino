@@ -552,7 +552,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(i, _nMu+j, selmuons.at(i), selelectrons.at(j));
     }
     for(unsigned i=0; i < selelectrons.size(); ++i){
-      //for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(_nMu+i, j,      selelectrons.at(i), selmuons.at(j));
+      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(_nMu+i, j,      selelectrons.at(i), selmuons.at(j));
       for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(_nMu+i, _nMu+j, selelectrons.at(i), selelectrons.at(j));
     }
 
@@ -610,9 +610,9 @@ const reco::Track& LeptonAnalyzer::getTrack(const reco::RecoCandidate* lep){
 
 // Fill the arrays of displaced vertices and leptons
 void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minus, const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2){
-  //if(lep1->charge() < 0) return; // ensure opposite charge
-  //if(lep2->charge() > 0) return;
-  if (iL_plus == iL_minus) return;
+  if(lep1->charge() < 0) return; // ensure opposite charge
+  if(lep2->charge() > 0) return;
+  //if (iL_plus == iL_minus) return;
     
   TransientVertex dvtx = dileptonVertex(lep1, lep2);
   if(!dvtx.isValid()){
