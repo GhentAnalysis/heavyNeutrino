@@ -801,6 +801,13 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_b[_nL]  = 0;
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL]    = 0;
+        _closestJEC[_nL]           = 0;
+        _closest_lepAwareJet[_nL]  =0;
+        _closest_l1Jet[_nL]        = 0;
+        _closest_lJetE [_nL]        = 0;
+        _closest_lJetPx [_nL]        = 0;
+        _closest_lJetPy [_nL]        = 0;
+        _closest_lJetPz [_nL]        = 0;
     } else {
         auto  l1Jet       = jet.correctedP4("L1FastJet");
         float JEC         = jet.p4().E()/l1Jet.E();
@@ -814,6 +821,14 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetCsvV2[_nL]      = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
         _closestJetDeepCsv_b[_nL]  = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+        _closestJEC[_nL]           = JEC;
+        _closest_lepAwareJet[_nL]  =lepAwareJet;
+        _closest_l1Jet[_nL]        = l1Jet;
+        _closest_lJetE [_nL]        = jet.p4().E();
+        _closest_lJetPx [_nL]        = jet.p4().Px();
+        _closest_lJetPy [_nL]        = jet.p4().Py();
+        _closest_lJetPz [_nL]        = jet.p4().Pz();
+
 
         //compute selected track multiplicity of closest jet
         _selectedTrackMult[_nL] = 0;
