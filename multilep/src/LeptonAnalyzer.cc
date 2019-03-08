@@ -611,9 +611,9 @@ void LeptonAnalyzer::cleanDileptonVertexArrays(unsigned nVFit){
     /*for (int i =0; i < 50; i++){
     for (int j =0; j < 24 ; j++){
       if (j < 12) _vertices_os[i][j] = 0;
-      _lDisplaced_os[i][j] = 0;*/
+      _lDisplaced_os[i][j] = 0;
     }
-  }
+  }*/
 }
 
 const reco::Track& LeptonAnalyzer::getTrack(const reco::RecoCandidate* lep){
