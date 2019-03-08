@@ -48,15 +48,6 @@ class LeptonAnalyzer {
   private:
     //this has to come before the effective areas as their initialization depends on it!
     multilep* multilepAnalyzer;
-
-  
-      _closestJEC[_nL]           = JEC;
-        _closest_lepAwareJet[_nL]  =lepAwareJet;
-        _closest_l1Jet[_nL]        = l1Jet;
-        _closest_lJetE [_nL]        = jet.p4().E();
-        _closest_lJetPx [_nL]        = jet.p4().Px();
-        _closest_lJetPy [_nL]        = jet.p4().Py();
-        _closest_lJetPz [_nL]        = jet.p4().Pz();
   
     EffectiveAreas electronsEffectiveAreas;
     EffectiveAreas muonsEffectiveAreas;
@@ -137,6 +128,16 @@ class LeptonAnalyzer {
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
     unsigned _selectedTrackMult[nL_max];
+    double      _closestJEC[nL_max] ;
+    double     _closest_lepAwareJet[nL_max];
+    double     _closest_l1Jet[nL_max];
+    double     _closest_lJetE [nL_max];
+    double     _closest_lJetPx [nL_max] ;
+    double     _closest_lJetPy [nL_max] ;
+    double     _closest_lJetPz [nL_max]  ;
+  
+  
+  
 
     double _dxy[nL_max];                                                                             //pointing variables
     double _dz[nL_max];
