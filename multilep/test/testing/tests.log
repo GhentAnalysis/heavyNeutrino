@@ -3,36 +3,338 @@
        DBSCMD_HOME
        MAGIC
        MALLOC_CONF
-commit 404477d0e6bb38ceefe6cfcf700fcbe138df650a
-Author: tomc <tomc@cern.ch>
-Date:   Thu Jan 31 12:53:06 2019 +0100
+commit 5eb7550eadedd773b0512441ba74d0c2d6e3dc5c
+Author: willem <willem.verbeke@cern.ch>
+Date:   Wed Feb 27 12:44:00 2019 +0100
 
-    Save as unsigned instead of branch
+    major escalation of the style war
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   Changed:
+      _3dIP                                              mean:   0.0017 -->   0.0016     rms:   0.0122 -->   0.0120    
+      _3dIPSig                                           mean:   2.3168 -->   1.6254     rms:   4.6526 -->   5.6496    
+      _decayModeFindingNew                               mean:   0.0459 -->   0.5536     rms:   0.2092 -->   0.4971    
+      _dxy                                               mean:   0.0001 -->   0.0010     rms:   0.0083 -->   0.0082    
+      _dz                                                mean:   0.2381 -->   0.0436     rms:   1.2569 -->   1.0624    
+      _lE                                                mean:  71.3052 -->  78.3649     rms:  56.6849 -->  58.1510    
+      _lEta                                              mean:   0.1429 -->   0.1296     rms:   1.2522 -->   1.2673    
+      _lEwkFO                                            mean:   0.6422 -->   0.4335     rms:   0.4794 -->   0.4956    
+      _lEwkLoose                                         mean:   0.7156 -->   0.4678     rms:   0.4511 -->   0.4990    
+      _lEwkTight                                         mean:   0.6055 -->   0.3605     rms:   0.4887 -->   0.4801    
+      _lFlavor                                           mean:   0.9633 -->   1.5150     rms:   0.3565 -->   0.5719    
+      _lPOGLoose                                         mean:   0.8899 -->   0.6781     rms:   0.3130 -->   0.4672    
+      _lPOGMedium                                        mean:   0.8624 -->   0.6352     rms:   0.3445 -->   0.4814    
+      _lPOGTight                                         mean:   0.8624 -->   0.5923     rms:   0.3445 -->   0.4914    
+      _lPOGVeto                                          mean:   0.8899 -->   0.7253     rms:   0.3130 -->   0.4464    
+      _lPhi                                              mean:   0.1719 -->   0.0813     rms:   1.7139 -->   1.7296    
+      _lPt                                               mean:  35.0067 -->  39.0588     rms:  17.5357 -->  20.3968    
+      _nL                                                mean:   1.0900 -->   2.3300     rms:   0.5674 -->   1.2088    
+      _nTau                                              mean:   0.0500 -->   1.2900     rms:   0.2598 -->   0.9197    
+      _tauAgainstElectronMVA6Raw                         mean:   0.0195 -->  -5.1282     rms:   0.1677 -->  21.8814    
+      _tauCombinedIsoDBRaw3Hits                          mean:   0.2841 -->   8.6403     rms:   2.0784 -->  25.6014    
+      _tauEleVeto                                        mean:   0.0459 -->   0.3433     rms:   0.2092 -->   0.4748    
+      _tauIsoMVADBdR03newDMwLT                           mean:   0.0059 -->   0.1693     rms:   0.1660 -->   0.5827    
+      _tauIsoMVADBdR03oldDMwLT                           mean:  -0.0096 -->   0.0284     rms:   0.1732 -->   0.6277    
+      _tauIsoMVAPWdR03oldDMwLT                           mean:  -0.0016 -->   0.1184     rms:   0.1687 -->   0.6220    
+      _tauIsoMVAPWnewDMwLT                               mean:   0.0079 -->   0.1639     rms:   0.1805 -->   0.5940    
+      _tauIsoMVAPWoldDMwLT                               mean:   0.0006 -->   0.0487     rms:   0.1797 -->   0.6163    
+      _tauLooseMvaNew                                    mean:   0.0275 -->   0.3219     rms:   0.1636 -->   0.4672    
+      _tauMediumMvaNew                                   mean:   0.0183 -->   0.2790     rms:   0.1342 -->   0.4485    
+      _tauMuonVeto                                       mean:   0.0367 -->   0.1803     rms:   0.1880 -->   0.3844    
+      _tauTightMvaNew                                    mean:   0.0183 -->   0.2489     rms:   0.1342 -->   0.4324    
+      _tauVLooseMvaNew                                   mean:   0.0275 -->   0.3691     rms:   0.1636 -->   0.4826    
+      _tauVTightMvaNew                                   mean:   0.0000 -->   0.2103     rms:   0.0000 -->   0.4075    
+      _tauVTightMvaOld                                   mean:   0.0000 -->   0.1202     rms:   0.0000 -->   0.3252    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   Changed:
+      _3dIP                                              mean:   0.0013 -->  -0.0003     rms:   0.0104 -->   0.0240    
+      _3dIPSig                                           mean:   2.0837 -->   1.2096     rms:   3.4670 -->   4.6849    
+      _decayModeFindingNew                               mean:   0.0283 -->   0.5442     rms:   0.1658 -->   0.4980    
+      _dxy                                               mean:  -0.0004 -->   0.0005     rms:   0.0084 -->   0.0091    
+      _dz                                                mean:   0.1042 -->   0.0487     rms:   0.6656 -->   0.4594    
+      _lCharge                                           mean:   0.0943 -->   0.0973     rms:   0.9955 -->   0.9953    
+      _lE                                                mean:  77.1404 -->  83.5848     rms:  56.0944 -->  75.4002    
+      _lEta                                              mean:  -0.1339 -->  -0.0709     rms:   1.3025 -->   1.2708    
+      _lEwkFO                                            mean:   0.7075 -->   0.5354     rms:   0.4549 -->   0.4987    
+      _lEwkLoose                                         mean:   0.8396 -->   0.5973     rms:   0.3670 -->   0.4904    
+      _lEwkTight                                         mean:   0.6887 -->   0.4381     rms:   0.4630 -->   0.4961    
+      _lFlavor                                           mean:   1.0094 -->   1.5354     rms:   0.2170 -->   0.5162    
+      _lPOGLoose                                         mean:   0.9717 -->   0.7301     rms:   0.1658 -->   0.4439    
+      _lPOGMedium                                        mean:   0.9340 -->   0.6593     rms:   0.2483 -->   0.4739    
+      _lPOGTight                                         mean:   0.9245 -->   0.6283     rms:   0.2642 -->   0.4833    
+      _lPOGVeto                                          mean:   0.9717 -->   0.7699     rms:   0.1658 -->   0.4209    
+      _lPhi                                              mean:   0.1139 -->   0.1459     rms:   1.7247 -->   1.7548    
+      _lPt                                               mean:  36.3071 -->  40.6016     rms:  16.0695 -->  24.0760    
+      _nL                                                mean:   1.0600 -->   2.2600     rms:   0.4652 -->   0.8789    
+      _nTau                                              mean:   0.0300 -->   1.2300     rms:   0.1706 -->   0.6761    
+      _tauAgainstElectronMVA6Raw                         mean:  -0.0025 -->  -2.2510     rms:   0.1359 -->  14.5618    
+      _tauCombinedIsoDBRaw3Hits                          mean:   0.0374 -->   6.9069     rms:   0.3222 -->  18.8950    
+      _tauEleVeto                                        mean:   0.0189 -->   0.4071     rms:   0.1361 -->   0.4913    
+      _tauIsoMVADBdR03newDMwLT                           mean:   0.0160 -->   0.1799     rms:   0.1339 -->   0.5851    
+      _tauIsoMVADBdR03oldDMwLT                           mean:   0.0112 -->   0.0605     rms:   0.1462 -->   0.6166    
+      _tauIsoMVAPWdR03oldDMwLT                           mean:   0.0240 -->   0.1414     rms:   0.1424 -->   0.6250    
+      _tauIsoMVAPWnewDMwLT                               mean:   0.0163 -->   0.1762     rms:   0.1337 -->   0.5887    
+      _tauIsoMVAPWoldDMwLT                               mean:   0.0136 -->   0.0783     rms:   0.1326 -->   0.6042    
+      _tauLooseMvaNew                                    mean:   0.0189 -->   0.3142     rms:   0.1361 -->   0.4642    
+      _tauMediumMvaNew                                   mean:   0.0189 -->   0.2965     rms:   0.1361 -->   0.4567    
+      _tauMuonVeto                                       mean:   0.0094 -->   0.1460     rms:   0.0967 -->   0.3531    
+      _tauTightMvaNew                                    mean:   0.0189 -->   0.2655     rms:   0.1361 -->   0.4416    
+      _tauVLooseMvaNew                                   mean:   0.0189 -->   0.3628     rms:   0.1361 -->   0.4808    
+      _tauVTightMvaNew                                   mean:   0.0189 -->   0.2257     rms:   0.1361 -->   0.4180    
+      _tauVTightMvaOld                                   mean:   0.0189 -->   0.1593     rms:   0.1361 -->   0.3659    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   Changed:
+      _3dIP                                              mean: -11.6175 --> -14.3388     rms: 107.0967 --> 118.8267    
+      _3dIPSig                                           mean:   1.4614 -->   1.1988     rms:   1.9416 -->   4.2717    
+      _decayModeFindingNew                               mean:   0.1163 -->   0.6364     rms:   0.3206 -->   0.4810    
+      _dxy                                               mean: -11.6178 --> -14.3392     rms: 107.0966 --> 118.8266    
+      _dz                                                mean:   0.4064 -->   0.0613     rms:   1.4500 -->   1.3245    
+      _lCharge                                           mean:   0.0000 -->  -0.0622     rms:   1.0000 -->   0.9981    
+      _lE                                                mean:  80.8732 -->  81.0574     rms:  83.3153 -->  70.7282    
+      _lEta                                              mean:  -0.0704 -->  -0.0413     rms:   1.3584 -->   1.2522    
+      _lEwkFO                                            mean:   0.2442 -->   0.1005     rms:   0.4296 -->   0.3006    
+      _lEwkLoose                                         mean:   0.4186 -->   0.1722     rms:   0.4933 -->   0.3776    
+      _lEwkTight                                         mean:   0.2209 -->   0.0909     rms:   0.4149 -->   0.2875    
+      _lFlavor                                           mean:   0.2558 -->   1.2823     rms:   0.6503 -->   0.9543    
+      _lPOGLoose                                         mean:   0.3256 -->   0.2297     rms:   0.4686 -->   0.4206    
+      _lPOGMedium                                        mean:   0.2558 -->   0.1866     rms:   0.4363 -->   0.3896    
+      _lPOGTight                                         mean:   0.2442 -->   0.1627     rms:   0.4296 -->   0.3691    
+      _lPOGVeto                                          mean:   0.3953 -->   0.2679     rms:   0.4889 -->   0.4429    
+      _lPhi                                              mean:   0.0313 -->  -0.0777     rms:   1.8544 -->   1.8615    
+      _lPt                                               mean:  35.8639 -->  41.2241     rms:  23.2412 -->  28.5580    
+      _nL                                                mean:   0.8600 -->   2.0900     rms:   0.9167 -->   1.6976    
+      _nTau                                              mean:   0.1000 -->   1.3300     rms:   0.3317 -->   1.1494    
+      _tauAgainstElectronMVA6Raw                         mean:  -3.4383 --> -11.6666     rms:  18.1691 -->  32.1957    
+      _tauCombinedIsoDBRaw3Hits                          mean:   0.2499 -->  19.1470     rms:   1.0234 -->  68.1704    
+      _tauEleVeto                                        mean:   0.0465 -->   0.3876     rms:   0.2106 -->   0.4872    
+      _tauIsoMVADBdR03newDMwLT                           mean:   0.0710 -->  -0.0840     rms:   0.2547 -->   0.5811    
+      _tauIsoMVADBdR03oldDMwLT                           mean:   0.0063 -->  -0.3456     rms:   0.2199 -->   0.6151    
+      _tauIsoMVAPWdR03oldDMwLT                           mean:   0.0574 -->  -0.1876     rms:   0.2595 -->   0.6347    
+      _tauIsoMVAPWnewDMwLT                               mean:   0.0545 -->  -0.1339     rms:   0.2405 -->   0.5761    
+      _tauIsoMVAPWoldDMwLT                               mean:   0.0304 -->  -0.2936     rms:   0.2237 -->   0.6060    
+      _tauLooseMvaNew                                    mean:   0.0814 -->   0.1770     rms:   0.2734 -->   0.3817    
+      _tauMediumMvaNew                                   mean:   0.0698 -->   0.1388     rms:   0.2548 -->   0.3457    
+      _tauMuonVeto                                       mean:   0.1163 -->   0.6220     rms:   0.3206 -->   0.4849    
+      _tauTightMvaNew                                    mean:   0.0698 -->   0.1196     rms:   0.2548 -->   0.3245    
+      _tauVLooseMvaNew                                   mean:   0.1047 -->   0.2584     rms:   0.3061 -->   0.4377    
+      _tauVTightMvaNew                                   mean:   0.0581 -->   0.1053     rms:   0.2340 -->   0.3069    
+      _tauVTightMvaOld                                   mean:   0.0116 -->   0.0431     rms:   0.1072 -->   0.2030    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   Changed:
+      _3dIP                                              mean: -20.8186 --> -26.0613     rms: 142.6833 --> 159.2348    
+      _3dIPSig                                           mean:   2.9600 -->   1.5920     rms:   8.8404 -->   6.7466    
+      _decayModeFindingNew                               mean:   0.1042 -->   0.6261     rms:   0.3055 -->   0.4838    
+      _dxy                                               mean: -20.8137 --> -26.0601     rms: 142.6831 --> 159.2347    
+      _dz                                                mean:   0.6143 -->   0.0992     rms:   2.2850 -->   1.7630    
+      _lCharge                                           mean:   0.0833 -->   0.0609     rms:   0.9965 -->   0.9981    
+      _lE                                                mean:  94.9865 -->  95.2437     rms:  97.9666 -->  90.3685    
+      _lEta                                              mean:   0.0758 -->  -0.0196     rms:   1.2720 -->   1.2839    
+      _lEwkFO                                            mean:   0.1458 -->   0.0652     rms:   0.3529 -->   0.2469    
+      _lEwkLoose                                         mean:   0.2812 -->   0.1217     rms:   0.4496 -->   0.3270    
+      _lEwkTight                                         mean:   0.1354 -->   0.0609     rms:   0.3422 -->   0.2391    
+      _lFlavor                                           mean:   0.2500 -->   1.2696     rms:   0.6292 -->   0.9539    
+      _lPOGLoose                                         mean:   0.2500 -->   0.1783     rms:   0.4330 -->   0.3827    
+      _lPOGMedium                                        mean:   0.2083 -->   0.1391     rms:   0.4061 -->   0.3461    
+      _lPOGTight                                         mean:   0.1771 -->   0.1087     rms:   0.3817 -->   0.3113    
+      _lPOGVeto                                          mean:   0.2917 -->   0.2391     rms:   0.4545 -->   0.4266    
+      _lPhi                                              mean:  -0.3545 -->  -0.2087     rms:   1.7501 -->   1.7856    
+      _lPt                                               mean:  45.9864 -->  45.5601     rms:  36.9155 -->  32.7552    
+      _nL                                                mean:   0.9600 -->   2.3000     rms:   0.9047 -->   1.5524    
+      _nTau                                              mean:   0.1000 -->   1.4400     rms:   0.3000 -->   0.9415    
+      _tauAgainstElectronMVA6Raw                         mean:  -2.0263 --> -21.7985     rms:  14.1463 -->  41.2107    
+      _tauCombinedIsoDBRaw3Hits                          mean:   0.2029 -->  16.4004     rms:   0.9408 -->  33.9619    
+      _tauEleVeto                                        mean:   0.0625 -->   0.2957     rms:   0.2421 -->   0.4563    
+      _tauIsoMVADBdR03newDMwLT                           mean:   0.0652 -->  -0.0898     rms:   0.2430 -->   0.5909    
+      _tauIsoMVADBdR03oldDMwLT                           mean:   0.0168 -->  -0.3494     rms:   0.2016 -->   0.5921    
+      _tauIsoMVAPWdR03oldDMwLT                           mean:   0.0512 -->  -0.2107     rms:   0.2045 -->   0.6264    
+      _tauIsoMVAPWnewDMwLT                               mean:   0.0510 -->  -0.1249     rms:   0.2404 -->   0.5834    
+      _tauIsoMVAPWoldDMwLT                               mean:   0.0299 -->  -0.3009     rms:   0.2268 -->   0.5979    
+      _tauLooseMvaNew                                    mean:   0.0833 -->   0.1957     rms:   0.2764 -->   0.3967    
+      _tauMediumMvaNew                                   mean:   0.0625 -->   0.1348     rms:   0.2421 -->   0.3415    
+      _tauMuonVeto                                       mean:   0.1042 -->   0.6130     rms:   0.3055 -->   0.4871    
+      _tauTightMvaNew                                    mean:   0.0625 -->   0.1043     rms:   0.2421 -->   0.3057    
+      _tauVLooseMvaNew                                   mean:   0.0833 -->   0.2348     rms:   0.2764 -->   0.4239    
+      _tauVTightMvaNew                                   mean:   0.0312 -->   0.0826     rms:   0.1740 -->   0.2753    
+      _tauVTightMvaOld                                   mean:   0.0000 -->   0.0174     rms:   0.0000 -->   0.1307    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _3dIP                                              mean:   0.0005 -->   0.0010     rms:   0.0058 -->   0.0074    
+      _3dIPSig                                           mean:   1.2348 -->   1.0122     rms:   1.1701 -->   2.5843    
+      _decayModeFindingNew                               mean:   0.0426 -->   0.5263     rms:   0.2018 -->   0.4993    
+      _dxy                                               mean:   0.0005 -->   0.0009     rms:   0.0042 -->   0.0058    
+      _dz                                                mean:   0.1836 -->   0.0735     rms:   0.9394 -->   0.6933    
+      _gen_lCharge                                       mean:   0.0000 -->  -0.0059     rms:   0.0000 -->   1.0000    
+      _gen_lE                                            mean:   0.0000 -->  54.8966     rms:   0.0000 --> 123.3528    
+      _gen_lEta                                          mean:   0.0000 -->  -0.1022     rms:   0.0000 -->   2.9701    
+      _gen_lFlavor                                       mean:   0.0000 -->   0.4283     rms:   0.0000 -->   0.7183    
+      _gen_lIsPrompt                                     mean:   0.0000 -->   0.4381     rms:   0.0000 -->   0.4962    
+      _gen_lMinDeltaR                                    mean:   0.0000 -->   2.3641     rms:   0.0000 -->   2.0194    
+      _gen_lMomPdg                                       mean:   0.0000 --> 765.5344     rms:   0.0000 --> 1047.6920   
+      _gen_lPassParentage                                mean:   0.0000 -->   0.9214     rms:   0.0000 -->   0.2691    
+      _gen_lPhi                                          mean:   0.0000 -->  -0.0905     rms:   0.0000 -->   1.7907    
+      _gen_lPt                                           mean:   0.0000 -->  16.0972     rms:   0.0000 -->  27.4531    
+      _gen_nL                                            mean:   0.0000 -->   5.0900     rms:   0.0000 -->   2.7499    
+      _lCharge                                           mean:  -0.0780 -->  -0.0246     rms:   0.9970 -->   0.9997    
+      _lE                                                mean:  81.8827 -->  83.1685     rms:  93.8364 -->  89.7991    
+      _lEta                                              mean:   0.1933 -->   0.0989     rms:   1.2807 -->   1.2370    
+      _lEwkFO                                            mean:   0.7021 -->   0.4316     rms:   0.4573 -->   0.4953    
+      _lEwkLoose                                         mean:   0.7943 -->   0.4772     rms:   0.4042 -->   0.4995    
+      _lEwkTight                                         mean:   0.6099 -->   0.3614     rms:   0.4878 -->   0.4804    
+      _lFlavor                                           mean:   0.4752 -->   1.2456     rms:   0.5784 -->   0.8641    
+      _lIsPrompt                                         mean:   0.9220 -->   0.7158     rms:   0.2682 -->   0.4510    
+      _lMatchPdgId                                       mean:   2.7021 -->   5.2772     rms:  12.7027 -->  12.7781    
+      _lMomPdgId                                         mean:  22.4043 -->  15.2386     rms:  47.2730 -->  48.2537    
+      _lPOGLoose                                         mean:   0.7660 -->   0.6912     rms:   0.4234 -->   0.4620    
+      _lPOGMedium                                        mean:   0.7021 -->   0.6281     rms:   0.4573 -->   0.4833    
+      _lPOGTight                                         mean:   0.6525 -->   0.5439     rms:   0.4762 -->   0.4981    
+      _lPOGVeto                                          mean:   0.7943 -->   0.7614     rms:   0.4042 -->   0.4262    
+      _lPhi                                              mean:  -0.0099 -->   0.0138     rms:   1.8470 -->   1.8479    
+      _lProvenance                                       mean:   8.2979 -->  10.6281     rms:   8.0888 -->   8.0969    
+      _lProvenanceCompressed                             mean:   0.2553 -->   1.0842     rms:   0.8945 -->   1.7371    
+      _lProvenanceConversion                             mean:  90.6667 -->  77.9965     rms:  27.3241 -->  40.2499    
+      _lPt                                               mean:  38.3270 -->  41.3869     rms:  35.6842 -->  35.6597    
+      _nL                                                mean:   1.4100 -->   2.8500     rms:   0.8843 -->   1.6086    
+      _nTau                                              mean:   0.0600 -->   1.5000     rms:   0.2375 -->   0.9539    
+      _tauAgainstElectronMVA6Raw                         mean:  -0.6954 -->  -4.9729     rms:   8.3092 -->  21.3778    
+      _tauCombinedIsoDBRaw3Hits                          mean:   0.1164 -->   3.3719     rms:   0.8077 -->  10.8088    
+      _tauEleVeto                                        mean:   0.0284 -->   0.2421     rms:   0.1660 -->   0.4284    
+      _tauIsoMVADBdR03newDMwLT                           mean:   0.0234 -->   0.3138     rms:   0.1612 -->   0.5245    
+      _tauIsoMVADBdR03oldDMwLT                           mean:   0.0069 -->   0.1819     rms:   0.1530 -->   0.5546    
+      _tauIsoMVAPWdR03oldDMwLT                           mean:   0.0206 -->   0.2905     rms:   0.1519 -->   0.5585    
+      _tauIsoMVAPWnewDMwLT                               mean:   0.0230 -->   0.3103     rms:   0.1639 -->   0.5252    
+      _tauIsoMVAPWoldDMwLT                               mean:   0.0159 -->   0.2030     rms:   0.1594 -->   0.5470    
+      _tauLooseMvaNew                                    mean:   0.0284 -->   0.3860     rms:   0.1660 -->   0.4868    
+      _tauMediumMvaNew                                   mean:   0.0284 -->   0.3579     rms:   0.1660 -->   0.4794    
+      _tauMuonVeto                                       mean:   0.0355 -->   0.3614     rms:   0.1849 -->   0.4804    
+      _tauTightMvaNew                                    mean:   0.0213 -->   0.3018     rms:   0.1443 -->   0.4590    
+      _tauVLooseMvaNew                                   mean:   0.0355 -->   0.4456     rms:   0.1849 -->   0.4970    
+      _tauVTightMvaNew                                   mean:   0.0213 -->   0.2632     rms:   0.1443 -->   0.4403    
+      _tauVTightMvaOld                                   mean:   0.0071 -->   0.1474     rms:   0.0839 -->   0.3545    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _3dIP                                              mean:  -0.0002 --> -17.9997     rms:   0.0087 --> 132.8834    
+      _3dIPSig                                           mean:   1.6107 -->   0.9387     rms:   2.5160 -->   2.6007    
+      _decayModeFindingNew                               mean:   0.0100 -->   0.5541     rms:   0.0995 -->   0.4971    
+      _dxy                                               mean:  -0.0001 --> -17.9995     rms:   0.0068 --> 132.8835    
+      _dz                                                mean:   0.0187 -->  -0.0130     rms:   0.1883 -->   0.2720    
+      _gen_lCharge                                       mean:   0.0000 -->  -0.0021     rms:   0.0000 -->   1.0000    
+      _gen_lE                                            mean:   0.0000 --> 119.7990     rms:   0.0000 --> 288.9037    
+      _gen_lEta                                          mean:   0.0000 -->   0.4350     rms:   0.0000 -->   2.8746    
+      _gen_lFlavor                                       mean:   0.0000 -->   0.5243     rms:   0.0000 -->   0.7611    
+      _gen_lIsPrompt                                     mean:   0.0000 -->   0.4905     rms:   0.0000 -->   0.4999    
+      _gen_lMinDeltaR                                    mean:   0.0000 -->   3.2259     rms:   0.0000 -->   2.6665    
+      _gen_lMomPdg                                       mean:   0.0000 --> 705.5962     rms:   0.0000 --> 1056.5494   
+      _gen_lPassParentage                                mean:   0.0000 -->   0.8795     rms:   0.0000 -->   0.3256    
+      _gen_lPhi                                          mean:   0.0000 -->   0.0743     rms:   0.0000 -->   1.8321    
+      _gen_lPt                                           mean:   0.0000 -->  16.9477     rms:   0.0000 -->  23.3485    
+      _gen_nL                                            mean:   0.0000 -->   4.7300     rms:   0.0000 -->   2.3616    
+      _lCharge                                           mean:   0.0200 -->   0.0541     rms:   0.9998 -->   0.9985    
+      _lE                                                mean:  84.7917 -->  84.3544     rms:  75.2726 -->  70.4671    
+      _lEta                                              mean:  -0.0283 -->  -0.0264     rms:   1.3673 -->   1.3372    
+      _lEwkFO                                            mean:   0.7600 -->   0.4414     rms:   0.4271 -->   0.4966    
+      _lEwkLoose                                         mean:   0.9100 -->   0.5090     rms:   0.2862 -->   0.4999    
+      _lEwkTight                                         mean:   0.7200 -->   0.3829     rms:   0.4490 -->   0.4861    
+      _lFlavor                                           mean:   0.5700 -->   1.3559     rms:   0.5149 -->   0.7910    
+      _lIsPrompt                                         mean:   0.9500 -->   0.6441     rms:   0.2179 -->   0.4788    
+      _lMatchPdgId                                       mean:   0.1100 -->   2.9234     rms:  12.0705 -->  12.1105    
+      _lMomPdgId                                         mean:  20.5000 -->  18.2162     rms:  13.0012 -->  40.8738    
+      _lPOGLoose                                         mean:   0.8800 -->   0.6937     rms:   0.3250 -->   0.4610    
+      _lPOGMedium                                        mean:   0.8500 -->   0.6171     rms:   0.3571 -->   0.4861    
+      _lPOGTight                                         mean:   0.8100 -->   0.5586     rms:   0.3923 -->   0.4966    
+      _lPOGVeto                                          mean:   0.9200 -->   0.7658     rms:   0.2713 -->   0.4235    
+      _lPhi                                              mean:   0.1264 -->   0.0825     rms:   1.8202 -->   1.7789    
+      _lProvenance                                       mean:   7.0500 -->  10.7477     rms:   7.9491 -->   8.1384    
+      _lProvenanceCompressed                             mean:   0.1900 -->   1.3784     rms:   0.8330 -->   1.8723    
+      _lProvenanceConversion                             mean:  98.0200 -->  85.7793     rms:   9.7509 -->  33.4465    
+      _lPt                                               mean:  36.7454 -->  38.0182     rms:  19.8745 -->  19.0263    
+      _nL                                                mean:   1.0000 -->   2.2200     rms:   0.9055 -->   1.7696    
+      _nTau                                              mean:   0.0100 -->   1.2300     rms:   0.0995 -->   1.0569    
+      _tauAgainstElectronMVA6Raw                         mean:   0.0047 -->  -4.0608     rms:   0.0468 -->  19.5234    
+      _tauCombinedIsoDBRaw3Hits                          mean:   0.0071 -->   2.4467     rms:   0.0702 -->   6.5181    
+      _tauEleVeto                                        mean:   0.0100 -->   0.3198     rms:   0.0995 -->   0.4664    
+      _tauIsoMVADBdR03newDMwLT                           mean:   0.0096 -->   0.2519     rms:   0.0958 -->   0.5678    
+      _tauIsoMVADBdR03oldDMwLT                           mean:   0.0082 -->   0.1029     rms:   0.0813 -->   0.6026    
+      _tauIsoMVAPWdR03oldDMwLT                           mean:   0.0092 -->   0.1912     rms:   0.0920 -->   0.6250    
+      _tauIsoMVAPWnewDMwLT                               mean:   0.0097 -->   0.2324     rms:   0.0970 -->   0.5739    
+      _tauIsoMVAPWoldDMwLT                               mean:   0.0095 -->   0.0900     rms:   0.0946 -->   0.6066    
+      _tauLooseMvaNew                                    mean:   0.0100 -->   0.3514     rms:   0.0995 -->   0.4774    
+      _tauMediumMvaNew                                   mean:   0.0100 -->   0.3243     rms:   0.0995 -->   0.4681    
+      _tauMuonVeto                                       mean:   0.0100 -->   0.3559     rms:   0.0995 -->   0.4788    
+      _tauTightMvaNew                                    mean:   0.0100 -->   0.2973     rms:   0.0995 -->   0.4571    
+      _tauVLooseMvaNew                                   mean:   0.0100 -->   0.4189     rms:   0.0995 -->   0.4934    
+      _tauVTightMvaNew                                   mean:   0.0100 -->   0.2613     rms:   0.0995 -->   0.4393    
+      _tauVTightMvaOld                                   mean:   0.0000 -->   0.1486     rms:   0.0000 -->   0.3557    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _3dIP                                              mean:  -0.0000 -->  -3.7554     rms:   0.0047 -->  61.1374    
+      _3dIPSig                                           mean:   0.9104 -->   0.5038     rms:   1.2442 -->   2.1144    
+      _decayModeFindingNew                               mean:   0.0076 -->   0.5075     rms:   0.0867 -->   0.4999    
+      _dxy                                               mean:   0.0001 -->  -3.7553     rms:   0.0018 -->  61.1374    
+      _dz                                                mean:   0.0666 -->  -0.0041     rms:   0.7618 -->   0.7043    
+      _gen_lCharge                                       mean:   0.0000 -->   0.0024     rms:   0.0000 -->   1.0000    
+      _gen_lE                                            mean:   0.0000 --> 161.9292     rms:   0.0000 --> 330.0607    
+      _gen_lEta                                          mean:   0.0000 -->   0.3142     rms:   0.0000 -->   3.1145    
+      _gen_lFlavor                                       mean:   0.0000 -->   0.5082     rms:   0.0000 -->   0.5093    
+      _gen_lIsPrompt                                     mean:   0.0000 -->   0.4706     rms:   0.0000 -->   0.4991    
+      _gen_lMinDeltaR                                    mean:   0.0000 -->   2.8255     rms:   0.0000 -->   1.4667    
+      _gen_lMomPdg                                       mean:   0.0000 --> 822.4071     rms:   0.0000 --> 1063.5092   
+      _gen_lPassParentage                                mean:   0.0000 -->   0.8894     rms:   0.0000 -->   0.3136    
+      _gen_lPhi                                          mean:   0.0000 -->  -0.1524     rms:   0.0000 -->   1.7460    
+      _gen_lPt                                           mean:   0.0000 -->  22.8508     rms:   0.0000 -->  28.7758    
+      _gen_nL                                            mean:   0.0000 -->   4.2500     rms:   0.0000 -->   2.1184    
+      _lCharge                                           mean:   0.1364 -->   0.1429     rms:   0.9907 -->   0.9897    
+      _lE                                                mean: 105.4003 --> 106.2468     rms:  75.1348 -->  75.6001    
+      _lEta                                              mean:  -0.0763 -->  -0.1089     rms:   1.3656 -->   1.3132    
+      _lEwkFO                                            mean:   0.9318 -->   0.6955     rms:   0.2521 -->   0.4602    
+      _lEwkLoose                                         mean:   0.9545 -->   0.7068     rms:   0.2083 -->   0.4552    
+      _lEwkTight                                         mean:   0.9242 -->   0.6241     rms:   0.2646 -->   0.4844    
+      _lFlavor                                           mean:   0.9697 -->   1.4887     rms:   0.2110 -->   0.5362    
+      _lIsPrompt                                         mean:   0.9545 -->   0.6090     rms:   0.2083 -->   0.4880    
+      _lMatchPdgId                                       mean:  -1.5227 -->   2.7180     rms:  12.9325 -->  12.4447    
+      _lMomPdgId                                         mean:  19.0985 -->  12.0865     rms:  38.5231 -->  52.4610    
+      _lPOGLoose                                         mean:   0.9621 -->   0.8346     rms:   0.1909 -->   0.3716    
+      _lPOGMedium                                        mean:   0.9470 -->   0.7707     rms:   0.2241 -->   0.4204    
+      _lPOGTight                                         mean:   0.9470 -->   0.7444     rms:   0.2241 -->   0.4362    
+      _lPOGVeto                                          mean:   0.9621 -->   0.8647     rms:   0.1909 -->   0.3421    
+      _lPhi                                              mean:  -0.1341 -->  -0.0979     rms:   1.8069 -->   1.8129    
+      _lProvenance                                       mean:  10.5909 -->  13.3346     rms:   8.1862 -->   7.2644    
+      _lProvenanceCompressed                             mean:   0.1515 -->   1.5075     rms:   0.7123 -->   1.9042    
+      _lProvenanceConversion                             mean:  97.5303 -->  82.8195     rms:  11.8491 -->  36.3450    
+      _lPt                                               mean:  48.1557 -->  50.2419     rms:  23.8451 -->  24.9405    
+      _nL                                                mean:   1.3200 -->   2.6600     rms:   0.7332 -->   1.5246    
+      _nTau                                              mean:   0.0100 -->   1.3500     rms:   0.0995 -->   0.8986    
+      _tauAgainstElectronMVA6Raw                         mean:  -0.9108 -->  -3.8186     rms:   0.0000 -->  18.8180    
+      _tauCombinedIsoDBRaw3Hits                          mean:   0.0000 -->   2.7930     rms:   0.0000 -->  11.8102    
+      _tauEleVeto                                        mean:   0.0000 -->   0.3195     rms:   0.0000 -->   0.4663    
+      _tauIsoMVADBdR03newDMwLT                           mean:   0.0073 -->   0.3183     rms:   0.0835 -->   0.5356    
+      _tauIsoMVADBdR03oldDMwLT                           mean:   0.0068 -->   0.2301     rms:   0.0779 -->   0.5700    
+      _tauIsoMVAPWdR03oldDMwLT                           mean:   0.0061 -->   0.2736     rms:   0.0700 -->   0.5607    
+      _tauIsoMVAPWnewDMwLT                               mean:   0.0073 -->   0.3033     rms:   0.0839 -->   0.5398    
+      _tauIsoMVAPWoldDMwLT                               mean:   0.0072 -->   0.2087     rms:   0.0819 -->   0.5636    
+      _tauLooseMvaNew                                    mean:   0.0076 -->   0.3910     rms:   0.0867 -->   0.4880    
+      _tauMediumMvaNew                                   mean:   0.0076 -->   0.3534     rms:   0.0867 -->   0.4780    
+      _tauMuonVeto                                       mean:   0.0000 -->   0.0827     rms:   0.0000 -->   0.2754    
+      _tauTightMvaNew                                    mean:   0.0076 -->   0.3308     rms:   0.0867 -->   0.4705    
+      _tauVLooseMvaNew                                   mean:   0.0076 -->   0.4173     rms:   0.0867 -->   0.4931    
+      _tauVTightMvaNew                                   mean:   0.0076 -->   0.2970     rms:   0.0867 -->   0.4569    
+      _tauVTightMvaOld                                   mean:   0.0076 -->   0.2180     rms:   0.0867 -->   0.4129    
