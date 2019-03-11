@@ -23,6 +23,9 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
     triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
     prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
+    prefireWeightToken(               consumes<double>(                           edm::InputTag("prefiringweight:nonPrefiringProb"))),
+    prefireWeightUpToken(             consumes<double>(                           edm::InputTag("prefiringweight:nonPrefiringProbUp"))),
+    prefireWeightDownToken(           consumes<double>(                           edm::InputTag("prefiringweight:nonPrefiringProbDown"))),
     skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
     isData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
@@ -62,6 +65,12 @@ void multilep::beginJob(){
     outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
+
+    if(!isData and !is2018){
+      outputTree->Branch("_prefireWeight",              &_prefireWeight,                "_prefireWeight/F");
+      outputTree->Branch("_prefireWeightUp",            &_prefireWeightUp,              "_prefireWeightUp/F");
+      outputTree->Branch("_prefireWeightDown",          &_prefireWeightDown,            "_prefireWeightDown/F");
+    }
 
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
@@ -103,7 +112,14 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(!isData) genAnalyzer->analyze(iEvent);
     triggerAnalyzer->analyze(iEvent);
 
-    _eventNb   = (unsigned long) iEvent.id().event();                  //determine event number run number and luminosity block
+    _eventNb = (unsigned long) iEvent.id().event();                    //determine event number run number and luminosity block
+
+    if(!isData and !is2018){
+      edm::Handle<double> pfw;     iEvent.getByToken(prefireWeightToken,     pfw);     _prefireWeight     = (*pfw);
+      edm::Handle<double> pfwUp;   iEvent.getByToken(prefireWeightUpToken,   pfwUp);   _prefireWeightUp   = (*pfwUp);
+      edm::Handle<double> pfwDown; iEvent.getByToken(prefireWeightDownToken, pfwDown); _prefireWeightDown = (*pfwDown);
+    }
+
     outputTree->Fill();                                                //store calculated event info in root tree
 }
 

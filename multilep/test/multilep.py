@@ -77,6 +77,21 @@ if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='20
 elif is2017: setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2017-Nov17ReReco') # Rerun scale and smearings for shiftscale bug
 else:        setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='2016-Legacy')      # Default scale and smearings are ok
 
+#
+# L1 prefiring (only needed for 2016/2017, use empty sequence for 2018)
+#
+from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
+if not is2018:
+  process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+      DataEra                      = cms.string("2017BtoF" if is2017 else "2016BToH"),
+      UseJetEMPt                   = cms.bool(False),
+      PrefiringRateSystematicUncty = cms.double(0.2),
+      SkipWarnings                 = False
+  )
+else:
+  process.prefiringweight = cms.Sequence()
+
+
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
@@ -140,4 +155,5 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.egammaPostRecoSeq *
                      process.jetSequence *
                      process.fullPatMetSequence *
+                     process.prefiringweight *
                      process.blackJackAndHookers)

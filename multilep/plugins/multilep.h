@@ -87,6 +87,9 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
         edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
         edm::EDGetTokenT<bool>                              ecalBadCalibFilterToken;
+        edm::EDGetTokenT<double>                            prefireWeightToken;
+        edm::EDGetTokenT<double>                            prefireWeightUpToken;
+        edm::EDGetTokenT<double>                            prefireWeightDownToken;
         std::string                                         skim;
         bool                                                isData;
         bool                                                is2017;
@@ -118,6 +121,10 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         unsigned long _lumiBlock;
         unsigned long _eventNb;
         unsigned      _nVertex;
+
+        float _prefireWeight;
+        float _prefireWeightUp;
+        float _prefireWeightDown;
 
         TH1D* nVertices;                                                                                 //Histogram with number of vertices
 };
