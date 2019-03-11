@@ -37,6 +37,9 @@ isSUSY = "SMS-T" in inputFile
 
 process = cms.Process("BlackJackAndHookers")
 
+# Print a warning if a different release is used as the one in the setup script (i.e. probably something will be broken)
+os.system('if [[ "$(grep RELEASE= $CMSSW_BASE/src/heavyNeutrino/setup.sh)" != *"$CMSSW_VERSION"* ]];then echo ">>> WARNING: you are using a different release as the one specified in the setup.sh script! <<< ";fi')
+
 # initialize MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
