@@ -1,8 +1,8 @@
-commit f43ff3ea9006c0d7b7856fb92a7f143a564aee3b
+commit 6d873776445404a5c6bf1cc8c67258dbc0049449
 Author: tomc <tomc@cern.ch>
-Date:   Mon Mar 11 14:44:49 2019 +0100
+Date:   Mon Mar 11 16:10:32 2019 +0100
 
-    Switching in EG energy scale corrections
+    runTests.py: only commit when no jobs fail
 
 --------------------------------------------------------------------------------------------------
 
@@ -27,7 +27,9 @@ Running test: Autumn18MiniAOD --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   New: _prefireWeight,_prefireWeightDown,_prefireWeightUp
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _prefireWeight,_prefireWeightDown,_prefireWeightUp
