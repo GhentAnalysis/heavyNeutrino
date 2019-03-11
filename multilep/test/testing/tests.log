@@ -1,94 +1,252 @@
-commit ef244384966c9d5cc48ab23c300b69aa0ae1b21b
+commit a76cbe349b12611e8071c8924af77dc91c2ff3fb
 Author: tomc <tomc@cern.ch>
-Date:   Mon Mar 11 13:55:58 2019 +0100
+Date:   Mon Mar 11 14:04:48 2019 +0100
 
-    Implementation of 2018 Jet ID
-
---------------------------------------------------------------------------------------------------
-
-Running test: Run2018-17Sep2018 --> FAILED
-Output:   ----- Begin Fatal Exception 11-Mar-2019 13:57:54 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.RuntimeError'>
-   edm::FileInPath unable to find file heavyNeutrino/multilep/data/JECAutumn18_V8_MC_Uncertainty_AK4PFchs.txt anywhere in the search path.
-   The search path is defined by: CMSSW_SEARCH_PATH
-   ${CMSSW_SEARCH_PATH} is: /storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/src:/storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/external/slc6_amd64_gcc700/data:/cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_9/src:/cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_9/external/slc6_amd64_gcc700/data
-   Current directory is: /storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/src/heavyNeutrino/multilep/test/testing
-   
-   ----- End Fatal Exception -------------------------------------------------
+    Typos
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2018-PromptReco --> FAILED
-Output:   ----- Begin Fatal Exception 11-Mar-2019 13:58:01 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.RuntimeError'>
-   edm::FileInPath unable to find file heavyNeutrino/multilep/data/JECAutumn18_V8_MC_Uncertainty_AK4PFchs.txt anywhere in the search path.
-   The search path is defined by: CMSSW_SEARCH_PATH
-   ${CMSSW_SEARCH_PATH} is: /storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/src:/storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/external/slc6_amd64_gcc700/data:/cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_9/src:/cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_9/external/slc6_amd64_gcc700/data
-   Current directory is: /storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/src/heavyNeutrino/multilep/test/testing
-   
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2018-17Sep2018 --> OK
+   Removed: _jetIsLoose
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0035 -->   0.0035     rms:   0.0204 -->   0.0206    
+      _jetChargedHadronFraction                          mean:   0.3072 -->   0.3137     rms:   0.2853 -->   0.2842    
+      _jetCsvV2                                          mean:  -1.2133 -->  -0.9861     rms:   3.7142 -->   3.4821    
+      _jetDeepCsv_b                                      mean:  -0.0956 -->  -0.0827     rms:   0.5369 -->   0.5296    
+      _jetDeepCsv_bb                                     mean:  -0.2175 -->  -0.2063     rms:   0.4181 -->   0.4104    
+      _jetDeepCsv_c                                      mean:  -0.1185 -->  -0.1058     rms:   0.4793 -->   0.4709    
+      _jetDeepCsv_udsg                                   mean:   0.3232 -->   0.3422     rms:   0.7536 -->   0.7420    
+      _jetE                                              mean: 206.3478 --> 194.0137     rms: 279.8832 --> 265.8211    
+      _jetEta                                            mean:   0.1425 -->   0.1745     rms:   1.8119 -->   1.7194    
+      _jetHFEmFraction                                   mean:   0.0062 -->   0.0055     rms:   0.0241 -->   0.0235    
+      _jetHFHadronFraction                               mean:   0.1154 -->   0.0938     rms:   0.3063 -->   0.2781    
+      _jetIsTight                                        mean:   1.0000 -->   0.1148     rms:   0.0000 -->   0.3188    
+      _jetIsTightLepVeto                                 mean:   0.7547 -->   0.1148     rms:   0.4303 -->   0.3188    
+      _jetNeutralEmFraction                              mean:   0.1685 -->   0.1710     rms:   0.1824 -->   0.1827    
+      _jetNeutralHadronFraction                          mean:   0.1858 -->   0.1669     rms:   0.3027 -->   0.2796    
+      _jetPhi                                            mean:  -0.0755 -->  -0.0644     rms:   1.7924 -->   1.7881    
+      _jetPt                                             mean:  61.1867 -->  61.9212     rms:  52.2787 -->  52.3578    
+      _jetPt_JECDown                                     mean:  59.4215 -->  60.1655     rms:  52.0221 -->  51.3459    
+      _jetPt_JECUp                                       mean:  62.9520 -->  63.6768     rms:  52.6352 -->  53.5620    
+      _jetPt_L1                                          mean:  50.8955 -->  51.5627     rms:  47.0373 -->  47.0994    
+      _jetPt_L2                                          mean:  58.4686 -->  59.2006     rms:  51.0309 -->  51.0943    
+      _jetPt_L3                                          mean:  58.4686 -->  59.2006     rms:  51.0309 -->  51.0943    
+      _jetPt_Uncorrected                                 mean:  57.5231 -->  58.0560     rms:  46.5461 -->  46.6856    
+      _jetSmearedPt                                      mean:  61.1867 -->  61.9212     rms:  52.2787 -->  52.3578    
+      _jetSmearedPt_JECDown                              mean:  59.4215 -->  60.1655     rms:  52.0221 -->  51.3459    
+      _jetSmearedPt_JECUp                                mean:  62.9520 -->  63.6768     rms:  52.6352 -->  53.5620    
+      _jetSmearedPt_JERDown                              mean:  61.1867 -->  61.9212     rms:  52.2787 -->  52.3578    
+      _jetSmearedPt_JERUp                                mean:  61.1867 -->  61.9212     rms:  52.2787 -->  52.3578    
+      _nJets                                             mean:   2.1200 -->   2.0900     rms:   1.5381 -->   1.5303    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2017-31March2017 --> FAILED
-Output:   ----- Begin Fatal Exception 11-Mar-2019 13:58:08 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.NameError'>
-   name 'is0217' is not defined
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2018-PromptReco --> OK
+   Removed: _jetIsLoose
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0055 -->   0.0058     rms:   0.0325 -->   0.0332    
+      _jetChargedHadronFraction                          mean:   0.2624 -->   0.2730     rms:   0.2861 -->   0.2876    
+      _jetCsvV2                                          mean:  -2.1604 -->  -1.7990     rms:   4.4287 -->   4.1868    
+      _jetDeepCsv_b                                      mean:  -0.1769 -->  -0.1335     rms:   0.5309 -->   0.5083    
+      _jetDeepCsv_bb                                     mean:  -0.2681 -->  -0.2290     rms:   0.4463 -->   0.4238    
+      _jetDeepCsv_c                                      mean:  -0.1671 -->  -0.1228     rms:   0.5149 -->   0.4899    
+      _jetDeepCsv_udsg                                   mean:   0.2575 -->   0.3256     rms:   0.7947 -->   0.7595    
+      _jetE                                              mean: 258.4341 --> 239.6487     rms: 308.5146 --> 298.0011    
+      _jetEta                                            mean:  -0.2891 -->  -0.2263     rms:   2.0673 -->   1.9286    
+      _jetHFEmFraction                                   mean:   0.0112 -->   0.0096     rms:   0.0308 -->   0.0290    
+      _jetHFHadronFraction                               mean:   0.1769 -->   0.1407     rms:   0.3684 -->   0.3353    
+      _jetIsTight                                        mean:   1.0000 -->   0.1649     rms:   0.0000 -->   0.3711    
+      _jetIsTightLepVeto                                 mean:   0.6995 -->   0.1649     rms:   0.4585 -->   0.3711    
+      _jetNeutralEmFraction                              mean:   0.1259 -->   0.1264     rms:   0.1473 -->   0.1442    
+      _jetNeutralHadronFraction                          mean:   0.2292 -->   0.1953     rms:   0.3572 -->   0.3283    
+      _jetPhi                                            mean:   0.0920 -->   0.0436     rms:   1.8119 -->   1.8027    
+      _jetPt                                             mean:  57.3736 -->  59.1354     rms:  47.0854 -->  47.4565    
+      _jetPt_JECDown                                     mean:  55.3607 -->  57.3501     rms:  47.1937 -->  46.7712    
+      _jetPt_JECUp                                       mean:  59.3865 -->  60.9207     rms:  47.0724 -->  48.1858    
+      _jetPt_L1                                          mean:  51.1022 -->  52.8914     rms:  43.7207 -->  43.9388    
+      _jetPt_L2                                          mean:  56.9165 -->  58.8077     rms:  47.4277 -->  47.7087    
+      _jetPt_L3                                          mean:  56.9165 -->  58.8077     rms:  47.4277 -->  47.7087    
+      _jetPt_Uncorrected                                 mean:  56.4764 -->  57.8540     rms:  41.9205 -->  42.3675    
+      _jetSmearedPt                                      mean:  57.3736 -->  59.1354     rms:  47.0854 -->  47.4565    
+      _jetSmearedPt_JECDown                              mean:  55.3607 -->  57.3501     rms:  47.1937 -->  46.7712    
+      _jetSmearedPt_JECUp                                mean:  59.3865 -->  60.9207     rms:  47.0724 -->  48.1858    
+      _jetSmearedPt_JERDown                              mean:  57.3736 -->  59.1354     rms:  47.0854 -->  47.4565    
+      _jetSmearedPt_JERUp                                mean:  57.3736 -->  59.1354     rms:  47.0854 -->  47.4565    
+      _nJets                                             mean:   2.0300 -->   1.9400     rms:   1.2203 -->   1.1473    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2016-17Jul2018 --> FAILED
-Output:   ----- Begin Fatal Exception 11-Mar-2019 13:58:15 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.NameError'>
-   name 'is0217' is not defined
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2017-31March2017 --> OK
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0927 -->   0.1005     rms:   0.2418 -->   0.2502    
+      _jetChargedHadronFraction                          mean:   0.3680 -->   0.3758     rms:   0.2567 -->   0.2545    
+      _jetCsvV2                                          mean:  -1.1732 -->  -0.8002     rms:   3.7195 -->   3.3094    
+      _jetDeepCsv_b                                      mean:  -0.2543 -->  -0.2036     rms:   0.5312 -->   0.5110    
+      _jetDeepCsv_bb                                     mean:  -0.3240 -->  -0.2780     rms:   0.4699 -->   0.4501    
+      _jetDeepCsv_c                                      mean:  -0.2303 -->  -0.1778     rms:   0.5382 -->   0.5162    
+      _jetDeepCsv_udsg                                   mean:   0.1796 -->   0.2599     rms:   0.8330 -->   0.8002    
+      _jetE                                              mean: 210.6096 --> 206.4288     rms: 249.4190 --> 253.5792    
+      _jetEta                                            mean:   0.0468 -->   0.0555     rms:   1.9212 -->   1.7839    
+      _jetHFEmFraction                                   mean:   0.0160 -->   0.0093     rms:   0.0509 -->   0.0370    
+      _jetHFHadronFraction                               mean:   0.0629 -->   0.0431     rms:   0.2139 -->   0.1806    
+      _jetIsTight                                        mean:   0.9749 -->   0.9728     rms:   0.1563 -->   0.1626    
+      _jetIsTightLepVeto                                 mean:   0.9273 -->   0.9212     rms:   0.2596 -->   0.2694    
+      _jetNeutralEmFraction                              mean:   0.3821 -->   0.4010     rms:   0.2854 -->   0.2863    
+      _jetNeutralHadronFraction                          mean:   0.1543 -->   0.1196     rms:   0.2429 -->   0.2052    
+      _jetPhi                                            mean:  -0.0295 -->  -0.0022     rms:   1.8154 -->   1.8261    
+      _jetPt                                             mean:  62.2149 -->  65.7619     rms:  74.8936 -->  76.9379    
+      _jetPt_JECDown                                     mean:  59.4183 -->  64.2838     rms:  74.9338 -->  76.6848    
+      _jetPt_JECUp                                       mean:  65.0114 -->  67.2401     rms:  75.0158 -->  77.2149    
+      _jetPt_L1                                          mean:  53.3326 -->  56.9010     rms:  70.3488 -->  72.1208    
+      _jetPt_L2                                          mean:  59.5069 -->  63.0722     rms:  74.3979 -->  76.4038    
+      _jetPt_L3                                          mean:  59.5069 -->  63.0722     rms:  74.3979 -->  76.4038    
+      _jetPt_Uncorrected                                 mean:  56.9183 -->  60.0574     rms:  68.7417 -->  70.6663    
+      _jetSmearedPt                                      mean:  62.2149 -->  65.7619     rms:  74.8936 -->  76.9379    
+      _jetSmearedPt_JECDown                              mean:  59.4183 -->  64.2838     rms:  74.9338 -->  76.6848    
+      _jetSmearedPt_JECUp                                mean:  65.0114 -->  67.2401     rms:  75.0158 -->  77.2149    
+      _jetSmearedPt_JERDown                              mean:  62.2149 -->  65.7619     rms:  74.8936 -->  76.9379    
+      _jetSmearedPt_JERUp                                mean:  62.2149 -->  65.7619     rms:  74.8936 -->  76.9379    
+      _nJets                                             mean:   3.9900 -->   3.6800     rms:   1.6643 -->   1.5419    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Autumn18MiniAOD --> FAILED
-Output:   ----- Begin Fatal Exception 11-Mar-2019 13:58:23 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.RuntimeError'>
-   edm::FileInPath unable to find file heavyNeutrino/multilep/data/JECAutumn18_V8_MC_Uncertainty_AK4PFchs.txt anywhere in the search path.
-   The search path is defined by: CMSSW_SEARCH_PATH
-   ${CMSSW_SEARCH_PATH} is: /storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/src:/storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/external/slc6_amd64_gcc700/data:/cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_9/src:/cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_9/external/slc6_amd64_gcc700/data
-   Current directory is: /storage_mnt/storage/user/tomc/heavyNeutrino/master/CMSSW_10_2_9/src/heavyNeutrino/multilep/test/testing
-   
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Run2016-17Jul2018 --> OK
+   Changed:
+      _jetChargedEmFraction                              mean:   0.1105 -->   0.1124     rms:   0.2464 -->   0.2492    
+      _jetChargedHadronFraction                          mean:   0.3228 -->   0.3208     rms:   0.2609 -->   0.2613    
+      _jetCsvV2                                          mean:  -1.6392 -->  -1.6575     rms:   4.1153 -->   4.1300    
+      _jetDeepCsv_b                                      mean:  -0.1866 -->  -0.1914     rms:   0.5663 -->   0.5680    
+      _jetDeepCsv_bb                                     mean:  -0.3041 -->  -0.3082     rms:   0.4692 -->   0.4709    
+      _jetDeepCsv_c                                      mean:  -0.2088 -->  -0.2136     rms:   0.5340 -->   0.5359    
+      _jetDeepCsv_udsg                                   mean:   0.1426 -->   0.1358     rms:   0.7878 -->   0.7903    
+      _jetE                                              mean: 213.9774 --> 219.5561     rms: 195.3500 --> 219.5188    
+      _jetEta                                            mean:  -0.1125 -->  -0.1018     rms:   1.7414 -->   1.7604    
+      _jetHFEmFraction                                   mean:   0.0086 -->   0.0086     rms:   0.0303 -->   0.0302    
+      _jetHFHadronFraction                               mean:   0.0680 -->   0.0705     rms:   0.2185 -->   0.2237    
+      _jetIsLoose                                        mean:   1.0000 -->   0.9940     rms:   0.0000 -->   0.0769    
+      _jetIsTight                                        mean:   0.9731 -->   0.9673     rms:   0.1619 -->   0.1780    
+      _jetIsTightLepVeto                                 mean:   0.9521 -->   0.9464     rms:   0.2136 -->   0.2252    
+      _jetNeutralEmFraction                              mean:   0.4006 -->   0.3983     rms:   0.2803 -->   0.2811    
+      _jetNeutralHadronFraction                          mean:   0.1558 -->   0.1582     rms:   0.2556 -->   0.2589    
+      _jetPhi                                            mean:  -0.0695 -->  -0.0700     rms:   1.8121 -->   1.8185    
+      _jetPt                                             mean:  70.9156 -->  70.8330     rms:  49.8749 -->  49.7886    
+      _jetPt_JECDown                                     mean:  69.8053 -->  69.7214     rms:  49.6034 -->  49.5193    
+      _jetPt_JECUp                                       mean:  72.0259 -->  71.9445     rms:  50.1511 -->  50.0626    
+      _jetPt_L1                                          mean:  62.0594 -->  61.9553     rms:  45.3684 -->  45.3141    
+      _jetPt_L2                                          mean:  69.9212 -->  69.8377     rms:  49.6337 -->  49.5491    
+      _jetPt_L3                                          mean:  69.9212 -->  69.8377     rms:  49.6337 -->  49.5491    
+      _jetPt_Uncorrected                                 mean:  67.5668 -->  67.4529     rms:  44.4025 -->  44.3546    
+      _jetSmearedPt                                      mean:  70.9156 -->  70.8330     rms:  49.8749 -->  49.7886    
+      _jetSmearedPt_JECDown                              mean:  69.8053 -->  69.7214     rms:  49.6034 -->  49.5193    
+      _jetSmearedPt_JECUp                                mean:  72.0259 -->  71.9445     rms:  50.1511 -->  50.0626    
+      _jetSmearedPt_JERDown                              mean:  70.9156 -->  70.8330     rms:  49.8749 -->  49.7886    
+      _jetSmearedPt_JERUp                                mean:  70.9156 -->  70.8330     rms:  49.8749 -->  49.7886    
+      _nJets                                             mean:   3.3400 -->   3.3600     rms:   1.2508 -->   1.2532    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Fall17MiniAODv2 --> FAILED
-Output:   ----- Begin Fatal Exception 11-Mar-2019 13:58:30 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.NameError'>
-   name 'is0217' is not defined
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Autumn18MiniAOD --> OK
+   Removed: _jetIsLoose
+   Changed:
+      _jetChargedEmFraction                              mean:   0.1416 -->   0.1501     rms:   0.2952 -->   0.3029    
+      _jetChargedHadronFraction                          mean:   0.2918 -->   0.2966     rms:   0.2675 -->   0.2693    
+      _jetCsvV2                                          mean:  -2.1412 -->  -1.9461     rms:   4.4244 -->   4.2975    
+      _jetDeepCsv_b                                      mean:  -0.3523 -->  -0.3365     rms:   0.5445 -->   0.5407    
+      _jetDeepCsv_bb                                     mean:  -0.4074 -->  -0.3922     rms:   0.4928 -->   0.4897    
+      _jetDeepCsv_c                                      mean:  -0.3329 -->  -0.3159     rms:   0.5567 -->   0.5532    
+      _jetDeepCsv_udsg                                   mean:   0.0484 -->   0.0763     rms:   0.8800 -->   0.8757    
+      _jetE                                              mean: 152.8018 --> 145.1630     rms: 153.4910 --> 144.2544    
+      _jetEta                                            mean:   0.0200 -->   0.0273     rms:   1.8861 -->   1.7966    
+      _jetHFEmFraction                                   mean:   0.0099 -->   0.0078     rms:   0.0392 -->   0.0376    
+      _jetHFHadronFraction                               mean:   0.0606 -->   0.0436     rms:   0.2111 -->   0.1801    
+      _jetHadronFlavor                                   mean:   0.1436 -->   0.1264     rms:   0.7443 -->   0.6998    
+      _jetIsTight                                        mean:   0.9641 -->   0.1063     rms:   0.1861 -->   0.3082    
+      _jetIsTightLepVeto                                 mean:   0.7873 -->   0.1063     rms:   0.4092 -->   0.3082    
+      _jetNeutralEmFraction                              mean:   0.2719 -->   0.2768     rms:   0.2941 -->   0.2950    
+      _jetNeutralHadronFraction                          mean:   0.1888 -->   0.1635     rms:   0.2728 -->   0.2462    
+      _jetPhi                                            mean:  -0.0367 -->  -0.0412     rms:   1.8237 -->   1.8379    
+      _jetPt                                             mean:  45.0875 -->  46.2972     rms:  34.3435 -->  34.6623    
+      _jetPt_JECDown                                     mean:  42.8532 -->  44.5613     rms:  34.7968 -->  34.4229    
+      _jetPt_JECUp                                       mean:  47.3219 -->  48.0331     rms:  34.0838 -->  34.9909    
+      _jetPt_L1                                          mean:  39.7279 -->  40.9950     rms:  33.1576 -->  33.3993    
+      _jetPt_L2                                          mean:  45.0875 -->  46.2972     rms:  34.3435 -->  34.6623    
+      _jetPt_L3                                          mean:  45.0875 -->  46.2972     rms:  34.3435 -->  34.6623    
+      _jetPt_Uncorrected                                 mean:  42.9300 -->  43.8388     rms:  31.9427 -->  32.3554    
+      _jetSmearedPt                                      mean:  46.1101 -->  47.5901     rms:  34.5453 -->  34.6246    
+      _jetSmearedPt_JECDown                              mean:  42.8632 -->  44.5748     rms:  34.8026 -->  34.4173    
+      _jetSmearedPt_JECUp                                mean:  47.3119 -->  48.0196     rms:  34.0801 -->  34.9960    
+      _jetSmearedPt_JERDown                              mean:  45.6373 -->  47.0798     rms:  34.4498 -->  34.5635    
+      _jetSmearedPt_JERUp                                mean:  46.5171 -->  47.9515     rms:  34.7073 -->  34.8246    
+      _nJets                                             mean:   3.6200 -->   3.4800     rms:   1.6111 -->   1.5131    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Summer16MiniAODv3 --> FAILED
-Output:   ----- Begin Fatal Exception 11-Mar-2019 13:58:36 CET-----------------------
-   An exception of category 'ConfigFileReadError' occurred while
-      [0] Processing the python configuration file named ../multilep.py
-   Exception Message:
-   python encountered the error: <type 'exceptions.NameError'>
-   name 'is0217' is not defined
-   ----- End Fatal Exception -------------------------------------------------
+Running test: Fall17MiniAODv2 --> OK
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0959 -->   0.0965     rms:   0.2615 -->   0.2622    
+      _jetChargedHadronFraction                          mean:   0.3419 -->   0.3444     rms:   0.3108 -->   0.3110    
+      _jetCsvV2                                          mean:  -2.6463 -->  -2.6003     rms:   4.7016 -->   4.6788    
+      _jetDeepCsv_b                                      mean:  -0.4167 -->  -0.4133     rms:   0.5489 -->   0.5483    
+      _jetDeepCsv_bb                                     mean:  -0.4638 -->  -0.4603     rms:   0.4999 -->   0.4996    
+      _jetDeepCsv_c                                      mean:  -0.3913 -->  -0.3876     rms:   0.5712 -->   0.5708    
+      _jetDeepCsv_udsg                                   mean:  -0.0531 -->  -0.0464     rms:   0.8909 -->   0.8911    
+      _jetE                                              mean: 205.5193 --> 211.5843     rms: 250.4918 --> 316.6935    
+      _jetEta                                            mean:  -0.1512 -->  -0.1006     rms:   2.2129 -->   2.1934    
+      _jetHFEmFraction                                   mean:   0.0208 -->   0.0178     rms:   0.0524 -->   0.0458    
+      _jetHFHadronFraction                               mean:   0.1529 -->   0.1413     rms:   0.3261 -->   0.3167    
+      _jetHadronFlavor                                   mean:   0.0892 -->   0.0769     rms:   0.5905 -->   0.5493    
+      _jetIsLoose                                        mean:   1.0000 -->   0.9744     rms:   0.0000 -->   0.1581    
+      _jetIsTight                                        mean:   0.9936 -->   0.9679     rms:   0.0796 -->   0.1761    
+      _jetIsTightLepVeto                                 mean:   0.8089 -->   0.7821     rms:   0.3932 -->   0.4129    
+      _jetNeutralEmFraction                              mean:   0.1635 -->   0.1638     rms:   0.1885 -->   0.1922    
+      _jetNeutralHadronFraction                          mean:   0.2682 -->   0.2617     rms:   0.3328 -->   0.3297    
+      _jetPhi                                            mean:   0.0870 -->   0.0657     rms:   1.8333 -->   1.8299    
+      _jetPt                                             mean:  40.1152 -->  40.5798     rms:  24.0268 -->  23.9521    
+      _jetPt_JECDown                                     mean:  37.5703 -->  39.0812     rms:  24.6411 -->  24.0851    
+      _jetPt_JECUp                                       mean:  42.6602 -->  42.0783     rms:  23.7557 -->  23.8739    
+      _jetPt_L1                                          mean:  34.4907 -->  34.8985     rms:  23.7211 -->  23.6201    
+      _jetPt_L2                                          mean:  40.1152 -->  40.5798     rms:  24.0268 -->  23.9521    
+      _jetPt_L3                                          mean:  40.1152 -->  40.5798     rms:  24.0268 -->  23.9521    
+      _jetPt_Uncorrected                                 mean:  39.4844 -->  39.7600     rms:  22.1331 -->  22.1065    
+      _jetSmearedPt                                      mean:  42.9846 -->  43.8576     rms:  23.8817 -->  23.3833    
+      _jetSmearedPt_JECDown                              mean:  37.6215 -->  39.1238     rms:  24.5909 -->  24.0447    
+      _jetSmearedPt_JECUp                                mean:  42.6090 -->  42.0357     rms:  23.8015 -->  23.9172    
+      _jetSmearedPt_JERDown                              mean:  41.2449 -->  41.9419     rms:  24.0688 -->  23.7585    
+      _jetSmearedPt_JERUp                                mean:  44.2742 -->  45.2852     rms:  24.5041 -->  23.9070    
+      _nJets                                             mean:   3.1400 -->   3.1200     rms:   2.3665 -->   2.3464    
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0121 -->   0.0114     rms:   0.0736 -->   0.0713    
+      _jetChargedHadronFraction                          mean:   0.2022 -->   0.1897     rms:   0.2730 -->   0.2689    
+      _jetCsvV2                                          mean:  -3.5264 -->  -3.7176     rms:   4.9298 -->   4.9758    
+      _jetDeepCsv_b                                      mean:  -0.3017 -->  -0.3227     rms:   0.5663 -->   0.5686    
+      _jetDeepCsv_bb                                     mean:  -0.3821 -->  -0.3996     rms:   0.4883 -->   0.4920    
+      _jetDeepCsv_c                                      mean:  -0.3085 -->  -0.3282     rms:   0.5477 -->   0.5517    
+      _jetDeepCsv_udsg                                   mean:   0.0709 -->   0.0424     rms:   0.8582 -->   0.8654    
+      _jetE                                              mean: 205.5556 --> 212.7941     rms: 254.4344 --> 262.9648    
+      _jetEta                                            mean:  -0.0448 -->  -0.0602     rms:   1.9488 -->   2.0046    
+      _jetHFEmFraction                                   mean:   0.0129 -->   0.0130     rms:   0.0496 -->   0.0497    
+      _jetHFHadronFraction                               mean:   0.1066 -->   0.1115     rms:   0.2828 -->   0.2899    
+      _jetHadronFlavor                                   mean:   0.2707 -->   0.2541     rms:   1.0680 -->   1.0367    
+      _jetIsLoose                                        mean:   1.0000 -->   0.9385     rms:   0.0000 -->   0.2402    
+      _jetIsTight                                        mean:   0.9956 -->   0.9344     rms:   0.0659 -->   0.2475    
+      _jetIsTightLepVeto                                 mean:   0.5764 -->   0.5410     rms:   0.4941 -->   0.4983    
+      _jetNeutralEmFraction                              mean:   0.1703 -->   0.1615     rms:   0.2100 -->   0.2068    
+      _jetNeutralHadronFraction                          mean:   0.1878 -->   0.1884     rms:   0.3079 -->   0.3121    
+      _jetPhi                                            mean:  -0.0030 -->  -0.0538     rms:   1.9055 -->   1.8876    
+      _jetPt                                             mean:  52.6197 -->  51.9647     rms:  34.0057 -->  33.2839    
+      _jetPt_JECDown                                     mean:  51.6334 -->  50.9824     rms:  33.8390 -->  33.1255    
+      _jetPt_JECUp                                       mean:  53.6060 -->  52.9470     rms:  34.1761 -->  33.4460    
+      _jetPt_L1                                          mean:  46.2129 -->  45.5483     rms:  31.5071 -->  30.8965    
+      _jetPt_L2                                          mean:  52.6197 -->  51.9647     rms:  34.0057 -->  33.2839    
+      _jetPt_L3                                          mean:  52.6197 -->  51.9647     rms:  34.0057 -->  33.2839    
+      _jetPt_Uncorrected                                 mean:  49.8983 -->  49.1315     rms:  30.9134 -->  30.3469    
+      _jetSmearedPt                                      mean:  54.0932 -->  53.5221     rms:  33.6659 -->  32.8471    
+      _jetSmearedPt_JECDown                              mean:  51.6618 -->  51.0138     rms:  33.8143 -->  33.0971    
+      _jetSmearedPt_JECUp                                mean:  53.5776 -->  52.9155     rms:  34.2005 -->  33.4739    
+      _jetSmearedPt_JERDown                              mean:  53.3822 -->  52.7536     rms:  33.6811 -->  32.9189    
+      _jetSmearedPt_JERUp                                mean:  54.7369 -->  54.2055     rms:  33.7486 -->  32.8950    
+      _nJets                                             mean:   2.2900 -->   2.4400     rms:   1.4512 -->   1.4375    
