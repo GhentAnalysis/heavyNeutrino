@@ -37,6 +37,9 @@ isSUSY = "SMS-T" in inputFile
 
 process = cms.Process("BlackJackAndHookers")
 
+# Print a warning if a different release is used as the one in the setup script (i.e. probably something will be broken)
+os.system('if [[ "$(grep RELEASE= $CMSSW_BASE/src/heavyNeutrino/setup.sh)" != *"$CMSSW_VERSION"* ]];then echo ">>> WARNING: you are using a different release as the one specified in the setup.sh script! <<< ";fi')
+
 # initialize MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
@@ -47,8 +50,8 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v11'
-elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018Rereco_v1' if isData else '102X_upgrade2018_realistic_v12'
+if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v11' # TO BE UPDATED REALLY SOON (NEW JEC)
+elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018Rereco_v1' if isData else '102X_upgrade2018_realistic_v12' # TO BE UPDATED REALLY SOON (NEW JEC)
 elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'               if isData else '94X_mc2017_realistic_v17'
 else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'               if isData else '94X_mcRun2_asymptotic_v3'
 
@@ -70,9 +73,24 @@ elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.
 else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
 
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
-if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='2018-Prompt')      # No scale and smearings available yet
+if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # No scale and smearings available yet
 elif is2017: setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2017-Nov17ReReco') # Rerun scale and smearings for shiftscale bug
 else:        setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='2016-Legacy')      # Default scale and smearings are ok
+
+#
+# L1 prefiring (only needed for 2016/2017, use empty sequence for 2018)
+#
+from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
+if not is2018:
+  process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+      DataEra                      = cms.string("2017BtoF" if is2017 else "2016BToH"),
+      UseJetEMPt                   = cms.bool(False),
+      PrefiringRateSystematicUncty = cms.double(0.2),
+      SkipWarnings                 = False
+  )
+else:
+  process.prefiringweight = cms.Sequence()
+
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -137,4 +155,5 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.egammaPostRecoSeq *
                      process.jetSequence *
                      process.fullPatMetSequence *
+                     process.prefiringweight *
                      process.blackJackAndHookers)

@@ -48,6 +48,7 @@ def compare(logger, name):
 print system('eval `scram runtime -sh`;cd $CMSSW_BASE/src;scram b -j 10')
 
 # Starting the test
+doCommit = True
 with open('tests.log', 'w') as logFile:
   logFile.write(system("eval `scram runtime -sh`;git log -n 1;git diff -- . ':(exclude)*.log'"))
 
@@ -55,13 +56,14 @@ with open('tests.log', 'w') as logFile:
     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
     command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles'
     logFile.write('Running test: ' + name)
-    try:    
+    try:
       system(command)
       system('mv noskim.root ' + name + '.root')
       logFile.write( ' --> OK\n')
       compare(logFile, name)
       system('mv ' + name + '.root ' + name + '-ref.root')
     except subprocess.CalledProcessError, e:
+      doCommit = False
       logFile.write( ' --> FAILED\nOutput:')
       for line in e.output.splitlines():
         if '[arg' in line: continue
@@ -76,7 +78,8 @@ with open('tests.log', 'w') as logFile:
   runTest('Fall17MiniAODv2',      'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root')
   runTest('Summer16MiniAODv3',    'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root')
 
-system('git add *ref.root')
-system('git add runTests.py')
-system('git add tests.log')
-system('git commit -m"New test run: see tests.log"')
+if doCommit:
+  system('git add *ref.root')
+  system('git add runTests.py')
+  system('git add tests.log')
+  system('git commit -m"New test run: see tests.log"')

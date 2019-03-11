@@ -15,6 +15,7 @@ JetAnalyzer::~JetAnalyzer(){
     delete jecUnc;
 }
 
+// Note: the JEC are already applied through the GT, if you need back the old way (JEC.cc) check the code before c3564f71a2e7dca3cb963ef69481894cb04bbf53
 // WARNING: the _nJets is number of stored jets (i.e. including those where JECUp/JERUp passes the cut), do not use as selection
 void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/i");
@@ -73,10 +74,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
-    edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken, mets);
-
-    //to apply JEC from txt files
-    edm::Handle<double> rho;                            iEvent.getByToken(multilepAnalyzer->rhoToken,            rho);
+    edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken,            mets);
 
     _nJets = 0;
 
@@ -84,7 +82,6 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     for(const auto& jet : *jets){
         if(_nJets == nJets_max) break;
 
-        //only store loose jets
         _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
         _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
