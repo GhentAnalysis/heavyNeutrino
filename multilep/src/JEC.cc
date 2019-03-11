@@ -1,12 +1,13 @@
 /*
  * implementation of JEC class
- * TODO: keep an eye on https://twiki.cern.ch/twiki/bin/view/CMS/JECDataMC#Recommended_for_Data to see when 2018 JEC become available
+ * WARNING: it seems this code is not used
+ * TODO: keep an eye on https://twiki.cern.ch/twiki/bin/view/CMS/JECDataMC#Recommended_for_Data for updates
  */
 
 #include "heavyNeutrino/multilep/interface/JEC.h"
 
-JEC::JEC(const std::string& JECPath, bool dataSample, bool fall17Sample): // need fall2018Sample ?
-    path(JECPath), isData(dataSample), is2017(fall17Sample), is2018(fall17Sample), currentJEC("none") {}
+JEC::JEC(const std::string& JECPath, bool dataSample, bool is2017sample, bool is2018sample):
+    path(JECPath), isData(dataSample), is2017(is2017sample), is2018(is2018sample), currentJEC("none") {}
 
 JEC::~JEC(){}
 
@@ -29,36 +30,29 @@ void JEC::setJEC(const std::string& JECName){
    
 std::string JEC::getJECRunName(const unsigned long runNumber){
     ///////////////////////////
-    static const std::string version2016 = "_V9";
-    static const std::string version2017 = "_V6";
-    static const std::string version2018 = "_V6"; // TODO
+    static const std::string version2016 = "_V11";
+    static const std::string version2017 = "_V32";
+    static const std::string version2018 = "_V8";
     //////////////////////////
     std::string jecName;
     if(isData){
         if(is2018){
-            std::cout << "no JEC available/inmplemented for 2018! Check multilep/src/JEC.cc, currently as a test taking 2017GH" << std::endl;
-            jecName = "_GH"; //TODO
+            if(runNumber < 316998)      jecName = "A";
+            else if(runNumber < 319313) jecName = "B";
+            else if(runNumber < 320394) jecName = "C";
+            else                        std::cerr << "no JEC available for 2018 run E, they are not 13 TeV data! Seems like JSON file is not applied" << std::endl;
             jecName += version2018;
         } else if(is2017){
-            if(runNumber < 297020){
-                jecName = "A";
-                std::cerr << "no JEC available for 2017 run A, seems like JSON file is not applied!" << std::endl;
-            } 
+            if(runNumber < 297020)      std::cerr << "no JEC available for 2017 run A, seems like JSON file is not applied!" << std::endl;
             else if(runNumber < 299337) jecName = "B";
             else if(runNumber < 302030) jecName = "C";
             else if(runNumber < 303435) jecName = "D";
             else if(runNumber < 304911) jecName = "E";
             else if(runNumber < 306464) jecName = "F";
-            else{
-                jecName = "GH";
-                std::cerr << "no JEC available for 2017 runs G-H, they are not 13 TeV data! Seems like JSON file is not applied" << std::endl;
-            }
+            else                        std::cerr << "no JEC available for 2017 runs G-H, they are not 13 TeV data! Seems like JSON file is not applied" << std::endl;
             jecName += version2017;
         } else {
-            if (runNumber < 271658){
-                jecName = "A";
-                std::cerr << "no JEC available for 2016 run A, seems like JSON file is not applied!" << std::endl;
-            }
+            if (runNumber < 271658)     std::cerr << "no JEC available for 2016 run A, seems like JSON file is not applied!" << std::endl;
             else if(runNumber < 276812) jecName = "BCD";
             else if(runNumber < 278809) jecName = "EF";
             else if(runNumber < 294645) jecName = "GH";
@@ -74,7 +68,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
 }
 
 std::string JEC::getJECName(const unsigned long runNumber){
-    if(is2018)      return "Fall17_17Nov2017" + getJECRunName(runNumber); //TODO
+    if(is2018)      return "Autumn18" + getJECRunName(runNumber);
     else if(is2017) return "Fall17_17Nov2017" + getJECRunName(runNumber);
     else            return "Summer16_07Aug2017" + getJECRunName(runNumber);
 }

@@ -6,7 +6,6 @@ class to apply JEC from txt files
 #define JEC_H
 
 //include c++ library classes
-#include <map>
 #include <string>
 #include <vector>
 #include <memory>
@@ -20,7 +19,7 @@ class to apply JEC from txt files
 
 class JEC {
     public:
-        JEC(const std::string& JECpath, const bool dataSample, const bool fall17Sample);
+        JEC(const std::string& JECpath, const bool dataSample, const bool is2017sample, const bool is2018sample);
         ~JEC();
 
         void updateJEC(const unsigned long);

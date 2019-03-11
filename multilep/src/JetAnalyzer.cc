@@ -8,21 +8,13 @@
 JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer)
 {
-    std::string jecFile;
-    if(multilepAnalyzer->is2018)      jecFile = "jecUncertaintyFile17"; // TODO: update when 2018 JEC become available
-    else if(multilepAnalyzer->is2017) jecFile = "jecUncertaintyFile17";
-    else                              jecFile = "jecUncertaintyFile16";
-
-    jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>(jecFile)).fullPath());
+    jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile")).fullPath());
 };
 
 JetAnalyzer::~JetAnalyzer(){
     delete jecUnc;
 }
 
-// Note that here only the uncertainty is saved, the Up and Down variations still need to be calculated later, probably easier to do on python level
-// Also b-tagging up/down is easier on python level (see https://github.com/GhentAnalysis/StopsDilepton/blob/leptonSelectionUpdate_80X/tools/python/btagEfficiency.py)
-// Storing here jet id variables, id itself also to be implemented at python level https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016, or maybe still here as the loose wp does not change often?
 // WARNING: the _nJets is number of stored jets (i.e. including those where JECUp/JERUp passes the cut), do not use as selection
 void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/i");
