@@ -1,8 +1,8 @@
-commit 6d873776445404a5c6bf1cc8c67258dbc0049449
+commit af0cdba347887a5ac4e129a5e4d697442056887c
 Author: tomc <tomc@cern.ch>
-Date:   Mon Mar 11 16:10:32 2019 +0100
+Date:   Mon Mar 11 16:57:53 2019 +0100
 
-    runTests.py: only commit when no jobs fail
+    Clean-up of unused code
 
 --------------------------------------------------------------------------------------------------
 
@@ -27,9 +27,7 @@ Running test: Autumn18MiniAOD --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _prefireWeight,_prefireWeightDown,_prefireWeightUp
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _prefireWeight,_prefireWeightDown,_prefireWeightUp
