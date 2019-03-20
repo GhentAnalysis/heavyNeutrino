@@ -1,8 +1,25 @@
-commit af0cdba347887a5ac4e129a5e4d697442056887c
+**** Following environment variables are going to be unset.
+       DBS_CLIENT_CONFIG
+       DBSCMD_HOME
+       MAGIC
+       MALLOC_CONF
+commit 4cc847fd6b8057294be156825488480ed892abfb
 Author: tomc <tomc@cern.ch>
-Date:   Mon Mar 11 16:57:53 2019 +0100
+Date:   Wed Mar 20 13:11:34 2019 +0100
 
-    Clean-up of unused code
+    Adding ParticleLevel information
+    
+    Adding particleLevel information, which would be needed for unfolding or writing a rivet plugin
+    The particleLevel information is only calculated and stored when using the extraContent=storeParticleLevel option
+    References:
+    https://twiki.cern.ch/twiki/bin/viewauth/CMS/ParticleLevelProducer
+    https://twiki.cern.ch/twiki/bin/view/CMS/GenParticles2HepMCConverter
+diff --git a/multilep/test/testing/Run2018-17Sep2018-ref.root b/multilep/test/testing/Run2018-17Sep2018-ref.root
+index c3d54c6..52b35f8 100644
+Binary files a/multilep/test/testing/Run2018-17Sep2018-ref.root and b/multilep/test/testing/Run2018-17Sep2018-ref.root differ
+diff --git a/multilep/test/testing/Run2018-PromptReco-ref.root b/multilep/test/testing/Run2018-PromptReco-ref.root
+index 380e6fc..9d9298c 100644
+Binary files a/multilep/test/testing/Run2018-PromptReco-ref.root and b/multilep/test/testing/Run2018-PromptReco-ref.root differ
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,11 +40,18 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   New: _pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJet,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   New: _pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJet,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJet,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt
+   Changed:
+      _prefireWeight                                     mean:   1.0000 -->   0.9901     rms:   0.0000 -->   0.0315    
+      _prefireWeightDown                                 mean:   1.0000 -->   0.9927     rms:   0.0000 -->   0.0246    
+      _prefireWeightUp                                   mean:   1.0000 -->   0.9875     rms:   0.0000 -->   0.0384    
