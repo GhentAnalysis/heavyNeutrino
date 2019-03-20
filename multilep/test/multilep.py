@@ -12,7 +12,6 @@ extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
-                                # ttg       --> skim two light leptons + one photon
                                 # singlejet --> one jet
                                 # FR        --> one jet and one light lepton
 

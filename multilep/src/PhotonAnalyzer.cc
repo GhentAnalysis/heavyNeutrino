@@ -126,7 +126,6 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         ++_nPh;
     }
 
-    if(multilepAnalyzer->skim == "ttg" and _nPh < 1) return false;
     if(multilepAnalyzer->skim == "singlephoton" and _nPh < 1) return false;
     if(multilepAnalyzer->skim == "diphoton" and _nPh < 2) return false;
     return true;

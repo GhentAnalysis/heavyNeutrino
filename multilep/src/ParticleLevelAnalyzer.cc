@@ -82,7 +82,6 @@ bool ParticleLevelAnalyzer::analyze(const edm::Event& iEvent){
     if(multilepAnalyzer->skim == "trilep"       and _pl_nL < 3)                    return false;
     if(multilepAnalyzer->skim == "dilep"        and _pl_nL < 3)                    return false;
     if(multilepAnalyzer->skim == "singlelep"    and _pl_nL < 1)                    return false;
-    if(multilepAnalyzer->skim == "ttg"          and (_pl_nL < 2 or _pl_nPh < 1))   return false;
     if(multilepAnalyzer->skim == "FR"           and (_pl_nL < 1 or _pl_nJets < 1)) return false;
     if(multilepAnalyzer->skim == "singlephoton" and _pl_nPh < 1)                   return false;
     if(multilepAnalyzer->skim == "diphoton"     and _pl_nPh < 2)                   return false;
