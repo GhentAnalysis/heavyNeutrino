@@ -3,31 +3,121 @@
        DBSCMD_HOME
        MAGIC
        MALLOC_CONF
-commit 4cc847fd6b8057294be156825488480ed892abfb
+commit 23f2480f015990731f18e0fb49dea8d731752a4b
 Author: tomc <tomc@cern.ch>
-Date:   Wed Mar 20 13:11:34 2019 +0100
+Date:   Wed Mar 20 17:25:59 2019 +0100
 
-    Adding ParticleLevel information
+    Global tag updated for 2018 JEC
     
-    Adding particleLevel information, which would be needed for unfolding or writing a rivet plugin
-    The particleLevel information is only calculated and stored when using the extraContent=storeParticleLevel option
-    References:
-    https://twiki.cern.ch/twiki/bin/viewauth/CMS/ParticleLevelProducer
-    https://twiki.cern.ch/twiki/bin/view/CMS/GenParticles2HepMCConverter
-diff --git a/multilep/test/testing/Run2018-17Sep2018-ref.root b/multilep/test/testing/Run2018-17Sep2018-ref.root
-index c3d54c6..52b35f8 100644
-Binary files a/multilep/test/testing/Run2018-17Sep2018-ref.root and b/multilep/test/testing/Run2018-17Sep2018-ref.root differ
-diff --git a/multilep/test/testing/Run2018-PromptReco-ref.root b/multilep/test/testing/Run2018-PromptReco-ref.root
-index 380e6fc..9d9298c 100644
-Binary files a/multilep/test/testing/Run2018-PromptReco-ref.root and b/multilep/test/testing/Run2018-PromptReco-ref.root differ
+    Based on current information on https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0035 -->   0.0031     rms:   0.0206 -->   0.0193    
+      _jetChargedHadronFraction                          mean:   0.3137 -->   0.2924     rms:   0.2842 -->   0.2832    
+      _jetCsvV2                                          mean:  -0.9861 -->  -1.7409     rms:   3.4821 -->   4.1698    
+      _jetDeepCsv_b                                      mean:  -0.0827 -->  -0.1865     rms:   0.5296 -->   0.5767    
+      _jetDeepCsv_bb                                     mean:  -0.2063 -->  -0.2958     rms:   0.4104 -->   0.4609    
+      _jetDeepCsv_c                                      mean:  -0.1058 -->  -0.2067     rms:   0.4709 -->   0.5260    
+      _jetDeepCsv_udsg                                   mean:   0.3422 -->   0.1911     rms:   0.7420 -->   0.8178    
+      _jetE                                              mean: 194.0137 --> 212.9710     rms: 265.8211 --> 269.8032    
+      _jetEta                                            mean:   0.1745 -->   0.1042     rms:   1.7194 -->   1.9444    
+      _jetHFEmFraction                                   mean:   0.0055 -->   0.0179     rms:   0.0235 -->   0.0488    
+      _jetHFHadronFraction                               mean:   0.0938 -->   0.1586     rms:   0.2781 -->   0.3359    
+      _jetIsTight                                        mean:   0.1148 -->   0.2025     rms:   0.3188 -->   0.4019    
+      _jetIsTightLepVeto                                 mean:   0.1148 -->   0.2025     rms:   0.3188 -->   0.4019    
+      _jetNeutralEmFraction                              mean:   0.1710 -->   0.1672     rms:   0.1827 -->   0.1749    
+      _jetNeutralHadronFraction                          mean:   0.1669 -->   0.2331     rms:   0.2796 -->   0.3288    
+      _jetPhi                                            mean:  -0.0644 -->  -0.1217     rms:   1.7881 -->   1.8079    
+      _jetPt                                             mean:  61.9212 -->  57.6480     rms:  52.3578 -->  50.0596    
+      _jetPt_JECDown                                     mean:  60.1655 -->  55.6181     rms:  51.3459 -->  48.8653    
+      _jetPt_JECUp                                       mean:  63.6768 -->  59.6779     rms:  53.5620 -->  51.5642    
+      _jetPt_L1                                          mean:  51.5627 -->  49.8780     rms:  47.0994 -->  46.7158    
+      _jetPt_L2                                          mean:  59.2006 -->  55.6732     rms:  51.0943 -->  49.7077    
+      _jetPt_L3                                          mean:  59.2006 -->  55.6732     rms:  51.0943 -->  49.7077    
+      _jetPt_Uncorrected                                 mean:  58.0560 -->  54.3387     rms:  46.6856 -->  45.0546    
+      _jetSmearedPt                                      mean:  61.9212 -->  57.6480     rms:  52.3578 -->  50.0596    
+      _jetSmearedPt_JECDown                              mean:  60.1655 -->  55.6181     rms:  51.3459 -->  48.8653    
+      _jetSmearedPt_JECUp                                mean:  63.6768 -->  59.6779     rms:  53.5620 -->  51.5642    
+      _jetSmearedPt_JERDown                              mean:  61.9212 -->  57.6480     rms:  52.3578 -->  50.0596    
+      _jetSmearedPt_JERUp                                mean:  61.9212 -->  57.6480     rms:  52.3578 -->  50.0596    
+      _lEwkFO                                            mean:   0.4335 -->   0.4292     rms:   0.4956 -->   0.4950    
+      _lEwkTight                                         mean:   0.3605 -->   0.3562     rms:   0.4801 -->   0.4789    
+      _leptonMvaSUSY16                                   mean:   0.2739 -->   0.2387     rms:   0.9002 -->   0.8939    
+      _leptonMvaSUSY17                                   mean:   0.2818 -->   0.2270     rms:   0.8937 -->   0.8784    
+      _leptonMvaTTH16                                    mean:   0.2954 -->   0.2616     rms:   0.8923 -->   0.8874    
+      _leptonMvaTTH17                                    mean:   0.2922 -->   0.2468     rms:   0.8768 -->   0.8657    
+      _leptonMvatZqTTV16                                 mean:   0.2684 -->   0.2279     rms:   0.9113 -->   0.9021    
+      _leptonMvatZqTTV17                                 mean:   0.2421 -->   0.2127     rms:   0.9133 -->   0.9020    
+      _met                                               mean:  41.5405 -->  40.8538     rms:  20.7405 -->  20.9900    
+      _metJECDown                                        mean:  40.3814 -->  39.7405     rms:  20.2110 -->  19.9566    
+      _metJECUp                                          mean:  43.1357 -->  43.0893     rms:  21.8088 -->  22.7767    
+      _metPhi                                            mean:  -0.0036 -->  -0.0314     rms:   1.5590 -->   1.5204    
+      _metPhiJECDown                                     mean:   0.0069 -->  -0.0617     rms:   1.5600 -->   1.5442    
+      _metPhiJECUp                                       mean:   0.0478 -->  -0.0553     rms:   1.5587 -->   1.5434    
+      _metPhiUnclDown                                    mean:   0.1161 -->   0.0612     rms:   1.5826 -->   1.5442    
+      _metPhiUnclUp                                      mean:  -0.0018 -->  -0.0957     rms:   1.5279 -->   1.5165    
+      _metSignificance                                   mean:   3.4915 -->   3.4511     rms:   3.0816 -->   3.1812    
+      _metUnclDown                                       mean:  40.9099 -->  40.8238     rms:  20.4581 -->  21.8258    
+      _metUnclUp                                         mean:  42.9066 -->  41.8298     rms:  21.3204 -->  20.8908    
+      _nJets                                             mean:   2.0900 -->   2.3700     rms:   1.5303 -->   1.6772    
+      _ptRatio                                           mean:   0.8004 -->   0.7431     rms:   0.2998 -->   0.2622    
+      _ptRel                                             mean:  11.5326 -->   7.4324     rms:  19.3191 -->   8.9355    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0058 -->   0.0065     rms:   0.0332 -->   0.0354    
+      _jetChargedHadronFraction                          mean:   0.2730 -->   0.2574     rms:   0.2876 -->   0.2803    
+      _jetCsvV2                                          mean:  -1.7990 -->  -2.5037     rms:   4.1868 -->   4.6329    
+      _jetDeepCsv_b                                      mean:  -0.1335 -->  -0.2251     rms:   0.5083 -->   0.5499    
+      _jetDeepCsv_bb                                     mean:  -0.2290 -->  -0.3119     rms:   0.4238 -->   0.4664    
+      _jetDeepCsv_c                                      mean:  -0.1228 -->  -0.2170     rms:   0.4899 -->   0.5366    
+      _jetDeepCsv_udsg                                   mean:   0.3256 -->   0.1807     rms:   0.7595 -->   0.8241    
+      _jetE                                              mean: 239.6487 --> 248.2887     rms: 298.0011 --> 274.5190    
+      _jetEta                                            mean:  -0.2263 -->  -0.3242     rms:   1.9286 -->   2.0903    
+      _jetHFEmFraction                                   mean:   0.0096 -->   0.0275     rms:   0.0290 -->   0.0674    
+      _jetHFHadronFraction                               mean:   0.1407 -->   0.1954     rms:   0.3353 -->   0.3667    
+      _jetIsTight                                        mean:   0.1649 -->   0.2629     rms:   0.3711 -->   0.4402    
+      _jetIsTightLepVeto                                 mean:   0.1649 -->   0.2629     rms:   0.3711 -->   0.4402    
+      _jetNeutralEmFraction                              mean:   0.1264 -->   0.1441     rms:   0.1442 -->   0.1548    
+      _jetNeutralHadronFraction                          mean:   0.1953 -->   0.2579     rms:   0.3283 -->   0.3557    
+      _jetPhi                                            mean:   0.0436 -->   0.0953     rms:   1.8027 -->   1.8107    
+      _jetPt                                             mean:  59.1354 -->  55.9636     rms:  47.4565 -->  45.7822    
+      _jetPt_JECDown                                     mean:  57.3501 -->  53.9090     rms:  46.7712 -->  45.2560    
+      _jetPt_JECUp                                       mean:  60.9207 -->  58.0182     rms:  48.1858 -->  46.3766    
+      _jetPt_L1                                          mean:  52.8914 -->  47.7845     rms:  43.9388 -->  42.6478    
+      _jetPt_L2                                          mean:  58.8077 -->  53.8464     rms:  47.7087 -->  45.2338    
+      _jetPt_L3                                          mean:  58.8077 -->  53.8464     rms:  47.7087 -->  45.2338    
+      _jetPt_Uncorrected                                 mean:  57.8540 -->  52.6247     rms:  42.3675 -->  40.5582    
+      _jetSmearedPt                                      mean:  59.1354 -->  55.9636     rms:  47.4565 -->  45.7822    
+      _jetSmearedPt_JECDown                              mean:  57.3501 -->  53.9090     rms:  46.7712 -->  45.2560    
+      _jetSmearedPt_JECUp                                mean:  60.9207 -->  58.0182     rms:  48.1858 -->  46.3766    
+      _jetSmearedPt_JERDown                              mean:  59.1354 -->  55.9636     rms:  47.4565 -->  45.7822    
+      _jetSmearedPt_JERUp                                mean:  59.1354 -->  55.9636     rms:  47.4565 -->  45.7822    
+      _leptonMvaSUSY16                                   mean:   0.3954 -->   0.3724     rms:   0.7922 -->   0.7945    
+      _leptonMvaSUSY17                                   mean:   0.4128 -->   0.3874     rms:   0.7743 -->   0.7756    
+      _leptonMvaTTH16                                    mean:   0.4521 -->   0.4355     rms:   0.7751 -->   0.7686    
+      _leptonMvaTTH17                                    mean:   0.4384 -->   0.4170     rms:   0.7602 -->   0.7626    
+      _leptonMvatZqTTV16                                 mean:   0.4146 -->   0.3973     rms:   0.8006 -->   0.7990    
+      _leptonMvatZqTTV17                                 mean:   0.3692 -->   0.3495     rms:   0.8257 -->   0.8216    
+      _met                                               mean:  49.2975 -->  50.0421     rms:  27.4949 -->  28.2272    
+      _metJECDown                                        mean:  47.9594 -->  48.2055     rms:  27.1894 -->  27.0585    
+      _metJECUp                                          mean:  50.8228 -->  52.2748     rms:  27.9941 -->  29.6907    
+      _metPhi                                            mean:  -0.0776 -->  -0.0308     rms:   1.3369 -->   1.3705    
+      _metPhiJECDown                                     mean:  -0.0779 -->  -0.0256     rms:   1.3314 -->   1.3484    
+      _metPhiJECUp                                       mean:  -0.0189 -->  -0.0430     rms:   1.3494 -->   1.3830    
+      _metPhiUnclDown                                    mean:  -0.0234 -->   0.0664     rms:   1.3645 -->   1.4078    
+      _metPhiUnclUp                                      mean:  -0.0699 -->  -0.0358     rms:   1.3233 -->   1.3466    
+      _metSignificance                                   mean:   4.5537 -->   4.9229     rms:   4.1294 -->   4.4419    
+      _metUnclDown                                       mean:  48.7443 -->  49.9192     rms:  26.8223 -->  27.6921    
+      _metUnclUp                                         mean:  50.5354 -->  50.9134     rms:  28.3617 -->  29.0198    
+      _nJets                                             mean:   1.9400 -->   2.3200     rms:   1.1473 -->   1.3991    
+      _ptRatio                                           mean:   0.8060 -->   0.7780     rms:   0.2324 -->   0.2251    
+      _ptRel                                             mean:   9.1030 -->   7.2040     rms:  11.8694 -->   6.6916    
 
 --------------------------------------------------------------------------------------------------
 
@@ -39,19 +129,204 @@ Running test: Run2016-17Jul2018 --> OK
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Autumn18MiniAOD --> OK
-   New: _pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJet,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt
+Running test: Autumn18MiniAOD --> FAILED
+Output:   **** Following environment variables are going to be unset.
+          DBS_CLIENT_CONFIG
+          DBSCMD_HOME
+          MAGIC
+          MALLOC_CONF
+   20-Mar-2019 17:38:31 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
+   20-Mar-2019 17:38:32 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon_2017" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron_2017" of type: "BDT"
+   ----- Begin Fatal Exception 20-Mar-2019 17:39:00 CET-----------------------
+   An exception of category 'FatalRootError' occurred while
+      [0] Calling beginJob for module multilep/'blackJackAndHookers'
+      Additional Info:
+         [a] Fatal Root Error: @SUB=TBranch::TBranch
+   Illegal leaf: _pl_jetPt/_pl_jetPt[_pl_nJet]/D
+   
+   ----- End Fatal Exception -------------------------------------------------
+   20-Mar-2019 17:39:00 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Fall17MiniAODv2 --> OK
-   New: _pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJet,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt
+Running test: Fall17MiniAODv2 --> FAILED
+Output:   **** Following environment variables are going to be unset.
+          DBS_CLIENT_CONFIG
+          DBSCMD_HOME
+          MAGIC
+          MALLOC_CONF
+   20-Mar-2019 17:39:47 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root
+   20-Mar-2019 17:39:48 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon_2017" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron_2017" of type: "BDT"
+   ----- Begin Fatal Exception 20-Mar-2019 17:40:12 CET-----------------------
+   An exception of category 'FatalRootError' occurred while
+      [0] Calling beginJob for module multilep/'blackJackAndHookers'
+      Additional Info:
+         [a] Fatal Root Error: @SUB=TBranch::TBranch
+   Illegal leaf: _pl_jetPt/_pl_jetPt[_pl_nJet]/D
+   
+   ----- End Fatal Exception -------------------------------------------------
+   20-Mar-2019 17:40:12 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Summer16MiniAODv3 --> OK
-   New: _pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJet,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt
-   Changed:
-      _prefireWeight                                     mean:   1.0000 -->   0.9901     rms:   0.0000 -->   0.0315    
-      _prefireWeightDown                                 mean:   1.0000 -->   0.9927     rms:   0.0000 -->   0.0246    
-      _prefireWeightUp                                   mean:   1.0000 -->   0.9875     rms:   0.0000 -->   0.0384    
+Running test: Summer16MiniAODv3 --> FAILED
+Output:   **** Following environment variables are going to be unset.
+          DBS_CLIENT_CONFIG
+          DBSCMD_HOME
+          MAGIC
+          MALLOC_CONF
+   20-Mar-2019 17:40:21 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root
+   20-Mar-2019 17:40:22 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon_2017" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_10/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron_2017" of type: "BDT"
+   ----- Begin Fatal Exception 20-Mar-2019 17:40:43 CET-----------------------
+   An exception of category 'FatalRootError' occurred while
+      [0] Calling beginJob for module multilep/'blackJackAndHookers'
+      Additional Info:
+         [a] Fatal Root Error: @SUB=TBranch::TBranch
+   Illegal leaf: _pl_jetPt/_pl_jetPt[_pl_nJet]/D
+   
+   ----- End Fatal Exception -------------------------------------------------
+   20-Mar-2019 17:40:43 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root
