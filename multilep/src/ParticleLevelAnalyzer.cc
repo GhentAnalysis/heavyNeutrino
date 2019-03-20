@@ -28,7 +28,7 @@ void ParticleLevelAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_pl_lE",                    &_pl_lE,                    "_pl_lE[_pl_nL]/D");
     outputTree->Branch("_pl_lFlavor",               &_pl_lFlavor,               "_pl_lFlavor[_pl_nL]/i");
     outputTree->Branch("_pl_lCharge",               &_pl_lCharge,               "_pl_lCharge[_pl_nL]/I");
-    outputTree->Branch("_pl_nJet",                  &_pl_nJet,                  "_pl_nJet/i");
+    outputTree->Branch("_pl_nJets",                 &_pl_nJets,                 "_pl_nJets/i");
     outputTree->Branch("_pl_jetPt",                 &_pl_jetPt,                 "_pl_jetPt[_pl_nJet]/D");
     outputTree->Branch("_pl_jetEta",                &_pl_jetEta,                "_pl_jetEta[_pl_nJet]/D");
     outputTree->Branch("_pl_jetPhi",                &_pl_jetPhi,                "_pl_jetPhi[_pl_nJet]/D");
@@ -37,7 +37,7 @@ void ParticleLevelAnalyzer::beginJob(TTree* outputTree){
 
 }
 
-void ParticleLevelAnalyzer::analyze(const edm::Event& iEvent){
+bool ParticleLevelAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> photons; iEvent.getByToken(multilepAnalyzer->particleLevelPhotonsToken, photons);
     edm::Handle<std::vector<reco::GenJet>> leptons;      iEvent.getByToken(multilepAnalyzer->particleLevelLeptonsToken, leptons);
     edm::Handle<std::vector<reco::GenJet>> jets;         iEvent.getByToken(multilepAnalyzer->particleLevelJetsToken, jets);
@@ -69,13 +69,23 @@ void ParticleLevelAnalyzer::analyze(const edm::Event& iEvent){
       ++_pl_nL;
     }
 
-    _pl_nJet = 0;
+    _pl_nJets = 0;
     for(const reco::GenJet& p : *jets){
-      _pl_jetPt[_pl_nJet]           = p.pt();
-      _pl_jetEta[_pl_nJet]          = p.eta();
-      _pl_jetPhi[_pl_nJet]          = p.phi();
-      _pl_jetE[_pl_nJet]            = p.energy();
-      _pl_jetHadronFlavor[_pl_nJet] = p.pdgId();
-      ++_pl_nJet;
+      _pl_jetPt[_pl_nJets]           = p.pt();
+      _pl_jetEta[_pl_nJets]          = p.eta();
+      _pl_jetPhi[_pl_nJets]          = p.phi();
+      _pl_jetE[_pl_nJets]            = p.energy();
+      _pl_jetHadronFlavor[_pl_nJets] = p.pdgId();
+      ++_pl_nJets;
     }
+
+    if(multilepAnalyzer->skim == "trilep"       and _pl_nL < 3)                    return false;
+    if(multilepAnalyzer->skim == "dilep"        and _pl_nL < 3)                    return false;
+    if(multilepAnalyzer->skim == "singlelep"    and _pl_nL < 1)                    return false;
+    if(multilepAnalyzer->skim == "ttg"          and (_pl_nL < 2 or _pl_nPh < 1))   return false;
+    if(multilepAnalyzer->skim == "FR"           and (_pl_nL < 1 or _pl_nJets < 1)) return false;
+    if(multilepAnalyzer->skim == "singlephoton" and _pl_nPh < 1)                   return false;
+    if(multilepAnalyzer->skim == "diphoton"     and _pl_nPh < 2)                   return false;
+    if(multilepAnalyzer->skim == "singlejet"    and _pl_nJets < 1)                 return false;
+    return true;
 }

@@ -106,22 +106,24 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
-    if(!isData) lheAnalyzer->analyze(iEvent);                          // needs to be run before selection to get correct uncertainties on MC xsection
-    if(isSUSY) susyMassAnalyzer->analyze(iEvent);                      // needs to be run after LheAnalyzer, but before all other models
+    if(!isData) lheAnalyzer->analyze(iEvent);                                            // needs to be run before selection to get correct uncertainties on MC xsection
+    if(isSUSY) susyMassAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
-    //extract number of vertices 
     _nVertex = vertices->size();
     nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
-    if(_nVertex == 0) return;                                          //Don't consider 0 vertex events
 
-    if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin()))) return; // returns false if doesn't pass skim condition, so skip event in such case
-    if(!photonAnalyzer->analyze(iEvent))                       return;
-    if(!jetAnalyzer->analyze(iEvent))                          return;
+    bool skim;                                                                           // Do not skim if event topology is available on particleLevel
+    if(!isData and storeParticleLevel) skim = !particleLevelAnalyzer->analyze(iEvent);
+    else                               skim = true;
+
+    if(_nVertex == 0 and skim)                                          return;          // Don't consider 0 vertex events
+    if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin())) and skim) return;          // returns false if doesn't pass skim condition, so skip event in such case
+    if(!photonAnalyzer->analyze(iEvent) and skim)                       return;
+    if(!jetAnalyzer->analyze(iEvent) and skim)                          return;
     if(!isData) genAnalyzer->analyze(iEvent);
-    if(!isData and storeParticleLevel) particleLevelAnalyzer->analyze(iEvent);
     triggerAnalyzer->analyze(iEvent);
 
-    _eventNb = (unsigned long) iEvent.id().event();                    //determine event number run number and luminosity block
+    _eventNb = (unsigned long) iEvent.id().event();
 
     if(!isData and !is2018){
       edm::Handle<double> pfw;     iEvent.getByToken(prefireWeightToken,     pfw);     _prefireWeight     = (*pfw);
@@ -129,7 +131,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       edm::Handle<double> pfwDown; iEvent.getByToken(prefireWeightDownToken, pfwDown); _prefireWeightDown = (*pfwDown);
     }
 
-    outputTree->Fill();                                                //store calculated event info in root tree
+    outputTree->Fill();                                                                  //store calculated event info in root tree
 }
 
 //define this as a plug-in

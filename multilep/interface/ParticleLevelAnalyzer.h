@@ -36,7 +36,7 @@ class ParticleLevelAnalyzer {
     int      _pl_lCharge[pl_nL_max];
 
     //particle level jets
-    unsigned _pl_nJet;
+    unsigned _pl_nJets;
     double   _pl_jetPt[pl_nJet_max];
     double   _pl_jetEta[pl_nJet_max];
     double   _pl_jetPhi[pl_nJet_max];
@@ -50,6 +50,6 @@ class ParticleLevelAnalyzer {
     ~ParticleLevelAnalyzer(){};
 
     void beginJob(TTree* outputTree);
-    void analyze(const edm::Event&);
+    bool analyze(const edm::Event&);
 };
 #endif
