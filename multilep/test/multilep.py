@@ -2,11 +2,8 @@ import sys, os
 import FWCore.ParameterSet.Config as cms
 
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
-#inputFile      = 'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2017F/DoubleMuon/MINIAOD/17Nov2017-v1/70000/E4B6F7A1-7BDE-E711-8C42-02163E019DE8.root'
-#inputFile      = "root://cmsxrootd.fnal.gov///store/mc/RunIIFall17MiniAOD/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/20000/02041699-0BFB-E711-AAD4-FA163E965751.root"
-#inputFile      = '/store/data/Run2017F/SingleMuon/MINIAOD/17Nov2017-v1/00000/3E7C07F9-E6F1-E711-841A-0CC47A4C8E46.root'
-#inputFile      = '/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
-#inputFile      = '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0CC8EDCD-FD64-E811-BCA8-02163E01A020.root'
+#inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root"
+#inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
 inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
 
 # Other default arguments
@@ -15,7 +12,6 @@ extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
-                                # ttg       --> skim two light leptons + one photon
                                 # singlejet --> one jet
                                 # FR        --> one jet and one light lepton
 
@@ -83,7 +79,7 @@ else:        setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='20
 from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
 if not is2018:
   process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
-      DataEra                      = cms.string("2017BtoF" if is2017 else "2016BToH"),
+      DataEra                      = cms.string("2017BtoF" if is2017 else "2016BtoH"),
       UseJetEMPt                   = cms.bool(False),
       PrefiringRateSystematicUncty = cms.double(0.2),
       SkipWarnings                 = False
@@ -91,6 +87,20 @@ if not is2018:
 else:
   process.prefiringweight = cms.Sequence()
 
+#
+# For the particleLevelProducer (useful for rivet implementation and/or unfolding)
+# https://twiki.cern.ch/twiki/bin/viewauth/CMS/ParticleLevelProducer
+#
+if 'storeParticleLevel' in extraContent and not isData:
+  process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+  process.load("GeneratorInterface.RivetInterface.mergedGenParticles_cfi")
+  process.load("GeneratorInterface.RivetInterface.genParticles2HepMC_cfi")
+  process.genParticles2HepMC.genParticles = cms.InputTag("mergedGenParticles")
+  process.genParticles2HepMC.signalParticlePdgIds = cms.vint32(6,-6) # for top analyses, though not yet sure what it exactlye does, I think it is only relevant to find the signal vertex which we currently do not save
+  process.load("GeneratorInterface.RivetInterface.particleLevel_cfi")
+  process.particleLevelSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel)
+else:
+  process.particleLevelSequence = cms.Sequence()
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -99,6 +109,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   lheEventInfo                  = cms.InputTag("externalLHEProducer"),
   pileUpInfo                    = cms.InputTag("slimmedAddPileupInfo"),
   genParticles                  = cms.InputTag("prunedGenParticles"),
+  particleLevelLeptons          = cms.InputTag("particleLevel:leptons"),
+  particleLevelPhotons          = cms.InputTag("particleLevel:photons"),
+  particleLevelJets             = cms.InputTag("particleLevel:jets"),
+  particleLevelMets             = cms.InputTag("particleLevel:mets"),
   muons                         = cms.InputTag("slimmedMuons"),
   muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'), # TODO: check if muon POG has updates on effective areas
   muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreas_cone03_Muons_Fall17.txt'), # TODO
@@ -139,6 +153,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   is2018                        = cms.untracked.bool(is2018),
   isSUSY                        = cms.untracked.bool(isSUSY),
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
+  storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),
 )
 
 def getJSON(is2017, is2018):
@@ -156,4 +171,5 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.jetSequence *
                      process.fullPatMetSequence *
                      process.prefiringweight *
+                     process.particleLevelSequence *
                      process.blackJackAndHookers)
