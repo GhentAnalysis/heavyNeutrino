@@ -16,6 +16,7 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/METReco/interface/METFwd.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -37,6 +38,7 @@
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/ParticleLevelAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 
@@ -48,6 +50,7 @@ class LeptonAnalyzer;
 class PhotonAnalyzer;
 class JetAnalyzer;
 class GenAnalyzer;
+class ParticleLevelAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
 
@@ -58,6 +61,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
     friend PhotonAnalyzer;
     friend JetAnalyzer;
     friend GenAnalyzer;
+    friend ParticleLevelAnalyzer;
     friend LheAnalyzer;
     friend SUSYMassAnalyzer;
     public:
@@ -70,7 +74,11 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<GenLumiInfoHeader>                 genLumiInfoToken;
         edm::EDGetTokenT<LHEEventProduct>                   lheEventInfoToken;
         edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken;
-        edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 
+        edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken;
+        edm::EDGetTokenT<reco::GenParticleCollection>       particleLevelPhotonsToken;
+        edm::EDGetTokenT<reco::GenJetCollection>            particleLevelLeptonsToken;
+        edm::EDGetTokenT<reco::GenJetCollection>            particleLevelJetsToken;
+        edm::EDGetTokenT<reco::METCollection>               particleLevelMetsToken;
         edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
         edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
         edm::EDGetTokenT<std::vector<pat::Tau>>             tauToken;
@@ -96,6 +104,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                is2018;
         bool                                                isSUSY;
         bool                                                storeLheParticles;
+        bool                                                storeParticleLevel;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
@@ -106,13 +115,14 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         virtual void endLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override {}
         virtual void endJob() override {};
 
-        TriggerAnalyzer*  triggerAnalyzer;
-        LeptonAnalyzer*   leptonAnalyzer;
-        PhotonAnalyzer*   photonAnalyzer;
-        JetAnalyzer*      jetAnalyzer;
-        LheAnalyzer*      lheAnalyzer;
-        GenAnalyzer*      genAnalyzer;
-        SUSYMassAnalyzer* susyMassAnalyzer;
+        TriggerAnalyzer*       triggerAnalyzer;
+        LeptonAnalyzer*        leptonAnalyzer;
+        PhotonAnalyzer*        photonAnalyzer;
+        JetAnalyzer*           jetAnalyzer;
+        LheAnalyzer*           lheAnalyzer;
+        GenAnalyzer*           genAnalyzer;
+        ParticleLevelAnalyzer* particleLevelAnalyzer;
+        SUSYMassAnalyzer*      susyMassAnalyzer;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;

@@ -8,6 +8,10 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     lheEventInfoToken(                consumes<LHEEventProduct>(                  iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
     pileUpToken(                      consumes<std::vector<PileupSummaryInfo>>(   iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
     genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
+    particleLevelPhotonsToken(        consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("particleLevelPhotons"))),
+    particleLevelLeptonsToken(        consumes<reco::GenJetCollection>(           iConfig.getParameter<edm::InputTag>("particleLevelLeptons"))),
+    particleLevelJetsToken(           consumes<reco::GenJetCollection>(           iConfig.getParameter<edm::InputTag>("particleLevelJets"))),
+    particleLevelMetsToken(           consumes<reco::METCollection>(              iConfig.getParameter<edm::InputTag>("particleLevelMets"))),
     muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
     tauToken(                         consumes<std::vector<pat::Tau>>(            iConfig.getParameter<edm::InputTag>("taus"))),
@@ -31,16 +35,18 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     is2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
     is2018(                                                                       iConfig.getUntrackedParameter<bool>("is2018")),
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
-    storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles"))
+    storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles")),
+    storeParticleLevel(                                                           iConfig.getUntrackedParameter<bool>("storeParticleLevel"))
 {
     if(is2017 or is2018) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
-    triggerAnalyzer = new TriggerAnalyzer(iConfig, this);
-    leptonAnalyzer  = new LeptonAnalyzer(iConfig, this);
-    photonAnalyzer  = new PhotonAnalyzer(iConfig, this);
-    jetAnalyzer     = new JetAnalyzer(iConfig, this);
-    genAnalyzer     = new GenAnalyzer(iConfig, this);
-    lheAnalyzer     = new LheAnalyzer(iConfig, this);
-    susyMassAnalyzer= new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
+    triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
+    leptonAnalyzer        = new LeptonAnalyzer(iConfig, this);
+    photonAnalyzer        = new PhotonAnalyzer(iConfig, this);
+    jetAnalyzer           = new JetAnalyzer(iConfig, this);
+    genAnalyzer           = new GenAnalyzer(iConfig, this);
+    lheAnalyzer           = new LheAnalyzer(iConfig, this);
+    susyMassAnalyzer      = new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
+    particleLevelAnalyzer = new ParticleLevelAnalyzer(iConfig, this);
 }
 
 multilep::~multilep(){
@@ -49,6 +55,7 @@ multilep::~multilep(){
     delete photonAnalyzer;
     delete jetAnalyzer;
     delete genAnalyzer;
+    delete particleLevelAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
 }
@@ -75,6 +82,7 @@ void multilep::beginJob(){
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
     if(!isData) genAnalyzer->beginJob(outputTree);
+    if(!isData) particleLevelAnalyzer->beginJob(outputTree);
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
@@ -110,6 +118,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(!photonAnalyzer->analyze(iEvent))                       return;
     if(!jetAnalyzer->analyze(iEvent))                          return;
     if(!isData) genAnalyzer->analyze(iEvent);
+    if(!isData and storeParticleLevel) particleLevelAnalyzer->analyze(iEvent);
     triggerAnalyzer->analyze(iEvent);
 
     _eventNb = (unsigned long) iEvent.id().event();                    //determine event number run number and luminosity block
