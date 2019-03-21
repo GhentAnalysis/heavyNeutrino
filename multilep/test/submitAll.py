@@ -40,7 +40,7 @@ for dataset in datasets:
                 outputDir = outputDir + "/Run2017"
             else :
                 outputDir = outputDir + "/Run2018"
-            for era in ["B", "C", "D", "E", "F", "G", "H"]:
+            for era in ["A", "B", "C", "D", "E", "F", "G", "H"]:
                 if ( ("Run2016" + era) in dataset ) or ( ("Run2017" + era) in dataset ) or ( ("Run2018" + era) in dataset ): 
                     outputDir = outputDir + era
 
