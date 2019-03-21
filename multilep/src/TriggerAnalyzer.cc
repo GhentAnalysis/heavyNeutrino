@@ -36,7 +36,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   if(multilepAnalyzer->is2018){
     allFlags["passTrigger_1l"]   = {"HLT_IsoMu24", "HLT_IsoMu27","HLT_Ele32_WPTight_Gsf"};
   } else if(multilepAnalyzer->is2017){
-    allFlags["passTrigger_1l"]   = {"HLT_IsoMu27", "HLT_IsoMu24", "HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf"};
+    allFlags["passTrigger_1l"]   = {"HLT_IsoMu27", "HLT_IsoMu24", "HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele32_WPTight_Gsf_L1DoubleEG"};
   } else {
     allFlags["passTrigger_1l"]   = {"HLT_Ele27_WPTight_Gsf","HLT_IsoMu24", "HLT_IsoTkMu24"};
   }
