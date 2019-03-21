@@ -150,7 +150,7 @@ def getJSON(is2017, is2018):
 
 process.blackJackAndHookers.SingleEleTriggers.extend(["HLT_Ele27_WPTight_Gsf_v*"])
 process.blackJackAndHookers.SingleMuoTriggers.extend(["HLT_IsoMu24_v*", "HLT_IsoTkMu24_v*"])
-process.blackJackAndHookers.SingleEleTriggers2017.extend(["HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*","HLT_Ele35_WPTight_Gsf_v*"])
+process.blackJackAndHookers.SingleEleTriggers2017.extend(["HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*","HLT_Ele35_WPTight_Gsf_v*","HLT_Ele32_WPTight_Gsf_v*"])
 process.blackJackAndHookers.SingleMuoTriggers2017.extend(["HLT_IsoMu24_*","HLT_IsoMu27_v*"])
 process.blackJackAndHookers.SingleEleTriggers2018.extend(["HLT_Ele32_WPTight_Gsf_v*"])
 process.blackJackAndHookers.SingleMuoTriggers2018.extend(["HLT_IsoMu24_*","HLT_IsoMu27_v*"])
