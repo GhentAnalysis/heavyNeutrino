@@ -473,7 +473,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
 
         // maybe put this simply in a function in LeptonAnalyzerId.cc???
-        bool someIdWithoutName = (ele->pt() > 27 and _lPOGMedium[_nL]
+        bool someIdWithoutName = (ele->pt() > 27 
                                   and fabs(_dxy[_nL]) < 0.05 and fabs(_dz[_nL])< 0.1
                                   and _relIso[_nL] < 0.2
                                   and !ele->gsfTrack().isNull()
