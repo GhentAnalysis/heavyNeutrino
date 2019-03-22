@@ -118,6 +118,9 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     }
     bool triggerr_FR=triggerAnalyzer->flag["FR_single_lepton"];
     bool triggerr_trilep=triggerAnalyzer->flag["passTrigger_1l"];
+    // to be removeeeeeeeeeeeeeeeee
+    if (leptonAnalyzer->_lFlavor[0] !=1) return;
+    if (leptonAnalyzer->_lPt[0] > 20) return;
     if(skim == "FR" and nJetBackToBack == 0) return;
     if(skim == "FR" and !triggerr_FR) return;
     if(skim == "trilep" and !triggerr_trilep)return;
