@@ -82,7 +82,7 @@ void multilep::beginJob(){
     if(!isData) lheAnalyzer->beginJob(outputTree, fs);
     if(isSUSY)  susyMassAnalyzer->beginJob(outputTree, fs);
     if(!isData) genAnalyzer->beginJob(outputTree);
-    if(!isData) particleLevelAnalyzer->beginJob(outputTree);
+    if(!isData and storeParticleLevel) particleLevelAnalyzer->beginJob(outputTree);
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
