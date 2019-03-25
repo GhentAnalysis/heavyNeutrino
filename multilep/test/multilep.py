@@ -46,10 +46,10 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v11' # TO BE UPDATED REALLY SOON (NEW JEC)
-elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018Rereco_v1' if isData else '102X_upgrade2018_realistic_v12' # TO BE UPDATED REALLY SOON (NEW JEC)
-elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'               if isData else '94X_mc2017_realistic_v17'
-else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'               if isData else '94X_mcRun2_asymptotic_v3'
+if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v13'
+elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018ABC_v2' if isData else '102X_upgrade2018_realistic_v18'
+elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'            if isData else '94X_mc2017_realistic_v17'
+else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'            if isData else '94X_mcRun2_asymptotic_v3'
 
 #
 # Vertex collection
