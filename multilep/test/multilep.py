@@ -2,14 +2,9 @@ import sys, os
 import FWCore.ParameterSet.Config as cms
 
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
-#inputFile      = 'file:///pnfs/iihe/cms/ph/sc4/store/data/Run2017F/DoubleMuon/MINIAOD/17Nov2017-v1/70000/E4B6F7A1-7BDE-E711-8C42-02163E019DE8.root'
-#inputFile      = "root://cmsxrootd.fnal.gov///store/mc/RunIIFall17MiniAOD/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/20000/02041699-0BFB-E711-AAD4-FA163E965751.root"
-#inputFile      = '/store/data/Run2017F/SingleMuon/MINIAOD/17Nov2017-v1/00000/3E7C07F9-E6F1-E711-841A-0CC47A4C8E46.root'
-inputFile      = '/store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/80000/FEB78ECD-B4EB-E611-8E36-0025905A6088.root'
-#inputFile      = '/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
-#inputFile      = '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0CC8EDCD-FD64-E811-BCA8-02163E01A020.root'
-#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
-#inputFile        = '/store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/80000/F283191C-11C4-E611-973D-00215E2EB74E.root'
+#inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root"
+#inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
+inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
 
 # Other default arguments
 
@@ -18,7 +13,6 @@ extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
-                                # ttg       --> skim two light leptons + one photon
                                 # singlejet --> one jet
                                 # FR        --> one jet and one light lepton
 
@@ -40,6 +34,9 @@ isSUSY = "SMS-T" in inputFile
 
 process = cms.Process("BlackJackAndHookers")
 
+# Print a warning if a different release is used as the one in the setup script (i.e. probably something will be broken)
+os.system('if [[ "$(grep RELEASE= $CMSSW_BASE/src/heavyNeutrino/setup.sh)" != *"$CMSSW_VERSION"* ]];then echo ">>> WARNING: you are using a different release as the one specified in the setup.sh script! <<< ";fi')
+
 # initialize MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
@@ -50,10 +47,10 @@ process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v11'
-elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018Rereco_v1' if isData else '102X_upgrade2018_realistic_v12'
-elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'               if isData else '94X_mc2017_realistic_v17'
-else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'               if isData else '94X_mcRun2_asymptotic_v3'
+if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v13'
+elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018ABC_v2' if isData else '102X_upgrade2018_realistic_v18'
+elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'            if isData else '94X_mc2017_realistic_v17'
+else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'            if isData else '94X_mcRun2_asymptotic_v3'
 
 #
 # Vertex collection
@@ -68,11 +65,43 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 addJetSequence(process, isData, is2017, is2018)
+if is2018:   jecUncertaintyFile = 'Autumn18_V8_MC_Uncertainty_AK4PFchs.txt'
+elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
+else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
 
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
-if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='2018-Prompt')      # No scale and smearings available yet
+if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # No scale and smearings available yet
 elif is2017: setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2017-Nov17ReReco') # Rerun scale and smearings for shiftscale bug
 else:        setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='2016-Legacy')      # Default scale and smearings are ok
+
+#
+# L1 prefiring (only needed for 2016/2017, use empty sequence for 2018)
+#
+from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
+if not is2018:
+  process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+      DataEra                      = cms.string("2017BtoF" if is2017 else "2016BtoH"),
+      UseJetEMPt                   = cms.bool(False),
+      PrefiringRateSystematicUncty = cms.double(0.2),
+      SkipWarnings                 = False
+  )
+else:
+  process.prefiringweight = cms.Sequence()
+
+#
+# For the particleLevelProducer (useful for rivet implementation and/or unfolding)
+# https://twiki.cern.ch/twiki/bin/viewauth/CMS/ParticleLevelProducer
+#
+if 'storeParticleLevel' in extraContent and not isData:
+  process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+  process.load("GeneratorInterface.RivetInterface.mergedGenParticles_cfi")
+  process.load("GeneratorInterface.RivetInterface.genParticles2HepMC_cfi")
+  process.genParticles2HepMC.genParticles = cms.InputTag("mergedGenParticles")
+  process.genParticles2HepMC.signalParticlePdgIds = cms.vint32(6,-6) # for top analyses, though not yet sure what it exactlye does, I think it is only relevant to find the signal vertex which we currently do not save
+  process.load("GeneratorInterface.RivetInterface.particleLevel_cfi")
+  process.particleLevelSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel)
+else:
+  process.particleLevelSequence = cms.Sequence()
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -81,6 +110,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   lheEventInfo                  = cms.InputTag("externalLHEProducer"),
   pileUpInfo                    = cms.InputTag("slimmedAddPileupInfo"),
   genParticles                  = cms.InputTag("prunedGenParticles"),
+  particleLevelLeptons          = cms.InputTag("particleLevel:leptons"),
+  particleLevelPhotons          = cms.InputTag("particleLevel:photons"),
+  particleLevelJets             = cms.InputTag("particleLevel:jets"),
+  particleLevelMets             = cms.InputTag("particleLevel:mets"),
   muons                         = cms.InputTag("slimmedMuons"),
   muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'), # TODO: check if muon POG has updates on effective areas
   muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreas_cone03_Muons_Fall17.txt'), # TODO
@@ -110,8 +143,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
   jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
   jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
-  jecUncertaintyFile16          = cms.FileInPath("heavyNeutrino/multilep/data/JEC/Summer16_07Aug2017_V9_MC_Uncertainty_AK4PFchs.txt"),
-  jecUncertaintyFile17          = cms.FileInPath("heavyNeutrino/multilep/data/JEC/Fall17_17Nov2017_V6_MC_Uncertainty_AK4PFchs.txt"), # TODO: add 2018
+  jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyFile),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),
   recoResultsPrimary            = cms.InputTag("TriggerResults::PAT"),
@@ -122,6 +154,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   is2018                        = cms.untracked.bool(is2018),
   isSUSY                        = cms.untracked.bool(isSUSY),
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
+  storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),
 )
 
 def getJSON(is2017, is2018):
@@ -138,4 +171,6 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.egammaPostRecoSeq *
                      process.jetSequence *
                      process.fullPatMetSequence *
+                     process.prefiringweight *
+                     process.particleLevelSequence *
                      process.blackJackAndHookers)

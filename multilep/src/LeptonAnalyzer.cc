@@ -290,11 +290,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(_nL == nL_max)         break;
         if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
         if(fabs(tau.eta()) > 2.3) continue;
-        //if(!tau.tauID("decayModeFinding")) continue;
         fillLeptonKinVars(tau);
         if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
         fillLeptonImpactParameters(tau, primaryVertex);
-        //if(_dz[_nL] < 0.4)        continue;         //tau dz cut used in ewkino  --> is this a standard cut? reference?
 
         _lFlavor[_nL]  = 2;
         _tauDecayMode[_nL] = tau.decayMode();
@@ -365,9 +363,9 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 
 template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* match = lepton.genParticle();
-    if(!match or match->pdgId() != lepton.pdgId()) match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
+    if(!match || match->pdgId() != lepton.pdgId()) match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
 
-    _lIsPrompt[_nL]             = match and (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) and GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
+    _lIsPrompt[_nL]             = match && (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) && GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
     _lMatchPt[_nL]              = match ? match->pt() : 0;
     _lMatchEta[_nL]             = match ? match->eta() : 0;
