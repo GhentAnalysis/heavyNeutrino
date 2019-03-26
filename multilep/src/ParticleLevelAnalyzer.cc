@@ -7,8 +7,8 @@
 #include "heavyNeutrino/multilep/interface/ParticleLevelAnalyzer.h"
 
 /*
- * Storing plerator particles
- */
+Storing plerator particles
+*/
 
 ParticleLevelAnalyzer::ParticleLevelAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer){};
@@ -43,8 +43,8 @@ bool ParticleLevelAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenJet>> jets;         iEvent.getByToken(multilepAnalyzer->particleLevelJetsToken, jets);
     edm::Handle<std::vector<reco::MET>> mets;            iEvent.getByToken(multilepAnalyzer->particleLevelMetsToken, mets);
 
-    _pl_met    = mets->at(0).pt();
-    _pl_metPhi = mets->at(0).phi();
+    _pl_met    = mets->front().pt();
+    _pl_metPhi = mets->front().phi();
 
     _pl_nPh = 0;
     for(const reco::GenParticle& p : *photons){
