@@ -1,0 +1,9 @@
+trilep:/SingleMuon/Run2016B-17Jul2018_ver2-v1/MINIAOD
+trilep:/SingleMuon/Run2016E-17Jul2018-v1/MINIAOD   
+trilep:/SingleMuon/Run2016G-17Jul2018-v1/MINIAOD
+trilep:/SingleMuon/Run2016H-17Jul2018-v1/MINIAOD
+
+trilep:/SingleElectron/Run2016B-17Jul2018_ver2-v1/MINIAOD
+trilep:/SingleElectron/Run2016C-17Jul2018-v1/MINIAOD
+trilep:/SingleElectron/Run2016F-17Jul2018-v1/MINIAOD  
+#trilep:/SingleElectron/Run2016G-17Jul2018-v1/MINIAOD  
