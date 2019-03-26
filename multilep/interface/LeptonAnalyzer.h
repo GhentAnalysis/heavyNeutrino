@@ -106,14 +106,28 @@ class LeptonAnalyzer {
     bool _tauEleVetoVTight[nL_max];
     bool _decayModeFinding[nL_max];                      
     int _tauDecayMode[nL_max];                      
-    bool _decayModeFindingNew[nL_max];                      
+    bool _tauPOGVVLoose2017v2[nL_max];
+    bool _tauPOGVLoose2017v2[nL_max];
+    bool _tauPOGLoose2017v2[nL_max];
+    bool _tauPOGMedium2017v2[nL_max];
+    bool _tauPOGTight2017v2[nL_max];
+    bool _tauPOGVTight2017v2[nL_max];
+    bool _tauPOGVVTight2017v2[nL_max];
+
     bool _tauVLooseMvaNew[nL_max];                                                                      //"old tau id's will be stored in the POG id definitions (vloose := veto), however very tight is stored separately
+    bool _decayModeFindingNew[nL_max];                      
     bool _tauLooseMvaNew[nL_max];
     bool _tauMediumMvaNew[nL_max];
     bool _tauTightMvaNew[nL_max];
     bool _tauVTightMvaNew[nL_max];
     bool _tauVTightMvaOld[nL_max];
-
+    
+    bool _tauVLooseMvaNew2017v2[nL_max];
+    bool _tauLooseMvaNew2017v2[nL_max];
+    bool _tauMediumMvaNew2017v2[nL_max];
+    bool _tauTightMvaNew2017v2[nL_max];
+    bool _tauVTightMvaNew2017v2[nL_max];
+    
     double _tauAgainstElectronMVA6Raw[nL_max];
     double _tauCombinedIsoDBRaw3Hits[nL_max];
     double _tauIsoMVAPWdR03oldDMwLT[nL_max];
@@ -153,6 +167,7 @@ class LeptonAnalyzer {
     unsigned _lProvenanceConversion[nL_max];
 
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
+    void fillTauGenVars(const pat::Tau&);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);

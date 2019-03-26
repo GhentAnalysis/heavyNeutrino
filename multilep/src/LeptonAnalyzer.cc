@@ -80,11 +80,23 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauDecayMode",                 &_tauDecayMode,                 "_tauDecayMode[_nL]/I");
     outputTree->Branch("_decayModeFinding",             &_decayModeFinding,             "_decayModeFinding[_nL]/O");
     outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
+    outputTree->Branch("_tauPOGVVLoose2017v2",          &_tauPOGVVLoose2017v2,          "_tauPOGVVLoose2017v2[_nL]/O");
+    outputTree->Branch("_tauPOGVLoose2017v2",           &_tauPOGVLoose2017v2,           "_tauPOGVLoose2017v2[_nL]/O");
+    outputTree->Branch("_tauPOGLoose2017v2",            &_tauPOGLoose2017v2,            "_tauPOGLoose2017v2[_nL]/O");
+    outputTree->Branch("_tauPOGMedium2017v2",           &_tauPOGMedium2017v2,           "_tauPOGMedium2017v2[_nL]/O");
+    outputTree->Branch("_tauPOGTight2017v2",            &_tauPOGTight2017v2,            "_tauPOGTight2017v2[_nL]/O");
+    outputTree->Branch("_tauPOGVTight2017v2",           &_tauPOGVTight2017v2,           "_tauPOGVTight2017v2[_nL]/O");
+    outputTree->Branch("_tauPOGVVTight2017v2",          &_tauPOGVVTight2017v2,          "_tauPOGVVTight2017v2[_nL]/O");
     outputTree->Branch("_tauVLooseMvaNew",              &_tauVLooseMvaNew,              "_tauVLooseMvaNew[_nL]/O");
     outputTree->Branch("_tauLooseMvaNew",               &_tauLooseMvaNew,               "_tauLooseMvaNew[_nL]/O");
     outputTree->Branch("_tauMediumMvaNew",              &_tauMediumMvaNew,              "_tauMediumMvaNew[_nL]/O");
     outputTree->Branch("_tauTightMvaNew",               &_tauTightMvaNew,               "_tauTightMvaNew[_nL]/O");
     outputTree->Branch("_tauVTightMvaNew",              &_tauVTightMvaNew,              "_tauVTightMvaNew[_nL]/O");
+    outputTree->Branch("_tauVLooseMvaNew2017v2",        &_tauVLooseMvaNew2017v2,        "_tauVLooseMvaNew2017v2[_nL]/O");
+    outputTree->Branch("_tauLooseMvaNew2017v2",         &_tauLooseMvaNew2017v2,         "_tauLooseMvaNew2017v2[_nL]/O");
+    outputTree->Branch("_tauMediumMvaNew2017v2",        &_tauMediumMvaNew2017v2,        "_tauMediumMvaNew2017v2[_nL]/O");
+    outputTree->Branch("_tauTightMvaNew2017v2",         &_tauTightMvaNew2017v2,         "_tauTightMvaNew2017v2[_nL]/O");
+    outputTree->Branch("_tauVTightMvaNew2017v2",        &_tauVTightMvaNew2017v2,        "_tauVTightMvaNew2017v2[_nL]/O");
     outputTree->Branch("_tauVTightMvaOld",              &_tauVTightMvaOld,              "_tauVTightMvaOld[_nL]/O");
     outputTree->Branch("_tauAgainstElectronMVA6Raw",    &_tauAgainstElectronMVA6Raw,    "_tauAgainstElectronMVA6Raw[_nL]/D");
     outputTree->Branch("_tauCombinedIsoDBRaw3Hits",     &_tauCombinedIsoDBRaw3Hits,     "_tauCombinedIsoDBRaw3Hits[_nL]/D");
@@ -292,6 +304,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(tau.eta()) > 2.3) continue;
         fillLeptonKinVars(tau);
         if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
+        if(!multilepAnalyzer->isData) fillTauGenVars(tau);
         fillLeptonImpactParameters(tau, primaryVertex);
 
         _lFlavor[_nL]  = 2;
@@ -311,12 +324,29 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lPOGTight[_nL] = tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT");
         _tauVTightMvaOld[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBoldDMwLT");
 
+        _tauPOGVVLoose2017v2[_nL] = tau.tauID("byVVLooseIsolationMVArun2017v2DBoldDMwLT2017");
+        _tauPOGVLoose2017v2[_nL] = tau.tauID("byVLooseIsolationMVArun2017v2DBoldDMwLT2017");
+        _tauPOGLoose2017v2[_nL] = tau.tauID("byLooseIsolationMVArun2017v2DBoldDMwLT2017");
+        _tauPOGMedium2017v2[_nL] = tau.tauID("byMediumIsolationMVArun2017v2DBoldDMwLT2017");
+        _tauPOGTight2017v2[_nL] = tau.tauID("byTightIsolationMVArun2017v2DBoldDMwLT2017");
+        _tauPOGVTight2017v2[_nL] = tau.tauID("byVTightIsolationMVArun2017v2DBoldDMwLT2017");
+        _tauPOGVVTight2017v2[_nL] = tau.tauID("byVVTightIsolationMVArun2017v2DBoldDMwLT2017");
+        
+        std::cout << "new tau" << std::endl << _lPOGVeto[_nL] << " " <<_lPOGLoose[_nL] << " " <<_lPOGMedium[_nL] << " " <<_lPOGTight[_nL] << " " <<_tauVTightMvaOld[_nL] << std::endl;
+        std::cout << tau.tauID("byVLooseIsolationMVArun2017v2DBoldDMwLT2017") << " " << tau.tauID("byLooseIsolationMVArun2017v2DBoldDMwLT2017") << " " << tau.tauID("byMediumIsolationMVArun2017v2DBoldDMwLT2017") << " " << tau.tauID("byTightIsolationMVArun2017v2DBoldDMwLT2017") << " " << tau.tauID("byVTightIsolationMVArun2017v2DBoldDMwLT2017") << std::endl;
+
         _decayModeFindingNew[_nL]       = tau.tauID("decayModeFindingNewDMs");                   //new Tau ID
         _tauVLooseMvaNew[_nL]           = tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT");
         _tauLooseMvaNew[_nL]            = tau.tauID("byLooseIsolationMVArun2v1DBnewDMwLT");
         _tauMediumMvaNew[_nL]           = tau.tauID("byMediumIsolationMVArun2v1DBnewDMwLT");
         _tauTightMvaNew[_nL]            = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
         _tauVTightMvaNew[_nL]           = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
+
+        _tauVLooseMvaNew2017v2[_nL]           = tau.tauID("byVLooseIsolationMVArun2017v2DBnewDMwLT2017");
+        _tauLooseMvaNew2017v2[_nL]            = tau.tauID("byLooseIsolationMVArun2017v2DBnewDMwLT2017");
+        _tauMediumMvaNew2017v2[_nL]           = tau.tauID("byMediumIsolationMVArun2017v2DBnewDMwLT2017");
+        _tauTightMvaNew2017v2[_nL]            = tau.tauID("byTightIsolationMVArun2017v2DBnewDMwLT2017");
+        _tauVTightMvaNew2017v2[_nL]           = tau.tauID("byVTightIsolationMVArun2017v2DBnewDMwLT2017");
 
         _tauAgainstElectronMVA6Raw[_nL] = tau.tauID("againstElectronMVA6Raw");
         _tauCombinedIsoDBRaw3Hits[_nL]  = tau.tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits");
@@ -378,6 +408,11 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lMatchDecayedHadr[_nL]     = match ? GenTools::decayedHadronically(*match, genParticles) : false;
 }
 
+void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau){
+    const reco::GenJet* match = tau.genJet();
+    if(match != nullptr) std::cout << match->pt() << std::endl;
+    else if(match == nullptr) std::cout << "nullptr" << std::endl;
+}
 
 /*
  * Impact parameters:
