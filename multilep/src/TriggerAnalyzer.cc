@@ -18,15 +18,15 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   allFlags["passMETFilters"] = {"Flag_goodVertices", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter",  "Flag_EcalDeadCellTriggerPrimitiveFilter",
                                 "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"};
 
-  if(!multilepAnalyzer->isSUSY){ // This one is only for data and fullSIM, not for fastSim
+  if( !multilepAnalyzer->isSUSY() ){ // This one is only for data and fullSIM, not for fastSim
     allFlags["passMETFilters"].push_back("Flag_globalSuperTightHalo2016Filter");
   }
 
-  if(multilepAnalyzer->isData){ // This one is only to be applied on data
+  if( multilepAnalyzer->isData() ){ // This one is only to be applied on data
     allFlags["passMETFilters"].push_back("Flag_eeBadScFilter");
   }
 
-  if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018){ // This one is only for 2017 and 2018 data
+  if( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ){ // This one is only for 2017 and 2018 data
     allFlags["passMETFilters"].push_back("updated_ecalBadCalibFilter"); // improved version over the Flag_ecalBadCalibFilter, implementation manually
   }
 
@@ -34,7 +34,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   // Triggers are taken in OR and always start with "HLT"
   // WARNING/TODO: the 2018 year is currently a placeholder using the 2017 triggers, please check before starting analysis
   // Also for the other years the triggers might be checked and optimized in detail, could use https://tomc.web.cern.ch/tomc/triggerPrescales to check prescales
-  if(multilepAnalyzer->is2018){
+  if( multilepAnalyzer->is2018() ){
     allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
     allFlags["passTrigger_e"]   = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele38_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
     allFlags["passTrigger_t"]   = {"HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr"};
@@ -54,7 +54,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["passTrigger_eem"] = {"HLT_Mu8_DiEle12_CaloIdL_TrackIdL", "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ"};
     allFlags["passTrigger_eee"] = {"HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL"};                                                                    //Bullshit trigger because L1 seeds are higher than HLT, be careful using it
 
-  } else if(multilepAnalyzer->is2017){
+  } else if( multilepAnalyzer->is2017() ){
     allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_IsoMu30", "HLT_Mu50", "HLT_Mu55"};
     allFlags["passTrigger_e"]   = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele38_WPTight_Gsf", "HLT_Ele40_WPTight_Gsf"};
     allFlags["passTrigger_t"]   = {"HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr"};
@@ -164,7 +164,7 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   edm::Handle<edm::TriggerResults> recoResultsSecondary; iEvent.getByToken(multilepAnalyzer->recoResultsSecondaryToken, recoResultsSecondary);
   edm::Handle<edm::TriggerResults> triggerResults;       iEvent.getByToken(multilepAnalyzer->triggerToken,              triggerResults);
 
-  if(multilepAnalyzer->is2017 || multilepAnalyzer->is2018){ // The updated ecalBadCalibFilter
+  if( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ){ // The updated ecalBadCalibFilter
     edm::Handle<bool> passEcalBadCalibFilterUpdate; iEvent.getByToken(multilepAnalyzer->ecalBadCalibFilterToken, passEcalBadCalibFilterUpdate);
     flag["updated_ecalBadCalibFilter"] = (*passEcalBadCalibFilterUpdate);
   }

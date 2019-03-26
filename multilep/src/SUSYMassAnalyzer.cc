@@ -9,7 +9,7 @@ SUSYMassAnalyzer::SUSYMassAnalyzer(const edm::ParameterSet& iConfig, multilep* m
 
 
 void SUSYMassAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
-    if(!multilepAnalyzer->isSUSY) return;    //only run this module on SUSY samples
+    if( !multilepAnalyzer->isSUSY() ) return;    //only run this module on SUSY samples
     //Counter to determine the amount of events for every SUSY mass point
     //Note, too small binning is used to be sure the binning is smaller than the sample's mass point separation
     //There is no way to access the amount of mass points or there splitting while running over the sample!!!

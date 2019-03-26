@@ -66,7 +66,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
     outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
 
-    if(!multilepAnalyzer->is2018) outputTree->Branch("_jetIsLoose", _jetIsLoose, "_jetIsLoose[_nJets]/O"); // WARNING, not recommended to be used, only exists for 2016
+    if(!multilepAnalyzer->is2018() ) outputTree->Branch("_jetIsLoose", _jetIsLoose, "_jetIsLoose[_nJets]/O"); // WARNING, not recommended to be used, only exists for 2016
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
@@ -82,9 +82,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     for(const auto& jet : *jets){
         if(_nJets == nJets_max) break;
 
-        _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
-        _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
-        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
+        _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017() || multilepAnalyzer->is2018() );
+        _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
+        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
 
         //find smeared equivalents of nominal jet
         auto jetSmearedIt = jetsSmeared->begin();

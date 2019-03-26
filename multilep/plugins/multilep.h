@@ -66,6 +66,14 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
     friend SUSYMassAnalyzer;
     public:
         explicit multilep(const edm::ParameterSet&);
+
+        bool isData() const{ return sampleIsData; }
+        bool isMC() const{ return !sampleIsData; }
+        bool is2016() const{ return !(sampleIs2017 || sampleIs2018); }
+        bool is2017() const{ return sampleIs2017; }
+        bool is2018() const{ return sampleIs2018; }
+        bool isSUSY() const{ return sampleIsSUSY; }
+
         ~multilep();
 
     private:
@@ -99,10 +107,10 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<double>                            prefireWeightUpToken;
         edm::EDGetTokenT<double>                            prefireWeightDownToken;
         std::string                                         skim;
-        bool                                                isData;
-        bool                                                is2017;
-        bool                                                is2018;
-        bool                                                isSUSY;
+        bool                                                sampleIsData;
+        bool                                                sampleIs2017;
+        bool                                                sampleIs2018;
+        bool                                                sampleIsSUSY;
         bool                                                storeLheParticles;
         bool                                                storeParticleLevel;
 

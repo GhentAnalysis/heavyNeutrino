@@ -126,12 +126,9 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWoldDMwLT[nL_max];
 
     //lepton MVA definitions for SUSY (ewkino), TTH and tZq 
-    double _leptonMvaSUSY16[nL_max];
-    double _leptonMvaTTH16[nL_max];
-    double _leptonMvaSUSY17[nL_max];
-    double _leptonMvaTTH17[nL_max];
-    double _leptonMvatZqTTV16[nL_max];
-    double _leptonMvatZqTTV17[nL_max];
+    double _leptonMvaSUSY[nL_max];
+    double _leptonMvaTTH[nL_max];
+    double _leptonMvatZq[nL_max];
 
     //analysis specific lepton selection (please do NOT delete for now, will be deleted when analysis code is updated 
     bool _lEwkLoose[nL_max];
@@ -195,12 +192,9 @@ class LeptonAnalyzer {
     double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
 
     //for lepton MVA calculation
-    LeptonMvaHelper* leptonMvaComputerSUSY16;
-    LeptonMvaHelper* leptonMvaComputerTTH16;
-    LeptonMvaHelper* leptonMvaComputerSUSY17;
-    LeptonMvaHelper* leptonMvaComputerTTH17;
-    LeptonMvaHelper* leptonMvaComputertZqTTV16;
-    LeptonMvaHelper* leptonMvaComputertZqTTV17;
+    LeptonMvaHelper* leptonMvaComputerSUSY;
+    LeptonMvaHelper* leptonMvaComputerTTH;
+    LeptonMvaHelper* leptonMvaComputertZq;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

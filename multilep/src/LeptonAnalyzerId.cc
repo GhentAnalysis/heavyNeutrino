@@ -158,7 +158,7 @@ bool LeptonAnalyzer::isEwkFO(const pat::Muon& lep) const{
     if(!_lEwkLoose[_nL])        return false;
     if(_lPt[_nL] <= 10)         return false;
     if(!lep.isMediumMuon())     return false;
-    return _leptonMvaSUSY16[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
+    return _leptonMvaSUSY[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
 }
 
 bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep) const{
@@ -167,11 +167,11 @@ bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep) const{
     if(!passTriggerEmulationDoubleEG(&lep, false))                                                  return false;
     if(lep.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) !=0)     return false;
     double ptCone = _lPt[_nL];
-    if(_leptonMvaSUSY16[_nL] <= 0.5){
+    if(_leptonMvaSUSY[_nL] <= 0.5){
         ptCone *= 0.85/_ptRatio[_nL];
     }
     if(ptCone >= 30 && lep.hadronicOverEm() >= (lep.isEB() ? 0.10  : 0.07) )                        return false;
-    return _leptonMvaSUSY16[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMvaSummer16GP[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
+    return _leptonMvaSUSY[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMvaSummer16GP[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
 }
 
 bool LeptonAnalyzer::isEwkFO(const pat::Tau& tau) const{
@@ -180,14 +180,14 @@ bool LeptonAnalyzer::isEwkFO(const pat::Tau& tau) const{
 
 bool LeptonAnalyzer::isEwkTight(const pat::Muon& lep) const{
     if(!_lEwkFO[_nL]) return false;
-    return _leptonMvaSUSY16[_nL] > -0.2;
+    return _leptonMvaSUSY[_nL] > -0.2;
 }
 
 bool LeptonAnalyzer::isEwkTight(const pat::Electron& lep) const{
     if(!_lEwkFO[_nL])                       return false;
     if(!passTriggerEmulationDoubleEG(&lep)) return false;
     if(!lep.passConversionVeto())           return false;
-    return _leptonMvaSUSY16[_nL] > 0.5;
+    return _leptonMvaSUSY[_nL] > 0.5;
 }
 
 bool LeptonAnalyzer::isEwkTight(const pat::Tau& tau) const{
