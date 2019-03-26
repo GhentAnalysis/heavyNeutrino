@@ -1,95 +1,43 @@
-**** Following environment variables are going to be unset.
-       DBS_CLIENT_CONFIG
-       DBSCMD_HOME
-       MAGIC
-       MALLOC_CONF
-commit 43508391e7ff3a7360383c6a19245e562b2b7a34
+commit c41b4695bb8d7f9fa70c26f69c05d7e94d81bdac
 Author: tomc <tomc@cern.ch>
-Date:   Mon Mar 25 14:11:29 2019 +0100
+Date:   Tue Mar 26 12:15:38 2019 +0100
 
-    Fix typo
+    Scale and smearing corrections were not yet stored for 2018
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
+   Removed: _lHNFO,_lHNLoose,_lHNTight
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
+   Removed: _lHNFO,_lHNLoose,_lHNTight
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   Removed: _lHNFO,_lHNLoose,_lHNTight
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   Removed: _lHNFO,_lHNLoose,_lHNTight
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _pl_nJets
-   Removed: _pl_nJet
-   Changed:
-      _jetChargedEmFraction                              mean:   0.1501 -->   0.1532     rms:   0.3029 -->   0.3052    
-      _jetChargedHadronFraction                          mean:   0.2966 -->   0.2757     rms:   0.2693 -->   0.2665    
-      _jetCsvV2                                          mean:  -1.9461 -->  -2.3050     rms:   4.2975 -->   4.5074    
-      _jetDeepCsv_b                                      mean:  -0.3365 -->  -0.3534     rms:   0.5407 -->   0.5422    
-      _jetDeepCsv_bb                                     mean:  -0.3922 -->  -0.4063     rms:   0.4897 -->   0.4925    
-      _jetDeepCsv_c                                      mean:  -0.3159 -->  -0.3320     rms:   0.5532 -->   0.5562    
-      _jetDeepCsv_udsg                                   mean:   0.0763 -->   0.0536     rms:   0.8757 -->   0.8822    
-      _jetE                                              mean: 145.1630 --> 155.5320     rms: 144.2544 --> 161.9474    
-      _jetEta                                            mean:   0.0273 -->  -0.0760     rms:   1.7966 -->   1.8501    
-      _jetHFEmFraction                                   mean:   0.0078 -->   0.0102     rms:   0.0376 -->   0.0400    
-      _jetHFHadronFraction                               mean:   0.0436 -->   0.0679     rms:   0.1801 -->   0.2231    
-      _jetHadronFlavor                                   mean:   0.1264 -->   0.1290     rms:   0.6998 -->   0.7067    
-      _jetIsTight                                        mean:   0.1063 -->   0.1466     rms:   0.3082 -->   0.3537    
-      _jetIsTightLepVeto                                 mean:   0.1063 -->   0.1466     rms:   0.3082 -->   0.3537    
-      _jetNeutralEmFraction                              mean:   0.2768 -->   0.2758     rms:   0.2950 -->   0.2908    
-      _jetNeutralHadronFraction                          mean:   0.1635 -->   0.1806     rms:   0.2462 -->   0.2758    
-      _jetPhi                                            mean:  -0.0412 -->  -0.0140     rms:   1.8379 -->   1.8216    
-      _jetPt                                             mean:  46.2972 -->  46.4071     rms:  34.6623 -->  34.9259    
-      _jetPt_JECDown                                     mean:  44.5613 -->  44.6040     rms:  34.4229 -->  34.6581    
-      _jetPt_JECUp                                       mean:  48.0331 -->  48.2102     rms:  34.9909 -->  35.2997    
-      _jetPt_L1                                          mean:  40.9950 -->  40.9596     rms:  33.3993 -->  33.5804    
-      _jetPt_L2                                          mean:  46.2972 -->  46.4071     rms:  34.6623 -->  34.9259    
-      _jetPt_L3                                          mean:  46.2972 -->  46.4071     rms:  34.6623 -->  34.9259    
-      _jetPt_Uncorrected                                 mean:  43.8388 -->  44.5310     rms:  32.3554 -->  32.3757    
-      _jetSmearedPt                                      mean:  47.5901 -->  47.5792     rms:  34.6246 -->  35.0519    
-      _jetSmearedPt_JECDown                              mean:  44.5748 -->  44.6160     rms:  34.4173 -->  34.6528    
-      _jetSmearedPt_JECUp                                mean:  48.0196 -->  48.1982     rms:  34.9960 -->  35.3046    
-      _jetSmearedPt_JERDown                              mean:  47.0798 -->  47.1137     rms:  34.5635 -->  34.9207    
-      _jetSmearedPt_JERUp                                mean:  47.9515 -->  48.0753     rms:  34.8246 -->  35.1724    
-      _lEwkTight                                         mean:   0.3614 -->   0.3719     rms:   0.4804 -->   0.4833    
-      _leptonMvaSUSY16                                   mean:   0.4470 -->   0.4639     rms:   0.7029 -->   0.7024    
-      _leptonMvaSUSY17                                   mean:   0.3913 -->   0.4058     rms:   0.7340 -->   0.7336    
-      _leptonMvaTTH16                                    mean:   0.4857 -->   0.4978     rms:   0.6951 -->   0.6938    
-      _leptonMvaTTH17                                    mean:   0.4334 -->   0.4479     rms:   0.7153 -->   0.7165    
-      _leptonMvatZqTTV16                                 mean:   0.3716 -->   0.3805     rms:   0.7515 -->   0.7518    
-      _leptonMvatZqTTV17                                 mean:   0.3294 -->   0.3379     rms:   0.7646 -->   0.7645    
-      _met                                               mean:  35.2760 -->  35.0949     rms:  22.4654 -->  22.2928    
-      _metJECDown                                        mean:  33.4805 -->  33.4084     rms:  21.8145 -->  21.8331    
-      _metJECUp                                          mean:  37.3299 -->  37.1272     rms:  23.2656 -->  23.1150    
-      _metPhi                                            mean:   0.0139 -->   0.0328     rms:   1.5469 -->   1.5492    
-      _metPhiJECDown                                     mean:   0.0219 -->  -0.0698     rms:   1.5247 -->   1.5326    
-      _metPhiJECUp                                       mean:  -0.0417 -->   0.0830     rms:   1.5529 -->   1.5539    
-      _metPhiUnclDown                                    mean:  -0.0917 -->  -0.0457     rms:   1.5304 -->   1.5474    
-      _metPhiUnclUp                                      mean:   0.0720 -->   0.0034     rms:   1.5519 -->   1.5590    
-      _metSignificance                                   mean:   2.7434 -->   2.6848     rms:   3.4424 -->   3.2220    
-      _metUnclDown                                       mean:  35.0929 -->  34.5587     rms:  22.3823 -->  22.7154    
-      _metUnclUp                                         mean:  36.2558 -->  36.3114     rms:  22.4998 -->  22.0087    
-      _nJets                                             mean:   3.4800 -->   3.4100     rms:   1.5131 -->   1.4635    
-      _ptRatio                                           mean:   0.7431 -->   0.7537     rms:   0.2459 -->   0.2477    
-      _ptRel                                             mean:   7.5567 -->   8.5340     rms:   9.3896 -->  10.6304    
+   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
+   Removed: _lHNFO,_lHNLoose,_lHNTight
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _pl_nJets
-   Removed: _pl_nJet
+   Removed: _lHNFO,_lHNLoose,_lHNTight
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _pl_nJets
-   Removed: _pl_nJet
+   Removed: _lHNFO,_lHNLoose,_lHNTight

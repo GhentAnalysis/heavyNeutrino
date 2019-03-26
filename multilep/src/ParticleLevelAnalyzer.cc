@@ -7,7 +7,8 @@
 #include "heavyNeutrino/multilep/interface/ParticleLevelAnalyzer.h"
 
 /*
-Storing plerator particles
+Class storing data for unfolding to particle-level in differential measurement
+Saving the products created by https://twiki.cern.ch/twiki/bin/viewauth/CMS/ParticleLevelProducer
 */
 
 ParticleLevelAnalyzer::ParticleLevelAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
