@@ -122,9 +122,6 @@ class LeptonAnalyzer {
     double _leptonMvatZqTTV16[nL_max];
     double _leptonMvatZqTTV17[nL_max];
 
-    bool _lHNLoose[nL_max];                                                                          //analysis specific lepton selection decisions
-    bool _lHNFO[nL_max];
-    bool _lHNTight[nL_max];
     bool _lEwkLoose[nL_max];
     bool _lEwkFO[nL_max];
     bool _lEwkTight[nL_max];
