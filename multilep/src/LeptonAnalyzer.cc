@@ -96,18 +96,16 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
       outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
     }
-    if( !multilepAnalyzer->is2018() ){
-      outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nLight]/D");
-      outputTree->Branch("_lPtScaleUp",                 &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
-      outputTree->Branch("_lPtScaleDown",               &_lPtScaleDown,                 "_lPtScaleDown[_nLight]/D");
-      outputTree->Branch("_lPtResUp",                   &_lPtResUp,                     "_lPtResUp[_nLight]/D");
-      outputTree->Branch("_lPtResDown",                 &_lPtResDown,                   "_lPtResDown[_nLight]/D");
-      outputTree->Branch("_lECorr",                     &_lECorr,                       "_lECorr[_nLight]/D");
-      outputTree->Branch("_lEScaleUp",                  &_lEScaleUp,                    "_lEScaleUp[_nLight]/D");
-      outputTree->Branch("_lEScaleDown",                &_lEScaleDown,                  "_lEScaleDown[_nLight]/D");
-      outputTree->Branch("_lEResUp",                    &_lEResUp,                      "_lEResUp[_nLight]/D");
-      outputTree->Branch("_lEResDown",                  &_lEResDown,                    "_lEResDown[_nLight]/D");
-    }
+    outputTree->Branch("_lPtCorr",                      &_lPtCorr,                      "_lPtCorr[_nLight]/D");
+    outputTree->Branch("_lPtScaleUp",                   &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
+    outputTree->Branch("_lPtScaleDown",                 &_lPtScaleDown,                 "_lPtScaleDown[_nLight]/D");
+    outputTree->Branch("_lPtResUp",                     &_lPtResUp,                     "_lPtResUp[_nLight]/D");
+    outputTree->Branch("_lPtResDown",                   &_lPtResDown,                   "_lPtResDown[_nLight]/D");
+    outputTree->Branch("_lECorr",                       &_lECorr,                       "_lECorr[_nLight]/D");
+    outputTree->Branch("_lEScaleUp",                    &_lEScaleUp,                    "_lEScaleUp[_nLight]/D");
+    outputTree->Branch("_lEScaleDown",                  &_lEScaleDown,                  "_lEScaleDown[_nLight]/D");
+    outputTree->Branch("_lEResUp",                      &_lEResUp,                      "_lEResUp[_nLight]/D");
+    outputTree->Branch("_lEResDown",                    &_lEResDown,                    "_lEResDown[_nLight]/D");
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
@@ -218,19 +216,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
-        // Currently only available for 2016/2017
-        if( !multilepAnalyzer->is2018() ){
-          _lPtCorr[_nL]                 = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
-          _lPtScaleUp[_nL]              = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
-          _lPtScaleDown[_nL]            = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
-          _lPtResUp[_nL]                = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
-          _lPtResDown[_nL]              = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
-          _lECorr[_nL]                  = ele->userFloat("ecalTrkEnergyPostCorr");
-          _lEScaleUp[_nL]               = ele->userFloat("energyScaleUp");
-          _lEScaleDown[_nL]             = ele->userFloat("energyScaleDown");
-          _lEResUp[_nL]                 = ele->userFloat("energySigmaUp");
-          _lEResDown[_nL]               = ele->userFloat("energySigmaDown");
-        }
+        _lPtCorr[_nL]                   = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
+        _lPtScaleUp[_nL]                = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
+        _lPtScaleDown[_nL]              = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
+        _lPtResUp[_nL]                  = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
+        _lPtResDown[_nL]                = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
+        _lECorr[_nL]                    = ele->userFloat("ecalTrkEnergyPostCorr");
+        _lEScaleUp[_nL]                 = ele->userFloat("energyScaleUp");
+        _lEScaleDown[_nL]               = ele->userFloat("energyScaleDown");
+        _lEResUp[_nL]                   = ele->userFloat("energySigmaUp");
+        _lEResDown[_nL]                 = ele->userFloat("energySigmaDown");
 
         ++_nEle;
         ++_nL;
