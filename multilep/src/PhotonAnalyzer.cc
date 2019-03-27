@@ -41,18 +41,16 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_phTTGMatchEta",                    &_phTTGMatchEta,                  "_phTTGMatchEta[_nPh]/D");
       outputTree->Branch("_phMatchPdgId",                     &_phMatchPdgId,                   "_phMatchPdgId[_nPh]/I");
     }
-    if( !multilepAnalyzer->is2018() ){
-      outputTree->Branch("_phPtCorr",                         &_phPtCorr,                       "_phPtCorr[_nPh]/D");
-      outputTree->Branch("_phPtScaleUp",                      &_phPtScaleUp,                    "_phPtScaleUp[_nPh]/D");
-      outputTree->Branch("_phPtScaleDown",                    &_phPtScaleDown,                  "_phPtScaleDown[_nPh]/D");
-      outputTree->Branch("_phPtResUp",                        &_phPtResUp,                      "_phPtResUp[_nPh]/D");
-      outputTree->Branch("_phPtResDown",                      &_phPtResDown,                    "_phPtResDown[_nPh]/D");
-      outputTree->Branch("_phECorr",                          &_phECorr,                        "_phECorr[_nPh]/D");
-      outputTree->Branch("_phEScaleUp",                       &_phEScaleUp,                     "_phEScaleUp[_nPh]/D");
-      outputTree->Branch("_phEScaleDown",                     &_phEScaleDown,                   "_phEScaleDown[_nPh]/D");
-      outputTree->Branch("_phEResUp",                         &_phEResUp,                       "_phEResUp[_nPh]/D");
-      outputTree->Branch("_phEResDown",                       &_phEResDown,                     "_phEResDown[_nPh]/D");
-    }
+    outputTree->Branch("_phPtCorr",                           &_phPtCorr,                       "_phPtCorr[_nPh]/D");
+    outputTree->Branch("_phPtScaleUp",                        &_phPtScaleUp,                    "_phPtScaleUp[_nPh]/D");
+    outputTree->Branch("_phPtScaleDown",                      &_phPtScaleDown,                  "_phPtScaleDown[_nPh]/D");
+    outputTree->Branch("_phPtResUp",                          &_phPtResUp,                      "_phPtResUp[_nPh]/D");
+    outputTree->Branch("_phPtResDown",                        &_phPtResDown,                    "_phPtResDown[_nPh]/D");
+    outputTree->Branch("_phECorr",                            &_phECorr,                        "_phECorr[_nPh]/D");
+    outputTree->Branch("_phEScaleUp",                         &_phEScaleUp,                     "_phEScaleUp[_nPh]/D");
+    outputTree->Branch("_phEScaleDown",                       &_phEScaleDown,                   "_phEScaleDown[_nPh]/D");
+    outputTree->Branch("_phEResUp",                           &_phEResUp,                       "_phEResUp[_nPh]/D");
+    outputTree->Branch("_phEResDown",                         &_phEResDown,                     "_phEResDown[_nPh]/D");
 
     generator = TRandom3(0);
 }
@@ -105,19 +103,16 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
-        // Currently only available for 2016/2017
-        if( !multilepAnalyzer->is2018() ){
-          _phPtCorr[_nPh]                   = photon->pt()*photon->userFloat("ecalEnergyPostCorr")/photon->energy();
-          _phPtScaleUp[_nPh]                = photon->pt()*photon->userFloat("energyScaleUp")/photon->energy();
-          _phPtScaleDown[_nPh]              = photon->pt()*photon->userFloat("energyScaleDown")/photon->energy();
-          _phPtResUp[_nPh]                  = photon->pt()*photon->userFloat("energySigmaUp")/photon->energy();
-          _phPtResDown[_nPh]                = photon->pt()*photon->userFloat("energySigmaDown")/photon->energy();
-          _phECorr[_nPh]                    = photon->userFloat("ecalEnergyPostCorr");
-          _phEScaleUp[_nPh]                 = photon->userFloat("energyScaleUp");
-          _phEScaleDown[_nPh]               = photon->userFloat("energyScaleDown");
-          _phEResUp[_nPh]                   = photon->userFloat("energySigmaUp");
-          _phEResDown[_nPh]                 = photon->userFloat("energySigmaDown");
-        }
+        _phPtCorr[_nPh]                     = photon->pt()*photon->userFloat("ecalEnergyPostCorr")/photon->energy();
+        _phPtScaleUp[_nPh]                  = photon->pt()*photon->userFloat("energyScaleUp")/photon->energy();
+        _phPtScaleDown[_nPh]                = photon->pt()*photon->userFloat("energyScaleDown")/photon->energy();
+        _phPtResUp[_nPh]                    = photon->pt()*photon->userFloat("energySigmaUp")/photon->energy();
+        _phPtResDown[_nPh]                  = photon->pt()*photon->userFloat("energySigmaDown")/photon->energy();
+        _phECorr[_nPh]                      = photon->userFloat("ecalEnergyPostCorr");
+        _phEScaleUp[_nPh]                   = photon->userFloat("energyScaleUp");
+        _phEScaleDown[_nPh]                 = photon->userFloat("energyScaleDown");
+        _phEResUp[_nPh]                     = photon->userFloat("energySigmaUp");
+        _phEResDown[_nPh]                   = photon->userFloat("energySigmaDown");
 
         if( multilepAnalyzer->isMC() ){
             fillPhotonGenVars(photon->genParticle());
