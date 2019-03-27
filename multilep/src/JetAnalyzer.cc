@@ -125,7 +125,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         std::vector<double> ptVector = {_jetPt[_nJets], _jetPt_JECDown[_nJets], _jetPt_JECUp[_nJets],
             _jetSmearedPt[_nJets], _jetSmearedPt_JECDown[_nJets], _jetSmearedPt_JECUp[_nJets], _jetSmearedPt_JERDown[_nJets],  _jetSmearedPt_JERUp[_nJets]};
         double maxpT = *(std::max_element(ptVector.cbegin(), ptVector.cend()));
-        if(maxpT <= 25) continue;
+        if(maxpT <= 20) continue;
 
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
@@ -138,6 +138,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+
         //new DeepFlavour tagger
         _jetDeepCsv_udsg[_nJets]          = jet.bDiscriminator("pfDeepCSVJetTags:probudsg");
         _jetDeepCsv_b[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probb");
