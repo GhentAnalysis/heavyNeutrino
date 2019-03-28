@@ -2,7 +2,7 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
-#include "heavyNeutrino/multilep/interface/TauMatchTest.h"
+#include "heavyNeutrino/multilep/interface/TauTools.h"
 #include "TLorentzVector.h"
 #include <algorithm>
 
@@ -305,8 +305,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
         if(fabs(tau.eta()) > 2.3) continue;
         fillLeptonKinVars(tau);
-//        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
-//        if(!multilepAnalyzer->isData) TauMatchTest::findMatch(tau, *genParticles);
         if(!multilepAnalyzer->isData) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
         fillLeptonImpactParameters(tau, primaryVertex);
 
@@ -416,7 +414,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     const reco::GenParticle* match = lepton.genParticle();
     if(!match || match->pdgId() != lepton.pdgId()) match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
 
-    _tauGenStatus[_nL]          = TauMatchTest::tauGenStatus(match);        
+    _tauGenStatus[_nL]          = TauTools::tauGenStatus(match);        
     _lIsPrompt[_nL]             = match && (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) && GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
     _lMatchPt[_nL]              = match ? match->pt() : 0;
@@ -431,9 +429,9 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
 
 void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco::GenParticle>& genParticles){
     
-    const reco::GenParticle* match = TauMatchTest::findMatch(tau, genParticles);
+    const reco::GenParticle* match = TauTools::findMatch(tau, genParticles);
 
-    _tauGenStatus[_nL]          = TauMatchTest::tauGenStatus(match);        
+    _tauGenStatus[_nL]          = TauTools::tauGenStatus(match);        
     _lIsPrompt[_nL]             = match && _tauGenStatus[_nL] != 6; 
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
     _lMatchPt[_nL]              = match ? match->pt() : 0;
@@ -444,7 +442,7 @@ void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco:
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
     _lMomPdgId[_nL]             = match ? GenTools::getMotherPdgId(*match, genParticles) : 0;
-    _lMatchDecayedHadr[_nL]     = match ? TauMatchTest::decayedHadronically(*match, genParticles) : false;
+    _lMatchDecayedHadr[_nL]     = match ? TauTools::decayedHadronically(*match, genParticles) : false;
 
 }
 

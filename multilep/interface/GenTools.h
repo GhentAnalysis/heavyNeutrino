@@ -40,7 +40,6 @@ namespace GenTools{
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
 
     const reco::GenParticle* geometricMatch(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles, const bool differentId=false);
-    //const reco::GenParticle* matchLepToTau(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles);
     bool considerForMatching(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId);
 
 

@@ -271,22 +271,3 @@ const reco::GenParticle* GenTools::geometricMatch(const reco::Candidate& reco, c
     return match;
 }
 
-//const reco::GenParticle* GenTools::matchLepToTau(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles){
-//    reco::GenParticle const* match = nullptr;
-//    TLorentzVector recoV(reco.px(), reco.py(), reco.pz(), reco.energy());
-//    double minDeltaR = 99999.;
-//    for(auto genIt = genParticles.cbegin(); genIt != genParticles.cend(); ++genIt){
-//        if(abs(genIt->pdgId()) != 11 or abs(genIt->pdgId()) != 13) continue;
-//        if(genIt->pt() < 8)     continue;
-//        TLorentzVector genV(genIt->px(), genIt->py(), genIt->pz(), genIt->energy());
-//        double deltaR = recoV.DeltaR(genV);
-//        if(deltaR < minDeltaR){
-//            minDeltaR = deltaR;
-//            match = &*genIt;
-//        }
-//    }
-//
-//    if(minDeltaR > 0.2) return nullptr;
-//    return match;          
-//
-//}

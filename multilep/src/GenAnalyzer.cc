@@ -8,7 +8,7 @@
 //include other parts of code 
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
-#include "heavyNeutrino/multilep/interface/TauMatchTest.h"
+#include "heavyNeutrino/multilep/interface/TauTools.h"
 
 /*
  * Storing generator particles
@@ -80,7 +80,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lCharge[_gen_nL]           = p.charge();
                 _gen_lIsPrompt[_gen_nL]         = GenTools::isPrompt(p, *genParticles); 
                 _gen_lMomPdg[_gen_nL]           = GenTools::getMother(p, *genParticles)->pdgId();
-                _gen_lDecayedHadr[_gen_nL]      = TauMatchTest::decayedHadronically(p, *genParticles);
+                _gen_lDecayedHadr[_gen_nL]      = TauTools::decayedHadronically(p, *genParticles);
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
 
