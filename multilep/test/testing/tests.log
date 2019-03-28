@@ -1,15 +1,12 @@
-**** Following environment variables are going to be unset.
-       DBS_CLIENT_CONFIG
-       DBSCMD_HOME
-       MAGIC
-       MALLOC_CONF
-commit 7db93f13188ca789ad12ce2c9a6cc6276e201765
+commit 51ef408fb89f4c08735c86b0c32bce998b1a9302
 Author: tomc <tomc@cern.ch>
-Date:   Thu Mar 28 10:47:52 2019 +0100
+Date:   Thu Mar 28 17:00:06 2019 +0100
 
-    Bug fix for prefiring weights
+    Introducing getHandle function
     
-    Fixing bug introduced in 7d663e6bb89bbeb997ef6bad966a99aaa1d9a5ff
+    In order to have a clean and easy way to retrieve the handles, the getHandle function is introduced
+    Stolen from Sam
+    Should have become a CMSSW standard function long time ago
 
 --------------------------------------------------------------------------------------------------
 
@@ -30,54 +27,11 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _leptonMvaSUSY,_leptonMvaTTH,_leptonMvatZq,_phECorr,_phEResDown,_phEResUp,_phEScaleDown,_phEScaleUp,_phPtCorr,_phPtResDown,_phPtResUp,_phPtScaleDown,_phPtScaleUp
-   Removed: _leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17
-   Changed:
-      _jetChargedEmFraction                              mean:   0.1532 -->   0.1213     rms:   0.3052 -->   0.2789    
-      _jetChargedHadronFraction                          mean:   0.2757 -->   0.2769     rms:   0.2665 -->   0.2670    
-      _jetCsvV2                                          mean:  -2.3050 -->  -2.9799     rms:   4.5074 -->   4.8425    
-      _jetDeepCsv_b                                      mean:  -0.3534 -->  -0.4326     rms:   0.5422 -->   0.5521    
-      _jetDeepCsv_bb                                     mean:  -0.4063 -->  -0.4808     rms:   0.4925 -->   0.5009    
-      _jetDeepCsv_c                                      mean:  -0.3320 -->  -0.4153     rms:   0.5562 -->   0.5658    
-      _jetDeepCsv_udsg                                   mean:   0.0536 -->  -0.0818     rms:   0.8822 -->   0.8926    
-      _jetE                                              mean: 155.5320 --> 166.6615     rms: 161.9474 --> 188.4192    
-      _jetEta                                            mean:  -0.0760 -->  -0.0044     rms:   1.8501 -->   2.1281    
-      _jetHFEmFraction                                   mean:   0.0102 -->   0.0140     rms:   0.0400 -->   0.0418    
-      _jetHFHadronFraction                               mean:   0.0679 -->   0.1271     rms:   0.2231 -->   0.3081    
-      _jetHadronFlavor                                   mean:   0.1290 -->   0.1095     rms:   0.7067 -->   0.6526    
-      _jetIsTight                                        mean:   0.1466 -->   0.2147     rms:   0.3537 -->   0.4106    
-      _jetIsTightLepVeto                                 mean:   0.1466 -->   0.2147     rms:   0.3537 -->   0.4106    
-      _jetNeutralEmFraction                              mean:   0.2758 -->   0.2427     rms:   0.2908 -->   0.2789    
-      _jetNeutralHadronFraction                          mean:   0.1806 -->   0.2728     rms:   0.2758 -->   0.3379    
-      _jetPhi                                            mean:  -0.0140 -->   0.0091     rms:   1.8216 -->   1.8334    
-      _jetPt                                             mean:  46.4071 -->  38.5766     rms:  34.9259 -->  32.1737    
-      _jetPt_JECDown                                     mean:  44.6040 -->  36.8360     rms:  34.6581 -->  31.9441    
-      _jetPt_JECUp                                       mean:  48.2102 -->  40.3171     rms:  35.2997 -->  32.4955    
-      _jetPt_L1                                          mean:  40.9596 -->  33.3693     rms:  33.5804 -->  31.0022    
-      _jetPt_L2                                          mean:  46.4071 -->  38.5766     rms:  34.9259 -->  32.1737    
-      _jetPt_L3                                          mean:  46.4071 -->  38.5766     rms:  34.9259 -->  32.1737    
-      _jetPt_Uncorrected                                 mean:  44.5310 -->  37.9829     rms:  32.3757 -->  29.5033    
-      _jetSmearedPt                                      mean:  47.5792 -->  39.5931     rms:  35.0519 -->  32.4063    
-      _jetSmearedPt_JECDown                              mean:  44.6160 -->  36.8454     rms:  34.6528 -->  31.9408    
-      _jetSmearedPt_JECUp                                mean:  48.1982 -->  40.3077     rms:  35.3046 -->  32.4990    
-      _jetSmearedPt_JERDown                              mean:  47.1137 -->  39.1567     rms:  34.9207 -->  32.2774    
-      _jetSmearedPt_JERUp                                mean:  48.0753 -->  40.1446     rms:  35.1724 -->  32.4701    
-      _lEwkFO                                            mean:   0.4316 -->   0.4351     rms:   0.4953 -->   0.4958    
-      _lEwkTight                                         mean:   0.3719 -->   0.3684     rms:   0.4833 -->   0.4824    
-      _nJets                                             mean:   3.4100 -->   4.7500     rms:   1.4635 -->   2.1972    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Changed:
-      _prefireWeight                                     mean:   0.0000 -->   0.9807     rms:   0.0000 -->   0.0724    
-      _prefireWeightDown                                 mean:   0.0000 -->   0.9854     rms:   0.0000 -->   0.0570    
-      _prefireWeightUp                                   mean:   0.0000 -->   0.9758     rms:   0.0000 -->   0.0878    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Changed:
-      _prefireWeight                                     mean:   0.0000 -->   0.9901     rms:   0.0000 -->   0.0315    
-      _prefireWeightDown                                 mean:   0.0000 -->   0.9927     rms:   0.0000 -->   0.0246    
-      _prefireWeightUp                                   mean:   0.0000 -->   0.9875     rms:   0.0000 -->   0.0384    
