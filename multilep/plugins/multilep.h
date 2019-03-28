@@ -42,6 +42,16 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
 
+// Allow for easy way to retrieve handles
+namespace {
+  template<typename T, typename I> edm::Handle<T> getHandle(const I& iEvent,const edm::EDGetTokenT<T>& token){
+    edm::Handle<T> handle;
+    iEvent.getByToken(token,handle);
+    return handle;
+  }
+}
+
+
 //
 // class declaration
 //

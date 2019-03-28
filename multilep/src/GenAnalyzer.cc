@@ -45,7 +45,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
-    edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
+    edm::Handle<std::vector<reco::GenParticle>> genParticles = getHandle(iEvent, multilepAnalyzer->genParticleToken);
 
     if(!genParticles.isValid()) return;
 

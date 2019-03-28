@@ -105,7 +105,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
-    edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
+    auto vertices = getHandle(iEvent, vtxToken);
     if( isMC() ) lheAnalyzer->analyze(iEvent);                                            // needs to be run before selection to get correct uncertainties on MC xsection
     if( isSUSY() ) susyMassAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
@@ -126,9 +126,9 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     _eventNb = (unsigned long) iEvent.id().event();
 
     if(isMC() and !is2018()){
-        edm::Handle<double> pfw;     iEvent.getByToken(prefireWeightToken,     pfw);     _prefireWeight     = (*pfw);
-        edm::Handle<double> pfwUp;   iEvent.getByToken(prefireWeightUpToken,   pfwUp);   _prefireWeightUp   = (*pfwUp);
-        edm::Handle<double> pfwDown; iEvent.getByToken(prefireWeightDownToken, pfwDown); _prefireWeightDown = (*pfwDown);
+     _prefireWeight = *(getHandle(iEvent, prefireWeightToken));
+     _prefireWeightUp = *(getHandle(iEvent, prefireWeightUpToken));
+     _prefireWeightDown = *(getHandle(iEvent, prefireWeightDownToken));
     }
 
     outputTree->Fill();                                                                  //store calculated event info in root tree

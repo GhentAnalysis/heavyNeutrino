@@ -160,12 +160,12 @@ bool TriggerAnalyzer::passCombinedFlagAND(TString combinedFlag){
 }
 
 void TriggerAnalyzer::analyze(const edm::Event& iEvent){
-  edm::Handle<edm::TriggerResults> recoResultsPrimary;   iEvent.getByToken(multilepAnalyzer->recoResultsPrimaryToken,   recoResultsPrimary);
-  edm::Handle<edm::TriggerResults> recoResultsSecondary; iEvent.getByToken(multilepAnalyzer->recoResultsSecondaryToken, recoResultsSecondary);
-  edm::Handle<edm::TriggerResults> triggerResults;       iEvent.getByToken(multilepAnalyzer->triggerToken,              triggerResults);
+  edm::Handle<edm::TriggerResults> recoResultsPrimary   = getHandle(iEvent, multilepAnalyzer->recoResultsPrimaryToken);
+  edm::Handle<edm::TriggerResults> recoResultsSecondary = getHandle(iEvent, multilepAnalyzer->recoResultsSecondaryToken);
+  edm::Handle<edm::TriggerResults> triggerResults       = getHandle(iEvent, multilepAnalyzer->triggerToken);
 
   if( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ){ // The updated ecalBadCalibFilter
-    edm::Handle<bool> passEcalBadCalibFilterUpdate; iEvent.getByToken(multilepAnalyzer->ecalBadCalibFilterToken, passEcalBadCalibFilterUpdate);
+    edm::Handle<bool> passEcalBadCalibFilterUpdate = getHandle(iEvent, multilepAnalyzer->ecalBadCalibFilterToken);
     flag["updated_ecalBadCalibFilter"] = (*passEcalBadCalibFilterUpdate);
   }
 
@@ -222,8 +222,7 @@ void TriggerAnalyzer::getResults(const edm::Event& iEvent, edm::Handle<edm::Trig
   }
 
   if(savePrescales){
-    edm::Handle<pat::PackedTriggerPrescales> prescales;
-    iEvent.getByToken(multilepAnalyzer->prescalesToken, prescales);
+    edm::Handle<pat::PackedTriggerPrescales> prescales = getHandle(iEvent, multilepAnalyzer->prescalesToken);
     for(TString t : toSave){
       if(index[t] == -1) prescale[t] = -1;
       else               prescale[t] = prescales->getPrescaleForIndex(index[t]);
