@@ -1,43 +1,1695 @@
-commit c41b4695bb8d7f9fa70c26f69c05d7e94d81bdac
+**** Following environment variables are going to be unset.
+       DBS_CLIENT_CONFIG
+       DBSCMD_HOME
+       MAGIC
+       MALLOC_CONF
+commit 35d79fce111345ff3e687282e6d1d4a67073a84d
 Author: tomc <tomc@cern.ch>
-Date:   Tue Mar 26 12:15:38 2019 +0100
+Date:   Wed Mar 27 11:28:31 2019 +0100
 
-    Scale and smearing corrections were not yet stored for 2018
+    Remove outdated if, i.e. apply 2018 photon corrections
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _leptonMvaSUSY,_leptonMvaTTH,_leptonMvatZq,_phECorr,_phEResDown,_phEResUp,_phEScaleDown,_phEScaleUp,_phPtCorr,_phPtResDown,_phPtResUp,_phPtScaleDown,_phPtScaleUp
+   Removed: _leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0031 -->   0.0029     rms:   0.0193 -->   0.0222    
+      _jetChargedHadronFraction                          mean:   0.2924 -->   0.2754     rms:   0.2832 -->   0.2895    
+      _jetCsvV2                                          mean:  -1.7409 -->  -3.0313     rms:   4.1698 -->   4.8715    
+      _jetDeepCsv_b                                      mean:  -0.1865 -->  -0.3761     rms:   0.5767 -->   0.6012    
+      _jetDeepCsv_bb                                     mean:  -0.2958 -->  -0.4546     rms:   0.4609 -->   0.5009    
+      _jetDeepCsv_c                                      mean:  -0.2067 -->  -0.3856     rms:   0.5260 -->   0.5686    
+      _jetDeepCsv_udsg                                   mean:   0.1911 -->  -0.0702     rms:   0.8178 -->   0.8782    
+      _jetE                                              mean: 212.9710 --> 209.1504     rms: 269.8032 --> 238.8474    
+      _jetEta                                            mean:   0.1042 -->  -0.0348     rms:   1.9444 -->   2.2601    
+      _jetHFEmFraction                                   mean:   0.0179 -->   0.0373     rms:   0.0488 -->   0.0739    
+      _jetHFHadronFraction                               mean:   0.1586 -->   0.2672     rms:   0.3359 -->   0.3995    
+      _jetIsTight                                        mean:   0.2025 -->   0.3333     rms:   0.4019 -->   0.4714    
+      _jetIsTightLepVeto                                 mean:   0.2025 -->   0.3333     rms:   0.4019 -->   0.4714    
+      _jetNeutralEmFraction                              mean:   0.1672 -->   0.1701     rms:   0.1749 -->   0.1652    
+      _jetNeutralHadronFraction                          mean:   0.2331 -->   0.3503     rms:   0.3288 -->   0.3788    
+      _jetPhi                                            mean:  -0.1217 -->  -0.0148     rms:   1.8079 -->   1.7927    
+      _jetPt                                             mean:  57.6480 -->  44.7066     rms:  50.0596 -->  44.1815    
+      _jetPt_JECDown                                     mean:  55.6181 -->  42.8448     rms:  48.8653 -->  43.2125    
+      _jetPt_JECUp                                       mean:  59.6779 -->  46.5685     rms:  51.5642 -->  45.3870    
+      _jetPt_L1                                          mean:  49.8780 -->  37.7500     rms:  46.7158 -->  41.2804    
+      _jetPt_L2                                          mean:  55.6732 -->  43.0298     rms:  49.7077 -->  43.7626    
+      _jetPt_L3                                          mean:  55.6732 -->  43.0298     rms:  49.7077 -->  43.7626    
+      _jetPt_Uncorrected                                 mean:  54.3387 -->  43.8135     rms:  45.0546 -->  39.2571    
+      _jetSmearedPt                                      mean:  57.6480 -->  44.7066     rms:  50.0596 -->  44.1815    
+      _jetSmearedPt_JECDown                              mean:  55.6181 -->  42.8448     rms:  48.8653 -->  43.2125    
+      _jetSmearedPt_JECUp                                mean:  59.6779 -->  46.5685     rms:  51.5642 -->  45.3870    
+      _jetSmearedPt_JERDown                              mean:  57.6480 -->  44.7066     rms:  50.0596 -->  44.1815    
+      _jetSmearedPt_JERUp                                mean:  57.6480 -->  44.7066     rms:  50.0596 -->  44.1815    
+      _lEwkFO                                            mean:   0.4292 -->   0.4378     rms:   0.4950 -->   0.4961    
+      _lEwkTight                                         mean:   0.3562 -->   0.3648     rms:   0.4789 -->   0.4814    
+      _nJets                                             mean:   2.3700 -->   3.6300     rms:   1.6772 -->   2.1617    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _leptonMvaSUSY,_leptonMvaTTH,_leptonMvatZq,_phECorr,_phEResDown,_phEResUp,_phEScaleDown,_phEScaleUp,_phPtCorr,_phPtResDown,_phPtResUp,_phPtScaleDown,_phPtScaleUp
+   Removed: _leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0065 -->   0.0052     rms:   0.0354 -->   0.0305    
+      _jetChargedHadronFraction                          mean:   0.2574 -->   0.2581     rms:   0.2803 -->   0.2946    
+      _jetCsvV2                                          mean:  -2.5037 -->  -3.5834     rms:   4.6329 -->   5.0422    
+      _jetDeepCsv_b                                      mean:  -0.2251 -->  -0.3755     rms:   0.5499 -->   0.5769    
+      _jetDeepCsv_bb                                     mean:  -0.3119 -->  -0.4441     rms:   0.4664 -->   0.4991    
+      _jetDeepCsv_c                                      mean:  -0.2170 -->  -0.3648     rms:   0.5366 -->   0.5751    
+      _jetDeepCsv_udsg                                   mean:   0.1807 -->  -0.0472     rms:   0.8241 -->   0.8725    
+      _jetE                                              mean: 248.2887 --> 232.9496     rms: 274.5190 --> 246.1866    
+      _jetEta                                            mean:  -0.3242 -->  -0.2748     rms:   2.0903 -->   2.3280    
+      _jetHFEmFraction                                   mean:   0.0275 -->   0.0480     rms:   0.0674 -->   0.0883    
+      _jetHFHadronFraction                               mean:   0.1954 -->   0.2833     rms:   0.3667 -->   0.4041    
+      _jetIsTight                                        mean:   0.2629 -->   0.3616     rms:   0.4402 -->   0.4805    
+      _jetIsTightLepVeto                                 mean:   0.2629 -->   0.3616     rms:   0.4402 -->   0.4805    
+      _jetNeutralEmFraction                              mean:   0.1441 -->   0.1574     rms:   0.1548 -->   0.1477    
+      _jetNeutralHadronFraction                          mean:   0.2579 -->   0.3538     rms:   0.3557 -->   0.3808    
+      _jetPhi                                            mean:   0.0953 -->   0.0002     rms:   1.8107 -->   1.8695    
+      _jetPt                                             mean:  55.9636 -->  43.7849     rms:  45.7822 -->  40.7013    
+      _jetPt_JECDown                                     mean:  53.9090 -->  41.9416     rms:  45.2560 -->  40.2013    
+      _jetPt_JECUp                                       mean:  58.0182 -->  45.6283     rms:  46.3766 -->  41.2566    
+      _jetPt_L1                                          mean:  47.7845 -->  36.6222     rms:  42.6478 -->  37.8361    
+      _jetPt_L2                                          mean:  53.8464 -->  42.0165     rms:  45.2338 -->  40.1043    
+      _jetPt_L3                                          mean:  53.8464 -->  42.0165     rms:  45.2338 -->  40.1043    
+      _jetPt_Uncorrected                                 mean:  52.6247 -->  42.6679     rms:  40.5582 -->  35.6651    
+      _jetSmearedPt                                      mean:  55.9636 -->  43.7849     rms:  45.7822 -->  40.7013    
+      _jetSmearedPt_JECDown                              mean:  53.9090 -->  41.9416     rms:  45.2560 -->  40.2013    
+      _jetSmearedPt_JECUp                                mean:  58.0182 -->  45.6283     rms:  46.3766 -->  41.2566    
+      _jetSmearedPt_JERDown                              mean:  55.9636 -->  43.7849     rms:  45.7822 -->  40.7013    
+      _jetSmearedPt_JERUp                                mean:  55.9636 -->  43.7849     rms:  45.7822 -->  40.7013    
+      _lEwkFO                                            mean:   0.5354 -->   0.5442     rms:   0.4987 -->   0.4980    
+      _lEwkTight                                         mean:   0.4381 -->   0.4469     rms:   0.4961 -->   0.4972    
+      _nJets                                             mean:   2.3200 -->   3.5400     rms:   1.3991 -->   1.8784    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _leptonMvaSUSY,_leptonMvaTTH,_leptonMvatZq
+   Removed: _leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17
+   Changed:
+      _jetChargedEmFraction                              mean:   0.1005 -->   0.0771     rms:   0.2502 -->   0.2214    
+      _jetChargedHadronFraction                          mean:   0.3758 -->   0.3825     rms:   0.2545 -->   0.2652    
+      _jetCsvV2                                          mean:  -0.8002 -->  -1.2670     rms:   3.3094 -->   3.8204    
+      _jetDeepCsv_b                                      mean:  -0.2036 -->  -0.2841     rms:   0.5110 -->   0.5395    
+      _jetDeepCsv_bb                                     mean:  -0.2780 -->  -0.3511     rms:   0.4501 -->   0.4792    
+      _jetDeepCsv_c                                      mean:  -0.1778 -->  -0.2605     rms:   0.5162 -->   0.5490    
+      _jetDeepCsv_udsg                                   mean:   0.2599 -->   0.1310     rms:   0.8002 -->   0.8464    
+      _jetE                                              mean: 206.4288 --> 193.6978     rms: 253.5792 --> 236.1172    
+      _jetEta                                            mean:   0.0555 -->   0.0032     rms:   1.7839 -->   1.9666    
+      _jetHFEmFraction                                   mean:   0.0093 -->   0.0171     rms:   0.0370 -->   0.0542    
+      _jetHFHadronFraction                               mean:   0.0431 -->   0.0829     rms:   0.1806 -->   0.2478    
+      _jetIsLoose                                        mean:   1.0000 -->   0.9959     rms:   0.0000 -->   0.0636    
+      _jetIsTight                                        mean:   0.9728 -->   0.9757     rms:   0.1626 -->   0.1541    
+      _jetIsTightLepVeto                                 mean:   0.9212 -->   0.9371     rms:   0.2694 -->   0.2427    
+      _jetNeutralEmFraction                              mean:   0.4010 -->   0.3431     rms:   0.2863 -->   0.2785    
+      _jetNeutralHadronFraction                          mean:   0.1196 -->   0.1938     rms:   0.2052 -->   0.2730    
+      _jetPhi                                            mean:  -0.0022 -->  -0.0554     rms:   1.8261 -->   1.8385    
+      _jetPt                                             mean:  65.7619 -->  54.3734     rms:  76.9379 -->  69.2891    
+      _jetPt_JECDown                                     mean:  64.2838 -->  52.9139     rms:  76.6848 -->  69.0742    
+      _jetPt_JECUp                                       mean:  67.2401 -->  55.8329     rms:  77.2149 -->  69.5269    
+      _jetPt_L1                                          mean:  56.9010 -->  46.1345     rms:  72.1208 -->  65.0160    
+      _jetPt_L2                                          mean:  63.0722 -->  51.9393     rms:  76.4038 -->  68.7282    
+      _jetPt_L3                                          mean:  63.0722 -->  51.9393     rms:  76.4038 -->  68.7282    
+      _jetPt_Uncorrected                                 mean:  60.0574 -->  50.2780     rms:  70.6663 -->  63.3853    
+      _jetSmearedPt                                      mean:  65.7619 -->  54.3734     rms:  76.9379 -->  69.2891    
+      _jetSmearedPt_JECDown                              mean:  64.2838 -->  52.9139     rms:  76.6848 -->  69.0742    
+      _jetSmearedPt_JECUp                                mean:  67.2401 -->  55.8329     rms:  77.2149 -->  69.5269    
+      _jetSmearedPt_JERDown                              mean:  65.7619 -->  54.3734     rms:  76.9379 -->  69.2891    
+      _jetSmearedPt_JERUp                                mean:  65.7619 -->  54.3734     rms:  76.9379 -->  69.2891    
+      _lEwkFO                                            mean:   0.1005 -->   0.1053     rms:   0.3006 -->   0.3069    
+      _lEwkTight                                         mean:   0.0909 -->   0.0957     rms:   0.2875 -->   0.2942    
+      _nJets                                             mean:   3.6800 -->   4.9300     rms:   1.5419 -->   1.9507    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _leptonMvaSUSY,_leptonMvaTTH,_leptonMvatZq
+   Removed: _leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17
+   Changed:
+      _jetChargedEmFraction                              mean:   0.1124 -->   0.0911     rms:   0.2492 -->   0.2284    
+      _jetChargedHadronFraction                          mean:   0.3208 -->   0.3108     rms:   0.2613 -->   0.2653    
+      _jetCsvV2                                          mean:  -1.6575 -->  -2.2853     rms:   4.1300 -->   4.5408    
+      _jetDeepCsv_b                                      mean:  -0.1914 -->  -0.2802     rms:   0.5680 -->   0.5893    
+      _jetDeepCsv_bb                                     mean:  -0.3082 -->  -0.3829     rms:   0.4709 -->   0.4932    
+      _jetDeepCsv_c                                      mean:  -0.2136 -->  -0.2992     rms:   0.5359 -->   0.5605    
+      _jetDeepCsv_udsg                                   mean:   0.1358 -->   0.0179     rms:   0.7903 -->   0.8271    
+      _jetE                                              mean: 219.5561 --> 207.4618     rms: 219.5188 --> 219.5302    
+      _jetEta                                            mean:  -0.1018 -->  -0.1544     rms:   1.7604 -->   1.8998    
+      _jetHFEmFraction                                   mean:   0.0086 -->   0.0144     rms:   0.0302 -->   0.0416    
+      _jetHFHadronFraction                               mean:   0.0705 -->   0.1043     rms:   0.2237 -->   0.2678    
+      _jetIsLoose                                        mean:   0.9940 -->   0.9931     rms:   0.0769 -->   0.0830    
+      _jetIsTight                                        mean:   0.9673 -->   0.9722     rms:   0.1780 -->   0.1643    
+      _jetIsTightLepVeto                                 mean:   0.9464 -->   0.9560     rms:   0.2252 -->   0.2051    
+      _jetNeutralEmFraction                              mean:   0.3983 -->   0.3682     rms:   0.2811 -->   0.2706    
+      _jetNeutralHadronFraction                          mean:   0.1582 -->   0.2204     rms:   0.2589 -->   0.3014    
+      _jetPhi                                            mean:  -0.0700 -->  -0.0717     rms:   1.8185 -->   1.8253    
+      _jetPt                                             mean:  70.8330 -->  59.8509     rms:  49.7886 -->  48.4832    
+      _jetPt_JECDown                                     mean:  69.7214 -->  58.7977     rms:  49.5193 -->  48.2229    
+      _jetPt_JECUp                                       mean:  71.9445 -->  60.9041     rms:  50.0626 -->  48.7480    
+      _jetPt_L1                                          mean:  61.9553 -->  51.8877     rms:  45.3141 -->  44.1914    
+      _jetPt_L2                                          mean:  69.8377 -->  58.9339     rms:  49.5491 -->  48.2317    
+      _jetPt_L3                                          mean:  69.8377 -->  58.9339     rms:  49.5491 -->  48.2317    
+      _jetPt_Uncorrected                                 mean:  67.4529 -->  57.9544     rms:  44.3546 -->  42.9955    
+      _jetSmearedPt                                      mean:  70.8330 -->  59.8509     rms:  49.7886 -->  48.4832    
+      _jetSmearedPt_JECDown                              mean:  69.7214 -->  58.7977     rms:  49.5193 -->  48.2229    
+      _jetSmearedPt_JECUp                                mean:  71.9445 -->  60.9041     rms:  50.0626 -->  48.7480    
+      _jetSmearedPt_JERDown                              mean:  70.8330 -->  59.8509     rms:  49.7886 -->  48.4832    
+      _jetSmearedPt_JERUp                                mean:  70.8330 -->  59.8509     rms:  49.7886 -->  48.4832    
+      _nJets                                             mean:   3.3600 -->   4.3200     rms:   1.2532 -->   1.7882    
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Autumn18MiniAOD --> OK
-   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+Running test: Autumn18MiniAOD --> FAILED
+Output:   **** Following environment variables are going to be unset.
+          DBS_CLIENT_CONFIG
+          DBSCMD_HOME
+          MAGIC
+          MALLOC_CONF
+   28-Mar-2019 10:35:33 CET  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
+   28-Mar-2019 10:35:34 CET  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_13/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_13/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_13/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_13/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_13/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon_2017" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_13/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron_2017" of type: "BDT"
+   Begin processing the 1st record. Run 1, Event 18750751, LumiSection 11083 on stream 0 at 28-Mar-2019 10:38:05.659 CET
+   Rivet.Analysis.Handler: WARN  Analysis 'RivetAnalysis' is unvalidated: be careful, it may be broken!
+   Available triggers:
+     digitisation_step
+     datamixing_step
+     L1simulation_step
+     digi2raw_step
+     HLTriggerFirstPath
+     HLT_AK8PFJet360_TrimMass30_v18
+     HLT_AK8PFJet380_TrimMass30_v11
+     HLT_AK8PFJet400_TrimMass30_v12
+     HLT_AK8PFJet420_TrimMass30_v11
+     HLT_AK8PFHT750_TrimMass50_v12
+     HLT_AK8PFHT800_TrimMass50_v12
+     HLT_AK8PFHT850_TrimMass50_v11
+     HLT_AK8PFHT900_TrimMass50_v11
+     HLT_CaloJet500_NoJetID_v12
+     HLT_CaloJet550_NoJetID_v7
+     HLT_DoubleMu5_Upsilon_DoubleEle3_CaloIdL_TrackIdL_v4
+     HLT_DoubleMu3_DoubleEle7p5_CaloIdL_TrackIdL_Upsilon_v4
+     HLT_Trimuon5_3p5_2_Upsilon_Muon_v5
+     HLT_TrimuonOpen_5_3p5_2_Upsilon_Muon_v3
+     HLT_DoubleEle25_CaloIdL_MW_v4
+     HLT_DoubleEle27_CaloIdL_MW_v4
+     HLT_DoubleEle33_CaloIdL_MW_v17
+     HLT_DoubleEle24_eta2p1_WPTight_Gsf_v7
+     HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350_v20
+     HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350_v20
+     HLT_Ele27_Ele37_CaloIdL_MW_v4
+     HLT_Mu27_Ele37_CaloIdL_MW_v5
+     HLT_Mu37_Ele27_CaloIdL_MW_v5
+     HLT_Mu37_TkMu27_v5
+     HLT_DoubleMu4_3_Bs_v14
+     HLT_DoubleMu4_3_Jpsi_v2
+     HLT_DoubleMu4_JpsiTrk_Displaced_v15
+     HLT_DoubleMu4_LowMassNonResonantTrk_Displaced_v15
+     HLT_DoubleMu3_Trk_Tau3mu_v12
+     HLT_DoubleMu3_TkMu_DsTau3Mu_v4
+     HLT_DoubleMu4_PsiPrimeTrk_Displaced_v15
+     HLT_DoubleMu4_Mass3p8_DZ_PFHT350_v8
+     HLT_Mu3_PFJet40_v16
+     HLT_Mu7p5_L2Mu2_Jpsi_v10
+     HLT_Mu7p5_L2Mu2_Upsilon_v10
+     HLT_Mu7p5_Track2_Jpsi_v11
+     HLT_Mu7p5_Track3p5_Jpsi_v11
+     HLT_Mu7p5_Track7_Jpsi_v11
+     HLT_Mu7p5_Track2_Upsilon_v11
+     HLT_Mu7p5_Track3p5_Upsilon_v11
+     HLT_Mu7p5_Track7_Upsilon_v11
+     HLT_Mu3_L1SingleMu5orSingleMu7_v1
+     HLT_DoublePhoton33_CaloIdL_v6
+     HLT_DoublePhoton70_v6
+     HLT_DoublePhoton85_v14
+     HLT_Ele20_WPTight_Gsf_v6
+     HLT_Ele15_WPLoose_Gsf_v3
+     HLT_Ele17_WPLoose_Gsf_v3
+     HLT_Ele20_WPLoose_Gsf_v6
+     HLT_Ele20_eta2p1_WPLoose_Gsf_v6
+     HLT_DiEle27_WPTightCaloOnly_L1DoubleEG_v4
+     HLT_Ele27_WPTight_Gsf_v16
+     HLT_Ele28_WPTight_Gsf_v1
+     HLT_Ele30_WPTight_Gsf_v1
+     HLT_Ele32_WPTight_Gsf_v15     --> saving to tree
+     HLT_Ele35_WPTight_Gsf_v9     --> saving to tree
+     HLT_Ele35_WPTight_Gsf_L1EGMT_v5
+     HLT_Ele38_WPTight_Gsf_v9     --> saving to tree
+     HLT_Ele40_WPTight_Gsf_v9     --> saving to tree
+     HLT_Ele32_WPTight_Gsf_L1DoubleEG_v9
+     HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1_v1
+     HLT_Ele24_eta2p1_WPTight_Gsf_MediumChargedIsoPFTauHPS30_eta2p1_CrossL1_v1
+     HLT_Ele24_eta2p1_WPTight_Gsf_TightChargedIsoPFTauHPS30_eta2p1_CrossL1_v1
+     HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_TightID_CrossL1_v1
+     HLT_Ele24_eta2p1_WPTight_Gsf_MediumChargedIsoPFTauHPS30_eta2p1_TightID_CrossL1_v1
+     HLT_Ele24_eta2p1_WPTight_Gsf_TightChargedIsoPFTauHPS30_eta2p1_TightID_CrossL1_v1
+     HLT_HT450_Beamspot_v11
+     HLT_HT300_Beamspot_v11
+     HLT_ZeroBias_Beamspot_v4
+     HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1_v4
+     HLT_IsoMu20_eta2p1_MediumChargedIsoPFTauHPS27_eta2p1_CrossL1_v1
+     HLT_IsoMu20_eta2p1_TightChargedIsoPFTauHPS27_eta2p1_CrossL1_v1
+     HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_TightID_CrossL1_v1
+     HLT_IsoMu20_eta2p1_MediumChargedIsoPFTauHPS27_eta2p1_TightID_CrossL1_v1
+     HLT_IsoMu20_eta2p1_TightChargedIsoPFTauHPS27_eta2p1_TightID_CrossL1_v1
+     HLT_IsoMu24_eta2p1_TightChargedIsoPFTauHPS35_Trk1_eta2p1_Reg_CrossL1_v1
+     HLT_IsoMu24_eta2p1_MediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg_CrossL1_v1
+     HLT_IsoMu24_eta2p1_TightChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg_CrossL1_v1
+     HLT_IsoMu24_eta2p1_MediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg_CrossL1_v4
+     HLT_IsoMu27_LooseChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1_v1
+     HLT_IsoMu27_MediumChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1_v1
+     HLT_IsoMu27_TightChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1_v1
+     HLT_IsoMu20_v15
+     HLT_IsoMu24_v13     --> saving to tree
+     HLT_IsoMu24_eta2p1_v15     --> saving to tree
+     HLT_IsoMu27_v16     --> saving to tree
+     HLT_IsoMu30_v4     --> saving to tree
+     HLT_UncorrectedJetE30_NoBPTX_v6
+     HLT_UncorrectedJetE30_NoBPTX3BX_v6
+     HLT_UncorrectedJetE60_NoBPTX3BX_v6
+     HLT_UncorrectedJetE70_NoBPTX3BX_v6
+     HLT_L1SingleMu18_v3
+     HLT_L1SingleMu25_v2
+     HLT_L2Mu10_v7
+     HLT_L2Mu10_NoVertex_NoBPTX3BX_v5
+     HLT_L2Mu10_NoVertex_NoBPTX_v6
+     HLT_L2Mu45_NoVertex_3Sta_NoBPTX3BX_v4
+     HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX_v5
+     HLT_L2Mu50_v2
+     HLT_L2Mu23NoVtx_2Cha_v1
+     HLT_L2Mu23NoVtx_2Cha_CosmicSeed_v1
+     HLT_DoubleL2Mu30NoVtx_2Cha_CosmicSeed_Eta2p4_v2
+     HLT_DoubleL2Mu30NoVtx_2Cha_Eta2p4_v2
+     HLT_DoubleL2Mu50_v2
+     HLT_DoubleL2Mu23NoVtx_2Cha_CosmicSeed_v2
+     HLT_DoubleL2Mu23NoVtx_2Cha_CosmicSeed_NoL2Matched_v2
+     HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed_v2
+     HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed_NoL2Matched_v2
+     HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed_Eta2p4_v2
+     HLT_DoubleL2Mu23NoVtx_2Cha_v2
+     HLT_DoubleL2Mu23NoVtx_2Cha_NoL2Matched_v2
+     HLT_DoubleL2Mu25NoVtx_2Cha_v2
+     HLT_DoubleL2Mu25NoVtx_2Cha_NoL2Matched_v2
+     HLT_DoubleL2Mu25NoVtx_2Cha_Eta2p4_v2
+     HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v14     --> saving to tree
+     HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_v3
+     HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v15     --> saving to tree
+     HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_v3
+     HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v5     --> saving to tree
+     HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8_v3     --> saving to tree
+     HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v5     --> saving to tree
+     HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8_v3     --> saving to tree
+     HLT_Mu25_TkMu0_Onia_v8
+     HLT_Mu30_TkMu0_Psi_v1
+     HLT_Mu30_TkMu0_Upsilon_v1
+     HLT_Mu20_TkMu0_Phi_v8
+     HLT_Mu25_TkMu0_Phi_v8
+     HLT_Mu12_v3
+     HLT_Mu15_v3
+     HLT_Mu20_v12
+     HLT_Mu27_v13
+     HLT_Mu50_v13     --> saving to tree
+     HLT_Mu55_v3     --> saving to tree
+     HLT_OldMu100_v3
+     HLT_TkMu100_v2
+     HLT_DiPFJetAve40_v14
+     HLT_DiPFJetAve60_v14
+     HLT_DiPFJetAve80_v13
+     HLT_DiPFJetAve140_v13
+     HLT_DiPFJetAve200_v13
+     HLT_DiPFJetAve260_v14
+     HLT_DiPFJetAve320_v14
+     HLT_DiPFJetAve400_v14
+     HLT_DiPFJetAve500_v14
+     HLT_DiPFJetAve60_HFJEC_v15
+     HLT_DiPFJetAve80_HFJEC_v16
+     HLT_DiPFJetAve100_HFJEC_v16
+     HLT_DiPFJetAve160_HFJEC_v16
+     HLT_DiPFJetAve220_HFJEC_v16
+     HLT_DiPFJetAve300_HFJEC_v16
+     HLT_AK8PFJet15_v3
+     HLT_AK8PFJet25_v3
+     HLT_AK8PFJet40_v16
+     HLT_AK8PFJet60_v15
+     HLT_AK8PFJet80_v15
+     HLT_AK8PFJet140_v15
+     HLT_AK8PFJet200_v15
+     HLT_AK8PFJet260_v16
+     HLT_AK8PFJet320_v16
+     HLT_AK8PFJet400_v16
+     HLT_AK8PFJet450_v16
+     HLT_AK8PFJet500_v16
+     HLT_AK8PFJet550_v11
+     HLT_PFJet15_v3
+     HLT_PFJet25_v3
+     HLT_PFJet40_v21
+     HLT_PFJet60_v21
+     HLT_PFJet80_v20
+     HLT_PFJet140_v19
+     HLT_PFJet200_v19
+     HLT_PFJet260_v20
+     HLT_PFJet320_v20
+     HLT_PFJet400_v20
+     HLT_PFJet450_v21
+     HLT_PFJet500_v21
+     HLT_PFJet550_v11
+     HLT_PFJetFwd15_v3
+     HLT_PFJetFwd25_v3
+     HLT_PFJetFwd40_v19
+     HLT_PFJetFwd60_v19
+     HLT_PFJetFwd80_v18
+     HLT_PFJetFwd140_v18
+     HLT_PFJetFwd200_v18
+     HLT_PFJetFwd260_v19
+     HLT_PFJetFwd320_v19
+     HLT_PFJetFwd400_v19
+     HLT_PFJetFwd450_v19
+     HLT_PFJetFwd500_v19
+     HLT_AK8PFJetFwd15_v3
+     HLT_AK8PFJetFwd25_v3
+     HLT_AK8PFJetFwd40_v15
+     HLT_AK8PFJetFwd60_v14
+     HLT_AK8PFJetFwd80_v14
+     HLT_AK8PFJetFwd140_v14
+     HLT_AK8PFJetFwd200_v14
+     HLT_AK8PFJetFwd260_v15
+     HLT_AK8PFJetFwd320_v15
+     HLT_AK8PFJetFwd400_v15
+     HLT_AK8PFJetFwd450_v15
+     HLT_AK8PFJetFwd500_v15
+     HLT_PFHT180_v17
+     HLT_PFHT250_v17
+     HLT_PFHT370_v17
+     HLT_PFHT430_v17
+     HLT_PFHT510_v17
+     HLT_PFHT590_v17
+     HLT_PFHT680_v17
+     HLT_PFHT780_v17
+     HLT_PFHT890_v17
+     HLT_PFHT1050_v18
+     HLT_PFHT500_PFMET100_PFMHT100_IDTight_v12
+     HLT_PFHT500_PFMET110_PFMHT110_IDTight_v12
+     HLT_PFHT700_PFMET85_PFMHT85_IDTight_v12
+     HLT_PFHT700_PFMET95_PFMHT95_IDTight_v12
+     HLT_PFHT800_PFMET75_PFMHT75_IDTight_v12
+     HLT_PFHT800_PFMET85_PFMHT85_IDTight_v12
+     HLT_PFMET110_PFMHT110_IDTight_v20
+     HLT_PFMET120_PFMHT120_IDTight_v20
+     HLT_PFMET130_PFMHT130_IDTight_v20
+     HLT_PFMET140_PFMHT140_IDTight_v20
+     HLT_PFMET100_PFMHT100_IDTight_CaloBTagDeepCSV_3p1_v8
+     HLT_PFMET110_PFMHT110_IDTight_CaloBTagDeepCSV_3p1_v8
+     HLT_PFMET120_PFMHT120_IDTight_CaloBTagDeepCSV_3p1_v8
+     HLT_PFMET130_PFMHT130_IDTight_CaloBTagDeepCSV_3p1_v8
+     HLT_PFMET140_PFMHT140_IDTight_CaloBTagDeepCSV_3p1_v8
+     HLT_PFMET120_PFMHT120_IDTight_PFHT60_v9
+     HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v9
+     HLT_PFMETTypeOne120_PFMHT120_IDTight_PFHT60_v9
+     HLT_PFMETTypeOne110_PFMHT110_IDTight_v12
+     HLT_PFMETTypeOne120_PFMHT120_IDTight_v12
+     HLT_PFMETTypeOne130_PFMHT130_IDTight_v12
+     HLT_PFMETTypeOne140_PFMHT140_IDTight_v11
+     HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v20
+     HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v20
+     HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v19
+     HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v19
+     HLT_MonoCentralPFJet80_PFMETNoMu110_PFMHTNoMu110_IDTight_v20
+     HLT_MonoCentralPFJet80_PFMETNoMu120_PFMHTNoMu120_IDTight_v20
+     HLT_MonoCentralPFJet80_PFMETNoMu130_PFMHTNoMu130_IDTight_v19
+     HLT_MonoCentralPFJet80_PFMETNoMu140_PFMHTNoMu140_IDTight_v19
+     HLT_L1ETMHadSeeds_v2
+     HLT_CaloMHT90_v4
+     HLT_CaloMET80_NotCleaned_v4
+     HLT_CaloMET90_NotCleaned_v4
+     HLT_CaloMET100_NotCleaned_v4
+     HLT_CaloMET110_NotCleaned_v4
+     HLT_CaloMET250_NotCleaned_v4
+     HLT_CaloMET70_HBHECleaned_v4
+     HLT_CaloMET80_HBHECleaned_v4
+     HLT_CaloMET90_HBHECleaned_v4
+     HLT_CaloMET100_HBHECleaned_v4
+     HLT_CaloMET250_HBHECleaned_v4
+     HLT_CaloMET300_HBHECleaned_v4
+     HLT_CaloMET350_HBHECleaned_v4
+     HLT_PFMET200_NotCleaned_v9
+     HLT_PFMET200_HBHECleaned_v9
+     HLT_PFMET250_HBHECleaned_v9
+     HLT_PFMET300_HBHECleaned_v9
+     HLT_PFMET200_HBHE_BeamHaloCleaned_v9
+     HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned_v9
+     HLT_MET105_IsoTrk50_v9
+     HLT_MET120_IsoTrk50_v9
+     HLT_SingleJet30_Mu12_SinglePFJet40_v11
+     HLT_Mu12_DoublePFJets40_CaloBTagDeepCSV_p71_v2
+     HLT_Mu12_DoublePFJets100_CaloBTagDeepCSV_p71_v2
+     HLT_Mu12_DoublePFJets200_CaloBTagDeepCSV_p71_v2
+     HLT_Mu12_DoublePFJets350_CaloBTagDeepCSV_p71_v2
+     HLT_Mu12_DoublePFJets40MaxDeta1p6_DoubleCaloBTagDeepCSV_p71_v2
+     HLT_Mu12_DoublePFJets54MaxDeta1p6_DoubleCaloBTagDeepCSV_p71_v2
+     HLT_Mu12_DoublePFJets62MaxDeta1p6_DoubleCaloBTagDeepCSV_p71_v2
+     HLT_DoublePFJets40_CaloBTagDeepCSV_p71_v2
+     HLT_DoublePFJets100_CaloBTagDeepCSV_p71_v2
+     HLT_DoublePFJets200_CaloBTagDeepCSV_p71_v2
+     HLT_DoublePFJets350_CaloBTagDeepCSV_p71_v2
+     HLT_DoublePFJets116MaxDeta1p6_DoubleCaloBTagDeepCSV_p71_v2
+     HLT_DoublePFJets128MaxDeta1p6_DoubleCaloBTagDeepCSV_p71_v2
+     HLT_Photon300_NoHE_v12
+     HLT_Mu8_TrkIsoVVL_v12
+     HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ_v18     --> saving to tree
+     HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v18     --> saving to tree
+     HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_v19     --> saving to tree
+     HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_v19
+     HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13     --> saving to tree
+     HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_v1
+     HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_v1
+     HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5_v1
+     HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5_v1
+     HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v11
+     HLT_Mu17_TrkIsoVVL_v13
+     HLT_Mu19_TrkIsoVVL_v4
+     HLT_BTagMu_AK4DiJet20_Mu5_v13
+     HLT_BTagMu_AK4DiJet40_Mu5_v13
+     HLT_BTagMu_AK4DiJet70_Mu5_v13
+     HLT_BTagMu_AK4DiJet110_Mu5_v13
+     HLT_BTagMu_AK4DiJet170_Mu5_v12
+     HLT_BTagMu_AK4Jet300_Mu5_v12
+     HLT_BTagMu_AK8DiJet170_Mu5_v9
+     HLT_BTagMu_AK8Jet170_DoubleMu5_v2
+     HLT_BTagMu_AK8Jet300_Mu5_v12
+     HLT_BTagMu_AK4DiJet20_Mu5_noalgo_v13
+     HLT_BTagMu_AK4DiJet40_Mu5_noalgo_v13
+     HLT_BTagMu_AK4DiJet70_Mu5_noalgo_v13
+     HLT_BTagMu_AK4DiJet110_Mu5_noalgo_v13
+     HLT_BTagMu_AK4DiJet170_Mu5_noalgo_v12
+     HLT_BTagMu_AK4Jet300_Mu5_noalgo_v12
+     HLT_BTagMu_AK8DiJet170_Mu5_noalgo_v9
+     HLT_BTagMu_AK8Jet170_DoubleMu5_noalgo_v2
+     HLT_BTagMu_AK8Jet300_Mu5_noalgo_v12
+     HLT_Ele15_Ele8_CaloIdL_TrackIdL_IsoVL_v3
+     HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v19     --> saving to tree
+     HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v19     --> saving to tree
+     HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15     --> saving to tree
+     HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7     --> saving to tree
+     HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7
+     HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v15     --> saving to tree
+     HLT_Mu12_DoublePhoton20_v5
+     HLT_TriplePhoton_20_20_20_CaloIdLV2_v3
+     HLT_TriplePhoton_20_20_20_CaloIdLV2_R9IdVL_v3
+     HLT_TriplePhoton_30_30_10_CaloIdLV2_v4
+     HLT_TriplePhoton_30_30_10_CaloIdLV2_R9IdVL_v4
+     HLT_TriplePhoton_35_35_5_CaloIdLV2_R9IdVL_v4
+     HLT_Photon20_v2
+     HLT_Photon33_v5
+     HLT_Photon50_v13
+     HLT_Photon75_v13
+     HLT_Photon90_v13
+     HLT_Photon120_v13
+     HLT_Photon150_v6
+     HLT_Photon175_v14
+     HLT_Photon200_v13
+     HLT_Photon100EB_TightID_TightIso_v2
+     HLT_Photon110EB_TightID_TightIso_v2
+     HLT_Photon120EB_TightID_TightIso_v2
+     HLT_Photon100EBHE10_v2
+     HLT_Photon100EEHE10_v2
+     HLT_Photon100EE_TightID_TightIso_v2
+     HLT_Photon50_R9Id90_HE10_IsoM_v14
+     HLT_Photon75_R9Id90_HE10_IsoM_v14
+     HLT_Photon75_R9Id90_HE10_IsoM_EBOnly_CaloMJJ300_PFJetsMJJ400DEta3_v5
+     HLT_Photon75_R9Id90_HE10_IsoM_EBOnly_CaloMJJ400_PFJetsMJJ600DEta3_v5
+     HLT_Photon90_R9Id90_HE10_IsoM_v14
+     HLT_Photon120_R9Id90_HE10_IsoM_v14
+     HLT_Photon165_R9Id90_HE10_IsoM_v15
+     HLT_Photon90_CaloIdL_PFHT700_v16
+     HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v13
+     HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95_v13
+     HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55_v15
+     HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55_v13
+     HLT_Photon35_TwoProngs35_v1
+     HLT_IsoMu24_TwoProngs35_v1
+     HLT_Dimuon0_Jpsi_L1_NoOS_v7
+     HLT_Dimuon0_Jpsi_NoVertexing_NoOS_v7
+     HLT_Dimuon0_Jpsi_v8
+     HLT_Dimuon0_Jpsi_NoVertexing_v8
+     HLT_Dimuon0_Jpsi_L1_4R_0er1p5R_v7
+     HLT_Dimuon0_Jpsi_NoVertexing_L1_4R_0er1p5R_v7
+     HLT_Dimuon0_Jpsi3p5_Muon2_v5
+     HLT_Dimuon0_Upsilon_L1_4p5_v9
+     HLT_Dimuon0_Upsilon_L1_5_v9
+     HLT_Dimuon0_Upsilon_L1_4p5NoOS_v8
+     HLT_Dimuon0_Upsilon_L1_4p5er2p0_v9
+     HLT_Dimuon0_Upsilon_L1_4p5er2p0M_v7
+     HLT_Dimuon0_Upsilon_NoVertexing_v7
+     HLT_Dimuon0_Upsilon_L1_5M_v8
+     HLT_Dimuon0_LowMass_L1_0er1p5R_v7
+     HLT_Dimuon0_LowMass_L1_0er1p5_v8
+     HLT_Dimuon0_LowMass_v8
+     HLT_Dimuon0_LowMass_L1_4_v8
+     HLT_Dimuon0_LowMass_L1_4R_v7
+     HLT_Dimuon0_LowMass_L1_TM530_v6
+     HLT_Dimuon0_Upsilon_Muon_L1_TM0_v6
+     HLT_Dimuon0_Upsilon_Muon_NoL1Mass_v6
+     HLT_TripleMu_5_3_3_Mass3p8_DZ_v8
+     HLT_TripleMu_10_5_5_DZ_v10     --> saving to tree
+     HLT_TripleMu_12_10_5_v10
+     HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15_v4
+     HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15_Charge1_v4
+     HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v4
+     HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v4
+     HLT_DoubleMu3_DZ_PFMET50_PFMHT60_v10
+     HLT_DoubleMu3_DZ_PFMET70_PFMHT70_v10
+     HLT_DoubleMu3_DZ_PFMET90_PFMHT90_v10
+     HLT_DoubleMu3_Trk_Tau3mu_NoL1Mass_v6
+     HLT_DoubleMu4_Jpsi_Displaced_v7
+     HLT_DoubleMu4_Jpsi_NoVertexing_v7
+     HLT_DoubleMu4_JpsiTrkTrk_Displaced_v7
+     HLT_DoubleMu43NoFiltersNoVtx_v4
+     HLT_DoubleMu48NoFiltersNoVtx_v4
+     HLT_Mu43NoFiltersNoVtx_Photon43_CaloIdL_v5
+     HLT_Mu48NoFiltersNoVtx_Photon48_CaloIdL_v5
+     HLT_Mu38NoFiltersNoVtxDisplaced_Photon38_CaloIdL_v1
+     HLT_Mu43NoFiltersNoVtxDisplaced_Photon43_CaloIdL_v1
+     HLT_DoubleMu33NoFiltersNoVtxDisplaced_v1
+     HLT_DoubleMu40NoFiltersNoVtxDisplaced_v1
+     HLT_DoubleMu20_7_Mass0to30_L1_DM4_v7
+     HLT_DoubleMu20_7_Mass0to30_L1_DM4EG_v8
+     HLT_HT425_v9
+     HLT_HT430_DisplacedDijet40_DisplacedTrack_v13
+     HLT_HT500_DisplacedDijet40_DisplacedTrack_v13
+     HLT_HT430_DisplacedDijet60_DisplacedTrack_v13
+     HLT_HT400_DisplacedDijet40_DisplacedTrack_v13
+     HLT_HT650_DisplacedDijet60_Inclusive_v13
+     HLT_HT550_DisplacedDijet60_Inclusive_v13
+     HLT_DiJet110_35_Mjj650_PFMET110_v9
+     HLT_DiJet110_35_Mjj650_PFMET120_v9
+     HLT_DiJet110_35_Mjj650_PFMET130_v9
+     HLT_TripleJet110_35_35_Mjj650_PFMET110_v9
+     HLT_TripleJet110_35_35_Mjj650_PFMET120_v9
+     HLT_TripleJet110_35_35_Mjj650_PFMET130_v9
+     HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v13
+     HLT_Ele28_eta2p1_WPTight_Gsf_HT150_v13
+     HLT_Ele28_HighEta_SC20_Mass55_v13
+     HLT_DoubleMu20_7_Mass0to30_Photon23_v8
+     HLT_Ele15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5_v8
+     HLT_Ele15_IsoVVVL_PFHT450_PFMET50_v16
+     HLT_Ele15_IsoVVVL_PFHT450_v16
+     HLT_Ele50_IsoVVVL_PFHT450_v16
+     HLT_Ele15_IsoVVVL_PFHT600_v20
+     HLT_Mu4_TrkIsoVVL_DiPFJet90_40_DEta3p5_MJJ750_HTT300_PFMETNoMu60_v15
+     HLT_Mu8_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT300_PFMETNoMu60_v16
+     HLT_Mu10_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT350_PFMETNoMu60_v15
+     HLT_Mu15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5_v8
+     HLT_Mu15_IsoVVVL_PFHT450_PFMET50_v15
+     HLT_Mu15_IsoVVVL_PFHT450_v15
+     HLT_Mu50_IsoVVVL_PFHT450_v15
+     HLT_Mu15_IsoVVVL_PFHT600_v19
+     HLT_Mu3er1p5_PFJet100er2p5_PFMET70_PFMHT70_IDTight_v2
+     HLT_Mu3er1p5_PFJet100er2p5_PFMET80_PFMHT80_IDTight_v2
+     HLT_Mu3er1p5_PFJet100er2p5_PFMET90_PFMHT90_IDTight_v2
+     HLT_Mu3er1p5_PFJet100er2p5_PFMET100_PFMHT100_IDTight_v2
+     HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu70_PFMHTNoMu70_IDTight_v2
+     HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu80_PFMHTNoMu80_IDTight_v2
+     HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu90_PFMHTNoMu90_IDTight_v2
+     HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu100_PFMHTNoMu100_IDTight_v2
+     HLT_Dimuon10_PsiPrime_Barrel_Seagulls_v7
+     HLT_Dimuon20_Jpsi_Barrel_Seagulls_v7
+     HLT_Dimuon12_Upsilon_y1p4_v2
+     HLT_Dimuon14_Phi_Barrel_Seagulls_v7
+     HLT_Dimuon18_PsiPrime_v14
+     HLT_Dimuon25_Jpsi_v14
+     HLT_Dimuon18_PsiPrime_noCorrL1_v6
+     HLT_Dimuon24_Upsilon_noCorrL1_v6
+     HLT_Dimuon24_Phi_noCorrL1_v6
+     HLT_Dimuon25_Jpsi_noCorrL1_v6
+     HLT_DiMu4_Ele9_CaloIdL_TrackIdL_DZ_Mass3p8_v17
+     HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_v17     --> saving to tree
+     HLT_DiMu9_Ele9_CaloIdL_TrackIdL_v17     --> saving to tree
+     HLT_DoubleIsoMu20_eta2p1_v7
+     HLT_TrkMu12_DoubleTrkMu5NoFiltersNoVtx_v6
+     HLT_TrkMu16_DoubleTrkMu6NoFiltersNoVtx_v12
+     HLT_TrkMu17_DoubleTrkMu8NoFiltersNoVtx_v13
+     HLT_Mu8_v12
+     HLT_Mu17_v13
+     HLT_Mu19_v4
+     HLT_Mu17_Photon30_IsoCaloId_v6
+     HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_v16
+     HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v18
+     HLT_Ele15_CaloIdL_TrackIdL_IsoVL_PFJet30_v3
+     HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v18
+     HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v18
+     HLT_Ele17_CaloIdM_TrackIdM_PFJet30_v16
+     HLT_Ele23_CaloIdM_TrackIdM_PFJet30_v18
+     HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v18
+     HLT_Ele115_CaloIdVT_GsfTrkIdT_v14
+     HLT_Ele135_CaloIdVT_GsfTrkIdT_v7
+     HLT_Ele145_CaloIdVT_GsfTrkIdT_v8
+     HLT_Ele200_CaloIdVT_GsfTrkIdT_v8
+     HLT_Ele250_CaloIdVT_GsfTrkIdT_v13
+     HLT_Ele300_CaloIdVT_GsfTrkIdT_v13
+     HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepCSV_4p5_v3
+     HLT_PFHT330PT30_QuadPFJet_75_60_45_40_v9
+     HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v8
+     HLT_PFHT400_SixPFJet32_v8
+     HLT_PFHT450_SixPFJet36_PFBTagDeepCSV_1p59_v7
+     HLT_PFHT450_SixPFJet36_v7
+     HLT_PFHT350_v19
+     HLT_PFHT350MinPFJet15_v9
+     HLT_Photon60_R9Id90_CaloIdL_IsoL_v5
+     HLT_Photon60_R9Id90_CaloIdL_IsoL_DisplacedIdL_v5
+     HLT_Photon60_R9Id90_CaloIdL_IsoL_DisplacedIdL_PFHT350MinPFJet15_v11
+     HLT_ECALHT800_v10
+     HLT_DiSC30_18_EIso_AND_HE_Mass70_v13
+     HLT_Physics_v7
+     HLT_Physics_part0_v7
+     HLT_Physics_part1_v7
+     HLT_Physics_part2_v7
+     HLT_Physics_part3_v7
+     HLT_Physics_part4_v7
+     HLT_Physics_part5_v7
+     HLT_Physics_part6_v7
+     HLT_Physics_part7_v7
+     DST_Physics_v7
+     HLT_Random_v3
+     HLT_ZeroBias_v6
+     HLT_ZeroBias_Alignment_v1
+     HLT_ZeroBias_part0_v6
+     HLT_ZeroBias_part1_v6
+     HLT_ZeroBias_part2_v6
+     HLT_ZeroBias_part3_v6
+     HLT_ZeroBias_part4_v6
+     HLT_ZeroBias_part5_v6
+     HLT_ZeroBias_part6_v6
+     HLT_ZeroBias_part7_v6
+     DST_ZeroBias_v2
+     DST_HT250_CaloScouting_v10
+     DST_HT250_CaloBTagScouting_v10
+     DST_HT410_PFScouting_v16
+     DST_HT410_BTagScouting_v16
+     DST_ZeroBias_BTagScouting_v15
+     DST_ZeroBias_CaloScouting_PFScouting_v14
+     DST_CaloJet40_BTagScouting_v15
+     DST_CaloJet40_CaloScouting_PFScouting_v15
+     DST_CaloJet40_CaloBTagScouting_v14
+     DST_L1HTT_BTagScouting_v15
+     DST_L1HTT_CaloScouting_PFScouting_v15
+     DST_L1HTT_CaloBTagScouting_v14
+     DST_L1DoubleMu_BTagScouting_v16
+     DST_L1DoubleMu_CaloScouting_PFScouting_v15
+     DST_DoubleMu3_noVtx_CaloScouting_Monitoring_v6
+     DST_DoubleMu3_noVtx_CaloScouting_v6
+     DST_DoubleMu1_noVtx_CaloScouting_v2
+     DST_DoubleMu3_noVtx_Mass10_PFScouting_v3
+     HLT_AK4CaloJet30_v11
+     HLT_AK4CaloJet40_v10
+     HLT_AK4CaloJet50_v10
+     HLT_AK4CaloJet80_v10
+     HLT_AK4CaloJet100_v10
+     HLT_AK4CaloJet120_v9
+     HLT_AK4PFJet30_v19
+     HLT_AK4PFJet50_v19
+     HLT_AK4PFJet80_v19
+     HLT_AK4PFJet100_v19
+     HLT_AK4PFJet120_v18
+     HLT_SinglePhoton10_Eta3p1ForPPRef_v8
+     HLT_SinglePhoton20_Eta3p1ForPPRef_v9
+     HLT_SinglePhoton30_Eta3p1ForPPRef_v9
+     HLT_Photon20_HoverELoose_v10
+     HLT_Photon30_HoverELoose_v10
+     HLT_EcalCalibration_v4
+     HLT_HcalCalibration_v5
+     AlCa_EcalPhiSym_v9
+     HLT_L1UnpairedBunchBptxMinus_v2
+     HLT_L1UnpairedBunchBptxPlus_v2
+     HLT_L1NotBptxOR_v3
+     HLT_L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142_v2
+     HLT_CDC_L2cosmic_5_er1p0_v1
+     HLT_CDC_L2cosmic_5p5_er1p0_v1
+     HLT_HcalNZS_v13
+     HLT_HcalPhiSym_v15
+     HLT_HcalIsolatedbunch_v5
+     HLT_IsoTrackHB_v4
+     HLT_IsoTrackHE_v4
+     HLT_ZeroBias_FirstCollisionAfterAbortGap_v5
+     HLT_ZeroBias_IsolatedBunches_v5
+     HLT_ZeroBias_FirstCollisionInTrain_v4
+     HLT_ZeroBias_LastCollisionInTrain_v3
+     HLT_ZeroBias_FirstBXAfterTrain_v3
+     AlCa_RPCMuonNormalisation_v13
+     AlCa_LumiPixels_Random_v4
+     AlCa_LumiPixels_ZeroBias_v8
+     MC_ReducedIterativeTracking_v12
+     MC_PFMET_v17
+     MC_AK4PFJets_v17
+     MC_PFBTagDeepCSV_v10
+     MC_PFHT_v16
+     MC_PFMHT_v16
+     MC_CaloMET_v8
+     MC_CaloMET_JetIdCleaned_v9
+     MC_AK4CaloJets_v9
+     MC_AK4CaloJetsFromPV_v8
+     MC_CaloBTagDeepCSV_v8
+     MC_CaloHT_v8
+     MC_CaloMHT_v8
+     MC_AK8PFJets_v17
+     MC_AK8TrimPFJets_v17
+     MC_AK8PFHT_v16
+     MC_AK8CaloHT_v8
+     MC_Diphoton10_10_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass10_v13
+     MC_DoubleEle5_CaloIdL_MW_v15
+     MC_Ele5_WPTight_Gsf_v8
+     MC_Ele15_Ele10_CaloIdL_TrackIdL_IsoVL_DZ_v15
+     MC_IsoMu_v15
+     MC_DoubleMu_TrkIsoVVL_DZ_v11
+     MC_DoubleMuNoFiltersNoVtx_v7
+     AlCa_EcalPi0EBonly_v13
+     AlCa_EcalPi0EEonly_v13
+     AlCa_EcalEtaEBonly_v13
+     AlCa_EcalEtaEEonly_v13
+     HLT_IsoMu24_eta2p1_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_v12
+     HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET90_v12
+     HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET100_v12
+     HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET110_v8
+     HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET120_v8
+     HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET130_v8
+     HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET140_v3
+     HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_v12     --> saving to tree
+     HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1_1pr_v11
+     HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1_v12
+     HLT_MediumChargedIsoPFTau200HighPtRelaxedIso_Trk50_eta2p1_v12
+     HLT_MediumChargedIsoPFTau220HighPtRelaxedIso_Trk50_eta2p1_v12
+     HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v9     --> saving to tree
+     HLT_Rsq0p35_v15
+     HLT_Rsq0p40_v15
+     HLT_RsqMR300_Rsq0p09_MR200_v15
+     HLT_RsqMR320_Rsq0p09_MR200_v15
+     HLT_RsqMR300_Rsq0p09_MR200_4jet_v15
+     HLT_RsqMR320_Rsq0p09_MR200_4jet_v15
+     HLT_IsoMu27_MET90_v3
+     HLT_DoubleTightChargedIsoPFTauHPS35_Trk1_eta2p1_Reg_v1
+     HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg_v1
+     HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg_v4
+     HLT_DoubleTightChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg_v1
+     HLT_DoubleMediumChargedIsoPFTauHPS40_Trk1_eta2p1_Reg_v1
+     HLT_DoubleTightChargedIsoPFTauHPS40_Trk1_eta2p1_Reg_v1
+     HLT_DoubleMediumChargedIsoPFTauHPS40_Trk1_TightID_eta2p1_Reg_v1
+     HLT_DoubleTightChargedIsoPFTauHPS40_Trk1_TightID_eta2p1_Reg_v1
+     HLT_VBF_DoubleLooseChargedIsoPFTauHPS20_Trk1_eta2p1_v1
+     HLT_VBF_DoubleMediumChargedIsoPFTauHPS20_Trk1_eta2p1_v1
+     HLT_VBF_DoubleTightChargedIsoPFTauHPS20_Trk1_eta2p1_v1
+     HLT_Photon50_R9Id90_HE10_IsoM_EBOnly_PFJetsMJJ300DEta3_PFMET50_v5
+     HLT_Photon75_R9Id90_HE10_IsoM_EBOnly_PFJetsMJJ300DEta3_v5
+     HLT_Photon75_R9Id90_HE10_IsoM_EBOnly_PFJetsMJJ600DEta3_v5
+     HLT_PFMET100_PFMHT100_IDTight_PFHT60_v9
+     HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_PFHT60_v9
+     HLT_PFMETTypeOne100_PFMHT100_IDTight_PFHT60_v9
+     HLT_Mu18_Mu9_SameSign_v4
+     HLT_Mu18_Mu9_SameSign_DZ_v4
+     HLT_Mu18_Mu9_v4
+     HLT_Mu18_Mu9_DZ_v4
+     HLT_Mu20_Mu10_SameSign_v4
+     HLT_Mu20_Mu10_SameSign_DZ_v4
+     HLT_Mu20_Mu10_v4
+     HLT_Mu20_Mu10_DZ_v4
+     HLT_Mu23_Mu12_SameSign_v4
+     HLT_Mu23_Mu12_SameSign_DZ_v4
+     HLT_Mu23_Mu12_v4
+     HLT_Mu23_Mu12_DZ_v4
+     HLT_DoubleMu2_Jpsi_DoubleTrk1_Phi1p05_v6
+     HLT_DoubleMu2_Jpsi_DoubleTkMu0_Phi_v5
+     HLT_DoubleMu3_DCA_PFMET50_PFMHT60_v10
+     HLT_TripleMu_5_3_3_Mass3p8_DCA_v3
+     HLT_QuadPFJet98_83_71_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1_v8
+     HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1_v8
+     HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1_v8
+     HLT_QuadPFJet98_83_71_15_PFBTagDeepCSV_1p3_VBF2_v8
+     HLT_QuadPFJet103_88_75_15_PFBTagDeepCSV_1p3_VBF2_v8
+     HLT_QuadPFJet105_88_76_15_PFBTagDeepCSV_1p3_VBF2_v8
+     HLT_QuadPFJet111_90_80_15_PFBTagDeepCSV_1p3_VBF2_v8
+     HLT_QuadPFJet98_83_71_15_v5
+     HLT_QuadPFJet103_88_75_15_v5
+     HLT_QuadPFJet105_88_76_15_v5
+     HLT_QuadPFJet111_90_80_15_v5
+     HLT_AK8PFJet330_TrimMass30_PFAK8BTagDeepCSV_p17_v2
+     HLT_AK8PFJet330_TrimMass30_PFAK8BTagDeepCSV_p1_v2
+     HLT_AK8PFJet330_TrimMass30_PFAK8BoostedDoubleB_p02_v3
+     HLT_AK8PFJet330_TrimMass30_PFAK8BoostedDoubleB_np2_v2
+     HLT_AK8PFJet330_TrimMass30_PFAK8BoostedDoubleB_np4_v2
+     HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55_v2
+     HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_v2
+     HLT_Mu12_IP6_part0_v2
+     HLT_Mu12_IP6_part1_v2
+     HLT_Mu12_IP6_part2_v2
+     HLT_Mu12_IP6_part3_v2
+     HLT_Mu12_IP6_part4_v2
+     HLT_Mu9_IP5_part0_v2
+     HLT_Mu9_IP5_part1_v2
+     HLT_Mu9_IP5_part2_v2
+     HLT_Mu9_IP5_part3_v2
+     HLT_Mu9_IP5_part4_v2
+     HLT_Mu7_IP4_part0_v2
+     HLT_Mu7_IP4_part1_v2
+     HLT_Mu7_IP4_part2_v2
+     HLT_Mu7_IP4_part3_v2
+     HLT_Mu7_IP4_part4_v2
+     HLT_Mu9_IP4_part0_v2
+     HLT_Mu9_IP4_part1_v2
+     HLT_Mu9_IP4_part2_v2
+     HLT_Mu9_IP4_part3_v2
+     HLT_Mu9_IP4_part4_v2
+     HLT_Mu8_IP5_part0_v2
+     HLT_Mu8_IP5_part1_v2
+     HLT_Mu8_IP5_part2_v2
+     HLT_Mu8_IP5_part3_v2
+     HLT_Mu8_IP5_part4_v2
+     HLT_Mu8_IP6_part0_v2
+     HLT_Mu8_IP6_part1_v2
+     HLT_Mu8_IP6_part2_v2
+     HLT_Mu8_IP6_part3_v2
+     HLT_Mu8_IP6_part4_v2
+     HLT_Mu9_IP6_part0_v3
+     HLT_Mu9_IP6_part1_v3
+     HLT_Mu9_IP6_part2_v3
+     HLT_Mu9_IP6_part3_v3
+     HLT_Mu9_IP6_part4_v3
+     HLT_Mu8_IP3_part0_v3
+     HLT_Mu8_IP3_part1_v3
+     HLT_Mu8_IP3_part2_v3
+     HLT_Mu8_IP3_part3_v3
+     HLT_Mu8_IP3_part4_v3
+     HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1_v8
+     HLT_TrkMu6NoFiltersNoVtx_v1
+     HLT_TrkMu16NoFiltersNoVtx_v1
+     HLT_DoubleTrkMu_16_6_NoFiltersNoVtx_v1
+     HLTriggerFinalPath
+     ScoutingPFOutput
+     ScoutingCaloMuonOutput
+   WARNING: HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1 not found in triggerresult, please check!
+   WARNING: HLT_TripleMu_5_3_3_Mass3p8to60_DZ not found in triggerresult, please check!
+   WARNING: HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1 not found in triggerresult, please check!
+   WARNING: HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1 not found in triggerresult, please check!
+   WARNING: HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1 not found in triggerresult, please check!
+   WARNING: HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1 not found in triggerresult, please check!
+   WARNING: HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1 not found in triggerresult, please check!
+   Available triggers:
+     Flag_HBHENoiseFilter     --> saving to tree
+     Flag_HBHENoiseIsoFilter     --> saving to tree
+     Flag_CSCTightHaloFilter
+     Flag_CSCTightHaloTrkMuUnvetoFilter
+     Flag_CSCTightHalo2015Filter
+     Flag_globalTightHalo2016Filter
+     Flag_globalSuperTightHalo2016Filter     --> saving to tree
+     Flag_HcalStripHaloFilter
+     Flag_hcalLaserEventFilter
+     Flag_EcalDeadCellTriggerPrimitiveFilter     --> saving to tree
+     Flag_EcalDeadCellBoundaryEnergyFilter
+     Flag_ecalBadCalibFilter
+     Flag_goodVertices     --> saving to tree
+     Flag_eeBadScFilter
+     Flag_ecalLaserCorrFilter
+     Flag_trkPOGFilters
+     Flag_chargedHadronTrackResolutionFilter
+     Flag_muonBadTrackFilter
+     Flag_BadChargedCandidateFilter     --> saving to tree
+     Flag_BadPFMuonFilter     --> saving to tree
+     Flag_BadChargedCandidateSummer16Filter
+     Flag_BadPFMuonSummer16Filter
+     Flag_trkPOG_manystripclus53X
+     Flag_trkPOG_toomanystripclus53X
+     Flag_trkPOG_logErrorTooManyClusters
+     Flag_METFilters
+   ----- Begin Fatal Exception 28-Mar-2019 10:38:09 CET-----------------------
+   An exception of category 'ProductNotFound' occurred while
+      [0] Processing  Event run: 1 lumi: 11083 event: 18750751 stream: 0
+      [1] Running path 'p'
+      [2] Calling method for module multilep/'blackJackAndHookers'
+   Exception Message:
+   Principal::getByToken: Found zero products matching all criteria
+   Looking for type: double
+   Looking for module label: prefiringweight
+   Looking for productInstanceName: nonPrefiringProb
+   
+      Additional Info:
+         [a] If you wish to continue processing events after a ProductNotFound exception,
+   add "SkipEvent = cms.untracked.vstring('ProductNotFound')" to the "options" PSet in the configuration.
+   
+   ----- End Fatal Exception -------------------------------------------------
+   28-Mar-2019 10:38:10 CET  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root
+   
+   TrigReport ---------- Event  Summary ------------
+   TrigReport Events total = 1 passed = 0 failed = 1
+   
+   TrigReport ---------- Path   Summary ------------
+   TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+   TrigReport     1    0          1          0          0          1 p
+   
+   TrigReport -------End-Path   Summary ------------
+   TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+   
+   TrigReport ---------- Modules in Path: p ------------
+   TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+   TrigReport     1    0          1          1          0          0 goodOfflinePrimaryVertices
+   TrigReport     1    1          1          1          0          0 slimmedJetsCorrectedAndSmeared
+   TrigReport     1    2          1          1          0          0 slimmedJetsCorrectedAndSmearedDown
+   TrigReport     1    3          1          1          0          0 slimmedJetsCorrectedAndSmearedUp
+   TrigReport     1    4          1          1          0          0 ecalBadCalibReducedMINIAODFilter
+   TrigReport     1    5          1          1          0          0 pfMet
+   TrigReport     1    6          1          1          0          0 genMetExtractor
+   TrigReport     1    7          1          1          0          0 patJetCorrFactorsReapplyJEC
+   TrigReport     1    8          1          1          0          0 patJetsReapplyJEC
+   TrigReport     1    9          1          1          0          0 basicJetsForMet
+   TrigReport     1   10          1          1          0          0 jetSelectorForMet
+   TrigReport     1   11          1          1          0          0 cleanedPatJets
+   TrigReport     1   12          1          1          0          0 metrawCalo
+   TrigReport     1   13          1          1          0          0 pfCHS
+   TrigReport     1   14          1          1          0          0 pfMetCHS
+   TrigReport     1   15          1          1          0          0 patCHSMet
+   TrigReport     1   16          1          1          0          0 pfTrk
+   TrigReport     1   17          1          1          0          0 pfMetTrk
+   TrigReport     1   18          1          1          0          0 patTrkMet
+   TrigReport     1   19          1          1          0          0 patPFMet
+   TrigReport     1   20          1          1          0          0 patPFMetT1
+   TrigReport     1   21          1          1          0          0 patPFMetT1Txy
+   TrigReport     1   22          1          1          0          0 patPFMetTxy
+   TrigReport     1   23          1          1          0          0 patPFMetT1Smear
+   TrigReport     1   24          1          1          0          0 shiftedPatJetResDown
+   TrigReport     1   25          1          1          0          0 shiftedPatMETCorrJetResDown
+   TrigReport     1   26          1          1          0          0 shiftedPatJetResUp
+   TrigReport     1   27          1          1          0          0 shiftedPatMETCorrJetResUp
+   TrigReport     1   28          1          1          0          0 pfCandsNoJets
+   TrigReport     1   29          1          1          0          0 pfCandsNoJetsNoEle
+   TrigReport     1   30          1          1          0          0 pfCandsNoJetsNoEleNoMu
+   TrigReport     1   31          1          1          0          0 pfCandsNoJetsNoEleNoMuNoTau
+   TrigReport     1   32          1          1          0          0 pfCandsForUnclusteredUnc
+   TrigReport     1   33          1          1          0          0 shiftedPatMuonEnDown
+   TrigReport     1   34          1          1          0          0 shiftedPatMETCorrMuonEnDown
+   TrigReport     1   35          1          1          0          0 shiftedPatMuonEnUp
+   TrigReport     1   36          1          1          0          0 shiftedPatMETCorrMuonEnUp
+   TrigReport     1   37          1          1          0          0 shiftedPatJetEnDown
+   TrigReport     1   38          1          1          0          0 shiftedPatMETCorrJetEnDown
+   TrigReport     1   39          1          1          0          0 shiftedPatJetEnUp
+   TrigReport     1   40          1          1          0          0 shiftedPatMETCorrJetEnUp
+   TrigReport     1   41          1          1          0          0 shiftedPatTauEnDown
+   TrigReport     1   42          1          1          0          0 shiftedPatMETCorrTauEnDown
+   TrigReport     1   43          1          1          0          0 shiftedPatTauEnUp
+   TrigReport     1   44          1          1          0          0 shiftedPatMETCorrTauEnUp
+   TrigReport     1   45          1          1          0          0 shiftedPatPhotonEnDown
+   TrigReport     1   46          1          1          0          0 shiftedPatMETCorrPhotonEnDown
+   TrigReport     1   47          1          1          0          0 shiftedPatPhotonEnUp
+   TrigReport     1   48          1          1          0          0 shiftedPatMETCorrPhotonEnUp
+   TrigReport     1   49          1          1          0          0 shiftedPatElectronEnDown
+   TrigReport     1   50          1          1          0          0 shiftedPatMETCorrElectronEnDown
+   TrigReport     1   51          1          1          0          0 shiftedPatElectronEnUp
+   TrigReport     1   52          1          1          0          0 shiftedPatMETCorrElectronEnUp
+   TrigReport     1   53          1          1          0          0 shiftedPatUnclusteredEnDown
+   TrigReport     1   54          1          1          0          0 shiftedPatMETCorrUnclusteredEnDown
+   TrigReport     1   55          1          1          0          0 shiftedPatUnclusteredEnUp
+   TrigReport     1   56          1          1          0          0 shiftedPatMETCorrUnclusteredEnUp
+   TrigReport     1   57          1          1          0          0 shiftedPatSmearedJetResDown
+   TrigReport     1   58          1          1          0          0 shiftedPatMETCorrSmearedJetResDown
+   TrigReport     1   59          1          1          0          0 shiftedPatSmearedJetResUp
+   TrigReport     1   60          1          1          0          0 shiftedPatMETCorrSmearedJetResUp
+   TrigReport     1   61          1          1          0          0 patPFMetT1JetResUp
+   TrigReport     1   62          1          1          0          0 patPFMetT1JetResDown
+   TrigReport     1   63          1          1          0          0 patPFMetT1MuonEnUp
+   TrigReport     1   64          1          1          0          0 patPFMetT1MuonEnDown
+   TrigReport     1   65          1          1          0          0 patPFMetT1JetEnUp
+   TrigReport     1   66          1          1          0          0 patPFMetT1JetEnDown
+   TrigReport     1   67          1          1          0          0 patPFMetT1TauEnDown
+   TrigReport     1   68          1          1          0          0 patPFMetT1TauEnUp
+   TrigReport     1   69          1          1          0          0 patPFMetT1PhotonEnUp
+   TrigReport     1   70          1          1          0          0 patPFMetT1PhotonEnDown
+   TrigReport     1   71          1          1          0          0 patPFMetT1ElectronEnUp
+   TrigReport     1   72          1          1          0          0 patPFMetT1ElectronEnDown
+   TrigReport     1   73          1          1          0          0 patPFMetT1UnclusteredEnUp
+   TrigReport     1   74          1          1          0          0 patPFMetT1UnclusteredEnDown
+   TrigReport     1   75          1          1          0          0 patPFMetT1SmearJetResDown
+   TrigReport     1   76          1          1          0          0 patPFMetT1SmearJetResUp
+   TrigReport     1   77          1          1          0          0 patPFMetT1SmearMuonEnUp
+   TrigReport     1   78          1          1          0          0 patPFMetT1SmearMuonEnDown
+   TrigReport     1   79          1          1          0          0 patPFMetT1SmearJetEnUp
+   TrigReport     1   80          1          1          0          0 patPFMetT1SmearJetEnDown
+   TrigReport     1   81          1          1          0          0 patPFMetT1SmearTauEnUp
+   TrigReport     1   82          1          1          0          0 patPFMetT1SmearTauEnDown
+   TrigReport     1   83          1          1          0          0 patPFMetT1SmearPhotonEnUp
+   TrigReport     1   84          1          1          0          0 patPFMetT1SmearPhotonEnDown
+   TrigReport     1   85          1          1          0          0 patPFMetT1SmearElectronEnDown
+   TrigReport     1   86          1          1          0          0 patPFMetT1SmearElectronEnUp
+   TrigReport     1   87          1          1          0          0 patPFMetT1SmearUnclusteredEnUp
+   TrigReport     1   88          1          1          0          0 patPFMetT1SmearUnclusteredEnDown
+   TrigReport     1   89          1          1          0          0 patCaloMet
+   TrigReport     1   90          1          1          0          0 slimmedMETs
+   TrigReport     1   91          1          1          0          0 mergedGenParticles
+   TrigReport     1   92          1          1          0          0 genParticles2HepMC
+   TrigReport     1   93          1          1          0          0 particleLevel
+   TrigReport     1   94          1          0          0          1 blackJackAndHookers
+   
+   TrigReport ---------- Module Summary ------------
+   TrigReport    Visited   Executed     Passed     Failed      Error Name
+   TrigReport          1          1          1          0          0 TriggerResults
+   TrigReport          0          0          0          0          0 ak4CaloL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL1FastL2L3L6Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL1FastjetCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL1OffsetCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL2L3L6Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL6SLBCorrector
+   TrigReport          0          0          0          0          0 ak4CaloResidualCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4JPTL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4JPTL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4JPTL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4JPTResidualCorrector
+   TrigReport          0          0          0          0          0 ak4L1JPTFastjetCorrector
+   TrigReport          0          0          0          0          0 ak4L1JPTOffsetCorrector
+   TrigReport          1          1          1          0          0 ak4PFCHSL1FastL2L3Corrector
+   TrigReport          1          1          1          0          0 ak4PFCHSL1FastL2L3ResidualCorrector
+   TrigReport          1          1          1          0          0 ak4PFCHSL1FastjetCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1OffsetCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL2L3ResidualCorrector
+   TrigReport          1          1          1          0          0 ak4PFCHSL2RelativeCorrector
+   TrigReport          1          1          1          0          0 ak4PFCHSL3AbsoluteCorrector
+   TrigReport          1          1          1          0          0 ak4PFCHSResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFL1FastL2L3L6Corrector
+   TrigReport          0          0          0          0          0 ak4PFL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFL1FastjetCorrector
+   TrigReport          0          0          0          0          0 ak4PFL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFL1OffsetCorrector
+   TrigReport          0          0          0          0          0 ak4PFL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFL2L3L6Corrector
+   TrigReport          0          0          0          0          0 ak4PFL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4PFL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4PFL6SLBCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1FastjetCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1OffsetCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFResidualCorrector
+   TrigReport          0          0          0          0          0 ak4TrackL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4TrackL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4TrackL3AbsoluteCorrector
+   TrigReport          1          1          1          0          0 basicJetsForMet
+   TrigReport          1          1          0          0          1 blackJackAndHookers
+   TrigReport         25          1          1          0          0 calibratedPatElectrons
+   TrigReport         21          1          1          0          0 calibratedPatPhotons
+   TrigReport          1          1          1          0          0 cleanedPatJets
+   TrigReport          1          1          1          0          0 ecalBadCalibReducedMINIAODFilter
+   TrigReport         42          1          1          0          0 egmGsfElectronIDs
+   TrigReport         26          1          1          0          0 egmPhotonIDs
+   TrigReport          2          1          1          0          0 egmPhotonIsolation
+   TrigReport         14          1          1          0          0 electronMVAValueMapProducer
+   TrigReport          3          1          1          0          0 electronMVAVariableHelper
+   TrigReport          0          0          0          0          0 electronRegressionValueMapProducer
+   TrigReport          1          1          1          0          0 genMetExtractor
+   TrigReport          1          1          1          0          0 genParticles2HepMC
+   TrigReport          1          1          1          0          0 goodOfflinePrimaryVertices
+   TrigReport          1          1          1          0          0 heepIDVarValueMaps
+   TrigReport          1          1          1          0          0 jetSelectorForMet
+   TrigReport          1          1          1          0          0 mergedGenParticles
+   TrigReport          1          1          1          0          0 metrawCalo
+   TrigReport          1          1          1          0          0 p
+   TrigReport          0          0          0          0          0 particleFlowDisplacedVertex
+   TrigReport          1          1          1          0          0 particleLevel
+   TrigReport          1          1          1          0          0 patCHSMet
+   TrigReport          1          1          1          0          0 patCaloMet
+   TrigReport          1          1          1          0          0 patJetCorrFactorsReapplyJEC
+   TrigReport          1          1          1          0          0 patJetCorrFactorsUpdatedJEC
+   TrigReport          1          1          1          0          0 patJetsReapplyJEC
+   TrigReport          1          1          1          0          0 patPFMet
+   TrigReport          0          0          0          0          0 patPFMetT0Corr
+   TrigReport          0          0          0          0          0 patPFMetT0pcT1
+   TrigReport          0          0          0          0          0 patPFMetT0pcT1T2
+   TrigReport          1          1          1          0          0 patPFMetT1
+   TrigReport          1          1          1          0          0 patPFMetT1ElectronEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1ElectronEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1JetEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1JetEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1JetResDown
+   TrigReport          1          1          1          0          0 patPFMetT1JetResUp
+   TrigReport          1          1          1          0          0 patPFMetT1MuonEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1MuonEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1PhotonEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1PhotonEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1Smear
+   TrigReport          1          1          1          0          0 patPFMetT1SmearElectronEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1SmearElectronEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1SmearJetEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1SmearJetEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1SmearJetResDown
+   TrigReport          1          1          1          0          0 patPFMetT1SmearJetResUp
+   TrigReport          1          1          1          0          0 patPFMetT1SmearMuonEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1SmearMuonEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1SmearPhotonEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1SmearPhotonEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1SmearTauEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1SmearTauEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1SmearUnclusteredEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1SmearUnclusteredEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1T2
+   TrigReport          1          1          1          0          0 patPFMetT1T2Corr
+   TrigReport          1          1          1          0          0 patPFMetT1T2SmearCorr
+   TrigReport          1          1          1          0          0 patPFMetT1TauEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1TauEnUp
+   TrigReport          1          1          1          0          0 patPFMetT1Txy
+   TrigReport          1          1          1          0          0 patPFMetT1UnclusteredEnDown
+   TrigReport          1          1          1          0          0 patPFMetT1UnclusteredEnUp
+   TrigReport          0          0          0          0          0 patPFMetT2Corr
+   TrigReport          0          0          0          0          0 patPFMetT2SmearCorr
+   TrigReport          1          1          1          0          0 patPFMetTxy
+   TrigReport          1          1          1          0          0 patPFMetTxyCorr
+   TrigReport          1          1          1          0          0 patSmearedJets
+   TrigReport          1          1          1          0          0 patTrkMet
+   TrigReport          1          1          1          0          0 pfCHS
+   TrigReport          0          0          0          0          0 pfCandMETcorr
+   TrigReport          0          0          0          0          0 pfCandidateToVertexAssociation
+   TrigReport          1          1          1          0          0 pfCandsForUnclusteredUnc
+   TrigReport          1          1          1          0          0 pfCandsNoJets
+   TrigReport          1          1          1          0          0 pfCandsNoJetsNoEle
+   TrigReport          1          1          1          0          0 pfCandsNoJetsNoEleNoMu
+   TrigReport          1          1          1          0          0 pfCandsNoJetsNoEleNoMuNoTau
+   TrigReport          0          0          0          0          0 pfCandsNotInJetsForMetCorr
+   TrigReport          1          1          1          0          0 pfMet
+   TrigReport          1          1          1          0          0 pfMetCHS
+   TrigReport          1          1          1          0          0 pfMetTrk
+   TrigReport          1          1          1          0          0 pfTrk
+   TrigReport          6          1          1          0          0 photonIDValueMapProducer
+   TrigReport          8          1          1          0          0 photonMVAValueMapProducer
+   TrigReport          0          0          0          0          0 photonRegressionValueMapProducer
+   TrigReport          0          0          0          0          0 selectedPatJetsForMetT1T2Corr
+   TrigReport          1          1          1          0          0 selectedPatJetsForMetT1T2SmearCorr
+   TrigReport          0          0          0          0          0 selectedPatJetsForMetT2Corr
+   TrigReport          0          0          0          0          0 selectedPatJetsForMetT2SmearCorr
+   TrigReport          0          0          0          0          0 selectedPrimaryVertexHighestPtTrackSumForPFMEtCorrType0
+   TrigReport          1          1          1          0          0 selectedUpdatedPatJetsUpdatedJEC
+   TrigReport          0          0          0          0          0 selectedVerticesForPFMEtCorrType0
+   TrigReport          1          1          1          0          0 shiftedPatElectronEnDown
+   TrigReport          1          1          1          0          0 shiftedPatElectronEnUp
+   TrigReport          1          1          1          0          0 shiftedPatJetEnDown
+   TrigReport          1          1          1          0          0 shiftedPatJetEnUp
+   TrigReport          1          1          1          0          0 shiftedPatJetResDown
+   TrigReport          1          1          1          0          0 shiftedPatJetResUp
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrElectronEnDown
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrElectronEnUp
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrJetEnDown
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrJetEnUp
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrJetResDown
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrJetResUp
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrMuonEnDown
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrMuonEnUp
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrPhotonEnDown
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrPhotonEnUp
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrSmearedJetResDown
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrSmearedJetResUp
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrTauEnDown
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrTauEnUp
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrUnclusteredEnDown
+   TrigReport          1          1          1          0          0 shiftedPatMETCorrUnclusteredEnUp
+   TrigReport          1          1          1          0          0 shiftedPatMuonEnDown
+   TrigReport          1          1          1          0          0 shiftedPatMuonEnUp
+   TrigReport          1          1          1          0          0 shiftedPatPhotonEnDown
+   TrigReport          1          1          1          0          0 shiftedPatPhotonEnUp
+   TrigReport          1          1          1          0          0 shiftedPatSmearedJetResDown
+   TrigReport          1          1          1          0          0 shiftedPatSmearedJetResUp
+   TrigReport          1          1          1          0          0 shiftedPatTauEnDown
+   TrigReport          1          1          1          0          0 shiftedPatTauEnUp
+   TrigReport          1          1          1          0          0 shiftedPatUnclusteredEnDown
+   TrigReport          1          1          1          0          0 shiftedPatUnclusteredEnUp
+   TrigReport          1          1          1          0          0 slimmedElectrons
+   TrigReport          1          1          1          0          0 slimmedJetsCorrectedAndSmeared
+   TrigReport          1          1          1          0          0 slimmedJetsCorrectedAndSmearedDown
+   TrigReport          1          1          1          0          0 slimmedJetsCorrectedAndSmearedUp
+   TrigReport          1          1          1          0          0 slimmedMETs
+   TrigReport          1          1          1          0          0 slimmedPhotons
+   TrigReport          1          1          1          0          0 updatedPatJetsUpdatedJEC
+   
+   TimeReport ---------- Event  Summary ---[sec]----
+   TimeReport       event loop CPU/event = 3.070316
+   TimeReport      event loop Real/event = 118.919958
+   TimeReport     sum Streams Real/event = 4.435417
+   TimeReport efficiency CPU/Real/thread = 0.025818
+   
+   TimeReport ---------- Path   Summary ---[Real sec]----
+   TimeReport  per event     per exec  Name
+   TimeReport   4.301779     4.301779  p
+   TimeReport  per event     per exec  Name
+   
+   TimeReport -------End-Path   Summary ---[Real sec]----
+   TimeReport  per event     per exec  Name
+   TimeReport  per event     per exec  Name
+   
+   TimeReport ---------- Modules in Path: p ---[Real sec]----
+   TimeReport  per event    per visit  Name
+   TimeReport   0.000309     0.000309  goodOfflinePrimaryVertices
+   TimeReport   0.193256     0.193256  slimmedJetsCorrectedAndSmeared
+   TimeReport   0.000383     0.000383  slimmedJetsCorrectedAndSmearedDown
+   TimeReport   0.000343     0.000343  slimmedJetsCorrectedAndSmearedUp
+   TimeReport   1.652763     1.652763  ecalBadCalibReducedMINIAODFilter
+   TimeReport   0.000382     0.000382  pfMet
+   TimeReport   0.000060     0.000060  genMetExtractor
+   TimeReport   0.001919     0.001919  patJetCorrFactorsReapplyJEC
+   TimeReport   0.000401     0.000401  patJetsReapplyJEC
+   TimeReport   0.019480     0.019480  basicJetsForMet
+   TimeReport   0.000118     0.000118  jetSelectorForMet
+   TimeReport   0.000633     0.000633  cleanedPatJets
+   TimeReport   0.000027     0.000027  metrawCalo
+   TimeReport   0.030533     0.030533  pfCHS
+   TimeReport   0.001231     0.001231  pfMetCHS
+   TimeReport   0.000374     0.000374  patCHSMet
+   TimeReport   0.005970     0.005970  pfTrk
+   TimeReport   0.000182     0.000182  pfMetTrk
+   TimeReport   0.000045     0.000045  patTrkMet
+   TimeReport   0.004244     0.004244  patPFMet
+   TimeReport   0.000354     0.000354  patPFMetT1
+   TimeReport   0.000026     0.000026  patPFMetT1Txy
+   TimeReport   0.000032     0.000032  patPFMetTxy
+   TimeReport   0.000024     0.000024  patPFMetT1Smear
+   TimeReport   0.000177     0.000177  shiftedPatJetResDown
+   TimeReport   0.000021     0.000021  shiftedPatMETCorrJetResDown
+   TimeReport   0.000164     0.000164  shiftedPatJetResUp
+   TimeReport   0.000013     0.000013  shiftedPatMETCorrJetResUp
+   TimeReport   0.000297     0.000297  pfCandsNoJets
+   TimeReport   0.000204     0.000204  pfCandsNoJetsNoEle
+   TimeReport   0.000238     0.000238  pfCandsNoJetsNoEleNoMu
+   TimeReport   0.000385     0.000385  pfCandsNoJetsNoEleNoMuNoTau
+   TimeReport   0.000207     0.000207  pfCandsForUnclusteredUnc
+   TimeReport   0.000201     0.000201  shiftedPatMuonEnDown
+   TimeReport   0.000025     0.000025  shiftedPatMETCorrMuonEnDown
+   TimeReport   0.000017     0.000017  shiftedPatMuonEnUp
+   TimeReport   0.000012     0.000012  shiftedPatMETCorrMuonEnUp
+   TimeReport   0.000370     0.000370  shiftedPatJetEnDown
+   TimeReport   0.000018     0.000018  shiftedPatMETCorrJetEnDown
+   TimeReport   0.000088     0.000088  shiftedPatJetEnUp
+   TimeReport   0.000012     0.000012  shiftedPatMETCorrJetEnUp
+   TimeReport   0.000016     0.000016  shiftedPatTauEnDown
+   TimeReport   0.000012     0.000012  shiftedPatMETCorrTauEnDown
+   TimeReport   0.000013     0.000013  shiftedPatTauEnUp
+   TimeReport   0.000012     0.000012  shiftedPatMETCorrTauEnUp
+   TimeReport   0.000019     0.000019  shiftedPatPhotonEnDown
+   TimeReport   0.000012     0.000012  shiftedPatMETCorrPhotonEnDown
+   TimeReport   0.000012     0.000012  shiftedPatPhotonEnUp
+   TimeReport   0.000012     0.000012  shiftedPatMETCorrPhotonEnUp
+   TimeReport   0.000010     0.000010  shiftedPatElectronEnDown
+   TimeReport   0.000011     0.000011  shiftedPatMETCorrElectronEnDown
+   TimeReport   0.000009     0.000009  shiftedPatElectronEnUp
+   TimeReport   0.000010     0.000010  shiftedPatMETCorrElectronEnUp
+   TimeReport   0.002629     0.002629  shiftedPatUnclusteredEnDown
+   TimeReport   0.000263     0.000263  shiftedPatMETCorrUnclusteredEnDown
+   TimeReport   0.001859     0.001859  shiftedPatUnclusteredEnUp
+   TimeReport   0.000258     0.000258  shiftedPatMETCorrUnclusteredEnUp
+   TimeReport   0.000218     0.000218  shiftedPatSmearedJetResDown
+   TimeReport   0.000014     0.000014  shiftedPatMETCorrSmearedJetResDown
+   TimeReport   0.000159     0.000159  shiftedPatSmearedJetResUp
+   TimeReport   0.000013     0.000013  shiftedPatMETCorrSmearedJetResUp
+   TimeReport   0.000039     0.000039  patPFMetT1JetResUp
+   TimeReport   0.000019     0.000019  patPFMetT1JetResDown
+   TimeReport   0.000020     0.000020  patPFMetT1MuonEnUp
+   TimeReport   0.000019     0.000019  patPFMetT1MuonEnDown
+   TimeReport   0.000020     0.000020  patPFMetT1JetEnUp
+   TimeReport   0.000019     0.000019  patPFMetT1JetEnDown
+   TimeReport   0.000019     0.000019  patPFMetT1TauEnDown
+   TimeReport   0.000019     0.000019  patPFMetT1TauEnUp
+   TimeReport   0.000022     0.000022  patPFMetT1PhotonEnUp
+   TimeReport   0.000021     0.000021  patPFMetT1PhotonEnDown
+   TimeReport   0.000019     0.000019  patPFMetT1ElectronEnUp
+   TimeReport   0.000019     0.000019  patPFMetT1ElectronEnDown
+   TimeReport   0.000019     0.000019  patPFMetT1UnclusteredEnUp
+   TimeReport   0.000019     0.000019  patPFMetT1UnclusteredEnDown
+   TimeReport   0.000021     0.000021  patPFMetT1SmearJetResDown
+   TimeReport   0.000018     0.000018  patPFMetT1SmearJetResUp
+   TimeReport   0.000019     0.000019  patPFMetT1SmearMuonEnUp
+   TimeReport   0.000021     0.000021  patPFMetT1SmearMuonEnDown
+   TimeReport   0.000020     0.000020  patPFMetT1SmearJetEnUp
+   TimeReport   0.000022     0.000022  patPFMetT1SmearJetEnDown
+   TimeReport   0.000019     0.000019  patPFMetT1SmearTauEnUp
+   TimeReport   0.000021     0.000021  patPFMetT1SmearTauEnDown
+   TimeReport   0.000019     0.000019  patPFMetT1SmearPhotonEnUp
+   TimeReport   0.000020     0.000020  patPFMetT1SmearPhotonEnDown
+   TimeReport   0.000022     0.000022  patPFMetT1SmearElectronEnDown
+   TimeReport   0.000026     0.000026  patPFMetT1SmearElectronEnUp
+   TimeReport   0.000023     0.000023  patPFMetT1SmearUnclusteredEnUp
+   TimeReport   0.000019     0.000019  patPFMetT1SmearUnclusteredEnDown
+   TimeReport   0.000033     0.000033  patCaloMet
+   TimeReport   0.000209     0.000209  slimmedMETs
+   TimeReport   0.001437     0.001437  mergedGenParticles
+   TimeReport   0.028394     0.028394  genParticles2HepMC
+   TimeReport   0.025204     0.025204  particleLevel
+   TimeReport   0.200956     0.200956  blackJackAndHookers
+   TimeReport  per event    per visit  Name
+   
+   TimeReport ---------- Module Summary ---[Real sec]----
+   TimeReport  per event     per exec    per visit  Name
+   TimeReport   0.000008     0.000008     0.000008  TriggerResults
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1FastL2L3L6Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1FastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1OffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL2L3L6Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL6SLBCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4L1JPTFastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4L1JPTOffsetCorrector
+   TimeReport   0.000187     0.000187     0.000187  ak4PFCHSL1FastL2L3Corrector
+   TimeReport   0.000011     0.000011     0.000011  ak4PFCHSL1FastL2L3ResidualCorrector
+   TimeReport   0.000120     0.000120     0.000120  ak4PFCHSL1FastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1OffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL2L3ResidualCorrector
+   TimeReport   0.000818     0.000818     0.000818  ak4PFCHSL2RelativeCorrector
+   TimeReport   0.000009     0.000009     0.000009  ak4PFCHSL3AbsoluteCorrector
+   TimeReport   0.000745     0.000745     0.000745  ak4PFCHSResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1FastL2L3L6Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1FastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1OffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL2L3L6Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL6SLBCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1FastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1OffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4TrackL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4TrackL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4TrackL3AbsoluteCorrector
+   TimeReport   0.019480     0.019480     0.019480  basicJetsForMet
+   TimeReport   0.200956     0.200956     0.200956  blackJackAndHookers
+   TimeReport   0.000122     0.000122     0.000122  calibratedPatElectrons
+   TimeReport   0.001014     0.001014     0.001014  calibratedPatPhotons
+   TimeReport   0.000633     0.000633     0.000633  cleanedPatJets
+   TimeReport   1.652763     1.652763     1.652763  ecalBadCalibReducedMINIAODFilter
+   TimeReport   0.002207     0.002207     0.002207  egmGsfElectronIDs
+   TimeReport   0.003073     0.003073     0.003073  egmPhotonIDs
+   TimeReport   0.001687     0.001687     0.001687  egmPhotonIsolation
+   TimeReport   0.000198     0.000198     0.000198  electronMVAValueMapProducer
+   TimeReport   0.000448     0.000448     0.000448  electronMVAVariableHelper
+   TimeReport   0.000000     0.000000     0.000000  electronRegressionValueMapProducer
+   TimeReport   0.000060     0.000060     0.000060  genMetExtractor
+   TimeReport   0.028394     0.028394     0.028394  genParticles2HepMC
+   TimeReport   0.000309     0.000309     0.000309  goodOfflinePrimaryVertices
+   TimeReport   0.001722     0.001722     0.001722  heepIDVarValueMaps
+   TimeReport   0.000118     0.000118     0.000118  jetSelectorForMet
+   TimeReport   0.001437     0.001437     0.001437  mergedGenParticles
+   TimeReport   0.000027     0.000027     0.000027  metrawCalo
+   TimeReport   0.000016     0.000016     0.000016  p
+   TimeReport   0.000000     0.000000     0.000000  particleFlowDisplacedVertex
+   TimeReport   0.025204     0.025204     0.025204  particleLevel
+   TimeReport   0.000374     0.000374     0.000374  patCHSMet
+   TimeReport   0.000033     0.000033     0.000033  patCaloMet
+   TimeReport   0.001919     0.001919     0.001919  patJetCorrFactorsReapplyJEC
+   TimeReport   1.159438     1.159438     1.159438  patJetCorrFactorsUpdatedJEC
+   TimeReport   0.000401     0.000401     0.000401  patJetsReapplyJEC
+   TimeReport   0.004244     0.004244     0.004244  patPFMet
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT0Corr
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT0pcT1
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT0pcT1T2
+   TimeReport   0.000354     0.000354     0.000354  patPFMetT1
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1ElectronEnDown
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1ElectronEnUp
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1JetEnDown
+   TimeReport   0.000020     0.000020     0.000020  patPFMetT1JetEnUp
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1JetResDown
+   TimeReport   0.000039     0.000039     0.000039  patPFMetT1JetResUp
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1MuonEnDown
+   TimeReport   0.000020     0.000020     0.000020  patPFMetT1MuonEnUp
+   TimeReport   0.000021     0.000021     0.000021  patPFMetT1PhotonEnDown
+   TimeReport   0.000022     0.000022     0.000022  patPFMetT1PhotonEnUp
+   TimeReport   0.000024     0.000024     0.000024  patPFMetT1Smear
+   TimeReport   0.000022     0.000022     0.000022  patPFMetT1SmearElectronEnDown
+   TimeReport   0.000026     0.000026     0.000026  patPFMetT1SmearElectronEnUp
+   TimeReport   0.000022     0.000022     0.000022  patPFMetT1SmearJetEnDown
+   TimeReport   0.000020     0.000020     0.000020  patPFMetT1SmearJetEnUp
+   TimeReport   0.000021     0.000021     0.000021  patPFMetT1SmearJetResDown
+   TimeReport   0.000018     0.000018     0.000018  patPFMetT1SmearJetResUp
+   TimeReport   0.000021     0.000021     0.000021  patPFMetT1SmearMuonEnDown
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1SmearMuonEnUp
+   TimeReport   0.000020     0.000020     0.000020  patPFMetT1SmearPhotonEnDown
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1SmearPhotonEnUp
+   TimeReport   0.000021     0.000021     0.000021  patPFMetT1SmearTauEnDown
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1SmearTauEnUp
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1SmearUnclusteredEnDown
+   TimeReport   0.000023     0.000023     0.000023  patPFMetT1SmearUnclusteredEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1T2
+   TimeReport   0.000336     0.000336     0.000336  patPFMetT1T2Corr
+   TimeReport   0.000222     0.000222     0.000222  patPFMetT1T2SmearCorr
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1TauEnDown
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1TauEnUp
+   TimeReport   0.000026     0.000026     0.000026  patPFMetT1Txy
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1UnclusteredEnDown
+   TimeReport   0.000019     0.000019     0.000019  patPFMetT1UnclusteredEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT2Corr
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT2SmearCorr
+   TimeReport   0.000032     0.000032     0.000032  patPFMetTxy
+   TimeReport   0.001017     0.001017     0.001017  patPFMetTxyCorr
+   TimeReport   0.000301     0.000301     0.000301  patSmearedJets
+   TimeReport   0.000045     0.000045     0.000045  patTrkMet
+   TimeReport   0.030533     0.030533     0.030533  pfCHS
+   TimeReport   0.000000     0.000000     0.000000  pfCandMETcorr
+   TimeReport   0.000000     0.000000     0.000000  pfCandidateToVertexAssociation
+   TimeReport   0.000207     0.000207     0.000207  pfCandsForUnclusteredUnc
+   TimeReport   0.000297     0.000297     0.000297  pfCandsNoJets
+   TimeReport   0.000204     0.000204     0.000204  pfCandsNoJetsNoEle
+   TimeReport   0.000238     0.000238     0.000238  pfCandsNoJetsNoEleNoMu
+   TimeReport   0.000385     0.000385     0.000385  pfCandsNoJetsNoEleNoMuNoTau
+   TimeReport   0.000000     0.000000     0.000000  pfCandsNotInJetsForMetCorr
+   TimeReport   0.000382     0.000382     0.000382  pfMet
+   TimeReport   0.001231     0.001231     0.001231  pfMetCHS
+   TimeReport   0.000182     0.000182     0.000182  pfMetTrk
+   TimeReport   0.005970     0.005970     0.005970  pfTrk
+   TimeReport   0.101588     0.101588     0.101588  photonIDValueMapProducer
+   TimeReport   0.002063     0.002063     0.002063  photonMVAValueMapProducer
+   TimeReport   0.000000     0.000000     0.000000  photonRegressionValueMapProducer
+   TimeReport   0.000000     0.000000     0.000000  selectedPatJetsForMetT1T2Corr
+   TimeReport   0.000100     0.000100     0.000100  selectedPatJetsForMetT1T2SmearCorr
+   TimeReport   0.000000     0.000000     0.000000  selectedPatJetsForMetT2Corr
+   TimeReport   0.000000     0.000000     0.000000  selectedPatJetsForMetT2SmearCorr
+   TimeReport   0.000000     0.000000     0.000000  selectedPrimaryVertexHighestPtTrackSumForPFMEtCorrType0
+   TimeReport   0.000981     0.000981     0.000981  selectedUpdatedPatJetsUpdatedJEC
+   TimeReport   0.000000     0.000000     0.000000  selectedVerticesForPFMEtCorrType0
+   TimeReport   0.000010     0.000010     0.000010  shiftedPatElectronEnDown
+   TimeReport   0.000009     0.000009     0.000009  shiftedPatElectronEnUp
+   TimeReport   0.000370     0.000370     0.000370  shiftedPatJetEnDown
+   TimeReport   0.000088     0.000088     0.000088  shiftedPatJetEnUp
+   TimeReport   0.000177     0.000177     0.000177  shiftedPatJetResDown
+   TimeReport   0.000164     0.000164     0.000164  shiftedPatJetResUp
+   TimeReport   0.000011     0.000011     0.000011  shiftedPatMETCorrElectronEnDown
+   TimeReport   0.000010     0.000010     0.000010  shiftedPatMETCorrElectronEnUp
+   TimeReport   0.000018     0.000018     0.000018  shiftedPatMETCorrJetEnDown
+   TimeReport   0.000012     0.000012     0.000012  shiftedPatMETCorrJetEnUp
+   TimeReport   0.000021     0.000021     0.000021  shiftedPatMETCorrJetResDown
+   TimeReport   0.000013     0.000013     0.000013  shiftedPatMETCorrJetResUp
+   TimeReport   0.000025     0.000025     0.000025  shiftedPatMETCorrMuonEnDown
+   TimeReport   0.000012     0.000012     0.000012  shiftedPatMETCorrMuonEnUp
+   TimeReport   0.000012     0.000012     0.000012  shiftedPatMETCorrPhotonEnDown
+   TimeReport   0.000012     0.000012     0.000012  shiftedPatMETCorrPhotonEnUp
+   TimeReport   0.000014     0.000014     0.000014  shiftedPatMETCorrSmearedJetResDown
+   TimeReport   0.000013     0.000013     0.000013  shiftedPatMETCorrSmearedJetResUp
+   TimeReport   0.000012     0.000012     0.000012  shiftedPatMETCorrTauEnDown
+   TimeReport   0.000012     0.000012     0.000012  shiftedPatMETCorrTauEnUp
+   TimeReport   0.000263     0.000263     0.000263  shiftedPatMETCorrUnclusteredEnDown
+   TimeReport   0.000258     0.000258     0.000258  shiftedPatMETCorrUnclusteredEnUp
+   TimeReport   0.000201     0.000201     0.000201  shiftedPatMuonEnDown
+   TimeReport   0.000017     0.000017     0.000017  shiftedPatMuonEnUp
+   TimeReport   0.000019     0.000019     0.000019  shiftedPatPhotonEnDown
+   TimeReport   0.000012     0.000012     0.000012  shiftedPatPhotonEnUp
+   TimeReport   0.000218     0.000218     0.000218  shiftedPatSmearedJetResDown
+   TimeReport   0.000159     0.000159     0.000159  shiftedPatSmearedJetResUp
+   TimeReport   0.000016     0.000016     0.000016  shiftedPatTauEnDown
+   TimeReport   0.000013     0.000013     0.000013  shiftedPatTauEnUp
+   TimeReport   0.002629     0.002629     0.002629  shiftedPatUnclusteredEnDown
+   TimeReport   0.001859     0.001859     0.001859  shiftedPatUnclusteredEnUp
+   TimeReport   0.000758     0.000758     0.000758  slimmedElectrons
+   TimeReport   0.193256     0.193256     0.193256  slimmedJetsCorrectedAndSmeared
+   TimeReport   0.000383     0.000383     0.000383  slimmedJetsCorrectedAndSmearedDown
+   TimeReport   0.000343     0.000343     0.000343  slimmedJetsCorrectedAndSmearedUp
+   TimeReport   0.000209     0.000209     0.000209  slimmedMETs
+   TimeReport   0.000799     0.000799     0.000799  slimmedPhotons
+   TimeReport   0.002757     0.002757     0.002757  updatedPatJetsUpdatedJEC
+   TimeReport  per event     per exec    per visit  Name
+   
+   T---Report end!
+   
+   
+   =============================================
+   
+   MessageLogger Summary
+   
+    type     category        sev    module        subroutine        count    total
+    ---- -------------------- -- ---------------- ----------------  -----    -----
+       1 Fatal Exception      -s PostModuleEvent                        1        1
+       2 fileAction           -s file_close                             1        1
+       3 fileAction           -s file_open                              2        2
+   
+    type    category    Examples: run/evt        run/evt          run/evt
+    ---- -------------------- ---------------- ---------------- ----------------
+       1 Fatal Exception      1/18750751                        
+       2 fileAction           PostGlobalEndRun                  
+       3 fileAction           pre-events       pre-events       
+   
+   Severity    # Occurrences   Total Occurrences
+   --------    -------------   -----------------
+   System                  4                   4
+   
+   dropped waiting message count 0
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _leptonMvaSUSY,_leptonMvaTTH,_leptonMvatZq
+   Removed: _leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0965 -->   0.0763     rms:   0.2622 -->   0.2333    
+      _jetChargedHadronFraction                          mean:   0.3444 -->   0.3332     rms:   0.3110 -->   0.3091    
+      _jetCsvV2                                          mean:  -2.6003 -->  -3.0592     rms:   4.6788 -->   4.8871    
+      _jetDeepCsv_b                                      mean:  -0.4133 -->  -0.4691     rms:   0.5483 -->   0.5547    
+      _jetDeepCsv_bb                                     mean:  -0.4603 -->  -0.5162     rms:   0.4996 -->   0.5011    
+      _jetDeepCsv_c                                      mean:  -0.3876 -->  -0.4492     rms:   0.5708 -->   0.5736    
+      _jetDeepCsv_udsg                                   mean:  -0.0464 -->  -0.1532     rms:   0.8911 -->   0.8849    
+      _jetE                                              mean: 211.5843 --> 199.8277     rms: 316.6935 --> 291.1345    
+      _jetEta                                            mean:  -0.1006 -->  -0.1872     rms:   2.1934 -->   2.3225    
+      _jetHFEmFraction                                   mean:   0.0178 -->   0.0243     rms:   0.0458 -->   0.0569    
+      _jetHFHadronFraction                               mean:   0.1413 -->   0.2008     rms:   0.3167 -->   0.3651    
+      _jetHadronFlavor                                   mean:   0.0769 -->   0.1140     rms:   0.5493 -->   0.6657    
+      _jetIsLoose                                        mean:   0.9744 -->   0.9693     rms:   0.1581 -->   0.1725    
+      _jetIsTight                                        mean:   0.9679 -->   0.9627     rms:   0.1761 -->   0.1894    
+      _jetIsTightLepVeto                                 mean:   0.7821 -->   0.8333     rms:   0.4129 -->   0.3727    
+      _jetNeutralEmFraction                              mean:   0.1638 -->   0.1594     rms:   0.1922 -->   0.1824    
+      _jetNeutralHadronFraction                          mean:   0.2617 -->   0.3338     rms:   0.3297 -->   0.3603    
+      _jetPhi                                            mean:   0.0657 -->   0.1091     rms:   1.8299 -->   1.8247    
+      _jetPt                                             mean:  40.5798 -->  33.6047     rms:  23.9521 -->  22.3929    
+      _jetPt_JECDown                                     mean:  39.0812 -->  32.1964     rms:  24.0851 -->  22.4434    
+      _jetPt_JECUp                                       mean:  42.0783 -->  35.0130     rms:  23.8739 -->  22.3904    
+      _jetPt_L1                                          mean:  34.8985 -->  28.3444     rms:  23.6201 -->  21.8886    
+      _jetPt_L2                                          mean:  40.5798 -->  33.6047     rms:  23.9521 -->  22.3929    
+      _jetPt_L3                                          mean:  40.5798 -->  33.6047     rms:  23.9521 -->  22.3929    
+      _jetPt_Uncorrected                                 mean:  39.7600 -->  34.0453     rms:  22.1065 -->  20.4096    
+      _jetSmearedPt                                      mean:  43.8576 -->  35.8624     rms:  23.3833 -->  22.8462    
+      _jetSmearedPt_JECDown                              mean:  39.1238 -->  32.2207     rms:  24.0447 -->  22.4234    
+      _jetSmearedPt_JECUp                                mean:  42.0357 -->  34.9888     rms:  23.9172 -->  22.4156    
+      _jetSmearedPt_JERDown                              mean:  41.9419 -->  34.4800     rms:  23.7585 -->  22.6715    
+      _jetSmearedPt_JERUp                                mean:  45.2852 -->  36.9384     rms:  23.9070 -->  23.5354    
+      _lEwkTight                                         mean:   0.3829 -->   0.3739     rms:   0.4861 -->   0.4838    
+      _nJets                                             mean:   3.1200 -->   4.5600     rms:   2.3464 -->   2.8890    
+      _prefireWeight                                     mean:   0.9807 -->   0.0000     rms:   0.0724 -->   0.0000    
+      _prefireWeightDown                                 mean:   0.9854 -->   0.0000     rms:   0.0570 -->   0.0000    
+      _prefireWeightUp                                   mean:   0.9758 -->   0.0000     rms:   0.0878 -->   0.0000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _leptonMvaSUSY,_leptonMvaTTH,_leptonMvatZq
+   Removed: _leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0114 -->   0.0125     rms:   0.0713 -->   0.0701    
+      _jetChargedHadronFraction                          mean:   0.1897 -->   0.1916     rms:   0.2689 -->   0.2677    
+      _jetCsvV2                                          mean:  -3.7176 -->  -4.3220     rms:   4.9758 -->   5.0986    
+      _jetDeepCsv_b                                      mean:  -0.3227 -->  -0.4219     rms:   0.5686 -->   0.5803    
+      _jetDeepCsv_bb                                     mean:  -0.3996 -->  -0.4904     rms:   0.4920 -->   0.5019    
+      _jetDeepCsv_c                                      mean:  -0.3282 -->  -0.4284     rms:   0.5517 -->   0.5639    
+      _jetDeepCsv_udsg                                   mean:   0.0424 -->  -0.1208     rms:   0.8654 -->   0.8755    
+      _jetE                                              mean: 212.7941 --> 213.9573     rms: 262.9648 --> 254.7544    
+      _jetEta                                            mean:  -0.0602 -->  -0.0669     rms:   2.0046 -->   2.2271    
+      _jetHFEmFraction                                   mean:   0.0130 -->   0.0208     rms:   0.0497 -->   0.0602    
+      _jetHFHadronFraction                               mean:   0.1115 -->   0.1763     rms:   0.2899 -->   0.3490    
+      _jetHadronFlavor                                   mean:   0.2541 -->   0.2031     rms:   1.0367 -->   0.9292    
+      _jetIsLoose                                        mean:   0.9385 -->   0.9538     rms:   0.2402 -->   0.2098    
+      _jetIsTight                                        mean:   0.9344 -->   0.9508     rms:   0.2475 -->   0.2163    
+      _jetIsTightLepVeto                                 mean:   0.5410 -->   0.6462     rms:   0.4983 -->   0.4782    
+      _jetNeutralEmFraction                              mean:   0.1615 -->   0.1811     rms:   0.2068 -->   0.2062    
+      _jetNeutralHadronFraction                          mean:   0.1884 -->   0.2694     rms:   0.3121 -->   0.3579    
+      _jetPhi                                            mean:  -0.0538 -->  -0.0756     rms:   1.8876 -->   1.8676    
+      _jetPt                                             mean:  51.9647 -->  43.8021     rms:  33.2839 -->  32.1746    
+      _jetPt_JECDown                                     mean:  50.9824 -->  42.8484     rms:  33.1255 -->  32.0329    
+      _jetPt_JECUp                                       mean:  52.9470 -->  44.7558     rms:  33.4460 -->  32.3203    
+      _jetPt_L1                                          mean:  45.5483 -->  37.9775     rms:  30.8965 -->  29.8628    
+      _jetPt_L2                                          mean:  51.9647 -->  43.8021     rms:  33.2839 -->  32.1746    
+      _jetPt_L3                                          mean:  51.9647 -->  43.8021     rms:  33.2839 -->  32.1746    
+      _jetPt_Uncorrected                                 mean:  49.1315 -->  42.1679     rms:  30.3469 -->  29.0143    
+      _jetSmearedPt                                      mean:  53.5221 -->  45.3013     rms:  32.8471 -->  31.8529    
+      _jetSmearedPt_JECDown                              mean:  51.0138 -->  42.8837     rms:  33.0971 -->  32.0050    
+      _jetSmearedPt_JECUp                                mean:  52.9155 -->  44.7206     rms:  33.4739 -->  32.3478    
+      _jetSmearedPt_JERDown                              mean:  52.7536 -->  44.5729     rms:  32.9189 -->  31.8777    
+      _jetSmearedPt_JERUp                                mean:  54.2055 -->  45.9318     rms:  32.8950 -->  31.9442    
+      _nJets                                             mean:   2.4400 -->   3.2500     rms:   1.4375 -->   1.8131    
+      _prefireWeight                                     mean:   0.9901 -->   0.0000     rms:   0.0315 -->   0.0000    
+      _prefireWeightDown                                 mean:   0.9927 -->   0.0000     rms:   0.0246 -->   0.0000    
+      _prefireWeightUp                                   mean:   0.9875 -->   0.0000     rms:   0.0384 -->   0.0000    
