@@ -125,7 +125,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     _eventNb = (unsigned long) iEvent.id().event();
 
-    if( isMC() && is2018() ){
+    if(isMC() and !is2018()){
         edm::Handle<double> pfw;     iEvent.getByToken(prefireWeightToken,     pfw);     _prefireWeight     = (*pfw);
         edm::Handle<double> pfwUp;   iEvent.getByToken(prefireWeightUpToken,   pfwUp);   _prefireWeightUp   = (*pfwUp);
         edm::Handle<double> pfwDown; iEvent.getByToken(prefireWeightDownToken, pfwDown); _prefireWeightDown = (*pfwDown);
