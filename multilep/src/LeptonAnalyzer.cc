@@ -106,6 +106,21 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lEScaleDown",                  &_lEScaleDown,                  "_lEScaleDown[_nLight]/D");
     outputTree->Branch("_lEResUp",                      &_lEResUp,                      "_lEResUp[_nLight]/D");
     outputTree->Branch("_lEResDown",                    &_lEResDown,                    "_lEResDown[_nLight]/D");
+
+    //variables for particle flow leptonMVA
+    outputTree->Branch("_nClosestJetConstituents",      &_nClosestJetConstituents,      "_nClosestJetConstituents[_nLight]/D");
+    std::string jetConstituentsArraySize = "[" + std::to_string(maxJetSize) + "][_nLight]";
+    outputTree->Branch( "_closestJetConstituentPt", &_closestJetConstituentPt, std::string("_closestJetConstituentPt" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentEta", &_closestJetConstituentEta, std::string("_closestJetConstituentEta" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentPhi", &_closestJetConstituentPhi, std::string("_closestJetConstituentPhi" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentMass", &_closestJetConstituentMass, std::string("_closestJetConstituentMass" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentPdgId", &_closestJetConstituentPdgId, std::string("_closestJetConstituentPdgId" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentCharge", &_closestJetConstituentCharge, std::string("_closestJetConstituentCharge" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentdxySig", &_closestJetConstituentdxySig, std::string("_closestJetConstituentdxySig" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentdzSig", &_closestJetConstituentdzSig, std::string("_closestJetConstituentdzSig" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentsNumberOfHits", &_closestJetConstituentsNumberOfHits, std::string("_closestJetConstituentsNumberOfHits" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentsNumberOfPixelHits", &_closestJetConstituentsNumberOfPixelHits, std::string("_closestJetConstituentsNumberOfPixelHits" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentsHasTrack", &_closestJetConstituentsHasTrack, std::string("_closestJetConstituentsHasTrack" + jetConstituentsArraySize + "/O").c_str() );
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
@@ -374,6 +389,7 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepCsv_b[_nL]  = 0;
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL]    = 0;
+        fillClosestJetConstituents( lepton, nullptr );
     } else {
         auto  l1Jet       = jet.correctedP4("L1FastJet");
         float JEC         = jet.p4().E()/l1Jet.E();
@@ -411,5 +427,6 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
                 if(daughterDeltaR <= 0.4) ++_selectedTrackMult[_nL];
             }
         }
+        fillClosestJetConstituents( lepton, &jet );
     }
 }

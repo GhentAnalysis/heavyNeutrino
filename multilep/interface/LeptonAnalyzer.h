@@ -82,6 +82,22 @@ class LeptonAnalyzer {
     double _closestJetDeepCsv_bb[nL_max];
     unsigned _selectedTrackMult[nL_max];
 
+    //to train lepton MVA based on the deep sets theorem
+    static const unsigned maxJetSize = 50;
+    unsigned _nClosestJetConstituents[nL_max];
+    double _closestJetConstituentPt[maxJetSize][nL_max];
+    double _closestJetConstituentEta[maxJetSize][nL_max];
+    double _closestJetConstituentPhi[maxJetSize][nL_max];
+    double _closestJetConstituentMass[maxJetSize][nL_max];
+    int _closestJetConstituentPdgId[maxJetSize][nL_max];
+    int _closestJetConstituentCharge[maxJetSize][nL_max];
+    double _closestJetConstituentdxySig[maxJetSize][nL_max];
+    double _closestJetConstituentdzSig[maxJetSize][nL_max];
+    int _closestJetConstituentsNumberOfHits[maxJetSize][nL_max];    //signed integer so particles without tracks can have negative default values
+    int _closestJetConstituentsNumberOfPixelHits[maxJetSize][nL_max];
+    bool _closestJetConstituentsHasTrack[maxJetSize][nL_max];
+
+
     //pointing variables
     double _dxy[nL_max];
     double _dz[nL_max];
@@ -158,6 +174,9 @@ class LeptonAnalyzer {
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
+
+    // In leptonMVATools.cc 
+    void fillClosestJetConstituents( const reco::Candidate&, const pat::Jet* jet = nullptr );
 
     // In leptonAnalyzerIso.cc
     double getRelIso03(const pat::Muon&, const double) const;
