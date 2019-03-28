@@ -12,7 +12,6 @@ namespace GenTools{
     int getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //return decay chain for a particle;
     void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
-    void getNextDaughters(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
     bool hasOnlyIncomingGluonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
 
     //scan decay chain for certain types of particles
@@ -41,10 +40,9 @@ namespace GenTools{
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
 
     const reco::GenParticle* geometricMatch(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles, const bool differentId=false);
+    //const reco::GenParticle* matchLepToTau(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles);
     bool considerForMatching(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId);
 
-    //Check whether a tau decayed hadronically
-    bool decayedHadronically(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 
 }
 #endif

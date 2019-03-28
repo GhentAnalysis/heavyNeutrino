@@ -8,6 +8,7 @@
 //include other parts of code 
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
+#include "heavyNeutrino/multilep/interface/TauMatchTest.h"
 
 /*
  * Storing generator particles
@@ -79,7 +80,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lCharge[_gen_nL]           = p.charge();
                 _gen_lIsPrompt[_gen_nL]         = GenTools::isPrompt(p, *genParticles); 
                 _gen_lMomPdg[_gen_nL]           = GenTools::getMother(p, *genParticles)->pdgId();
-                _gen_lDecayedHadr[_gen_nL]      = GenTools::decayedHadronically(p, *genParticles);
+                _gen_lDecayedHadr[_gen_nL]      = TauMatchTest::decayedHadronically(p, *genParticles);
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
 
@@ -108,6 +109,22 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     }
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
+
+    std::cout << "GEN" << std::endl;
+    for (unsigned i = 0; i < _gen_nL; ++i){
+        std::cout << ' ' << _gen_lFlavor[i];
+    }
+    std::cout << std::endl;
+    for (unsigned i = 0; i < _gen_nL; ++i){
+        std::cout << ' ' << _gen_lEta[i];
+    }
+    std::cout << std::endl;
+    for (unsigned i = 0; i < _gen_nL; ++i){
+        std::cout << ' ' << _gen_lPhi[i];
+    }
+    std::cout << std::endl << "END GEN" <<std::endl;
+
+
 }
 
 

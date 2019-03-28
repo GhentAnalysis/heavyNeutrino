@@ -201,24 +201,6 @@ unsigned GenTools::provenanceConversion(const reco::GenParticle* photon, const s
     return 0;
 }
 
-void GenTools::getNextDaughters(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list){
-    for(unsigned d = 0; d < gen.numberOfDaughters(); ++d){
-        if(list.empty() or list.find(gen.pdgId())==list.end()) list.insert(genParticles[gen.daughterRef(d).key()].pdgId());
-    }      
-}
-
-bool GenTools::decayedHadronically(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
-    std::set<int> decayProducts;
-    if(abs(gen.pdgId()) == 11 or abs(gen.pdgId()) == 13) return false;
-    getNextDaughters(gen, genParticles, decayProducts);
-    
-    if(decayProducts.find(11) != decayProducts.cend() || decayProducts.find(-11) != decayProducts.cend() || decayProducts.find(13) != decayProducts.cend() || decayProducts.find(-13) != decayProducts.cend()){
-        return false;
-    }   
-    return true;
-    
-}
-
 bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* mom = getMother(gen, genParticles);
     if(abs(mom->pdgId()) == 15 && mom->isPromptDecayed()) return true;
@@ -282,11 +264,29 @@ const reco::GenParticle* GenTools::geometricMatch(const reco::Candidate& reco, c
             }
         }
     }
-    double minVal = 0.2;
-    if(abs(reco.pdgId()) == 15) minVal = 0.3;
-    if(minDeltaR > minVal){
+    if(minDeltaR > 0.2){
       if(!differentId) match = geometricMatch(reco, genParticles, true);
       else             return nullptr;
     }
     return match;
 }
+
+//const reco::GenParticle* GenTools::matchLepToTau(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles){
+//    reco::GenParticle const* match = nullptr;
+//    TLorentzVector recoV(reco.px(), reco.py(), reco.pz(), reco.energy());
+//    double minDeltaR = 99999.;
+//    for(auto genIt = genParticles.cbegin(); genIt != genParticles.cend(); ++genIt){
+//        if(abs(genIt->pdgId()) != 11 or abs(genIt->pdgId()) != 13) continue;
+//        if(genIt->pt() < 8)     continue;
+//        TLorentzVector genV(genIt->px(), genIt->py(), genIt->pz(), genIt->energy());
+//        double deltaR = recoV.DeltaR(genV);
+//        if(deltaR < minDeltaR){
+//            minDeltaR = deltaR;
+//            match = &*genIt;
+//        }
+//    }
+//
+//    if(minDeltaR > 0.2) return nullptr;
+//    return match;          
+//
+//}

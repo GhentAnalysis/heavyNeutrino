@@ -2,6 +2,7 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
+#include "heavyNeutrino/multilep/interface/TauMatchTest.h"
 #include "TLorentzVector.h"
 #include <algorithm>
 
@@ -77,7 +78,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauEleVetoMedium",             &_tauEleVetoMedium,             "_tauEleVetoMedium[_nL]/O");
     outputTree->Branch("_tauEleVetoTight",              &_tauEleVetoTight,              "_tauEleVetoTight[_nL]/O");
     outputTree->Branch("_tauEleVetoVTight",             &_tauEleVetoVTight,             "_tauEleVetoVTight[_nL]/O");
-    outputTree->Branch("_tauDecayMode",                 &_tauDecayMode,                 "_tauDecayMode[_nL]/I");
+    outputTree->Branch("_tauDecayMode",                 &_tauDecayMode,                 "_tauDecayMode[_nL]/i");
     outputTree->Branch("_decayModeFinding",             &_decayModeFinding,             "_decayModeFinding[_nL]/O");
     outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
     outputTree->Branch("_tauPOGVVLoose2017v2",          &_tauPOGVVLoose2017v2,          "_tauPOGVVLoose2017v2[_nL]/O");
@@ -127,6 +128,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_lMatchEta",                  &_lMatchEta,                    "_lMatchEta[_nL]/D");
       outputTree->Branch("_lMatchPhi",                  &_lMatchPhi,                    "_lMatchPhi[_nL]/D");
       outputTree->Branch("_lMatchE",                	  &_lMatchE,                  	  "_lMatchE[_nL]/D");
+      outputTree->Branch("_tauGenStatus",                 &_tauGenStatus,                 "_tauGenStatus[_nL]/i");
       outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
       outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
       outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
@@ -303,8 +305,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
         if(fabs(tau.eta()) > 2.3) continue;
         fillLeptonKinVars(tau);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
-        if(!multilepAnalyzer->isData) fillTauGenVars(tau);
+//        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
+//        if(!multilepAnalyzer->isData) TauMatchTest::findMatch(tau, *genParticles);
+        if(!multilepAnalyzer->isData) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
         fillLeptonImpactParameters(tau, primaryVertex);
 
         _lFlavor[_nL]  = 2;
@@ -332,9 +335,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _tauPOGVTight2017v2[_nL] = tau.tauID("byVTightIsolationMVArun2017v2DBoldDMwLT2017");
         _tauPOGVVTight2017v2[_nL] = tau.tauID("byVVTightIsolationMVArun2017v2DBoldDMwLT2017");
         
-        std::cout << "new tau" << std::endl << _lPOGVeto[_nL] << " " <<_lPOGLoose[_nL] << " " <<_lPOGMedium[_nL] << " " <<_lPOGTight[_nL] << " " <<_tauVTightMvaOld[_nL] << std::endl;
-        std::cout << tau.tauID("byVLooseIsolationMVArun2017v2DBoldDMwLT2017") << " " << tau.tauID("byLooseIsolationMVArun2017v2DBoldDMwLT2017") << " " << tau.tauID("byMediumIsolationMVArun2017v2DBoldDMwLT2017") << " " << tau.tauID("byTightIsolationMVArun2017v2DBoldDMwLT2017") << " " << tau.tauID("byVTightIsolationMVArun2017v2DBoldDMwLT2017") << std::endl;
-
         _decayModeFindingNew[_nL]       = tau.tauID("decayModeFindingNewDMs");                   //new Tau ID
         _tauVLooseMvaNew[_nL]           = tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT");
         _tauLooseMvaNew[_nL]            = tau.tauID("byLooseIsolationMVArun2v1DBnewDMwLT");
@@ -370,6 +370,27 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {&_tauAgainstElectronMVA6Raw, &_tauCombinedIsoDBRaw3Hits, &_tauIsoMVAPWdR03oldDMwLT}) std::fill_n(*array, _nLight, 0.);
     for(auto array : {&_tauIsoMVADBdR03oldDMwLT, &_tauIsoMVADBdR03newDMwLT, &_tauIsoMVAPWnewDMwLT, &_tauIsoMVAPWoldDMwLT}) std::fill_n(*array, _nLight, 0.);
 
+    std::cout << "RECO" << std::endl;
+    for (unsigned i = 0; i < _nL; ++i){
+        std::cout << ' ' << _lFlavor[i];
+    }
+    std::cout << std::endl;
+    for (unsigned i = 0; i < _nL; ++i){
+        std::cout << ' ' << _lPOGMedium[i];
+    }
+    std::cout << std::endl;
+    for (unsigned i = 0; i < _nL; ++i){
+        std::cout << ' ' << _tauGenStatus[i];
+    }
+    std::cout << std::endl;
+    for (unsigned i = 0; i < _nL; ++i){
+        std::cout << ' ' << _lEta[i];
+    }
+    std::cout << std::endl;
+    for (unsigned i = 0; i < _nL; ++i){
+        std::cout << ' ' << _lPhi[i];
+    }
+    std::cout << std::endl << "END RECO" << std::endl;
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
     if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
@@ -395,6 +416,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     const reco::GenParticle* match = lepton.genParticle();
     if(!match || match->pdgId() != lepton.pdgId()) match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
 
+    _tauGenStatus[_nL]          = TauMatchTest::tauGenStatus(match);        
     _lIsPrompt[_nL]             = match && (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) && GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
     _lMatchPt[_nL]              = match ? match->pt() : 0;
@@ -405,13 +427,25 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
     _lMomPdgId[_nL]             = match ? GenTools::getMotherPdgId(*match, genParticles) : 0;
-    _lMatchDecayedHadr[_nL]     = match ? GenTools::decayedHadronically(*match, genParticles) : false;
 }
 
-void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau){
-    const reco::GenJet* match = tau.genJet();
-    if(match != nullptr) std::cout << match->pt() << std::endl;
-    else if(match == nullptr) std::cout << "nullptr" << std::endl;
+void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco::GenParticle>& genParticles){
+    
+    const reco::GenParticle* match = TauMatchTest::findMatch(tau, genParticles);
+
+    _tauGenStatus[_nL]          = TauMatchTest::tauGenStatus(match);        
+    _lIsPrompt[_nL]             = match && _tauGenStatus[_nL] != 6; 
+    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
+    _lMatchPt[_nL]              = match ? match->pt() : 0;
+    _lMatchEta[_nL]             = match ? match->eta() : 0;
+    _lMatchPhi[_nL]             = match ? match->phi() : 0;
+    _lMatchE[_nL]               = match ? match->energy() : 0;
+    _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
+    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
+    _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
+    _lMomPdgId[_nL]             = match ? GenTools::getMotherPdgId(*match, genParticles) : 0;
+    _lMatchDecayedHadr[_nL]     = match ? TauMatchTest::decayedHadronically(*match, genParticles) : false;
+
 }
 
 /*

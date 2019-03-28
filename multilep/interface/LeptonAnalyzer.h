@@ -105,7 +105,9 @@ class LeptonAnalyzer {
     bool _tauEleVetoTight[nL_max];
     bool _tauEleVetoVTight[nL_max];
     bool _decayModeFinding[nL_max];                      
-    int _tauDecayMode[nL_max];                      
+    unsigned int _tauDecayMode[nL_max];                      
+    unsigned int _tauGenStatus[nL_max];                                                         //1: prompt ele, 2:prompt mu, 3: ele from leptonic tau, 4:mu from leptonic tau, 5: hadronically decayed tau, 6:rest 
+
     bool _tauPOGVVLoose2017v2[nL_max];
     bool _tauPOGVLoose2017v2[nL_max];
     bool _tauPOGLoose2017v2[nL_max];
@@ -167,7 +169,7 @@ class LeptonAnalyzer {
     unsigned _lProvenanceConversion[nL_max];
 
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
-    void fillTauGenVars(const pat::Tau&);
+    void fillTauGenVars(const pat::Tau&, const std::vector<reco::GenParticle>& genParticles);
     void fillLeptonKinVars(const reco::Candidate&);
     void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
     void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
