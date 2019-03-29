@@ -159,10 +159,44 @@ bool TriggerAnalyzer::passCombinedFlagAND(TString combinedFlag){
   return true;
 }
 
+// Matching trigger objects within maxDeltaR to the electron supercluster eta/phi
+// It is important to match to ALL objects as there are different ways to reconstruct the same electron (e.g. L1 seeded, unseeded, jet,...)
+std::vector<const pat::TriggerObjectStandAlone*> TriggerAnalyzer::getMatchedObjects(const pat::Electron& ele, const std::vector<pat::TriggerObjectStandAlone>& trigObjs, const float maxDeltaR){
+  std::vector<const pat::TriggerObjectStandAlone*> matchedObjs;
+  const float maxDR2 = maxDeltaR*maxDeltaR;
+  for(auto& trigObj : trigObjs){
+    const float dR2 = reco::deltaR2(ele.superCluster()->eta(), ele.superCluster()->phi(), trigObj.eta(), trigObj.phi());
+    if(dR2<maxDR2) matchedObjs.push_back(&trigObj);
+  }
+  return matchedObjs;
+}
+
+bool TriggerAnalyzer::passEle32WPTight(const edm::Event& iEvent, edm::Handle<edm::TriggerResults>& triggerResults){
+  auto electrons      = getHandle(iEvent, multilepAnalyzer->eleToken);
+  auto triggerObjects = getHandle(iEvent, multilepAnalyzer->trigObjToken);
+
+  // unpack the trigger objects
+  std::vector<pat::TriggerObjectStandAlone> unpackedTriggerObjects;
+  for(auto& trigObj : *triggerObjects){
+    unpackedTriggerObjects.push_back(trigObj);
+    unpackedTriggerObjects.back().unpackFilterLabels(iEvent, *triggerResults);
+  }
+
+  // Check if there's an electron matched to a trigger object which passes the two filters
+  for(auto& ele : *electrons){
+    for(const auto trigObj : getMatchedObjects(ele, unpackedTriggerObjects, 0.1)){
+      if(!trigObj->hasFilterLabel("hltEle32L1DoubleEGWPTightGsfTrackIsoFilter")) continue;
+      if(!trigObj->hasFilterLabel("hltEGL1SingleEGOrFilter")) continue;
+      return true;
+    }
+  }
+  return false;
+}
+
 void TriggerAnalyzer::analyze(const edm::Event& iEvent){
-  edm::Handle<edm::TriggerResults> recoResultsPrimary   = getHandle(iEvent, multilepAnalyzer->recoResultsPrimaryToken);
-  edm::Handle<edm::TriggerResults> recoResultsSecondary = getHandle(iEvent, multilepAnalyzer->recoResultsSecondaryToken);
-  edm::Handle<edm::TriggerResults> triggerResults       = getHandle(iEvent, multilepAnalyzer->triggerToken);
+  edm::Handle<edm::TriggerResults> recoResults    = getHandle(iEvent, multilepAnalyzer->recoResultsPrimaryToken);
+  if(recoResults.failedToGet())    recoResults    = getHandle(iEvent, multilepAnalyzer->recoResultsSecondaryToken);
+  edm::Handle<edm::TriggerResults> triggerResults = getHandle(iEvent, multilepAnalyzer->triggerToken);
 
   if( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ){ // The updated ecalBadCalibFilter
     edm::Handle<bool> passEcalBadCalibFilterUpdate = getHandle(iEvent, multilepAnalyzer->ecalBadCalibFilterToken);
@@ -170,8 +204,13 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   }
 
   // Get all flags
-  getResults(iEvent, triggerResults,                                                               triggersToSave, true);
-  getResults(iEvent, recoResultsPrimary.failedToGet() ? recoResultsSecondary : recoResultsPrimary, filtersToSave,  false);
+  getResults(iEvent, triggerResults, triggersToSave, true);
+  getResults(iEvent, recoResults,    filtersToSave,  false);
+
+  // In 2017: emulate the non-existing HLT_Ele32_WPTight_Gsf
+  if(multilepAnalyzer->is2017()){
+    flag["HLT_Ele32_WPTight_Gsf"] = passEle32WPTight(iEvent, triggerResults);
+  }
 
   reIndex = false;
 

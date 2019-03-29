@@ -87,42 +87,43 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         ~multilep();
 
     private:
-        edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
-        edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
-        edm::EDGetTokenT<GenLumiInfoHeader>                 genLumiInfoToken;
-        edm::EDGetTokenT<LHEEventProduct>                   lheEventInfoToken;
-        edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken;
-        edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken;
-        edm::EDGetTokenT<reco::GenParticleCollection>       particleLevelPhotonsToken;
-        edm::EDGetTokenT<reco::GenJetCollection>            particleLevelLeptonsToken;
-        edm::EDGetTokenT<reco::GenJetCollection>            particleLevelJetsToken;
-        edm::EDGetTokenT<reco::METCollection>               particleLevelMetsToken;
-        edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
-        edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
-        edm::EDGetTokenT<std::vector<pat::Tau>>             tauToken;
-        edm::EDGetTokenT<std::vector<pat::Photon>>          photonToken;
-        edm::EDGetTokenT<std::vector<pat::PackedCandidate>> packedCandidatesToken;                       //particle collection used to calculate isolation variables
-        edm::EDGetTokenT<double>                            rhoToken;
-        edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedUpToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedDownToken;
-        edm::EDGetTokenT<edm::TriggerResults>               recoResultsPrimaryToken;                     //MET filter information
-        edm::EDGetTokenT<edm::TriggerResults>               recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
-        edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
-        edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
-        edm::EDGetTokenT<bool>                              ecalBadCalibFilterToken;
-        edm::EDGetTokenT<double>                            prefireWeightToken;
-        edm::EDGetTokenT<double>                            prefireWeightUpToken;
-        edm::EDGetTokenT<double>                            prefireWeightDownToken;
-        std::string                                         skim;
-        bool                                                sampleIsData;
-        bool                                                sampleIs2017;
-        bool                                                sampleIs2018;
-        bool                                                sampleIsSUSY;
-        bool                                                storeLheParticles;
-        bool                                                storeParticleLevel;
+        edm::EDGetTokenT<std::vector<reco::Vertex>>              vtxToken;
+        edm::EDGetTokenT<GenEventInfoProduct>                    genEventInfoToken;
+        edm::EDGetTokenT<GenLumiInfoHeader>                      genLumiInfoToken;
+        edm::EDGetTokenT<LHEEventProduct>                        lheEventInfoToken;
+        edm::EDGetTokenT<std::vector<PileupSummaryInfo>>         pileUpToken;
+        edm::EDGetTokenT<reco::GenParticleCollection>            genParticleToken;
+        edm::EDGetTokenT<reco::GenParticleCollection>            particleLevelPhotonsToken;
+        edm::EDGetTokenT<reco::GenJetCollection>                 particleLevelLeptonsToken;
+        edm::EDGetTokenT<reco::GenJetCollection>                 particleLevelJetsToken;
+        edm::EDGetTokenT<reco::METCollection>                    particleLevelMetsToken;
+        edm::EDGetTokenT<std::vector<pat::Muon>>                 muonToken;
+        edm::EDGetTokenT<std::vector<pat::Electron>>             eleToken;
+        edm::EDGetTokenT<std::vector<pat::Tau>>                  tauToken;
+        edm::EDGetTokenT<std::vector<pat::Photon>>               photonToken;
+        edm::EDGetTokenT<std::vector<pat::PackedCandidate>>      packedCandidatesToken;                       //particle collection used to calculate isolation variables
+        edm::EDGetTokenT<double>                                 rhoToken;
+        edm::EDGetTokenT<std::vector<pat::MET>>                  metToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedUpToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedDownToken;
+        edm::EDGetTokenT<edm::TriggerResults>                    recoResultsPrimaryToken;                     //MET filter information
+        edm::EDGetTokenT<edm::TriggerResults>                    recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
+        edm::EDGetTokenT<edm::TriggerResults>                    triggerToken;
+        edm::EDGetTokenT<pat::PackedTriggerPrescales>            prescalesToken;
+        edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> trigObjToken;
+        edm::EDGetTokenT<bool>                                   ecalBadCalibFilterToken;
+        edm::EDGetTokenT<double>                                 prefireWeightToken;
+        edm::EDGetTokenT<double>                                 prefireWeightUpToken;
+        edm::EDGetTokenT<double>                                 prefireWeightDownToken;
+        std::string                                              skim;
+        bool                                                     sampleIsData;
+        bool                                                     sampleIs2017;
+        bool                                                     sampleIs2018;
+        bool                                                     sampleIsSUSY;
+        bool                                                     storeLheParticles;
+        bool                                                     storeParticleLevel;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
