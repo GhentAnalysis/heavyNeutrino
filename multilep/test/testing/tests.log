@@ -1,39 +1,59 @@
-commit 66fdb253acf605ddbb26999985a1452ce2a64fc8
+commit 8db6f4f22e8e9cee299413629e52a21f740ebbc9
 Author: tomc <tomc@cern.ch>
-Date:   Fri Mar 29 15:42:11 2019 +0100
+Date:   Fri Mar 29 18:12:24 2019 +0100
 
-    HLT_Ele32_WPTight_Gsf emulation for 2017 data
+    Trigger selection updates
     
-    HLT_Ele32_WPTight_Gsf does not exist before run 302026, but can be emulated from HLT_Ele32_WPTight_Gsf_L1DoubleEG
-    Based on https://github.com/Sam-Harper/usercode/blob/100XNtup/TrigTools/plugins/Ele32DoubleL1ToSingleL1Example.cc
+    Triggers updated based on recommendations and checks of their prescales
+    Not-existing triggers or prescaled triggers are removed
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   New: _HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_passTrigger_met
+   Removed: _HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele35_WPTight_Gsf,_HLT_Ele35_WPTight_Gsf_prescale,_HLT_Ele38_WPTight_Gsf,_HLT_Ele38_WPTight_Gsf_prescale,_HLT_Ele40_WPTight_Gsf,_HLT_Ele40_WPTight_Gsf_prescale,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_prescale
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   New: _HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_passTrigger_met
+   Removed: _HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele35_WPTight_Gsf,_HLT_Ele35_WPTight_Gsf_prescale,_HLT_Ele38_WPTight_Gsf,_HLT_Ele38_WPTight_Gsf_prescale,_HLT_Ele40_WPTight_Gsf,_HLT_Ele40_WPTight_Gsf_prescale,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_prescale
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   New: _HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_passTrigger_met
+   Removed: _HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele38_WPTight_Gsf,_HLT_Ele38_WPTight_Gsf_prescale,_HLT_Ele40_WPTight_Gsf,_HLT_Ele40_WPTight_Gsf_prescale,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_prescale
    Changed:
-      _HLT_Ele32_WPTight_Gsf                             mean:   0.0000 -->   0.1200     rms:   0.0000 -->   0.3250    
-      _passTrigger_e                                     mean:   0.1100 -->   0.1200     rms:   0.3129 -->   0.3250    
+      _passTrigger_e                                     mean:   0.1200 -->   0.1500     rms:   0.3250 -->   0.3571    
+      _passTrigger_ee                                    mean:   0.3100 -->   0.4000     rms:   0.4625 -->   0.4899    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   New: _HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1_prescale,_HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL,_HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL_prescale,_HLT_Photon175,_HLT_Photon175_prescale
+   Removed: _HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1,_HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1_prescale,_HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1,_HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_prescale
+   Changed:
+      _passTrigger_e                                     mean:   0.0700 -->   0.0800     rms:   0.2551 -->   0.2713    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   New: _HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_passTrigger_met
+   Removed: _HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele35_WPTight_Gsf,_HLT_Ele35_WPTight_Gsf_prescale,_HLT_Ele38_WPTight_Gsf,_HLT_Ele38_WPTight_Gsf_prescale,_HLT_Ele40_WPTight_Gsf,_HLT_Ele40_WPTight_Gsf_prescale,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_prescale
+   Changed:
+      _passTrigger_ee                                    mean:   0.1700 -->   0.2100     rms:   0.3756 -->   0.4073    
+      _passTrigger_emm                                   mean:   0.0200 -->   0.0100     rms:   0.1400 -->   0.0995    
+      _passTrigger_et                                    mean:   0.0000 -->   0.0900     rms:   0.0000 -->   0.2862    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   New: _HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_passTrigger_met
+   Removed: _HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele38_WPTight_Gsf,_HLT_Ele38_WPTight_Gsf_prescale,_HLT_Ele40_WPTight_Gsf,_HLT_Ele40_WPTight_Gsf_prescale,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_prescale
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1_prescale,_HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL,_HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL_prescale,_HLT_Photon175,_HLT_Photon175_prescale
+   Removed: _HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1,_HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1_prescale,_HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1,_HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_prescale
