@@ -1,12 +1,11 @@
-commit 51ef408fb89f4c08735c86b0c32bce998b1a9302
+commit 66fdb253acf605ddbb26999985a1452ce2a64fc8
 Author: tomc <tomc@cern.ch>
-Date:   Thu Mar 28 17:00:06 2019 +0100
+Date:   Fri Mar 29 15:42:11 2019 +0100
 
-    Introducing getHandle function
+    HLT_Ele32_WPTight_Gsf emulation for 2017 data
     
-    In order to have a clean and easy way to retrieve the handles, the getHandle function is introduced
-    Stolen from Sam
-    Should have become a CMSSW standard function long time ago
+    HLT_Ele32_WPTight_Gsf does not exist before run 302026, but can be emulated from HLT_Ele32_WPTight_Gsf_L1DoubleEG
+    Based on https://github.com/Sam-Harper/usercode/blob/100XNtup/TrigTools/plugins/Ele32DoubleL1ToSingleL1Example.cc
 
 --------------------------------------------------------------------------------------------------
 
@@ -19,6 +18,9 @@ Running test: Run2018-PromptReco --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   Changed:
+      _HLT_Ele32_WPTight_Gsf                             mean:   0.0000 -->   0.1200     rms:   0.0000 -->   0.3250    
+      _passTrigger_e                                     mean:   0.1100 -->   0.1200     rms:   0.3129 -->   0.3250    
 
 --------------------------------------------------------------------------------------------------
 
