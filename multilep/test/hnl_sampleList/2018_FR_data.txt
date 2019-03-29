@@ -1,1 +1,20 @@
 
+############
+#Single Muon
+############
+
+#legacy rereco
+FR:/DoubleMuon/Run2018A-17Sep2018-v2/MINIAOD
+FR:/DoubleMuon/Run2018B-17Sep2018-v1/MINIAOD
+FR:/DoubleMuon/Run2018C-17Sep2018-v1/MINIAOD
+FR:/DoubleMuon/Run2018D-PromptReco-v2/MINIAOD
+
+#Single Electron
+################
+
+##original Moriond17 rereco
+FR:/EGamma/Run2018A-17Sep2018-v2/MINIAOD
+FR:/EGamma/Run2018B-17Sep2018-v1/MINIAOD
+FR:/EGamma/Run2018C-17Sep2018-v1/MINIAOD
+FR:/EGamma/Run2018D-PromptReco-v2/MINIAOD
+FR:/EGamma/Run2018D-PromptReco-v1/MINIAOD
