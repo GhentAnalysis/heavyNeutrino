@@ -192,7 +192,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
 //  if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;              // this is in the master branch
-    if(multilepAnalyzer->skim == "FR" and (_nJets < 1 || _jetPt[0] < 30)) return false; // the _jetPt[0] is only ok if you do not use systematics for this skim
+    if(multilepAnalyzer->skim == "FR" and   (_nJets < 1 || _jetPt[0] < 30)) return false; // the _jetPt[0] is only ok if you do not use systematics for this skim
+    if(multilepAnalyzer->skim == "FRsM" and (_nJets < 1 || _jetPt[0] < 30)) return false; // the _jetPt[0] is only ok if you do not use systematics for this skim
+
     return true;
 }
 
