@@ -1,8 +1,7 @@
-####################################################################
-# Example dataset.txt file to be used with the submitAll.py script #
-####################################################################
+################################
+# 2016 data (legacy miniAODv3) #
+################################
 
-# Data
 dilep:/SingleMuon/Run2016B-17Jul2018_ver2-v1/MINIAOD
 dilep:/SingleMuon/Run2016C-17Jul2018-v1/MINIAOD
 dilep:/SingleMuon/Run2016D-17Jul2018-v1/MINIAOD
@@ -10,6 +9,7 @@ dilep:/SingleMuon/Run2016E-17Jul2018-v1/MINIAOD
 dilep:/SingleMuon/Run2016F-17Jul2018-v1/MINIAOD
 dilep:/SingleMuon/Run2016G-17Jul2018-v1/MINIAOD
 dilep:/SingleMuon/Run2016H-17Jul2018-v1/MINIAOD
+
 dilep:/SingleElectron/Run2016B-17Jul2018_ver2-v1/MINIAOD
 dilep:/SingleElectron/Run2016C-17Jul2018-v1/MINIAOD
 dilep:/SingleElectron/Run2016D-17Jul2018-v1/MINIAOD
@@ -17,6 +17,7 @@ dilep:/SingleElectron/Run2016E-17Jul2018-v1/MINIAOD
 dilep:/SingleElectron/Run2016F-17Jul2018-v1/MINIAOD
 dilep:/SingleElectron/Run2016G-17Jul2018-v1/MINIAOD
 dilep:/SingleElectron/Run2016H-17Jul2018-v1/MINIAOD
+
 dilep:/DoubleMuon/Run2016B-17Jul2018_ver2-v1/MINIAOD
 dilep:/DoubleMuon/Run2016C-17Jul2018-v1/MINIAOD
 dilep:/DoubleMuon/Run2016D-17Jul2018-v1/MINIAOD
@@ -24,6 +25,7 @@ dilep:/DoubleMuon/Run2016E-17Jul2018-v1/MINIAOD
 dilep:/DoubleMuon/Run2016F-17Jul2018-v1/MINIAOD
 dilep:/DoubleMuon/Run2016G-17Jul2018-v1/MINIAOD
 dilep:/DoubleMuon/Run2016H-17Jul2018-v1/MINIAOD
+
 dilep:/DoubleEG/Run2016B-17Jul2018_ver2-v1/MINIAOD
 dilep:/DoubleEG/Run2016C-17Jul2018-v1/MINIAOD
 dilep:/DoubleEG/Run2016D-17Jul2018-v1/MINIAOD
@@ -31,6 +33,7 @@ dilep:/DoubleEG/Run2016E-17Jul2018-v1/MINIAOD
 dilep:/DoubleEG/Run2016F-17Jul2018-v1/MINIAOD
 dilep:/DoubleEG/Run2016G-17Jul2018-v1/MINIAOD
 dilep:/DoubleEG/Run2016H-17Jul2018-v1/MINIAOD
+
 dilep:/MuonEG/Run2016B-17Jul2018_ver2-v1/MINIAOD
 dilep:/MuonEG/Run2016C-17Jul2018-v1/MINIAOD
 dilep:/MuonEG/Run2016D-17Jul2018-v1/MINIAOD
@@ -39,7 +42,6 @@ dilep:/MuonEG/Run2016F-17Jul2018-v1/MINIAOD
 dilep:/MuonEG/Run2016G-17Jul2018-v1/MINIAOD
 dilep:/MuonEG/Run2016H-17Jul2018-v1/MINIAOD
 
-# Data for trigger
 dilep:/MET/Run2016B-17Jul2018_ver2-v1/MINIAOD
 dilep:/MET/Run2016C-17Jul2018-v1/MINIAOD
 dilep:/MET/Run2016D-17Jul2018-v1/MINIAOD
@@ -48,7 +50,22 @@ dilep:/MET/Run2016F-17Jul2018-v1/MINIAOD
 dilep:/MET/Run2016G-17Jul2018-v1/MINIAOD
 dilep:/MET/Run2016H-17Jul2018-v2/MINIAOD
 
-# Top 
+dilep:/JetHT/Run2016B-17Jul2018_ver2-v1/MINIAOD
+dilep:/JetHT/Run2016C-17Jul2018-v1/MINIAOD
+dilep:/JetHT/Run2016D-17Jul2018-v1/MINIAOD
+dilep:/JetHT/Run2016E-17Jul2018-v1/MINIAOD
+dilep:/JetHT/Run2016F-17Jul2018-v1/MINIAOD
+dilep:/JetHT/Run2016G-17Jul2018-v1/MINIAOD
+dilep:/JetHT/Run2016H-17Jul2018-v2/MINIAOD
+
+
+
+################################
+# 2016 RunIISummer16 miniAODv3 #
+################################
++storeParticleLevel
+
+# Top pair production
 dilep:/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM
 dilep:/TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/MINIAODSIM
 dilep:/TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/MINIAODSIM
@@ -72,11 +89,13 @@ dilep:/TT_hdampUP_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv3-PUM
 dilep:/TT_hdampUP_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2/MINIAODSIM
 
 # TTG
++storeLheParticles
 dilep:/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2/MINIAODSIM
 dilep:/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM
 dilep:/TTGamma_SingleLeptFromTbar_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM
 dilep:/TTGamma_SingleLeptFromT_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/MINIAODSIM
 dilep:/TTGamma_Hadronic_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM
+-storeLheParticles
 # systematic samples not available!
 
 # Single top
@@ -88,7 +107,6 @@ dilep:/ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/RunIISum
 dilep:/ST_s-channel_4f_InclusiveDecays_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM
 dilep:/ST_tWnunu_5f_LO_13TeV-MadGraph-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM
 dilep:/ST_tWll_5f_LO_13TeV-MadGraph-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM
-dilep:
 
 # VG
 dilep:/ZGToLLG_01J_5f_lowMLL_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM
