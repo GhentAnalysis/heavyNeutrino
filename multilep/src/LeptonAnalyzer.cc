@@ -108,8 +108,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lEResDown",                    &_lEResDown,                    "_lEResDown[_nLight]/D");
 
     //variables for particle flow leptonMVA
-    outputTree->Branch("_nClosestJetConstituents",      &_nClosestJetConstituents,      "_nClosestJetConstituents[_nLight]/D");
-    std::string jetConstituentsArraySize = "[" + std::to_string(maxJetSize) + "][_nLight]";
+    outputTree->Branch("_nClosestJetConstituents",      &_nClosestJetConstituents,      "_nClosestJetConstituents[_nLight]/i");
+    std::string jetConstituentsArraySize = "[_nLight][" + std::to_string(maxJetSize) + "]";
     outputTree->Branch( "_closestJetConstituentPt", &_closestJetConstituentPt, std::string("_closestJetConstituentPt" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentEta", &_closestJetConstituentEta, std::string("_closestJetConstituentEta" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentPhi", &_closestJetConstituentPhi, std::string("_closestJetConstituentPhi" + jetConstituentsArraySize + "/D").c_str() );

@@ -5,17 +5,17 @@ void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, 
     unsigned num_daughters = ( jet == nullptr ) ? 0 : jet->numberOfDaughters();
     if( num_daughters < maxJetSize ){
         for( unsigned i = num_daughters; i < maxJetSize; ++i ){
-            _closestJetConstituentPt[i][_nL] = 0.;
-            _closestJetConstituentEta[i][_nL] = 0.;
-            _closestJetConstituentPhi[i][_nL] = 0.;
-            _closestJetConstituentMass[i][_nL] = 0.;
-            _closestJetConstituentPdgId[i][_nL] = 0;
-            _closestJetConstituentCharge[i][_nL] = 0;
-            _closestJetConstituentdxySig[i][_nL] = 0.;
-            _closestJetConstituentdzSig[i][_nL] = 0.;
-            _closestJetConstituentsNumberOfHits[i][_nL] = 0;
-            _closestJetConstituentsNumberOfPixelHits[i][_nL] = 0;
-            _closestJetConstituentsHasTrack[i][_nL] = false;
+            _closestJetConstituentPt[_nL][i] = 0.;
+            _closestJetConstituentEta[_nL][i] = 0.;
+            _closestJetConstituentPhi[_nL][i] = 0.;
+            _closestJetConstituentMass[_nL][i] = 0.;
+            _closestJetConstituentPdgId[_nL][i] = 0;
+            _closestJetConstituentCharge[_nL][i] = 0;
+            _closestJetConstituentdxySig[_nL][i] = 0.;
+            _closestJetConstituentdzSig[_nL][i] = 0.;
+            _closestJetConstituentsNumberOfHits[_nL][i] = 0;
+            _closestJetConstituentsNumberOfPixelHits[_nL][i] = 0;
+            _closestJetConstituentsHasTrack[_nL][i] = false;
         }
     } 
     if( jet == nullptr ){
@@ -26,25 +26,25 @@ void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, 
     _nClosestJetConstituents[_nL] = jet->numberOfDaughters();
     for(unsigned d = 0; d < std::min( (unsigned) jet->numberOfDaughters(), maxJetSize); ++d){
         const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet->daughter(d);
-        _closestJetConstituentPt[d][_nL] = daughter->pt();
-        _closestJetConstituentEta[d][_nL] = daughter->eta();
-        _closestJetConstituentPhi[d][_nL] = daughter->phi();
-        _closestJetConstituentMass[d][_nL] = daughter->mass();
-        _closestJetConstituentPdgId[d][_nL] = daughter->pdgId();
+        _closestJetConstituentPt[_nL][d] = daughter->pt();
+        _closestJetConstituentEta[_nL][d] = daughter->eta();
+        _closestJetConstituentPhi[_nL][d] = daughter->phi();
+        _closestJetConstituentMass[_nL][d] = daughter->mass();
+        _closestJetConstituentPdgId[_nL][d] = daughter->pdgId();
 
-        _closestJetConstituentCharge[d][_nL] = daughter->charge();
+        _closestJetConstituentCharge[_nL][d] = daughter->charge();
         if( daughter->hasTrackDetails() ){
-            _closestJetConstituentdxySig[d][_nL] = fabs( daughter->dxy()/daughter->dxyError() );
-            _closestJetConstituentdzSig[d][_nL] = fabs( daughter->dz()/daughter->dzError() );
-            _closestJetConstituentsNumberOfHits[d][_nL] = daughter->numberOfHits();
-            _closestJetConstituentsNumberOfPixelHits[d][_nL] = daughter->numberOfPixelHits();
-            _closestJetConstituentsHasTrack[d][_nL] = true;
+            _closestJetConstituentdxySig[_nL][d] = fabs( daughter->dxy()/daughter->dxyError() );
+            _closestJetConstituentdzSig[_nL][d] = fabs( daughter->dz()/daughter->dzError() ); 
+            _closestJetConstituentsNumberOfHits[_nL][d] = daughter->numberOfHits();
+            _closestJetConstituentsNumberOfPixelHits[_nL][d] = daughter->numberOfPixelHits();
+            _closestJetConstituentsHasTrack[_nL][d] = true;
         } else {
-            _closestJetConstituentdxySig[d][_nL] = -1.;
-            _closestJetConstituentdzSig[d][_nL] = -1.;
-            _closestJetConstituentsNumberOfHits[d][_nL] = -1;
-            _closestJetConstituentsNumberOfPixelHits[d][_nL] = -1;
-            _closestJetConstituentsHasTrack[d][_nL] = false;
+            _closestJetConstituentdxySig[_nL][d] = -1.;
+            _closestJetConstituentdzSig[_nL][d] = -1.;
+            _closestJetConstituentsNumberOfHits[_nL][d] = -1;
+            _closestJetConstituentsNumberOfPixelHits[_nL][d] = -1;
+            _closestJetConstituentsHasTrack[_nL][d] = false; 
         }
     }
 }

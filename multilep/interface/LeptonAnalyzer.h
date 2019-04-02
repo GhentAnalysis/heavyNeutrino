@@ -83,20 +83,19 @@ class LeptonAnalyzer {
     unsigned _selectedTrackMult[nL_max];
 
     //to train lepton MVA based on the deep sets theorem
-    static const unsigned maxJetSize = 50;
+    static const unsigned maxJetSize = 100;
     unsigned _nClosestJetConstituents[nL_max];
-    double _closestJetConstituentPt[maxJetSize][nL_max];
-    double _closestJetConstituentEta[maxJetSize][nL_max];
-    double _closestJetConstituentPhi[maxJetSize][nL_max];
-    double _closestJetConstituentMass[maxJetSize][nL_max];
-    int _closestJetConstituentPdgId[maxJetSize][nL_max];
-    int _closestJetConstituentCharge[maxJetSize][nL_max];
-    double _closestJetConstituentdxySig[maxJetSize][nL_max];
-    double _closestJetConstituentdzSig[maxJetSize][nL_max];
-    int _closestJetConstituentsNumberOfHits[maxJetSize][nL_max];    //signed integer so particles without tracks can have negative default values
-    int _closestJetConstituentsNumberOfPixelHits[maxJetSize][nL_max];
-    bool _closestJetConstituentsHasTrack[maxJetSize][nL_max];
-
+    double _closestJetConstituentPt[nL_max][maxJetSize];
+    double _closestJetConstituentEta[nL_max][maxJetSize];
+    double _closestJetConstituentPhi[nL_max][maxJetSize];
+    double _closestJetConstituentMass[nL_max][maxJetSize];
+    int _closestJetConstituentPdgId[nL_max][maxJetSize];
+    int _closestJetConstituentCharge[nL_max][maxJetSize];
+    double _closestJetConstituentdxySig[nL_max][maxJetSize];
+    double _closestJetConstituentdzSig[nL_max][maxJetSize];
+    int _closestJetConstituentsNumberOfHits[nL_max][maxJetSize];    //signed integer so particles without tracks can have negative default values
+    int _closestJetConstituentsNumberOfPixelHits[nL_max][maxJetSize];
+    bool _closestJetConstituentsHasTrack[nL_max][maxJetSize];
 
     //pointing variables
     double _dxy[nL_max];
