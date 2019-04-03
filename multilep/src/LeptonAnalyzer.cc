@@ -114,27 +114,27 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
     outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
     outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
-    outputTree->Branch("_lKVF_valid",			        &_lKVF_valid,			        "_lKVF_valid[_nLight]/O");
-    outputTree->Branch("_lKVF_x",			            &_lKVF_x,			            "_lKVF_x[_nLight]/D");
-    outputTree->Branch("_lKVF_y",			            &_lKVF_y,			            "_lKVF_y[_nLight]/D");
-    outputTree->Branch("_lKVF_z",			            &_lKVF_z,			            "_lKVF_z[_nLight]/D");
-    outputTree->Branch("_lKVF_cxx",			            &_lKVF_cxx,			            "_lKVF_cxx[_nLight]/D");
-    outputTree->Branch("_lKVF_cyy",			            &_lKVF_cyy,			            "_lKVF_cyy[_nLight]/D");
-    outputTree->Branch("_lKVF_czz",			            &_lKVF_czz,			            "_lKVF_czz[_nLight]/D");
-    outputTree->Branch("_lKVF_cyx",			            &_lKVF_cyx,			            "_lKVF_cyx[_nLight]/D");
-    outputTree->Branch("_lKVF_czy",			            &_lKVF_czy,			            "_lKVF_czy[_nLight]/D");
-    outputTree->Branch("_lKVF_czx",			            &_lKVF_czx,			            "_lKVF_czx[_nLight]/D");
-    outputTree->Branch("_lKVF_df",			            &_lKVF_df,			            "_lKVF_df[_nLight]/D");
-    outputTree->Branch("_lKVF_chi2",			        &_lKVF_chi2,			        "_lKVF_chi2[_nLight]/D");
-    outputTree->Branch("_lKVF_ntracks",		            &_lKVF_ntracks,		            "_lKVF_ntracks[_nLight]/i");
-    outputTree->Branch("_lKVF_dRcut",                   &_lKVF_dRcut,                   "_lKVF_dRcut[_nLight]/D");
-    outputTree->Branch("_lKVF_trackPt",                 &_lKVF_trackPt,                 "_lKVF_trackPt[_nLight][15]/D");
-    outputTree->Branch("_lKVF_trackEta",                &_lKVF_trackEta,                "_lKVF_trackEta[_nLight][15]/D");
-    outputTree->Branch("_lKVF_trackPhi",                &_lKVF_trackPhi,                "_lKVF_trackPhi[_nLight][15]/D");
-    outputTree->Branch("_lKVF_trackE",                  &_lKVF_trackE,                  "_lKVF_trackE[_nLight][15]/D");
-    outputTree->Branch("_lKVF_trackdR",                 &_lKVF_trackdR,                 "_lKVF_trackdR[_nLight][15]/D");
-    outputTree->Branch("_lKVF_trackdxy",                &_lKVF_trackdxy,                "_lKVF_trackdxy[_nLight][15]/D");
-    outputTree->Branch("_lKVF_trackdz",                 &_lKVF_trackdz,                 "_lKVF_trackdz[_nLight][15]/D");
+    //outputTree->Branch("_lKVF_valid",			        &_lKVF_valid,			        "_lKVF_valid[_nLight]/O");
+    //outputTree->Branch("_lKVF_x",			            &_lKVF_x,			            "_lKVF_x[_nLight]/D");
+    //outputTree->Branch("_lKVF_y",			            &_lKVF_y,			            "_lKVF_y[_nLight]/D");
+    //outputTree->Branch("_lKVF_z",			            &_lKVF_z,			            "_lKVF_z[_nLight]/D");
+    //outputTree->Branch("_lKVF_cxx",			            &_lKVF_cxx,			            "_lKVF_cxx[_nLight]/D");
+    //outputTree->Branch("_lKVF_cyy",			            &_lKVF_cyy,			            "_lKVF_cyy[_nLight]/D");
+    //outputTree->Branch("_lKVF_czz",			            &_lKVF_czz,			            "_lKVF_czz[_nLight]/D");
+    //outputTree->Branch("_lKVF_cyx",			            &_lKVF_cyx,			            "_lKVF_cyx[_nLight]/D");
+    //outputTree->Branch("_lKVF_czy",			            &_lKVF_czy,			            "_lKVF_czy[_nLight]/D");
+    //outputTree->Branch("_lKVF_czx",			            &_lKVF_czx,			            "_lKVF_czx[_nLight]/D");
+    //outputTree->Branch("_lKVF_df",			            &_lKVF_df,			            "_lKVF_df[_nLight]/D");
+    //outputTree->Branch("_lKVF_chi2",			        &_lKVF_chi2,			        "_lKVF_chi2[_nLight]/D");
+    //outputTree->Branch("_lKVF_ntracks",		            &_lKVF_ntracks,		            "_lKVF_ntracks[_nLight]/i");
+    //outputTree->Branch("_lKVF_dRcut",                   &_lKVF_dRcut,                   "_lKVF_dRcut[_nLight]/D");
+    //outputTree->Branch("_lKVF_trackPt",                 &_lKVF_trackPt,                 "_lKVF_trackPt[_nLight][15]/D");
+    //outputTree->Branch("_lKVF_trackEta",                &_lKVF_trackEta,                "_lKVF_trackEta[_nLight][15]/D");
+    //outputTree->Branch("_lKVF_trackPhi",                &_lKVF_trackPhi,                "_lKVF_trackPhi[_nLight][15]/D");
+    //outputTree->Branch("_lKVF_trackE",                  &_lKVF_trackE,                  "_lKVF_trackE[_nLight][15]/D");
+    //outputTree->Branch("_lKVF_trackdR",                 &_lKVF_trackdR,                 "_lKVF_trackdR[_nLight][15]/D");
+    //outputTree->Branch("_lKVF_trackdxy",                &_lKVF_trackdxy,                "_lKVF_trackdxy[_nLight][15]/D");
+    //outputTree->Branch("_lKVF_trackdz",                 &_lKVF_trackdz,                 "_lKVF_trackdz[_nLight][15]/D");
     //outputTree->Branch("_IVF_nvertex",                  &_IVF_nvertex,                  "_IVF_nvertex/i");
     outputTree->Branch("_IVF_x",                        &_IVF_x,                        "_IVF_x[_nLight]/D");
     outputTree->Branch("_IVF_y",                        &_IVF_y,                        "_IVF_y[_nLight]/D");
@@ -238,9 +238,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
         fillDisplacedIDVariables(mu);
 
-	    std::vector<reco::Track> vertex_tracks;
-	    vertex_tracks.push_back(*mu.bestTrack());
-	    fillLeptonKVFVariables(packedCands, vertex_tracks);
+	    //std::vector<reco::Track> vertex_tracks;
+	    //vertex_tracks.push_back(*mu.bestTrack());
+	    //fillLeptonKVFVariables(packedCands, vertex_tracks);
         //fillLeptonIVFVariables(*mu.bestTrack(), *secVertices);
         //std::cout << std::endl << "--- muon pt, eta, phi: " << (*mu.bestTrack()).pt() << " " << (*mu.bestTrack()).eta() << " " << (*mu.bestTrack()).phi() << " " << mu.numberOfSourceCandidatePtrs() << " "; 
         //if(mu.numberOfSourceCandidatePtrs() > 0) std::cout << mu.sourceCandidatePtr(0)->pt() << std::endl;
@@ -298,9 +298,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
         fillDisplacedIDVariables(*ele);
 	
-	    std::vector<reco::Track> vertex_tracks;
-	    vertex_tracks.push_back(*ele->gsfTrack());
-	    fillLeptonKVFVariables(packedCands, vertex_tracks); 
+	    //std::vector<reco::Track> vertex_tracks;
+	    //vertex_tracks.push_back(*ele->gsfTrack());
+	    //fillLeptonKVFVariables(packedCands, vertex_tracks); 
         //fillLeptonIVFVariables(*ele, secVertices);
         //std::cout << std::endl << "--- electron gsf pt, eta, phi, ptr: " << (*ele->gsfTrack()).pt() << " " << (*ele->gsfTrack()).eta() << " " << (*ele->gsfTrack()).phi() << " -" << ele->associatedPackedPFCandidates().size() << "- " << std::endl;
         //for(edm::Ref<pat::PackedCandidateCollection> cand : ele->associatedPackedPFCandidates()){
@@ -591,186 +591,6 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
     }
 }
 
-TransientVertex LeptonAnalyzer::constructKalmanVertex(std::vector<reco::Track>& tracks, MagneticField* bfield){
-    std::vector<reco::TransientTrack> ttks;
-    for(auto track : tracks){
-	ttks.push_back(reco::TransientTrack(track, bfield));
-    }
-    KalmanVertexFitter vtxFitter;
-    return vtxFitter.vertex(ttks);
-}
-
-void LeptonAnalyzer::fillLeptonKVFVariables(edm::Handle<std::vector<pat::PackedCandidate>>& packedCands, std::vector<reco::Track>& tracks){
-    MagneticField *bfield = new OAEParametrizedMagneticField("3_8T");
-
-    const GlobalPoint*  lepPoint  = new GlobalPoint(tracks[0].referencePoint().x(), tracks[0].referencePoint().y(), tracks[0].referencePoint().z()); // Calc. traj.param. for lepton, used to calculate PCA
-    const GlobalVector* lepVector = new GlobalVector(tracks[0].px(), tracks[0].py(), tracks[0].pz());
-    TrackCharge lepCharge         = tracks[0].charge();
-    GlobalTrajectoryParameters lepParam(*lepPoint, *lepVector, lepCharge, bfield);
-
-    double min_tracks_dR = 5;
-    int i_duplicated_lep = -1;
-    
-    std::vector<std::pair<double, reco::Track>> temp_tracks;
-    //for(; dRcut < 1.1 && tracks.size() == 1; dRcut += 0.1){
-        for(auto cand = packedCands->cbegin(); cand != packedCands->cend(); ++cand){
-            if(!cand->hasTrackDetails()) continue;
-            const reco::Track& candTrack = cand->pseudoTrack();
-
-            const GlobalPoint*  candPoint  = new GlobalPoint(candTrack.referencePoint().x(), candTrack.referencePoint().y(), candTrack.referencePoint().z());
-            const GlobalVector* candVector = new GlobalVector(candTrack.px(), candTrack.py(), candTrack.pz());
-            TrackCharge candCharge         = candTrack.charge();
-            GlobalTrajectoryParameters candParam(*candPoint, *candVector, candCharge, bfield);
-            TwoTrackMinimumDistance TTMinDist;
-                
-            double PCA_distance = 5;
-            double PCA_dphi     = 5;
-            if(TTMinDist.calculate(lepParam, candParam)){
-                PCA_distance = TTMinDist.distance();
-                PCA_dphi     = fabs(TTMinDist.firstAngle() - TTMinDist.secondAngle());
-                if(PCA_dphi > 3.14) PCA_dphi = 6.28 - PCA_dphi;
-            }
-            
-            double tracks_dz    = fabs(tracks[0].dz() - candTrack.dz());
-            double tracks_deta  = fabs(tracks[0].eta() - candTrack.eta());
-            double tracks_dR    = sqrt(tracks_deta*tracks_deta + PCA_dphi*PCA_dphi);
-
-            bool goodTrack      =   tracks_dR < 1 &&
-                                    PCA_distance < 1 && 
-	            			        candTrack.normalizedChi2() < 5 &&
-                                    candTrack.pt() > 0.95 &&
-                                    tracks_dz < 8;
-
-            if(goodTrack){
-                temp_tracks.push_back(std::pair<double, reco::Track>(tracks_dR, candTrack));
-            }
-
-            if(goodTrack && fabs(tracks[0].pt() - candTrack.pt()) < 0.5 && tracks_dR < 0.05 && tracks_dR < min_tracks_dR){ //find original lepton in PF candidates 
-                min_tracks_dR = tracks_dR;
-                i_duplicated_lep = tracks.size() - 1;
-            }
-        }
-    //}dRcut += -0.1;
-    if(i_duplicated_lep != -1) temp_tracks.erase(temp_tracks.begin() + i_duplicated_lep); //remove the duplicated original lepton
-
-    _lKVF_trackPt[_nL][0] = tracks[0].pt();
-    _lKVF_trackEta[_nL][0] = tracks[0].eta();
-    _lKVF_trackPhi[_nL][0] = tracks[0].phi();
-    _lKVF_trackE[_nL][0] = tracks[0].p();
-
-    _lKVF_trackdR[_nL][0] = 0;
-    _lKVF_trackdxy[_nL][0] = tracks[0].dxy();
-    _lKVF_trackdz[_nL][0] = tracks[0].dz();
-    double dRcut = 0.3;
-    while(tracks.size() < 2 && dRcut < 1){
-        dRcut += 0.1;
-        for(std::pair<double, reco::Track> track : temp_tracks){
-            if(track.first < dRcut){ 
-                tracks.push_back(track.second);
-                _lKVF_trackPt[_nL][tracks.size()-1] = track.second.pt();
-                _lKVF_trackEta[_nL][tracks.size()-1] = track.second.eta();
-                _lKVF_trackPhi[_nL][tracks.size()-1] = track.second.phi();
-                _lKVF_trackE[_nL][tracks.size()-1] = track.second.p();
-
-                _lKVF_trackdR[_nL][tracks.size()-1] = track.first;
-                _lKVF_trackdxy[_nL][tracks.size()-1] = track.second.dxy();
-                _lKVF_trackdz[_nL][tracks.size()-1] = track.second.dz();
-            }
-        }
-    }
-    if(tracks.size() < 2) dRcut = 0;
-
-    _lKVF_x[_nL]                 = 0;
-    _lKVF_y[_nL]                 = 0;
-    _lKVF_z[_nL]                 = 0;
-    _lKVF_cxx[_nL]               = 0;
-    _lKVF_cyy[_nL]               = 0;
-    _lKVF_czz[_nL]               = 0;
-    _lKVF_cyx[_nL]               = 0;
-    _lKVF_czy[_nL]               = 0;
-    _lKVF_czx[_nL]               = 0;
-    _lKVF_df[_nL]                = 0;
-    _lKVF_chi2[_nL]              = 0;
-    _lKVF_ntracks[_nL]           = tracks.size();
-    _lKVF_dRcut[_nL]             = dRcut;
-
-    //if(tracks.size() == 1) 
-    if(tracks.size() == 1){
-        _lKVF_valid[_nL] = false;
-        return;
-    } else{
-        TransientVertex vtx = constructKalmanVertex(tracks, bfield);
-        _lKVF_valid[_nL]                = vtx.isValid();
-        if(vtx.isValid()){
-            _lKVF_x[_nL]                 = vtx.position().x();
-            _lKVF_y[_nL]                 = vtx.position().y();
-            _lKVF_z[_nL]                 = vtx.position().z();
-            _lKVF_cxx[_nL]               = vtx.positionError().cxx();
-            _lKVF_cyy[_nL]               = vtx.positionError().cyy();
-            _lKVF_czz[_nL]               = vtx.positionError().czz();
-            _lKVF_cyx[_nL]               = vtx.positionError().cyx();
-            _lKVF_czy[_nL]               = vtx.positionError().czy();
-            _lKVF_czx[_nL]               = vtx.positionError().czx();
-            _lKVF_df[_nL]                = vtx.degreesOfFreedom();
-            _lKVF_chi2[_nL]              = vtx.totalChiSquared();
-        }
-    }
-}
-
-//This function is not finished yet, it stores only the vertex associated with a lepton!
-void LeptonAnalyzer::fillLeptonIVFVariables(const reco::Track& lepTrack, const std::vector<reco::Vertex>& secVertices){
-    //So after all, I am saving all vertices with their track information.
-    //do I need muon info or only track info? in that case I can just pass the track and dont need to distinguish between electron and muon
-    //std::cout << std::endl << "--- lepton pt, eta, phi: " << lepTrack.pt() << " " << lepTrack.eta() << " " << lepTrack.phi() << std::endl; 
-    //_trackmatch[_nMu] = 0;
-    for(const reco::Vertex& vtx : secVertices){
-        //std::cout << "--- --- vertex x, y, z: " << vtx.x() << " " << vtx.y() << " " << vtx.z() << std::endl;
-        for(reco::Vertex::trackRef_iterator vtxTrackref = vtx.tracks_begin(); vtxTrackref != vtx.tracks_end(); vtxTrackref++){
-            reco::TrackRef vtxTrack = vtxTrackref->castTo<reco::TrackRef>();
-            //std::cout << "--- --- --- track pt, eta, phi: " << vtxTrack->pt() << " " << vtxTrack->eta() << " " << vtxTrack->phi() << std::endl;
-            //if(fabs(lepTrack.pt() - vtxTrack->pt()) < 0.1 and fabs(lepTrack.eta() - vtxTrack->eta()) < 0.05 and fabs(lepTrack.phi() - vtxTrack->phi()) < 0.05) _trackmatch[_nMu]++;
-        }
-    }
-}
-
-
-//This function stores all vertices with their information: position, errors, chi2, dof, track kinematics
-//void LeptonAnalyzer::fillAllIVFVariables(const std::vector<reco::Vertex>& secVertices, const reco::Vertex& pv){
-//    _IVF_nvertex = 0;
-//    for(const reco::Vertex& vtx : secVertices){
-//        //store vertex info
-//        if(_IVF_nvertex == nvtx_max) break;
-//        _IVF_x[_IVF_nvertex]    = vtx.x();
-//        _IVF_y[_IVF_nvertex]    = vtx.y();
-//        _IVF_z[_IVF_nvertex]    = vtx.z();
-//        _IVF_cx[_IVF_nvertex]   = vtx.xError();
-//        _IVF_cy[_IVF_nvertex]   = vtx.yError();
-//        _IVF_cz[_IVF_nvertex]   = vtx.zError();
-//        _IVF_df[_IVF_nvertex]   = vtx.ndof();
-//        _IVF_chi2[_IVF_nvertex] = vtx.chi2();
-//        _IVF_pt[_IVF_nvertex]   = vtx.p4().pt();
-//        _IVF_eta[_IVF_nvertex]  = vtx.p4().eta();
-//        _IVF_phi[_IVF_nvertex]  = vtx.p4().phi();
-//        _IVF_E[_IVF_nvertex]    = vtx.p4().energy();
-//        _IVF_mass[_IVF_nvertex] = vtx.p4().mass();
-//        
-//        _IVF_ntracks[_IVF_nvertex] = 0;
-//        for(reco::Vertex::trackRef_iterator vtxTrackref = vtx.tracks_begin(); vtxTrackref != vtx.tracks_end(); vtxTrackref++){
-//            //store track info
-//            if(_IVF_ntracks[_IVF_nvertex] == ntrack_max) break;
-//            reco::TrackRef vtxTrack = vtxTrackref->castTo<reco::TrackRef>();
-//            _IVF_trackpt[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]        = vtxTrack->pt();
-//            _IVF_tracketa[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]       = vtxTrack->eta();
-//            _IVF_trackphi[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]       = vtxTrack->phi();
-//            _IVF_trackE[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]         = vtxTrack->p();
-//            _IVF_trackcharge[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]    = vtxTrack->charge();
-//            _IVF_trackdxy[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]       = std::abs(vtxTrack->dxy(pv.position()));
-//            _IVF_trackdz[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]        = std::abs(vtxTrack->dz(pv.position()));
-//            _IVF_ntracks[_IVF_nvertex]++;
-//        }
-//        _IVF_nvertex++;
-//    }
-//}
 
 void LeptonAnalyzer::fillMatchingIVFVariables(const std::vector<reco::Vertex>& secVertices, const pat::Muon& muon, const reco::Vertex& pv){
     _lIVF_match[_nLight] = false;
@@ -874,6 +694,170 @@ void LeptonAnalyzer::fillMatchingIVFVariables(const std::vector<reco::Vertex>& s
         }
     }
 }
+
+//TransientVertex LeptonAnalyzer::constructKalmanVertex(std::vector<reco::Track>& tracks, MagneticField* bfield){
+//    std::vector<reco::TransientTrack> ttks;
+//    for(auto track : tracks){
+//	ttks.push_back(reco::TransientTrack(track, bfield));
+//    }
+//    KalmanVertexFitter vtxFitter;
+//    return vtxFitter.vertex(ttks);
+//}
+//
+//void LeptonAnalyzer::fillLeptonKVFVariables(edm::Handle<std::vector<pat::PackedCandidate>>& packedCands, std::vector<reco::Track>& tracks){
+//    MagneticField *bfield = new OAEParametrizedMagneticField("3_8T");
+//
+//    const GlobalPoint*  lepPoint  = new GlobalPoint(tracks[0].referencePoint().x(), tracks[0].referencePoint().y(), tracks[0].referencePoint().z()); // Calc. traj.param. for lepton, used to calculate PCA
+//    const GlobalVector* lepVector = new GlobalVector(tracks[0].px(), tracks[0].py(), tracks[0].pz());
+//    TrackCharge lepCharge         = tracks[0].charge();
+//    GlobalTrajectoryParameters lepParam(*lepPoint, *lepVector, lepCharge, bfield);
+//
+//    double min_tracks_dR = 5;
+//    int i_duplicated_lep = -1;
+//    
+//    std::vector<std::pair<double, reco::Track>> temp_tracks;
+//    //for(; dRcut < 1.1 && tracks.size() == 1; dRcut += 0.1){
+//        for(auto cand = packedCands->cbegin(); cand != packedCands->cend(); ++cand){
+//            if(!cand->hasTrackDetails()) continue;
+//            const reco::Track& candTrack = cand->pseudoTrack();
+//
+//            const GlobalPoint*  candPoint  = new GlobalPoint(candTrack.referencePoint().x(), candTrack.referencePoint().y(), candTrack.referencePoint().z());
+//            const GlobalVector* candVector = new GlobalVector(candTrack.px(), candTrack.py(), candTrack.pz());
+//            TrackCharge candCharge         = candTrack.charge();
+//            GlobalTrajectoryParameters candParam(*candPoint, *candVector, candCharge, bfield);
+//            TwoTrackMinimumDistance TTMinDist;
+//                
+//            double PCA_distance = 5;
+//            double PCA_dphi     = 5;
+//            if(TTMinDist.calculate(lepParam, candParam)){
+//                PCA_distance = TTMinDist.distance();
+//                PCA_dphi     = fabs(TTMinDist.firstAngle() - TTMinDist.secondAngle());
+//                if(PCA_dphi > 3.14) PCA_dphi = 6.28 - PCA_dphi;
+//            }
+//            
+//            double tracks_dz    = fabs(tracks[0].dz() - candTrack.dz());
+//            double tracks_deta  = fabs(tracks[0].eta() - candTrack.eta());
+//            double tracks_dR    = sqrt(tracks_deta*tracks_deta + PCA_dphi*PCA_dphi);
+//
+//            bool goodTrack      =   tracks_dR < 1 &&
+//                                    PCA_distance < 1 && 
+//	            			        candTrack.normalizedChi2() < 5 &&
+//                                    candTrack.pt() > 0.95 &&
+//                                    tracks_dz < 8;
+//
+//            if(goodTrack){
+//                temp_tracks.push_back(std::pair<double, reco::Track>(tracks_dR, candTrack));
+//            }
+//
+//            if(goodTrack && fabs(tracks[0].pt() - candTrack.pt()) < 0.5 && tracks_dR < 0.05 && tracks_dR < min_tracks_dR){ //find original lepton in PF candidates 
+//                min_tracks_dR = tracks_dR;
+//                i_duplicated_lep = tracks.size() - 1;
+//            }
+//        }
+//    //}dRcut += -0.1;
+//    if(i_duplicated_lep != -1) temp_tracks.erase(temp_tracks.begin() + i_duplicated_lep); //remove the duplicated original lepton
+//
+//    _lKVF_trackPt[_nL][0] = tracks[0].pt();
+//    _lKVF_trackEta[_nL][0] = tracks[0].eta();
+//    _lKVF_trackPhi[_nL][0] = tracks[0].phi();
+//    _lKVF_trackE[_nL][0] = tracks[0].p();
+//
+//    _lKVF_trackdR[_nL][0] = 0;
+//    _lKVF_trackdxy[_nL][0] = tracks[0].dxy();
+//    _lKVF_trackdz[_nL][0] = tracks[0].dz();
+//    double dRcut = 0.3;
+//    while(tracks.size() < 2 && dRcut < 1){
+//        dRcut += 0.1;
+//        for(std::pair<double, reco::Track> track : temp_tracks){
+//            if(track.first < dRcut){ 
+//                tracks.push_back(track.second);
+//                _lKVF_trackPt[_nL][tracks.size()-1] = track.second.pt();
+//                _lKVF_trackEta[_nL][tracks.size()-1] = track.second.eta();
+//                _lKVF_trackPhi[_nL][tracks.size()-1] = track.second.phi();
+//                _lKVF_trackE[_nL][tracks.size()-1] = track.second.p();
+//
+//                _lKVF_trackdR[_nL][tracks.size()-1] = track.first;
+//                _lKVF_trackdxy[_nL][tracks.size()-1] = track.second.dxy();
+//                _lKVF_trackdz[_nL][tracks.size()-1] = track.second.dz();
+//            }
+//        }
+//    }
+//    if(tracks.size() < 2) dRcut = 0;
+//
+//    _lKVF_x[_nL]                 = 0;
+//    _lKVF_y[_nL]                 = 0;
+//    _lKVF_z[_nL]                 = 0;
+//    _lKVF_cxx[_nL]               = 0;
+//    _lKVF_cyy[_nL]               = 0;
+//    _lKVF_czz[_nL]               = 0;
+//    _lKVF_cyx[_nL]               = 0;
+//    _lKVF_czy[_nL]               = 0;
+//    _lKVF_czx[_nL]               = 0;
+//    _lKVF_df[_nL]                = 0;
+//    _lKVF_chi2[_nL]              = 0;
+//    _lKVF_ntracks[_nL]           = tracks.size();
+//    _lKVF_dRcut[_nL]             = dRcut;
+//
+//    //if(tracks.size() == 1) 
+//    if(tracks.size() == 1){
+//        _lKVF_valid[_nL] = false;
+//        return;
+//    } else{
+//        TransientVertex vtx = constructKalmanVertex(tracks, bfield);
+//        _lKVF_valid[_nL]                = vtx.isValid();
+//        if(vtx.isValid()){
+//            _lKVF_x[_nL]                 = vtx.position().x();
+//            _lKVF_y[_nL]                 = vtx.position().y();
+//            _lKVF_z[_nL]                 = vtx.position().z();
+//            _lKVF_cxx[_nL]               = vtx.positionError().cxx();
+//            _lKVF_cyy[_nL]               = vtx.positionError().cyy();
+//            _lKVF_czz[_nL]               = vtx.positionError().czz();
+//            _lKVF_cyx[_nL]               = vtx.positionError().cyx();
+//            _lKVF_czy[_nL]               = vtx.positionError().czy();
+//            _lKVF_czx[_nL]               = vtx.positionError().czx();
+//            _lKVF_df[_nL]                = vtx.degreesOfFreedom();
+//            _lKVF_chi2[_nL]              = vtx.totalChiSquared();
+//        }
+//    }
+//}
+
+//This function stores all vertices with their information: position, errors, chi2, dof, track kinematics
+//void LeptonAnalyzer::fillAllIVFVariables(const std::vector<reco::Vertex>& secVertices, const reco::Vertex& pv){
+//    _IVF_nvertex = 0;
+//    for(const reco::Vertex& vtx : secVertices){
+//        //store vertex info
+//        if(_IVF_nvertex == nvtx_max) break;
+//        _IVF_x[_IVF_nvertex]    = vtx.x();
+//        _IVF_y[_IVF_nvertex]    = vtx.y();
+//        _IVF_z[_IVF_nvertex]    = vtx.z();
+//        _IVF_cx[_IVF_nvertex]   = vtx.xError();
+//        _IVF_cy[_IVF_nvertex]   = vtx.yError();
+//        _IVF_cz[_IVF_nvertex]   = vtx.zError();
+//        _IVF_df[_IVF_nvertex]   = vtx.ndof();
+//        _IVF_chi2[_IVF_nvertex] = vtx.chi2();
+//        _IVF_pt[_IVF_nvertex]   = vtx.p4().pt();
+//        _IVF_eta[_IVF_nvertex]  = vtx.p4().eta();
+//        _IVF_phi[_IVF_nvertex]  = vtx.p4().phi();
+//        _IVF_E[_IVF_nvertex]    = vtx.p4().energy();
+//        _IVF_mass[_IVF_nvertex] = vtx.p4().mass();
+//        
+//        _IVF_ntracks[_IVF_nvertex] = 0;
+//        for(reco::Vertex::trackRef_iterator vtxTrackref = vtx.tracks_begin(); vtxTrackref != vtx.tracks_end(); vtxTrackref++){
+//            //store track info
+//            if(_IVF_ntracks[_IVF_nvertex] == ntrack_max) break;
+//            reco::TrackRef vtxTrack = vtxTrackref->castTo<reco::TrackRef>();
+//            _IVF_trackpt[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]        = vtxTrack->pt();
+//            _IVF_tracketa[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]       = vtxTrack->eta();
+//            _IVF_trackphi[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]       = vtxTrack->phi();
+//            _IVF_trackE[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]         = vtxTrack->p();
+//            _IVF_trackcharge[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]    = vtxTrack->charge();
+//            _IVF_trackdxy[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]       = std::abs(vtxTrack->dxy(pv.position()));
+//            _IVF_trackdz[_IVF_nvertex][_IVF_ntracks[_IVF_nvertex]]        = std::abs(vtxTrack->dz(pv.position()));
+//            _IVF_ntracks[_IVF_nvertex]++;
+//        }
+//        _IVF_nvertex++;
+//    }
+//}
 //void LeptonAnalyzer::OldfillMatchingIVFVariables(const pat::Muon& muon){
 //    _lIVF_match[_nLight] = -1;
 //    //const reco::Track& lepTrack = (*muon.bestTrack());
