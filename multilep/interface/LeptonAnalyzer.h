@@ -87,6 +87,7 @@ class LeptonAnalyzer {
     double _closestJetDeepCsv_bb[nL_max];
     unsigned _selectedTrackMult[nL_max];
 
+    static const unsigned ntrack_max  = 15;
     bool     _lKVF_valid[nL_max];
     double   _lKVF_x[nL_max];
     double   _lKVF_y[nL_max];
@@ -101,37 +102,37 @@ class LeptonAnalyzer {
     double   _lKVF_chi2[nL_max];
     unsigned _lKVF_ntracks[nL_max];
     double   _lKVF_dRcut[nL_max];
-    double   _lKVF_trackPt[nL_max][20];
-    double   _lKVF_trackEta[nL_max][20];
-    double   _lKVF_trackPhi[nL_max][20];
-    double   _lKVF_trackE[nL_max][20];
-    double   _lKVF_trackdR[nL_max][20];
-    double   _lKVF_trackdxy[nL_max][20];
-    double   _lKVF_trackdz[nL_max][20];
+    double   _lKVF_trackPt[nL_max][ntrack_max];
+    double   _lKVF_trackEta[nL_max][ntrack_max];
+    double   _lKVF_trackPhi[nL_max][ntrack_max];
+    double   _lKVF_trackE[nL_max][ntrack_max];
+    double   _lKVF_trackdR[nL_max][ntrack_max];
+    double   _lKVF_trackdxy[nL_max][ntrack_max];
+    double   _lKVF_trackdz[nL_max][ntrack_max];
     
-    static const unsigned nvtx_max    = 50;
-    static const unsigned ntrack_max  = 15;
-    unsigned _IVF_nvertex;
-    double _IVF_x[nvtx_max];
-    double _IVF_y[nvtx_max];
-    double _IVF_z[nvtx_max];
-    double _IVF_cx[nvtx_max];
-    double _IVF_cy[nvtx_max];
-    double _IVF_cz[nvtx_max];
-    double _IVF_df[nvtx_max];
-    double _IVF_chi2[nvtx_max];
-    double _IVF_pt[nvtx_max];
-    double _IVF_eta[nvtx_max];
-    double _IVF_phi[nvtx_max];
-    double _IVF_E[nvtx_max];
-    double _IVF_mass[nvtx_max];
-    unsigned _IVF_ntracks[nvtx_max];
-    double _IVF_trackpt[nvtx_max][ntrack_max];
-    double _IVF_tracketa[nvtx_max][ntrack_max];
-    double _IVF_trackphi[nvtx_max][ntrack_max];
-    double _IVF_trackE[nvtx_max][ntrack_max];
-    double _IVF_trackcharge[nvtx_max][ntrack_max];
-    int    _lIVF_match[nL_max];
+    //unsigned _IVF_nvertex;
+    bool    _lIVF_match[nL_max];
+    double _IVF_x[nL_max];
+    double _IVF_y[nL_max];
+    double _IVF_z[nL_max];
+    double _IVF_cx[nL_max];
+    double _IVF_cy[nL_max];
+    double _IVF_cz[nL_max];
+    double _IVF_df[nL_max];
+    double _IVF_chi2[nL_max];
+    double _IVF_pt[nL_max];
+    double _IVF_eta[nL_max];
+    double _IVF_phi[nL_max];
+    double _IVF_E[nL_max];
+    double _IVF_mass[nL_max];
+    unsigned _IVF_ntracks[nL_max];
+    double _IVF_trackpt[nL_max][ntrack_max];
+    double _IVF_tracketa[nL_max][ntrack_max];
+    double _IVF_trackphi[nL_max][ntrack_max];
+    double _IVF_trackE[nL_max][ntrack_max];
+    double _IVF_trackdxy[nL_max][ntrack_max];
+    double _IVF_trackdz[nL_max][ntrack_max];
+    double _IVF_trackcharge[nL_max][ntrack_max];
 
 
     double _dxy[nL_max];                                                                             //pointing variables
@@ -238,10 +239,10 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
     void fillLeptonKVFVariables(edm::Handle<std::vector<pat::PackedCandidate>>&, std::vector<reco::Track>&);
     void fillLeptonIVFVariables(const reco::Track&, const std::vector<reco::Vertex>&);
-    void fillAllIVFVariables(const std::vector<reco::Vertex>&);
+    //void fillAllIVFVariables(const std::vector<reco::Vertex>&, const reco::Vertex&);
     //void fillLeptonIVFVariables(const pat::Muon&, edm::Handle<std::vector<reco::Vertex>>);
-    void fillMatchingIVFVariables(const pat::Muon&);
-    void fillMatchingIVFVariables(const pat::Electron&);
+    void fillMatchingIVFVariables(const std::vector<reco::Vertex>&, const pat::Muon&, const reco::Vertex&);
+    void fillMatchingIVFVariables(const std::vector<reco::Vertex>&, const pat::Electron&, const reco::Vertex&);
 
     // In leptonAnalyzerIso.cc
     double getRelIso03(const pat::Muon&, const double) const;
