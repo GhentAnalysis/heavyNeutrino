@@ -33,6 +33,9 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   if (multilepAnalyzer->skim == "FR"){
     allFlags["FR_single_lepton"]= {"HLT_Mu8","HLT_Mu17","HLT_Mu3_PFJet40","HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30","HLT_Ele8_CaloIdM_TrackIdM_PFJet30"};
   }
+  if (multilepAnalyzer->skim == "FRsM"){
+    allFlags["FR_single_lepton"]= {"HLT_Mu3_PFJet40"};
+  }
   if(multilepAnalyzer->is2018){
     allFlags["passTrigger_1l"]   = {"HLT_IsoMu24", "HLT_IsoMu27","HLT_Ele32_WPTight_Gsf"};
   } else if(multilepAnalyzer->is2017){
