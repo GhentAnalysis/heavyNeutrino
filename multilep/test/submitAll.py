@@ -12,7 +12,7 @@ datasets        = [dataset.split()[0] for dataset in datasets if dataset and not
 #check if call asked for local submission
 submitLocal     = ""
 #Use third argument to specify the number of jobs per file
-filesPerJob     = 10
+filesPerJob     = 3
 print 'initialized voms-proxy-init --voms cms?'
 
 if len(sys.argv) > 2:
@@ -27,10 +27,7 @@ for dataset in datasets:
         dir        = os.getcwd()
         outputDir = outDir + "/"
         if 'pnfs' in dataset and 'user' in dataset: outputDir = outputDir + dataset.split('/')[-2] + '/' + dataset.split('/')[-1]      
-        else: 
-	    print 'outputDir: ' + outputDir
-	    print 'dataset.split: ' + dataset.split('/')[1]
-	    outputDir = outputDir + dataset.split('/')[1]
+        else: outputDir = outputDir + dataset.split('/')[1]
         if 'ext' in dataset:
             outputDir = outputDir + "_"
             index = dataset.find('ext')
