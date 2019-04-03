@@ -8,6 +8,8 @@ productionLabel = os.path.basename(datasetsFile.split('/')[-1].split('.')[0])   
 outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'                                 # Output directory in case of local submission
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
+extraContent    = []
+
 #check if call asked for local submission
 submitLocal     = ""
 #Use third argument to specify the number of jobs per file
@@ -19,12 +21,20 @@ if len(sys.argv) > 2:
         filesPerJob = sys.argv[3]
 
 for dataset in datasets:
+  if   dataset.startswith('+'):
+    extraContent += dataset.replace('+','').split(',')
+  elif dataset.startswith('-'):
+    for toRemove in dataset.replace('-','').split(','):
+      extraContent.remove(toRemove)
+  else:
     skim, dataset = dataset.split(':')
 
     if 'pnfs' in dataset or 'user' in dataset or submitLocal == "local":
+        if extraContent:
+            print 'WARNING: extraContent option is currently still ignored for local submission, please implement when you need it'
         dir        = os.getcwd()
         outputDir = outDir + "/"
-        if 'pnfs' in dataset or 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]      
+        if 'pnfs' in dataset or 'user' in dataset: outputDir = outputDir + dataset.split('/')[-1]
         else: outputDir = outputDir + dataset.split('/')[1]
         if 'ext' in dataset:
             outputDir = outputDir + "_"
@@ -32,7 +42,7 @@ for dataset in datasets:
             for i in range (index, len(dataset)):
                 if dataset[i] == "/": break
                 else : outputDir = outputDir + dataset[i]
-        #add run labels to data output directory 
+        #add run labels to data output directory [TODO: it seems this could be rewritten in one line (and probably the part above too)]
         if ('Run2016' in dataset) or ('Run2017' in dataset) or ('Run2018' in dataset):
             if('Run2016') in dataset :
                 outputDir = outputDir + "/Run2016"
@@ -41,7 +51,7 @@ for dataset in datasets:
             else :
                 outputDir = outputDir + "/Run2018"
             for era in ["B", "C", "D", "E", "F", "G", "H"]:
-                if ( ("Run2016" + era) in dataset ) or ( ("Run2017" + era) in dataset ) or ( ("Run2018" + era) in dataset ): 
+                if ( ("Run2016" + era) in dataset ) or ( ("Run2017" + era) in dataset ) or ( ("Run2018" + era) in dataset ):
                     outputDir = outputDir + era
 
 
@@ -63,6 +73,7 @@ for dataset in datasets:
         os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
         os.environ['CRAB_DATASET']         = dataset
         os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
+        os.environ['CRAB_EXTRACONTENT']    = ','.join(extraContent)
         if 'Run2017' in dataset :   os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/ReReco/" +       getJSON(True, False)
         elif 'Run2018' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/PromptReco/" +   getJSON(False, True)
         else :                      os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/" + getJSON(False, False)

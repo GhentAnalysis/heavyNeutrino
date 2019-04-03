@@ -91,53 +91,6 @@ bool LeptonAnalyzer::passElectronMvaEwkFO(const pat::Electron* ele, double mvaVa
 }
 
 
-/*
- * Id definitions for the heavyNeutrino analysis
- */
-// Important: not official-loose like in POG-loose, but own-made loose, never call this a 'loose' lepton in a presentation
-bool LeptonAnalyzer::isHNLoose(const pat::Muon& lepton) const{
-    if(fabs(_dxy[_nL]) >= 0.05 || fabs(_dz[_nL]) >= 0.1) return false;
-    if(_relIso[_nL] >= 0.6)                              return false;
-    return (lepton.isLooseMuon() && lepton.pt() > 5); 
-}
-
-bool LeptonAnalyzer::isHNLoose(const pat::Electron& lepton) const{
-    if(fabs(_dxy[_nL]) >= 0.05 || fabs(_dz[_nL]) >= 0.1)                                            return false;
-    if(_relIso[_nL] >= 0.6)                                                                         return false;
-    if(lepton.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 1)  return false;
-    if(!lepton.passConversionVeto())                                                                return false;
-    if(eleMuOverlap(lepton, _lHNLoose))                                                             return false; // Always run electrons after muons because of this
-    return (lepton.pt() > 10);
-}
-
-bool LeptonAnalyzer::isHNFO(const pat::Muon& lepton) const{
-    if(!_lHNLoose[_nL])                         return false; // own-made loose, not POG-loose
-    if(fabs(_3dIPSig[_nL]) >= 4)                return false;
-    return lepton.isMediumMuon();
-}
-
-bool LeptonAnalyzer::isHNFO(const pat::Electron& lepton) const{
-    if(!_lHNLoose[_nL])                                                                                 return false; // own-made loose, not POG-loose
-    if(fabs(_3dIPSig[_nL]) >= 4)                                                                        return false;
-    if(lepton.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) != 0)     return false;
-    if(!passTriggerEmulationDoubleEG(&lepton))                                                          return false;
-    if(!passingElectronMvaHeavyNeutrinoFO(&lepton, _lElectronMvaSummer16GP[_nL]))                       return false; // TODO: consider replacing this by somethinig better
-    return true;
-}
-
-bool LeptonAnalyzer::isHNTight(const pat::Electron& lepton) const{
-    if(!_lHNFO[_nL])                                                        return false;
-    if(_relIso[_nL] >= 0.1)                                                 return false;
-    if(!passingElectronMvaTightSusy(&lepton, _lElectronMvaSummer16GP[_nL])) return false; // TODO: consider replacing this by something better
-    return true;
-}
-
-bool LeptonAnalyzer::isHNTight(const pat::Muon& lepton) const{
-    if(!_lHNFO[_nL])        return false;
-    if(_relIso[_nL] >= 0.1) return false;
-    return true;
-}
-
 double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon, LeptonMvaHelper* mvaHelper){
     return mvaHelper->leptonMvaMuon(_lPt[_nL],
             _lEta[_nL],
@@ -205,7 +158,7 @@ bool LeptonAnalyzer::isEwkFO(const pat::Muon& lep) const{
     if(!_lEwkLoose[_nL])        return false;
     if(_lPt[_nL] <= 10)         return false;
     if(!lep.isMediumMuon())     return false;
-    return _leptonMvaSUSY16[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
+    return _leptonMvaSUSY[_nL] > -0.2 || (_ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
 }
 
 bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep) const{
@@ -214,11 +167,11 @@ bool LeptonAnalyzer::isEwkFO(const pat::Electron& lep) const{
     if(!passTriggerEmulationDoubleEG(&lep, false))                                                  return false;
     if(lep.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) !=0)     return false;
     double ptCone = _lPt[_nL];
-    if(_leptonMvaSUSY16[_nL] <= 0.5){
+    if(_leptonMvaSUSY[_nL] <= 0.5){
         ptCone *= 0.85/_ptRatio[_nL];
     }
     if(ptCone >= 30 && lep.hadronicOverEm() >= (lep.isEB() ? 0.10  : 0.07) )                        return false;
-    return _leptonMvaSUSY16[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMvaSummer16GP[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
+    return _leptonMvaSUSY[_nL] > 0.5 || (passElectronMvaEwkFO(&lep, _lElectronMvaSummer16GP[_nL]) && _ptRatio[_nL] > 0.3 && _closestJetCsvV2[_nL] < 0.3);
 }
 
 bool LeptonAnalyzer::isEwkFO(const pat::Tau& tau) const{
@@ -227,14 +180,14 @@ bool LeptonAnalyzer::isEwkFO(const pat::Tau& tau) const{
 
 bool LeptonAnalyzer::isEwkTight(const pat::Muon& lep) const{
     if(!_lEwkFO[_nL]) return false;
-    return _leptonMvaSUSY16[_nL] > -0.2;
+    return _leptonMvaSUSY[_nL] > -0.2;
 }
 
 bool LeptonAnalyzer::isEwkTight(const pat::Electron& lep) const{
     if(!_lEwkFO[_nL])                       return false;
     if(!passTriggerEmulationDoubleEG(&lep)) return false;
     if(!lep.passConversionVeto())           return false;
-    return _leptonMvaSUSY16[_nL] > 0.5;
+    return _leptonMvaSUSY[_nL] > 0.5;
 }
 
 bool LeptonAnalyzer::isEwkTight(const pat::Tau& tau) const{

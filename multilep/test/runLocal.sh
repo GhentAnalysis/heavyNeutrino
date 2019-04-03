@@ -30,6 +30,8 @@ if [[ $USER == "tutran" ]]; then
   proxy=/user/tutran/private/x509up_u23068
 elif [[ $USER == "wverbeke" ]]; then
   proxy=/user/wverbeke/x509up_u20640
+elif [[ $USER == "gmestdac" ]]; then
+proxy=/user/gmestdac/x509up_u20676
 else
   echo "Add your proxy in RunLocal.sh before submitting jobs!"
   exit 1
