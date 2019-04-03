@@ -14,11 +14,11 @@ setCMSSW(){
 #function to submit a job and catch invalid credentials
 submitJob(){
     #cat $1
-    qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
+    qsub $1 -l walltime=12:00:00 > outputCheck.txt 2>> outputCheck.txt
     while grep "Invalid credential" outputCheck.txt; do
         echo "Invalid credential caught, resubmitting"
         sleep 2  #sleep 2 seconds before attemtping resubmission
-        qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
+        qsub $1 -l walltime=12:00:00 > outputCheck.txt 2>> outputCheck.txt
     done
     cat outputCheck.txt
     rm outputCheck.txt
@@ -81,6 +81,9 @@ if [[ -z "$output" ]]; then
     echo "OUTPUT = $output"
     output=~/public/heavyNeutrino/${output}    
 fi
+
+#make output directory structure if needed
+mkdir -p $output
 
 #get outputdirectory for pnfs, same directory name as in personal storage except for 'public'
 outputpnfs=/pnfs/iihe/cms/store/user/bvermass/${output#*public/}
