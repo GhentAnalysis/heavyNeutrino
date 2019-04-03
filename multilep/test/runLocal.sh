@@ -26,7 +26,9 @@ submitJob(){
 ##################################
 #Add your proxy!
 ##################################
-if [[ $USER == "tutran" ]]; then
+if [[ $USER == "trocino" ]]; then
+  proxy=/user/trocino/x509up_u20672
+elif [[ $USER == "tutran" ]]; then
   proxy=/user/tutran/private/x509up_u23068
 elif [[ $USER == "wverbeke" ]]; then
   proxy=/user/wverbeke/x509up_u20640

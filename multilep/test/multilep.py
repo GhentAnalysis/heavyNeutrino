@@ -35,7 +35,7 @@ for i in range(1,len(sys.argv)):
     elif "events"       in sys.argv[i]: nEvents      = int(getVal(sys.argv[i]))
 
 isData = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
-is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
+is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in inputFile
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile
 isSUSY = "SMS-T" in inputFile
 
