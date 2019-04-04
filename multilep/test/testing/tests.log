@@ -1,220 +1,266 @@
-commit 669d606b59c3c3702101b96fb1ec69efedbd0722
-Merge: 2094e7c ea91876
-Author: martina vit <martina.vit@cern.ch>
-Date:   Sat Mar 9 00:17:00 2019 +0100
+**** Following environment variables are going to be unset.
+       DBS_CLIENT_CONFIG
+       DBSCMD_HOME
+       MAGIC
+       MALLOC_CONF
+commit ce3e4956d13115ef9e973750146e077fce05ae28
+Author: tomc <tomc@cern.ch>
+Date:   Thu Apr 4 15:56:25 2019 +0200
 
-    Merge branch 'displacedLegacy' of https://github.com/GhentAnalysis/heavyNeutrino into displacedLegacy
+    Don't push back genparticles which fail all options
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   New: _lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
+   Changed:
+      _closestJEC                                        mean:   1.1808 -->   1.0845     rms:   0.3290 -->   0.2961    
+      _closest_l1JetE                                    mean:  82.2690 -->  88.1965     rms:  70.2962 -->  75.2703    
+      _closest_l1JetPx                                   mean:   4.7224 -->   4.9255     rms:  33.9469 -->  35.7572    
+      _closest_l1JetPy                                   mean:  -3.6177 -->  -3.7137     rms:  36.1457 -->  37.9137    
+      _closest_l1JetPz                                   mean:   7.4768 -->   8.0495     rms:  95.5060 --> 102.8728    
+      _closest_lJetE                                     mean: 103.3197 --> 102.3867     rms:  88.2211 -->  88.9601    
+      _closest_lJetPx                                    mean:   5.5898 -->   5.4518     rms:  40.5001 -->  39.9922    
+      _closest_lJetPy                                    mean:  -4.1787 -->  -4.0382     rms:  42.6183 -->  41.9194    
+      _closest_lJetPz                                    mean:   8.8681 -->   8.7442     rms: 121.7348 --> 121.9212    
+      _closest_lepAwareJetE                              mean:  84.7899 -->  90.8296     rms:  73.0531 -->  77.9605    
+      _closest_lepAwareJetPx                             mean:   5.0408 -->   5.1365     rms:  35.5156 -->  36.9613    
+      _closest_lepAwareJetPy                             mean:  -3.8913 -->  -3.8836     rms:  37.6000 -->  38.9350    
+      _closest_lepAwareJetPz                             mean:   7.7204 -->   8.2485     rms:  98.5050 --> 106.2417    
+      _jetChargedEmFraction                              mean:   0.0035 -->   0.0030     rms:   0.0204 -->   0.0191    
+      _jetChargedHadronFraction                          mean:   0.3072 -->   0.2891     rms:   0.2853 -->   0.2826    
+      _jetCsvV2                                          mean:  -1.2133 -->  -1.9111     rms:   3.7142 -->   4.2908    
+      _jetDeepCsv_b                                      mean:  -0.0956 -->  -0.1984     rms:   0.5369 -->   0.5806    
+      _jetDeepCsv_bb                                     mean:  -0.2175 -->  -0.3062     rms:   0.4181 -->   0.4653    
+      _jetDeepCsv_c                                      mean:  -0.1185 -->  -0.2184     rms:   0.4793 -->   0.5308    
+      _jetDeepCsv_udsg                                   mean:   0.3232 -->   0.1734     rms:   0.7536 -->   0.8240    
+      _jetE                                              mean: 206.3478 --> 215.5188     rms: 279.8832 --> 268.1300    
+      _jetEta                                            mean:   0.1425 -->   0.0735     rms:   1.8119 -->   1.9920    
+      _jetHFEmFraction                                   mean:   0.0062 -->   0.0195     rms:   0.0241 -->   0.0510    
+      _jetHFHadronFraction                               mean:   0.1154 -->   0.1721     rms:   0.3063 -->   0.3457    
+      _jetIsTightLepVeto                                 mean:   0.7547 -->   0.7851     rms:   0.4303 -->   0.4107    
+      _jetNeutralEmFraction                              mean:   0.1685 -->   0.1672     rms:   0.1824 -->   0.1758    
+      _jetNeutralHadronFraction                          mean:   0.1858 -->   0.2469     rms:   0.3027 -->   0.3372    
+      _jetPhi                                            mean:  -0.0755 -->  -0.1109     rms:   1.7924 -->   1.8041    
+      _jetPt                                             mean:  61.1867 -->  56.7441     rms:  52.2787 -->  49.8750    
+      _jetPt_JECDown                                     mean:  59.4215 -->  54.6596     rms:  52.0221 -->  49.7408    
+      _jetPt_JECUp                                       mean:  62.9520 -->  58.8286     rms:  52.6352 -->  50.1526    
+      _jetPt_L1                                          mean:  50.8955 -->  48.9739     rms:  47.0373 -->  46.5918    
+      _jetPt_L2                                          mean:  58.4686 -->  54.7565     rms:  51.0309 -->  49.5392    
+      _jetPt_L3                                          mean:  58.4686 -->  54.7565     rms:  51.0309 -->  49.5392    
+      _jetPt_Uncorrected                                 mean:  57.5231 -->  53.6233     rms:  46.5461 -->  44.8392    
+      _jetSmearedPt                                      mean:  61.1867 -->  56.7441     rms:  52.2787 -->  49.8750    
+      _jetSmearedPt_JECDown                              mean:  59.4215 -->  54.6596     rms:  52.0221 -->  49.7408    
+      _jetSmearedPt_JECUp                                mean:  62.9520 -->  58.8286     rms:  52.6352 -->  50.1526    
+      _jetSmearedPt_JERDown                              mean:  61.1867 -->  56.7441     rms:  52.2787 -->  49.8750    
+      _jetSmearedPt_JERUp                                mean:  61.1867 -->  56.7441     rms:  52.2787 -->  49.8750    
+      _met                                               mean:  41.5405 -->  40.8538     rms:  20.7405 -->  20.9900    
+      _metJECDown                                        mean:  40.3814 -->  39.7405     rms:  20.2110 -->  19.9566    
+      _metJECUp                                          mean:  43.1357 -->  43.0893     rms:  21.8088 -->  22.7767    
+      _metPhi                                            mean:  -0.0036 -->  -0.0314     rms:   1.5590 -->   1.5204    
+      _metPhiJECDown                                     mean:   0.0069 -->  -0.0617     rms:   1.5600 -->   1.5442    
+      _metPhiJECUp                                       mean:   0.0478 -->  -0.0553     rms:   1.5587 -->   1.5434    
+      _metPhiUnclDown                                    mean:   0.1161 -->   0.0612     rms:   1.5826 -->   1.5442    
+      _metPhiUnclUp                                      mean:  -0.0018 -->  -0.0957     rms:   1.5279 -->   1.5165    
+      _metSignificance                                   mean:   3.4915 -->   3.4511     rms:   3.0816 -->   3.1812    
+      _metUnclDown                                       mean:  40.9099 -->  40.8238     rms:  20.4581 -->  21.8258    
+      _metUnclUp                                         mean:  42.9066 -->  41.8298     rms:  21.3204 -->  20.8908    
+      _nJets                                             mean:   2.1200 -->   2.4200     rms:   1.5381 -->   1.6624    
+      _ptRatio                                           mean:   0.8500 -->   0.7922     rms:   0.2434 -->   0.2156    
+      _ptRel                                             mean:  11.2202 -->   7.0846     rms:  19.0494 -->   8.8869    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   New: _lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
+   Changed:
+      _closestJEC                                        mean:   1.0743 -->   1.1100     rms:   0.2104 -->   0.2278    
+      _closest_l1JetE                                    mean:  95.3227 -->  96.0252     rms:  87.9518 -->  86.1969    
+      _closest_l1JetPx                                   mean:   3.7605 -->   3.7899     rms:  33.9659 -->  34.7901    
+      _closest_l1JetPy                                   mean:   2.6631 -->   2.5040     rms:  37.9084 -->  38.3786    
+      _closest_l1JetPz                                   mean: -12.5482 --> -12.4640     rms: 118.3756 --> 117.2609    
+      _closest_lJetE                                     mean: 107.0650 --> 111.8860     rms: 100.5888 --> 104.0437    
+      _closest_lJetPx                                    mean:   4.1124 -->   4.2009     rms:  37.3893 -->  38.8157    
+      _closest_lJetPy                                    mean:   3.1136 -->   3.2379     rms:  41.9862 -->  43.5187    
+      _closest_lJetPz                                    mean: -14.5515 --> -15.1316     rms: 134.6589 --> 140.1161    
+      _closest_lepAwareJetE                              mean:  98.5545 --> 100.4176     rms:  93.1620 -->  93.3254    
+      _closest_lepAwareJetPx                             mean:   3.8529 -->   3.8739     rms:  35.0233 -->  36.0709    
+      _closest_lepAwareJetPy                             mean:   2.8607 -->   2.7998     rms:  39.1553 -->  39.9462    
+      _closest_lepAwareJetPz                             mean: -13.1511 --> -13.3559     rms: 124.0604 --> 125.0860    
+      _jetChargedEmFraction                              mean:   0.0055 -->   0.0064     rms:   0.0325 -->   0.0351    
+      _jetChargedHadronFraction                          mean:   0.2624 -->   0.2488     rms:   0.2861 -->   0.2767    
+      _jetCsvV2                                          mean:  -2.1604 -->  -2.7195     rms:   4.4287 -->   4.7335    
+      _jetDeepCsv_b                                      mean:  -0.1769 -->  -0.2426     rms:   0.5309 -->   0.5563    
+      _jetDeepCsv_bb                                     mean:  -0.2681 -->  -0.3278     rms:   0.4463 -->   0.4724    
+      _jetDeepCsv_c                                      mean:  -0.1671 -->  -0.2352     rms:   0.5149 -->   0.5432    
+      _jetDeepCsv_udsg                                   mean:   0.2575 -->   0.1530     rms:   0.7947 -->   0.8334    
+      _jetE                                              mean: 258.4341 --> 258.8479     rms: 308.5146 --> 282.0549    
+      _jetEta                                            mean:  -0.2891 -->  -0.2857     rms:   2.0673 -->   2.1627    
+      _jetHFEmFraction                                   mean:   0.0112 -->   0.0273     rms:   0.0308 -->   0.0664    
+      _jetHFHadronFraction                               mean:   0.1769 -->   0.2149     rms:   0.3684 -->   0.3825    
+      _jetIsTightLepVeto                                 mean:   0.6995 -->   0.7415     rms:   0.4585 -->   0.4378    
+      _jetNeutralEmFraction                              mean:   0.1259 -->   0.1430     rms:   0.1473 -->   0.1564    
+      _jetNeutralHadronFraction                          mean:   0.2292 -->   0.2774     rms:   0.3572 -->   0.3694    
+      _jetPhi                                            mean:   0.0920 -->   0.0771     rms:   1.8119 -->   1.7975    
+      _jetPt                                             mean:  57.3736 -->  55.2553     rms:  47.0854 -->  45.6781    
+      _jetPt_JECDown                                     mean:  55.3607 -->  52.9723     rms:  47.1937 -->  45.9153    
+      _jetPt_JECUp                                       mean:  59.3865 -->  57.5384     rms:  47.0724 -->  45.5733    
+      _jetPt_L1                                          mean:  51.1022 -->  47.1138     rms:  43.7207 -->  42.5629    
+      _jetPt_L2                                          mean:  56.9165 -->  53.1177     rms:  47.4277 -->  45.1528    
+      _jetPt_L3                                          mean:  56.9165 -->  53.1177     rms:  47.4277 -->  45.1528    
+      _jetPt_Uncorrected                                 mean:  56.4764 -->  52.1436     rms:  41.9205 -->  40.3821    
+      _jetSmearedPt                                      mean:  57.3736 -->  55.2553     rms:  47.0854 -->  45.6781    
+      _jetSmearedPt_JECDown                              mean:  55.3607 -->  52.9723     rms:  47.1937 -->  45.9153    
+      _jetSmearedPt_JECUp                                mean:  59.3865 -->  57.5384     rms:  47.0724 -->  45.5733    
+      _jetSmearedPt_JERDown                              mean:  57.3736 -->  55.2553     rms:  47.0854 -->  45.6781    
+      _jetSmearedPt_JERUp                                mean:  57.3736 -->  55.2553     rms:  47.0854 -->  45.6781    
+      _met                                               mean:  49.2975 -->  50.0421     rms:  27.4949 -->  28.2272    
+      _metJECDown                                        mean:  47.9594 -->  48.2055     rms:  27.1894 -->  27.0585    
+      _metJECUp                                          mean:  50.8228 -->  52.2748     rms:  27.9941 -->  29.6907    
+      _metPhi                                            mean:  -0.0776 -->  -0.0308     rms:   1.3369 -->   1.3705    
+      _metPhiJECDown                                     mean:  -0.0779 -->  -0.0256     rms:   1.3314 -->   1.3484    
+      _metPhiJECUp                                       mean:  -0.0189 -->  -0.0430     rms:   1.3494 -->   1.3830    
+      _metPhiUnclDown                                    mean:  -0.0234 -->   0.0664     rms:   1.3645 -->   1.4078    
+      _metPhiUnclUp                                      mean:  -0.0699 -->  -0.0358     rms:   1.3233 -->   1.3466    
+      _metSignificance                                   mean:   4.5537 -->   4.9229     rms:   4.1294 -->   4.4419    
+      _metUnclDown                                       mean:  48.7443 -->  49.9192     rms:  26.8223 -->  27.6921    
+      _metUnclUp                                         mean:  50.5354 -->  50.9134     rms:  28.3617 -->  29.0198    
+      _nJets                                             mean:   2.0300 -->   2.3600     rms:   1.2203 -->   1.4319    
+      _ptRatio                                           mean:   0.7977 -->   0.7701     rms:   0.2408 -->   0.2358    
+      _ptRel                                             mean:   8.3083 -->   6.7182     rms:  11.5446 -->   6.6634    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _closestJEC,_closest_l1JetE,_closest_l1JetPx,_closest_l1JetPy,_closest_l1JetPz,_closest_lJetE,_closest_lJetPx,_closest_lJetPy,_closest_lJetPz,_closest_lepAwareJetE,_closest_lepAwareJetPx,_closest_lepAwareJetPy,_closest_lepAwareJetPz,_lDisplaced_os,_nVFit_os,_passTrigger_1l,_vertices_os
-   Removed: _Flag_globalSuperTightHalo2016Filter,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_HLT_Ele38_WPTight_Gsf,_HLT_Ele38_WPTight_Gsf_prescale,_HLT_Ele40_WPTight_Gsf,_HLT_Ele40_WPTight_Gsf_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1_prescale,_HLT_IsoMu24_eta2p1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1_prescale,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1_prescale,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1_prescale,_HLT_IsoMu24_eta2p1_prescale,_HLT_IsoMu30,_HLT_IsoMu30_prescale,_HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr,_HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_prescale,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale,_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8,_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu55,_HLT_Mu55_prescale,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ_prescale,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_prescale,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_TripleMu_10_5_5_DZ,_HLT_TripleMu_10_5_5_DZ_prescale,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_prescale,_TripleMu_12_10_5,_lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ,_lEwkFO,_lEwkLoose,_lEwkTight,_lHNFO,_lHNLoose,_lHNTight,_leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_t
+   New: _HLT_Ele32_WPTight_Gsf_L1DoubleEG,_HLT_Ele32_WPTight_Gsf_L1DoubleEG_prescale,_lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
    Changed:
-      _2dIP                                              mean:   0.0652 -->   0.0671     rms:   0.4673 -->   0.4856    
-      _2dIPSig                                           mean:   2.3246 -->   1.8677     rms:   6.8191 -->   6.7516    
-      _3dIP                                              mean: -14.9455 --> -10.7530     rms: 121.1337 --> 103.0340    
-      _3dIPSig                                           mean:  71.2118 -->  26.3196     rms: 360.7772 --> 219.1779    
-      _absIso03                                          mean:   5.5179 -->   4.2651     rms:   8.6545 -->   8.6046    
-      _decayModeFindingNew                               mean:   0.1045 -->   0.6774     rms:   0.3059 -->   0.4675    
-      _dxy                                               mean: -14.8699 --> -10.7262     rms: 121.1384 --> 103.0348    
-      _dz                                                mean:   0.5145 -->  -0.0931     rms:   3.1473 -->   1.8866    
-      _lCharge                                           mean:   0.0448 -->  -0.0430     rms:   0.9990 -->   0.9991    
-      _lDisplaced                                        mean:  42.7060 -->  35.0625     rms: 365.5621 --> 333.8446    
-      _lE                                                mean:  77.3971 -->  80.4571     rms:  89.8338 -->  72.7491    
-      _lEta                                              mean:  -0.2089 -->  -0.0775     rms:   1.2914 -->   1.2212    
-      _lFlavor                                           mean:   0.3284 -->   1.3978     rms:   0.6554 -->   0.8937    
-      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.8507 -->   0.7366     rms:   0.3563 -->   0.4405    
-      _lPOGLoose                                         mean:   0.5672 -->   0.3065     rms:   0.4955 -->   0.4610    
-      _lPOGMedium                                        mean:   0.4478 -->   0.2581     rms:   0.4973 -->   0.4376    
-      _lPOGTight                                         mean:   0.3433 -->   0.1989     rms:   0.4748 -->   0.3992    
-      _lPOGVeto                                          mean:   0.6418 -->   0.3387     rms:   0.4795 -->   0.4733    
-      _lPhi                                              mean:   0.0380 -->  -0.0759     rms:   1.8348 -->   1.8326    
-      _lPt                                               mean:  36.3988 -->  42.2224     rms:  25.0928 -->  29.7032    
-      _nL                                                mean:   0.6700 -->   1.8600     rms:   0.8492 -->   1.5558    
-      _nTau                                              mean:   0.0700 -->   1.2600     rms:   0.2551 -->   1.1884    
-      _nVFit                                             mean:   0.1500 -->   0.3400     rms:   0.4330 -->   0.8969    
-      _tauAgainstElectronMVA6Raw                         mean:  -2.9364 --> -12.0515     rms:  16.8516 -->  32.6656    
-      _tauCombinedIsoDBRaw3Hits                          mean:   0.2757 -->  21.4153     rms:   1.1279 -->  71.9353    
-      _tauEleVeto                                        mean:   0.0448 -->   0.4194     rms:   0.2068 -->   0.4935    
-      _tauIsoMVADBdR03newDMwLT                           mean:   0.0599 -->  -0.1160     rms:   0.2431 -->   0.5928    
-      _tauIsoMVADBdR03oldDMwLT                           mean:  -0.0009 -->  -0.3880     rms:   0.1978 -->   0.6282    
-      _tauIsoMVAPWdR03oldDMwLT                           mean:   0.0402 -->  -0.2252     rms:   0.2492 -->   0.6469    
-      _tauIsoMVAPWnewDMwLT                               mean:   0.0451 -->  -0.1667     rms:   0.2335 -->   0.5873    
-      _tauIsoMVAPWoldDMwLT                               mean:   0.0246 -->  -0.3387     rms:   0.2207 -->   0.6140    
-      _tauLooseMvaNew                                    mean:   0.0746 -->   0.1720     rms:   0.2628 -->   0.3774    
-      _tauMediumMvaNew                                   mean:   0.0597 -->   0.1344     rms:   0.2369 -->   0.3411    
-      _tauMuonVeto                                       mean:   0.1045 -->   0.6613     rms:   0.3059 -->   0.4733    
-      _tauTightMvaNew                                    mean:   0.0597 -->   0.1129     rms:   0.2369 -->   0.3165    
-      _tauVLooseMvaNew                                   mean:   0.0896 -->   0.2581     rms:   0.2855 -->   0.4376    
-      _tauVTightMvaNew                                   mean:   0.0448 -->   0.1022     rms:   0.2068 -->   0.3028    
-      _tauVTightMvaOld                                   mean:   0.0000 -->   0.0484     rms:   0.0000 -->   0.2146    
-      _vertices                                          mean: 369.9252 --> 361.6259     rms: 4751.4541 --> 4975.3808  
+      _nGoodLeading                                      mean:   0.1900 -->   0.2500     rms:   0.5234 -->   0.5895    
+      _passTrigger_1l                                    mean:   0.1100 -->   0.1200     rms:   0.3129 -->   0.3250    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   New: _lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
+   Changed:
+      _nGoodLeading                                      mean:   0.1500 -->   0.2000     rms:   0.4093 -->   0.4899    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   New: _lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
    Changed:
-      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.5129 -->   0.5498     rms:   0.4998 -->   0.4975    
+      _closestJEC                                        mean:   1.0791 -->   1.0796     rms:   0.1764 -->   0.1772    
+      _closest_l1JetE                                    mean: 103.4829 --> 101.9655     rms: 104.1259 --> 102.9667    
+      _closest_l1JetPx                                   mean:  -3.9482 -->  -3.9178     rms:  35.3680 -->  34.9942    
+      _closest_l1JetPy                                   mean:  -5.3251 -->  -5.3229     rms:  48.7966 -->  48.4494    
+      _closest_l1JetPz                                   mean:  22.2146 -->  21.5555     rms: 131.6930 --> 129.9283    
+      _closest_lJetE                                     mean: 114.0291 --> 112.7495     rms: 113.7137 --> 113.3775    
+      _closest_lJetPx                                    mean:  -4.2244 -->  -4.1753     rms:  38.4425 -->  38.1774    
+      _closest_lJetPy                                    mean:  -5.8543 -->  -5.8862     rms:  52.5288 -->  52.1482    
+      _closest_lJetPz                                    mean:  25.2609 -->  24.6615     rms: 144.7778 --> 143.8232    
+      _closest_lepAwareJetE                              mean: 105.6148 --> 104.0356     rms: 105.4959 --> 104.4144    
+      _closest_lepAwareJetPx                             mean:  -4.0046 -->  -3.9691     rms:  35.9869 -->  35.6099    
+      _closest_lepAwareJetPy                             mean:  -5.3427 -->  -5.3393     rms:  49.2030 -->  48.8317    
+      _closest_lepAwareJetPz                             mean:  22.9638 -->  22.2744     rms: 133.9909 --> 132.2549    
+      _jetChargedEmFraction                              mean:   0.1416 -->   0.1477     rms:   0.2952 -->   0.3000    
+      _jetChargedHadronFraction                          mean:   0.2918 -->   0.2696     rms:   0.2675 -->   0.2630    
+      _jetCsvV2                                          mean:  -2.1412 -->  -2.4077     rms:   4.4244 -->   4.5641    
+      _jetDeepCsv_b                                      mean:  -0.3523 -->  -0.3646     rms:   0.5445 -->   0.5440    
+      _jetDeepCsv_bb                                     mean:  -0.4074 -->  -0.4166     rms:   0.4928 -->   0.4943    
+      _jetDeepCsv_c                                      mean:  -0.3329 -->  -0.3435     rms:   0.5567 -->   0.5582    
+      _jetDeepCsv_udsg                                   mean:   0.0484 -->   0.0353     rms:   0.8800 -->   0.8853    
+      _jetE                                              mean: 152.8018 --> 160.5150     rms: 153.4910 --> 169.4504    
+      _jetEta                                            mean:   0.0200 -->  -0.1003     rms:   1.8861 -->   1.8953    
+      _jetHFEmFraction                                   mean:   0.0099 -->   0.0105     rms:   0.0392 -->   0.0400    
+      _jetHFHadronFraction                               mean:   0.0606 -->   0.0784     rms:   0.2111 -->   0.2421    
+      _jetHadronFlavor                                   mean:   0.1436 -->   0.1383     rms:   0.7443 -->   0.7309    
+      _jetIsTight                                        mean:   0.9641 -->   0.9625     rms:   0.1861 -->   0.1899    
+      _jetIsTightLepVeto                                 mean:   0.7873 -->   0.7781     rms:   0.4092 -->   0.4155    
+      _jetNeutralEmFraction                              mean:   0.2719 -->   0.2776     rms:   0.2941 -->   0.2940    
+      _jetNeutralHadronFraction                          mean:   0.1888 -->   0.1951     rms:   0.2728 -->   0.2906    
+      _jetPhi                                            mean:  -0.0367 -->  -0.0331     rms:   1.8237 -->   1.8066    
+      _jetPt                                             mean:  45.0875 -->  45.7466     rms:  34.3435 -->  34.7861    
+      _jetPt_JECDown                                     mean:  42.8532 -->  43.4959     rms:  34.7968 -->  35.1910    
+      _jetPt_JECUp                                       mean:  47.3219 -->  47.9973     rms:  34.0838 -->  34.5876    
+      _jetPt_L1                                          mean:  39.7279 -->  40.3073     rms:  33.1576 -->  33.4435    
+      _jetPt_L2                                          mean:  45.0875 -->  45.7466     rms:  34.3435 -->  34.7861    
+      _jetPt_L3                                          mean:  45.0875 -->  45.7466     rms:  34.3435 -->  34.7861    
+      _jetPt_Uncorrected                                 mean:  42.9300 -->  44.0567     rms:  31.9427 -->  32.1734    
+      _jetSmearedPt                                      mean:  46.1101 -->  46.7674     rms:  34.5453 -->  35.0216    
+      _jetSmearedPt_JECDown                              mean:  42.8632 -->  43.5166     rms:  34.8026 -->  35.1938    
+      _jetSmearedPt_JECUp                                mean:  47.3119 -->  47.9766     rms:  34.0801 -->  34.5809    
+      _jetSmearedPt_JERDown                              mean:  45.6373 -->  46.3437     rms:  34.4498 -->  34.8604    
+      _jetSmearedPt_JERUp                                mean:  46.5171 -->  47.2184     rms:  34.7073 -->  35.1742    
+      _lIsPrompt                                         mean:   0.6052 -->   0.5941     rms:   0.4888 -->   0.4911    
+      _lIsPromptDecayed                                  mean:   0.1144 -->   0.1070     rms:   0.3183 -->   0.3091    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.5498 -->   0.5129     rms:   0.4975 -->   0.4998    
+      _lMatchEta                                         mean:   0.1023 -->   0.0834     rms:   1.2321 -->   1.0594    
+      _lMatchPdgId                                       mean:  10.9151 -->   1.6162     rms: 135.9843 -->  21.0164    
+      _lMatchPhi                                         mean:  -0.0209 -->  -0.0225     rms:   1.7695 -->   1.5022    
+      _lMatchPt                                          mean:  36.4795 -->  24.8077     rms:  35.6706 -->  32.7158    
+      _lMatchType                                        mean:   1.0111 -->   2.6162     rms:   1.7595 -->   2.8635    
+      _lMatchVertexX                                     mean:   0.0070 -->   0.0027     rms:   0.0749 -->   0.0770    
+      _lMatchVertexY                                     mean:   0.0378 -->   0.0283     rms:   0.0266 -->   0.0442    
+      _lMatchVertexZ                                     mean:  -0.1207 -->   0.0005     rms:   3.1831 -->   2.5743    
+      _lMomPdgId                                         mean:  49.0148 -->  11.4502     rms: 411.9498 -->  31.9317    
+      _lProvenance                                       mean:   2.2546 -->   7.3653     rms:   5.7041 -->   8.6913    
+      _lProvenanceCompressed                             mean:   0.6421 -->   1.5461     rms:   1.4506 -->   1.9355    
+      _lProvenanceConversion                             mean:  91.7343 -->  93.5314     rms:  25.7400 -->  22.5923    
+      _met                                               mean:  35.2760 -->  35.0949     rms:  22.4654 -->  22.2928    
+      _metJECDown                                        mean:  33.4805 -->  33.4084     rms:  21.8145 -->  21.8331    
+      _metJECUp                                          mean:  37.3299 -->  37.1272     rms:  23.2656 -->  23.1150    
+      _metPhi                                            mean:   0.0139 -->   0.0328     rms:   1.5469 -->   1.5492    
+      _metPhiJECDown                                     mean:   0.0219 -->  -0.0698     rms:   1.5247 -->   1.5326    
+      _metPhiJECUp                                       mean:  -0.0417 -->   0.0830     rms:   1.5529 -->   1.5539    
+      _metPhiUnclDown                                    mean:  -0.0917 -->  -0.0457     rms:   1.5304 -->   1.5474    
+      _metPhiUnclUp                                      mean:   0.0720 -->   0.0034     rms:   1.5519 -->   1.5590    
+      _metSignificance                                   mean:   2.7434 -->   2.6848     rms:   3.4424 -->   3.2220    
+      _metUnclDown                                       mean:  35.0929 -->  34.5587     rms:  22.3823 -->  22.7154    
+      _metUnclUp                                         mean:  36.2558 -->  36.3114     rms:  22.4998 -->  22.0087    
+      _nGoodLeading                                      mean:   0.6500 -->   0.7000     rms:   0.6982 -->   0.7141    
+      _nJets                                             mean:   3.6200 -->   3.4700     rms:   1.6111 -->   1.4796    
+      _ptRatio                                           mean:   0.8061 -->   0.8166     rms:   0.1869 -->   0.1882    
+      _ptRel                                             mean:   8.2638 -->   9.2290     rms:  10.1434 -->  11.0916    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _closestJEC,_closest_l1JetE,_closest_l1JetPx,_closest_l1JetPy,_closest_l1JetPz,_closest_lJetE,_closest_lJetPx,_closest_lJetPy,_closest_lJetPz,_closest_lepAwareJetE,_closest_lepAwareJetPx,_closest_lepAwareJetPy,_closest_lepAwareJetPz,_lDisplaced_os,_nVFit_os,_passTrigger_1l,_vertices_os
-   Removed: _Flag_globalSuperTightHalo2016Filter,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_HLT_Ele38_WPTight_Gsf,_HLT_Ele38_WPTight_Gsf_prescale,_HLT_Ele40_WPTight_Gsf,_HLT_Ele40_WPTight_Gsf_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1_prescale,_HLT_IsoMu24_eta2p1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1_prescale,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1_prescale,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1_prescale,_HLT_IsoMu24_eta2p1_prescale,_HLT_IsoMu30,_HLT_IsoMu30_prescale,_HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr,_HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_prescale,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale,_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8,_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu55,_HLT_Mu55_prescale,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ_prescale,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ,_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_prescale,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_TripleMu_10_5_5_DZ,_HLT_TripleMu_10_5_5_DZ_prescale,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_prescale,_TripleMu_12_10_5,_lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ,_lEwkFO,_lEwkLoose,_lEwkTight,_lHNFO,_lHNLoose,_lHNTight,_leptonMvaSUSY16,_leptonMvaSUSY17,_leptonMvaTTH16,_leptonMvaTTH17,_leptonMvatZqTTV16,_leptonMvatZqTTV17,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_t
+   New: _HLT_Ele32_WPTight_Gsf_L1DoubleEG,_HLT_Ele32_WPTight_Gsf_L1DoubleEG_prescale,_lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
    Changed:
-      _2dIP                                              mean:   0.0101 -->   0.0043     rms:   0.0705 -->   0.0080    
-      _2dIPSig                                           mean:   1.6246 -->   1.1568     rms:   5.1837 -->   1.7764    
-      _3dIP                                              mean:  -0.0927 --> -17.7115     rms:   1.2951 --> 131.7224    
-      _3dIPSig                                           mean: 100.9249 -->  45.8471     rms: 410.0572 --> 282.5174    
-      _absIso03                                          mean:   1.3102 -->   0.6966     rms:   2.2521 -->   1.6827    
-      _absIso04                                          mean:   2.3657 -->   2.3263     rms:   3.0267 -->   3.0356    
-      _closestJetCsvV2                                   mean:  -1.6569 -->  -1.6781     rms:   3.9481 -->   3.9614    
-      _closestJetDeepCsv_b                               mean:  -0.2230 -->  -0.2155     rms:   0.4761 -->   0.4722    
-      _closestJetDeepCsv_bb                              mean:  -0.2684 -->  -0.2613     rms:   0.4440 -->   0.4403    
-      _decayModeFindingNew                               mean:   0.0000 -->   0.5442     rms:   0.0000 -->   0.4980    
-      _dxy                                               mean:   0.0067 --> -17.6809     rms:   0.0709 --> 131.7237    
-      _dz                                                mean:  -0.1171 -->  -0.0808     rms:   1.6186 -->   1.1101    
-      _ecalIso                                           mean:   2.1946 -->   2.1552     rms:   1.9173 -->   1.8842    
-      _gen_lCharge                                       mean:   0.0000 -->  -0.0021     rms:   0.0000 -->   1.0000    
-      _gen_lE                                            mean:   0.0000 --> 119.7990     rms:   0.0000 --> 288.9037    
-      _gen_lEta                                          mean:   0.0000 -->   0.4350     rms:   0.0000 -->   2.8746    
-      _gen_lFlavor                                       mean:   0.0000 -->   0.5243     rms:   0.0000 -->   0.7611    
-      _gen_lIsPrompt                                     mean:   0.0000 -->   0.4905     rms:   0.0000 -->   0.4999    
-      _gen_lMinDeltaR                                    mean:   0.0000 -->   3.2259     rms:   0.0000 -->   2.6665    
-      _gen_lMomPdg                                       mean:   0.0000 --> 705.5962     rms:   0.0000 --> 1056.5494   
-      _gen_lPassParentage                                mean:   0.0000 -->   0.8879     rms:   0.0000 -->   0.3154    
-      _gen_lPhi                                          mean:   0.0000 -->   0.0743     rms:   0.0000 -->   1.8321    
-      _gen_lPt                                           mean:   0.0000 -->  16.9477     rms:   0.0000 -->  23.3485    
-      _gen_nL                                            mean:   0.0000 -->   4.7300     rms:   0.0000 -->   2.3616    
-      _gen_pdgID                                         mean:   0.0000 -->   0.0317     rms:   0.0000 -->  12.1444    
-      _gen_vertex_x                                      mean:   0.0000 -->  -0.0237     rms:   0.0000 -->   0.0563    
-      _gen_vertex_y                                      mean:   0.0000 -->   0.0673     rms:   0.0000 -->   0.0479    
-      _gen_vertex_z                                      mean:   0.0000 -->   0.8607     rms:   0.0000 -->   3.5216    
-      _hcalIso                                           mean:   1.9461 -->   1.9650     rms:   2.0226 -->   2.0232    
-      _lCQChi2Position                                   mean:  39.8978 -->  40.5519     rms: 301.6769 --> 304.0960    
-      _lCQTrackKink                                      mean:   6.6972 -->   6.7186     rms:   4.0180 -->   4.0473    
-      _lCharge                                           mean:   0.0000 -->   0.0531     rms:   1.0000 -->   0.9986    
-      _lDisplaced                                        mean: 578.7142 --> 578.6109     rms: 14408.0749 --> 14408.0788
-      _lE                                                mean:  79.2882 -->  82.2532     rms:  75.7593 -->  70.6549    
-      _lECorr                                            mean:  24.4855 -->  24.7233     rms:  39.9353 -->  40.0554    
-      _lEResDown                                         mean:  24.4876 -->  24.7253     rms:  39.9400 -->  40.0601    
-      _lEResUp                                           mean:  24.4839 -->  24.7216     rms:  39.9310 -->  40.0511    
-      _lEScaleDown                                       mean:  24.4374 -->  24.6747     rms:  39.7988 -->  39.9182    
-      _lEScaleUp                                         mean:  24.5058 -->  24.7437     rms:  39.9726 -->  40.0928    
-      _lEleDEtaInSeed                                    mean:  -0.5956 -->  -0.5917     rms:   0.4913 -->   0.4921    
-      _lEleDeltaPhiSuperClusterTrackAtVtx                mean:  -0.5913 -->  -0.5873     rms:   0.4968 -->   0.4975    
-      _lEleEcalEnergy                                    mean:  23.7906 -->  24.0313     rms:  40.5659 -->  40.6884    
-      _lEleInvMinusPInv                                  mean:  -0.5927 -->  -0.5888     rms:   0.4951 -->   0.4958    
-      _lEleIsEB                                          mean:   0.3269 -->   0.3301     rms:   0.4691 -->   0.4702    
-      _lEleIsEE                                          mean:   0.0769 -->   0.0777     rms:   0.2665 -->   0.2677    
-      _lEleSuperClusterOverP                             mean:  -0.1123 -->  -0.1037     rms:   1.1632 -->   1.1655    
-      _lElectronChargeConst                              mean:   0.3558 -->   0.3592     rms:   0.4787 -->   0.4798    
-      _lElectronMissingHits                              mean:   0.0481 -->   0.0485     rms:   0.2549 -->   0.2561    
-      _lElectronPassConvVeto                             mean:   0.4038 -->   0.4078     rms:   0.4907 -->   0.4914    
-      _lElectronPassEmu                                  mean:   0.2981 -->   0.3010     rms:   0.4574 -->   0.4587    
-      _lElefull5x5SigmaIetaIeta                          mean:  -0.5914 -->  -0.5874     rms:   0.4965 -->   0.4972    
-      _lElehadronicOverEm                                mean:  -0.5872 -->  -0.5832     rms:   0.5021 -->   0.5028    
-      _lEta                                              mean:  -0.0958 -->  -0.0636     rms:   1.3493 -->   1.3355    
-      _lEtaSC                                            mean:  -0.0528 -->  -0.0533     rms:   0.7292 -->   0.7327    
-      _lFlavor                                           mean:   0.5962 -->   1.3584     rms:   0.4907 -->   0.7756    
-      _lGlobalMuon                                       mean:   0.9839 -->   1.0000     rms:   0.1260 -->   0.0000    
-      _lGlobalTrackNormalizeChi2                         mean:  18.8078 -->  19.1325     rms: 139.1273 --> 140.2398    
-      _lHasTrigger                                       mean:   0.4327 -->   0.0000     rms:   0.4954 -->   0.0000    
-      _lInnerTrackValidFraction                          mean:   0.9856 -->   0.9880     rms:   0.0289 -->   0.0225    
-      _lIsPrompt                                         mean:   0.9231 -->   0.5398     rms:   0.2665 -->   0.4984    
-      _lIsPromptDecayed                                  mean:   0.0096 -->   0.1283     rms:   0.0976 -->   0.3344    
-      _lIsPromptFinalState                               mean:   0.7981 -->   0.3761     rms:   0.4014 -->   0.4844    
-      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.4038 -->   0.2876     rms:   0.4907 -->   0.4526    
-      _lMatchEta                                         mean:  -0.0480 -->  -0.0392     rms:   1.3167 -->   1.2769    
-      _lMatchPdgId                                       mean:  21.1154 -->  23.4381     rms: 216.2090 --> 208.8826    
-      _lMatchPhi                                         mean:   0.2418 -->   0.0808     rms:   1.7740 -->   1.6517    
-      _lMatchPt                                          mean:  35.1655 -->  32.5927     rms:  21.5464 -->  23.3323    
-      _lMatchType                                        mean:   0.2115 -->   1.1106     rms:   1.0160 -->   1.9305    
-      _lMatchVertexX                                     mean:  -0.0303 -->  -0.0246     rms:   0.0886 -->   0.0609    
-      _lMatchVertexY                                     mean:   0.0638 -->   0.0585     rms:   0.0877 -->   0.0633    
-      _lMatchVertexZ                                     mean:   0.6376 -->   0.7059     rms:   3.5519 -->   3.3246    
-      _lMomPdgId                                         mean:  13.8846 --> 142.9248     rms:  52.7318 --> 513.2085    
-      _lMuRPCTime                                        mean:   0.4032 -->   0.4098     rms:   3.1493 -->   3.1746    
-      _lMuRPCTimenDof                                    mean:   2.6935 -->   2.7377     rms:   2.0208 -->   2.0074    
-      _lMuTime                                           mean:  -0.2832 -->  -0.2712     rms:   3.3418 -->   3.3677    
-      _lMuTimeErr                                        mean:   1.1199 -->   1.1231     rms:   0.4864 -->   0.4897    
-      _lMuTimenDof                                       mean:  30.7742 -->  31.1639     rms:  14.0935 -->  13.8732    
-      _lMuonSegComp                                      mean:   0.9136 -->   0.9122     rms:   0.1511 -->   0.1519    
-      _lMuonTrackPt                                      mean:  35.6715 -->  36.1942     rms:  22.2798 -->  22.0813    
-      _lMuonTrackPtErr                                   mean:   0.7324 -->   0.7438     rms:   0.7978 -->   0.7993    
-      _lNumberOfMatchedStation                           mean:   3.4677 -->   3.5082     rms:   0.7975 -->   0.7383    
-      _lNumberOfValidPixelHits                           mean:   4.3226 -->   4.3770     rms:   1.4343 -->   1.3809    
-      _lPOGLoose                                         mean:   0.9135 -->   0.7124     rms:   0.2812 -->   0.4526    
-      _lPOGMedium                                        mean:   0.8750 -->   0.6327     rms:   0.3307 -->   0.4821    
-      _lPOGTight                                         mean:   0.7788 -->   0.5531     rms:   0.4150 -->   0.4972    
-      _lPOGVeto                                          mean:   0.9615 -->   0.7876     rms:   0.1923 -->   0.4090    
-      _lPhi                                              mean:   0.1874 -->   0.0984     rms:   1.8215 -->   1.7915    
-      _lProvenance                                       mean:   0.7404 -->   2.8451     rms:   3.0915 -->   6.2378    
-      _lProvenanceCompressed                             mean:   0.1635 -->   1.0531     rms:   0.7735 -->   1.7389    
-      _lProvenanceConversion                             mean:  99.0000 -->  98.5664     rms:   0.0000 -->   6.5044    
-      _lPt                                               mean:  34.9117 -->  37.2522     rms:  21.0060 -->  19.5553    
-      _lPtCorr                                           mean:  13.6610 -->  13.7937     rms:  20.5130 -->  20.5679    
-      _lPtResDown                                        mean:  13.6616 -->  13.7942     rms:  20.5137 -->  20.5686    
-      _lPtResUp                                          mean:  13.6607 -->  13.7933     rms:  20.5123 -->  20.5672    
-      _lPtScaleDown                                      mean:  13.6444 -->  13.7768     rms:  20.4915 -->  20.5464    
-      _lPtScaleUp                                        mean:  13.6717 -->  13.8045     rms:  20.5309 -->  20.5858    
-      _lSimExtType                                       mean:   9.0323 -->   9.1803     rms:   2.7058 -->   2.4662    
-      _lSimFlavour                                       mean:  12.0806 -->  12.2787     rms:   3.7858 -->   3.4836    
-      _lSimType                                          mean:   3.5323 -->   3.5902     rms:   1.1030 -->   1.0143    
-      _lTrackerLayersWithMeasurement                     mean:  13.3387 -->  13.3770     rms:   1.7775 -->   1.7664    
-      _lTrackerMuon                                      mean:   0.9839 -->   0.9836     rms:   0.1260 -->   0.1270    
-      _miniIso                                           mean:   0.0329 -->   0.0333     rms:   0.1141 -->   0.1146    
-      _miniIsoCharged                                    mean:   0.0114 -->   0.0116     rms:   0.0520 -->   0.0522    
-      _muNumberInnerHits                                 mean:  26.1935 -->  26.6230     rms:  10.8848 -->  10.4398    
-      _nL                                                mean:   1.0400 -->   2.2600     rms:   0.8823 -->   1.6948    
-      _nLight                                            mean:   1.0400 -->   1.0300     rms:   0.8823 -->   0.8655    
-      _nMu                                               mean:   0.6200 -->   0.6100     rms:   0.8459 -->   0.8233    
-      _nTau                                              mean:   0.0000 -->   1.2300     rms:   0.0000 -->   1.0569    
-      _nVFit                                             mean:   0.3800 -->   0.7600     rms:   0.5250 -->   1.0781    
-      _ptRatio                                           mean:   0.8663 -->   0.8724     rms:   0.1278 -->   0.1125    
-      _ptRel                                             mean:   6.6024 -->   6.6562     rms:   5.5221 -->   5.5216    
-      _puCorr                                            mean:   1.9005 -->   1.9054     rms:   1.6501 -->   1.6573    
-      _relIso                                            mean:   0.0713 -->   0.0570     rms:   0.2075 -->   0.1488    
-      _relIso0p4                                         mean:   0.1128 -->   0.1017     rms:   0.2586 -->   0.2337    
-      _relIso0p4MuDeltaBeta                              mean:   0.0812 -->   0.0825     rms:   0.2109 -->   0.2124    
-      _selectedTrackMult                                 mean:   1.1250 -->   1.1359     rms:   0.6605 -->   0.6543    
-      _sumChargedHadronPt03                              mean:   0.5314 -->   0.5365     rms:   1.1811 -->   1.1857    
-      _sumChargedHadronPt04                              mean:   0.9171 -->   0.9321     rms:   1.7667 -->   1.7771    
-      _sumNeutralHadronEt03                              mean:   0.9144 -->   0.9233     rms:   1.7605 -->   1.7667    
-      _sumNeutralHadronEt04                              mean:   1.2601 -->   1.2807     rms:   2.0623 -->   2.0727    
-      _sumPhotonEt03                                     mean:   0.9270 -->   0.8657     rms:   1.2061 -->   1.0381    
-      _sumPhotonEt04                                     mean:   1.4551 -->   1.3602     rms:   1.9173 -->   1.7826    
-      _tauAgainstElectronMVA6Raw                         mean:   0.0000 -->  -3.9889     rms:   0.0000 -->  19.3573    
-      _tauCombinedIsoDBRaw3Hits                          mean:   0.0000 -->   2.4034     rms:   0.0000 -->   6.4682    
-      _tauEleVeto                                        mean:   0.0000 -->   0.3142     rms:   0.0000 -->   0.4642    
-      _tauIsoMVADBdR03newDMwLT                           mean:   0.0000 -->   0.2474     rms:   0.0000 -->   0.5637    
-      _tauIsoMVADBdR03oldDMwLT                           mean:   0.0000 -->   0.1011     rms:   0.0000 -->   0.5974    
-      _tauIsoMVAPWdR03oldDMwLT                           mean:   0.0000 -->   0.1878     rms:   0.0000 -->   0.6199    
-      _tauIsoMVAPWnewDMwLT                               mean:   0.0000 -->   0.2283     rms:   0.0000 -->   0.5696    
-      _tauIsoMVAPWoldDMwLT                               mean:   0.0000 -->   0.0884     rms:   0.0000 -->   0.6014    
-      _tauLooseMvaNew                                    mean:   0.0000 -->   0.3451     rms:   0.0000 -->   0.4754    
-      _tauMediumMvaNew                                   mean:   0.0000 -->   0.3186     rms:   0.0000 -->   0.4659    
-      _tauMuonVeto                                       mean:   0.0000 -->   0.3496     rms:   0.0000 -->   0.4768    
-      _tauTightMvaNew                                    mean:   0.0000 -->   0.2920     rms:   0.0000 -->   0.4547    
-      _tauVLooseMvaNew                                   mean:   0.0000 -->   0.4115     rms:   0.0000 -->   0.4921    
-      _tauVTightMvaNew                                   mean:   0.0000 -->   0.2566     rms:   0.0000 -->   0.4368    
-      _tauVTightMvaOld                                   mean:   0.0000 -->   0.1460     rms:   0.0000 -->   0.3531    
-      _trackIso                                          mean:   0.7936 -->   0.7661     rms:   1.7450 -->   1.7308    
-      _vertices                                          mean:  66.6731 -->  25.2482     rms: 1143.0522 --> 208.6848   
+      _lIsPrompt                                         mean:   0.5398 -->   0.5310     rms:   0.4984 -->   0.4990    
+      _lIsPromptDecayed                                  mean:   0.1283 -->   0.0973     rms:   0.3344 -->   0.2964    
+      _lIsPromptFinalState                               mean:   0.3761 -->   0.3717     rms:   0.4844 -->   0.4833    
+      _lMatchEta                                         mean:  -0.0392 -->  -0.0327     rms:   1.2769 -->   1.0485    
+      _lMatchPdgId                                       mean:  23.4381 -->  -5.1814     rms: 208.8826 -->  36.2414    
+      _lMatchPhi                                         mean:   0.0808 -->   0.0933     rms:   1.6517 -->   1.3696    
+      _lMatchPt                                          mean:  32.5927 -->  20.6164     rms:  23.3323 -->  23.3486    
+      _lMatchType                                        mean:   1.1106 -->   2.7434     rms:   1.9305 -->   2.9397    
+      _lMatchVertexX                                     mean:  -0.0246 -->  -0.0182     rms:   0.0609 -->   0.0660    
+      _lMatchVertexY                                     mean:   0.0585 -->   0.0392     rms:   0.0633 -->   0.0735    
+      _lMatchVertexZ                                     mean:   0.7059 -->   0.4916     rms:   3.3246 -->   2.6199    
+      _lMomPdgId                                         mean: 142.9248 -->  13.3407     rms: 513.2085 -->  54.3616    
+      _lProvenance                                       mean:   2.8451 -->   8.4336     rms:   6.2378 -->   8.7233    
+      _lProvenanceCompressed                             mean:   1.0531 -->   1.7965     rms:   1.7389 -->   1.9582    
+      _lProvenanceConversion                             mean:  98.5664 -->  97.2655     rms:   6.5044 -->  12.9225    
+      _nGoodLeading                                      mean:   0.6000 -->   0.6500     rms:   0.7746 -->   0.8170    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _lElectronMvaFall17Iso,_lElectronMvaFall17NoIso,_lElectronMvaFall17v1NoIso,_lElectronSummer16MvaGP,_lElectronSummer16MvaHZZ
+   Changed:
+      _lIsPrompt                                         mean:   0.4796 -->   0.4758     rms:   0.4996 -->   0.4994    
+      _lIsPromptDecayed                                  mean:   0.0074 -->   0.0000     rms:   0.0859 -->   0.0000    
+      _lIsPromptFinalState                               mean:   0.4833 -->   0.4758     rms:   0.4997 -->   0.4994    
+      _lMatchEta                                         mean:  -0.0532 -->  -0.0359     rms:   1.3097 -->   1.0307    
+      _lMatchPdgId                                       mean:  20.2268 -->   0.3755     rms: 194.7134 -->  21.6887    
+      _lMatchPhi                                         mean:  -0.0975 -->  -0.0761     rms:   1.7333 -->   1.3022    
+      _lMatchPt                                          mean:  45.1781 -->  23.7217     rms:  27.8304 -->  29.2471    
+      _lMatchType                                        mean:   0.9442 -->   3.0818     rms:   1.6179 -->   2.9846    
+      _lMatchVertexX                                     mean:   0.0959 -->   0.0515     rms:   0.0294 -->   0.0531    
+      _lMatchVertexY                                     mean:   0.1542 -->   0.0836     rms:   0.0472 -->   0.0841    
+      _lMatchVertexZ                                     mean:  -0.7177 -->  -0.3319     rms:   4.5755 -->   3.4317    
+      _lMomPdgId                                         mean:  71.5390 -->   7.0409     rms: 352.9310 -->  50.6624    
+      _lProvenance                                       mean:   1.9591 -->   9.3457     rms:   5.4720 -->   8.9291    
+      _lProvenanceCompressed                             mean:   0.7138 -->   2.0595     rms:   1.5021 -->   1.9804    
+      _lProvenanceConversion                             mean:  98.6357 -->  97.9182     rms:   5.9640 -->  10.1864    
