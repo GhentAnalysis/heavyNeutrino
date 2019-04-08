@@ -7,8 +7,9 @@
 #include "heavyNeutrino/multilep/interface/ParticleLevelAnalyzer.h"
 
 /*
- * Storing plerator particles
- */
+Class storing data for unfolding to particle-level in differential measurement
+Saving the products created by https://twiki.cern.ch/twiki/bin/viewauth/CMS/ParticleLevelProducer
+*/
 
 ParticleLevelAnalyzer::ParticleLevelAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer){};
@@ -38,13 +39,13 @@ void ParticleLevelAnalyzer::beginJob(TTree* outputTree){
 }
 
 bool ParticleLevelAnalyzer::analyze(const edm::Event& iEvent){
-    edm::Handle<std::vector<reco::GenParticle>> photons; iEvent.getByToken(multilepAnalyzer->particleLevelPhotonsToken, photons);
-    edm::Handle<std::vector<reco::GenJet>> leptons;      iEvent.getByToken(multilepAnalyzer->particleLevelLeptonsToken, leptons);
-    edm::Handle<std::vector<reco::GenJet>> jets;         iEvent.getByToken(multilepAnalyzer->particleLevelJetsToken, jets);
-    edm::Handle<std::vector<reco::MET>> mets;            iEvent.getByToken(multilepAnalyzer->particleLevelMetsToken, mets);
+    edm::Handle<std::vector<reco::GenParticle>> photons = getHandle(iEvent, multilepAnalyzer->particleLevelPhotonsToken);
+    edm::Handle<std::vector<reco::GenJet>> leptons      = getHandle(iEvent, multilepAnalyzer->particleLevelLeptonsToken);
+    edm::Handle<std::vector<reco::GenJet>> jets         = getHandle(iEvent, multilepAnalyzer->particleLevelJetsToken);
+    edm::Handle<std::vector<reco::MET>> mets            = getHandle(iEvent, multilepAnalyzer->particleLevelMetsToken);
 
-    _pl_met    = mets->at(0).pt();
-    _pl_metPhi = mets->at(0).phi();
+    _pl_met    = mets->front().pt();
+    _pl_metPhi = mets->front().phi();
 
     _pl_nPh = 0;
     for(const reco::GenParticle& p : *photons){

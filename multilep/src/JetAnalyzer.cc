@@ -66,15 +66,15 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
     outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
 
-    if(!multilepAnalyzer->is2018) outputTree->Branch("_jetIsLoose", _jetIsLoose, "_jetIsLoose[_nJets]/O"); // WARNING, not recommended to be used, only exists for 2016
+    if(!multilepAnalyzer->is2018() ) outputTree->Branch("_jetIsLoose", _jetIsLoose, "_jetIsLoose[_nJets]/O"); // WARNING, not recommended to be used, only exists for 2016
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
-    edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
-    edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
-    edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
-    edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
-    edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken,            mets);
+    edm::Handle<std::vector<pat::Jet>> jets            = getHandle(iEvent, multilepAnalyzer->jetToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmeared     = getHandle(iEvent, multilepAnalyzer->jetSmearedToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmearedUp   = getHandle(iEvent, multilepAnalyzer->jetSmearedUpToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmearedDown = getHandle(iEvent, multilepAnalyzer->jetSmearedDownToken);
+    edm::Handle<std::vector<pat::MET>> mets            = getHandle(iEvent, multilepAnalyzer->metToken);
 
     _nJets = 0;
 
@@ -82,9 +82,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     for(const auto& jet : *jets){
         if(_nJets == nJets_max) break;
 
-        _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
-        _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
-        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017, multilepAnalyzer->is2018);
+        _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017() || multilepAnalyzer->is2018() );
+        _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
+        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
 
         //find smeared equivalents of nominal jet
         auto jetSmearedIt = jetsSmeared->begin();
@@ -125,7 +125,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         std::vector<double> ptVector = {_jetPt[_nJets], _jetPt_JECDown[_nJets], _jetPt_JECUp[_nJets],
             _jetSmearedPt[_nJets], _jetSmearedPt_JECDown[_nJets], _jetSmearedPt_JECUp[_nJets], _jetSmearedPt_JERDown[_nJets],  _jetSmearedPt_JERUp[_nJets]};
         double maxpT = *(std::max_element(ptVector.cbegin(), ptVector.cend()));
-        if(maxpT <= 25) continue;
+        if(maxpT <= 20) continue;
 
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
@@ -138,6 +138,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+
         //new DeepFlavour tagger
         _jetDeepCsv_udsg[_nJets]          = jet.bDiscriminator("pfDeepCSVJetTags:probudsg");
         _jetDeepCsv_b[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probb");

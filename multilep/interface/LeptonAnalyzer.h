@@ -37,52 +37,58 @@ class LeptonAnalyzer {
     EffectiveAreas electronsEffectiveAreas;
     EffectiveAreas muonsEffectiveAreas;
 
+    //maximum number of leptons to be stored 
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
-    unsigned _nL;                                                                                    //number of leptons
+
+    //number of leptons of each type in the event
+    unsigned _nL;
     unsigned _nMu;
     unsigned _nEle;
     unsigned _nLight;
     unsigned _nTau;
 
-    double _lPt[nL_max];                                                                             //lepton kinematics
+    //lepton kinematics and systematic variations
+    double _lPt[nL_max];
     double _lPtCorr[nL_max];
     double _lPtScaleUp[nL_max];
     double _lPtScaleDown[nL_max];
     double _lPtResUp[nL_max];
     double _lPtResDown[nL_max];
     double _lEta[nL_max];
-    double _lEtaSC[nL_max];
     double _lPhi[nL_max];
     double _lE[nL_max];
     double _lECorr[nL_max];
-    double _lEScaleUp[nL_max];
-    double _lEScaleDown[nL_max];
-    double _lEResUp[nL_max];
-    double _lEResDown[nL_max];
+    double _lEScaleUp[nL_max]; //probably useless? I guess ECorr/E = pTCorr/pT (same for up- down variations)
+    double _lEScaleDown[nL_max]; //probably useless? I guess ECorr/E = pTCorr/pT (same for up- down variations)
+    double _lEResUp[nL_max]; //probably useless? I guess ECorr/E = pTCorr/pT (same for up- down variations)
+    double _lEResDown[nL_max]; //probably useless? I guess ECorr/E = pTCorr/pT (same for up- down variations)
 
-    unsigned _lFlavor[nL_max];                                                                       //lepton flavor and charge
+    //lepton flavor and charge 
+    unsigned _lFlavor[nL_max];
     int _lCharge[nL_max];
 
-    double _relIso[nL_max];                                                                          //lepton isolation variables
-    double _relIso0p4[nL_max];                                                                       //lepton isolation variables
-    double _relIsoOld[nL_max];                                                                       //lepton isolation variables, not stored
-    double _relIso0p4Old[nL_max];                                                                    //lepton isolation variables, not stored
-    double _relIso0p4MuDeltaBeta[nL_max];                                                            //lepton isolation variables
+    //lepton isolation
+    double _relIso[nL_max];
+    double _relIso0p4[nL_max];
+    double _relIso0p4MuDeltaBeta[nL_max];
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];
 
-    double _ptRel[nL_max];                                                                           //variables related to closest jet
+    //variables based on closest jet to lepton (typically containing lepton)
+    double _ptRel[nL_max];
     double _ptRatio[nL_max];
     double _closestJetCsvV2[nL_max];
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
     unsigned _selectedTrackMult[nL_max];
 
-    double _dxy[nL_max];                                                                             //pointing variables
+    //pointing variables
+    double _dxy[nL_max];
     double _dz[nL_max];
     double _3dIP[nL_max];
     double _3dIPSig[nL_max];
 
+    //electron properties 
     float _lElectronMvaSummer16GP[nL_max];                                                           // OLD
     float _lElectronMvaSummer16HZZ[nL_max];                                                          // OLD
     float _lElectronMvaFall17v1NoIso[nL_max];                                                        // OLD
@@ -92,8 +98,10 @@ class LeptonAnalyzer {
     bool _lElectronPassConvVeto[nL_max];
     bool _lElectronChargeConst[nL_max];
     unsigned _lElectronMissingHits[nL_max];
+    double _lEtaSC[nL_max];
 
-    double _lMuonSegComp[nL_max];                                                                     //muon speficic variables
+    //muon properties
+    double _lMuonSegComp[nL_max];
     double _lMuonTrackPt[nL_max];
     double _lMuonTrackPtErr[nL_max];
 
@@ -139,25 +147,24 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
 
-    double _leptonMvaSUSY16[nL_max];                                                                       //lepton MVA used in ewkino analysis
-    double _leptonMvaTTH16[nL_max];
-    double _leptonMvaSUSY17[nL_max];                                                                       //lepton MVA used in ewkino analysis
-    double _leptonMvaTTH17[nL_max];
-    double _leptonMvatZqTTV16[nL_max];
-    double _leptonMvatZqTTV17[nL_max];
+    //lepton MVA definitions for SUSY (ewkino), TTH and tZq 
+    double _leptonMvaSUSY[nL_max];
+    double _leptonMvaTTH[nL_max];
+    double _leptonMvatZq[nL_max];
 
-    bool _lHNLoose[nL_max];                                                                          //analysis specific lepton selection decisions
-    bool _lHNFO[nL_max];
-    bool _lHNTight[nL_max];
+    //analysis specific lepton selection (please do NOT delete for now, will be deleted when analysis code is updated 
     bool _lEwkLoose[nL_max];
     bool _lEwkFO[nL_max];
     bool _lEwkTight[nL_max];
+
+    //official POG selection definitions
     bool _lPOGVeto[nL_max];
     bool _lPOGLoose[nL_max];
     bool _lPOGMedium[nL_max];
     bool _lPOGTight[nL_max];
 
-    bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
+    //MC truth information from matching 
+    bool _lIsPrompt[nL_max];
     int _lMatchPdgId[nL_max];
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];
@@ -192,13 +199,7 @@ class LeptonAnalyzer {
     bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double) const;
     bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue) const;
 
-    bool  isHNLoose(const pat::Electron& lepton) const;                                                     //check HNL id definitions
-    bool  isHNLoose(const pat::Muon& lepton) const;
-    bool  isHNFO(const pat::Electron& lepton) const;
-    bool  isHNFO(const pat::Muon& lepton) const;
-    bool  isHNTight(const pat::Electron& lepton) const;
-    bool  isHNTight(const pat::Muon& lepton) const;
-
+    //analysis specific lepton selection (please do NOT delete for now, will be deleted when analysis code is updated 
     bool isEwkLoose(const pat::Muon&) const;
     bool isEwkLoose(const pat::Electron&) const;
     bool isEwkLoose(const pat::Tau&) const;
@@ -209,16 +210,14 @@ class LeptonAnalyzer {
     bool isEwkTight(const pat::Electron&) const;
     bool isEwkTight(const pat::Tau&) const;
 
-    double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);                                                            //compute ewkino lepton MVA
+    //compute lepton MVA value 
+    double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);
     double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
 
     //for lepton MVA calculation
-    LeptonMvaHelper* leptonMvaComputerSUSY16;
-    LeptonMvaHelper* leptonMvaComputerTTH16;
-    LeptonMvaHelper* leptonMvaComputerSUSY17;
-    LeptonMvaHelper* leptonMvaComputerTTH17;
-    LeptonMvaHelper* leptonMvaComputertZqTTV16;
-    LeptonMvaHelper* leptonMvaComputertZqTTV17;
+    LeptonMvaHelper* leptonMvaComputerSUSY;
+    LeptonMvaHelper* leptonMvaComputerTTH;
+    LeptonMvaHelper* leptonMvaComputertZq;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

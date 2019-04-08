@@ -1,5 +1,10 @@
 #ifndef PARTICLE_LEVEL_ANALYZER_H
 #define PARTICLE_LEVEL_ANALYZER_H
+
+/*
+Class storing data for unfolding to particle-level in differential measurement
+*/
+
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/Event.h"
 

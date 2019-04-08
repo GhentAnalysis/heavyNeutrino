@@ -10,23 +10,17 @@
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer),
     electronsEffectiveAreas(iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas").fullPath()),
-    muonsEffectiveAreas    ((multilepAnalyzer->is2017 || multilepAnalyzer->is2018)? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
+    muonsEffectiveAreas    ((multilepAnalyzer->is2017() || multilepAnalyzer->is2018() )? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
-    leptonMvaComputerSUSY16   = new LeptonMvaHelper(iConfig, 0, false); // SUSY         // TODO: all of these really needed? could use some clean-up
-    leptonMvaComputerTTH16    = new LeptonMvaHelper(iConfig, 1, false); // TTH
-    leptonMvaComputerSUSY17   = new LeptonMvaHelper(iConfig, 0, true);  // SUSY
-    leptonMvaComputerTTH17    = new LeptonMvaHelper(iConfig, 1, true);  // TTH
-    leptonMvaComputertZqTTV16 = new LeptonMvaHelper(iConfig, 2, false); // tZq/TTV
-    leptonMvaComputertZqTTV17 = new LeptonMvaHelper(iConfig, 2, true);  // tZq/TTV
+    leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig, 0, !multilepAnalyzer->is2016() ); // SUSY 
+    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, 1, !multilepAnalyzer->is2016() );
+    leptonMvaComputertZq = new LeptonMvaHelper(iConfig, 2, !multilepAnalyzer->is2016() );
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
-    delete leptonMvaComputerSUSY16;
-    delete leptonMvaComputerTTH16;
-    delete leptonMvaComputertZqTTV16;
-    delete leptonMvaComputerSUSY17;
-    delete leptonMvaComputerTTH17;
-    delete leptonMvaComputertZqTTV17;
+    delete leptonMvaComputerSUSY;
+    delete leptonMvaComputerTTH;
+    delete leptonMvaComputertZq;
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
@@ -55,15 +49,9 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElectronPassConvVeto",        &_lElectronPassConvVeto,        "_lElectronPassConvVeto[_nLight]/O");
     outputTree->Branch("_lElectronChargeConst",         &_lElectronChargeConst,         "_lElectronChargeConst[_nLight]/O");
     outputTree->Branch("_lElectronMissingHits",         &_lElectronMissingHits,         "_lElectronMissingHits[_nLight]/i");
-    outputTree->Branch("_leptonMvaSUSY16",              &_leptonMvaSUSY16,              "_leptonMvaSUSY16[_nLight]/D");
-    outputTree->Branch("_leptonMvaTTH16",               &_leptonMvaTTH16,               "_leptonMvaTTH16[_nLight]/D");
-    outputTree->Branch("_leptonMvaSUSY17",              &_leptonMvaSUSY17,              "_leptonMvaSUSY17[_nLight]/D");
-    outputTree->Branch("_leptonMvaTTH17",               &_leptonMvaTTH17,               "_leptonMvaTTH17[_nLight]/D");
-    outputTree->Branch("_leptonMvatZqTTV16",            &_leptonMvatZqTTV16,            "_leptonMvatZqTTV16[_nLight]/D");
-    outputTree->Branch("_leptonMvatZqTTV17",            &_leptonMvatZqTTV17,            "_leptonMvatZqTTV17[_nLight]/D");
-    outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nLight]/O");
-    outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nLight]/O");
-    outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nLight]/O");
+    outputTree->Branch("_leptonMvaSUSY",                &_leptonMvaSUSY,                "_leptonMvaSUSY[_nLight]/D");
+    outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
+    outputTree->Branch("_leptonMvatZq",                 &_leptonMvatZq,                 "_leptonMvatZq[_nLight]/D");
     outputTree->Branch("_lEwkLoose",                    &_lEwkLoose,                    "_lEwkLoose[_nL]/O");
     outputTree->Branch("_lEwkFO",                       &_lEwkFO,                       "_lEwkFO[_nL]/O");
     outputTree->Branch("_lEwkTight",                    &_lEwkTight,                    "_lEwkTight[_nL]/O");
@@ -97,7 +85,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");
-    if(!multilepAnalyzer->isData){
+    if( multilepAnalyzer->isMC() ){
       outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
       outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
       outputTree->Branch("_tauGenStatus",               &_tauGenStatus,                 "_tauGenStatus[_nL]/i");
@@ -106,18 +94,16 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
       outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
     }
-    if(!multilepAnalyzer->is2018){
-      outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nLight]/D");
-      outputTree->Branch("_lPtScaleUp",                 &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
-      outputTree->Branch("_lPtScaleDown",               &_lPtScaleDown,                 "_lPtScaleDown[_nLight]/D");
-      outputTree->Branch("_lPtResUp",                   &_lPtResUp,                     "_lPtResUp[_nLight]/D");
-      outputTree->Branch("_lPtResDown",                 &_lPtResDown,                   "_lPtResDown[_nLight]/D");
-      outputTree->Branch("_lECorr",                     &_lECorr,                       "_lECorr[_nLight]/D");
-      outputTree->Branch("_lEScaleUp",                  &_lEScaleUp,                    "_lEScaleUp[_nLight]/D");
-      outputTree->Branch("_lEScaleDown",                &_lEScaleDown,                  "_lEScaleDown[_nLight]/D");
-      outputTree->Branch("_lEResUp",                    &_lEResUp,                      "_lEResUp[_nLight]/D");
-      outputTree->Branch("_lEResDown",                  &_lEResDown,                    "_lEResDown[_nLight]/D");
-    }
+    outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nLight]/D");
+    outputTree->Branch("_lPtScaleUp",                 &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
+    outputTree->Branch("_lPtScaleDown",               &_lPtScaleDown,                 "_lPtScaleDown[_nLight]/D");
+    outputTree->Branch("_lPtResUp",                   &_lPtResUp,                     "_lPtResUp[_nLight]/D");
+    outputTree->Branch("_lPtResDown",                 &_lPtResDown,                   "_lPtResDown[_nLight]/D");
+    outputTree->Branch("_lECorr",                     &_lECorr,                       "_lECorr[_nLight]/D");
+    outputTree->Branch("_lEScaleUp",                  &_lEScaleUp,                    "_lEScaleUp[_nLight]/D");
+    outputTree->Branch("_lEScaleDown",                &_lEScaleDown,                  "_lEScaleDown[_nLight]/D");
+    outputTree->Branch("_lEResUp",                    &_lEResUp,                      "_lEResUp[_nLight]/D");
+    outputTree->Branch("_lEResDown",                  &_lEResDown,                    "_lEResDown[_nLight]/D");
     if(multilepAnalyzer->storeAllTauID){
       outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
       outputTree->Branch("_tauPOGVLoose2015",             &_tauPOGVLoose2015,             "_tauPOGVLoose2015[_nL]/O");
@@ -142,19 +128,18 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_tauEleVetoMedium",             &_tauEleVetoMedium,             "_tauEleVetoMedium[_nL]/O");
       outputTree->Branch("_tauEleVetoTight",              &_tauEleVetoTight,              "_tauEleVetoTight[_nL]/O");
       outputTree->Branch("_tauEleVetoVTight",             &_tauEleVetoVTight,             "_tauEleVetoVTight[_nL]/O");
-
     }
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
-    edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
-    edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
-    edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
-    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
-    edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
-    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
-  //edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetSmearedToken,                   jets);  // Are we sure we do not want the smeared jets here???
-    edm::Handle<std::vector<reco::GenParticle>> genParticles;        iEvent.getByToken(multilepAnalyzer->genParticleToken,                  genParticles);
+    edm::Handle<std::vector<pat::Electron>> electrons          = getHandle(iEvent, multilepAnalyzer->eleToken);
+    edm::Handle<std::vector<pat::Muon>> muons                  = getHandle(iEvent, multilepAnalyzer->muonToken);
+    edm::Handle<std::vector<pat::Tau>> taus                    = getHandle(iEvent, multilepAnalyzer->tauToken);
+    edm::Handle<std::vector<pat::PackedCandidate>> packedCands = getHandle(iEvent, multilepAnalyzer->packedCandidatesToken);
+    edm::Handle<double> rho                                    = getHandle(iEvent, multilepAnalyzer->rhoToken);
+    edm::Handle<std::vector<pat::Jet>> jets                    = getHandle(iEvent, multilepAnalyzer->jetToken);
+  //edm::Handle<std::vector<pat::Jet>> jets                    = getHandle(iEvent, multilepAnalyzer->jetSmearedToken);  // Are we sure we do not want the smeared jets here???
+    edm::Handle<std::vector<reco::GenParticle>> genParticles   = getHandle(iEvent, multilepAnalyzer->genParticleToken);
 
     _nL     = 0;
     _nLight = 0;
@@ -175,7 +160,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(_dxy[_nL]) > 0.05)                     continue;
         if(fabs(_dz[_nL]) > 0.1)                       continue;
         fillLeptonKinVars(mu);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, *genParticles);
+        if( multilepAnalyzer->isMC() ) fillLeptonGenVars(mu, *genParticles);
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
 
         _lFlavor[_nL]        = 1;
@@ -189,22 +174,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false); // TODO: check how this compares with the MiniIsoLoose,etc... booleans
         _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
 
-        _lHNLoose[_nL]       = isHNLoose(mu);                                                       // ID variables
-        _lHNFO[_nL]          = isHNFO(mu);                                                          // don't change order, they rely on above variables
-        _lHNTight[_nL]       = isHNTight(mu);
-
         _lPOGVeto[_nL]       = mu.passed(reco::Muon::CutBasedIdLoose); // no veto available, so we take loose here
         _lPOGLoose[_nL]      = mu.passed(reco::Muon::CutBasedIdLoose);
         _lPOGMedium[_nL]     = mu.passed(reco::Muon::CutBasedIdMedium);
         _lPOGTight[_nL]      = mu.passed(reco::Muon::CutBasedIdTight);
-        // TODO: consider to add muon MVA
 
-        _leptonMvaSUSY16[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY16);
-        _leptonMvaTTH16[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH16);
-        _leptonMvaSUSY17[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY17);
-        _leptonMvaTTH17[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH17);
-        _leptonMvatZqTTV16[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV16);
-        _leptonMvatZqTTV17[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV17);
+        _leptonMvaSUSY[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY);
+        _leptonMvaTTH[_nL]   = mu.mvaValue();
+        _leptonMvatZq[_nL]   = leptonMvaVal(mu, leptonMvaComputertZq);
 
         _lEwkLoose[_nL]      = isEwkLoose(mu);
         _lEwkFO[_nL]         = isEwkFO(mu);
@@ -226,7 +203,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(_dxy[_nL]) > 0.05)                                                                      continue;
         if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
         fillLeptonKinVars(*ele);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, *genParticles);
+        if( multilepAnalyzer->isMC() ) fillLeptonGenVars(*ele, *genParticles);
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
         _lFlavor[_nL]                   = 0;
@@ -246,21 +223,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lElectronChargeConst[_nL]      = ele->isGsfCtfScPixChargeConsistent();
         _lElectronMissingHits[_nL]      = ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
 
-        _lHNLoose[_nL]                  = isHNLoose(*ele);
-        _lHNFO[_nL]                     = isHNFO(*ele);
-        _lHNTight[_nL]                  = isHNTight(*ele);
-
         _lPOGVeto[_nL]                  = ele->electronID("cutBasedElectronID-Fall17-94X-V1-veto");
         _lPOGLoose[_nL]                 = ele->electronID("cutBasedElectronID-Fall17-94X-V1-loose");
         _lPOGMedium[_nL]                = ele->electronID("cutBasedElectronID-Fall17-94X-V1-medium");
         _lPOGTight[_nL]                 = ele->electronID("cutBasedElectronID-Fall17-94X-V1-tight");
 
-        _leptonMvaSUSY16[_nL]           = leptonMvaVal(*ele, leptonMvaComputerSUSY16);
-        _leptonMvaTTH16[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTTH16);
-        _leptonMvaSUSY17[_nL]           = leptonMvaVal(*ele, leptonMvaComputerSUSY17);
-        _leptonMvaTTH17[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTTH17);
-        _leptonMvatZqTTV16[_nL]         = leptonMvaVal(*ele, leptonMvaComputertZqTTV16);
-        _leptonMvatZqTTV17[_nL]         = leptonMvaVal(*ele, leptonMvaComputertZqTTV17);
+        _leptonMvaSUSY[_nL]             = leptonMvaVal(*ele, leptonMvaComputerSUSY);
+        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
+        _leptonMvatZq[_nL]              = leptonMvaVal(*ele, leptonMvaComputertZq);
 
         _lEwkLoose[_nL]                 = isEwkLoose(*ele);
         _lEwkFO[_nL]                    = isEwkFO(*ele);
@@ -269,19 +239,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
-        // Currently only available for 2016/2017
-        if(!multilepAnalyzer->is2018){
-          _lPtCorr[_nL]                 = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
-          _lPtScaleUp[_nL]              = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
-          _lPtScaleDown[_nL]            = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
-          _lPtResUp[_nL]                = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
-          _lPtResDown[_nL]              = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
-          _lECorr[_nL]                  = ele->userFloat("ecalTrkEnergyPostCorr");
-          _lEScaleUp[_nL]               = ele->userFloat("energyScaleUp");
-          _lEScaleDown[_nL]             = ele->userFloat("energyScaleDown");
-          _lEResUp[_nL]                 = ele->userFloat("energySigmaUp");
-          _lEResDown[_nL]               = ele->userFloat("energySigmaDown");
-        }
+        _lPtCorr[_nL]                   = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
+        _lPtScaleUp[_nL]                = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
+        _lPtScaleDown[_nL]              = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
+        _lPtResUp[_nL]                  = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
+        _lPtResDown[_nL]                = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
+        _lECorr[_nL]                    = ele->userFloat("ecalTrkEnergyPostCorr");
+        _lEScaleUp[_nL]                 = ele->userFloat("energyScaleUp");
+        _lEScaleDown[_nL]               = ele->userFloat("energyScaleDown");
+        _lEResUp[_nL]                   = ele->userFloat("energySigmaUp");
+        _lEResDown[_nL]                 = ele->userFloat("energySigmaDown");
 
         ++_nEle;
         ++_nL;
@@ -303,7 +270,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(tau.pt() < 20)         continue;          // Minimum pt for tau reconstruction
         if(fabs(tau.eta()) > 2.3) continue;
         fillLeptonKinVars(tau);
-        if(!multilepAnalyzer->isData) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
+        
+        if(multilepAnalyzer->isMC()) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
         fillLeptonImpactParameters(tau, primaryVertex);
 
         _lFlavor[_nL]  = 2;
