@@ -98,31 +98,32 @@ class LeptonAnalyzer {
     double _lMuonTrackPtErr[nL_max];
 
     bool _tauMuonVetoLoose[nL_max];                                                                       //tau specific variables
-    bool _tauMuonVetoTight[nL_max];                                                                       //tau specific variables
+    bool _tauMuonVetoTight[nL_max];                                                                       
     bool _tauEleVetoVLoose[nL_max];
     bool _tauEleVetoLoose[nL_max];
     bool _tauEleVetoMedium[nL_max];
     bool _tauEleVetoTight[nL_max];
     bool _tauEleVetoVTight[nL_max];
     bool _decayModeFinding[nL_max];                      
-    unsigned int _tauDecayMode[nL_max];                      
+    unsigned int _tauDecayMode[nL_max];                                                         // As in https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Decay_Mode_Reconstruction 
     unsigned int _tauGenStatus[nL_max];                                                         //1: prompt ele, 2:prompt mu, 3: ele from leptonic tau, 4:mu from leptonic tau, 5: hadronically decayed tau, 6:rest 
-
-    bool _tauPOGVVLoose2017v2[nL_max];
-    bool _tauPOGVLoose2017v2[nL_max];
-    bool _tauPOGLoose2017v2[nL_max];
-    bool _tauPOGMedium2017v2[nL_max];
-    bool _tauPOGTight2017v2[nL_max];
-    bool _tauPOGVTight2017v2[nL_max];
+    bool _tauPOGVLoose2015[nL_max];                                                             //version of ID to use in MiniAOD: MC 80X_mcRun2_asymptotic_2016_TrancheIV_v6, Data 03Feb2017
+    bool _tauPOGLoose2015[nL_max];                                                              //More info at https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Isolation
+    bool _tauPOGMedium2015[nL_max];
+    bool _tauPOGTight2015[nL_max];
+    bool _tauPOGVTight2015[nL_max];
+    
+    bool _tauPOGVVLoose2017v2[nL_max];                                                           //version of ID to use in 94X and above
+    bool _tauPOGVTight2017v2[nL_max];                                                            //Other WPs contained in _lPOG variables (vloose = veto)
     bool _tauPOGVVTight2017v2[nL_max];
 
-    bool _tauVLooseMvaNew[nL_max];                                                                      //"old tau id's will be stored in the POG id definitions (vloose := veto), however very tight is stored separately
     bool _decayModeFindingNew[nL_max];                      
-    bool _tauLooseMvaNew[nL_max];
-    bool _tauMediumMvaNew[nL_max];
-    bool _tauTightMvaNew[nL_max];
-    bool _tauVTightMvaNew[nL_max];
-    bool _tauVTightMvaOld[nL_max];
+    bool _tauVLooseMvaNew[nL_max];                                                               
+    bool _tauVLooseMvaNew2015[nL_max];
+    bool _tauLooseMvaNew2015[nL_max];
+    bool _tauMediumMvaNew2015[nL_max];
+    bool _tauTightMvaNew2015[nL_max];
+    bool _tauVTightMvaNew2015[nL_max];
     
     bool _tauVLooseMvaNew2017v2[nL_max];
     bool _tauLooseMvaNew2017v2[nL_max];
@@ -157,12 +158,7 @@ class LeptonAnalyzer {
     bool _lPOGTight[nL_max];
 
     bool _lIsPrompt[nL_max];                                                                          //MC-truth variables
-    bool _lMatchDecayedHadr[nL_max];                                   
     int _lMatchPdgId[nL_max];
-    double _lMatchPt[nL_max];
-    double _lMatchEta[nL_max];
-    double _lMatchPhi[nL_max];
-    double _lMatchE[nL_max];
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];
     unsigned _lProvenanceCompressed[nL_max];

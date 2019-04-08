@@ -110,21 +110,6 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
 
-    std::cout << "GEN" << std::endl;
-    for (unsigned i = 0; i < _gen_nL; ++i){
-        std::cout << ' ' << _gen_lFlavor[i];
-    }
-    std::cout << std::endl;
-    for (unsigned i = 0; i < _gen_nL; ++i){
-        std::cout << ' ' << _gen_lEta[i];
-    }
-    std::cout << std::endl;
-    for (unsigned i = 0; i < _gen_nL; ++i){
-        std::cout << ' ' << _gen_lPhi[i];
-    }
-    std::cout << std::endl << "END GEN" <<std::endl;
-
-
 }
 
 

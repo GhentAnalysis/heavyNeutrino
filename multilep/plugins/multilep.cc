@@ -36,7 +36,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     is2018(                                                                       iConfig.getUntrackedParameter<bool>("is2018")),
     isSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles")),
-    storeParticleLevel(                                                           iConfig.getUntrackedParameter<bool>("storeParticleLevel"))
+    storeParticleLevel(                                                           iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
+    storeAllTauID(                                                                iConfig.getUntrackedParameter<bool>("storeAllTauID"))
 {
     if(is2017 or is2018) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
