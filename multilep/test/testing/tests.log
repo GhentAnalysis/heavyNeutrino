@@ -1,8 +1,8 @@
-commit 391bab714cf40c36a38faee24fc9c6244ac0411d
+commit 41b70e789453a42067865f84eb0b9959efcd33d2
 Author: tomc <tomc@cern.ch>
-Date:   Fri Apr 5 11:22:17 2019 +0200
+Date:   Tue Apr 9 15:05:30 2019 +0200
 
-    Only pass needed xml's to the plugin
+    Fix for segfaults in ParticleLevelAnalyzer
 
 --------------------------------------------------------------------------------------------------
 
@@ -31,3 +31,9 @@ Running test: Fall17MiniAODv2 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _pl_nPh                                            mean:   1.0300 -->   1.0200     rms:   1.1442 -->   1.1044    
+      _pl_phE                                            mean:  11.4100 -->  11.5589     rms:  43.4129 -->  43.6035    
+      _pl_phEta                                          mean:  -0.2137 -->  -0.2308     rms:   2.3807 -->   2.4039    
+      _pl_phPhi                                          mean:  -0.0022 -->  -0.0330     rms:   1.8154 -->   1.8356    
+      _pl_phPt                                           mean:   1.4064 -->   1.4202     rms:   4.5016 -->   4.5215    
