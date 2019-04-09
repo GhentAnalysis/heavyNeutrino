@@ -1,14 +1,13 @@
-commit 8998d9d71e3b1fbfb148ec369ccff70fe4ad1d48
+commit ab1e1abde50e2b49b3c25be0538af6e56ac5b59b
+Merge: 8998d9d e474c7e
 Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Mon Apr 8 15:09:50 2019 +0200
+Date:   Mon Apr 8 16:36:52 2019 +0200
 
-    Forgot to push multilep.py with tau ID switch commit
+    New test run: see tests.log
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   Changed:
-      _tauEleVetoLoose                                   mean:   1.0000 -->   0.4936     rms:   0.7116 -->   0.5000    
 
 --------------------------------------------------------------------------------------------------
 
@@ -22,7 +21,7 @@ Running test: Run2017-31March2017 --> OK
 
 Running test: Run2016-17Jul2018 --> OK
    Changed:
-      _tauEleVetoLoose                                   mean:   0.4957 -->   0.9826     rms:   0.5000 -->   5.1768    
+      _tauEleVetoLoose                                   mean:   1.8522 -->   0.4957     rms:  14.4458 -->   0.5000    
 
 --------------------------------------------------------------------------------------------------
 
@@ -35,3 +34,5 @@ Running test: Fall17MiniAODv2 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   Changed:
+      _tauEleVetoLoose                                   mean:   0.5827 -->   3.6053     rms:   0.4931 -->  19.8422    

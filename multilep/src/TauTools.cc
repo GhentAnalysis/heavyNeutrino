@@ -24,6 +24,7 @@ void TauTools::getNextDaughters(const reco::GenParticle& gen, const std::vector<
     }      
 }
 
+//If match to genJet, look for the corresponding gen tau, else try to see if match with electron or muon 
 const bool TauTools::considerForMatching(const pat::Tau& tau, const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     if(tau.genJet()){
         if(abs(gen.pdgId()) != 15 or !TauTools::decayedHadronically(gen, genParticles)) return false;
@@ -56,6 +57,7 @@ const reco::GenParticle* TauTools::findMatch(const pat::Tau& tau, const std::vec
     return match;
 }
 
+//As in https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorking2017#MC_Matching
 const unsigned int TauTools::tauGenStatus(const reco::GenParticle* match){
 
     if(!match) return 6;
