@@ -1,48 +1,115 @@
-commit 1b9263d73188e298098b8f250a81b4c7ef139376
-Merge: ab1e1ab 8271a21
+commit e387c6f84823915c17114f45088e311ade246b72
 Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Apr 9 18:08:51 2019 +0200
+Date:   Tue Apr 9 18:31:39 2019 +0200
 
     New test run: see tests.log
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   New: _decayModeFinding,_tauDecayMode,_tauEleVetoLoose,_tauMuonVetoLoose,_tauPOGVTight2017v2
+   Removed: _decayModeFindingNew,_tauEleVeto,_tauLooseMvaNew,_tauMediumMvaNew,_tauMuonVeto,_tauTightMvaNew,_tauVLooseMvaNew,_tauVTightMvaNew,_tauVTightMvaOld
    Changed:
-      _tauEleVetoLoose                                   mean:   0.4936 -->   0.3433     rms:   0.5000 -->   0.4748    
+      _lEwkFO                                            mean:   0.4378 -->   0.4506     rms:   0.4961 -->   0.4976    
+      _lEwkLoose                                         mean:   0.4678 -->   0.4807     rms:   0.4990 -->   0.4996    
+      _lEwkTight                                         mean:   0.3648 -->   0.4034     rms:   0.4814 -->   0.4906    
+      _lPOGLoose                                         mean:   0.6781 -->   0.7082     rms:   0.4672 -->   0.4546    
+      _lPOGMedium                                        mean:   0.6352 -->   0.6738     rms:   0.4814 -->   0.4688    
+      _lPOGTight                                         mean:   0.5923 -->   0.6524     rms:   0.4914 -->   0.4762    
+      _lPOGVeto                                          mean:   0.7253 -->   0.7468     rms:   0.4464 -->   0.4349    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   New: _decayModeFinding,_tauDecayMode,_tauEleVetoLoose,_tauMuonVetoLoose,_tauPOGVTight2017v2
+   Removed: _decayModeFindingNew,_tauEleVeto,_tauLooseMvaNew,_tauMediumMvaNew,_tauMuonVeto,_tauTightMvaNew,_tauVLooseMvaNew,_tauVTightMvaNew,_tauVTightMvaOld
    Changed:
-      _tauEleVetoLoose                                   mean:   0.5885 -->   0.4071     rms:   0.4921 -->   0.4913    
+      _lEwkFO                                            mean:   0.5442 -->   0.5531     rms:   0.4980 -->   0.4972    
+      _lEwkLoose                                         mean:   0.5973 -->   0.6062     rms:   0.4904 -->   0.4886    
+      _lEwkTight                                         mean:   0.4469 -->   0.4956     rms:   0.4972 -->   0.5000    
+      _lPOGLoose                                         mean:   0.7301 -->   0.7655     rms:   0.4439 -->   0.4237    
+      _lPOGMedium                                        mean:   0.6593 -->   0.7212     rms:   0.4739 -->   0.4484    
+      _lPOGTight                                         mean:   0.6283 -->   0.6858     rms:   0.4833 -->   0.4642    
+      _lPOGVeto                                          mean:   0.7699 -->   0.7876     rms:   0.4209 -->   0.4090    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   New: _decayModeFinding,_tauDecayMode,_tauEleVetoLoose,_tauMuonVetoLoose,_tauPOGVTight2017v2
+   Removed: _decayModeFindingNew,_tauEleVeto,_tauLooseMvaNew,_tauMediumMvaNew,_tauMuonVeto,_tauTightMvaNew,_tauVLooseMvaNew,_tauVTightMvaNew,_tauVTightMvaOld
    Changed:
-      _tauEleVetoLoose                                   mean:   1.2871 -->   0.3876     rms:   8.7290 -->   0.4872    
+      _lPOGLoose                                         mean:   0.2297 -->   0.2536     rms:   0.4206 -->   0.4351    
+      _lPOGMedium                                        mean:   0.1866 -->   0.2057     rms:   0.3896 -->   0.4042    
+      _lPOGTight                                         mean:   0.1627 -->   0.1770     rms:   0.3691 -->   0.3817    
+      _lPOGVeto                                          mean:   0.2679 -->   0.2919     rms:   0.4429 -->   0.4546    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   New: _HLT_IsoMu22,_HLT_IsoMu22_eta2p1,_HLT_IsoMu22_eta2p1_prescale,_HLT_IsoMu22_prescale,_HLT_IsoTkMu22,_HLT_IsoTkMu22_eta2p1,_HLT_IsoTkMu22_eta2p1_prescale,_HLT_IsoTkMu22_prescale,_decayModeFinding,_passTrigger_mAN094,_tauDecayMode,_tauEleVetoLoose,_tauMuonVetoLoose,_tauPOGVTight2017v2
+   Removed: _decayModeFindingNew,_tauEleVeto,_tauLooseMvaNew,_tauMediumMvaNew,_tauMuonVeto,_tauTightMvaNew,_tauVLooseMvaNew,_tauVTightMvaNew,_tauVTightMvaOld
    Changed:
-      _tauEleVetoLoose                                   mean:   0.4957 -->   0.2957     rms:   0.5000 -->   0.4563    
+      _lPOGLoose                                         mean:   0.1783 -->   0.2087     rms:   0.3827 -->   0.4064    
+      _lPOGMedium                                        mean:   0.1391 -->   0.1696     rms:   0.3461 -->   0.3753    
+      _lPOGTight                                         mean:   0.1087 -->   0.1348     rms:   0.3113 -->   0.3415    
+      _lPOGVeto                                          mean:   0.2391 -->   0.2609     rms:   0.4266 -->   0.4391    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   New: _decayModeFinding,_gen_lDecayedHadr,_tauDecayMode,_tauEleVetoLoose,_tauGenStatus,_tauMuonVetoLoose,_tauPOGVTight2017v2
+   Removed: _decayModeFindingNew,_tauEleVeto,_tauLooseMvaNew,_tauMediumMvaNew,_tauMuonVeto,_tauTightMvaNew,_tauVLooseMvaNew,_tauVTightMvaNew,_tauVTightMvaOld
    Changed:
-      _tauEleVetoLoose                                   mean:   0.5789 -->   0.2421     rms:   0.4937 -->   0.4284    
+      _lEwkFO                                            mean:   0.4351 -->   0.4386     rms:   0.4958 -->   0.4962    
+      _lEwkLoose                                         mean:   0.4772 -->   0.4807     rms:   0.4995 -->   0.4996    
+      _lEwkTight                                         mean:   0.3684 -->   0.3860     rms:   0.4824 -->   0.4868    
+      _lIsPrompt                                         mean:   0.7158 -->   0.8421     rms:   0.4510 -->   0.3646    
+      _lMatchPdgId                                       mean:   5.2772 -->   1.0982     rms:  12.7781 -->  11.7416    
+      _lMomPdgId                                         mean:  15.2386 -->  17.6105     rms:  48.2537 -->  43.0194    
+      _lPOGLoose                                         mean:   0.6912 -->   0.7333     rms:   0.4620 -->   0.4422    
+      _lPOGMedium                                        mean:   0.6281 -->   0.6632     rms:   0.4833 -->   0.4726    
+      _lPOGTight                                         mean:   0.5439 -->   0.6000     rms:   0.4981 -->   0.4899    
+      _lPOGVeto                                          mean:   0.7614 -->   0.7860     rms:   0.4262 -->   0.4102    
+      _lProvenance                                       mean:  10.6281 -->   9.0982     rms:   8.0969 -->   8.2277    
+      _lProvenanceCompressed                             mean:   1.0842 -->   0.5965     rms:   1.7371 -->   1.3925    
+      _lProvenanceConversion                             mean:  77.9965 -->  95.9193     rms:  40.2499 -->  17.0608    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   New: _decayModeFinding,_gen_lDecayedHadr,_tauDecayMode,_tauEleVetoLoose,_tauGenStatus,_tauMuonVetoLoose,_tauPOGVTight2017v2
+   Removed: _decayModeFindingNew,_tauEleVeto,_tauLooseMvaNew,_tauMediumMvaNew,_tauMuonVeto,_tauTightMvaNew,_tauVLooseMvaNew,_tauVTightMvaNew,_tauVTightMvaOld
    Changed:
-      _tauEleVetoLoose                                   mean:   0.6351 -->   0.3198     rms:   0.4814 -->   0.4664    
+      _lEwkFO                                            mean:   0.4414 -->   0.4505     rms:   0.4966 -->   0.4975    
+      _lEwkLoose                                         mean:   0.5090 -->   0.5180     rms:   0.4999 -->   0.4997    
+      _lEwkTight                                         mean:   0.3739 -->   0.3919     rms:   0.4838 -->   0.4882    
+      _lIsPrompt                                         mean:   0.6441 -->   0.8243     rms:   0.4788 -->   0.3805    
+      _lMatchPdgId                                       mean:   2.9234 -->  -0.1081     rms:  12.1105 -->  11.4423    
+      _lMomPdgId                                         mean:  18.2162 -->  18.1892     rms:  40.8738 -->  13.8545    
+      _lPOGLoose                                         mean:   0.6937 -->   0.7432     rms:   0.4610 -->   0.4368    
+      _lPOGMedium                                        mean:   0.6171 -->   0.6847     rms:   0.4861 -->   0.4646    
+      _lPOGTight                                         mean:   0.5586 -->   0.6351     rms:   0.4966 -->   0.4814    
+      _lPOGVeto                                          mean:   0.7658 -->   0.7838     rms:   0.4235 -->   0.4117    
+      _lProvenance                                       mean:  10.7477 -->   8.4459     rms:   8.1384 -->   8.2710    
+      _lProvenanceCompressed                             mean:   1.3784 -->   0.6937     rms:   1.8723 -->   1.5055    
+      _lProvenanceConversion                             mean:  85.7793 -->  98.5586     rms:  33.4465 -->   6.5625    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _HLT_IsoMu22,_HLT_IsoMu22_eta2p1,_HLT_IsoMu22_eta2p1_prescale,_HLT_IsoMu22_prescale,_HLT_IsoTkMu22,_HLT_IsoTkMu22_eta2p1,_HLT_IsoTkMu22_eta2p1_prescale,_HLT_IsoTkMu22_prescale,_decayModeFinding,_gen_lDecayedHadr,_passTrigger_mAN094,_tauDecayMode,_tauEleVetoLoose,_tauGenStatus,_tauMuonVetoLoose,_tauPOGVTight2017v2
+   Removed: _decayModeFindingNew,_tauEleVeto,_tauLooseMvaNew,_tauMediumMvaNew,_tauMuonVeto,_tauTightMvaNew,_tauVLooseMvaNew,_tauVTightMvaNew,_tauVTightMvaOld
    Changed:
-      _tauEleVetoLoose                                   mean:   3.6053 -->   0.3195     rms:  19.8422 -->   0.4663    
+      _lEwkFO                                            mean:   0.6955 -->   0.6992     rms:   0.4602 -->   0.4586    
+      _lEwkLoose                                         mean:   0.7068 -->   0.7105     rms:   0.4552 -->   0.4535    
+      _lEwkTight                                         mean:   0.6241 -->   0.6541     rms:   0.4844 -->   0.4756    
+      _lIsPrompt                                         mean:   0.6090 -->   0.8947     rms:   0.4880 -->   0.3069    
+      _lMatchPdgId                                       mean:   2.7180 -->  -1.6203     rms:  12.4447 -->  12.3931    
+      _lMomPdgId                                         mean:  12.0865 -->  17.9135     rms:  52.4610 -->  38.1305    
+      _lPOGLoose                                         mean:   0.8346 -->   0.8609     rms:   0.3716 -->   0.3460    
+      _lPOGMedium                                        mean:   0.7707 -->   0.8195     rms:   0.4204 -->   0.3846    
+      _lPOGTight                                         mean:   0.7444 -->   0.7895     rms:   0.4362 -->   0.4077    
+      _lPOGVeto                                          mean:   0.8647 -->   0.8722     rms:   0.3421 -->   0.3339    
+      _lProvenance                                       mean:  13.3346 -->  11.0226     rms:   7.2644 -->   8.1328    
+      _lProvenanceCompressed                             mean:   1.5075 -->   0.3947     rms:   1.9042 -->   1.1659    
+      _lProvenanceConversion                             mean:  82.8195 -->  98.2707     rms:  36.3450 -->   8.3793    
