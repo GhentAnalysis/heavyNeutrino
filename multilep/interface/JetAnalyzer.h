@@ -54,13 +54,20 @@ class JetAnalyzer {
     double   _jetHFHadronFraction[nJets_max];
     double   _jetHFEmFraction[nJets_max];
 
-    /*Int_t    _nDaughters;
-    int      _jet_tag_for_daughters[nDaughters_max];
-    int      _jet_daughter_pdgid[nDaughters_max];
-    double   _jet_daughter_pt[nDaughters_max];
-    double   _jet_daughter_eta[nDaughters_max];
-    double   _jet_daughter_phi[nDaughters_max];
-    double   _jet_daughter_energy[nDaughters_max];*/
+    //to train HNL Jettagger MVA based on the deep sets theorem
+    static const unsigned maxJetSize = 50;
+    unsigned _nJetConstituents[nJets_max];
+    double   _JetConstituentPt[nJets_max][maxJetSize];
+    double   _JetConstituentEta[nJets_max][maxJetSize];
+    double   _JetConstituentPhi[nJets_max][maxJetSize];
+    double   _JetConstituentMass[nJets_max][maxJetSize];
+    int      _JetConstituentPdgId[nJets_max][maxJetSize];
+    int      _JetConstituentCharge[nJets_max][maxJetSize];
+    double   _JetConstituentdxySig[nJets_max][maxJetSize];
+    double   _JetConstituentdzSig[nJets_max][maxJetSize];
+    int      _JetConstituentsNumberOfHits[nJets_max][maxJetSize];    //signed integer so particles without tracks can have negative default values
+    int      _JetConstituentsNumberOfPixelHits[nJets_max][maxJetSize];
+    bool     _JetConstituentsHasTrack[nJets_max][maxJetSize];
     
     //correction level for JEC
     //std::string jecLevel;

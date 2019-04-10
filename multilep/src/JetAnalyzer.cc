@@ -74,14 +74,20 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
     outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
 
-    /*outputTree->Branch("_nDaughters",		     &_nDaughters,	         "_nDaughters/I");
-    outputTree->Branch("_jet_tag_for_daughters",     &_jet_tag_for_daughters,    "_jet_tag_for_daughters[_nDaughters]/I");
-    outputTree->Branch("_jet_daughter_pdgid",	     &_jet_daughter_pdgid,       "_jet_daughter_pdgid[_nDaughters]/I");
-    outputTree->Branch("_jet_daughter_pt",	     &_jet_daughter_pt,          "_jet_daughter_pt[_nDaughters]/D");
-    outputTree->Branch("_jet_daughter_eta",	     &_jet_daughter_eta,         "_jet_daughter_eta[_nDaughters]/D");
-    outputTree->Branch("_jet_daughter_phi",	     &_jet_daughter_phi,         "_jet_daughter_phi[_nDaughters]/D");
-    outputTree->Branch("_jet_daughter_energy",	     &_jet_daughter_energy,      "_jet_daughter_energy[_nDaughters]/D");*/
-
+    // variables for Particle Flow HNL Jet tagger MVA based on deep sets theorem
+    outputTree->Branch("_nJetConstituents",      &_nJetConstituents,      "_nJetConstituents[_nJets]/i");
+    std::string jetConstituentsArraySize = "[_nJets][" + std::to_string(maxJetSize) + "]";
+    outputTree->Branch( "_JetConstituentPt",     &_JetConstituentPt,      std::string("_JetConstituentPt" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_JetConstituentEta",    &_JetConstituentEta,     std::string("_JetConstituentEta" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_JetConstituentPhi",    &_JetConstituentPhi,     std::string("_JetConstituentPhi" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_JetConstituentMass",   &_JetConstituentMass,    std::string("_JetConstituentMass" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_JetConstituentPdgId",  &_JetConstituentPdgId,   std::string("_JetConstituentPdgId" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_JetConstituentCharge", &_JetConstituentCharge,  std::string("_JetConstituentCharge" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_JetConstituentdxySig", &_JetConstituentdxySig,  std::string("_JetConstituentdxySig" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_JetConstituentdzSig",  &_JetConstituentdzSig,   std::string("_JetConstituentdzSig" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_JetConstituentsNumberOfHits",      &_JetConstituentsNumberOfHits, std::string("_JetConstituentsNumberOfHits" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_JetConstituentsNumberOfPixelHits", &_JetConstituentsNumberOfPixelHits, std::string("_JetConstituentsNumberOfPixelHits" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_JetConstituentsHasTrack",          &_JetConstituentsHasTrack, std::string("_JetConstituentsHasTrack" + jetConstituentsArraySize + "/O").c_str() );
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
@@ -172,16 +178,49 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetHFHadronFraction[_nJets]      = jet.HFHadronEnergyFraction();
         _jetHFEmFraction[_nJets]          = jet.HFEMEnergyFraction();
 	    
-        /*for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
-      	    const pat::PackedCandidate* daughter  = (const pat::PackedCandidate*) jet.daughter(d);
-            _jet_tag_for_daughters[_nDaughters]   = _nJets;
-            _jet_daughter_pdgid[_nDaughters] 	  = daughter->pdgId();
-            _jet_daughter_pt[_nDaughters] 	  = daughter->pt();
-            _jet_daughter_eta[_nDaughters] 	  = daughter->eta();
-            _jet_daughter_phi[_nDaughters] 	  = daughter->phi();
-            _jet_daughter_energy[_nDaughters]     = daughter->energy();
-            ++_nDaughters;
-    	}*/
+        /*
+         * Jet Particle Flow constituent information for HNL Jet tagger MVA
+         */
+        _nJetConstituents[_nJets]         = std::min((unsigned) jet.numberOfDaughters(), maxJetSize);
+        for(unsigned d = 0; d < _nJetConstituents[_nJets]; ++d){
+            const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
+            _JetConstituentPt[_nJets][d]     = daughter->pt();
+            _JetConstituentEta[_nJets][d]    = daughter->eta();
+            _JetConstituentPhi[_nJets][d]    = daughter->phi();
+            _JetConstituentMass[_nJets][d]   = daughter->mass();
+            _JetConstituentPdgId[_nJets][d]  = daughter->pdgId();
+
+            _JetConstituentCharge[_nJets][d] = daughter->charge();
+            if( daughter->hasTrackDetails() ){
+                _JetConstituentdxySig[_nJets][d] = fabs( daughter->dxy()/daughter->dxyError() );
+                _JetConstituentdzSig[_nJets][d] = fabs( daughter->dz()/daughter->dzError() );
+                _JetConstituentsNumberOfHits[_nJets][d] = daughter->numberOfHits();
+                _JetConstituentsNumberOfPixelHits[_nJets][d] = daughter->numberOfPixelHits();
+                _JetConstituentsHasTrack[_nJets][d] = true;
+            } else {
+                _JetConstituentdxySig[_nJets][d] = -1.;
+                _JetConstituentdzSig[_nJets][d] = -1.;
+                _JetConstituentsNumberOfHits[_nJets][d] = -1;
+                _JetConstituentsNumberOfPixelHits[_nJets][d] = -1;
+                _JetConstituentsHasTrack[_nJets][d] = false;
+            }
+        }
+        // second loop to put remaining jet constituents to 0 up to maxJetSize
+        if( _nJetConstituents[_nJets] < maxJetSize){
+            for(unsigned d = _nJetConstituents[_nJets]; d < maxJetSize; ++d){
+                _JetConstituentPt[_nJets][d] = 0.;
+                _JetConstituentEta[_nJets][d] = 0.;
+                _JetConstituentPhi[_nJets][d] = 0.;
+                _JetConstituentMass[_nJets][d] = 0.;
+                _JetConstituentPdgId[_nJets][d] = 0;
+                _JetConstituentCharge[_nJets][d] = 0;
+                _JetConstituentdxySig[_nJets][d] = 0.;
+                _JetConstituentdzSig[_nJets][d] = 0.;
+                _JetConstituentsNumberOfHits[_nJets][d] = 0;
+                _JetConstituentsNumberOfPixelHits[_nJets][d] = 0;
+                _JetConstituentsHasTrack[_nJets][d] = false;
+            }
+        }
         
         ++_nJets;
     }
