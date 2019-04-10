@@ -115,24 +115,6 @@ na = TauIDEmbedder(process, cms, # pass tour process object
 )
 na.runTauID()
 
-byIsolationMVArun2017v2DBoldDMwLTraw2017 = cms.string('byIsolationMVArun2017v2DBoldDMwLTraw2017'),
-byVVLooseIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byVVLooseIsolationMVArun2017v2DBoldDMwLT2017'),
-byVLooseIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byVLooseIsolationMVArun2017v2DBoldDMwLT2017'),
-byLooseIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byLooseIsolationMVArun2017v2DBoldDMwLT2017'),
-byMediumIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byMediumIsolationMVArun2017v2DBoldDMwLT2017'),
-byTightIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byTightIsolationMVArun2017v2DBoldDMwLT2017'),
-byVTightIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byVTightIsolationMVArun2017v2DBoldDMwLT2017'),
-byVVTightIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byVVTightIsolationMVArun2017v2DBoldDMwLT2017')
-
-byIsolationMVArun2017v2DBnewDMwLTraw2017 = cms.string('byIsolationMVArun2017v2DBnewDMwLTraw2017'),
-byVVLooseIsolationMVArun2017v2DBnewDMwLT2017 = cms.string('byVVLooseIsolationMVArun2017v2DBnewDMwLT2017'),
-byVLooseIsolationMVArun2017v2DBnewDMwLT2017 = cms.string('byVLooseIsolationMVArun2017v2DBnewDMwLT2017'),
-byLooseIsolationMVArun2017v2DBnewDMwLT2017 = cms.string('byLooseIsolationMVArun2017v2DBnewDMwLT2017'),
-byMediumIsolationMVArun2017v2DBnewDMwLT2017 = cms.string('byMediumIsolationMVArun2017v2DBnewDMwLT2017'),
-byTightIsolationMVArun2017v2DBnewDMwLT2017 = cms.string('byTightIsolationMVArun2017v2DBnewDMwLT2017'),
-byVTightIsolationMVArun2017v2DBnewDMwLT2017 = cms.string('byVTightIsolationMVArun2017v2DBnewDMwLT2017'),
-byVVTightIsolationMVArun2017v2DBnewDMwLT2017 = cms.string('byVVTightIsolationMVArun2017v2DBnewDMwLT2017')
-
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
