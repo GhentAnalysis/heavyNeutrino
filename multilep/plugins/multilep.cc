@@ -37,7 +37,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     sampleIs2018(                                                              iConfig.getUntrackedParameter<bool>("is2018")),
     sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
-    storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel"))
+    storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
+    storeAllTauID(                                                                iConfig.getUntrackedParameter<bool>("storeAllTauID"))
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -84,6 +85,7 @@ void multilep::beginJob(){
     if( isSUSY() )  susyMassAnalyzer->beginJob(outputTree, fs);
     if( isMC() ) genAnalyzer->beginJob(outputTree);
     if( isMC() && storeParticleLevel) particleLevelAnalyzer->beginJob(outputTree);
+    
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);

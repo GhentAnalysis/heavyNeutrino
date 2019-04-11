@@ -84,6 +84,8 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                    "HLT_AK8PFJet500"};
 
   } else {
+    allFlags["passTrigger_mAN094"]      = {"HLT_IsoMu22", "HLT_IsoTkMu22", "HLT_IsoMu22_eta2p1", "HLT_IsoTkMu22_eta2p1"};
+
     allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"}; // HLT_TkMu50 off for ~3/fb, HLT_Mu45_eta2p1 off for ~12/fb
     allFlags["passTrigger_e"]   = {"HLT_Ele27_WPTight_Gsf", "HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT", "HLT_Photon175"}; // HLT_Ele105_CaloIdVT_GsfTrkIdT was switched off several times in second half of 2016; HLT_Photon175 recovers inefficiency for > 300 GeV electrons
 
