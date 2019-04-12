@@ -7,6 +7,7 @@ import FWCore.ParameterSet.Config as cms
 inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
 
 # Other default arguments
+
 nEvents         = 1000
 extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -104,6 +105,16 @@ else:
 
 yy = '17' if is2017 or is2018 else '16'
 
+#
+#Latest 94X tau ID
+#
+from heavyNeutrino.multilep.runTauIdMVA import *
+na = TauIDEmbedder(process, cms, # pass tour process object
+    debug=True,
+    toKeep = ["2017v2", "newDM2017v2"] # pick the one you need: ["2017v1", "2017v2", "newDM2017v2", "dR0p32017v2", "2016v1", "newDM2016v1"]
+)
+na.runTauID()
+
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
@@ -130,7 +141,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfChargedHadrons_90percentBased_V2.txt'),
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),
   photonsPhotonsEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_V2.txt'),
-  taus                          = cms.InputTag("slimmedTaus"),
+#  taus                          = cms.InputTag("slimmedTaus"),
+  taus                          = cms.InputTag("NewTauIDsEmbedded"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
@@ -151,6 +163,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isSUSY                        = cms.untracked.bool(isSUSY),
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
   storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),
+  storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
 )
 
 def getJSON(is2017, is2018):
@@ -169,4 +182,6 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.fullPatMetSequence *
                      process.prefiringweight *
                      process.particleLevelSequence *
+                     process.rerunMvaIsolationSequence *
+                     process.NewTauIDsEmbedded *# *getattr(process, "NewTauIDsEmbedded")
                      process.blackJackAndHookers)
