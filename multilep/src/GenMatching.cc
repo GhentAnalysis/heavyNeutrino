@@ -64,6 +64,8 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
   TLorentzVector recp4(lep->px(), lep->py(), lep->pz(), lep->energy());
   auto recid = lep->pdgId();
   for(auto& gp : genParticles){ // TODO: maybe you want to exclude some genparticles of matching?? currently we match even to incoming protons
+    auto absId = abs(gp.pdgId());
+    if (gp.status() != 1 and !(gp.status() == 2 and gp.isLastCopy() and absId == 15) and !((gp.status() == 1 or gp.status() == 71) and absId == 22)) continue;
     // Skip if the genparticle is already matched by reference
     if(std::any_of(recogenmatchlist.begin(), recogenmatchlist.end(), [&gp](auto& match){return match.second.first == &gp;})) continue;
 
@@ -75,7 +77,7 @@ template <typename Lepton> void GenMatching::individualGenToRecoMatch(const std:
         else if(fabs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 1.;      //    * Group 1.B: pT within 50%  (increase DR by 1.0, to give it less priority than group 1.A)
         else continue;
       }
-      else if(abs(recid)==11 && gp.pdgId()==22 && (gp.isPromptFinalState() || gp.isPromptDecayed())) rgdr += 2.; // * Group 2: photon conversions to electrons (increase DR by 2.0, to give it less priority than group 1)
+      else if(abs(recid)==11 && gp.pdgId()==22 && genp4.Pt()> 2 && (gp.isPromptFinalState() || gp.isPromptDecayed())) rgdr += 2.; // * Group 2: photon conversions to electrons (increase DR by 2.0, to give it less priority than group 1)
       else if(gp.pdgId()!=recid && gp.status()==1){                    // * Group 3: status 1, different PDG ID
         if(fabs(1.-(genp4.Pt()/recp4.Pt()))<0.2)      rgdr += 3.;      //    * Group 3.A: pT within 20% (increase DR by 3.0, to give it lower priority than groups 1 and 2)
         else if(fabs(1.-(genp4.Pt()/recp4.Pt()))<0.5) rgdr += 4.;      //    * Group 3.B: pT within 50% (increase DR by 4.0, to give it lower priority than groups 1, 2, and 3.A)
