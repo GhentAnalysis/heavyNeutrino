@@ -220,7 +220,7 @@ bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
 bool JetAnalyzer::jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const{
     if(is2018){
       if(fabs(jet.eta()) <= 2.7){
-        if(jet.neutralHadronEnergyFraction() >=  0.)                          return false;
+        if(jet.neutralHadronEnergyFraction() >=  0.9)                         return false;
         if(jet.neutralEmEnergyFraction() >= 0.9)                              return false;
         if(jet.chargedMultiplicity()+jet.neutralMultiplicity() <= 1)          return false;
         if(jet.chargedHadronEnergyFraction() <= 0 and fabs(jet.eta()) <= 2.6) return false; // only for |eta|<2.6
