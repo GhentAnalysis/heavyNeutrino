@@ -63,8 +63,10 @@ class JetAnalyzer {
     double   _JetConstituentMass[nJets_max][maxJetSize];
     int      _JetConstituentPdgId[nJets_max][maxJetSize];
     int      _JetConstituentCharge[nJets_max][maxJetSize];
-    double   _JetConstituentdxySig[nJets_max][maxJetSize];
-    double   _JetConstituentdzSig[nJets_max][maxJetSize];
+    double   _JetConstituentdxy[nJets_max][maxJetSize];
+    double   _JetConstituentdz[nJets_max][maxJetSize];
+    double   _JetConstituentdxyErr[nJets_max][maxJetSize];
+    double   _JetConstituentdzErr[nJets_max][maxJetSize];
     int      _JetConstituentsNumberOfHits[nJets_max][maxJetSize];    //signed integer so particles without tracks can have negative default values
     int      _JetConstituentsNumberOfPixelHits[nJets_max][maxJetSize];
     bool     _JetConstituentsHasTrack[nJets_max][maxJetSize];
