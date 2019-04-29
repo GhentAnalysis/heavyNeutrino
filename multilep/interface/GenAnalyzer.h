@@ -14,7 +14,7 @@ class GenAnalyzer {
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
     static const unsigned gen_n_max = 20;
-    static const unsigned gen_ndtr_max = 100;
+    static const unsigned gen_ndtr_max = 50;
    
     unsigned    _ttgEventType;
     unsigned    _zgEventType;

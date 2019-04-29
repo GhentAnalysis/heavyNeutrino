@@ -202,7 +202,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
             // get info on packed genparticle daughters from HNL ( = all status 1 genparticles)
             for(const pat::PackedGenParticle& packed : *packedGenParticles){
                 const reco::Candidate * motherInPrunedCollection = packed.mother(0);
-                if(packed.pt() > 0.4 && packed.charge() != 0 && motherInPrunedCollection != nullptr && isAncestor( &p , motherInPrunedCollection)){
+                if(packed.pt() > 0.4 && motherInPrunedCollection != nullptr && isAncestor( &p , motherInPrunedCollection)){
                     _gen_NPackedDtrsPt[_gen_nNPackedDtrs]       = packed.pt();
                     _gen_NPackedDtrsEta[_gen_nNPackedDtrs]      = packed.eta();
                     _gen_NPackedDtrsPhi[_gen_nNPackedDtrs]      = packed.phi();
