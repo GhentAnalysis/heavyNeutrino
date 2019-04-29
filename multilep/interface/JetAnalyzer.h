@@ -67,9 +67,9 @@ class JetAnalyzer {
     double   _JetConstituentdz[nJets_max][maxJetSize];
     double   _JetConstituentdxyErr[nJets_max][maxJetSize];
     double   _JetConstituentdzErr[nJets_max][maxJetSize];
-    int      _JetConstituentsNumberOfHits[nJets_max][maxJetSize];    //signed integer so particles without tracks can have negative default values
-    int      _JetConstituentsNumberOfPixelHits[nJets_max][maxJetSize];
-    bool     _JetConstituentsHasTrack[nJets_max][maxJetSize];
+    int      _JetConstituentNumberOfHits[nJets_max][maxJetSize];    //signed integer so particles without tracks can have negative default values
+    int      _JetConstituentNumberOfPixelHits[nJets_max][maxJetSize];
+    bool     _JetConstituentHasTrack[nJets_max][maxJetSize];
     
     //correction level for JEC
     //std::string jecLevel;

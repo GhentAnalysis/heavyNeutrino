@@ -87,9 +87,9 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch( "_JetConstituentdz",     &_JetConstituentdz,      std::string("_JetConstituentdz" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_JetConstituentdxyErr", &_JetConstituentdxyErr,  std::string("_JetConstituentdxyErr" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_JetConstituentdzErr",  &_JetConstituentdzErr,   std::string("_JetConstituentdzErr" + jetConstituentsArraySize + "/D").c_str() );
-    outputTree->Branch( "_JetConstituentsNumberOfHits",      &_JetConstituentsNumberOfHits, std::string("_JetConstituentsNumberOfHits" + jetConstituentsArraySize + "/I").c_str() );
-    outputTree->Branch( "_JetConstituentsNumberOfPixelHits", &_JetConstituentsNumberOfPixelHits, std::string("_JetConstituentsNumberOfPixelHits" + jetConstituentsArraySize + "/I").c_str() );
-    outputTree->Branch( "_JetConstituentsHasTrack",          &_JetConstituentsHasTrack, std::string("_JetConstituentsHasTrack" + jetConstituentsArraySize + "/O").c_str() );
+    outputTree->Branch( "_JetConstituentNumberOfHits",      &_JetConstituentNumberOfHits, std::string("_JetConstituentNumberOfHits" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_JetConstituentNumberOfPixelHits", &_JetConstituentNumberOfPixelHits, std::string("_JetConstituentNumberOfPixelHits" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_JetConstituentHasTrack",          &_JetConstituentHasTrack, std::string("_JetConstituentHasTrack" + jetConstituentsArraySize + "/O").c_str() );
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
@@ -198,17 +198,17 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
                 _JetConstituentdz[_nJets][d] = fabs(daughter->dz());
                 _JetConstituentdxyErr[_nJets][d] = fabs(daughter->dxyError());
                 _JetConstituentdzErr[_nJets][d] = fabs(daughter->dzError());
-                _JetConstituentsNumberOfHits[_nJets][d] = daughter->numberOfHits();
-                _JetConstituentsNumberOfPixelHits[_nJets][d] = daughter->numberOfPixelHits();
-                _JetConstituentsHasTrack[_nJets][d] = true;
+                _JetConstituentNumberOfHits[_nJets][d] = daughter->numberOfHits();
+                _JetConstituentNumberOfPixelHits[_nJets][d] = daughter->numberOfPixelHits();
+                _JetConstituentHasTrack[_nJets][d] = true;
             } else {
                 _JetConstituentdxy[_nJets][d] = -1.;
                 _JetConstituentdz[_nJets][d] = -1.;
                 _JetConstituentdxyErr[_nJets][d] = -1.;
                 _JetConstituentdzErr[_nJets][d] = -1.;
-                _JetConstituentsNumberOfHits[_nJets][d] = -1;
-                _JetConstituentsNumberOfPixelHits[_nJets][d] = -1;
-                _JetConstituentsHasTrack[_nJets][d] = false;
+                _JetConstituentNumberOfHits[_nJets][d] = -1;
+                _JetConstituentNumberOfPixelHits[_nJets][d] = -1;
+                _JetConstituentHasTrack[_nJets][d] = false;
             }
         }
         // second loop to put remaining jet constituents to 0 up to maxJetSize
@@ -224,9 +224,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
                 _JetConstituentdz[_nJets][d] = 0.;
                 _JetConstituentdxyErr[_nJets][d] = 0.;
                 _JetConstituentdzErr[_nJets][d] = 0.;
-                _JetConstituentsNumberOfHits[_nJets][d] = 0;
-                _JetConstituentsNumberOfPixelHits[_nJets][d] = 0;
-                _JetConstituentsHasTrack[_nJets][d] = false;
+                _JetConstituentNumberOfHits[_nJets][d] = 0;
+                _JetConstituentNumberOfPixelHits[_nJets][d] = 0;
+                _JetConstituentHasTrack[_nJets][d] = false;
             }
         }
         
