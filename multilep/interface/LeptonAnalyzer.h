@@ -147,6 +147,44 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
 
+    //Tau DNN
+    double _deepTauVsJetsRaw[nL_max];
+    bool _deepTauVsJetsVVVLoose[nL_max];
+    bool _deepTauVsJetsVVLoose[nL_max];
+    bool _deepTauVsJetsVLoose[nL_max];
+    bool _deepTauVsJetsLoose[nL_max];
+    bool _deepTauVsJetsMedium[nL_max];
+    bool _deepTauVsJetsTight[nL_max];
+    bool _deepTauVsJetsVTight[nL_max];
+    bool _deepTauVsJetsVVTight[nL_max];
+   
+    double _deepTauVsEleRaw[nL_max];
+    bool _deepTauVsEleVVVLoose[nL_max]; 
+    bool _deepTauVsEleVVLoose[nL_max]; 
+    bool _deepTauVsEleVLoose[nL_max]; 
+    bool _deepTauVsEleLoose[nL_max]; 
+    bool _deepTauVsEleMedium[nL_max]; 
+    bool _deepTauVsEleTight[nL_max]; 
+    bool _deepTauVsEleVTight[nL_max]; 
+    bool _deepTauVsEleVVTight[nL_max]; 
+
+    double _deepTauVsMuRaw[nL_max];
+    bool _deepTauVsMuVVVLoose[nL_max]; 
+    bool _deepTauVsMuVVLoose[nL_max]; 
+    bool _deepTauVsMuVLoose[nL_max]; 
+    bool _deepTauVsMuLoose[nL_max]; 
+    bool _deepTauVsMuMedium[nL_max]; 
+    bool _deepTauVsMuTight[nL_max]; 
+    bool _deepTauVsMuVTight[nL_max]; 
+    bool _deepTauVsMuVVTight[nL_max]; 
+
+    //DeepFlowTaus
+    double _dpfTauVsAllv0Raw[nL_max];
+    bool _dpfTauVsAllv0Tight[nL_max];
+
+    double _dpfTauVsAllv1Raw[nL_max];
+    bool _dpfTauVsAllv1Tight[nL_max];
+    
     //lepton MVA definitions for SUSY (ewkino), TTH and tZq 
     double _leptonMvaSUSY[nL_max];
     double _leptonMvaTTH[nL_max];
