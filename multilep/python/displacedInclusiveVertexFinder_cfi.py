@@ -6,15 +6,15 @@ displacedInclusiveVertexFinder  = cms.EDProducer("InclusiveVertexFinder",
        #tracks = cms.InputTag("displacedAssocToTracks","displacedAssocToTracks","ANA"),
        tracks = cms.InputTag("unpackedTracksAndVertices"),
        minHits = cms.uint32(6), #old 8 -> 0 AOD produciton has problems with nhits
-       maximumLongitudinalImpactParameter = cms.double(99999), #old  .3 -> infty
-       minPt = cms.double(0.4), #old .8 -> 1 
+       maximumLongitudinalImpactParameter = cms.double(20), #old  .3 -> infty
+       minPt = cms.double(0.8), #old .8 -> 1 
        maxNTracks = cms.uint32(100), #old 30 -> 100
 
        clusterizer = cms.PSet(
            seedMax3DIPSignificance = cms.double(9999.),
            seedMax3DIPValue = cms.double(9999.),
-           seedMin3DIPSignificance = cms.double(-9999), 
-           seedMin3DIPValue = cms.double(-9999),
+           seedMin3DIPSignificance = cms.double(1.2), 
+           seedMin3DIPValue = cms.double(0.005),
            clusterMaxDistance = cms.double(0.4), #500um #old .05 -> 1
            clusterMaxSignificance = cms.double(4.5), #4.5 sigma  #old  4.5 ---> infty
            distanceRatio = cms.double(20), # was cluster scale = 1 / density factor =0.05 

@@ -9,7 +9,7 @@ from heavyNeutrino.multilep.displacedTrackVertexArbitrator_cfi import *
 
 displacedInclusiveSecondaryVertices = displacedVertexMerger.clone()
 displacedInclusiveSecondaryVertices.secondaryVertices = cms.InputTag("displacedTrackVertexArbitrator")
-displacedInclusiveSecondaryVertices.maxFraction = 0.05 #0.05 #old .2 -> .05
+displacedInclusiveSecondaryVertices.maxFraction = 0.2 #0.05 #old .2 -> .05
 displacedInclusiveSecondaryVertices.minSignificance = 10
 
 
