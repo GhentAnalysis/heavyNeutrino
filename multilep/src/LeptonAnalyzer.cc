@@ -654,7 +654,7 @@ void LeptonAnalyzer::fillMatchingIVFVariables(const std::vector<reco::Vertex>& s
                 dR       = reco::deltaR(cand->eta(), cand->phi(), vtxTrack->eta(), vtxTrack->phi());
                 deta     = fabs(cand->eta() - vtxTrack->eta());
                 normchi2 = fabs(vtx.chi2()/vtx.ndof());
-                if((dR < 0.05 or (dR < 0.2 and deta < 0.01)) and (dR < mindR or (dR == mindR and normchi2 < minnormchi2))){
+                if((dR < 0.05 or (dR < 0.1 and deta < 0.03)) and (dR < mindR or (dR == mindR and normchi2 < minnormchi2))){
                     new_vtx = true;
                     _lIVF_match[_nLight] = true; 
                     mindR       = dR;
