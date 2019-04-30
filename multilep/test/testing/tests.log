@@ -1,61 +1,40 @@
-**** Following environment variables are going to be unset.
-       DBS_CLIENT_CONFIG
-       DBSCMD_HOME
-       MAGIC
-       MALLOC_CONF
-commit 0a31616139772d6608bde7afc1104d42486c7e1b
-Merge: 624c0c4 a68c10c
+commit 06bff2d4d51fb56a8e388b36882b8cdffc538ccc
 Author: tomc <tomc@cern.ch>
-Date:   Fri Apr 26 17:07:46 2019 +0200
+Date:   Fri Apr 26 18:20:01 2019 +0200
 
-    Merge remote-tracking branch 'ghent/master'
+    New test run: see tests.log
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _HLT_DoubleEle25_CaloIdL_MW,_HLT_DoubleEle25_CaloIdL_MW_prescale,_HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale
-   Removed: _HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale
-   Changed:
-      _jetIsTight                                        mean:   0.3333 -->   0.9972     rms:   0.4714 -->   0.0524    
-      _jetIsTightLepVeto                                 mean:   0.3333 -->   0.8512     rms:   0.4714 -->   0.3559    
-      _passTrigger_mm                                    mean:   0.0500 -->   0.0600     rms:   0.2179 -->   0.2375    
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _HLT_DoubleEle25_CaloIdL_MW,_HLT_DoubleEle25_CaloIdL_MW_prescale,_HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale
-   Removed: _HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale
-   Changed:
-      _jetIsTight                                        mean:   0.3616 -->   0.9915     rms:   0.4805 -->   0.0917    
-      _jetIsTightLepVeto                                 mean:   0.3616 -->   0.8164     rms:   0.4805 -->   0.3872    
-      _passTrigger_mm                                    mean:   0.0700 -->   0.0800     rms:   0.2551 -->   0.2713    
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _HLT_DoubleEle25_CaloIdL_MW,_HLT_DoubleEle25_CaloIdL_MW_prescale,_HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale
-   Removed: _HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale
-   Changed:
-      _jetIsTight                                        mean:   0.2147 -->   0.9453     rms:   0.4106 -->   0.2275    
-      _jetIsTightLepVeto                                 mean:   0.2147 -->   0.7979     rms:   0.4106 -->   0.4016    
-      _passTrigger_ee                                    mean:   0.2100 -->   0.2200     rms:   0.4073 -->   0.4142    
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale
-   Changed:
-      _passTrigger_mm                                    mean:   0.1700 -->   0.1800     rms:   0.3756 -->   0.3842    
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _phHadTowOverEm

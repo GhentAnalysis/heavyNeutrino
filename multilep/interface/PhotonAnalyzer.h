@@ -47,6 +47,7 @@ class PhotonAnalyzer {
         double   _phPhotonIsolation[nPhoton_max];
         double   _phSigmaIetaIeta[nPhoton_max];
         double   _phHadronicOverEm[nPhoton_max];
+        double   _phHadTowOverEm[nPhoton_max];
         bool     _phPassElectronVeto[nPhoton_max];
         bool     _phHasPixelSeed[nPhoton_max];
         bool     _phIsPrompt[nPhoton_max];
