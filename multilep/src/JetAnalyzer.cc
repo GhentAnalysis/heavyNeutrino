@@ -70,11 +70,11 @@ void JetAnalyzer::beginJob(TTree* outputTree){
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
-    edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
-    edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
-    edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
-    edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
-    edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken,            mets);
+    edm::Handle<std::vector<pat::Jet>> jets            = getHandle(iEvent, multilepAnalyzer->jetToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmeared     = getHandle(iEvent, multilepAnalyzer->jetSmearedToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmearedUp   = getHandle(iEvent, multilepAnalyzer->jetSmearedUpToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmearedDown = getHandle(iEvent, multilepAnalyzer->jetSmearedDownToken);
+    edm::Handle<std::vector<pat::MET>> mets            = getHandle(iEvent, multilepAnalyzer->metToken);
 
     _nJets = 0;
 
@@ -220,7 +220,7 @@ bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
 bool JetAnalyzer::jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const{
     if(is2018){
       if(fabs(jet.eta()) <= 2.7){
-        if(jet.neutralHadronEnergyFraction() >=  0.)                          return false;
+        if(jet.neutralHadronEnergyFraction() >=  0.9)                         return false;
         if(jet.neutralEmEnergyFraction() >= 0.9)                              return false;
         if(jet.chargedMultiplicity()+jet.neutralMultiplicity() <= 1)          return false;
         if(jet.chargedHadronEnergyFraction() <= 0 and fabs(jet.eta()) <= 2.6) return false; // only for |eta|<2.6

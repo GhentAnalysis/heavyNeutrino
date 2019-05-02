@@ -52,11 +52,11 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
             reader[1]->AddVariable("LepGood_mvaIdFall17noIso", &LepGood_mvaIdFall17noIso);
         }
         if(type == 0){
-            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsMuSUSY") + ( (is2017 || is2018)? "17" : "16") ).fullPath());
-            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsEleSUSY") + ((is2017 || is2018) ? "17" : "16") ).fullPath());
+            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMuSUSY").fullPath());
+            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEleSUSY").fullPath());
         } else{
-            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsMuttH") + ((is2017 || is2018) ? "17" : "16") ).fullPath());
-            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>( std::string("leptonMvaWeightsElettH") + ((is2017 || is2018) ? "17" : "16") ).fullPath());
+            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMuttH").fullPath());
+            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsElettH").fullPath());
         }
     } else{
         for(unsigned i = 0; i < 2; ++i){
@@ -79,13 +79,8 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigne
         } else{
             reader[1]->AddVariable("electronMvaFall17NoIso", &LepGood_mvaIdFall17noIso);
         }
-        if(  !(is2017 || is2018)  ){
-            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMutZqTTV16").fullPath());
-            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEletZqTTV16").fullPath());
-        } else{
-            reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMutZqTTV17").fullPath());
-            reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEletZqTTV17").fullPath());
-        }
+        reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMutZqTTV").fullPath());
+        reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEletZqTTV").fullPath());
     }
 }
 void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, 

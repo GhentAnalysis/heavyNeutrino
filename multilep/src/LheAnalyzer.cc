@@ -52,9 +52,9 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
 void LheAnalyzer::analyze(const edm::Event& iEvent){
     if( multilepAnalyzer->isData() ) return;
 
-    edm::Handle<GenEventInfoProduct> genEventInfo;          iEvent.getByToken(multilepAnalyzer->genEventInfoToken, genEventInfo);
-    edm::Handle<LHEEventProduct> lheEventInfo;              iEvent.getByToken(multilepAnalyzer->lheEventInfoToken, lheEventInfo);
-    edm::Handle<std::vector<PileupSummaryInfo>> pileUpInfo; iEvent.getByToken(multilepAnalyzer->pileUpToken,       pileUpInfo);
+    edm::Handle<GenEventInfoProduct> genEventInfo          = getHandle(iEvent, multilepAnalyzer->genEventInfoToken);
+    edm::Handle<LHEEventProduct> lheEventInfo              = getHandle(iEvent, multilepAnalyzer->lheEventInfoToken);
+    edm::Handle<std::vector<PileupSummaryInfo>> pileUpInfo = getHandle(iEvent, multilepAnalyzer->pileUpToken);
 
     _nTrueInt = pileUpInfo->begin()->getTrueNumInteractions(); // getTrueNumInteractions is the same for all bunch crossings
     _weight   = genEventInfo->weight();

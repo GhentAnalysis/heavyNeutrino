@@ -4,9 +4,11 @@ import FWCore.ParameterSet.Config as cms
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root"
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
-inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
+#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
+inputFile       = '/store/mc/RunIISummer16MiniAODv3/TTTo2L2Nu_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3-v2/270000/ECBA2DCD-02EE-E811-B88E-AC1F6B23C592.root'
 
 # Other default arguments
+
 nEvents         = 1000
 extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -69,7 +71,7 @@ elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.
 else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
 
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
-if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # No scale and smearings available yet
+if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # Updated scale and smearings
 elif is2017: setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2017-Nov17ReReco') # Rerun scale and smearings for shiftscale bug
 else:        setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='2016-Legacy')      # Default scale and smearings are ok
 
@@ -102,6 +104,18 @@ if 'storeParticleLevel' in extraContent and not isData:
 else:
   process.particleLevelSequence = cms.Sequence()
 
+yy = '17' if is2017 or is2018 else '16'
+
+#
+#Latest 94X tau ID
+#
+from heavyNeutrino.multilep.runTauIdMVA import *
+na = TauIDEmbedder(process, cms, # pass tour process object
+    debug=True,
+    toKeep = ["2017v2", "newDM2017v2"] # pick the one you need: ["2017v1", "2017v2", "newDM2017v2", "dR0p32017v2", "2016v1", "newDM2016v1"]
+)
+na.runTauID()
+
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
@@ -118,23 +132,18 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreas_cone03_Muons_Fall17.txt'), # TODO
   electrons                     = cms.InputTag("slimmedElectrons"),
   electronsEffectiveAreas       = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'), # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
-  leptonMvaWeightsMuSUSY16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml"), # TODO: clean-up old trainings here?
-  leptonMvaWeightsEleSUSY16     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml"),
-  leptonMvaWeightsMuttH16       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml"),
-  leptonMvaWeightsElettH16      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH16_BDTG.weights.xml"),
-  leptonMvaWeightsMuSUSY17      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml"),
-  leptonMvaWeightsEleSUSY17     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml"),
-  leptonMvaWeightsMuttH17       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml"),
-  leptonMvaWeightsElettH17      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml"),
-  leptonMvaWeightsEletZqTTV16   = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV16_BDTG.weights.xml"),
-  leptonMvaWeightsMutZqTTV16    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV16_BDTG.weights.xml"),
-  leptonMvaWeightsEletZqTTV17   = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml"),
-  leptonMvaWeightsMutZqTTV17    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml"),
+  leptonMvaWeightsMuSUSY        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_SUSY"+yy+"_BDTG.weights.xml"),
+  leptonMvaWeightsEleSUSY       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_SUSY"+yy+"_BDTG.weights.xml"),
+  leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH"+yy+"_BDTG.weights.xml"),
+  leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH"+yy+"_BDTG.weights.xml"),
+  leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV"+yy+"_BDTG.weights.xml"),
+  leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV"+yy+"_BDTG.weights.xml"),
   photons                       = cms.InputTag("slimmedPhotons"),
   photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfChargedHadrons_90percentBased_V2.txt'),
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),
   photonsPhotonsEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_V2.txt'),
-  taus                          = cms.InputTag("slimmedTaus"),
+#  taus                          = cms.InputTag("slimmedTaus"),
+  taus                          = cms.InputTag("NewTauIDsEmbedded"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
@@ -147,6 +156,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   triggers                      = cms.InputTag("TriggerResults::HLT"),
   recoResultsPrimary            = cms.InputTag("TriggerResults::PAT"),
   recoResultsSecondary          = cms.InputTag("TriggerResults::RECO"),
+  triggerObjects                = cms.InputTag("slimmedPatTrigger"),
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
@@ -154,6 +164,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isSUSY                        = cms.untracked.bool(isSUSY),
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
   storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),
+  storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
 )
 
 def getJSON(is2017, is2018):
@@ -172,4 +183,6 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.fullPatMetSequence *
                      process.prefiringweight *
                      process.particleLevelSequence *
+                     process.rerunMvaIsolationSequence *
+                     process.NewTauIDsEmbedded *# *getattr(process, "NewTauIDsEmbedded")
                      process.blackJackAndHookers)

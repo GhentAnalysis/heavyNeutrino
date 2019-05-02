@@ -150,7 +150,7 @@ bool LeptonAnalyzer::isEwkLoose(const pat::Electron& lep) const{
 bool LeptonAnalyzer::isEwkLoose(const pat::Tau& tau) const{
     if( _lPt[_nL] <= 20 || fabs(_lEta[_nL]) >= 2.3)     return false;
     if(!_lPOGVeto[_nL])                                 return false;
-    if(!_tauEleVeto[_nL])                               return false;
+    if(!_tauEleVetoLoose[_nL])                          return false;
     return tauLightOverlap(tau, _lEwkLoose);
 }
 

@@ -2,41 +2,43 @@
 
 
 multilep::multilep(const edm::ParameterSet& iConfig):
-    vtxToken(                         consumes<std::vector<reco::Vertex>>(        iConfig.getParameter<edm::InputTag>("vertices"))),
-    genEventInfoToken(                consumes<GenEventInfoProduct>(              iConfig.getParameter<edm::InputTag>("genEventInfo"))),
-    genLumiInfoToken(                 consumes<GenLumiInfoHeader, edm::InLumi>(   iConfig.getParameter<edm::InputTag>("genEventInfo"))),
-    lheEventInfoToken(                consumes<LHEEventProduct>(                  iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
-    pileUpToken(                      consumes<std::vector<PileupSummaryInfo>>(   iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
-    genParticleToken(                 consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("genParticles"))),
-    particleLevelPhotonsToken(        consumes<reco::GenParticleCollection>(      iConfig.getParameter<edm::InputTag>("particleLevelPhotons"))),
-    particleLevelLeptonsToken(        consumes<reco::GenJetCollection>(           iConfig.getParameter<edm::InputTag>("particleLevelLeptons"))),
-    particleLevelJetsToken(           consumes<reco::GenJetCollection>(           iConfig.getParameter<edm::InputTag>("particleLevelJets"))),
-    particleLevelMetsToken(           consumes<reco::METCollection>(              iConfig.getParameter<edm::InputTag>("particleLevelMets"))),
-    muonToken(                        consumes<std::vector<pat::Muon>>(           iConfig.getParameter<edm::InputTag>("muons"))),
-    eleToken(                         consumes<std::vector<pat::Electron>>(       iConfig.getParameter<edm::InputTag>("electrons"))),
-    tauToken(                         consumes<std::vector<pat::Tau>>(            iConfig.getParameter<edm::InputTag>("taus"))),
-    photonToken(                      consumes<std::vector<pat::Photon>>(         iConfig.getParameter<edm::InputTag>("photons"))),
-    packedCandidatesToken(            consumes<std::vector<pat::PackedCandidate>>(iConfig.getParameter<edm::InputTag>("packedCandidates"))),
-    rhoToken(                         consumes<double>(                           iConfig.getParameter<edm::InputTag>("rho"))),
-    metToken(                         consumes<std::vector<pat::MET>>(            iConfig.getParameter<edm::InputTag>("met"))),
-    jetToken(                         consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jets"))),
-    jetSmearedToken(                  consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
-    jetSmearedUpToken(                consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
-    jetSmearedDownToken(              consumes<std::vector<pat::Jet>>(            iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
-    recoResultsPrimaryToken(          consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsPrimary"))),
-    recoResultsSecondaryToken(        consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
-    triggerToken(                     consumes<edm::TriggerResults>(              iConfig.getParameter<edm::InputTag>("triggers"))),
-    prescalesToken(                   consumes<pat::PackedTriggerPrescales>(      iConfig.getParameter<edm::InputTag>("prescales"))),
-    prefireWeightToken(               consumes<double>(                           edm::InputTag("prefiringweight:nonPrefiringProb"))),
-    prefireWeightUpToken(             consumes<double>(                           edm::InputTag("prefiringweight:nonPrefiringProbUp"))),
-    prefireWeightDownToken(           consumes<double>(                           edm::InputTag("prefiringweight:nonPrefiringProbDown"))),
-    skim(                                                                         iConfig.getUntrackedParameter<std::string>("skim")),
-    sampleIsData(                                                                       iConfig.getUntrackedParameter<bool>("isData")),
-    sampleIs2017(                                                                       iConfig.getUntrackedParameter<bool>("is2017")),
-    sampleIs2018(                                                                       iConfig.getUntrackedParameter<bool>("is2018")),
-    sampleIsSUSY(                                                                       iConfig.getUntrackedParameter<bool>("isSUSY")),
-    storeLheParticles(                                                            iConfig.getUntrackedParameter<bool>("storeLheParticles")),
-    storeParticleLevel(                                                           iConfig.getUntrackedParameter<bool>("storeParticleLevel"))
+    vtxToken(                 consumes<std::vector<reco::Vertex>>(             iConfig.getParameter<edm::InputTag>("vertices"))),
+    genEventInfoToken(        consumes<GenEventInfoProduct>(                   iConfig.getParameter<edm::InputTag>("genEventInfo"))),
+    genLumiInfoToken(         consumes<GenLumiInfoHeader, edm::InLumi>(        iConfig.getParameter<edm::InputTag>("genEventInfo"))),
+    lheEventInfoToken(        consumes<LHEEventProduct>(                       iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
+    pileUpToken(              consumes<std::vector<PileupSummaryInfo>>(        iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
+    genParticleToken(         consumes<reco::GenParticleCollection>(           iConfig.getParameter<edm::InputTag>("genParticles"))),
+    particleLevelPhotonsToken(consumes<reco::GenParticleCollection>(           iConfig.getParameter<edm::InputTag>("particleLevelPhotons"))),
+    particleLevelLeptonsToken(consumes<reco::GenJetCollection>(                iConfig.getParameter<edm::InputTag>("particleLevelLeptons"))),
+    particleLevelJetsToken(   consumes<reco::GenJetCollection>(                iConfig.getParameter<edm::InputTag>("particleLevelJets"))),
+    particleLevelMetsToken(   consumes<reco::METCollection>(                   iConfig.getParameter<edm::InputTag>("particleLevelMets"))),
+    muonToken(                consumes<std::vector<pat::Muon>>(                iConfig.getParameter<edm::InputTag>("muons"))),
+    eleToken(                 consumes<std::vector<pat::Electron>>(            iConfig.getParameter<edm::InputTag>("electrons"))),
+    tauToken(                 consumes<std::vector<pat::Tau>>(                 iConfig.getParameter<edm::InputTag>("taus"))),
+    photonToken(              consumes<std::vector<pat::Photon>>(              iConfig.getParameter<edm::InputTag>("photons"))),
+    packedCandidatesToken(    consumes<std::vector<pat::PackedCandidate>>(     iConfig.getParameter<edm::InputTag>("packedCandidates"))),
+    rhoToken(                 consumes<double>(                                iConfig.getParameter<edm::InputTag>("rho"))),
+    metToken(                 consumes<std::vector<pat::MET>>(                 iConfig.getParameter<edm::InputTag>("met"))),
+    jetToken(                 consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jets"))),
+    jetSmearedToken(          consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
+    jetSmearedUpToken(        consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
+    jetSmearedDownToken(      consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
+    recoResultsPrimaryToken(  consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("recoResultsPrimary"))),
+    recoResultsSecondaryToken(consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
+    triggerToken(             consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("triggers"))),
+    prescalesToken(           consumes<pat::PackedTriggerPrescales>(           iConfig.getParameter<edm::InputTag>("prescales"))),
+    trigObjToken(             consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
+    prefireWeightToken(       consumes<double>(                                edm::InputTag("prefiringweight:nonPrefiringProb"))),
+    prefireWeightUpToken(     consumes<double>(                                edm::InputTag("prefiringweight:nonPrefiringProbUp"))),
+    prefireWeightDownToken(   consumes<double>(                                edm::InputTag("prefiringweight:nonPrefiringProbDown"))),
+    skim(                                                                      iConfig.getUntrackedParameter<std::string>("skim")),
+    sampleIsData(                                                              iConfig.getUntrackedParameter<bool>("isData")),
+    sampleIs2017(                                                              iConfig.getUntrackedParameter<bool>("is2017")),
+    sampleIs2018(                                                              iConfig.getUntrackedParameter<bool>("is2018")),
+    sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
+    storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
+    storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
+    storeAllTauID(                                                                iConfig.getUntrackedParameter<bool>("storeAllTauID"))
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -83,6 +85,7 @@ void multilep::beginJob(){
     if( isSUSY() )  susyMassAnalyzer->beginJob(outputTree, fs);
     if( isMC() ) genAnalyzer->beginJob(outputTree);
     if( isMC() && storeParticleLevel) particleLevelAnalyzer->beginJob(outputTree);
+    
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
@@ -105,7 +108,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
-    edm::Handle<std::vector<reco::Vertex>> vertices; iEvent.getByToken(vtxToken, vertices);
+    auto vertices = getHandle(iEvent, vtxToken);
     if( isMC() ) lheAnalyzer->analyze(iEvent);                                            // needs to be run before selection to get correct uncertainties on MC xsection
     if( isSUSY() ) susyMassAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
@@ -116,7 +119,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if( isMC() && storeParticleLevel ) applySkim = !particleLevelAnalyzer->analyze(iEvent);
     else applySkim = true;
 
-    if(_nVertex == 0 and applySkim)                                          return;          // Don't consider 0 vertex events
+    if(_nVertex == 0)                                                        return;          // Don't consider 0 vertex events
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin())) and applySkim) return;          // returns false if doesn't pass applySkim condition, so skip event in such case
     if(!photonAnalyzer->analyze(iEvent) and applySkim)                       return;
     if(!jetAnalyzer->analyze(iEvent) and applySkim)                          return;
@@ -125,10 +128,10 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     _eventNb = (unsigned long) iEvent.id().event();
 
-    if( isMC() && is2018() ){
-        edm::Handle<double> pfw;     iEvent.getByToken(prefireWeightToken,     pfw);     _prefireWeight     = (*pfw);
-        edm::Handle<double> pfwUp;   iEvent.getByToken(prefireWeightUpToken,   pfwUp);   _prefireWeightUp   = (*pfwUp);
-        edm::Handle<double> pfwDown; iEvent.getByToken(prefireWeightDownToken, pfwDown); _prefireWeightDown = (*pfwDown);
+    if(isMC() and !is2018()){
+     _prefireWeight = *(getHandle(iEvent, prefireWeightToken));
+     _prefireWeightUp = *(getHandle(iEvent, prefireWeightUpToken));
+     _prefireWeightDown = *(getHandle(iEvent, prefireWeightDownToken));
     }
 
     outputTree->Fill();                                                                  //store calculated event info in root tree

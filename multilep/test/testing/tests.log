@@ -1,43 +1,40 @@
-commit c41b4695bb8d7f9fa70c26f69c05d7e94d81bdac
+commit 06bff2d4d51fb56a8e388b36882b8cdffc538ccc
 Author: tomc <tomc@cern.ch>
-Date:   Tue Mar 26 12:15:38 2019 +0100
+Date:   Fri Apr 26 18:20:01 2019 +0200
 
-    Scale and smearing corrections were not yet stored for 2018
+    New test run: see tests.log
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Removed: _lHNFO,_lHNLoose,_lHNTight
+   New: _phHadTowOverEm
