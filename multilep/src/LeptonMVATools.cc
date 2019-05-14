@@ -1,5 +1,28 @@
 #include "heavyNeutrino/multilep/interface/LeptonAnalyzer.h"
 
+#include <map>
+
+
+double reducedPdgId( int pdgId ){
+    static const std::map< unsigned, double > pdgIdMap = {
+        { 0, 0.},
+        { 1, 0.125},
+        { 2, 0.25},
+        { 11, 0.375},
+        { 13, 0.5},
+        { 22, 0.625},
+        { 130, 0.75},
+        { 211, 0.875}
+    };
+    auto entry = pdgIdMap.find( fabs( pdgId ) );
+    if( entry != pdgIdMap.cend() ){
+        return entry->second;
+    } else {
+        return 1;
+    }
+}
+
+
 void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, const pat::Jet* jet ){
 
     unsigned num_daughters = ( jet == nullptr ) ? 0 : jet->numberOfDaughters();
@@ -10,12 +33,20 @@ void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, 
             _closestJetConstituentPhi[_nL][i] = 0.;
             _closestJetConstituentMass[_nL][i] = 0.;
             _closestJetConstituentPdgId[_nL][i] = 0;
+            _closestJetConstituentPdgIdReduced[_nL][i] = 0.;
             _closestJetConstituentCharge[_nL][i] = 0;
+            _closestJetConstituentdxy[_nL][i] = 0;
+            _closestJetConstituentdxyError[_nL][i] = 0;
             _closestJetConstituentdxySig[_nL][i] = 0.;
+            _closestJetConstituentdz[_nL][i] = 0;
+            _closestJetConstituentdzError[_nL][i] = 0;
             _closestJetConstituentdzSig[_nL][i] = 0.;
             _closestJetConstituentsNumberOfHits[_nL][i] = 0;
             _closestJetConstituentsNumberOfPixelHits[_nL][i] = 0;
             _closestJetConstituentsHasTrack[_nL][i] = false;
+            _closestJetConstituentVx[_nL][i] = 0.;
+            _closestJetConstituentVy[_nL][i] = 0.;
+            _closestJetConstituentVz[_nL][i] = 0.;
         }
     } 
     if( jet == nullptr ){
@@ -31,10 +62,17 @@ void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, 
         _closestJetConstituentPhi[_nL][d] = daughter->phi();
         _closestJetConstituentMass[_nL][d] = daughter->mass();
         _closestJetConstituentPdgId[_nL][d] = daughter->pdgId();
-
+        _closestJetConstituentPdgIdReduced[_nL][d] = reducedPdgId( daughter->pdgId() );
         _closestJetConstituentCharge[_nL][d] = daughter->charge();
+        _closestJetConstituentVx[_nL][d] = daughter->vx();
+        _closestJetConstituentVy[_nL][d] = daughter->vy();
+        _closestJetConstituentVz[_nL][d] = daughter->vz();
         if( daughter->hasTrackDetails() ){
+            _closestJetConstituentdxy[_nL][d] = daughter->dxy();
+            _closestJetConstituentdxyError[_nL][d] = daughter->dxyError();
             _closestJetConstituentdxySig[_nL][d] = fabs( daughter->dxy()/daughter->dxyError() );
+            _closestJetConstituentdz[_nL][d] = daughter->dz();
+            _closestJetConstituentdzError[_nL][d] = daughter->dzError();
             _closestJetConstituentdzSig[_nL][d] = fabs( daughter->dz()/daughter->dzError() ); 
             _closestJetConstituentsNumberOfHits[_nL][d] = daughter->numberOfHits();
             _closestJetConstituentsNumberOfPixelHits[_nL][d] = daughter->numberOfPixelHits();

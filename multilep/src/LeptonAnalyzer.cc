@@ -114,12 +114,20 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch( "_closestJetConstituentPhi", &_closestJetConstituentPhi, std::string("_closestJetConstituentPhi" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentMass", &_closestJetConstituentMass, std::string("_closestJetConstituentMass" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentPdgId", &_closestJetConstituentPdgId, std::string("_closestJetConstituentPdgId" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentPdgIdReduced", &_closestJetConstituentPdgIdReduced, std::string("_closestJetConstituentPdgIdReduced" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentCharge", &_closestJetConstituentCharge, std::string("_closestJetConstituentCharge" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentdxy", &_closestJetConstituentdxy, std::string("_closestJetConstituentdxy" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentdxyError", &_closestJetConstituentdxyError, std::string("_closestJetConstituentdxyError" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentdxySig", &_closestJetConstituentdxySig, std::string("_closestJetConstituentdxySig" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentdz", &_closestJetConstituentdz, std::string("_closestJetConstituentdz" + jetConstituentsArraySize + "/D").c_str() );
+    outputTree->Branch( "_closestJetConstituentdzError", &_closestJetConstituentdzError, std::string("_closestJetConstituentdzError" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentdzSig", &_closestJetConstituentdzSig, std::string("_closestJetConstituentdzSig" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentsNumberOfHits", &_closestJetConstituentsNumberOfHits, std::string("_closestJetConstituentsNumberOfHits" + jetConstituentsArraySize + "/I").c_str() );
     outputTree->Branch( "_closestJetConstituentsNumberOfPixelHits", &_closestJetConstituentsNumberOfPixelHits, std::string("_closestJetConstituentsNumberOfPixelHits" + jetConstituentsArraySize + "/I").c_str() );
     outputTree->Branch( "_closestJetConstituentsHasTrack", &_closestJetConstituentsHasTrack, std::string("_closestJetConstituentsHasTrack" + jetConstituentsArraySize + "/O").c_str() );
+    outputTree->Branch( "_closestJetConstituentVx", &_closestJetConstituentVx, std::string("_closestJetConstituentVx" + jetConstituentsArraySize + "/D" ).c_str() );
+    outputTree->Branch( "_closestJetConstituentVy", &_closestJetConstituentVy, std::string("_closestJetConstituentVy" + jetConstituentsArraySize + "/D" ).c_str() );
+    outputTree->Branch( "_closestJetConstituentVz", &_closestJetConstituentVz, std::string("_closestJetConstituentVz" + jetConstituentsArraySize + "/D" ).c_str() );
 
     if(multilepAnalyzer->storeAllTauID){
       outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
