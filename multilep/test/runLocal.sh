@@ -1,5 +1,37 @@
 #!/bin/bash
 
+#
+# The script needs a proxy, so make sure to have your preferred way of accessing the proxy here!
+#
+if [[ $USER == "tutran" ]]; then     proxy=/user/tutran/private/x509up_u23068
+elif [[ $USER == "wverbeke" ]]; then proxy=/user/wverbeke/x509up_u20640
+elif [[ $USER == "gmestdac" ]]; then proxy=/user/gmestdac/x509up_u20676
+elif [[ $USER == "lwezenbe" ]]; then proxy=/user/lwezenbe/proxylwezenbe
+elif [[ $USER == "tomc" ]]; then     proxy=/user/$USER/production/proxyExpect.sh
+else
+  echo "Add your proxy in RunLocal.sh before submitting jobs!"
+  exit 1
+fi
+
+exportProxy(){
+  if [[ $proxy == *.sh ]]; then
+    echo "$proxy" >> $1
+  else
+    echo "export X509_USER_PROXY=$proxy" >> $1
+  fi
+}
+
+DATE=`date '+%Y%m%d_%H%M%S'`
+#
+# Read command-line arguments, typically given by submitAll.py
+#
+input=$1
+output="$2/$DATE/0000" # similar structure as crab
+skim=$3
+filesPerJob=$4
+extraContent=$5
+
+
 #include function to make list of all files in given sample
 source scripts/makeFileList.sh
 
@@ -11,111 +43,37 @@ setCMSSW(){
     echo "cd heavyNeutrino/multilep/test/" >> $1
 }
 
+transfer(){
+    echo "gfal-mkdir -p srm://maite.iihe.ac.be:8443/$2/$(dirname $3)" >> $4
+    echo "gfal-copy -f file://$1/$3 srm://maite.iihe.ac.be:8443/$2/$3" >> $4
+    echo "rm $2/$3" >> $4
+}
+
 #function to submit a job and catch invalid credentials
 submitJob(){
     qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
-    while grep "Invalid credential" outputCheck.txt; do
-        echo "Invalid credential caught, resubmitting"
+    while !(grep ".cream02.iihe.ac.be" outputCheck.txt); do
+        echo "Submit failed, resubmitting"
         sleep 2  #sleep 2 seconds before attemtping resubmission
         qsub $1 -l walltime=40:00:00 > outputCheck.txt 2>> outputCheck.txt
     done
-    cat outputCheck.txt
     rm outputCheck.txt
 }
-
-##################################
-#Add your proxy!
-##################################
-if [[ $USER == "tutran" ]]; then
-  proxy=/user/tutran/private/x509up_u23068
-elif [[ $USER == "wverbeke" ]]; then
-  proxy=/user/wverbeke/x509up_u20640
-elif [[ $USER == "gmestdac" ]]; then
-  proxy=/user/gmestdac/x509up_u20676
-elif [[ $USER == "lwezenbe" ]]; then
-  proxy=/user/lwezenbe/proxylwezenbe
-else
-  echo "Add your proxy in RunLocal.sh before submitting jobs!"
-  exit 1
-fi
-
-exportProxy(){
-   echo "export X509_USER_PROXY=$proxy" >> $1
-}
-#read command-line arguments
-input=$1
-output=$2
-skim=$3             #skim condition for the sample
-                    #This will determine the name of the output files.
-                    #The names of the output files will determine the
-                    #skim, via multilep.py
-filesPerJob=$4
-
-#if no output directory given, automatically initialize one
-if [[ -z "$output" ]]; then
-    output=$input
-    if [[ $input == *"/user/"* ]] || [[ $input == *"/pnfs/"* ]]; then
-        if [[  -z "${a##/}" ]]; then
-            output=${output%:*}
-        fi
-        output=${input##/}
-    else 
-        #strip sample name from input
-        output=${input:1}    
-        output=${output%%/}
-        #set output directory to default 
-    fi
-    #add run labels for data
-    if [[ $input == *"Run2017"* ]] || [[ $input == *"Run2016"* ]]; then
-        echo "passed IF"
-        if [[ $input == *"Run2017"* ]]; then
-            output=${output}/Run2017
-        else 
-            output=${output}/Run2016
-        fi
-        for era in B C D E F G H; do
-            if [[ $input == *"Run2016${era}"* ]] || [[ $input == *"Run2017${era}"* ]]; then
-                output=${output}${era}
-            fi
-        done
-    fi
-    echo "OUTPUT = $output"
-    output=~/public/heavyNeutrino/${output}    
-fi
-
-#make output directory structure if needed
-mkdir -p $output
-
-#initialize filesPerJob to a default value if the argument is unspecified
-if [[ -z "$filesPerJob" ]]; then
-    filesPerJob=10
-fi
-
-
-#check if output exists, if not make the directory
-mkdir -p $output
-mkdir -p ${output}/errs
-mkdir -p ${output}/logs
 
 #make list of all files in input sample
 fileList $input
 
+
 #loop over new list of files and submit jobs
 fileCount=0
-#jobCount=0
-submit=crabSucks.sh
+submit=localSubmission.sh
 fileList=""
 while read f; do
-    #fileList="${fileList}${f},"
     fileCount=$((fileCount + 1))
     #submit a job for every few files, as specified in the input
     if (( $fileCount % $filesPerJob == 0 )) || (( $fileCount == 1 ))
         then if (( $fileCount % $filesPerJob == 0 )); then
-            #then fileList="${fileList%,}" #remove trailing comma from fileList
-            #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/Job_${jobCount}_${skim}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
-            #submit job
             submitJob $submit
-            #cat $submit
             jobCount=$((jobCount + 1))
             fileList=""
         fi
@@ -126,15 +84,23 @@ while read f; do
         setCMSSW $submit
         exportProxy $submit
     fi
-    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=${output}/${skim}_Job_${fileCount}.root events=-1 > ${output}/logs/Job_${fileCount}.txt 2> ${output}/errs/Job_${fileCount}.txt" >> $submit
+    userDir="/user/$USER/public/heavyNeutrino/$output"
+    pnfsDir="/pnfs/iihe/cms/store/user/$USER/heavyNeutrino/$output"
+    outputFile="${skim}_${fileCount}.root"
+    logFile="logs/${skim}_${fileCount}.txt"
+    errFile="errs/${skim}_${fileCount}.txt"
+    mkdir -p ${userDir}/errs
+    mkdir -p ${userDir}/logs
+    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=$userDir/$outputFile events=-1 ${extraContent} > $userDir/$logFile 2> $userDir/$errFile" >> $submit
+    exportProxy $submit
+    transfer $userDir $pnfsDir $outputFile $submit
+    transfer $userDir $pnfsDir $logFile $submit
+    transfer $userDir $pnfsDir $errFile $submit
 done < fileList.txt
 if (( $fileCount % $filesPerJob != 0 )); then
-    #fileList="${fileList%,}" #remove trailing comma from fileList
-    #echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$fileList outputFile=${output}/${skim}_Job_${jobCount}.root events=-1 > ${output}/logs/Job_${jobCount}.txt 2> ${output}/errs/Job_${jobCount}.txt" >> $submit
-    #submit job
     submitJob $submit
-    #cat $submit
 fi
+
 #remove temporary files
 rm $submit
 rm fileList.txt
