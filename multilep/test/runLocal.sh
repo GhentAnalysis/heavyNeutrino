@@ -46,7 +46,9 @@ setCMSSW(){
 transfer(){
     echo "gfal-mkdir -p srm://maite.iihe.ac.be:8443/$2/$(dirname $3)" >> $4
     echo "gfal-copy -f file://$1/$3 srm://maite.iihe.ac.be:8443/$2/$3" >> $4
-    echo "rm $2/$3" >> $4
+    if [[ $proxy == *.sh ]]; then # Only clean-up the local files when a script is used for the proxy, then we are sure the proxy is valid and files should be copied correctly
+      echo "rm $1/$3" >> $4
+    fi
 }
 
 #function to submit a job and catch invalid credentials
