@@ -26,8 +26,8 @@ for dataset in datasets:
 
       if 'Run201' in dataset: outputDir = os.path.join(outputDir, dataset.split('-')[0].split('/')[-1])
 
-      if 'ext' in dataset:    outputDir = os.path.join(outputDir, 'localSubmission_ext' + dataset.split('ext')[-1].split('/')[0])
-      else:                   outputDir = os.path.join(outputDir, 'localSubmission')
+      if 'ext' in dataset:    outputDir = os.path.join(outputDir, 'localSubmission_ext' + dataset.split('ext')[-1].split('/')[0] + '_' + productionLabel)
+      else:                   outputDir = os.path.join(outputDir, 'localSubmission_' + productionLabel)
 
       extra  = ('extraContent=' + ','.join(extraContent)) if len(extraContent) else ''
       os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + skim + ' ' + str(filesPerJob) + ' ' + extra)
