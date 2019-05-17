@@ -40,6 +40,7 @@ class JetAnalyzer {
     double   _jetDeepCsv_b[nJets_max];
     double   _jetDeepCsv_c[nJets_max];
     double   _jetDeepCsv_bb[nJets_max];
+    double   _jetDeepCsv[nJets_max];
     unsigned _jetHadronFlavor[nJets_max];
     bool     _jetIsLoose[nJets_max];
     bool     _jetIsTight[nJets_max];
