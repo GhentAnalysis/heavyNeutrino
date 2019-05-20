@@ -8,7 +8,7 @@ productionLabel = os.path.basename(datasetsFile.split('/')[-1].split('.')[0])   
 outDir          = '/user/' + os.environ['USER'] + '/public/heavyNeutrino'                                 # Output directory in case of local submission
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
-extraContent    = []
+extraContent    = ['storeAllTauID']
 
 #check if call asked for local submission
 submitLocal     = ""

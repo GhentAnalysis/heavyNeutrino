@@ -101,7 +101,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["passTrigger_ee"]  = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL", "HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW"};
     allFlags["passTrigger_et"]  = {"HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1", "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20", // first half of 2016
                                    "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30"};                                                         // second half of 2016
-    allFlags["passTrigger_mt"]  = {"HLT_IsoMu19_eta2p1_LooseIsoPFTau20"};
+    allFlags["passTrigger_mt"]  = {"HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1","HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1", "HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg", "HLT_IsoMu19_eta2p1_LooseIsoPFTau20", "HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1", "HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg", "HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1", "HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90"};
 
     allFlags["passTrigger_mmm"] = {"HLT_TripleMu_12_10_5"};
     allFlags["passTrigger_emm"] = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL"};
