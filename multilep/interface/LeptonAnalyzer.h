@@ -99,9 +99,12 @@ class LeptonAnalyzer {
     double _closestJetConstituentdz[nL_max][maxJetSize];
     double _closestJetConstituentdzError[nL_max][maxJetSize];
     double _closestJetConstituentdzSig[nL_max][maxJetSize];
-    int _closestJetConstituentsNumberOfHits[nL_max][maxJetSize];    //signed integer so particles without tracks can have negative default values
-    int _closestJetConstituentsNumberOfPixelHits[nL_max][maxJetSize];
-    bool _closestJetConstituentsHasTrack[nL_max][maxJetSize];
+    int _closestJetConstituentNumberOfHits[nL_max][maxJetSize];    //signed integer so particles without tracks can have negative default values
+    int _closestJetConstituentNumberOfPixelHits[nL_max][maxJetSize];
+    int _closestJetConstituentNumberOfStripLayersWithMeasurement[nL_max][maxJetSize];
+    int _closestJetConstituentNumberOfPixelLayersWithMeasurement[nL_max][maxJetSize];
+
+    bool _closestJetConstituentHasTrack[nL_max][maxJetSize];
     double _closestJetConstituentVx[nL_max][maxJetSize];
     double _closestJetConstituentVy[nL_max][maxJetSize];
     double _closestJetConstituentVz[nL_max][maxJetSize];

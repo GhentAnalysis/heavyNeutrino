@@ -123,9 +123,11 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch( "_closestJetConstituentdz", &_closestJetConstituentdz, std::string("_closestJetConstituentdz" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentdzError", &_closestJetConstituentdzError, std::string("_closestJetConstituentdzError" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_closestJetConstituentdzSig", &_closestJetConstituentdzSig, std::string("_closestJetConstituentdzSig" + jetConstituentsArraySize + "/D").c_str() );
-    outputTree->Branch( "_closestJetConstituentsNumberOfHits", &_closestJetConstituentsNumberOfHits, std::string("_closestJetConstituentsNumberOfHits" + jetConstituentsArraySize + "/I").c_str() );
-    outputTree->Branch( "_closestJetConstituentsNumberOfPixelHits", &_closestJetConstituentsNumberOfPixelHits, std::string("_closestJetConstituentsNumberOfPixelHits" + jetConstituentsArraySize + "/I").c_str() );
-    outputTree->Branch( "_closestJetConstituentsHasTrack", &_closestJetConstituentsHasTrack, std::string("_closestJetConstituentsHasTrack" + jetConstituentsArraySize + "/O").c_str() );
+    outputTree->Branch( "_closestJetConstituentNumberOfHits", &_closestJetConstituentNumberOfHits, std::string("_closestJetConstituentNumberOfHits" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentNumberOfPixelHits", &_closestJetConstituentNumberOfPixelHits, std::string("_closestJetConstituentNumberOfPixelHits" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentNumberOfPixelLayersWithMeasurement", &_closestJetConstituentNumberOfPixelLayersWithMeasurement, std::string( "_closestJetConstituentNumberOfPixelLayersWithMeasurement" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentNumberOfStripLayersWithMeasurement", &_closestJetConstituentNumberOfStripLayersWithMeasurement, std::string( "_closestJetConstituentNumberOfStripLayersWithMeasurement" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_closestJetConstituentHasTrack", &_closestJetConstituentHasTrack, std::string("_closestJetConstituentsHasTrack" + jetConstituentsArraySize + "/O").c_str() );
     outputTree->Branch( "_closestJetConstituentVx", &_closestJetConstituentVx, std::string("_closestJetConstituentVx" + jetConstituentsArraySize + "/D" ).c_str() );
     outputTree->Branch( "_closestJetConstituentVy", &_closestJetConstituentVy, std::string("_closestJetConstituentVy" + jetConstituentsArraySize + "/D" ).c_str() );
     outputTree->Branch( "_closestJetConstituentVz", &_closestJetConstituentVz, std::string("_closestJetConstituentVz" + jetConstituentsArraySize + "/D" ).c_str() );

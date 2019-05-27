@@ -52,9 +52,11 @@ void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, 
             _closestJetConstituentdz[_nL][i] = 0;
             _closestJetConstituentdzError[_nL][i] = 0;
             _closestJetConstituentdzSig[_nL][i] = 0.;
-            _closestJetConstituentsNumberOfHits[_nL][i] = 0;
-            _closestJetConstituentsNumberOfPixelHits[_nL][i] = 0;
-            _closestJetConstituentsHasTrack[_nL][i] = false;
+            _closestJetConstituentNumberOfHits[_nL][i] = 0;
+            _closestJetConstituentNumberOfPixelHits[_nL][i] = 0;
+            _closestJetConstituentNumberOfPixelLayersWithMeasurement[_nL][i] = 0;
+            _closestJetConstituentNumberOfStripLayersWithMeasurement[_nL][i] = 0;
+            _closestJetConstituentHasTrack[_nL][i] = false;
             _closestJetConstituentVx[_nL][i] = 0.;
             _closestJetConstituentVy[_nL][i] = 0.;
             _closestJetConstituentVz[_nL][i] = 0.;
@@ -85,15 +87,23 @@ void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, 
             _closestJetConstituentdz[_nL][d] = daughter->dz();
             _closestJetConstituentdzError[_nL][d] = catchNanOrInf( daughter->dzError() );
             _closestJetConstituentdzSig[_nL][d] = catchNanOrInf( fabs( daughter->dz()/daughter->dzError() ) );
-            _closestJetConstituentsNumberOfHits[_nL][d] = daughter->numberOfHits();
-            _closestJetConstituentsNumberOfPixelHits[_nL][d] = daughter->numberOfPixelHits();
-            _closestJetConstituentsHasTrack[_nL][d] = true;
+            _closestJetConstituentNumberOfHits[_nL][d] = daughter->numberOfHits();
+            _closestJetConstituentNumberOfPixelHits[_nL][d] = daughter->numberOfPixelHits();
+            _closestJetConstituentNumberOfPixelLayersWithMeasurement[_nL][d] = daughter->pixelLayersWithMeasurement();
+            _closestJetConstituentNumberOfStripLayersWithMeasurement[_nL][d] = daughter->stripLayersWithMeasurement();
+            _closestJetConstituentHasTrack[_nL][d] = true;
         } else {
+            _closestJetConstituentdxy[_nL][d] = -1;
+            _closestJetConstituentdxyError[_nL][d] = 0;
             _closestJetConstituentdxySig[_nL][d] = -1.;
+            _closestJetConstituentdz[_nL][d] = -1;
+            _closestJetConstituentdzError[_nL][d] = 0;
             _closestJetConstituentdzSig[_nL][d] = -1.;
-            _closestJetConstituentsNumberOfHits[_nL][d] = -1;
-            _closestJetConstituentsNumberOfPixelHits[_nL][d] = -1;
-            _closestJetConstituentsHasTrack[_nL][d] = false; 
+            _closestJetConstituentNumberOfHits[_nL][d] = -1;
+            _closestJetConstituentNumberOfPixelHits[_nL][d] = -1;
+            _closestJetConstituentNumberOfPixelLayersWithMeasurement[_nL][d] = -1;
+            _closestJetConstituentNumberOfStripLayersWithMeasurement[_nL][d] = -1;
+            _closestJetConstituentHasTrack[_nL][d] = false; 
         }
     }
 }
