@@ -52,7 +52,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     if(!genParticles.isValid()) return;
 
     // TODO: when applying overlap for new photon samples: check the pt and eta cuts of the photon
-    _ttgEventType = overlapEventType(*genParticles, 13., 3.0); // for TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8
+    _ttgEventType = overlapEventType(*genParticles, 10., 5.0); // for TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8
     _zgEventType  = overlapEventType(*genParticles, 15., 2.6); // for ZGToLLG_01J_5f_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8
 
     _gen_nL = 0;
@@ -127,7 +127,7 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         if(fabs(p->eta())>etaCut) continue;
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
-        if(GenTools::getMinDeltaR(*p, genParticles) < 0.2) continue;
+        if(GenTools::getMinDeltaR(*p, genParticles) < 0.1) continue;
         if(not GenTools::passParentage(*p, genParticles))  continue;
 
         // Everything below is *signal*
