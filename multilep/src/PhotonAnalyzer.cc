@@ -32,6 +32,7 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_phPhotonIsolation",                  &_phPhotonIsolation,              "_phPhotonIsolation[_nPh]/D");
     outputTree->Branch("_phSigmaIetaIeta",                    &_phSigmaIetaIeta,                "_phSigmaIetaIeta[_nPh]/D");
     outputTree->Branch("_phHadronicOverEm",                   &_phHadronicOverEm,               "_phHadronicOverEm[_nPh]/D");
+    outputTree->Branch("_phHadTowOverEm",                     &_phHadTowOverEm,                 "_phHadTowOverEm[_nPh]/D");
     outputTree->Branch("_phPassElectronVeto",                 &_phPassElectronVeto,             "_phPassElectronVeto[_nPh]/O");
     outputTree->Branch("_phHasPixelSeed",                     &_phHasPixelSeed,                 "_phHasPixelSeed[_nPh]/O");
     if( multilepAnalyzer->isMC() ){
@@ -97,6 +98,7 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
 
         _phSigmaIetaIeta[_nPh]              = photon->full5x5_sigmaIetaIeta();
         _phHadronicOverEm[_nPh]             = photon->hadronicOverEm();
+        _phHadTowOverEm[_nPh]               = photon->hadTowOverEm();
         _phPassElectronVeto[_nPh]           = photon->passElectronVeto();
         _phHasPixelSeed[_nPh]               = photon->hasPixelSeed();
 

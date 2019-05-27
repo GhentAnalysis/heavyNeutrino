@@ -124,6 +124,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     sampleIsSUSY;
         bool                                                     storeLheParticles;
         bool                                                     storeParticleLevel;
+        bool                                                     storeAllTauID;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;

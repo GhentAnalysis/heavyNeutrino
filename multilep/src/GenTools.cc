@@ -263,10 +263,11 @@ const reco::GenParticle* GenTools::geometricMatch(const reco::Candidate& reco, c
                 match = &*genIt;
             }
         }
-    } 
+    }
     if(minDeltaR > 0.2){
       if(!differentId) match = geometricMatch(reco, genParticles, true);
       else             return nullptr;
     }
     return match;
 }
+

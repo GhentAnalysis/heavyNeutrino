@@ -1,5 +1,5 @@
 # Setup script for branch: master
-RELEASE=CMSSW_10_2_13
+RELEASE=CMSSW_10_2_14
 BRANCH=master
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
@@ -24,7 +24,7 @@ git cms-init
 git clone https://github.com/$gitUser/heavyNeutrino
 git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X # for EE noise fix of 2017 MET
 git cms-merge-topic cms-egamma:EgammaPostRecoTools               # making the egamma postreco sequence available
-git clone git@github.com:cms-egamma/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data # 2018 EGamma energy corrections
+git clone https://github.com/cms-egamma/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data # 2018 EGamma energy corrections
 cd EgammaAnalysis/ElectronTools/data
 git checkout ScalesSmearing2018_Dev
 cd -

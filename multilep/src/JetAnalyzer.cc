@@ -40,6 +40,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetDeepCsv_b",              &_jetDeepCsv_b,             "_jetDeepCsv_b[_nJets]/D");
     outputTree->Branch("_jetDeepCsv_c",              &_jetDeepCsv_c,             "_jetDeepCsv_c[_nJets]/D");
     outputTree->Branch("_jetDeepCsv_bb",             &_jetDeepCsv_bb,            "_jetDeepCsv_bb[_nJets]/D");
+    outputTree->Branch("_jetDeepCsv",                &_jetDeepCsv,               "_jetDeepCsv[_nJets]/D");
     outputTree->Branch("_jetHadronFlavor",           &_jetHadronFlavor,          "_jetHadronFlavor[_nJets]/i");
     outputTree->Branch("_jetIsTight",                &_jetIsTight,               "_jetIsTight[_nJets]/O");
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/O");
@@ -144,6 +145,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetDeepCsv_b[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _jetDeepCsv_c[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probc");
         _jetDeepCsv_bb[_nJets]            = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+        _jetDeepCsv[_nJets]               = _jetDeepCsv_b[_nJets] + _jetDeepCsv_bb[_nJets];
+        if( std::isnan( _jetDeepCsv[_nJets] ) ) _jetDeepCsv[_nJets] = 0.;
         _jetHadronFlavor[_nJets]          = jet.hadronFlavour();
 
         _jetNeutralHadronFraction[_nJets] = jet.neutralHadronEnergyFraction();
@@ -220,7 +223,7 @@ bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
 bool JetAnalyzer::jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const{
     if(is2018){
       if(fabs(jet.eta()) <= 2.7){
-        if(jet.neutralHadronEnergyFraction() >=  0.)                          return false;
+        if(jet.neutralHadronEnergyFraction() >=  0.9)                         return false;
         if(jet.neutralEmEnergyFraction() >= 0.9)                              return false;
         if(jet.chargedMultiplicity()+jet.neutralMultiplicity() <= 1)          return false;
         if(jet.chargedHadronEnergyFraction() <= 0 and fabs(jet.eta()) <= 2.6) return false; // only for |eta|<2.6
