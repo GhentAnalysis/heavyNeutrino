@@ -22,7 +22,7 @@ class GenAnalyzer {
     double   _gen_metPhi;
 
     //Generator photons
-    unsigned _gen_nPh;
+    unsigned _gen_nPh = 0;
     unsigned _gen_phStatus[gen_nPh_max];
     double   _gen_phPt[gen_nPh_max];
     double   _gen_phEta[gen_nPh_max];
@@ -34,7 +34,7 @@ class GenAnalyzer {
     double   _gen_phMinDeltaR[gen_nPh_max];
 
     //Generator leptons
-    unsigned _gen_nL;
+    unsigned _gen_nL = 0;
     double   _gen_lPt[gen_nL_max];
     double   _gen_lEta[gen_nL_max];
     double   _gen_lPhi[gen_nL_max];

@@ -19,7 +19,7 @@ class JetAnalyzer {
 
     static const unsigned nJets_max = 20;
 
-    unsigned _nJets;
+    unsigned _nJets = 0;
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
     double   _jetPt_JECDown[nJets_max];
@@ -40,6 +40,7 @@ class JetAnalyzer {
     double   _jetDeepCsv_b[nJets_max];
     double   _jetDeepCsv_c[nJets_max];
     double   _jetDeepCsv_bb[nJets_max];
+    double   _jetDeepCsv[nJets_max];
     unsigned _jetHadronFlavor[nJets_max];
     bool     _jetIsLoose[nJets_max];
     bool     _jetIsTight[nJets_max];

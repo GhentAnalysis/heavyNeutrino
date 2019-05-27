@@ -25,14 +25,14 @@ class ParticleLevelAnalyzer {
     double   _pl_metPhi;
 
     //particle level photons
-    unsigned _pl_nPh;
+    unsigned _pl_nPh = 0;
     double   _pl_phPt[pl_nPh_max];
     double   _pl_phEta[pl_nPh_max];
     double   _pl_phPhi[pl_nPh_max];
     double   _pl_phE[pl_nPh_max];
 
     //particle level leptons
-    unsigned _pl_nL;
+    unsigned _pl_nL = 0;
     double   _pl_lPt[pl_nL_max];
     double   _pl_lEta[pl_nL_max];
     double   _pl_lPhi[pl_nL_max];
@@ -41,7 +41,7 @@ class ParticleLevelAnalyzer {
     int      _pl_lCharge[pl_nL_max];
 
     //particle level jets
-    unsigned _pl_nJets;
+    unsigned _pl_nJets = 0;
     double   _pl_jetPt[pl_nJet_max];
     double   _pl_jetEta[pl_nJet_max];
     double   _pl_jetPhi[pl_nJet_max];

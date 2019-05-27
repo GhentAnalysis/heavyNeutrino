@@ -21,7 +21,7 @@ class PhotonAnalyzer {
 
         static const unsigned nPhoton_max = 20;
 
-        unsigned _nPh;
+        unsigned _nPh = 0;
         double   _phPt[nPhoton_max];
         double   _phPtCorr[nPhoton_max];
         double   _phPtScaleUp[nPhoton_max];
