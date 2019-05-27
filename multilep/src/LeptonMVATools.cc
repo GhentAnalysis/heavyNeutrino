@@ -23,6 +23,17 @@ double reducedPdgId( int pdgId ){
 }
 
 
+double catchNanOrInf( double value ){
+    if( std::isnan( value ) ){
+        return -1;
+    } else if( std::isinf( value ) ){
+        return -1;
+    } else{
+        return value;
+    }
+}
+
+
 void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, const pat::Jet* jet ){
 
     unsigned num_daughters = ( jet == nullptr ) ? 0 : jet->numberOfDaughters();
@@ -69,11 +80,11 @@ void LeptonAnalyzer::fillClosestJetConstituents( const reco::Candidate& lepton, 
         _closestJetConstituentVz[_nL][d] = daughter->vz();
         if( daughter->hasTrackDetails() ){
             _closestJetConstituentdxy[_nL][d] = daughter->dxy();
-            _closestJetConstituentdxyError[_nL][d] = daughter->dxyError();
-            _closestJetConstituentdxySig[_nL][d] = fabs( daughter->dxy()/daughter->dxyError() );
+            _closestJetConstituentdxyError[_nL][d] = catchNanOrInf( daughter->dxyError() );
+            _closestJetConstituentdxySig[_nL][d] = catchNanOrInf( fabs( daughter->dxy()/daughter->dxyError() ) );
             _closestJetConstituentdz[_nL][d] = daughter->dz();
-            _closestJetConstituentdzError[_nL][d] = daughter->dzError();
-            _closestJetConstituentdzSig[_nL][d] = fabs( daughter->dz()/daughter->dzError() ); 
+            _closestJetConstituentdzError[_nL][d] = catchNanOrInf( daughter->dzError() );
+            _closestJetConstituentdzSig[_nL][d] = catchNanOrInf( fabs( daughter->dz()/daughter->dzError() ) );
             _closestJetConstituentsNumberOfHits[_nL][d] = daughter->numberOfHits();
             _closestJetConstituentsNumberOfPixelHits[_nL][d] = daughter->numberOfPixelHits();
             _closestJetConstituentsHasTrack[_nL][d] = true;
