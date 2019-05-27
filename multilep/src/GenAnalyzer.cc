@@ -50,7 +50,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_HT",                    &_gen_HT,                    "_gen_HT/D");
 
   //jet stuff
-  outputTree->Branch("_gen_nN",		               &_gen_nN,			        "_gen_nN/b");
+  outputTree->Branch("_gen_nN",		               &_gen_nN,			        "_gen_nN/i");
   outputTree->Branch("_gen_NPt",		           &_gen_NPt,			        "_gen_NPt/D");
   outputTree->Branch("_gen_NEta",		           &_gen_NEta,			        "_gen_NEta/D");
   outputTree->Branch("_gen_NPhi",		           &_gen_NPhi,			        "_gen_NPhi/D");
@@ -59,7 +59,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_Nvertex_y",		   	   &_gen_Nvertex_y,			    "_gen_Nvertex_y/D");
   outputTree->Branch("_gen_Nvertex_z",		   	   &_gen_Nvertex_z,			    "_gen_Nvertex_z/D");
 
-  outputTree->Branch("_gen_nNPackedDtrs",		   &_gen_nNPackedDtrs,			"_gen_nNPackedDtrs/b");
+  outputTree->Branch("_gen_nNPackedDtrs",		   &_gen_nNPackedDtrs,			"_gen_nNPackedDtrs/i");
   outputTree->Branch("_gen_NPackedDtrsPt",		   &_gen_NPackedDtrsPt,			"_gen_NPackedDtrsPt[_gen_nNPackedDtrs]/D");
   outputTree->Branch("_gen_NPackedDtrsEta",		   &_gen_NPackedDtrsEta,		"_gen_NPackedDtrsEta[_gen_nNPackedDtrs]/D");
   outputTree->Branch("_gen_NPackedDtrsPhi",		   &_gen_NPackedDtrsPhi,		"_gen_NPackedDtrsPhi[_gen_nNPackedDtrs]/D");
@@ -78,29 +78,29 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_NPackedDtrs_matchdz",   &_gen_NPackedDtrs_matchdz,	"_gen_NPackedDtrs_matchdz[_gen_nNPackedDtrs]/D");
   outputTree->Branch("_gen_NPackedDtrs_matchcharge",&_gen_NPackedDtrs_matchcharge,"_gen_NPackedDtrs_matchcharge[_gen_nNPackedDtrs]/I");
   
-  outputTree->Branch("_gen_nNdaughters",	       &_gen_nNdaughters,		    "_gen_nNdaughters/b");
+  outputTree->Branch("_gen_nNdaughters",	       &_gen_nNdaughters,		    "_gen_nNdaughters/i");
   outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	    "_gen_Ndaughters_pdg[_gen_nNdaughters]/i");
-  outputTree->Branch("_gen_nstatus23",		       &_gen_nstatus23,		        "_gen_nstatus23/b");
-  outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	    "_gen_nstatus23_fromN/b");
-  outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	    "_gen_nstatus23_fromW/b");
+  outputTree->Branch("_gen_nstatus23",		       &_gen_nstatus23,		        "_gen_nstatus23/i");
+  outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	    "_gen_nstatus23_fromN/i");
+  outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	    "_gen_nstatus23_fromW/i");
   outputTree->Branch("_gen_status23_pdg",	       &_gen_status23_pdg,		    "_gen_status23_pdg[_gen_nstatus23]/I");
   outputTree->Branch("_gen_status23_fromN_pdg",    &_gen_status23_fromN_pdg, 	"_gen_status23_fromN_pdg[_gen_nstatus23_fromN]/i");
   outputTree->Branch("_gen_status23_fromW_pdg",    &_gen_status23_fromW_pdg, 	"_gen_status23_fromW_pdg[_gen_nstatus23_fromW]/i");
   
-  outputTree->Branch("_gen_nq",		               &_gen_nq,			        "_gen_nq/b");
+  outputTree->Branch("_gen_nq",		               &_gen_nq,			        "_gen_nq/i");
   outputTree->Branch("_gen_qPt",		           &_gen_qPt,			        "_gen_qPt[_gen_nq]/D");
   outputTree->Branch("_gen_qEta",		           &_gen_qEta,			        "_gen_qEta[_gen_nq]/D");
   outputTree->Branch("_gen_qPhi",		           &_gen_qPhi,			        "_gen_qPhi[_gen_nq]/D");
   outputTree->Branch("_gen_qE",		   	           &_gen_qE,			        "_gen_qE[_gen_nq]/D");
  
-  outputTree->Branch("_gen_nq1dtr",		           &_gen_nq1dtr,		        "_gen_nq1dtr/b");
+  outputTree->Branch("_gen_nq1dtr",		           &_gen_nq1dtr,		        "_gen_nq1dtr/i");
   outputTree->Branch("_gen_q1dtr_status",	       &_gen_q1dtr_status,		    "_gen_q1dtr_status[_gen_nq1dtr]/I");
   outputTree->Branch("_gen_q1dtr_pdgid",	       &_gen_q1dtr_pdgid,		    "_gen_q1dtr_pdgid[_gen_nq1dtr]/I");
   outputTree->Branch("_gen_q1dtr_Pt",		       &_gen_q1dtr_Pt,		        "_gen_q1dtr_Pt[_gen_nq1dtr]/D");
   outputTree->Branch("_gen_q1dtr_Eta",		       &_gen_q1dtr_Eta,		        "_gen_q1dtr_Eta[_gen_nq1dtr]/D");
   outputTree->Branch("_gen_q1dtr_Phi",		       &_gen_q1dtr_Phi,		        "_gen_q1dtr_Phi[_gen_nq1dtr]/D");
   outputTree->Branch("_gen_q1dtr_E",		       &_gen_q1dtr_E,		        "_gen_q1dtr_E[_gen_nq1dtr]/D");
-  outputTree->Branch("_gen_nq2dtr",		           &_gen_nq2dtr,		        "_gen_nq2dtr/b");
+  outputTree->Branch("_gen_nq2dtr",		           &_gen_nq2dtr,		        "_gen_nq2dtr/i");
   outputTree->Branch("_gen_q2dtr_status",	       &_gen_q2dtr_status,		    "_gen_q2dtr_status[_gen_nq2dtr]/I");
   outputTree->Branch("_gen_q2dtr_pdgid",	       &_gen_q2dtr_pdgid,		    "_gen_q2dtr_pdgid[_gen_nq2dtr]/I");
   outputTree->Branch("_gen_q2dtr_Pt",		       &_gen_q2dtr_Pt,		        "_gen_q2dtr_Pt[_gen_nq2dtr]/D");
