@@ -41,11 +41,11 @@ class LeptonAnalyzer {
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
 
     //number of leptons of each type in the event
-    unsigned _nL;
-    unsigned _nMu;
-    unsigned _nEle;
-    unsigned _nLight;
-    unsigned _nTau;
+    unsigned _nL = 0;
+    unsigned _nMu = 0;
+    unsigned _nEle = 0;
+    unsigned _nLight = 0;
+    unsigned _nTau = 0;
 
     //lepton kinematics and systematic variations
     double _lPt[nL_max];

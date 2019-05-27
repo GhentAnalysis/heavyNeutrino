@@ -19,7 +19,7 @@ class JetAnalyzer {
 
     static const unsigned nJets_max = 20;
 
-    unsigned _nJets;
+    unsigned _nJets = 0;
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
     double   _jetPt_JECDown[nJets_max];
