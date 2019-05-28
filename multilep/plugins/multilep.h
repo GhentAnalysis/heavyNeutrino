@@ -19,6 +19,7 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/METReco/interface/METFwd.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -40,8 +41,19 @@
 #include "heavyNeutrino/multilep/interface/PhotonAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/ParticleLevelAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
+
+// Allow for easy way to retrieve handles
+namespace {
+  template<typename T, typename I> edm::Handle<T> getHandle(const I& iEvent,const edm::EDGetTokenT<T>& token){
+    edm::Handle<T> handle;
+    iEvent.getByToken(token,handle);
+    return handle;
+  }
+}
+
 
 //
 // class declaration
@@ -51,6 +63,7 @@ class LeptonAnalyzer;
 class PhotonAnalyzer;
 class JetAnalyzer;
 class GenAnalyzer;
+class ParticleLevelAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
 
@@ -61,45 +74,63 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
     friend PhotonAnalyzer;
     friend JetAnalyzer;
     friend GenAnalyzer;
+    friend ParticleLevelAnalyzer;
     friend LheAnalyzer;
     friend SUSYMassAnalyzer;
     public:
         explicit multilep(const edm::ParameterSet&);
+
+        bool isData() const{ return sampleIsData; }
+        bool isMC() const{ return !sampleIsData; }
+        bool is2016() const{ return !(sampleIs2017 || sampleIs2018); }
+        bool is2017() const{ return sampleIs2017; }
+        bool is2018() const{ return sampleIs2018; }
+        bool isSUSY() const{ return sampleIsSUSY; }
+
         ~multilep();
 
     private:
-        // Define EDgetTokens to read data from events
-        edm::EDGetTokenT<reco::BeamSpot>		    beamSpotToken;
-        edm::EDGetTokenT<std::vector<reco::Vertex>>         vtxToken;
-        edm::EDGetTokenT<GenEventInfoProduct>               genEventInfoToken;
-        edm::EDGetTokenT<GenLumiInfoHeader>                 genLumiInfoToken;
-        edm::EDGetTokenT<LHEEventProduct>                   lheEventInfoToken;
-        edm::EDGetTokenT<std::vector<PileupSummaryInfo>>    pileUpToken;
-        edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken; 
-        edm::EDGetTokenT<std::vector<pat::PackedGenParticle>>packedGenParticleToken;
-        edm::EDGetTokenT<std::vector<pat::Muon>>            muonToken;
-        edm::EDGetTokenT<std::vector<pat::Electron>>        eleToken;
-        edm::EDGetTokenT<std::vector<pat::Tau>>             tauToken;
-        edm::EDGetTokenT<std::vector<pat::Photon>>          photonToken;
-        edm::EDGetTokenT<std::vector<pat::PackedCandidate>> packedCandidatesToken;                       //particle collection used to calculate isolation variables
-        edm::EDGetTokenT<double>                            rhoToken;
-        edm::EDGetTokenT<std::vector<pat::MET>>             metToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedUpToken;
-        edm::EDGetTokenT<std::vector<pat::Jet>>             jetSmearedDownToken;
-        edm::EDGetTokenT<edm::TriggerResults>               recoResultsPrimaryToken;                     //MET filter information
-        edm::EDGetTokenT<edm::TriggerResults>               recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
-        edm::EDGetTokenT<edm::TriggerResults>               triggerToken;
-        edm::EDGetTokenT<pat::PackedTriggerPrescales>       prescalesToken;
-        edm::EDGetTokenT<std::vector<reco::Vertex>>         secondaryVerticesToken;
-        edm::EDGetTokenT<bool>                              ecalBadCalibFilterToken;
-        std::string                                         skim;
-        bool                                                isData;
-        bool                                                is2017;
-        bool                                                is2018;
-        bool                                                isSUSY;
-        bool                                                storeLheParticles;
+        edm::EDGetTokenT<reco::BeamSpot>		                 beamSpotToken;
+        edm::EDGetTokenT<std::vector<reco::Vertex>>              vtxToken;
+        edm::EDGetTokenT<std::vector<reco::Vertex>>              secondaryVerticesToken;
+        edm::EDGetTokenT<GenEventInfoProduct>                    genEventInfoToken;
+        edm::EDGetTokenT<GenLumiInfoHeader>                      genLumiInfoToken;
+        edm::EDGetTokenT<LHEEventProduct>                        lheEventInfoToken;
+        edm::EDGetTokenT<std::vector<PileupSummaryInfo>>         pileUpToken;
+        edm::EDGetTokenT<reco::GenParticleCollection>            genParticleToken;
+        edm::EDGetTokenT<reco::GenParticleCollection>            particleLevelPhotonsToken;
+        edm::EDGetTokenT<reco::GenJetCollection>                 particleLevelLeptonsToken;
+        edm::EDGetTokenT<reco::GenJetCollection>                 particleLevelJetsToken;
+        edm::EDGetTokenT<reco::METCollection>                    particleLevelMetsToken;
+        edm::EDGetTokenT<std::vector<pat::Muon>>                 muonToken;
+        edm::EDGetTokenT<std::vector<pat::Electron>>             eleToken;
+        edm::EDGetTokenT<std::vector<pat::Tau>>                  tauToken;
+        edm::EDGetTokenT<std::vector<pat::Photon>>               photonToken;
+        edm::EDGetTokenT<std::vector<pat::PackedCandidate>>      packedCandidatesToken;                       //particle collection used to calculate isolation variables
+        edm::EDGetTokenT<std::vector<pat::PackedGenParticle>>    packedGenParticleToken;
+        edm::EDGetTokenT<double>                                 rhoToken;
+        edm::EDGetTokenT<std::vector<pat::MET>>                  metToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedUpToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedDownToken;
+        edm::EDGetTokenT<edm::TriggerResults>                    recoResultsPrimaryToken;                     //MET filter information
+        edm::EDGetTokenT<edm::TriggerResults>                    recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
+        edm::EDGetTokenT<edm::TriggerResults>                    triggerToken;
+        edm::EDGetTokenT<pat::PackedTriggerPrescales>            prescalesToken;
+        edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> trigObjToken;
+        edm::EDGetTokenT<double>                                 prefireWeightToken;
+        edm::EDGetTokenT<double>                                 prefireWeightUpToken;
+        edm::EDGetTokenT<double>                                 prefireWeightDownToken;
+        std::string                                              skim;
+        bool                                                     sampleIsData;
+        bool                                                     sampleIs2017;
+        bool                                                     sampleIs2018;
+        bool                                                     sampleIsSUSY;
+        bool                                                     storeLheParticles;
+        bool                                                     storeParticleLevel;
+        bool                                                     storeAllTauID;
+        edm::EDGetTokenT<bool>                                   ecalBadCalibFilterToken;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
@@ -110,13 +141,14 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         virtual void endLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override {}
         virtual void endJob() override {};
 
-        TriggerAnalyzer*  triggerAnalyzer;
-        LeptonAnalyzer*   leptonAnalyzer;
-        PhotonAnalyzer*   photonAnalyzer;
-        JetAnalyzer*      jetAnalyzer;
-        LheAnalyzer*      lheAnalyzer;
-        GenAnalyzer*      genAnalyzer;
-        SUSYMassAnalyzer* susyMassAnalyzer;
+        TriggerAnalyzer*       triggerAnalyzer;
+        LeptonAnalyzer*        leptonAnalyzer;
+        PhotonAnalyzer*        photonAnalyzer;
+        JetAnalyzer*           jetAnalyzer;
+        LheAnalyzer*           lheAnalyzer;
+        GenAnalyzer*           genAnalyzer;
+        ParticleLevelAnalyzer* particleLevelAnalyzer;
+        SUSYMassAnalyzer*      susyMassAnalyzer;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;
@@ -131,6 +163,10 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         double _PV_x;
         double _PV_y;
         double _PV_z;
+
+        float _prefireWeight;
+        float _prefireWeightUp;
+        float _prefireWeightDown;
 
         TH1D* nVertices;                                                                                 //Histogram with number of vertices
 };

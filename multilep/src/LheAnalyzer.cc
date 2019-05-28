@@ -17,7 +17,7 @@ LheAnalyzer::LheAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 
 
 void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
-    if(multilepAnalyzer->isData) return;
+    if( multilepAnalyzer->isData() ) return;
     hCounter   = fs->make<TH1D>("hCounter",   "Events counter", 1, 0, 1);
     lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",    110, 0, 110); //Counter to determine effect of pdf and scale uncertainties on the MC cross section
     psCounter  = fs->make<TH1D>("psCounter",  "Lhe weights",    14, 0, 14);
@@ -50,11 +50,11 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
 }
 
 void LheAnalyzer::analyze(const edm::Event& iEvent){
-    if(multilepAnalyzer->isData) return;
+    if( multilepAnalyzer->isData() ) return;
 
-    edm::Handle<GenEventInfoProduct> genEventInfo;          iEvent.getByToken(multilepAnalyzer->genEventInfoToken, genEventInfo);
-    edm::Handle<LHEEventProduct> lheEventInfo;              iEvent.getByToken(multilepAnalyzer->lheEventInfoToken, lheEventInfo);
-    edm::Handle<std::vector<PileupSummaryInfo>> pileUpInfo; iEvent.getByToken(multilepAnalyzer->pileUpToken,       pileUpInfo);
+    edm::Handle<GenEventInfoProduct> genEventInfo          = getHandle(iEvent, multilepAnalyzer->genEventInfoToken);
+    edm::Handle<LHEEventProduct> lheEventInfo              = getHandle(iEvent, multilepAnalyzer->lheEventInfoToken);
+    edm::Handle<std::vector<PileupSummaryInfo>> pileUpInfo = getHandle(iEvent, multilepAnalyzer->pileUpToken);
 
     _nTrueInt = pileUpInfo->begin()->getTrueNumInteractions(); // getTrueNumInteractions is the same for all bunch crossings
     _weight   = genEventInfo->weight();
@@ -115,7 +115,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 }
 
 double LheAnalyzer::getWeight() const{
-    if(multilepAnalyzer->isData) return 1.;
+    if( multilepAnalyzer->isData() ) return 1.;
     return _weight;
 }
 

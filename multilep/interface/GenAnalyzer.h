@@ -24,7 +24,7 @@ class GenAnalyzer {
     double   _gen_metPhi;
 
     //Generator photons
-    unsigned _gen_nPh;
+    unsigned _gen_nPh = 0;
     unsigned _gen_phStatus[gen_nPh_max];
     double   _gen_phPt[gen_nPh_max];
     double   _gen_phEta[gen_nPh_max];
@@ -36,7 +36,7 @@ class GenAnalyzer {
     double   _gen_phMinDeltaR[gen_nPh_max];
 
     //Generator leptons
-    unsigned _gen_nL;
+    unsigned _gen_nL = 0;
     double   _gen_lPt[gen_nL_max];
     double   _gen_lEta[gen_nL_max];
     double   _gen_lPhi[gen_nL_max];
@@ -47,6 +47,7 @@ class GenAnalyzer {
     double   _gen_vertex_x[gen_nL_max];
     double   _gen_vertex_y[gen_nL_max];
     double   _gen_vertex_z[gen_nL_max];
+    bool     _gen_lDecayedHadr[gen_nL_max];
     bool     _gen_lIsPrompt[gen_nL_max];
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
@@ -99,29 +100,10 @@ class GenAnalyzer {
     double   _gen_qPhi[gen_n_max];
     double   _gen_qE[gen_n_max];
     
-    unsigned _gen_nq1dtr;
-    int	     _gen_q1dtr_status[gen_ndtr_max];
-    int	     _gen_q1dtr_pdgid[gen_ndtr_max];
-    double   _gen_q1dtr_Pt[gen_ndtr_max];
-    double   _gen_q1dtr_Eta[gen_ndtr_max];
-    double   _gen_q1dtr_Phi[gen_ndtr_max];
-    double   _gen_q1dtr_E[gen_ndtr_max];
-    unsigned _gen_nq2dtr;
-    int	     _gen_q2dtr_status[gen_ndtr_max];
-    int	     _gen_q2dtr_pdgid[gen_ndtr_max];
-    double   _gen_q2dtr_Pt[gen_ndtr_max];
-    double   _gen_q2dtr_Eta[gen_ndtr_max];
-    double   _gen_q2dtr_Phi[gen_ndtr_max];
-    double   _gen_q2dtr_E[gen_ndtr_max];
-
     //Functions to find the mother of a gen particle
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const int getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     void     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
-    void     getDaughterList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<reco::GenParticle>&, std::vector<int>&);
-    void     removeDoubleCountedDaughters(std::vector<reco::GenParticle>&);
-    int      check_for_daughter(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
-    bool     inMotherList(std::vector<int>& list, int i);
     unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
     
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;

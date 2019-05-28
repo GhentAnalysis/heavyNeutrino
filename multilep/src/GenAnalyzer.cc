@@ -10,6 +10,7 @@
 //include other parts of code 
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
+#include "heavyNeutrino/multilep/interface/TauTools.h"
 
 /*
  * Storing generator particles
@@ -45,6 +46,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_vertex_y",              &_gen_vertex_y,              "_gen_vertex_y[_gen_nL]/D");
     outputTree->Branch("_gen_vertex_z",              &_gen_vertex_z,              "_gen_vertex_z[_gen_nL]/D");
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
+    outputTree->Branch("_gen_lDecayedHadr",          &_gen_lDecayedHadr,          "_gen_lDecayedHadr[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
     outputTree->Branch("_gen_HT",                    &_gen_HT,                    "_gen_HT/D");
@@ -92,29 +94,14 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_qEta",		           &_gen_qEta,			        "_gen_qEta[_gen_nq]/D");
   outputTree->Branch("_gen_qPhi",		           &_gen_qPhi,			        "_gen_qPhi[_gen_nq]/D");
   outputTree->Branch("_gen_qE",		   	           &_gen_qE,			        "_gen_qE[_gen_nq]/D");
- 
-  outputTree->Branch("_gen_nq1dtr",		           &_gen_nq1dtr,		        "_gen_nq1dtr/i");
-  outputTree->Branch("_gen_q1dtr_status",	       &_gen_q1dtr_status,		    "_gen_q1dtr_status[_gen_nq1dtr]/I");
-  outputTree->Branch("_gen_q1dtr_pdgid",	       &_gen_q1dtr_pdgid,		    "_gen_q1dtr_pdgid[_gen_nq1dtr]/I");
-  outputTree->Branch("_gen_q1dtr_Pt",		       &_gen_q1dtr_Pt,		        "_gen_q1dtr_Pt[_gen_nq1dtr]/D");
-  outputTree->Branch("_gen_q1dtr_Eta",		       &_gen_q1dtr_Eta,		        "_gen_q1dtr_Eta[_gen_nq1dtr]/D");
-  outputTree->Branch("_gen_q1dtr_Phi",		       &_gen_q1dtr_Phi,		        "_gen_q1dtr_Phi[_gen_nq1dtr]/D");
-  outputTree->Branch("_gen_q1dtr_E",		       &_gen_q1dtr_E,		        "_gen_q1dtr_E[_gen_nq1dtr]/D");
-  outputTree->Branch("_gen_nq2dtr",		           &_gen_nq2dtr,		        "_gen_nq2dtr/i");
-  outputTree->Branch("_gen_q2dtr_status",	       &_gen_q2dtr_status,		    "_gen_q2dtr_status[_gen_nq2dtr]/I");
-  outputTree->Branch("_gen_q2dtr_pdgid",	       &_gen_q2dtr_pdgid,		    "_gen_q2dtr_pdgid[_gen_nq2dtr]/I");
-  outputTree->Branch("_gen_q2dtr_Pt",		       &_gen_q2dtr_Pt,		        "_gen_q2dtr_Pt[_gen_nq2dtr]/D");
-  outputTree->Branch("_gen_q2dtr_Eta",		       &_gen_q2dtr_Eta,		        "_gen_q2dtr_Eta[_gen_nq2dtr]/D");
-  outputTree->Branch("_gen_q2dtr_Phi",		       &_gen_q2dtr_Phi,		        "_gen_q2dtr_Phi[_gen_nq2dtr]/D");
-  outputTree->Branch("_gen_q2dtr_E",		       &_gen_q2dtr_E,		        "_gen_q2dtr_E[_gen_nq2dtr]/D");
 }
 
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
-    edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
-    edm::Handle<std::vector<pat::PackedGenParticle>> packedGenParticles; iEvent.getByToken(multilepAnalyzer->packedGenParticleToken, packedGenParticles);
-    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
-    //std::cout << "begin genanalyzer" << std::endl;
+    edm::Handle<std::vector<reco::GenParticle>> genParticles = getHandle(iEvent, multilepAnalyzer->genParticleToken);
+    edm::Handle<std::vector<pat::PackedGenParticle>> packedGenParticles = getHandle(iEvent, multilepAnalyzer->packedGenParticleToken);
+    edm::Handle<std::vector<pat::PackedCandidate>> packedCands = getHandle(iEvent, multilepAnalyzer->packedCandidatesToken);
+    
     if(!genParticles.isValid()) return;
     if(!packedGenParticles.isValid()) return;
 
@@ -129,8 +116,6 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     _gen_nstatus23_fromN = 0;
     _gen_nstatus23_fromW = 0;
     _gen_nq = 0;
-    _gen_nq1dtr = 0;
-    _gen_nq2dtr = 0;
 
     _gen_nL = 0;
     _gen_nPh = 0;
@@ -150,13 +135,14 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         //store generator level lepton info
         if((p.status() == 1 and (absId == 11 or absId == 13)) or (p.status() == 2 and p.isLastCopy() and absId == 15)){
             if(_gen_nL != gen_nL_max){
-                _gen_lPt[_gen_nL]            = p.pt();
-                _gen_lEta[_gen_nL]           = p.eta();
-                _gen_lPhi[_gen_nL]           = p.phi();
-                _gen_lE[_gen_nL]             = p.energy();
-                _gen_lCharge[_gen_nL]        = p.charge();
-                _gen_lIsPrompt[_gen_nL]      = GenTools::isPrompt(p, *genParticles);
-                _gen_lMomPdg[_gen_nL]        = GenTools::getMother(p, *genParticles)->pdgId();
+                _gen_lPt[_gen_nL]               = p.pt();
+                _gen_lEta[_gen_nL]              = p.eta();
+                _gen_lPhi[_gen_nL]              = p.phi();
+                _gen_lE[_gen_nL]                = p.energy();
+                _gen_lCharge[_gen_nL]           = p.charge();
+                _gen_lIsPrompt[_gen_nL]         = GenTools::isPrompt(p, *genParticles); 
+                _gen_lMomPdg[_gen_nL]           = GenTools::getMother(p, *genParticles)->pdgId();
+                _gen_lDecayedHadr[_gen_nL]      = TauTools::decayedHadronically(p, *genParticles);
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
                 _gen_vertex_x[_gen_nL]       = p.vertex().x();
@@ -245,132 +231,11 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 }
 	        }
         }
-
-
-        // Daughters of quarks      DELETE THESE IN NEXT ITERATION IF IM SURE THAT I DONT NEED THEM
-        std::vector<reco::GenParticle> daughterList1 = {};
-        std::vector<reco::GenParticle> daughterList2 = {};
-        std::vector<int> chain_ends1 = {};
-        std::vector<int> chain_ends2 = {};
-        if(p.status() == 23 && abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6 && abs(mompdgid) == 9900012){ // find 2 quarks from HNL decay
-          if(_gen_nq == 1){
-            getDaughterList(p, *genParticles, daughterList1, chain_ends1);
-            removeDoubleCountedDaughters(daughterList1);
-            for(auto daughters : daughterList1){
-              //if(daughters.status() != 1) continue;
-              _gen_q1dtr_status[_gen_nq1dtr] = daughters.status();
-              _gen_q1dtr_pdgid[_gen_nq1dtr]  = daughters.pdgId();
-              _gen_q1dtr_Pt[_gen_nq1dtr] 	 = daughters.pt();
-              _gen_q1dtr_Eta[_gen_nq1dtr] 	 = daughters.eta();
-              _gen_q1dtr_Phi[_gen_nq1dtr] 	 = daughters.phi();
-              _gen_q1dtr_E[_gen_nq1dtr] 	 = daughters.energy();
-              _gen_nq1dtr++;
-            }
-          }else if(_gen_nq == 2){
-            getDaughterList(p, *genParticles, daughterList2, chain_ends2);
-            removeDoubleCountedDaughters(daughterList2);
-            for(auto daughters : daughterList2){
-              //if(daughters.status() != 1) continue;
-              _gen_q2dtr_status[_gen_nq2dtr] = daughters.status();
-              _gen_q2dtr_pdgid[_gen_nq2dtr]  = daughters.pdgId();
-              _gen_q2dtr_Pt[_gen_nq2dtr] 	 = daughters.pt();
-              _gen_q2dtr_Eta[_gen_nq2dtr] 	 = daughters.eta();
-              _gen_q2dtr_Phi[_gen_nq2dtr] 	 = daughters.phi();
-              _gen_q2dtr_E[_gen_nq2dtr] 	 = daughters.energy();
-              _gen_nq2dtr++;
-            }
-          }
-          //print statements to analyze daughters
-          /*std::cout << "Pdg Id " << p.pdgId() << " pt: " << p.pt() << std::endl;
-          for(unsigned int i = 0; i < p.numberOfDaughters(); i++){
-            std::cout << "Daughter " << (*genParticles)[p.daughterRef(i).key()].pdgId() << " pt: " << (*genParticles)[p.daughterRef(i).key()].pt() << std::endl;
-          }
-          if(_gen_nq == 1){
-            std::cout << "number of daughters: " << daughterList1.size() << std::endl;
-            for(unsigned int i = 0; i < daughterList1.size(); i++){
-              if(chain_ends1[i] == 0) std::cout << daughterList1[i].pdgId() << " -> ";
-              if(chain_ends1[i] == 1) std::cout << daughterList1[i].pdgId() << " | ";
-            } std::cout << std::endl;
-            for(unsigned int i = 0; i < daughterList1.size(); i++){
-              if(chain_ends1[i] == 0) std::cout << daughterList1[i].status() << " -> ";
-              if(chain_ends1[i] == 1) std::cout << daughterList1[i].status() << " | ";
-            } std::cout << std::endl;
-            for(unsigned int i = 0; i < daughterList1.size(); i++){
-              if(chain_ends1[i] == 0) std::cout << daughterList1[i].pt() << " -> ";
-              if(chain_ends1[i] == 1) std::cout << daughterList1[i].pt() << " | ";
-            } std::cout << std::endl;
-          }else if(_gen_nq == 2){
-            std::cout << "number of daughters: " << daughterList2.size() << std::endl;
-            for(unsigned int i = 0; i < daughterList2.size(); i++){
-              if(chain_ends2[i] == 0) std::cout << daughterList2[i].pdgId() << " -> ";
-              if(chain_ends2[i] == 1) std::cout << daughterList2[i].pdgId() << " | ";
-            } std::cout << std::endl;
-            for(unsigned int i = 0; i < daughterList2.size(); i++){
-              if(chain_ends2[i] == 0) std::cout << daughterList2[i].status() << " -> ";
-              if(chain_ends2[i] == 1) std::cout << daughterList2[i].status() << " | ";
-            } std::cout << std::endl;
-            for(unsigned int i = 0; i < daughterList2.size(); i++){
-              if(chain_ends2[i] == 0) std::cout << daughterList2[i].pt() << " -> ";
-              if(chain_ends2[i] == 1) std::cout << daughterList2[i].pt() << " | ";
-            } std::cout << std::endl << std::endl;
-          }*/
-        }
-
-
     }
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
 
-    //compute gen HT as the sum of all status 23 partons
-    _gen_HT = 0;
-    for(const reco::GenParticle& p: *genParticles){
-        if(p.status() == 23){
-            if(abs(p.pdgId()) > 0 && abs(p.pdgId()) < 7){
-                _gen_HT += p.pt();
-            }
-        }
-    }
-    //std::cout << "end genanalyzer" << std::endl;
 }
-
-
-void GenAnalyzer::getDaughterList(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, std::vector<reco::GenParticle>& list, std::vector<int>& chain_ends)
-{
-  if(list.empty() or p.pdgId() != list.back().pdgId()){
-    list.push_back(p);
-  }
-  int n = p.numberOfDaughters();
-  chain_ends.push_back(check_for_daughter(p, genParticles));
-  for(int i = 0; i < n; i++){
-    getDaughterList(genParticles[p.daughterRef(i).key()], genParticles, list, chain_ends);
-  }
-}
-
-void GenAnalyzer::removeDoubleCountedDaughters(std::vector<reco::GenParticle>& list)
-{
-  for(unsigned int i = 1; i < list.size() - 1; i++){
-    for(unsigned int j = i+1; j < list.size(); j++){
-      if(((double)list[i].pt() - (double)list[j].pt()) < 0.0001){ list.erase(list.begin() + j); j--; }
-    }
-  }
-}
-
-int GenAnalyzer::check_for_daughter(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles){
-  //returns 0 if particle is not the end of a chain of daughters, 1 if it is
-  int n = p.numberOfDaughters();
-  if(n > 1) return 0;
-  else if(n == 1){
-    if(p.pdgId() == genParticles[p.daughterRef(0).key()].pdgId()) return check_for_daughter(genParticles[p.daughterRef(0).key()],genParticles);
-    else return 0;
-  }
-  else return 1; // if n == 0 this is the end of the chain
-}
-
-
-bool GenAnalyzer::inMotherList(std::vector<int>& list, int i){
-    return (std::find(list.begin(), list.end(), i) != list.end());
-}
-
 
 /*
  * Some event categorization in order to understand/debug/apply overlap removal for TTGamma <--> TTJets and similar photon samples

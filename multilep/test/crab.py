@@ -6,13 +6,13 @@ productionLabel = os.environ['CRAB_PRODUCTIONLABEL']
 dataset         = os.environ['CRAB_DATASET']
 outputFile      = os.environ['CRAB_OUTPUTFILE']
 lumiMask        = os.environ['CRAB_LUMIMASK']
+extraContent    = os.environ['CRAB_EXTRACONTENT']
 
 requestName = dataset.split('/')[2] + '_' + productionLabel
-requestName = requestName.replace('RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6','Moriond2017')
-requestName = requestName.replace('RunIISummer16MiniAODv2-PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6','Moriond2017')
-requestName = requestName.replace('RunIISummer16MiniAODv2-80X_mcRun2_asymptotic_2016_TrancheIV_v6', '80X')
-requestName = requestName.replace('RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016', 'Spring16FS')
-requestName = requestName.replace('RunIISummer16MiniAODv2-PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6', 'Moriond2017FS')
+requestName = requestName.replace('RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3', 'MiniAOD2016v3')
+requestName = requestName.replace('RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14', 'MiniAOD2017v2')
+requestName = requestName.replace('RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14', 'MiniAOD2017v2NewPMX')
+requestName = requestName.replace('RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15', 'MiniAOD2018')
 
 # Crab configuration
 config = Configuration()
@@ -23,20 +23,20 @@ config.General.workArea                = os.path.join('crab', productionLabel, d
 
 config.section_('JobType')
 config.JobType.psetName                = 'multilep.py'
-config.JobType.pyCfgParams             = ['events=-1', 'outputFile='+outputFile, 'inputFile='+dataset]
+config.JobType.pyCfgParams             = ['events=-1', 'outputFile='+outputFile, 'inputFile='+dataset] + (['extraContent='+extraContent] if extraContent else [])
 config.JobType.pluginName              = 'analysis'
 config.JobType.outputFiles             = [outputFile]
 config.JobType.sendExternalFolder      = True
-config.JobType.allowUndistributedCMSSW = True 
+config.JobType.allowUndistributedCMSSW = True
 
 config.section_('Data')
 config.Data.inputDataset               = dataset
-config.Data.unitsPerJob                = 1 if 'SIM' in dataset else 50
-config.Data.splitting                  = 'LumiBased' if not 'SIM' in dataset else 'FileBased'
+config.Data.unitsPerJob                = 1 if 'SIM' in dataset else 40
+config.Data.splitting                  = 'FileBased' if 'SIM' in dataset else 'LumiBased'
 config.Data.outLFNDirBase              = '/store/user/' + os.environ['USER'] + '/heavyNeutrino/'
 config.Data.publication                = False
 config.Data.lumiMask                   = lumiMask if not 'SIM' in dataset else None
-config.Data.allowNonValidInputDataset = True #allow unfinished samples (production) to be processed
+config.Data.allowNonValidInputDataset  = True #allow unfinished samples (production) to be processed
 
 config.section_('Site')
 config.Site.storageSite                = 'T2_BE_IIHE'

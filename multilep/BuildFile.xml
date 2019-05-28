@@ -16,6 +16,7 @@
 <use name="RecoVertex/VertexPrimitives"/>
 <use name="RecoVertex/KalmanVertexFit"/>
 <use name="RecoVertex/VertexTools"/>
+<use name="rivet"/>
 <export>
   <lib   name="1"/>
 </export>
