@@ -129,7 +129,38 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_tauEleVetoMedium",             &_tauEleVetoMedium,             "_tauEleVetoMedium[_nL]/O");
       outputTree->Branch("_tauEleVetoTight",              &_tauEleVetoTight,              "_tauEleVetoTight[_nL]/O");
       outputTree->Branch("_tauEleVetoVTight",             &_tauEleVetoVTight,             "_tauEleVetoVTight[_nL]/O");
-    }
+      outputTree->Branch("_deepTauVsJetsRaw",             &_deepTauVsJetsRaw,             "_deepTauVsJetsRaw[_nL]/D");
+      outputTree->Branch("_deepTauVsJetsVVVLoose",        &_deepTauVsJetsVVVLoose,        "_deepTauVsJetsVVVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsJetsVVLoose",         &_deepTauVsJetsVVLoose,         "_deepTauVsJetsVVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsJetsVLoose",          &_deepTauVsJetsVLoose,          "_deepTauVsJetsVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsJetsLoose",           &_deepTauVsJetsLoose,           "_deepTauVsJetsLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsJetsMedium",          &_deepTauVsJetsMedium,          "_deepTauVsJetsMedium[_nL]/O");
+      outputTree->Branch("_deepTauVsJetsTight",           &_deepTauVsJetsTight,           "_deepTauVsJetsTight[_nL]/O");
+      outputTree->Branch("_deepTauVsJetsVTight",          &_deepTauVsJetsVTight,          "_deepTauVsJetsVTight[_nL]/O");
+      outputTree->Branch("_deepTauVsJetsVVTight",         &_deepTauVsJetsVVTight,         "_deepTauVsJetsVVTight[_nL]/O");
+      outputTree->Branch("_deepTauVsEleRaw",              &_deepTauVsEleRaw,              "_deepTauVsEleRaw[_nL]/D");
+      outputTree->Branch("_deepTauVsEleVVVLoose",         &_deepTauVsEleVVVLoose,         "_deepTauVsEleVVVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsEleVVLoose",          &_deepTauVsEleVVLoose,          "_deepTauVsEleVVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsEleVLoose",           &_deepTauVsEleVLoose,           "_deepTauVsEleVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsEleLoose",            &_deepTauVsEleLoose,            "_deepTauVsEleLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsEleMedium",           &_deepTauVsEleMedium,           "_deepTauVsEleMedium[_nL]/O");
+      outputTree->Branch("_deepTauVsEleTight",            &_deepTauVsEleTight,            "_deepTauVsEleTight[_nL]/O");
+      outputTree->Branch("_deepTauVsEleVTight",           &_deepTauVsEleVTight,           "_deepTauVsEleVTight[_nL]/O");
+      outputTree->Branch("_deepTauVsEleVVTight",          &_deepTauVsEleVVTight,          "_deepTauVsEleVVTight[_nL]/O");
+      outputTree->Branch("_deepTauVsMuRaw",               &_deepTauVsMuRaw,               "_deepTauVsMuRaw[_nL]/D");
+      outputTree->Branch("_deepTauVsMuVVVLoose",          &_deepTauVsMuVVVLoose,          "_deepTauVsMuVVVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsMuVVLoose",           &_deepTauVsMuVVLoose,           "_deepTauVsMuVVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsMuVLoose",            &_deepTauVsMuVLoose,            "_deepTauVsMuVLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsMuLoose",             &_deepTauVsMuLoose,             "_deepTauVsMuLoose[_nL]/O");
+      outputTree->Branch("_deepTauVsMuMedium",            &_deepTauVsMuMedium,            "_deepTauVsMuMedium[_nL]/O");
+      outputTree->Branch("_deepTauVsMuTight",             &_deepTauVsMuTight,             "_deepTauVsMuTight[_nL]/O");
+      outputTree->Branch("_deepTauVsMuVTight",            &_deepTauVsMuVTight,            "_deepTauVsMuVTight[_nL]/O");
+      outputTree->Branch("_deepTauVsMuVVTight",           &_deepTauVsMuVVTight,           "_deepTauVsMuVVTight[_nL]/O");
+      outputTree->Branch("_dpfTauVsAllv0Raw",             &_dpfTauVsAllv0Raw,             "_dpfTauVsAllv0Raw[_nL]/D");
+      outputTree->Branch("_dpfTauVsAllv0Tight",           &_dpfTauVsAllv0Tight,           "_dpfTauVsAllv0Tight[_nL]/O");
+      outputTree->Branch("_dpfTauVsAllv1Raw",             &_dpfTauVsAllv1Raw,             "_dpfTauVsAllv1Raw[_nL]/D");
+      outputTree->Branch("_dpfTauVsAllv1Tight",           &_dpfTauVsAllv1Tight,           "_dpfTauVsAllv1Tight[_nL]/O");
+     }
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
@@ -295,7 +326,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _tauIsoMVADBdR03newDMwLT[_nL]   = tau.tauID("byIsolationMVArun2v1DBnewDMwLTraw");
         _tauIsoMVAPWnewDMwLT[_nL]       = tau.tauID("byIsolationMVArun2v1PWnewDMwLTraw");
         _tauIsoMVAPWoldDMwLT[_nL]       = tau.tauID("byIsolationMVArun2v1PWoldDMwLTraw");
-        // TODO:  Should try also deepTau? Available on lwezenbe fork, will add this next since it should now be contained in CMSSW 10X
 
         if(multilepAnalyzer->storeAllTauID){
             _tauMuonVetoTight[_nL] = tau.tauID("againstMuonTight3");                                        //Light lepton vetos
@@ -325,7 +355,45 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
             _tauMediumMvaNew2017v2[_nL]           = tau.tauID("byMediumIsolationMVArun2017v2DBnewDMwLT2017");
             _tauTightMvaNew2017v2[_nL]            = tau.tauID("byTightIsolationMVArun2017v2DBnewDMwLT2017");
             _tauVTightMvaNew2017v2[_nL]           = tau.tauID("byVTightIsolationMVArun2017v2DBnewDMwLT2017");
-        
+    
+            //DeepTau    
+            _deepTauVsJetsRaw[_nL]              = tau.tauID("byDeepTau2017v1VSjetraw");
+            _deepTauVsJetsVVVLoose[_nL]         = tau.tauID("byVVVLooseDeepTau2017v1VSjet");
+            _deepTauVsJetsVVLoose[_nL]          = tau.tauID("byVVLooseDeepTau2017v1VSjet");
+            _deepTauVsJetsVLoose[_nL]           = tau.tauID("byVLooseDeepTau2017v1VSjet");
+            _deepTauVsJetsLoose[_nL]            = tau.tauID("byLooseDeepTau2017v1VSjet");
+            _deepTauVsJetsMedium[_nL]           = tau.tauID("byMediumDeepTau2017v1VSjet");
+            _deepTauVsJetsTight[_nL]            = tau.tauID("byTightDeepTau2017v1VSjet");
+            _deepTauVsJetsVTight[_nL]           = tau.tauID("byVTightDeepTau2017v1VSjet");
+            _deepTauVsJetsVVTight[_nL]          = tau.tauID("byVVTightDeepTau2017v1VSjet");
+           
+            _deepTauVsEleRaw[_nL]               = tau.tauID("byDeepTau2017v1VSeraw");
+            _deepTauVsEleVVVLoose[_nL]          = tau.tauID("byVVVLooseDeepTau2017v1VSe"); 
+            _deepTauVsEleVVLoose[_nL]           = tau.tauID("byVVLooseDeepTau2017v1VSe"); 
+            _deepTauVsEleVLoose[_nL]            = tau.tauID("byVLooseDeepTau2017v1VSe"); 
+            _deepTauVsEleLoose[_nL]             = tau.tauID("byLooseDeepTau2017v1VSe"); 
+            _deepTauVsEleMedium[_nL]            = tau.tauID("byMediumDeepTau2017v1VSe"); 
+            _deepTauVsEleTight[_nL]             = tau.tauID("byTightDeepTau2017v1VSe"); 
+            _deepTauVsEleVTight[_nL]            = tau.tauID("byVTightDeepTau2017v1VSe"); 
+            _deepTauVsEleVVTight[_nL]           = tau.tauID("byVVTightDeepTau2017v1VSe"); 
+
+            _deepTauVsMuRaw[_nL]                = tau.tauID("byDeepTau2017v1VSmuraw");
+            _deepTauVsMuVVVLoose[_nL]           = tau.tauID("byVVVLooseDeepTau2017v1VSmu"); 
+            _deepTauVsMuVVLoose[_nL]            = tau.tauID("byVVVLooseDeepTau2017v1VSmu"); 
+            _deepTauVsMuVLoose[_nL]             = tau.tauID("byVLooseDeepTau2017v1VSmu"); 
+            _deepTauVsMuLoose[_nL]              = tau.tauID("byLooseDeepTau2017v1VSmu"); 
+            _deepTauVsMuMedium[_nL]             = tau.tauID("byMediumDeepTau2017v1VSmu"); 
+            _deepTauVsMuTight[_nL]              = tau.tauID("byTightDeepTau2017v1VSmu"); 
+            _deepTauVsMuVTight[_nL]             = tau.tauID("byVTightDeepTau2017v1VSmu"); 
+            _deepTauVsMuVVTight[_nL]            = tau.tauID("byVVTightDeepTau2017v1VSmu"); 
+
+            //DeepFlowTaus
+            _dpfTauVsAllv0Raw[_nL]              = tau.tauID("byDpfTau2016v0VSallraw");
+            _dpfTauVsAllv0Tight[_nL]            = tau.tauID("byTightDpfTau2016v0VSall");
+
+            _dpfTauVsAllv1Raw[_nL]              = tau.tauID("byDpfTau2016v1VSallraw");
+            _dpfTauVsAllv1Tight[_nL]            = tau.tauID("byTightDpfTau2016v1VSall");
+    
         }
 
         _lEwkLoose[_nL] = isEwkLoose(tau);
@@ -343,6 +411,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {&_tauPOGVLoose2015, &_tauPOGLoose2015, &_tauPOGMedium2015, &_tauPOGTight2015, &_tauPOGVTight2015}) std::fill_n(*array, _nLight, false);
     for(auto array : {&_tauPOGVVLoose2017v2, &_tauPOGVTight2017v2, &_tauPOGVVTight2017v2}) std::fill_n(*array, _nLight, false);
     for(auto array : {&_tauAgainstElectronMVA6Raw, &_tauCombinedIsoDBRaw3Hits, &_tauIsoMVAPWdR03oldDMwLT}) std::fill_n(*array, _nLight, 0.);
+    for(auto array : {&_deepTauVsJetsRaw, &_deepTauVsEleRaw, &_deepTauVsMuRaw, &_dpfTauVsAllv0Raw, &_dpfTauVsAllv1Raw}) std::fill_n(*array, _nLight, 0.);
+    for(auto array : {&_deepTauVsJetsVVVLoose, &_deepTauVsJetsVVLoose, &_deepTauVsJetsVLoose, &_deepTauVsJetsLoose, &_deepTauVsJetsTight, &_deepTauVsJetsVTight, &_deepTauVsJetsVVTight}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_deepTauVsEleVVVLoose, &_deepTauVsEleVVLoose, &_deepTauVsEleVLoose, &_deepTauVsEleLoose, &_deepTauVsEleTight, &_deepTauVsEleVTight, &_deepTauVsEleVVTight}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_deepTauVsMuVVVLoose, &_deepTauVsMuVVLoose, &_deepTauVsMuVLoose, &_deepTauVsMuLoose, &_deepTauVsMuTight, &_deepTauVsMuVTight, &_deepTauVsMuVVTight}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_dpfTauVsAllv0Tight, &_dpfTauVsAllv1Tight}) std::fill_n(*array, _nLight, false);
     for(auto array : {&_tauDecayMode}) std::fill_n(*array, _nLight, 0.);
     for(auto array : {&_tauIsoMVADBdR03oldDMwLT, &_tauIsoMVADBdR03newDMwLT, &_tauIsoMVAPWnewDMwLT, &_tauIsoMVAPWoldDMwLT}) std::fill_n(*array, _nLight, 0.);
 

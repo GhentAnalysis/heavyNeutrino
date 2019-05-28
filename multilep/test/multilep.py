@@ -4,7 +4,8 @@ import FWCore.ParameterSet.Config as cms
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root"
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
-inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
+#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
+inputFile       = '/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/100000/00E48852-32BF-E811-B687-A0369FC5E6FC.root'
 
 # Other default arguments
 
@@ -106,14 +107,18 @@ else:
 yy = '17' if is2017 or is2018 else '16'
 
 #
-#Latest 94X tau ID
+#Latest tau ID and DeepTau
 #
-from heavyNeutrino.multilep.runTauIdMVA import *
-na = TauIDEmbedder(process, cms, # pass tour process object
-    debug=True,
-    toKeep = ["2017v2", "newDM2017v2"] # pick the one you need: ["2017v1", "2017v2", "newDM2017v2", "dR0p32017v2", "2016v1", "newDM2016v1"]
-)
-na.runTauID()
+updatedTauName = "slimmedTausNewID" #name of pat::Tau collection with new tau-Ids
+import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
+tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
+                    updatedTauName = updatedTauName,
+                    toKeep = [ "2017v2", "newDM2017v2", #classic MVAIso tau-Ids
+                               "deepTau2017v1", #deepTau Tau-Ids
+                               "DPFTau_2016_v0", #D[eep]PF[low] Tau-Id
+                               "DPFTau_2016_v1", #D[eep]PF[low] Tau-Id
+                               ])
+tauIdEmbedder.runTauID()
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -142,7 +147,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),
   photonsPhotonsEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_V2.txt'),
 #  taus                          = cms.InputTag("slimmedTaus"),
-  taus                          = cms.InputTag("NewTauIDsEmbedded"),
+  taus                          = cms.InputTag("slimmedTausNewID"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
@@ -183,5 +188,5 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.prefiringweight *
                      process.particleLevelSequence *
                      process.rerunMvaIsolationSequence *
-                     process.NewTauIDsEmbedded *# *getattr(process, "NewTauIDsEmbedded")
+                     getattr(process,updatedTauName) *                    
                      process.blackJackAndHookers)

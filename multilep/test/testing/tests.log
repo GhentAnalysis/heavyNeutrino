@@ -1,40 +1,51 @@
-commit 06bff2d4d51fb56a8e388b36882b8cdffc538ccc
-Author: tomc <tomc@cern.ch>
-Date:   Fri Apr 26 18:20:01 2019 +0200
+commit a606d7e4650dc88efc6fd3039fdaeba319607f9f
+Merge: f34f86e 542e7ba
+Author: Tom Cornelis <4720687+UAEDF-tomc@users.noreply.github.com>
+Date:   Mon May 27 15:03:28 2019 +0200
 
-    New test run: see tests.log
+    Merge pull request #65 from UAEDF-tomc/master
+    
+    updated overlap removal
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _phHadTowOverEm
+   New: _closestJetDeepCsv,_jetDeepCsv
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _phHadTowOverEm
+   New: _closestJetDeepCsv,_jetDeepCsv
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _phHadTowOverEm
+   New: _closestJetDeepCsv,_jetDeepCsv
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _phHadTowOverEm
+   New: _HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale,_closestJetDeepCsv,_jetDeepCsv
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _phHadTowOverEm
+   New: _closestJetDeepCsv,_jetDeepCsv
+   Changed:
+      _ttgEventType                                      mean:   6.8000 -->   7.2800     rms:   2.4000 -->   1.9498    
+      _zgEventType                                       mean:   6.5500 -->   6.9100     rms:   2.6622 -->   2.4170    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _phHadTowOverEm
+   New: _closestJetDeepCsv,_jetDeepCsv
+   Changed:
+      _ttgEventType                                      mean:   1.1100 -->   1.2000     rms:   1.1304 -->   1.1576    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _phHadTowOverEm
+   New: _HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale,_closestJetDeepCsv,_jetDeepCsv
+   Changed:
+      _passTrigger_mt                                    mean:   0.0600 -->   0.0900     rms:   0.2375 -->   0.2862    
+      _ttgEventType                                      mean:   1.0000 -->   1.0900     rms:   1.1314 -->   1.3349    
