@@ -52,12 +52,9 @@ class GenAnalyzer {
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
 
-    //Generator HT (needed when merging HT binned sample with inclusive one)
-    double _gen_HT;
-    
 
     //Generator quarks
-    unsigned _gen_nN;
+    unsigned _gen_nN = 0;
     double   _gen_NPt;
     double   _gen_NEta;
     double   _gen_NPhi;
@@ -66,7 +63,7 @@ class GenAnalyzer {
     double   _gen_Nvertex_y;
     double   _gen_Nvertex_z;
 
-    unsigned _gen_nNPackedDtrs;
+    unsigned _gen_nNPackedDtrs = 0;
     double   _gen_NPackedDtrsPt[gen_ndtr_max];
     double   _gen_NPackedDtrsEta[gen_ndtr_max];
     double   _gen_NPackedDtrsPhi[gen_ndtr_max];
@@ -85,16 +82,16 @@ class GenAnalyzer {
     double   _gen_NPackedDtrs_matchdz[gen_ndtr_max];
     int      _gen_NPackedDtrs_matchcharge[gen_ndtr_max];
 
-    unsigned _gen_nNdaughters;
+    unsigned _gen_nNdaughters = 0;
     unsigned _gen_Ndaughters_pdg[gen_n_max];
-    unsigned _gen_nstatus23;
-    unsigned _gen_nstatus23_fromN;
-    unsigned _gen_nstatus23_fromW;
+    unsigned _gen_nstatus23 = 0;
+    unsigned _gen_nstatus23_fromN = 0;
+    unsigned _gen_nstatus23_fromW = 0;
     unsigned _gen_status23_pdg[gen_n_max];
     unsigned _gen_status23_fromN_pdg[gen_n_max];
     unsigned _gen_status23_fromW_pdg[gen_n_max];
     
-    unsigned _gen_nq;
+    unsigned _gen_nq = 0;
     double   _gen_qPt[gen_n_max];
     double   _gen_qEta[gen_n_max];
     double   _gen_qPhi[gen_n_max];

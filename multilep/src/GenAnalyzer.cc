@@ -49,7 +49,6 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lDecayedHadr",          &_gen_lDecayedHadr,          "_gen_lDecayedHadr[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
-    outputTree->Branch("_gen_HT",                    &_gen_HT,                    "_gen_HT/D");
 
   //jet stuff
   outputTree->Branch("_gen_nN",		               &_gen_nN,			        "_gen_nN/i");
