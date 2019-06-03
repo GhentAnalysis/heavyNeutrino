@@ -180,7 +180,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(const pat::Muon& mu : *muons){
         if(_nL == nL_max)                              break;
         if(mu.innerTrack().isNull())                   continue;
-        if(mu.pt() < 5)                                continue;
+        if(mu.pt() < 3)                                continue;
         if(fabs(mu.eta()) > 2.4)                       continue;
         if(!mu.isPFMuon())                             continue;
         if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue;
