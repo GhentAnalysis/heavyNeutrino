@@ -36,6 +36,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   // WARNING: several triggers are off for part of the datataking, this is typically mentioned in the comments, preferably offline cuts are higher than the unprescaled ones
   // TODO: mabye we should clean up this part by storing it in some configuration file which can be analysis-specific
   if( multilepAnalyzer->is2018() ){
+    allFlags["passTrigger_FR"]     = {"HLT_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL", "HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30", "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30"};
     allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoMu27", "HLT_Mu50", "HLT_OldMu100", "HLT_TkMu100"}; // OldMu100 and TkMu100 are recommend to recover inefficiencies at high pt (https://indico.cern.ch/event/766895/contributions/3184188/attachments/1739394/2814214/IdTrigEff_HighPtMu_Min_20181023_v2.pdf)
     allFlags["passTrigger_e"]   = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele115_CaloIdVT_GsfTrkIdT", "HLT_Photon200"};
 
@@ -60,6 +61,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                    "HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned", "HLT_TripleJet110_35_35_Mjj650_PFMET110"};
 
   } else if( multilepAnalyzer->is2017() ){
+    allFlags["passTrigger_FR"]     = {"HLT_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL", "HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30", "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30"};
     allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoMu24_eta2p1", "HLT_IsoMu27", "HLT_Mu50", "HLT_OldMu100", "HLT_TkMu100"}; // HLT_IsoMu24 is off for a 3.48/fb, HLT_IsoMu24_eta2p1 off for ~9/fb, HLT_TkMu100 not existing for first ~5/fb
     allFlags["passTrigger_e"]   = {"HLT_Ele32_WPTight_Gsf", "HLT_Ele35_WPTight_Gsf", "HLT_Ele115_CaloIdVT_GsfTrkIdT", "HLT_Photon200"};
 
@@ -86,6 +88,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                    "HLT_AK8PFJet500"};
 
   } else {
+    allFlags["passTrigger_FR"]     = {"HLT_Mu8", "HLT_Mu17", "HLT_Ele8_CaloIdM_TrackIdM_PFJet30", "HLT_Ele17_CaloIdM_TrackIdM_PFJet30"};
     allFlags["passTrigger_mAN094"]      = {"HLT_IsoMu22", "HLT_IsoTkMu22", "HLT_IsoMu22_eta2p1", "HLT_IsoTkMu22_eta2p1"};
 
     allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"}; // HLT_TkMu50 off for ~3/fb, HLT_Mu45_eta2p1 off for ~12/fb
