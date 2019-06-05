@@ -75,6 +75,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch( "_JetConstituentPhi",    &_JetConstituentPhi,     std::string("_JetConstituentPhi" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_JetConstituentMass",   &_JetConstituentMass,    std::string("_JetConstituentMass" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_JetConstituentPdgId",  &_JetConstituentPdgId,   std::string("_JetConstituentPdgId" + jetConstituentsArraySize + "/I").c_str() );
+    outputTree->Branch( "_JetConstituentPdgIdReduced",  &_JetConstituentPdgIdReduced,   std::string("_JetConstituentPdgIdReduced" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_JetConstituentCharge", &_JetConstituentCharge,  std::string("_JetConstituentCharge" + jetConstituentsArraySize + "/I").c_str() );
     outputTree->Branch( "_JetConstituentdxy",    &_JetConstituentdxy,     std::string("_JetConstituentdxy" + jetConstituentsArraySize + "/D").c_str() );
     outputTree->Branch( "_JetConstituentdz",     &_JetConstituentdz,      std::string("_JetConstituentdz" + jetConstituentsArraySize + "/D").c_str() );
@@ -183,13 +184,14 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
             _JetConstituentPhi[_nJets][d]    = daughter->phi();
             _JetConstituentMass[_nJets][d]   = daughter->mass();
             _JetConstituentPdgId[_nJets][d]  = daughter->pdgId();
+            _JetConstituentPdgIdReduced[_nJets][d]  = reducedPdgId(daughter->pdgId());
 
             _JetConstituentCharge[_nJets][d] = daughter->charge();
             if( daughter->hasTrackDetails() ){
                 _JetConstituentdxy[_nJets][d] = fabs(daughter->dxy());
                 _JetConstituentdz[_nJets][d] = fabs(daughter->dz());
-                _JetConstituentdxyErr[_nJets][d] = fabs(daughter->dxyError());
-                _JetConstituentdzErr[_nJets][d] = fabs(daughter->dzError());
+                _JetConstituentdxyErr[_nJets][d] = catchNanOrInf(fabs(daughter->dxyError()));
+                _JetConstituentdzErr[_nJets][d] = catchNanOrInf(fabs(daughter->dzError()));
                 _JetConstituentNumberOfHits[_nJets][d] = daughter->numberOfHits();
                 _JetConstituentNumberOfPixelHits[_nJets][d] = daughter->numberOfPixelHits();
                 _JetConstituentHasTrack[_nJets][d] = true;
@@ -329,4 +331,33 @@ bool JetAnalyzer::jetIsTightLepVeto(const pat::Jet& jet, const bool is2017, cons
       else if(fabs(jet.eta()) <= 2.4 and jet.chargedEmEnergyFraction() >= 0.9)            return false; // EM fraction cut 2016
     }
     return true;
+}
+
+double JetAnalyzer::reducedPdgId( int pdgId ){
+    static const std::map< unsigned, double > pdgIdMap = {
+        { 0, 0.},
+        { 1, 0.125},
+        { 2, 0.25},
+        { 11, 0.375},
+        { 13, 0.5},
+        { 22, 0.625},
+        { 130, 0.75},
+        { 211, 0.875}
+    };
+    auto entry = pdgIdMap.find( fabs( pdgId ) );
+    if( entry != pdgIdMap.cend() ){
+        return entry->second;
+    } else {
+        return 1;
+    }
+}
+
+double JetAnalyzer::catchNanOrInf( double value ){
+    if( std::isnan( value ) ){
+        return -1;
+    } else if( std::isinf( value ) ){
+        return -1;
+    } else{
+        return value;
+    }
 }

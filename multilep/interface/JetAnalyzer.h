@@ -63,6 +63,7 @@ class JetAnalyzer {
     double   _JetConstituentPhi[nJets_max][maxJetSize];
     double   _JetConstituentMass[nJets_max][maxJetSize];
     int      _JetConstituentPdgId[nJets_max][maxJetSize];
+    double   _JetConstituentPdgIdReduced[nJets_max][maxJetSize];
     int      _JetConstituentCharge[nJets_max][maxJetSize];
     double   _JetConstituentdxy[nJets_max][maxJetSize];
     double   _JetConstituentdz[nJets_max][maxJetSize];
@@ -94,6 +95,8 @@ class JetAnalyzer {
     bool jetIsLoose(const pat::Jet& jet, const bool is2017) const;
     bool jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const;
     bool jetIsTightLepVeto(const pat::Jet& jet, const bool is2017, const bool is2018) const;
+    double reducedPdgId(int pdgId);
+    double catchNanOrInf(double value);
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

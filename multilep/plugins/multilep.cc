@@ -120,15 +120,6 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     auto vertices = getHandle(iEvent, vtxToken);
     edm::Handle<reco::BeamSpot> beamspot;               iEvent.getByToken(beamSpotToken, beamspot);
     
-    _BS_x = beamspot->x0();
-    _BS_y = beamspot->y0();
-    _BS_z = beamspot->z0();
-
-    const reco::Vertex primaryVertex = *(vertices->begin());
-    _PV_x = primaryVertex.x();
-    _PV_y = primaryVertex.y();
-    _PV_z = primaryVertex.z();
-    
     if( isMC() ) lheAnalyzer->analyze(iEvent);                                            // needs to be run before selection to get correct uncertainties on MC xsection
     if( isSUSY() ) susyMassAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
@@ -147,6 +138,15 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(!triggerAnalyzer->analyze(iEvent))                               return;
 
     _eventNb = (unsigned long) iEvent.id().event();
+    _BS_x = beamspot->x0();
+    _BS_y = beamspot->y0();
+    _BS_z = beamspot->z0();
+
+    const reco::Vertex primaryVertex = *(vertices->begin());
+    _PV_x = primaryVertex.x();
+    _PV_y = primaryVertex.y();
+    _PV_z = primaryVertex.z();
+    
 
     if(isMC() and !is2018()){
      _prefireWeight = *(getHandle(iEvent, prefireWeightToken));
