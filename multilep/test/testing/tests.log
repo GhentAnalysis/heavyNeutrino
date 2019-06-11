@@ -1,51 +1,42 @@
-commit a606d7e4650dc88efc6fd3039fdaeba319607f9f
-Merge: f34f86e 542e7ba
-Author: Tom Cornelis <4720687+UAEDF-tomc@users.noreply.github.com>
-Date:   Mon May 27 15:03:28 2019 +0200
+**** Following environment variables are going to be unset.
+       DBS_CLIENT_CONFIG
+       DBSCMD_HOME
+       MAGIC
+       MALLOC_CONF
+commit 2e2cdefdb81bb3020146cdbdbf97d61db91964e3
+Author: tomc <tomc@cern.ch>
+Date:   Tue Jun 11 11:12:37 2019 +0200
 
-    Merge pull request #65 from UAEDF-tomc/master
-    
-    updated overlap removal
+    This avoid tagging the test files as MC
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _closestJetDeepCsv,_jetDeepCsv
+   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _closestJetDeepCsv,_jetDeepCsv
+   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _closestJetDeepCsv,_jetDeepCsv
+   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale,_closestJetDeepCsv,_jetDeepCsv
+   New: _HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Mu17,_HLT_Mu17_prescale,_HLT_Mu8,_HLT_Mu8_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _closestJetDeepCsv,_jetDeepCsv
-   Changed:
-      _ttgEventType                                      mean:   6.8000 -->   7.2800     rms:   2.4000 -->   1.9498    
-      _zgEventType                                       mean:   6.5500 -->   6.9100     rms:   2.6622 -->   2.4170    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _closestJetDeepCsv,_jetDeepCsv
-   Changed:
-      _ttgEventType                                      mean:   1.1100 -->   1.2000     rms:   1.1304 -->   1.1576    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale,_closestJetDeepCsv,_jetDeepCsv
-   Changed:
-      _passTrigger_mt                                    mean:   0.0600 -->   0.0900     rms:   0.2375 -->   0.2862    
-      _ttgEventType                                      mean:   1.0000 -->   1.0900     rms:   1.1314 -->   1.3349    
