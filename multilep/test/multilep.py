@@ -9,7 +9,7 @@ inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles
 # Other default arguments
 
 nEvents         = 1000
-extraContent    = 'storeAllTauID'
+extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
@@ -113,9 +113,6 @@ import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
 tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
                     updatedTauName = updatedTauName,
                     toKeep = [ "2017v2", "newDM2017v2", #classic MVAIso tau-Ids
-                               "deepTau2017v1", #deepTau Tau-Ids
-                               "DPFTau_2016_v0", #D[eep]PF[low] Tau-Id
-                               "DPFTau_2016_v1", #D[eep]PF[low] Tau-Id
                                ])
 tauIdEmbedder.runTauID()
 
