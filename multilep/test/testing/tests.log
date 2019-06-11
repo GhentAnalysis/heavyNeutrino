@@ -1,40 +1,1102 @@
-commit 06bff2d4d51fb56a8e388b36882b8cdffc538ccc
-Author: tomc <tomc@cern.ch>
-Date:   Fri Apr 26 18:20:01 2019 +0200
+**** Following environment variables are going to be unset.
+       DBS_CLIENT_CONFIG
+       DBSCMD_HOME
+       MAGIC
+       MALLOC_CONF
+commit 031ebbbdec80d7245840a9360056e103636c1435
+Author: willem <willem.verbeke@cern.ch>
+Date:   Tue Jun 11 10:08:37 2019 +0200
 
-    New test run: see tests.log
-
---------------------------------------------------------------------------------------------------
-
-Running test: Run2018-17Sep2018 --> OK
-   New: _phHadTowOverEm
-
---------------------------------------------------------------------------------------------------
-
-Running test: Run2018-PromptReco --> OK
-   New: _phHadTowOverEm
+    update to latest cmssw version
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2017-31March2017 --> OK
-   New: _phHadTowOverEm
+Running test: Run2018-17Sep2018 --> FAILED
+Output:   **** Following environment variables are going to be unset.
+          DBS_CLIENT_CONFIG
+          DBSCMD_HOME
+          MAGIC
+          MALLOC_CONF
+   >>> WARNING: you are using a different release as the one specified in the setup.sh script! <<< 
+   runTauID: not is_above_cmssw_version(10, 0, 0). Will update the list of available in DB samples to access 2017v2
+   loadMVA_WPs_run2_2017: performed
+   runTauID: not is_above_cmssw_version(10, 0, 0). Will update the list of available in DB samples to access newDM2017v2
+   loadMVA_WPs_run2_2017: performed
+   11-Jun-2019 10:44:38 CEST  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root
+   11-Jun-2019 10:44:39 CEST  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon_2017" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron_2017" of type: "BDT"
+   Begin processing the 1st record. Run 315713, Event 444544370, LumiSection 336 on stream 0 at 11-Jun-2019 10:45:23.224 CEST
+   
+   
+   A fatal system signal has occurred: segmentation violation
+   The following is the call stack containing the origin of the signal.
+   
+   Thread 2 (Thread 0x7f8c6921d700 (LWP 12733)):
+   #0  0x000000328340f37d in waitpid () from /lib64/libpthread.so.0
+   #1  0x00007f8c79850f87 in edm::service::cmssw_stacktrace_fork() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #2  0x00007f8c79851a6a in edm::service::InitRootHandlers::stacktraceHelperThread() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #3  0x00007f8c7c4648cf in std::execute_native_thread_routine (__p=0x7f8c697528d0) at ../../../../../libstdc++-v3/src/c++11/thread.cc:83
+   #4  0x0000003283407aa1 in start_thread () from /lib64/libpthread.so.0
+   #5  0x00000032828e8c4d in clone () from /lib64/libc.so.6
+   Thread 1 (Thread 0x7f8c7c11a3e0 (LWP 12653)):
+   #0  0x00000032828df403 in poll () from /lib64/libc.so.6
+   #1  0x00007f8c798514b7 in full_read.constprop () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #2  0x00007f8c79851b4c in edm::service::InitRootHandlers::stacktraceFromThread() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #3  0x00007f8c79852bb9 in sig_dostack_then_abort () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #4  <signal handler called>
+   #5  0x00007f8c61164bbe in reco::MET::MET(reco::MET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #6  0x00007f8c61164fb9 in reco::GenMET::GenMET(reco::GenMET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #7  0x00007f8c6116a153 in void std::vector<reco::GenMET, std::allocator<reco::GenMET> >::_M_realloc_insert<reco::GenMET const&>(__gnu_cxx::__normal_iterator<reco::GenMET*, std::vector<reco::GenMET, std::allocator<reco::GenMET> > >, reco::GenMET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #8  0x00007f8c4d3f3f25 in pat::GenMETExtractor::produce(edm::StreamID, edm::Event&, edm::EventSetup const&) const () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginPhysicsToolsPatAlgos_plugins.so
+   #9  0x00007f8c7e1358d8 in edm::global::EDProducerBase::doEvent(edm::EventPrincipal const&, edm::EventSetup const&, edm::ActivityRegistry*, edm::ModuleCallingContext const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #10 0x00007f8c7e073a32 in edm::WorkerT<edm::global::EDProducerBase>::implDo(edm::EventPrincipal const&, edm::EventSetup const&, edm::ModuleCallingContext const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #11 0x00007f8c7e0208fa in decltype ({parm#1}()) edm::convertException::wrap<bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*)::{lambda()#1}>(bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*)::{lambda()#1}) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #12 0x00007f8c7e020abd in bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #13 0x00007f8c7e0221db in std::__exception_ptr::exception_ptr edm::Worker::runModuleAfterAsyncPrefetch<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(std::__exception_ptr::exception_ptr const*, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #14 0x00007f8c7e023284 in edm::Worker::RunModuleTask<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >::execute() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #15 0x00007f8c7c980446 in tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all (this=0x7f8c7b3bf200, parent=..., child=<optimized out>) at ../../src/tbb/custom_scheduler.h:509
+   #16 0x00007f8c7e0ced71 in edm::EventProcessor::processLumis(std::shared_ptr<void> const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #17 0x00007f8c7e0d80ca in edm::EventProcessor::runToCompletion() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #18 0x000000000040eb7b in main::{lambda()#1}::operator()() const ()
+   #19 0x000000000040d322 in main ()
+   
+   Current Modules:
+   
+   Module: GenMETExtractor:genMetExtractor (crashed)
+   
+   A fatal system signal has occurred: segmentation violation
+   /bin/sh: line 1: 12653 Segmentation fault      cmsRun ../multilep.py inputFile=file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel
 
 --------------------------------------------------------------------------------------------------
 
-Running test: Run2016-17Jul2018 --> OK
-   New: _phHadTowOverEm
+Running test: Run2018-PromptReco --> FAILED
+Output:   **** Following environment variables are going to be unset.
+          DBS_CLIENT_CONFIG
+          DBSCMD_HOME
+          MAGIC
+          MALLOC_CONF
+   >>> WARNING: you are using a different release as the one specified in the setup.sh script! <<< 
+   runTauID: not is_above_cmssw_version(10, 0, 0). Will update the list of available in DB samples to access 2017v2
+   loadMVA_WPs_run2_2017: performed
+   runTauID: not is_above_cmssw_version(10, 0, 0). Will update the list of available in DB samples to access newDM2017v2
+   loadMVA_WPs_run2_2017: performed
+   11-Jun-2019 10:46:27 CEST  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root
+   11-Jun-2019 10:46:28 CEST  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon_2017" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron_2017" of type: "BDT"
+   Begin processing the 1st record. Run 316569, Event 67093815, LumiSection 66 on stream 0 at 11-Jun-2019 10:47:19.582 CEST
+   
+   
+   A fatal system signal has occurred: segmentation violation
+   The following is the call stack containing the origin of the signal.
+   
+   Thread 2 (Thread 0x7fbd1de5b700 (LWP 13671)):
+   #0  0x000000328340f37d in waitpid () from /lib64/libpthread.so.0
+   #1  0x00007fbd2e48ef87 in edm::service::cmssw_stacktrace_fork() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #2  0x00007fbd2e48fa6a in edm::service::InitRootHandlers::stacktraceHelperThread() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #3  0x00007fbd3109e8cf in std::execute_native_thread_routine (__p=0x7fbd1e3938d0) at ../../../../../libstdc++-v3/src/c++11/thread.cc:83
+   #4  0x0000003283407aa1 in start_thread () from /lib64/libpthread.so.0
+   #5  0x00000032828e8c4d in clone () from /lib64/libc.so.6
+   Thread 1 (Thread 0x7fbd30d543e0 (LWP 13598)):
+   #0  0x00000032828df403 in poll () from /lib64/libc.so.6
+   #1  0x00007fbd2e48f4b7 in full_read.constprop () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #2  0x00007fbd2e48fb4c in edm::service::InitRootHandlers::stacktraceFromThread() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #3  0x00007fbd2e490bb9 in sig_dostack_then_abort () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #4  <signal handler called>
+   #5  0x00007fbd15d9dbbe in reco::MET::MET(reco::MET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #6  0x00007fbd15d9dfb9 in reco::GenMET::GenMET(reco::GenMET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #7  0x00007fbd15da3153 in void std::vector<reco::GenMET, std::allocator<reco::GenMET> >::_M_realloc_insert<reco::GenMET const&>(__gnu_cxx::__normal_iterator<reco::GenMET*, std::vector<reco::GenMET, std::allocator<reco::GenMET> > >, reco::GenMET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #8  0x00007fbcf67b3f25 in pat::GenMETExtractor::produce(edm::StreamID, edm::Event&, edm::EventSetup const&) const () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginPhysicsToolsPatAlgos_plugins.so
+   #9  0x00007fbd32d6f8d8 in edm::global::EDProducerBase::doEvent(edm::EventPrincipal const&, edm::EventSetup const&, edm::ActivityRegistry*, edm::ModuleCallingContext const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #10 0x00007fbd32cada32 in edm::WorkerT<edm::global::EDProducerBase>::implDo(edm::EventPrincipal const&, edm::EventSetup const&, edm::ModuleCallingContext const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #11 0x00007fbd32c5a8fa in decltype ({parm#1}()) edm::convertException::wrap<bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*)::{lambda()#1}>(bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*)::{lambda()#1}) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #12 0x00007fbd32c5aabd in bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #13 0x00007fbd32c5c1db in std::__exception_ptr::exception_ptr edm::Worker::runModuleAfterAsyncPrefetch<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(std::__exception_ptr::exception_ptr const*, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #14 0x00007fbd32c5d284 in edm::Worker::RunModuleTask<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >::execute() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #15 0x00007fbd315ba446 in tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all (this=0x7fbd2ffbf200, parent=..., child=<optimized out>) at ../../src/tbb/custom_scheduler.h:509
+   #16 0x00007fbd32d08d71 in edm::EventProcessor::processLumis(std::shared_ptr<void> const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #17 0x00007fbd32d120ca in edm::EventProcessor::runToCompletion() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #18 0x000000000040eb7b in main::{lambda()#1}::operator()() const ()
+   #19 0x000000000040d322 in main ()
+   
+   Current Modules:
+   
+   Module: GenMETExtractor:genMetExtractor (crashed)
+   
+   A fatal system signal has occurred: segmentation violation
+   /bin/sh: line 1: 13598 Segmentation fault      cmsRun ../multilep.py inputFile=file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2017-31March2017 --> FAILED
+Output:   **** Following environment variables are going to be unset.
+          DBS_CLIENT_CONFIG
+          DBSCMD_HOME
+          MAGIC
+          MALLOC_CONF
+   >>> WARNING: you are using a different release as the one specified in the setup.sh script! <<< 
+   runTauID: not is_above_cmssw_version(10, 0, 0). Will update the list of available in DB samples to access 2017v2
+   loadMVA_WPs_run2_2017: performed
+   runTauID: not is_above_cmssw_version(10, 0, 0). Will update the list of available in DB samples to access newDM2017v2
+   loadMVA_WPs_run2_2017: performed
+   11-Jun-2019 10:48:27 CEST  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root
+   11-Jun-2019 10:48:28 CEST  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon_2017" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV17_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron_2017" of type: "BDT"
+   Begin processing the 1st record. Run 301142, Event 16473752, LumiSection 18 on stream 0 at 11-Jun-2019 10:49:50.811 CEST
+   ----- Begin Fatal Exception 11-Jun-2019 10:49:53 CEST-----------------------
+   An exception of category 'InvalidRequest' occurred while
+      [0] Processing  Event run: 301142 lumi: 18 event: 16473752 stream: 0
+      [1] Running path 'p'
+      [2] Calling method for module PATJetCleanerForType1MET/'basicJetsForMet'
+   Exception Message:
+   The JEC level L2L3Residual does not exist !!
+   Available levels = { Uncorrected, L1FastJet, L2Relative, L3Absolute }.
+   ----- End Fatal Exception -------------------------------------------------
+   11-Jun-2019 10:49:53 CEST  Closed file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2017C/DoubleEG/MINIAOD/31Mar2018-v1/00002/58841328-4838-E811-AC6D-00266CFFCAC0.root
+   
+   TrigReport ---------- Event  Summary ------------
+   TrigReport Events total = 1 passed = 0 failed = 1
+   
+   TrigReport ---------- Path   Summary ------------
+   TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+   TrigReport     1    0          1          0          0          1 p
+   
+   TrigReport -------End-Path   Summary ------------
+   TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+   
+   TrigReport ---------- Modules in Path: p ------------
+   TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+   TrigReport     1    0          1          1          0          0 goodOfflinePrimaryVertices
+   TrigReport     1    1          1          1          0          0 slimmedJetsCorrectedAndSmeared
+   TrigReport     1    2          1          1          0          0 slimmedJetsCorrectedAndSmearedDown
+   TrigReport     1    3          1          1          0          0 slimmedJetsCorrectedAndSmearedUp
+   TrigReport     1    4          1          1          0          0 ecalBadCalibReducedMINIAODFilter
+   TrigReport     1    5          1          1          0          0 pfCandidateJetsWithEEnoise
+   TrigReport     1    6          1          1          0          0 pfcandidateClustered
+   TrigReport     1    7          1          1          0          0 pfcandidateForUnclusteredUnc
+   TrigReport     1    8          1          1          0          0 badUnclustered
+   TrigReport     1    9          1          1          0          0 blobUnclustered
+   TrigReport     1   10          1          1          0          0 superbad
+   TrigReport     1   11          1          1          0          0 pfCandidatesGoodEE2017
+   TrigReport     1   12          1          1          0          0 pfMet
+   TrigReport     1   13          1          1          0          0 patJetCorrFactorsReapplyJEC
+   TrigReport     1   14          1          1          0          0 patJetsReapplyJEC
+   TrigReport     1   15          1          0          0          1 basicJetsForMet
+   TrigReport     1   16          0          0          0          0 jetSelectorForMet
+   TrigReport     1   17          0          0          0          0 cleanedPatJets
+   TrigReport     1   18          0          0          0          0 metrawCalo
+   TrigReport     1   19          0          0          0          0 genMetExtractor
+   TrigReport     1   20          0          0          0          0 pfCHS
+   TrigReport     1   21          0          0          0          0 pfMetCHS
+   TrigReport     1   22          0          0          0          0 patCHSMet
+   TrigReport     1   23          0          0          0          0 pfTrk
+   TrigReport     1   24          0          0          0          0 pfMetTrk
+   TrigReport     1   25          0          0          0          0 patTrkMet
+   TrigReport     1   26          0          0          0          0 patPFMet
+   TrigReport     1   27          0          0          0          0 patPFMetT1
+   TrigReport     1   28          0          0          0          0 patPFMetT1Txy
+   TrigReport     1   29          0          0          0          0 patPFMetTxy
+   TrigReport     1   30          0          0          0          0 patPFMetT1Smear
+   TrigReport     1   31          0          0          0          0 shiftedPatJetResDown
+   TrigReport     1   32          0          0          0          0 shiftedPatMETCorrJetResDown
+   TrigReport     1   33          0          0          0          0 shiftedPatJetResUp
+   TrigReport     1   34          0          0          0          0 shiftedPatMETCorrJetResUp
+   TrigReport     1   35          0          0          0          0 pfCandsNoJets
+   TrigReport     1   36          0          0          0          0 pfCandsNoJetsNoEle
+   TrigReport     1   37          0          0          0          0 pfCandsNoJetsNoEleNoMu
+   TrigReport     1   38          0          0          0          0 pfCandsNoJetsNoEleNoMuNoTau
+   TrigReport     1   39          0          0          0          0 pfCandsForUnclusteredUnc
+   TrigReport     1   40          0          0          0          0 shiftedPatMuonEnDown
+   TrigReport     1   41          0          0          0          0 shiftedPatMETCorrMuonEnDown
+   TrigReport     1   42          0          0          0          0 shiftedPatMuonEnUp
+   TrigReport     1   43          0          0          0          0 shiftedPatMETCorrMuonEnUp
+   TrigReport     1   44          0          0          0          0 shiftedPatJetEnDown
+   TrigReport     1   45          0          0          0          0 shiftedPatMETCorrJetEnDown
+   TrigReport     1   46          0          0          0          0 shiftedPatJetEnUp
+   TrigReport     1   47          0          0          0          0 shiftedPatMETCorrJetEnUp
+   TrigReport     1   48          0          0          0          0 shiftedPatTauEnDown
+   TrigReport     1   49          0          0          0          0 shiftedPatMETCorrTauEnDown
+   TrigReport     1   50          0          0          0          0 shiftedPatTauEnUp
+   TrigReport     1   51          0          0          0          0 shiftedPatMETCorrTauEnUp
+   TrigReport     1   52          0          0          0          0 shiftedPatPhotonEnDown
+   TrigReport     1   53          0          0          0          0 shiftedPatMETCorrPhotonEnDown
+   TrigReport     1   54          0          0          0          0 shiftedPatPhotonEnUp
+   TrigReport     1   55          0          0          0          0 shiftedPatMETCorrPhotonEnUp
+   TrigReport     1   56          0          0          0          0 shiftedPatElectronEnDown
+   TrigReport     1   57          0          0          0          0 shiftedPatMETCorrElectronEnDown
+   TrigReport     1   58          0          0          0          0 shiftedPatElectronEnUp
+   TrigReport     1   59          0          0          0          0 shiftedPatMETCorrElectronEnUp
+   TrigReport     1   60          0          0          0          0 shiftedPatUnclusteredEnDown
+   TrigReport     1   61          0          0          0          0 shiftedPatMETCorrUnclusteredEnDown
+   TrigReport     1   62          0          0          0          0 shiftedPatUnclusteredEnUp
+   TrigReport     1   63          0          0          0          0 shiftedPatMETCorrUnclusteredEnUp
+   TrigReport     1   64          0          0          0          0 shiftedPatSmearedJetResDown
+   TrigReport     1   65          0          0          0          0 shiftedPatMETCorrSmearedJetResDown
+   TrigReport     1   66          0          0          0          0 shiftedPatSmearedJetResUp
+   TrigReport     1   67          0          0          0          0 shiftedPatMETCorrSmearedJetResUp
+   TrigReport     1   68          0          0          0          0 patPFMetT1JetResUp
+   TrigReport     1   69          0          0          0          0 patPFMetT1JetResDown
+   TrigReport     1   70          0          0          0          0 patPFMetT1MuonEnUp
+   TrigReport     1   71          0          0          0          0 patPFMetT1MuonEnDown
+   TrigReport     1   72          0          0          0          0 patPFMetT1JetEnUp
+   TrigReport     1   73          0          0          0          0 patPFMetT1JetEnDown
+   TrigReport     1   74          0          0          0          0 patPFMetT1TauEnDown
+   TrigReport     1   75          0          0          0          0 patPFMetT1TauEnUp
+   TrigReport     1   76          0          0          0          0 patPFMetT1PhotonEnUp
+   TrigReport     1   77          0          0          0          0 patPFMetT1PhotonEnDown
+   TrigReport     1   78          0          0          0          0 patPFMetT1ElectronEnUp
+   TrigReport     1   79          0          0          0          0 patPFMetT1ElectronEnDown
+   TrigReport     1   80          0          0          0          0 patPFMetT1UnclusteredEnUp
+   TrigReport     1   81          0          0          0          0 patPFMetT1UnclusteredEnDown
+   TrigReport     1   82          0          0          0          0 patPFMetT1SmearJetResDown
+   TrigReport     1   83          0          0          0          0 patPFMetT1SmearJetResUp
+   TrigReport     1   84          0          0          0          0 patPFMetT1SmearMuonEnUp
+   TrigReport     1   85          0          0          0          0 patPFMetT1SmearMuonEnDown
+   TrigReport     1   86          0          0          0          0 patPFMetT1SmearJetEnUp
+   TrigReport     1   87          0          0          0          0 patPFMetT1SmearJetEnDown
+   TrigReport     1   88          0          0          0          0 patPFMetT1SmearTauEnUp
+   TrigReport     1   89          0          0          0          0 patPFMetT1SmearTauEnDown
+   TrigReport     1   90          0          0          0          0 patPFMetT1SmearPhotonEnUp
+   TrigReport     1   91          0          0          0          0 patPFMetT1SmearPhotonEnDown
+   TrigReport     1   92          0          0          0          0 patPFMetT1SmearElectronEnDown
+   TrigReport     1   93          0          0          0          0 patPFMetT1SmearElectronEnUp
+   TrigReport     1   94          0          0          0          0 patPFMetT1SmearUnclusteredEnUp
+   TrigReport     1   95          0          0          0          0 patPFMetT1SmearUnclusteredEnDown
+   TrigReport     1   96          0          0          0          0 patCaloMet
+   TrigReport     1   97          0          0          0          0 slimmedMETs
+   TrigReport     1   98          0          0          0          0 prefiringweight
+   TrigReport     1   99          0          0          0          0 mergedGenParticles
+   TrigReport     1  100          0          0          0          0 genParticles2HepMC
+   TrigReport     1  101          0          0          0          0 particleLevel
+   TrigReport     1  102          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2raw
+   TrigReport     1  103          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2VLoose
+   TrigReport     1  104          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2VVLoose
+   TrigReport     1  105          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2Loose
+   TrigReport     1  106          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2Medium
+   TrigReport     1  107          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2Tight
+   TrigReport     1  108          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2VTight
+   TrigReport     1  109          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2VVTight
+   TrigReport     1  110          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2raw
+   TrigReport     1  111          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2VLoose
+   TrigReport     1  112          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2VVLoose
+   TrigReport     1  113          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2Loose
+   TrigReport     1  114          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2Medium
+   TrigReport     1  115          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2Tight
+   TrigReport     1  116          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2VTight
+   TrigReport     1  117          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2VVTight
+   TrigReport     1  118          0          0          0          0 NewTauIDsEmbedded
+   TrigReport     1  119          0          0          0          0 blackJackAndHookers
+   
+   TrigReport ---------- Module Summary ------------
+   TrigReport    Visited   Executed     Passed     Failed      Error Name
+   TrigReport          0          0          0          0          0 NewTauIDsEmbedded
+   TrigReport          1          1          1          0          0 TriggerResults
+   TrigReport          0          0          0          0          0 ak4CaloL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL1FastL2L3L6Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL1FastjetCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL1OffsetCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL2L3L6Corrector
+   TrigReport          0          0          0          0          0 ak4CaloL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4CaloL6SLBCorrector
+   TrigReport          0          0          0          0          0 ak4CaloResidualCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4JPTL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4JPTL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4JPTL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4JPTL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4JPTResidualCorrector
+   TrigReport          0          0          0          0          0 ak4L1JPTFastjetCorrector
+   TrigReport          0          0          0          0          0 ak4L1JPTOffsetCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1FastjetCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL1OffsetCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4PFCHSResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFL1FastL2L3L6Corrector
+   TrigReport          0          0          0          0          0 ak4PFL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFL1FastjetCorrector
+   TrigReport          0          0          0          0          0 ak4PFL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFL1OffsetCorrector
+   TrigReport          0          0          0          0          0 ak4PFL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFL2L3L6Corrector
+   TrigReport          0          0          0          0          0 ak4PFL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4PFL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4PFL6SLBCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1FastL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1FastL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1FastjetCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1L2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1L2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL1OffsetCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL2L3ResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiL3AbsoluteCorrector
+   TrigReport          0          0          0          0          0 ak4PFPuppiResidualCorrector
+   TrigReport          0          0          0          0          0 ak4PFResidualCorrector
+   TrigReport          0          0          0          0          0 ak4TrackL2L3Corrector
+   TrigReport          0          0          0          0          0 ak4TrackL2RelativeCorrector
+   TrigReport          0          0          0          0          0 ak4TrackL3AbsoluteCorrector
+   TrigReport          1          1          1          0          0 badUnclustered
+   TrigReport          1          1          0          0          1 basicJetsForMet
+   TrigReport          0          0          0          0          0 blackJackAndHookers
+   TrigReport          1          1          1          0          0 blobUnclustered
+   TrigReport         25          1          1          0          0 calibratedPatElectrons
+   TrigReport         21          1          1          0          0 calibratedPatPhotons
+   TrigReport          0          0          0          0          0 caloMetT1
+   TrigReport          0          0          0          0          0 caloMetT1T2
+   TrigReport          0          0          0          0          0 cleanedPatJets
+   TrigReport          0          0          0          0          0 corrCaloMetType1
+   TrigReport          0          0          0          0          0 corrCaloMetType2
+   TrigReport          0          0          0          0          0 corrPfMetType1
+   TrigReport          0          0          0          0          0 corrPfMetType2
+   TrigReport          1          1          1          0          0 ecalBadCalibReducedMINIAODFilter
+   TrigReport         42          1          1          0          0 egmGsfElectronIDs
+   TrigReport         26          1          1          0          0 egmPhotonIDs
+   TrigReport          2          1          1          0          0 egmPhotonIsolation
+   TrigReport         14          1          1          0          0 electronMVAValueMapProducer
+   TrigReport          3          1          1          0          0 electronMVAVariableHelper
+   TrigReport          0          0          0          0          0 electronRegressionValueMapProducer
+   TrigReport          0          0          0          0          0 genMetExtractor
+   TrigReport          0          0          0          0          0 genParticles2HepMC
+   TrigReport          1          1          1          0          0 goodOfflinePrimaryVertices
+   TrigReport          1          1          1          0          0 heepIDVarValueMaps
+   TrigReport          0          0          0          0          0 jetSelectorForMet
+   TrigReport          0          0          0          0          0 mergedGenParticles
+   TrigReport          0          0          0          0          0 metrawCalo
+   TrigReport          0          0          0          0          0 muCaloMetCorr
+   TrigReport          1          1          1          0          0 p
+   TrigReport          0          0          0          0          0 particleFlowDisplacedVertex
+   TrigReport          0          0          0          0          0 particleFlowPtrs
+   TrigReport          0          0          0          0          0 particleLevel
+   TrigReport          0          0          0          0          0 patCHSMet
+   TrigReport          0          0          0          0          0 patCaloMet
+   TrigReport          1          1          1          0          0 patJetCorrFactorsReapplyJEC
+   TrigReport          1          1          1          0          0 patJetCorrFactorsUpdatedJEC
+   TrigReport          1          1          1          0          0 patJetsReapplyJEC
+   TrigReport          0          0          0          0          0 patMETs
+   TrigReport          0          0          0          0          0 patPFMet
+   TrigReport          0          0          0          0          0 patPFMetT0Corr
+   TrigReport          0          0          0          0          0 patPFMetT0pcT1
+   TrigReport          0          0          0          0          0 patPFMetT0pcT1T2
+   TrigReport          0          0          0          0          0 patPFMetT1
+   TrigReport          0          0          0          0          0 patPFMetT1ElectronEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1ElectronEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1JetEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1JetEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1JetResDown
+   TrigReport          0          0          0          0          0 patPFMetT1JetResUp
+   TrigReport          0          0          0          0          0 patPFMetT1MuonEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1MuonEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1PhotonEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1PhotonEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1Smear
+   TrigReport          0          0          0          0          0 patPFMetT1SmearElectronEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1SmearElectronEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1SmearJetEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1SmearJetEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1SmearJetResDown
+   TrigReport          0          0          0          0          0 patPFMetT1SmearJetResUp
+   TrigReport          0          0          0          0          0 patPFMetT1SmearMuonEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1SmearMuonEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1SmearPhotonEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1SmearPhotonEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1SmearTauEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1SmearTauEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1SmearUnclusteredEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1SmearUnclusteredEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1T2
+   TrigReport          0          0          0          0          0 patPFMetT1T2Corr
+   TrigReport          0          0          0          0          0 patPFMetT1T2SmearCorr
+   TrigReport          0          0          0          0          0 patPFMetT1TauEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1TauEnUp
+   TrigReport          0          0          0          0          0 patPFMetT1Txy
+   TrigReport          0          0          0          0          0 patPFMetT1UnclusteredEnDown
+   TrigReport          0          0          0          0          0 patPFMetT1UnclusteredEnUp
+   TrigReport          0          0          0          0          0 patPFMetT2Corr
+   TrigReport          0          0          0          0          0 patPFMetT2SmearCorr
+   TrigReport          0          0          0          0          0 patPFMetTxy
+   TrigReport          0          0          0          0          0 patPFMetTxyCorr
+   TrigReport          0          0          0          0          0 patSmearedJets
+   TrigReport          0          0          0          0          0 patTrkMet
+   TrigReport          0          0          0          0          0 pfCHS
+   TrigReport          0          0          0          0          0 pfCandMETcorr
+   TrigReport          1          1          1          0          0 pfCandidateJetsWithEEnoise
+   TrigReport          0          0          0          0          0 pfCandidateToVertexAssociation
+   TrigReport          1          1          1          0          0 pfCandidatesGoodEE2017
+   TrigReport          0          0          0          0          0 pfCandsForUnclusteredUnc
+   TrigReport          0          0          0          0          0 pfCandsNoJets
+   TrigReport          0          0          0          0          0 pfCandsNoJetsNoEle
+   TrigReport          0          0          0          0          0 pfCandsNoJetsNoEleNoMu
+   TrigReport          0          0          0          0          0 pfCandsNoJetsNoEleNoMuNoTau
+   TrigReport          0          0          0          0          0 pfCandsNotInJetsForMetCorr
+   TrigReport          0          0          0          0          0 pfCandsNotInJetsPtrForMetCorr
+   TrigReport          0          0          0          0          0 pfJetsPtrForMetCorr
+   TrigReport          1          1          1          0          0 pfMet
+   TrigReport          0          0          0          0          0 pfMetCHS
+   TrigReport          0          0          0          0          0 pfMetT1
+   TrigReport          0          0          0          0          0 pfMetT1T2
+   TrigReport          0          0          0          0          0 pfMetTrk
+   TrigReport          0          0          0          0          0 pfTrk
+   TrigReport          1          1          1          0          0 pfcandidateClustered
+   TrigReport          1          1          1          0          0 pfcandidateForUnclusteredUnc
+   TrigReport          6          1          1          0          0 photonIDValueMapProducer
+   TrigReport          8          1          1          0          0 photonMVAValueMapProducer
+   TrigReport          0          0          0          0          0 photonRegressionValueMapProducer
+   TrigReport          0          0          0          0          0 prefiringweight
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2Loose
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2Medium
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2Tight
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2VLoose
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2VTight
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2VVLoose
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2VVTight
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationNewDMMVArun2017v2raw
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2Loose
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2Medium
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2Tight
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2VLoose
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2VTight
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2VVLoose
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2VVTight
+   TrigReport          0          0          0          0          0 rerunDiscriminationByIsolationOldDMMVArun2017v2raw
+   TrigReport          0          0          0          0          0 selectedPatJetsForMetT1T2Corr
+   TrigReport          0          0          0          0          0 selectedPatJetsForMetT1T2SmearCorr
+   TrigReport          0          0          0          0          0 selectedPatJetsForMetT2Corr
+   TrigReport          0          0          0          0          0 selectedPatJetsForMetT2SmearCorr
+   TrigReport          0          0          0          0          0 selectedPrimaryVertexHighestPtTrackSumForPFMEtCorrType0
+   TrigReport          1          1          1          0          0 selectedUpdatedPatJetsUpdatedJEC
+   TrigReport          0          0          0          0          0 selectedVerticesForPFMEtCorrType0
+   TrigReport          0          0          0          0          0 shiftedPatElectronEnDown
+   TrigReport          0          0          0          0          0 shiftedPatElectronEnUp
+   TrigReport          0          0          0          0          0 shiftedPatJetEnDown
+   TrigReport          0          0          0          0          0 shiftedPatJetEnUp
+   TrigReport          0          0          0          0          0 shiftedPatJetResDown
+   TrigReport          0          0          0          0          0 shiftedPatJetResUp
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrElectronEnDown
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrElectronEnUp
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrJetEnDown
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrJetEnUp
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrJetResDown
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrJetResUp
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrMuonEnDown
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrMuonEnUp
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrPhotonEnDown
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrPhotonEnUp
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrSmearedJetResDown
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrSmearedJetResUp
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrTauEnDown
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrTauEnUp
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrUnclusteredEnDown
+   TrigReport          0          0          0          0          0 shiftedPatMETCorrUnclusteredEnUp
+   TrigReport          0          0          0          0          0 shiftedPatMuonEnDown
+   TrigReport          0          0          0          0          0 shiftedPatMuonEnUp
+   TrigReport          0          0          0          0          0 shiftedPatPhotonEnDown
+   TrigReport          0          0          0          0          0 shiftedPatPhotonEnUp
+   TrigReport          0          0          0          0          0 shiftedPatSmearedJetResDown
+   TrigReport          0          0          0          0          0 shiftedPatSmearedJetResUp
+   TrigReport          0          0          0          0          0 shiftedPatTauEnDown
+   TrigReport          0          0          0          0          0 shiftedPatTauEnUp
+   TrigReport          0          0          0          0          0 shiftedPatUnclusteredEnDown
+   TrigReport          0          0          0          0          0 shiftedPatUnclusteredEnUp
+   TrigReport          1          1          1          0          0 slimmedElectrons
+   TrigReport          1          1          1          0          0 slimmedJetsCorrectedAndSmeared
+   TrigReport          1          1          1          0          0 slimmedJetsCorrectedAndSmearedDown
+   TrigReport          1          1          1          0          0 slimmedJetsCorrectedAndSmearedUp
+   TrigReport          0          0          0          0          0 slimmedMETs
+   TrigReport          1          1          1          0          0 slimmedPhotons
+   TrigReport          1          1          1          0          0 superbad
+   TrigReport          1          1          1          0          0 updatedPatJetsUpdatedJEC
+   
+   TimeReport ---------- Event  Summary ---[sec]----
+   TimeReport       event loop CPU/event = 3.407307
+   TimeReport      event loop Real/event = 50.745706
+   TimeReport     sum Streams Real/event = 2.977217
+   TimeReport efficiency CPU/Real/thread = 0.067145
+   
+   TimeReport ---------- Path   Summary ---[Real sec]----
+   TimeReport  per event     per exec  Name
+   TimeReport   2.818603     2.818603  p
+   TimeReport  per event     per exec  Name
+   
+   TimeReport -------End-Path   Summary ---[Real sec]----
+   TimeReport  per event     per exec  Name
+   TimeReport  per event     per exec  Name
+   
+   TimeReport ---------- Modules in Path: p ---[Real sec]----
+   TimeReport  per event    per visit  Name
+   TimeReport   0.000486     0.000486  goodOfflinePrimaryVertices
+   TimeReport   0.000592     0.000592  slimmedJetsCorrectedAndSmeared
+   TimeReport   0.000296     0.000296  slimmedJetsCorrectedAndSmearedDown
+   TimeReport   0.000320     0.000320  slimmedJetsCorrectedAndSmearedUp
+   TimeReport   1.289531     1.289531  ecalBadCalibReducedMINIAODFilter
+   TimeReport   0.001696     0.001696  pfCandidateJetsWithEEnoise
+   TimeReport   0.001218     0.001218  pfcandidateClustered
+   TimeReport   0.000836     0.000836  pfcandidateForUnclusteredUnc
+   TimeReport   0.006264     0.006264  badUnclustered
+   TimeReport   0.000335     0.000335  blobUnclustered
+   TimeReport   0.000054     0.000054  superbad
+   TimeReport   0.000245     0.000245  pfCandidatesGoodEE2017
+   TimeReport   0.001249     0.001249  pfMet
+   TimeReport   0.001609     0.001609  patJetCorrFactorsReapplyJEC
+   TimeReport   0.000373     0.000373  patJetsReapplyJEC
+   TimeReport   0.011809     0.011809  basicJetsForMet
+   TimeReport   0.000000     0.000000  jetSelectorForMet
+   TimeReport   0.000000     0.000000  cleanedPatJets
+   TimeReport   0.000000     0.000000  metrawCalo
+   TimeReport   0.000000     0.000000  genMetExtractor
+   TimeReport   0.000000     0.000000  pfCHS
+   TimeReport   0.000000     0.000000  pfMetCHS
+   TimeReport   0.000000     0.000000  patCHSMet
+   TimeReport   0.000000     0.000000  pfTrk
+   TimeReport   0.000000     0.000000  pfMetTrk
+   TimeReport   0.000000     0.000000  patTrkMet
+   TimeReport   0.000000     0.000000  patPFMet
+   TimeReport   0.000000     0.000000  patPFMetT1
+   TimeReport   0.000000     0.000000  patPFMetT1Txy
+   TimeReport   0.000000     0.000000  patPFMetTxy
+   TimeReport   0.000000     0.000000  patPFMetT1Smear
+   TimeReport   0.000000     0.000000  shiftedPatJetResDown
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrJetResDown
+   TimeReport   0.000000     0.000000  shiftedPatJetResUp
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrJetResUp
+   TimeReport   0.000000     0.000000  pfCandsNoJets
+   TimeReport   0.000000     0.000000  pfCandsNoJetsNoEle
+   TimeReport   0.000000     0.000000  pfCandsNoJetsNoEleNoMu
+   TimeReport   0.000000     0.000000  pfCandsNoJetsNoEleNoMuNoTau
+   TimeReport   0.000000     0.000000  pfCandsForUnclusteredUnc
+   TimeReport   0.000000     0.000000  shiftedPatMuonEnDown
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrMuonEnDown
+   TimeReport   0.000000     0.000000  shiftedPatMuonEnUp
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrMuonEnUp
+   TimeReport   0.000000     0.000000  shiftedPatJetEnDown
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrJetEnDown
+   TimeReport   0.000000     0.000000  shiftedPatJetEnUp
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrJetEnUp
+   TimeReport   0.000000     0.000000  shiftedPatTauEnDown
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrTauEnDown
+   TimeReport   0.000000     0.000000  shiftedPatTauEnUp
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrTauEnUp
+   TimeReport   0.000000     0.000000  shiftedPatPhotonEnDown
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrPhotonEnDown
+   TimeReport   0.000000     0.000000  shiftedPatPhotonEnUp
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrPhotonEnUp
+   TimeReport   0.000000     0.000000  shiftedPatElectronEnDown
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrElectronEnDown
+   TimeReport   0.000000     0.000000  shiftedPatElectronEnUp
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrElectronEnUp
+   TimeReport   0.000000     0.000000  shiftedPatUnclusteredEnDown
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrUnclusteredEnDown
+   TimeReport   0.000000     0.000000  shiftedPatUnclusteredEnUp
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrUnclusteredEnUp
+   TimeReport   0.000000     0.000000  shiftedPatSmearedJetResDown
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrSmearedJetResDown
+   TimeReport   0.000000     0.000000  shiftedPatSmearedJetResUp
+   TimeReport   0.000000     0.000000  shiftedPatMETCorrSmearedJetResUp
+   TimeReport   0.000000     0.000000  patPFMetT1JetResUp
+   TimeReport   0.000000     0.000000  patPFMetT1JetResDown
+   TimeReport   0.000000     0.000000  patPFMetT1MuonEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1MuonEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1JetEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1JetEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1TauEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1TauEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1PhotonEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1PhotonEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1ElectronEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1ElectronEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1UnclusteredEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1UnclusteredEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1SmearJetResDown
+   TimeReport   0.000000     0.000000  patPFMetT1SmearJetResUp
+   TimeReport   0.000000     0.000000  patPFMetT1SmearMuonEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1SmearMuonEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1SmearJetEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1SmearJetEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1SmearTauEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1SmearTauEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1SmearPhotonEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1SmearPhotonEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1SmearElectronEnDown
+   TimeReport   0.000000     0.000000  patPFMetT1SmearElectronEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1SmearUnclusteredEnUp
+   TimeReport   0.000000     0.000000  patPFMetT1SmearUnclusteredEnDown
+   TimeReport   0.000000     0.000000  patCaloMet
+   TimeReport   0.000000     0.000000  slimmedMETs
+   TimeReport   0.000000     0.000000  prefiringweight
+   TimeReport   0.000000     0.000000  mergedGenParticles
+   TimeReport   0.000000     0.000000  genParticles2HepMC
+   TimeReport   0.000000     0.000000  particleLevel
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2raw
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2VLoose
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2VVLoose
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2Loose
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2Medium
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2Tight
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2VTight
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2VVTight
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2raw
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2VLoose
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2VVLoose
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2Loose
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2Medium
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2Tight
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2VTight
+   TimeReport   0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2VVTight
+   TimeReport   0.000000     0.000000  NewTauIDsEmbedded
+   TimeReport   0.000000     0.000000  blackJackAndHookers
+   TimeReport  per event    per visit  Name
+   
+   TimeReport ---------- Module Summary ---[Real sec]----
+   TimeReport  per event     per exec    per visit  Name
+   TimeReport   0.000000     0.000000     0.000000  NewTauIDsEmbedded
+   TimeReport   0.000008     0.000008     0.000008  TriggerResults
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1FastL2L3L6Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1FastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL1OffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL2L3L6Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloL6SLBCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4CaloResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4JPTResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4L1JPTFastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4L1JPTOffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1FastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL1OffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFCHSResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1FastL2L3L6Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1FastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL1OffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL2L3L6Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFL6SLBCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1FastL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1FastL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1FastjetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1L2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1L2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL1OffsetCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL2L3ResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiL3AbsoluteCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFPuppiResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4PFResidualCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4TrackL2L3Corrector
+   TimeReport   0.000000     0.000000     0.000000  ak4TrackL2RelativeCorrector
+   TimeReport   0.000000     0.000000     0.000000  ak4TrackL3AbsoluteCorrector
+   TimeReport   0.006264     0.006264     0.006264  badUnclustered
+   TimeReport   0.011809     0.011809     0.011809  basicJetsForMet
+   TimeReport   0.000000     0.000000     0.000000  blackJackAndHookers
+   TimeReport   0.000335     0.000335     0.000335  blobUnclustered
+   TimeReport   0.000583     0.000583     0.000583  calibratedPatElectrons
+   TimeReport   0.002334     0.002334     0.002334  calibratedPatPhotons
+   TimeReport   0.000000     0.000000     0.000000  caloMetT1
+   TimeReport   0.000000     0.000000     0.000000  caloMetT1T2
+   TimeReport   0.000000     0.000000     0.000000  cleanedPatJets
+   TimeReport   0.000000     0.000000     0.000000  corrCaloMetType1
+   TimeReport   0.000000     0.000000     0.000000  corrCaloMetType2
+   TimeReport   0.000000     0.000000     0.000000  corrPfMetType1
+   TimeReport   0.000000     0.000000     0.000000  corrPfMetType2
+   TimeReport   1.289531     1.289531     1.289531  ecalBadCalibReducedMINIAODFilter
+   TimeReport   0.004907     0.004907     0.004907  egmGsfElectronIDs
+   TimeReport   0.004355     0.004355     0.004355  egmPhotonIDs
+   TimeReport   0.025778     0.025778     0.025778  egmPhotonIsolation
+   TimeReport   0.000471     0.000471     0.000471  electronMVAValueMapProducer
+   TimeReport   0.000781     0.000781     0.000781  electronMVAVariableHelper
+   TimeReport   0.000000     0.000000     0.000000  electronRegressionValueMapProducer
+   TimeReport   0.000000     0.000000     0.000000  genMetExtractor
+   TimeReport   0.000000     0.000000     0.000000  genParticles2HepMC
+   TimeReport   0.000486     0.000486     0.000486  goodOfflinePrimaryVertices
+   TimeReport   0.016065     0.016065     0.016065  heepIDVarValueMaps
+   TimeReport   0.000000     0.000000     0.000000  jetSelectorForMet
+   TimeReport   0.000000     0.000000     0.000000  mergedGenParticles
+   TimeReport   0.000000     0.000000     0.000000  metrawCalo
+   TimeReport   0.000000     0.000000     0.000000  muCaloMetCorr
+   TimeReport   0.000016     0.000016     0.000016  p
+   TimeReport   0.000000     0.000000     0.000000  particleFlowDisplacedVertex
+   TimeReport   0.000000     0.000000     0.000000  particleFlowPtrs
+   TimeReport   0.000000     0.000000     0.000000  particleLevel
+   TimeReport   0.000000     0.000000     0.000000  patCHSMet
+   TimeReport   0.000000     0.000000     0.000000  patCaloMet
+   TimeReport   0.001609     0.001609     0.001609  patJetCorrFactorsReapplyJEC
+   TimeReport   0.017802     0.017802     0.017802  patJetCorrFactorsUpdatedJEC
+   TimeReport   0.000373     0.000373     0.000373  patJetsReapplyJEC
+   TimeReport   0.000000     0.000000     0.000000  patMETs
+   TimeReport   0.000000     0.000000     0.000000  patPFMet
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT0Corr
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT0pcT1
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT0pcT1T2
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1ElectronEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1ElectronEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1JetEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1JetEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1JetResDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1JetResUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1MuonEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1MuonEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1PhotonEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1PhotonEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1Smear
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearElectronEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearElectronEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearJetEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearJetEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearJetResDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearJetResUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearMuonEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearMuonEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearPhotonEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearPhotonEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearTauEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearTauEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearUnclusteredEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1SmearUnclusteredEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1T2
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1T2Corr
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1T2SmearCorr
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1TauEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1TauEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1Txy
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1UnclusteredEnDown
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT1UnclusteredEnUp
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT2Corr
+   TimeReport   0.000000     0.000000     0.000000  patPFMetT2SmearCorr
+   TimeReport   0.000000     0.000000     0.000000  patPFMetTxy
+   TimeReport   0.000000     0.000000     0.000000  patPFMetTxyCorr
+   TimeReport   0.000000     0.000000     0.000000  patSmearedJets
+   TimeReport   0.000000     0.000000     0.000000  patTrkMet
+   TimeReport   0.000000     0.000000     0.000000  pfCHS
+   TimeReport   0.000000     0.000000     0.000000  pfCandMETcorr
+   TimeReport   0.001696     0.001696     0.001696  pfCandidateJetsWithEEnoise
+   TimeReport   0.000000     0.000000     0.000000  pfCandidateToVertexAssociation
+   TimeReport   0.000245     0.000245     0.000245  pfCandidatesGoodEE2017
+   TimeReport   0.000000     0.000000     0.000000  pfCandsForUnclusteredUnc
+   TimeReport   0.000000     0.000000     0.000000  pfCandsNoJets
+   TimeReport   0.000000     0.000000     0.000000  pfCandsNoJetsNoEle
+   TimeReport   0.000000     0.000000     0.000000  pfCandsNoJetsNoEleNoMu
+   TimeReport   0.000000     0.000000     0.000000  pfCandsNoJetsNoEleNoMuNoTau
+   TimeReport   0.000000     0.000000     0.000000  pfCandsNotInJetsForMetCorr
+   TimeReport   0.000000     0.000000     0.000000  pfCandsNotInJetsPtrForMetCorr
+   TimeReport   0.000000     0.000000     0.000000  pfJetsPtrForMetCorr
+   TimeReport   0.001249     0.001249     0.001249  pfMet
+   TimeReport   0.000000     0.000000     0.000000  pfMetCHS
+   TimeReport   0.000000     0.000000     0.000000  pfMetT1
+   TimeReport   0.000000     0.000000     0.000000  pfMetT1T2
+   TimeReport   0.000000     0.000000     0.000000  pfMetTrk
+   TimeReport   0.000000     0.000000     0.000000  pfTrk
+   TimeReport   0.001218     0.001218     0.001218  pfcandidateClustered
+   TimeReport   0.000836     0.000836     0.000836  pfcandidateForUnclusteredUnc
+   TimeReport   0.214783     0.214783     0.214783  photonIDValueMapProducer
+   TimeReport   0.006764     0.006764     0.006764  photonMVAValueMapProducer
+   TimeReport   0.000000     0.000000     0.000000  photonRegressionValueMapProducer
+   TimeReport   0.000000     0.000000     0.000000  prefiringweight
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2Loose
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2Medium
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2Tight
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2VLoose
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2VTight
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2VVLoose
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2VVTight
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationNewDMMVArun2017v2raw
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2Loose
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2Medium
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2Tight
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2VLoose
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2VTight
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2VVLoose
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2VVTight
+   TimeReport   0.000000     0.000000     0.000000  rerunDiscriminationByIsolationOldDMMVArun2017v2raw
+   TimeReport   0.000000     0.000000     0.000000  selectedPatJetsForMetT1T2Corr
+   TimeReport   0.000000     0.000000     0.000000  selectedPatJetsForMetT1T2SmearCorr
+   TimeReport   0.000000     0.000000     0.000000  selectedPatJetsForMetT2Corr
+   TimeReport   0.000000     0.000000     0.000000  selectedPatJetsForMetT2SmearCorr
+   TimeReport   0.000000     0.000000     0.000000  selectedPrimaryVertexHighestPtTrackSumForPFMEtCorrType0
+   TimeReport   0.001807     0.001807     0.001807  selectedUpdatedPatJetsUpdatedJEC
+   TimeReport   0.000000     0.000000     0.000000  selectedVerticesForPFMEtCorrType0
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatElectronEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatElectronEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatJetEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatJetEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatJetResDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatJetResUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrElectronEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrElectronEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrJetEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrJetEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrJetResDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrJetResUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrMuonEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrMuonEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrPhotonEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrPhotonEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrSmearedJetResDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrSmearedJetResUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrTauEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrTauEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrUnclusteredEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMETCorrUnclusteredEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMuonEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatMuonEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatPhotonEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatPhotonEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatSmearedJetResDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatSmearedJetResUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatTauEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatTauEnUp
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatUnclusteredEnDown
+   TimeReport   0.000000     0.000000     0.000000  shiftedPatUnclusteredEnUp
+   TimeReport   0.000981     0.000981     0.000981  slimmedElectrons
+   TimeReport   0.000592     0.000592     0.000592  slimmedJetsCorrectedAndSmeared
+   TimeReport   0.000296     0.000296     0.000296  slimmedJetsCorrectedAndSmearedDown
+   TimeReport   0.000320     0.000320     0.000320  slimmedJetsCorrectedAndSmearedUp
+   TimeReport   0.000000     0.000000     0.000000  slimmedMETs
+   TimeReport   0.001140     0.001140     0.001140  slimmedPhotons
+   TimeReport   0.000054     0.000054     0.000054  superbad
+   TimeReport   0.002794     0.002794     0.002794  updatedPatJetsUpdatedJEC
+   TimeReport  per event     per exec    per visit  Name
+   
+   T---Report end!
+   
+   
+   =============================================
+   
+   MessageLogger Summary
+   
+    type     category        sev    module        subroutine        count    total
+    ---- -------------------- -- ---------------- ----------------  -----    -----
+       1 Fatal Exception      -s PostModuleEvent                        1        1
+       2 fileAction           -s file_close                             1        1
+       3 fileAction           -s file_open                              2        2
+   
+    type    category    Examples: run/evt        run/evt          run/evt
+    ---- -------------------- ---------------- ---------------- ----------------
+       1 Fatal Exception      301142/16473752                   
+       2 fileAction           PostGlobalEndRun                  
+       3 fileAction           pre-events       pre-events       
+   
+   Severity    # Occurrences   Total Occurrences
+   --------    -------------   -----------------
+   System                  4                   4
+   
+   dropped waiting message count 0
+
+--------------------------------------------------------------------------------------------------
+
+Running test: Run2016-17Jul2018 --> FAILED
+Output:   **** Following environment variables are going to be unset.
+          DBS_CLIENT_CONFIG
+          DBSCMD_HOME
+          MAGIC
+          MALLOC_CONF
+   >>> WARNING: you are using a different release as the one specified in the setup.sh script! <<< 
+   runTauID: not is_above_cmssw_version(10, 0, 0). Will update the list of available in DB samples to access 2017v2
+   loadMVA_WPs_run2_2017: performed
+   runTauID: not is_above_cmssw_version(10, 0, 0). Will update the list of available in DB samples to access newDM2017v2
+   loadMVA_WPs_run2_2017: performed
+   11-Jun-2019 10:50:08 CEST  Initiating request to open file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root
+   11-Jun-2019 10:50:09 CEST  Successfully opened file file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_SUSY16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_SUSY16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_ttH16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_ttH16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_muon" of type: "BDT"
+                            : Booking "BDTG method" of type "BDT" from /storage_mnt/storage/user/tomc/heavyNeutrino/CMSSW_10_2_14/src/heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV16_BDTG.weights.xml.
+   <HEADER> DataSetInfo              : [Default] : Added class "Signal"
+   <HEADER> DataSetInfo              : [Default] : Added class "Background"
+                            : Booked classifier "BDTG_200Cuts_Depth4_baggedGrad_1000trees_shrinkage0p1_electron" of type: "BDT"
+   Begin processing the 1st record. Run 283453, Event 242075803, LumiSection 197 on stream 0 at 11-Jun-2019 10:50:36.569 CEST
+   
+   
+   A fatal system signal has occurred: segmentation violation
+   The following is the call stack containing the origin of the signal.
+   
+   Thread 2 (Thread 0x7f7899c53700 (LWP 15519)):
+   #0  0x000000328340f37d in waitpid () from /lib64/libpthread.so.0
+   #1  0x00007f78aa286f87 in edm::service::cmssw_stacktrace_fork() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #2  0x00007f78aa287a6a in edm::service::InitRootHandlers::stacktraceHelperThread() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #3  0x00007f78ace9a8cf in std::execute_native_thread_routine (__p=0x7f789a16a8d0) at ../../../../../libstdc++-v3/src/c++11/thread.cc:83
+   #4  0x0000003283407aa1 in start_thread () from /lib64/libpthread.so.0
+   #5  0x00000032828e8c4d in clone () from /lib64/libc.so.6
+   Thread 1 (Thread 0x7f78acb503e0 (LWP 15476)):
+   #0  0x00000032828df403 in poll () from /lib64/libc.so.6
+   #1  0x00007f78aa2874b7 in full_read.constprop () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #2  0x00007f78aa287b4c in edm::service::InitRootHandlers::stacktraceFromThread() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #3  0x00007f78aa288bb9 in sig_dostack_then_abort () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginFWCoreServicesPlugins.so
+   #4  <signal handler called>
+   #5  0x00007f7891b9abbe in reco::MET::MET(reco::MET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #6  0x00007f7891b9afb9 in reco::GenMET::GenMET(reco::GenMET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #7  0x00007f7891ba0153 in void std::vector<reco::GenMET, std::allocator<reco::GenMET> >::_M_realloc_insert<reco::GenMET const&>(__gnu_cxx::__normal_iterator<reco::GenMET*, std::vector<reco::GenMET, std::allocator<reco::GenMET> > >, reco::GenMET const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libDataFormatsMETReco.so
+   #8  0x00007f7882751f25 in pat::GenMETExtractor::produce(edm::StreamID, edm::Event&, edm::EventSetup const&) const () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/pluginPhysicsToolsPatAlgos_plugins.so
+   #9  0x00007f78aeb6b8d8 in edm::global::EDProducerBase::doEvent(edm::EventPrincipal const&, edm::EventSetup const&, edm::ActivityRegistry*, edm::ModuleCallingContext const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #10 0x00007f78aeaa9a32 in edm::WorkerT<edm::global::EDProducerBase>::implDo(edm::EventPrincipal const&, edm::EventSetup const&, edm::ModuleCallingContext const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #11 0x00007f78aea568fa in decltype ({parm#1}()) edm::convertException::wrap<bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*)::{lambda()#1}>(bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*)::{lambda()#1}) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #12 0x00007f78aea56abd in bool edm::Worker::runModule<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #13 0x00007f78aea581db in std::__exception_ptr::exception_ptr edm::Worker::runModuleAfterAsyncPrefetch<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >(std::__exception_ptr::exception_ptr const*, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::MyPrincipal const&, edm::EventSetup const&, edm::StreamID, edm::ParentContext const&, edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1>::Context const*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #14 0x00007f78aea59284 in edm::Worker::RunModuleTask<edm::OccurrenceTraits<edm::EventPrincipal, (edm::BranchActionType)1> >::execute() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #15 0x00007f78ad3b6446 in tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all (this=0x7f78abdbf200, parent=..., child=<optimized out>) at ../../src/tbb/custom_scheduler.h:509
+   #16 0x00007f78aeb04d71 in edm::EventProcessor::processLumis(std::shared_ptr<void> const&) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #17 0x00007f78aeb0e0ca in edm::EventProcessor::runToCompletion() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/lib/slc6_amd64_gcc700/libFWCoreFramework.so
+   #18 0x000000000040eb7b in main::{lambda()#1}::operator()() const ()
+   #19 0x000000000040d322 in main ()
+   
+   Current Modules:
+   
+   Module: GenMETExtractor:genMetExtractor (crashed)
+   
+   A fatal system signal has occurred: segmentation violation
+   /bin/sh: line 1: 15476 Segmentation fault      cmsRun ../multilep.py inputFile=file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2016H/DoubleEG/MINIAOD/17Jul2018-v1/80000/B8EE4064-968D-E811-B077-0242AC1C0500.root outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _phHadTowOverEm
+   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
+   Changed:
+      _ttgEventType                                      mean:   6.8000 -->   7.2800     rms:   2.4000 -->   1.9498    
+      _zgEventType                                       mean:   6.5500 -->   6.9100     rms:   2.6622 -->   2.4170    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _phHadTowOverEm
+   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
+   Changed:
+      _ttgEventType                                      mean:   1.1100 -->   1.2000     rms:   1.1304 -->   1.1576    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _phHadTowOverEm
+   New: _HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Mu17,_HLT_Mu17_prescale,_HLT_Mu8,_HLT_Mu8_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
+   Changed:
+      _ttgEventType                                      mean:   1.0000 -->   1.0900     rms:   1.1314 -->   1.3349    
