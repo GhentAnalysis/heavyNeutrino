@@ -8,7 +8,7 @@ filesPerJob     = sys.argv[3]            if len(sys.argv) > 3 else 10           
 productionLabel = os.path.basename(datasetsFile.split('/')[-1].split('.')[0])                             # Label to keep track of the tuple version (is taken from the name of the above input file)
 datasets        = [dataset.strip() for dataset in open(datasetsFile)]                                     # Get list of datasets from file given as first argument
 datasets        = [dataset.split()[0] for dataset in datasets if dataset and not dataset.startswith('#')] # Clean empty and comment lines
-extraContent    = ['']
+extraContent    = []
 
 for dataset in datasets:
   if dataset.startswith('+'):
