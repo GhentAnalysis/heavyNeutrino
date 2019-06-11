@@ -1,40 +1,42 @@
-commit 06bff2d4d51fb56a8e388b36882b8cdffc538ccc
+**** Following environment variables are going to be unset.
+       DBS_CLIENT_CONFIG
+       DBSCMD_HOME
+       MAGIC
+       MALLOC_CONF
+commit 2e2cdefdb81bb3020146cdbdbf97d61db91964e3
 Author: tomc <tomc@cern.ch>
-Date:   Fri Apr 26 18:20:01 2019 +0200
+Date:   Tue Jun 11 11:12:37 2019 +0200
 
-    New test run: see tests.log
+    This avoid tagging the test files as MC
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _phHadTowOverEm
+   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _phHadTowOverEm
+   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _phHadTowOverEm
+   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _phHadTowOverEm
+   New: _HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Mu17,_HLT_Mu17_prescale,_HLT_Mu8,_HLT_Mu8_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _phHadTowOverEm
