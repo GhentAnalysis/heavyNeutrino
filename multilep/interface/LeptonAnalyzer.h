@@ -167,6 +167,7 @@ class LeptonAnalyzer {
     //MC truth information from matching 
     bool _lIsPrompt[nL_max];
     int _lMatchPdgId[nL_max];
+    int _lMatchCharge[nL_max];
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];
     unsigned _lProvenanceCompressed[nL_max];
