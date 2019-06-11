@@ -1,42 +1,39 @@
-**** Following environment variables are going to be unset.
-       DBS_CLIENT_CONFIG
-       DBSCMD_HOME
-       MAGIC
-       MALLOC_CONF
-commit 2e2cdefdb81bb3020146cdbdbf97d61db91964e3
-Author: tomc <tomc@cern.ch>
-Date:   Tue Jun 11 11:12:37 2019 +0200
+commit 5c5aa7a7d71f188be92da4553a4863c43ff15062
+Author: Liam <liamwezenbeek@hotmail.com>
+Date:   Tue Jun 11 14:17:58 2019 +0200
 
-    This avoid tagging the test files as MC
+    Remove deeptau
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Mu17,_HLT_Mu17_prescale,_HLT_Mu8,_HLT_Mu8_prescale,_closestJetDeepCsv,_jetDeepCsv,_passTrigger_FR
+   New: _HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   New: _lMatchCharge
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   New: _lMatchCharge
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale,_lMatchCharge
+   Changed:
+      _passTrigger_mt                                    mean:   0.0600 -->   0.0900     rms:   0.2375 -->   0.2862    
