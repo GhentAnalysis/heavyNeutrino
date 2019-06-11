@@ -106,7 +106,7 @@ else:
 yy = '17' if is2017 or is2018 else '16'
 
 #
-#Latest tau ID and DeepTau
+#Latest tau ID
 #
 updatedTauName = "slimmedTausNewID" #name of pat::Tau collection with new tau-Ids
 import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
