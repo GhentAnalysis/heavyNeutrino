@@ -27,7 +27,7 @@ for i in range(1,len(sys.argv)):
     elif "extraContent" in sys.argv[i]: extraContent = getVal(sys.argv[i])
     elif "events"       in sys.argv[i]: nEvents      = int(getVal(sys.argv[i]))
 
-isData = not ('SIM' in inputFile or 'HeavyNeutrino' in inputFile)
+isData = not ('SIM' in inputFile or '/pnfs/iihe/cms/store/user/tomc/heavyNeutrino' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile
 isSUSY = "SMS-T" in inputFile
@@ -171,7 +171,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 )
 
 def getJSON(is2017, is2018):
-    if is2018:   return "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"
+    if is2018:   return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
     elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
     else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
