@@ -147,7 +147,7 @@ class LeptonAnalyzer {
     double _tauIsoMVADBdR03newDMwLT[nL_max];
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
-
+    
     //lepton MVA definitions for SUSY (ewkino), TTH and tZq 
     double _leptonMvaSUSY[nL_max];
     double _leptonMvaTTH[nL_max];

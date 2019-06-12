@@ -106,14 +106,15 @@ else:
 yy = '17' if is2017 or is2018 else '16'
 
 #
-#Latest 94X tau ID
+#Latest tau ID
 #
-from heavyNeutrino.multilep.runTauIdMVA import *
-na = TauIDEmbedder(process, cms, # pass tour process object
-    debug=True,
-    toKeep = ["2017v2", "newDM2017v2"] # pick the one you need: ["2017v1", "2017v2", "newDM2017v2", "dR0p32017v2", "2016v1", "newDM2016v1"]
-)
-na.runTauID()
+updatedTauName = "slimmedTausNewID" #name of pat::Tau collection with new tau-Ids
+import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
+tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
+                    updatedTauName = updatedTauName,
+                    toKeep = [ "2017v2", "newDM2017v2", #classic MVAIso tau-Ids
+                               ])
+tauIdEmbedder.runTauID()
 
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
@@ -142,7 +143,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),
   photonsPhotonsEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_V2.txt'),
 #  taus                          = cms.InputTag("slimmedTaus"),
-  taus                          = cms.InputTag("NewTauIDsEmbedded"),
+  taus                          = cms.InputTag("slimmedTausNewID"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
@@ -183,5 +184,5 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.prefiringweight *
                      process.particleLevelSequence *
                      process.rerunMvaIsolationSequence *
-                     process.NewTauIDsEmbedded *# *getattr(process, "NewTauIDsEmbedded")
+                     getattr(process,updatedTauName) *                    
                      process.blackJackAndHookers)
