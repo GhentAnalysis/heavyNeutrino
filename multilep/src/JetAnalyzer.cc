@@ -117,8 +117,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         jecUnc->setJetPt(jetSmearedIt->pt());
         double uncSmeared = jecUnc->getUncertainty(true);
         _jetSmearedPt[_nJets]         = jetSmearedIt->pt();
-        _jetSmearedPt_JECDown[_nJets] = _jetPt[_nJets]*( 1. - uncSmeared );
-        _jetSmearedPt_JECUp[_nJets]   = _jetPt[_nJets]*( 1. + uncSmeared );
+        _jetSmearedPt_JECDown[_nJets] = _jetSmearedPt[_nJets]*( 1. - uncSmeared );
+        _jetSmearedPt_JECUp[_nJets]   = _jetSmearedPt[_nJets]*( 1. + uncSmeared );
         _jetSmearedPt_JERDown[_nJets] = jetSmearedDownIt->pt();
         _jetSmearedPt_JERUp[_nJets]   = jetSmearedUpIt->pt();
 
@@ -140,7 +140,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
 
-        //new DeepFlavour tagger
+        //new DeepCSV tagger
         _jetDeepCsv_udsg[_nJets]          = jet.bDiscriminator("pfDeepCSVJetTags:probudsg");
         _jetDeepCsv_b[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _jetDeepCsv_c[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probc");
