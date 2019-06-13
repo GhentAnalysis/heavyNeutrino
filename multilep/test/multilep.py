@@ -3,13 +3,13 @@ import FWCore.ParameterSet.Config as cms
 
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root"
-#inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
-inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
+inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
+#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
 
 # Other default arguments
 
 nEvents         = 1000
-extraContent    = ''
+extraContent    = 'storeAllTauID'
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
@@ -49,7 +49,7 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v13'
 elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018ABC_v2' if isData else '102X_upgrade2018_realistic_v18'
-elif is2017:                             process.GlobalTag.globaltag = '102X_dataRun2_v8 '           if isData else '102X_mc2017_realistic_v6'
+elif is2017:                             process.GlobalTag.globaltag = '102X_dataRun2_v8'           if isData else '102X_mc2017_realistic_v6'
 else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'            if isData else '94X_mcRun2_asymptotic_v3'
 
 #
