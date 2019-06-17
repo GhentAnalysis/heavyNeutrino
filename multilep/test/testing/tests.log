@@ -1,8 +1,8 @@
-commit 5c5aa7a7d71f188be92da4553a4863c43ff15062
-Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Jun 11 14:17:58 2019 +0200
+commit 56001d4c5164eb2999b0d79dc88324cd8fca2b9e
+Author: tomc <tomc@cern.ch>
+Date:   Mon Jun 17 16:20:00 2019 +0200
 
-    Remove deeptau
+    Keep the recommended global tags
 
 --------------------------------------------------------------------------------------------------
 
@@ -19,21 +19,15 @@ Running test: Run2017-31March2017 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _lMatchCharge
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _lMatchCharge
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale,_lMatchCharge
-   Changed:
-      _passTrigger_mt                                    mean:   0.0600 -->   0.0900     rms:   0.2375 -->   0.2862    
