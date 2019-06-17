@@ -1,11 +1,8 @@
-commit f589dfaf6c69e54e049d5fba780236e162d2a3b3
-Merge: d29afdc 8039d8a
-Author: Tom Cornelis <4720687+UAEDF-tomc@users.noreply.github.com>
-Date:   Mon Jun 17 12:58:28 2019 +0200
+commit 56001d4c5164eb2999b0d79dc88324cd8fca2b9e
+Author: tomc <tomc@cern.ch>
+Date:   Mon Jun 17 16:20:00 2019 +0200
 
-    Merge pull request #71 from UAEDF-tomc/master
-    
-    Fixing is2017 and is2018 boolean recognition for private samples
+    Keep the recommended global tags
 
 --------------------------------------------------------------------------------------------------
 
@@ -26,104 +23,11 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   Changed:
-      _jetChargedEmFraction                              mean:   0.1213 -->   0.1171     rms:   0.2789 -->   0.2750    
-      _jetChargedHadronFraction                          mean:   0.2769 -->   0.2804     rms:   0.2670 -->   0.2661    
-      _jetCsvV2                                          mean:  -2.9799 -->  -3.0509     rms:   4.8425 -->   4.8723    
-      _jetDeepCsv                                        mean:  -0.9134 -->  -0.9154     rms:   1.0510 -->   1.0524    
-      _jetDeepCsv_b                                      mean:  -0.4326 -->  -0.4331     rms:   0.5521 -->   0.5535    
-      _jetDeepCsv_bb                                     mean:  -0.4808 -->  -0.4824     rms:   0.5009 -->   0.5011    
-      _jetDeepCsv_c                                      mean:  -0.4153 -->  -0.4167     rms:   0.5658 -->   0.5662    
-      _jetDeepCsv_udsg                                   mean:  -0.0818 -->  -0.0865     rms:   0.8926 -->   0.8909    
-      _jetE                                              mean: 166.6615 --> 164.2929     rms: 188.4192 --> 185.9351    
-      _jetEta                                            mean:  -0.0044 -->  -0.0103     rms:   2.1281 -->   2.1443    
-      _jetHFEmFraction                                   mean:   0.0140 -->   0.0142     rms:   0.0418 -->   0.0419    
-      _jetHFHadronFraction                               mean:   0.1271 -->   0.1258     rms:   0.3081 -->   0.3066    
-      _jetHadronFlavor                                   mean:   0.1095 -->   0.1057     rms:   0.6526 -->   0.6416    
-      _jetIsTight                                        mean:   0.9453 -->   0.9411     rms:   0.2275 -->   0.2355    
-      _jetIsTightLepVeto                                 mean:   0.7979 -->   0.7988     rms:   0.4016 -->   0.4009    
-      _jetNeutralEmFraction                              mean:   0.2427 -->   0.2386     rms:   0.2789 -->   0.2774    
-      _jetNeutralHadronFraction                          mean:   0.2728 -->   0.2804     rms:   0.3379 -->   0.3381    
-      _jetPhi                                            mean:   0.0091 -->   0.0109     rms:   1.8334 -->   1.8199    
-      _jetPt                                             mean:  38.5766 -->  37.7278     rms:  32.1737 -->  31.9336    
-      _jetPt_JECDown                                     mean:  36.8360 -->  35.9824     rms:  31.9441 -->  31.7154    
-      _jetPt_JECUp                                       mean:  40.3171 -->  39.4732     rms:  32.4955 -->  32.2422    
-      _jetPt_L1                                          mean:  33.3693 -->  32.5365     rms:  31.0022 -->  30.7842    
-      _jetPt_L2                                          mean:  38.5766 -->  37.7278     rms:  32.1737 -->  31.9336    
-      _jetPt_L3                                          mean:  38.5766 -->  37.7278     rms:  32.1737 -->  31.9336    
-      _jetPt_Uncorrected                                 mean:  37.9829 -->  37.2531     rms:  29.5033 -->  29.2647    
-      _jetSmearedPt                                      mean:  39.5931 -->  38.9011     rms:  32.4063 -->  32.0396    
-      _jetSmearedPt_JECDown                              mean:  36.8454 -->  37.0534     rms:  31.9408 -->  31.7921    
-      _jetSmearedPt_JECUp                                mean:  40.3077 -->  40.7487     rms:  32.4990 -->  32.4018    
-      _jetSmearedPt_JERDown                              mean:  39.1567 -->  38.3693     rms:  32.2774 -->  31.9882    
-      _jetSmearedPt_JERUp                                mean:  40.1446 -->  39.4066     rms:  32.4701 -->  32.1461    
-      _lMatchCharge                                      mean: 62640817.3088 -->   0.0000 rms: 346887172.1799 -->   0.0000
-      _nJets                                             mean:   4.7500 -->   4.9200     rms:   2.1972 -->   2.1526    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   Changed:
-      _jetChargedEmFraction                              mean:   0.0763 -->   0.0753     rms:   0.2333 -->   0.2320    
-      _jetChargedHadronFraction                          mean:   0.3332 -->   0.3335     rms:   0.3091 -->   0.3110    
-      _jetCsvV2                                          mean:  -3.0592 -->  -3.0809     rms:   4.8871 -->   4.8960    
-      _jetDeepCsv                                        mean:  -0.9853 -->  -0.9891     rms:   1.0537 -->   1.0538    
-      _jetDeepCsv_b                                      mean:  -0.4691 -->  -0.4710     rms:   0.5547 -->   0.5549    
-      _jetDeepCsv_bb                                     mean:  -0.5162 -->  -0.5181     rms:   0.5011 -->   0.5010    
-      _jetDeepCsv_c                                      mean:  -0.4492 -->  -0.4514     rms:   0.5736 -->   0.5735    
-      _jetDeepCsv_udsg                                   mean:  -0.1532 -->  -0.1569     rms:   0.8849 -->   0.8843    
-      _jetE                                              mean: 199.8277 --> 202.0045     rms: 291.1345 --> 294.5054    
-      _jetEta                                            mean:  -0.1872 -->  -0.1865     rms:   2.3225 -->   2.3324    
-      _jetHFEmFraction                                   mean:   0.0243 -->   0.0248     rms:   0.0569 -->   0.0580    
-      _jetHFHadronFraction                               mean:   0.2008 -->   0.2042     rms:   0.3651 -->   0.3672    
-      _jetHadronFlavor                                   mean:   0.1140 -->   0.1126     rms:   0.6657 -->   0.6615    
-      _jetIsLoose                                        mean:   0.9693 -->   0.9675     rms:   0.1725 -->   0.1772    
-      _jetIsTight                                        mean:   0.9627 -->   0.9610     rms:   0.1894 -->   0.1935    
-      _jetNeutralEmFraction                              mean:   0.1594 -->   0.1598     rms:   0.1824 -->   0.1817    
-      _jetNeutralHadronFraction                          mean:   0.3338 -->   0.3354     rms:   0.3603 -->   0.3616    
-      _jetPhi                                            mean:   0.1091 -->   0.1175     rms:   1.8247 -->   1.8228    
-      _jetPt                                             mean:  33.6047 -->  33.3783     rms:  22.3929 -->  22.3355    
-      _jetPt_JECDown                                     mean:  32.1964 -->  31.9784     rms:  22.4434 -->  22.3802    
-      _jetPt_JECUp                                       mean:  35.0130 -->  34.7781     rms:  22.3904 -->  22.3383    
-      _jetPt_L1                                          mean:  28.3444 -->  28.1497     rms:  21.8886 -->  21.8145    
-      _jetPt_L2                                          mean:  33.6047 -->  33.3783     rms:  22.3929 -->  22.3355    
-      _jetPt_L3                                          mean:  33.6047 -->  33.3783     rms:  22.3929 -->  22.3355    
-      _jetPt_Uncorrected                                 mean:  34.0453 -->  33.8729     rms:  20.4096 -->  20.3235    
-      _jetSmearedPt                                      mean:  35.8624 -->  35.7584     rms:  22.8462 -->  22.6549    
-      _jetSmearedPt_JECDown                              mean:  32.2207 -->  34.2650     rms:  22.4234 -->  22.5340    
-      _jetSmearedPt_JECUp                                mean:  34.9888 -->  37.2518     rms:  22.4156 -->  22.8485    
-      _jetSmearedPt_JERDown                              mean:  34.4800 -->  34.3298     rms:  22.6715 -->  22.5302    
-      _jetSmearedPt_JERUp                                mean:  36.9384 -->  36.8468     rms:  23.5354 -->  23.3227    
-      _nJets                                             mean:   4.5600 -->   4.6200     rms:   2.8890 -->   2.9044    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   Changed:
-      _jetChargedEmFraction                              mean:   0.0125 -->   0.0124     rms:   0.0701 -->   0.0698    
-      _jetChargedHadronFraction                          mean:   0.1916 -->   0.1914     rms:   0.2677 -->   0.2674    
-      _jetCsvV2                                          mean:  -4.3220 -->  -4.3422     rms:   5.0986 -->   5.1011    
-      _jetDeepCsv_udsg                                   mean:  -0.1208 -->  -0.1236     rms:   0.8755 -->   0.8753    
-      _jetE                                              mean: 213.9573 --> 217.3558     rms: 254.7544 --> 263.2222    
-      _jetEta                                            mean:  -0.0669 -->  -0.0731     rms:   2.2271 -->   2.2424    
-      _jetHFEmFraction                                   mean:   0.0208 -->   0.0210     rms:   0.0602 -->   0.0602    
-      _jetHFHadronFraction                               mean:   0.1763 -->   0.1804     rms:   0.3490 -->   0.3526    
-      _jetHadronFlavor                                   mean:   0.2031 -->   0.2012     rms:   0.9292 -->   0.9251    
-      _jetIsLoose                                        mean:   0.9538 -->   0.9512     rms:   0.2098 -->   0.2154    
-      _jetIsTight                                        mean:   0.9508 -->   0.9482     rms:   0.2163 -->   0.2217    
-      _jetIsTightLepVeto                                 mean:   0.6462 -->   0.6463     rms:   0.4782 -->   0.4781    
-      _jetNeutralEmFraction                              mean:   0.1811 -->   0.1810     rms:   0.2062 -->   0.2058    
-      _jetNeutralHadronFraction                          mean:   0.2694 -->   0.2730     rms:   0.3579 -->   0.3601    
-      _jetPt                                             mean:  43.8021 -->  43.5659     rms:  32.1746 -->  32.1214    
-      _jetPt_JECDown                                     mean:  42.8484 -->  42.6125     rms:  32.0329 -->  31.9806    
-      _jetPt_JECUp                                       mean:  44.7558 -->  44.5194     rms:  32.3203 -->  32.2662    
-      _jetPt_L1                                          mean:  37.9775 -->  37.7460     rms:  29.8628 -->  29.8244    
-      _jetPt_L2                                          mean:  43.8021 -->  43.5659     rms:  32.1746 -->  32.1214    
-      _jetPt_L3                                          mean:  43.8021 -->  43.5659     rms:  32.1746 -->  32.1214    
-      _jetPt_Uncorrected                                 mean:  42.1679 -->  41.9449     rms:  29.0143 -->  28.9789    
-      _jetSmearedPt                                      mean:  45.3013 -->  45.0623     rms:  31.8529 -->  31.8043    
-      _jetSmearedPt_JECDown                              mean:  42.8837 -->  44.0793     rms:  32.0050 -->  31.6640    
-      _jetSmearedPt_JECUp                                mean:  44.7206 -->  46.0453     rms:  32.3478 -->  31.9494    
-      _jetSmearedPt_JERDown                              mean:  44.5729 -->  44.3357     rms:  31.8777 -->  31.8274    
-      _jetSmearedPt_JERUp                                mean:  45.9318 -->  45.6910     rms:  31.9442 -->  31.8965    
-      _nJets                                             mean:   3.2500 -->   3.2800     rms:   1.8131 -->   1.8225    
