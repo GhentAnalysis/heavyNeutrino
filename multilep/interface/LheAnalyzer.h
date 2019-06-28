@@ -23,6 +23,7 @@ class LheAnalyzer {
     TH1D*  lheCounter;
     TH1D*  psCounter;
     TH1D*  tauCounter;
+    TH1D*  HTCounter;
     TH1D*  nTrueInteractions;
 
     unsigned _nLheWeights = 0;

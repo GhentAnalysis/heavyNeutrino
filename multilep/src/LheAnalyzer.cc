@@ -22,6 +22,7 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",    110, 0, 110); //Counter to determine effect of pdf and scale uncertainties on the MC cross section
     psCounter  = fs->make<TH1D>("psCounter",  "Lhe weights",    14, 0, 14);
     tauCounter = fs->make<TH1D>("tauCounter", "Number of taus", 3, 0, 3);
+    HTCounter  = fs->make<TH1D>("HTCounter", "HT Incoming", 251, 0, 2510);
 
     nTrueInteractions = fs->make<TH1D>("nTrueInteractions", "nTrueInteractions", 100, 0, 100);
 
@@ -97,6 +98,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     }
 
     tauCounter->Fill(_nTau, _weight);
+    HTCounter->Fill(_lheHTIncoming, _weight);
 
     //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
     _nLheWeights = std::min( (unsigned) 110, (unsigned) lheEventInfo->weights().size()); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,...

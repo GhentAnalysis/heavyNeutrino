@@ -83,13 +83,12 @@ class GenAnalyzer {
     int      _gen_NPackedDtrs_matchcharge[gen_ndtr_max];
 
     unsigned _gen_nNdaughters = 0;
-    unsigned _gen_Ndaughters_pdg[gen_n_max];
-    unsigned _gen_nstatus23 = 0;
-    unsigned _gen_nstatus23_fromN = 0;
-    unsigned _gen_nstatus23_fromW = 0;
-    unsigned _gen_status23_pdg[gen_n_max];
-    unsigned _gen_status23_fromN_pdg[gen_n_max];
-    unsigned _gen_status23_fromW_pdg[gen_n_max];
+    int      _gen_Ndaughters_pdg[gen_n_max];
+    double   _gen_Ndaughters_Pt[gen_n_max];
+    double   _gen_Ndaughters_Eta[gen_n_max];
+    double   _gen_Ndaughters_Phi[gen_n_max];
+    double   _gen_Ndaughters_E[gen_n_max];
+    int      _gen_Ndaughters_Charge[gen_n_max];
     
     unsigned _gen_nq = 0;
     double   _gen_qPt[gen_n_max];

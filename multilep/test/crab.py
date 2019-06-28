@@ -31,7 +31,7 @@ config.JobType.allowUndistributedCMSSW = True
 
 config.section_('Data')
 config.Data.inputDataset               = dataset
-config.Data.unitsPerJob                = 1 if 'SIM' in dataset else 40
+config.Data.unitsPerJob                = 1 if 'SIM' in dataset else 30
 config.Data.splitting                  = 'FileBased' if 'SIM' in dataset else 'LumiBased'
 config.Data.outLFNDirBase              = '/store/user/' + os.environ['USER'] + '/heavyNeutrino/'
 config.Data.publication                = False

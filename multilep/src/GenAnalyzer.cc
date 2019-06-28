@@ -80,14 +80,12 @@ void GenAnalyzer::beginJob(TTree* outputTree){
   outputTree->Branch("_gen_NPackedDtrs_matchcharge",&_gen_NPackedDtrs_matchcharge,"_gen_NPackedDtrs_matchcharge[_gen_nNPackedDtrs]/I");
   
   outputTree->Branch("_gen_nNdaughters",	       &_gen_nNdaughters,		    "_gen_nNdaughters/i");
-  outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	    "_gen_Ndaughters_pdg[_gen_nNdaughters]/i");
-  outputTree->Branch("_gen_nstatus23",		       &_gen_nstatus23,		        "_gen_nstatus23/i");
-  outputTree->Branch("_gen_nstatus23_fromN",	   &_gen_nstatus23_fromN,	    "_gen_nstatus23_fromN/i");
-  outputTree->Branch("_gen_nstatus23_fromW",	   &_gen_nstatus23_fromW,	    "_gen_nstatus23_fromW/i");
-  outputTree->Branch("_gen_status23_pdg",	       &_gen_status23_pdg,		    "_gen_status23_pdg[_gen_nstatus23]/I");
-  outputTree->Branch("_gen_status23_fromN_pdg",    &_gen_status23_fromN_pdg, 	"_gen_status23_fromN_pdg[_gen_nstatus23_fromN]/i");
-  outputTree->Branch("_gen_status23_fromW_pdg",    &_gen_status23_fromW_pdg, 	"_gen_status23_fromW_pdg[_gen_nstatus23_fromW]/i");
-  
+  outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	    "_gen_Ndaughters_pdg[_gen_nNdaughters]/I");
+  outputTree->Branch("_gen_Ndaughters_Pt",   	   &_gen_Ndaughters_Pt,	        "_gen_Ndaughters_Pt[_gen_nNdaughters]/D");
+  outputTree->Branch("_gen_Ndaughters_Eta",   	   &_gen_Ndaughters_Eta,        "_gen_Ndaughters_Eta[_gen_nNdaughters]/D");
+  outputTree->Branch("_gen_Ndaughters_Phi",   	   &_gen_Ndaughters_Phi,        "_gen_Ndaughters_Phi[_gen_nNdaughters]/D");
+  outputTree->Branch("_gen_Ndaughters_E",   	   &_gen_Ndaughters_E,	        "_gen_Ndaughters_E[_gen_nNdaughters]/D");
+  outputTree->Branch("_gen_Ndaughters_Charge",     &_gen_Ndaughters_Charge,     "_gen_Ndaughters_Charge[_gen_nNdaughters]/D");
   outputTree->Branch("_gen_nq",		               &_gen_nq,			        "_gen_nq/i");
   outputTree->Branch("_gen_qPt",		           &_gen_qPt,			        "_gen_qPt[_gen_nq]/D");
   outputTree->Branch("_gen_qEta",		           &_gen_qEta,			        "_gen_qEta[_gen_nq]/D");
@@ -111,9 +109,6 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     _gen_nN = 0;
     _gen_nNPackedDtrs = 0;
     _gen_nNdaughters = 0;
-    _gen_nstatus23 = 0;
-    _gen_nstatus23_fromN = 0;
-    _gen_nstatus23_fromW = 0;
     _gen_nq = 0;
 
     _gen_nL = 0;
@@ -202,23 +197,18 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         }
 	    // daughters of HNL
         if(abs(GenTools::getMotherPdgId(p, *genParticles)) == 9900012){
-	        _gen_Ndaughters_pdg[_gen_nNdaughters] = abs(p.pdgId()); 
+	        _gen_Ndaughters_pdg[_gen_nNdaughters]    = p.pdgId(); 
+	        _gen_Ndaughters_Pt[_gen_nNdaughters]     = p.pt(); 
+	        _gen_Ndaughters_Eta[_gen_nNdaughters]    = p.eta(); 
+	        _gen_Ndaughters_Phi[_gen_nNdaughters]    = p.phi(); 
+	        _gen_Ndaughters_E[_gen_nNdaughters]      = p.energy(); 
+	        _gen_Ndaughters_Charge[_gen_nNdaughters] = p.charge(); 
 	        ++_gen_nNdaughters;
 	    }
 	    // hard process (status 23)
         int mompdgid = GenTools::getMotherPdgId(p, *genParticles);
         // only hard scatter:
         if(p.status() == 23){
-            _gen_status23_pdg[_gen_nstatus23] = abs(p.pdgId()); 
-            ++_gen_nstatus23;
-            if(abs(mompdgid) == 9900012){
-                _gen_status23_fromN_pdg[_gen_nstatus23_fromN] = abs(p.pdgId());
-                ++_gen_nstatus23_fromN;
-            }
-            if(abs(mompdgid) == 24){
-                _gen_status23_fromW_pdg[_gen_nstatus23_fromW] = abs(p.pdgId());
-                ++_gen_nstatus23_fromW;
-            }
             // quarks
 	        if(abs(mompdgid) == 9900012 || abs(mompdgid) == 24){
                 if(abs(p.pdgId()) >= 1 && abs(p.pdgId()) <= 6){
