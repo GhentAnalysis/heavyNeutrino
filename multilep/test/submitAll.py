@@ -41,6 +41,6 @@ for dataset in datasets:
       os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
       os.environ['CRAB_EXTRACONTENT']    = ','.join(extraContent)
       if 'Run2017' in dataset :   os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/ReReco/" +       getJSON(True, False)
-      elif 'Run2018' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/PromptReco/" +   getJSON(False, True)
+      elif 'Run2018' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/ReReco/" +   getJSON(False, True)
       else :                      os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/" + getJSON(False, False)
       os.system('crab submit -c crab.py')

@@ -159,13 +159,14 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");
     if( multilepAnalyzer->isMC() ){
-      outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
-      outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
-      outputTree->Branch("_tauGenStatus",               &_tauGenStatus,                 "_tauGenStatus[_nL]/i");
-      outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
-      outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
-      outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
-      outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
+        outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
+        outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
+        outputTree->Branch("_lMatchCharge",               &_lMatchCharge,                 "_lMatchCharge[_nL]/I");
+        outputTree->Branch("_tauGenStatus",               &_tauGenStatus,                 "_tauGenStatus[_nL]/i");
+        outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
+        outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
+        outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
+        outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
     }
     outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nLight]/D");
     outputTree->Branch("_lPtScaleUp",                 &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
@@ -201,7 +202,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_tauEleVetoMedium",             &_tauEleVetoMedium,             "_tauEleVetoMedium[_nL]/O");
       outputTree->Branch("_tauEleVetoTight",              &_tauEleVetoTight,              "_tauEleVetoTight[_nL]/O");
       outputTree->Branch("_tauEleVetoVTight",             &_tauEleVetoVTight,             "_tauEleVetoVTight[_nL]/O");
-    }
+     }
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup, const reco::Vertex& primaryVertex){
@@ -397,7 +398,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _tauIsoMVADBdR03newDMwLT[_nL]   = tau.tauID("byIsolationMVArun2v1DBnewDMwLTraw");
         _tauIsoMVAPWnewDMwLT[_nL]       = tau.tauID("byIsolationMVArun2v1PWnewDMwLTraw");
         _tauIsoMVAPWoldDMwLT[_nL]       = tau.tauID("byIsolationMVArun2v1PWoldDMwLTraw");
-        // TODO:  Should try also deepTau? Available on lwezenbe fork, will add this next since it should now be contained in CMSSW 10X
 
         if(multilepAnalyzer->storeAllTauID){
             _tauMuonVetoTight[_nL] = tau.tauID("againstMuonTight3");                                        //Light lepton vetos
@@ -427,7 +427,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
             _tauMediumMvaNew2017v2[_nL]           = tau.tauID("byMediumIsolationMVArun2017v2DBnewDMwLT2017");
             _tauTightMvaNew2017v2[_nL]            = tau.tauID("byTightIsolationMVArun2017v2DBnewDMwLT2017");
             _tauVTightMvaNew2017v2[_nL]           = tau.tauID("byVTightIsolationMVArun2017v2DBnewDMwLT2017");
-        
+    
         }
 
         _lEwkLoose[_nL] = isEwkLoose(tau);
@@ -487,7 +487,8 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
 
     _tauGenStatus[_nL]          = TauTools::tauGenStatus(match);        
     _lIsPrompt[_nL]             = match && (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) && GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
-    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
+    _lMatchPdgId[_nL]           = match != nullptr ? match->pdgId() : 0;
+    _lMatchCharge[_nL]          = match != nullptr ? match->charge() : 0;
     _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);

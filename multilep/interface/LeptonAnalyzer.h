@@ -225,7 +225,7 @@ class LeptonAnalyzer {
     double _tauIsoMVADBdR03newDMwLT[nL_max];
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
-
+    
     //lepton MVA definitions for SUSY (ewkino), TTH and tZq 
     double _leptonMvaSUSY[nL_max];
     double _leptonMvaTTH[nL_max];
@@ -245,6 +245,7 @@ class LeptonAnalyzer {
     //MC truth information from matching 
     bool _lIsPrompt[nL_max];
     int _lMatchPdgId[nL_max];
+    int _lMatchCharge[nL_max];
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];
     unsigned _lProvenanceCompressed[nL_max];

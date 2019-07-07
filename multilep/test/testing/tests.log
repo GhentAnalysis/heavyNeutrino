@@ -1,40 +1,33 @@
-commit 06bff2d4d51fb56a8e388b36882b8cdffc538ccc
+commit 56001d4c5164eb2999b0d79dc88324cd8fca2b9e
 Author: tomc <tomc@cern.ch>
-Date:   Fri Apr 26 18:20:01 2019 +0200
+Date:   Mon Jun 17 16:20:00 2019 +0200
 
-    New test run: see tests.log
+    Keep the recommended global tags
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _phHadTowOverEm
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _phHadTowOverEm
