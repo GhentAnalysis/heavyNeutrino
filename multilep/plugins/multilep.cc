@@ -23,6 +23,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     jetSmearedToken(          consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
     jetSmearedUpToken(        consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
     jetSmearedDownToken(      consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
+    jecPath(                                                                   iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath()),
     recoResultsPrimaryToken(  consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("recoResultsPrimary"))),
     recoResultsSecondaryToken(consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
     triggerToken(             consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("triggers"))),
@@ -38,7 +39,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
-    storeAllTauID(                                                                iConfig.getUntrackedParameter<bool>("storeAllTauID"))
+    storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID"))
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -49,6 +50,10 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     lheAnalyzer           = new LheAnalyzer(iConfig, this);
     susyMassAnalyzer      = new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
     particleLevelAnalyzer = new ParticleLevelAnalyzer(iConfig, this);
+
+    std::string dirtyHack = "dummy.txt";
+    std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
+    jec = new JEC(path, isData(), is2017(), is2018());
 }
 
 multilep::~multilep(){
@@ -60,6 +65,7 @@ multilep::~multilep(){
     delete particleLevelAnalyzer;
     delete lheAnalyzer;
     delete susyMassAnalyzer;
+    delete jec;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -104,6 +110,7 @@ void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     _runNb = (unsigned long) iRun.id().run();
     triggerAnalyzer->reIndex = true;                                   // HLT results could have different size/order in new run, so look up again the index positions
+    jec->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------

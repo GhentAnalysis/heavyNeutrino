@@ -41,6 +41,7 @@
 #include "heavyNeutrino/multilep/interface/ParticleLevelAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/JEC.h"
 
 // Allow for easy way to retrieve handles
 namespace {
@@ -63,6 +64,7 @@ class GenAnalyzer;
 class ParticleLevelAnalyzer;
 class LheAnalyzer;
 class SUSYMassAnalyzer;
+class JEC;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::WatchRuns, edm::one::SharedResources> {
     //Define other analyzers as friends
@@ -108,6 +110,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedUpToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedDownToken;
+        std::string                                              jecPath;
         edm::EDGetTokenT<edm::TriggerResults>                    recoResultsPrimaryToken;                     //MET filter information
         edm::EDGetTokenT<edm::TriggerResults>                    recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
         edm::EDGetTokenT<edm::TriggerResults>                    triggerToken;
@@ -143,6 +146,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         GenAnalyzer*           genAnalyzer;
         ParticleLevelAnalyzer* particleLevelAnalyzer;
         SUSYMassAnalyzer*      susyMassAnalyzer;
+        JEC*                   jec;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;

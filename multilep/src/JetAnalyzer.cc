@@ -8,6 +8,11 @@
 JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer)
 {
+    if(multilepAnalyzer->isData()){
+        jecLevel = "L2L3residual";
+    } else {
+        jecLevel = "L3Absolute";
+    }
     jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile")).fullPath());
 };
 
@@ -76,6 +81,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jetsSmearedUp   = getHandle(iEvent, multilepAnalyzer->jetSmearedUpToken);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedDown = getHandle(iEvent, multilepAnalyzer->jetSmearedDownToken);
     edm::Handle<std::vector<pat::MET>> mets            = getHandle(iEvent, multilepAnalyzer->metToken);
+    //to apply JEC from txt files
+    edm::Handle<double> rho                            = getHandle(iEvent, multilepAnalyzer->rhoToken);
 
     _nJets = 0;
 
@@ -103,12 +110,16 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
             if(reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedDownIt))  jetSmearedDownIt = j;
         }
 
+        // JEC implementation based on txt
+        double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
+        _jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
+
         //nominal jet pt and uncertainties
         jecUnc->setJetEta(jet.eta());
         jecUnc->setJetPt(jet.pt());
         double unc = jecUnc->getUncertainty(true);
 
-        _jetPt[_nJets]         = jet.pt();
+        //_jetPt[_nJets]         = jet.pt();
         _jetPt_JECDown[_nJets] = _jetPt[_nJets]*(1 - unc);
         _jetPt_JECUp[_nJets]   = _jetPt[_nJets]*(1 + unc);
 
@@ -135,7 +146,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
         _jetEta[_nJets]                   = jet.eta();
         _jetPhi[_nJets]                   = jet.phi();
-        _jetE[_nJets]                     = jet.energy();
+        _jetE[_nJets]                     = jet.correctedP4("Uncorrected").E()*corrTxt;
 
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
@@ -164,6 +175,10 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     const pat::MET& met = (*mets).front();
     _met             = met.pt();
     _metPhi          = met.phi();
+
+    std::pair< double, double> metAndPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho);
+    _met    = metAndPhi.first;
+    _metPhi = metAndPhi.second;
 
     //raw met values
     _metRaw          = met.uncorPt();

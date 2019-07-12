@@ -66,6 +66,8 @@ class JetAnalyzer {
     double   _metPhiUnclUp;
     double   _metSignificance;
 
+    std::string jecLevel;
+
     multilep* multilepAnalyzer;
 
     bool jetIsLoose(const pat::Jet& jet, const bool is2017) const;
