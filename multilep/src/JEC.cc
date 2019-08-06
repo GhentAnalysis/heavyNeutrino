@@ -40,6 +40,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
             if(runNumber < 316998)      jecName = "_RunA";
             else if(runNumber < 319313) jecName = "_RunB";
             else if(runNumber < 320394) jecName = "_RunC";
+            else if(runNumber < 325274) jecName = "_RunD";
             else                        std::cerr << "no JEC available for 2018 run E, they are not 13 TeV data! Seems like JSON file is not applied" << std::endl;
             jecName += version2018;
         } else if(is2017){

@@ -1,6 +1,6 @@
 # Setup script for branch: master
-RELEASE=CMSSW_10_2_15_patch2
-BRANCH=master
+RELEASE=CMSSW_10_2_14
+BRANCH=METResolution
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
 if [[ $CMSSW_BASE == *$RELEASE ]] && [[ -d $CMSSW_BASE ]]; then
