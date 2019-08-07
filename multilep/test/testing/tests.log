@@ -1,8 +1,13 @@
-commit 56001d4c5164eb2999b0d79dc88324cd8fca2b9e
+commit 08ea22c533183ede88e616806d355f3fa71f26dc
 Author: tomc <tomc@cern.ch>
-Date:   Mon Jun 17 16:20:00 2019 +0200
+Date:   Wed Aug 7 15:27:34 2019 +0200
 
-    Keep the recommended global tags
+    Fix rare memory corruption error
+    
+    Apparently some rare MC samples have more than 20 particles on lhe level,
+    which caused some memory corruption and as a result very difficult to debug errors.
+    
+    The limit of 20 particles is now raised and possible future cases of this problem will be catched by an exception.
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,6 +28,8 @@ Running test: Run2016-17Jul2018 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   Changed:
+      _lMatchCharge                                      mean:   0.0000 --> 44693931.4140 rms:   0.0000 --> 247501819.3906
 
 --------------------------------------------------------------------------------------------------
 
