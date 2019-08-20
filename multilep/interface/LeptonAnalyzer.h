@@ -81,6 +81,10 @@ class LeptonAnalyzer {
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
     double _closestJetDeepCsv[nL_max];
+    double _closestJetDeepFlavor_b[nL_max];
+    double _closestJetDeepFlavor_bb[nL_max];
+    double _closestJetDeepFlavor_lepb[nL_max];
+    double _closestJetDeepFlavor[nL_max];
     unsigned _selectedTrackMult[nL_max];
 
     //pointing variables
