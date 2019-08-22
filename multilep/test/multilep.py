@@ -10,7 +10,7 @@ inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles
 
 nEvents         = 1000
 extraContent    = ''
-outputFile      = 'singlelep.root' # trilep    --> skim three leptons (basic pt/eta criteria)
+outputFile      = 'dilep.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
                                 # singlejet --> one jet
