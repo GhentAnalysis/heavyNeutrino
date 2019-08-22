@@ -250,7 +250,7 @@ void TriggerAnalyzer::indexFlags(const edm::Event& iEvent, edm::Handle<edm::Trig
 
   std::cout << "Available triggers:" << std::endl;
   const edm::TriggerNames& triggerNames = iEvent.triggerNames(*results);
-  for (unsigned int i = 0; i < results->size(); ++i){
+  for (unsigned i = 0; i < results->size(); ++i){
     std::cout << "  " << triggerNames.triggerName(i);
     for(TString t : toSave){
       TString tt = (t.Contains("HLT") ? t + "_v" : t);

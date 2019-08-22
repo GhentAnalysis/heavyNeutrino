@@ -75,7 +75,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     if(_nLheParticles > nLhe_max){
       throw cms::Exception("maxLheParticles") << "This process has " << _nLheParticles << " lhe particles. Please increase nLhe_max in LheAnalyzer.h.\n";
     }
-    for(unsigned int i = 0; i < _nLheParticles; ++i){
+    for(unsigned i = 0; i < _nLheParticles; ++i){
         _lheStatus[i]          = lheEventInfo->hepeup().ISTUP[i];
         _lhePdgId[i]           = lheEventInfo->hepeup().IDUP[i];
         _lheMother1[i]         = lheEventInfo->hepeup().MOTHUP[i].first-1;
