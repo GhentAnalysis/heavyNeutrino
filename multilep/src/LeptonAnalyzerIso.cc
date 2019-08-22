@@ -87,19 +87,3 @@ double LeptonAnalyzer::getMiniIsolation(const reco::RecoCandidate& ptcl, edm::Ha
     double r_iso  = kt_scale/std::max(std::min(ptcl.pt(), max_pt), min_pt);
     return getRelIso(ptcl, pfcands, r_iso, rho, onlyCharged);
 }
-
-/*
-double LeptonAnalyzer::getMiniIsolation( const pat::Muon& muon, const double rho, const bool onlyCharged ) const{
-    auto iso = muon.miniPFIsolation();
-    double absIso;
-    if( onlyCharged ){
-        absIso = iso.chargedHadronIso();
-    } else {
-        double cone_size = 10.0 / std::min( std::max( muon.pt(), 50. ), 200. );
-        double effective_area = muonsEffectiveAreas.getEffectiveArea( muon.eta() ) * ( cone_size*cone_size )/ ( 0.3*0.3 );
-        double pu_corr = effective_area*rho;
-        absIso = iso.chargedHadronIso() + std::max( iso.neutralHadronIso() + iso.photonIso() - pu_corr, 0. );
-    }
-    return ( absIso / muon.pt() );
-}
-*/

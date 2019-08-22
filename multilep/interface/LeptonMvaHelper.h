@@ -8,8 +8,8 @@
 class LeptonMvaHelper{
     public:
         LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool isTTH, const bool sampleIs2017Or2018);
-        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4, double segComp);
-        double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closesJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4, double eleMvaSummer16, double eleMvaFall17v1, double eleMvaFall17v2);
+        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double segComp);
+        double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closesJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double eleMvaSummer16, double eleMvaFall17v1, double eleMvaFall17v2);
     private:
         bool isTTH; //true : ttH MVA, false : tZq MVA
         bool is2017Or2018; //currently a single training is used for 2017 and 2018
@@ -29,8 +29,7 @@ class LeptonMvaHelper{
         LepGood_mvaIdSummer16GP,
         LepGood_mvaIdFall17v1noIso,
         LepGood_mvaIdFall17v2noIso,
-        LepGood_relIso0p3,
-        LepGood_relIso0p4;
-        void bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4); 
+        LepGood_relIso0p3;
+        void bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3); 
 };
 #endif

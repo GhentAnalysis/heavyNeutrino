@@ -480,17 +480,19 @@ void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm:
 
     if( matchedJetPtr == nullptr ){
         if( _lFlavor[_nL] == 1 ){
-            _ptRatio[_nL] = ( oldMatching ? 1. : ( 1. + _relIso0p4MuDeltaBeta[_nL] ) );
+            _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4MuDeltaBeta[_nL] ) );
         } else{
-            _ptRatio[_nL] = ( oldMatching ? 1. : ( 1. + _relIso0p4[_nL] ) );
+            _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4[_nL] ) );
         }
         _ptRel[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
         _closestJetDeepFlavor_b[_nL] = 0;
         _closestJetDeepFlavor_bb[_nL] = 0;
         _closestJetDeepFlavor_lepb[_nL] = 0;
+        _closestJetDeepFlavor[_nL] = 0;
         _closestJetDeepCsv_b[_nL] = 0;
         _closestJetDeepCsv_bb[_nL] = 0;
+        _closestJetDeepCsv[_nL] = 0;
         _closestJetCsvV2[_nL] = 0;
     } else {
         const pat::Jet& jet = *matchedJetPtr;

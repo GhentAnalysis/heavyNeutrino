@@ -70,7 +70,7 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool is
 
 
 void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, 
-        double closestJetDeepFlavor, double closestJetDeepCsv, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4)
+        double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3 )
 {
     LepGood_pt = pt;
     if( isTTH ){
@@ -88,7 +88,6 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
     } else {
         LepGood_jetBTag = std::max( ( std::isnan( closestJetDeepCsv ) ? 0. : closestJetDeepCsv ), 0. );
     }
-    LepGood_relIso0p4 = relIso0p4;
     LepGood_sip3d = sip3d;
     LepGood_dxy = log(fabs(dxy));
     LepGood_dz = log(fabs(dz));
@@ -96,17 +95,17 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
 }
 
 double LeptonMvaHelper::leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, 
-    double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4, double segComp)
+    double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double segComp)
 {
-    bookCommonVars(pt, eta, selectedTrackMult, miniIsoCharged, miniIsoNeutral, ptRel, ptRatio, closestJetDeepCsv, closestJetDeepFlavor, sip3d, dxy, dz, relIso0p3, relIso0p4);
+    bookCommonVars(pt, eta, selectedTrackMult, miniIsoCharged, miniIsoNeutral, ptRel, ptRatio, closestJetDeepCsv, closestJetDeepFlavor, sip3d, dxy, dz, relIso0p3);
     LepGood_segmentCompatibility = segComp;
     return reader[0]->EvaluateMVA("BDTG method");
 }
 
 double LeptonMvaHelper::leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, 
-    double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4, double eleMvaSummer16, double eleMvaFall17v1, double eleMvaFall17v2)
+    double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double eleMvaSummer16, double eleMvaFall17v1, double eleMvaFall17v2)
 {
-    bookCommonVars(pt, eta, selectedTrackMult, miniIsoCharged, miniIsoNeutral, ptRel, ptRatio, closestJetDeepCsv, closestJetDeepFlavor, sip3d, dxy, dz, relIso0p3, relIso0p4);
+    bookCommonVars(pt, eta, selectedTrackMult, miniIsoCharged, miniIsoNeutral, ptRel, ptRatio, closestJetDeepCsv, closestJetDeepFlavor, sip3d, dxy, dz, relIso0p3);
     LepGood_mvaIdSummer16GP = eleMvaSummer16;
     LepGood_mvaIdFall17v1noIso = eleMvaFall17v1;
     LepGood_mvaIdFall17v2noIso = eleMvaFall17v2;
