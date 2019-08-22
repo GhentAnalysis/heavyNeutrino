@@ -7,13 +7,12 @@
 #include <memory>
 class LeptonMvaHelper{
     public:
-        LeptonMvaHelper(const edm::ParameterSet& iConfig, const unsigned type, const bool sampleIs2017);
-        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double closestJetDeepCsv, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4, double segComp);
-        double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double closesJetDeepCsv, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4, double eleMvaSpring16, double eleMvaHZZ, double eleMvaFall17);
+        LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool isTTH, const bool sampleIs2017Or2018);
+        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4, double segComp);
+        double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closesJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4, double eleMvaSummer16, double eleMvaFall17v1, double eleMvaFall17v2);
     private:
-        unsigned type; //0 = SUSY , 1 = ttH , 2 = tZqttV
-        bool is2017;
-        bool is2018;
+        bool isTTH; //true : ttH MVA, false : tZq MVA
+        bool is2017Or2018; //currently a single training is used for 2017 and 2018
         std::shared_ptr<TMVA::Reader> reader[2]; //First entry is for muons, second one for electrons
         float LepGood_pt,                       //Variables used in MVA computation
         LepGood_eta,
@@ -22,16 +21,16 @@ class LeptonMvaHelper{
         LepGood_miniRelIsoNeutral,
         LepGood_jetPtRelv2,
         LepGood_jetPtRatio,
-        LepGood_jetBTagCSV,
+        LepGood_jetBTag,
         LepGood_sip3d,
         LepGood_dxy,
         LepGood_dz,
         LepGood_segmentCompatibility,
-        LepGood_mvaIdSpring16GP,
-        LepGood_mvaIdFall17noIso,
-        LepGood_mvaIdSpring16HZZ,
+        LepGood_mvaIdSummer16GP,
+        LepGood_mvaIdFall17v1noIso,
+        LepGood_mvaIdFall17v2noIso,
         LepGood_relIso0p3,
         LepGood_relIso0p4;
-        void bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetCsv, double closestJetDeepCsv, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4); 
+        void bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p4); 
 };
 #endif

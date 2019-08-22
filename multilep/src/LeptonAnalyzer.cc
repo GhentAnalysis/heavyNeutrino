@@ -12,13 +12,11 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     electronsEffectiveAreas(iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas").fullPath()),
     muonsEffectiveAreas    ((multilepAnalyzer->is2017() || multilepAnalyzer->is2018() )? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
 {
-    leptonMvaComputerSUSY = new LeptonMvaHelper(iConfig, 0, !multilepAnalyzer->is2016() ); // SUSY 
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, 1, !multilepAnalyzer->is2016() );
     leptonMvaComputertZq = new LeptonMvaHelper(iConfig, 2, !multilepAnalyzer->is2016() );
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
-    delete leptonMvaComputerSUSY;
     delete leptonMvaComputerTTH;
     delete leptonMvaComputertZq;
 }
@@ -49,12 +47,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElectronPassConvVeto",        &_lElectronPassConvVeto,        "_lElectronPassConvVeto[_nLight]/O");
     outputTree->Branch("_lElectronChargeConst",         &_lElectronChargeConst,         "_lElectronChargeConst[_nLight]/O");
     outputTree->Branch("_lElectronMissingHits",         &_lElectronMissingHits,         "_lElectronMissingHits[_nLight]/i");
-    outputTree->Branch("_leptonMvaSUSY",                &_leptonMvaSUSY,                "_leptonMvaSUSY[_nLight]/D");
     outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
     outputTree->Branch("_leptonMvatZq",                 &_leptonMvatZq,                 "_leptonMvatZq[_nLight]/D");
-    outputTree->Branch("_lEwkLoose",                    &_lEwkLoose,                    "_lEwkLoose[_nL]/O");
-    outputTree->Branch("_lEwkFO",                       &_lEwkFO,                       "_lEwkFO[_nL]/O");
-    outputTree->Branch("_lEwkTight",                    &_lEwkTight,                    "_lEwkTight[_nL]/O");
     outputTree->Branch("_lPOGVeto",                     &_lPOGVeto,                     "_lPOGVeto[_nL]/O");
     outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
     outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
@@ -162,12 +156,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(fabs(mu.eta()) > 2.4)                       continue;
         if(!mu.isPFMuon())                             continue;
         if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue;
-        fillLeptonImpactParameters(mu, primaryVertex);
+        fillLeptonImpactParameters(mu);
         if(fabs(_dxy[_nL]) > 0.05)                     continue;
         if(fabs(_dz[_nL]) > 0.1)                       continue;
         fillLeptonKinVars(mu);
         if( multilepAnalyzer->isMC() ) fillLeptonGenVars(mu, *genParticles);
-        fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
 
         _lFlavor[_nL]        = 1;
         _lMuonSegComp[_nL]    = mu.segmentCompatibility();
@@ -177,21 +170,22 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
         _relIso0p4[_nL]      = getRelIso04(mu, *rho);
         _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, true);
-        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false); // TODO: check how this compares with the MiniIsoLoose,etc... booleans
-        _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
+        _miniIso[_nL]        = getMiniIsolation( mu, *rho, false );
+        _miniIsoCharged[_nL] = getMiniIsolation( mu, *rho, true );
 
         _lPOGVeto[_nL]       = mu.passed(reco::Muon::CutBasedIdLoose); // no veto available, so we take loose here
         _lPOGLoose[_nL]      = mu.passed(reco::Muon::CutBasedIdLoose);
         _lPOGMedium[_nL]     = mu.passed(reco::Muon::CutBasedIdMedium);
         _lPOGTight[_nL]      = mu.passed(reco::Muon::CutBasedIdTight);
 
-        _leptonMvaSUSY[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY);
-        _leptonMvaTTH[_nL]   = mu.mvaValue();
+        //fillLeptonJetVariables MUST be called after setting isolation variables since _relIso0p4 is used to set ptRatio in the absence of a closest jet 
+        //tZq lepton MVA uses old matching scheme, first set the lepton jet variables with old matching to compute this MVA
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho, true);
         _leptonMvatZq[_nL]   = leptonMvaVal(mu, leptonMvaComputertZq);
 
-        _lEwkLoose[_nL]      = isEwkLoose(mu);
-        _lEwkFO[_nL]         = isEwkFO(mu);
-        _lEwkTight[_nL]      = isEwkTight(mu);
+        //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho, false);
+        _leptonMvaTTH[_nL]   = mu.mvaValue();
 
         ++_nMu;
         ++_nL;
@@ -205,20 +199,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(ele->pt() < 7)                                                                               continue;
         if(fabs(ele->eta()) > 2.5)                                                                      continue;
         if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 2)    continue;
-        fillLeptonImpactParameters(*ele, primaryVertex);
+        fillLeptonImpactParameters(*ele);
         if(fabs(_dxy[_nL]) > 0.05)                                                                      continue;
         if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
         fillLeptonKinVars(*ele);
         if( multilepAnalyzer->isMC() ) fillLeptonGenVars(*ele, *genParticles);
-        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
 
         _lFlavor[_nL]                   = 0;
         _lEtaSC[_nL]                    = ele->superCluster()->eta();
 
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
-        _relIso0p4[_nL]                 = getRelIso(*ele, packedCands, 0.4, *rho, false);
-        _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);
-        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
+        _relIso0p4[_nL]                 = getRelIso04(*ele, *rho);
+        _miniIso[_nL]                   = getMiniIsolation( *ele, *rho, false );
+        _miniIsoCharged[_nL]            = getMiniIsolation( *ele, *rho, true );
         _lElectronMvaSummer16GP[_nL]    = ele->userFloat("ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"); // OLD, do not use it
         _lElectronMvaSummer16HZZ[_nL]   = ele->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"); // OLD, do not use it
         _lElectronMvaFall17v1NoIso[_nL] = ele->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"); // OLD, do not use it
@@ -234,13 +227,14 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lPOGMedium[_nL]                = ele->electronID("cutBasedElectronID-Fall17-94X-V1-medium");
         _lPOGTight[_nL]                 = ele->electronID("cutBasedElectronID-Fall17-94X-V1-tight");
 
-        _leptonMvaSUSY[_nL]             = leptonMvaVal(*ele, leptonMvaComputerSUSY);
-        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
+        //fillLeptonJetVariables MUST be called after setting isolation variables since _relIso0p4 is used to set ptRatio in the absence of a closest jet 
+        //tZq lepton MVA uses old matching scheme, first set the lepton jet variables with old matching to compute this MVA
+        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, true);
         _leptonMvatZq[_nL]              = leptonMvaVal(*ele, leptonMvaComputertZq);
 
-        _lEwkLoose[_nL]                 = isEwkLoose(*ele);
-        _lEwkFO[_nL]                    = isEwkFO(*ele);
-        _lEwkTight[_nL]                 = isEwkTight(*ele);
+        //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
+        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, false);
+        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
 
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
@@ -332,9 +326,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     
         }
 
-        _lEwkLoose[_nL] = isEwkLoose(tau);
-        _lEwkFO[_nL]    = isEwkFO(tau);
-        _lEwkTight[_nL] = isEwkTight(tau);
         ++_nTau;
         ++_nL;
     }
@@ -401,16 +392,24 @@ void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco:
  * Provide PV to dxy/dz otherwise you get dxy/dz to the beamspot instead of the primary vertex
  * For taus: dxy is pre-computed with PV it was constructed with
  */
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const reco::Vertex& vertex){
-    _dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
-    _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele ){
+
+    //WARNING: sign of these functions are often different from what is returned by 'dB' functions, and in very rare cases the absolute values are different (typically for very small values)
+    //_dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
+    //_dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
+    _dxy[_nL]     = ele.dB( pat::Electron::PV2D );
+    _dz[_nL]     = ele.dB( pat::Electron::PVDZ );
     _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
     _3dIPSig[_nL] = fabs(ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D));
 }
 
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
-    _dxy[_nL]     = muon.innerTrack()->dxy(vertex.position());
-    _dz[_nL]      = muon.innerTrack()->dz(vertex.position());
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon ){
+
+    //WARNING: sign of these functions are often different from what is returned by 'dB' functions, and in very rare cases the absolute values are different (typically for very small values)
+    //_dxy[_nL]     = muon.innerTrack()->dxy(vertex.position());
+    //_dz[_nL]      = muon.innerTrack()->dz(vertex.position());
+    _dxy[_nL]     = muon.dB( pat::Muon::PV2D );
+    _dz[_nL]      = muon.dB( pat::Muon::PVDZ );
     _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
     _3dIPSig[_nL] = fabs(muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D));
 }
@@ -429,38 +428,116 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
 }
 
 
-
-
-void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex, const double rho){
-    //Make skimmed "close jet" collection
-    std::vector<pat::Jet> selectedJetsAll;
-    for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        if(jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+//fucking disgusting lepton-jet matching based on obscure pointer defined somewhere in the abyss of CMSSW. (I feel ashamed for using this, but one has to be in sync with the POG - Willem )
+template< typename T1, typename T2 > bool isSourceCandidatePtrMatch( const T1& lhs, const T2& rhs ){
+    for( size_t lhsIndex = 0; lhsIndex < lhs.numberOfSourceCandidatePtrs(); ++lhsIndex ){
+        auto lhsSourcePtr = lhs.sourceCandidatePtr( lhsIndex );
+        for( size_t rhsIndex = 0; rhsIndex < rhs.numberOfSourceCandidatePtrs(); ++rhsIndex ){
+            auto rhsSourcePtr = rhs.sourceCandidatePtr( rhsIndex );
+            if( lhsSourcePtr == rhsSourcePtr ){
+                return true;
+            }
+        }
     }
-    // Find closest selected jet
-    unsigned closestIndex = 0;
-    for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
-        if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
-    }
+    return false;
+}
 
-    const pat::Jet& jet = selectedJetsAll[closestIndex];
-    if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
-        _ptRatio[_nL]              = 1;
-        _ptRel[_nL]                = 0;
-        _closestJetCsvV2[_nL]      = 0;
-        _closestJetDeepCsv_b[_nL]  = 0;
-        _closestJetDeepCsv_bb[_nL] = 0;
-        _selectedTrackMult[_nL]    = 0;
+
+const pat::Jet* findMatchedJet( const reco::Candidate& lepton, const edm::Handle< std::vector< pat::Jet > >& jets, const bool oldMatching ){
+    
+    //Look for jet that matches with lepton
+    const pat::Jet* matchedJetPtr = nullptr;
+
+    //old matching scheme looks for closest jet in terms of delta R, and required this to be within delta R 0.4 of the lepton
+    if( oldMatching ){
+        for( auto& jet : *jets ){
+            if( jet.pt() <= 5 || fabs( jet.eta() ) >= 3 ) continue;
+            if( ( matchedJetPtr == nullptr) || reco::deltaR( jet, lepton ) < reco::deltaR( *matchedJetPtr, lepton ) ){
+                matchedJetPtr = &jet;
+            }
+        }
+        if( matchedJetPtr != nullptr && reco::deltaR( lepton, *matchedJetPtr ) > 0.4 ){
+            matchedJetPtr = nullptr;
+        }
     } else {
-        auto  l1Jet       = jet.correctedP4("L1FastJet");
-        float JEC         = jet.p4().E()/l1Jet.E();
-        auto  l           = lepton.p4();
-        auto  lepAwareJet = (l1Jet - l)*JEC + l;
+        for( auto& jet : *jets ){
+            if( isSourceCandidatePtrMatch( lepton, jet ) ){
 
-        TLorentzVector lV(l.Px(), l.Py(), l.Pz(), l.E());
-        TLorentzVector jV(lepAwareJet.Px(), lepAwareJet.Py(), lepAwareJet.Pz(), lepAwareJet.E());
-        _ptRatio[_nL]              = l.Pt()/lepAwareJet.Pt();
-        _ptRel[_nL]                = lV.Perp((jV - lV).Vect());
+                //immediately returning guarantees that the leading jet matched to the lepton is returned
+                return &jet;
+            }
+        }
+    }
+    return matchedJetPtr;
+}
+
+
+//compute closest jet variables using new matching scheme 
+void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm::Handle< std::vector< pat::Jet > >& jets, const reco::Vertex& vertex, const double rho, const bool oldMatching ){
+
+    //find closest jet based on source candidate pointer matching
+    const pat::Jet* matchedJetPtr = findMatchedJet( lepton, jets, oldMatching );
+
+    if( matchedJetPtr == nullptr ){
+        if( _lFlavor[_nL] == 1 ){
+            _ptRatio[_nL] = ( oldMatching ? 1. : ( 1. + _relIso0p4MuDeltaBeta[_nL] ) );
+        } else{
+            _ptRatio[_nL] = ( oldMatching ? 1. : ( 1. + _relIso0p4[_nL] ) );
+        }
+        _ptRel[_nL] = 0;
+        _selectedTrackMult[_nL] = 0;
+        _closestJetDeepFlavor_b[_nL] = 0;
+        _closestJetDeepFlavor_bb[_nL] = 0;
+        _closestJetDeepFlavor_lepb[_nL] = 0;
+        _closestJetDeepCsv_b[_nL] = 0;
+        _closestJetDeepCsv_bb[_nL] = 0;
+        _closestJetCsvV2[_nL] = 0;
+    } else {
+        const pat::Jet& jet = *matchedJetPtr;
+
+        auto rawJetP4 = jet.correctedP4("Uncorrected"); 
+        auto leptonP4 = lepton.p4();
+
+        bool leptonEqualsJet = ( ( rawJetP4 - leptonP4 ).P() < 1e-4 );
+
+        //if lepton and jet vector are equal set _ptRatio, _ptRel and track multipliticy to defaults 
+        if( leptonEqualsJet && !oldMatching ){
+            _ptRatio[_nL] = 1;
+            _ptRel[_nL] = 0;
+            _selectedTrackMult[_nL] = 0;
+        } else {
+
+            //remove all corrections above L1 from the lepton
+            auto L1JetP4 = jet.correctedP4("L1FastJet");
+            double L2L3JEC = jet.pt()/L1JetP4.pt(); 
+            auto lepAwareJetP4 = ( L1JetP4 - leptonP4 )*L2L3JEC + leptonP4;
+
+            _ptRatio[_nL] = lepAwareJetP4.pt() / jet.pt();
+
+            //lepton momentum orthogonal to the jet axis
+            //magnitude of cross-product between lepton and rest of jet 
+            _ptRel[_nL ] = leptonP4.Vect().Cross( (lepAwareJetP4 - leptonP4 ).Vect().Unit() ).R();
+
+            _selectedTrackMult[_nL] = 0;
+            for( const auto daughterPtr : jet.daughterPtrVector() ){
+                const pat::PackedCandidate& daughter = *( (const pat::PackedCandidate*) daughterPtr.get() );
+            
+                if( daughter.charge() == 0 ) continue;
+                if( daughter.fromPV() < 2 ) continue;
+                if( reco::deltaR( daughter, lepton ) > 0.4 ) continue;
+                if( !daughter.hasTrackDetails() ) continue;
+
+                auto daughterTrack = daughter.pseudoTrack();
+                if( daughterTrack.pt() <= 1 ) continue;
+                if( daughterTrack.hitPattern().numberOfValidHits() < 8 ) continue;
+                if( daughterTrack.hitPattern().numberOfValidPixelHits() < 2 ) continue;
+                if( daughterTrack.normalizedChi2() >= 5 ) continue;
+                if( std::abs( daughterTrack.dz( vertex.position() ) ) >= 17 ) continue;
+                if( std::abs( daughterTrack.dxy( vertex.position() ) ) >= 0.2 ) continue;
+                ++_selectedTrackMult[_nL];
+            }
+
+        }
 
         //CSVv2 of closest jet
         _closestJetCsvV2[_nL]      = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
@@ -477,29 +554,5 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closestJetDeepFlavor_lepb[_nL] = jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
         _closestJetDeepFlavor[_nL] = _closestJetDeepFlavor_b[_nL] + _closestJetDeepFlavor_bb[_nL] + _closestJetDeepFlavor_lepb[_nL];
         if( std::isnan( _closestJetDeepFlavor[_nL] ) ) _closestJetDeepFlavor[_nL] = 0.;
-
-        //compute selected track multiplicity of closest jet
-        _selectedTrackMult[_nL] = 0;
-        for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
-            const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-            if(daughter->hasTrackDetails()){
-                const reco::Track& daughterTrack = daughter->pseudoTrack();
-                if(daughterTrack.pt() <= 1)                                 continue;
-                if(daughterTrack.charge() == 0)                             continue;
-                if(daughter->fromPV() < 2)                                  continue;
-                if(daughterTrack.hitPattern().numberOfValidHits() < 8)      continue;
-                if(daughterTrack.hitPattern().numberOfValidPixelHits() < 2) continue;
-                if(daughterTrack.normalizedChi2() >= 5)                     continue;
-                if(fabs(daughterTrack.dz(vertex.position())) >= 17)         continue;
-                if(fabs(daughterTrack.dxy(vertex.position())) >= 0.2)       continue;
-
-
-                //distance from jet core
-                TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-                double daughterDeltaR = trackVec.DeltaR(jV);
-
-                if(daughterDeltaR <= 0.4) ++_selectedTrackMult[_nL];
-            }
-        }
     }
 }
