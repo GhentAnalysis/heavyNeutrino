@@ -512,7 +512,7 @@ void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm:
             double L2L3JEC = jet.pt()/L1JetP4.pt(); 
             auto lepAwareJetP4 = ( L1JetP4 - leptonP4 )*L2L3JEC + leptonP4;
 
-            _ptRatio[_nL] = lepton.pt() / jet.pt();
+            _ptRatio[_nL] = lepton.pt() / lepAwareJetP4.pt();
 
             //lepton momentum orthogonal to the jet axis
             //magnitude of cross-product between lepton and rest of jet 
