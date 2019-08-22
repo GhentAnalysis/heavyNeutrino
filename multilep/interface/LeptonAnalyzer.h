@@ -35,6 +35,7 @@ class LeptonAnalyzer {
     multilep* multilepAnalyzer;
 
     EffectiveAreas electronsEffectiveAreas;
+    EffectiveAreas electronsEffectiveAreasMiniIso;
     EffectiveAreas muonsEffectiveAreas;
 
     //maximum number of leptons to be stored 
@@ -233,7 +234,7 @@ template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton,
         if( lepton.isMuon() ){
             effective_area = muonsEffectiveAreas.getEffectiveArea( etaForEffectiveArea( lepton ) );
         } else if( lepton.isElectron() ){
-            effective_area = electronsEffectiveAreas.getEffectiveArea( etaForEffectiveArea( lepton ) );
+            effective_area = electronsEffectiveAreasMiniIso.getEffectiveArea( etaForEffectiveArea( lepton ) );
         } else {
             throw std::invalid_argument( "getMiniIsolation is only defined for Muon and Electron objects." );
         }
