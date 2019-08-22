@@ -186,7 +186,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho, false);
-        _leptonMvaTTH[_nL]   = mu.mvaValue();
+        _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
 
         ++_nMu;
         ++_nL;
