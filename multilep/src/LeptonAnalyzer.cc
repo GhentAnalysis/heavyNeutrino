@@ -390,27 +390,20 @@ void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco:
 
 /*
  * Impact parameters:
- * Provide PV to dxy/dz otherwise you get dxy/dz to the beamspot instead of the primary vertex
+ * Note: dB function seems to be preferred and more accurate over track->dxy and dz functions 
+ * as the latter ones have some simplified extrapolation used (leading to slightly different values or opposite sign)
  * For taus: dxy is pre-computed with PV it was constructed with
  */
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele ){
-
-    //WARNING: sign of these functions are often different from what is returned by 'dB' functions, and in very rare cases the absolute values are different (typically for very small values)
-    //_dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
-    //_dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
-    _dxy[_nL]     = ele.dB( pat::Electron::PV2D );
-    _dz[_nL]     = ele.dB( pat::Electron::PVDZ );
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele){
+    _dxy[_nL]     = ele.dB(pat::Electron::PV2D);
+    _dz[_nL]      = ele.dB(pat::Electron::PVDZ);
     _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
     _3dIPSig[_nL] = fabs(ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D));
 }
 
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon ){
-
-    //WARNING: sign of these functions are often different from what is returned by 'dB' functions, and in very rare cases the absolute values are different (typically for very small values)
-    //_dxy[_nL]     = muon.innerTrack()->dxy(vertex.position());
-    //_dz[_nL]      = muon.innerTrack()->dz(vertex.position());
-    _dxy[_nL]     = muon.dB( pat::Muon::PV2D );
-    _dz[_nL]      = muon.dB( pat::Muon::PVDZ );
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon){
+    _dxy[_nL]     = muon.dB(pat::Muon::PV2D);
+    _dz[_nL]      = muon.dB(pat::Muon::PVDZ);
     _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
     _3dIPSig[_nL] = fabs(muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D));
 }
