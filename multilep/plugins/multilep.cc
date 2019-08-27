@@ -74,6 +74,8 @@ void multilep::beginJob(){
     outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
+    outputTree->Branch("_is2017",                       &sampleIs2017,                  "_is2017/O");
+    outputTree->Branch("_is2018",                       &sampleIs2018,                  "_is2018/O");
 
     if( isMC() && !is2018() ){
         outputTree->Branch("_prefireWeight",              &_prefireWeight,                "_prefireWeight/F");
