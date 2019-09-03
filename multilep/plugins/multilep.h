@@ -160,9 +160,15 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         double _BS_x;
         double _BS_y;
         double _BS_z;
+        double _BS_xErr;
+        double _BS_yErr;
+        double _BS_zErr;
         double _PV_x;
         double _PV_y;
         double _PV_z;
+        double _PV_xErr;
+        double _PV_yErr;
+        double _PV_zErr;
 
         float _prefireWeight;
         float _prefireWeightUp;

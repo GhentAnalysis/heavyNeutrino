@@ -80,9 +80,15 @@ void multilep::beginJob(){
     outputTree->Branch("_BS_x",                          &_BS_x,                          "_BS_x/D");
     outputTree->Branch("_BS_y",                          &_BS_y,                          "_BS_y/D");
     outputTree->Branch("_BS_z",                          &_BS_z,                          "_BS_z/D");
+    outputTree->Branch("_BS_xErr",                       &_BS_xErr,                       "_BS_xErr/D");
+    outputTree->Branch("_BS_yErr",                       &_BS_yErr,                       "_BS_yErr/D");
+    outputTree->Branch("_BS_zErr",                       &_BS_zErr,                       "_BS_zErr/D");
     outputTree->Branch("_PV_x",                          &_PV_x,                          "_PV_x/D");
     outputTree->Branch("_PV_y",                          &_PV_y,                          "_PV_y/D");
     outputTree->Branch("_PV_z",                          &_PV_z,                          "_PV_z/D");
+    outputTree->Branch("_PV_xErr",                       &_PV_xErr,                       "_PV_xErr/D");
+    outputTree->Branch("_PV_yErr",                       &_PV_yErr,                       "_PV_yErr/D");
+    outputTree->Branch("_PV_zErr",                       &_PV_zErr,                       "_PV_zErr/D");
 
     if( isMC() && !is2018() ){
         outputTree->Branch("_prefireWeight",              &_prefireWeight,                "_prefireWeight/F");
@@ -141,11 +147,17 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     _BS_x = beamspot->x0();
     _BS_y = beamspot->y0();
     _BS_z = beamspot->z0();
+    _BS_xErr = beamspot->x0Error();
+    _BS_yErr = beamspot->y0Error();
+    _BS_zErr = beamspot->z0Error();
 
     const reco::Vertex primaryVertex = *(vertices->begin());
     _PV_x = primaryVertex.x();
     _PV_y = primaryVertex.y();
     _PV_z = primaryVertex.z();
+    _PV_xErr = primaryVertex.xError();
+    _PV_yErr = primaryVertex.yError();
+    _PV_zErr = primaryVertex.zError();
     
 
     if(isMC() and !is2018()){
