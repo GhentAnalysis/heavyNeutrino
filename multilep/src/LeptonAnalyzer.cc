@@ -66,7 +66,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElehadronicOverEm",           &_lElehadronicOverEm ,          "_lElehadronicOverEm[_nLight]/D");
     outputTree->Branch("_lEleInvMinusPInv",             &_lEleInvMinusPInv ,            "_lEleInvMinusPInv[_nLight]/D");
     outputTree->Branch("_eleNumberInnerHitsMissing",    &_eleNumberInnerHitsMissing,    "_eleNumberInnerHitsMissing[_nLight]/D");
-    outputTree->Branch("_leptonMvaSUSY",                &_leptonMvaSUSY,                "_leptonMvaSUSY[_nLight]/D");
     outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
     outputTree->Branch("_leptonMvatZq",                 &_leptonMvatZq,                 "_leptonMvatZq[_nLight]/D");
     outputTree->Branch("_lPOGVeto",                     &_lPOGVeto,                     "_lPOGVeto[_nL]/O");
@@ -152,7 +151,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lCQChi2Position",              &_lCQChi2Position,              "_lCQChi2Position[_nMu]/D");
     outputTree->Branch("_lCQTrackKink",                 &_lCQTrackKink,                 "_lCQTrackKink[_nMu]/D");
     outputTree->Branch("_lNumberOfMatchedStation",      &_lNumberOfMatchedStation,      "_lNumberOfMatchedStation[_nMu]/i");
-    outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nMu]/i");
+    outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nLight]/i");
+    outputTree->Branch("_lNumberOfValidTrackerHits",    &_lNumberOfValidTrackerHits,    "_lNumberOfValidTrackerHits[_nLight]/i");
     outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nMu]/i");
     outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nMu]/i");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
@@ -533,7 +533,9 @@ void LeptonAnalyzer::fillDisplacedIDVariables(const pat::Electron& ele){
     _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] = std::abs(ele.deltaPhiSuperClusterTrackAtVtx());
     _lElehadronicOverEm[_nL] = ele.hadronicOverEm();
     _lEleInvMinusPInv[_nL] = std::abs(1.0 - ele.eSuperClusterOverP())/ele.ecalEnergy();
-    _eleNumberInnerHitsMissing[_nL]=ele.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
+    _eleNumberInnerHitsMissing[_nL] = ele.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
+    _lNumberOfValidPixelHits[_nL] = (!ele.gsfTrack().isNull())? ele.gsfTrack()->hitPattern().numberOfValidPixelHits() : 0;
+    _lNumberOfValidTrackerHits[_nL] = (!ele.gsfTrack().isNull())? ele.gsfTrack()->hitPattern().numberOfValidTrackerHits() : 0;
 }   
 
 void LeptonAnalyzer::fillDisplacedIDVariables(const pat::Muon& mu){
@@ -545,6 +547,7 @@ void LeptonAnalyzer::fillDisplacedIDVariables(const pat::Muon& mu){
     _lCQTrackKink[_nL] = mu.combinedQuality().trkKink;
     _lNumberOfMatchedStation[_nL] = mu.numberOfMatchedStations();
     _lNumberOfValidPixelHits[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().numberOfValidPixelHits()  : 0; // cannot be -1 !!
+    _lNumberOfValidTrackerHits[_nL] = (!mu.innerTrack().isNull()) ? mu.innerTrack()->hitPattern().numberOfValidTrackerHits() : 0;
     _lTrackerLayersWithMeasurement[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().trackerLayersWithMeasurement()  : 0; // cannot be -1 !! 
     _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : 0); // cannot be -1 !!!
 }
@@ -691,30 +694,6 @@ void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm:
         _closestJetDeepFlavor_lepb[_nL] = jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
         _closestJetDeepFlavor[_nL] = _closestJetDeepFlavor_b[_nL] + _closestJetDeepFlavor_bb[_nL] + _closestJetDeepFlavor_lepb[_nL];
         if( std::isnan( _closestJetDeepFlavor[_nL] ) ) _closestJetDeepFlavor[_nL] = 0.;
-
-        //compute selected track multiplicity of closest jet
-        _selectedTrackMult[_nL] = 0;
-        for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
-            const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-            if(daughter->hasTrackDetails()){
-                const reco::Track& daughterTrack = daughter->pseudoTrack();
-                if(daughterTrack.pt() <= 1)                                 continue;
-                if(daughterTrack.charge() == 0)                             continue;
-                if(daughter->fromPV() < 2)                                  continue;
-                if(daughterTrack.hitPattern().numberOfValidHits() < 8)      continue;
-                if(daughterTrack.hitPattern().numberOfValidPixelHits() < 2) continue;
-                if(daughterTrack.normalizedChi2() >= 5)                     continue;
-                if(fabs(daughterTrack.dz(vertex.position())) >= 17)         continue;
-                if(fabs(daughterTrack.dxy(vertex.position())) >= 0.2)       continue;
-
-
-                //distance from jet core
-                TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-                double daughterDeltaR = trackVec.DeltaR(jV);
-
-                if(daughterDeltaR <= 0.4) ++_selectedTrackMult[_nL];
-            } 
-        }
     }
 }
 

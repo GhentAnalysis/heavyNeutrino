@@ -181,6 +181,7 @@ class LeptonAnalyzer {
     double _lCQTrackKink[nL_max];
     unsigned _lNumberOfMatchedStation[nL_max];
     unsigned _lNumberOfValidPixelHits[nL_max];
+    unsigned _lNumberOfValidTrackerHits[nL_max];
     unsigned _muNumberInnerHits[nL_max];
     unsigned _lTrackerLayersWithMeasurement[nL_max];
     double _lMuonSegComp[nL_max];                                                                     
