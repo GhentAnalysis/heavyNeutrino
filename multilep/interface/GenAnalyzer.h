@@ -70,17 +70,6 @@ class GenAnalyzer {
     double   _gen_NPackedDtrsE[gen_ndtr_max];
     int      _gen_NPackedDtrsPdgId[gen_ndtr_max];
     int      _gen_NPackedDtrsCharge[gen_ndtr_max];
-    int      matches[gen_ndtr_max];
-    double   _gen_NPackedDtrsmineta[gen_ndtr_max];
-    double   _gen_NPackedDtrsminphi[gen_ndtr_max];
-    double   _gen_NPackedDtrsminpt[gen_ndtr_max];
-    double   _gen_NPackedDtrs_matchPt[gen_ndtr_max];
-    double   _gen_NPackedDtrs_matchEta[gen_ndtr_max];
-    double   _gen_NPackedDtrs_matchPhi[gen_ndtr_max];
-    double   _gen_NPackedDtrs_matchE[gen_ndtr_max];
-    double   _gen_NPackedDtrs_matchdxy[gen_ndtr_max];
-    double   _gen_NPackedDtrs_matchdz[gen_ndtr_max];
-    int      _gen_NPackedDtrs_matchcharge[gen_ndtr_max];
 
     unsigned _gen_nNdaughters = 0;
     int      _gen_Ndaughters_pdg[gen_n_max];
@@ -105,7 +94,6 @@ class GenAnalyzer {
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
     bool     isAncestor(const reco::Candidate*, const reco::Candidate*);
-    void     getMatchingPackedPFCandidateInfo(const pat::PackedGenParticle&, edm::Handle<std::vector<pat::PackedCandidate>>&);
 
     multilep* multilepAnalyzer;
 
