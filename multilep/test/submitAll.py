@@ -1,5 +1,34 @@
 #!/usr/bin/env python
-import os, glob, sys
+import os, glob, sys, subprocess
+
+#
+# Special git diff check for special people like Willem
+#
+def confirm(prompt, resp=False):
+  prompt = '%s %s|%s: ' % (prompt, 'y', 'n')
+  while True:
+    ans = raw_input(prompt)
+    if not ans: return resp
+    if ans not in ['y', 'Y', 'n', 'N']:
+      print 'please enter y or n.'
+      continue
+    if ans == 'y' or ans == 'Y': return True
+    if ans == 'n' or ans == 'N': return False
+
+def system(command):
+    return subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+
+if len(system('git diff')):
+  print '\033[1m\033[91mYou have local changes not yet committed to git!'
+  print
+  print os.system('git diff') # directly using os system to keep colorized output
+  print
+  if not confirm('\033[1m\033[94mAre you sure you would want to continue?'):
+    exit(0)
+
+#
+# Proceed with the submission script
+#
 from multilep import getJSON
 
 datasetsFile    = sys.argv[1]                                                                             # Input file with datasets

@@ -76,7 +76,9 @@ void multilep::beginJob(){
     outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
     outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
-    outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
+    outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/i");
+    outputTree->Branch("_is2017",                       &sampleIs2017,                  "_is2017/O");
+    outputTree->Branch("_is2018",                       &sampleIs2018,                  "_is2018/O");
     outputTree->Branch("_BS_x",                          &_BS_x,                          "_BS_x/D");
     outputTree->Branch("_BS_y",                          &_BS_y,                          "_BS_y/D");
     outputTree->Branch("_BS_z",                          &_BS_z,                          "_BS_z/D");

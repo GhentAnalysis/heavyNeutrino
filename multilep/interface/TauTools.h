@@ -17,7 +17,7 @@ namespace TauTools{
 
     const bool considerForMatching(const pat::Tau&, const reco::GenParticle&, const std::vector<reco::GenParticle>& genParticles);
 
-    const unsigned int tauGenStatus(const reco::GenParticle*);
+    const unsigned tauGenStatus(const reco::GenParticle*);
 }
 
 #endif

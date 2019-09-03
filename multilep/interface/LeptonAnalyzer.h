@@ -44,6 +44,7 @@ class LeptonAnalyzer {
     multilep* multilepAnalyzer;
 
     EffectiveAreas electronsEffectiveAreas;
+    EffectiveAreas electronsEffectiveAreasMiniIso;
     EffectiveAreas muonsEffectiveAreas;
 
     //maximum number of leptons to be stored 
@@ -90,6 +91,10 @@ class LeptonAnalyzer {
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
     double _closestJetDeepCsv[nL_max];
+    double _closestJetDeepFlavor_b[nL_max];
+    double _closestJetDeepFlavor_bb[nL_max];
+    double _closestJetDeepFlavor_lepb[nL_max];
+    double _closestJetDeepFlavor[nL_max];
     unsigned _selectedTrackMult[nL_max];
 
     static const unsigned ntrack_max  = 15;
@@ -192,8 +197,8 @@ class LeptonAnalyzer {
     bool _tauEleVetoTight[nL_max];
     bool _tauEleVetoVTight[nL_max];
     bool _decayModeFinding[nL_max];                      
-    unsigned int _tauDecayMode[nL_max];                                                         // As in https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Decay_Mode_Reconstruction 
-    unsigned int _tauGenStatus[nL_max];                                                         //1: prompt ele, 2:prompt mu, 3: ele from leptonic tau, 4:mu from leptonic tau, 5: hadronically decayed tau, 6:rest 
+    unsigned _tauDecayMode[nL_max];                                                             // As in https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Decay_Mode_Reconstruction 
+    unsigned _tauGenStatus[nL_max];                                                             //1: prompt ele, 2:prompt mu, 3: ele from leptonic tau, 4:mu from leptonic tau, 5: hadronically decayed tau, 6:rest 
     bool _tauPOGVLoose2015[nL_max];                                                             //version of ID to use in MiniAOD: MC 80X_mcRun2_asymptotic_2016_TrancheIV_v6, Data 03Feb2017
     bool _tauPOGLoose2015[nL_max];                                                              //More info at https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Isolation
     bool _tauPOGMedium2015[nL_max];
@@ -226,15 +231,9 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
     
-    //lepton MVA definitions for SUSY (ewkino), TTH and tZq 
-    double _leptonMvaSUSY[nL_max];
+    //lepton MVA definitions for TTH and tZq 
     double _leptonMvaTTH[nL_max];
     double _leptonMvatZq[nL_max];
-
-    //analysis specific lepton selection (please do NOT delete for now, will be deleted when analysis code is updated 
-    bool _lEwkLoose[nL_max];
-    bool _lEwkFO[nL_max];
-    bool _lEwkTight[nL_max];
 
     //official POG selection definitions
     bool _lPOGVeto[nL_max];
@@ -260,15 +259,16 @@ class LeptonAnalyzer {
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
     void fillTauGenVars(const pat::Tau&, const std::vector<reco::GenParticle>& genParticles);
     void fillLeptonKinVars(const reco::Candidate&);
-    void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
-    void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
+    void fillLeptonImpactParameters(const pat::Electron& );
+    void fillLeptonImpactParameters(const pat::Muon& );
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
     void fillDisplacedIDVariables(const pat::Electron&);
     void fillDisplacedIDVariables(const pat::Muon&);
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
-    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
+    
+    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho, const bool oldMatching = false);
     //void fillLeptonKVFVariables(edm::Handle<std::vector<pat::PackedCandidate>>&, std::vector<reco::Track>&);
     //void fillAllIVFVariables(const std::vector<reco::Vertex>&, const reco::Vertex&);
     //void fillLeptonIVFVariables(const pat::Muon&, edm::Handle<std::vector<reco::Vertex>>);
@@ -278,9 +278,11 @@ class LeptonAnalyzer {
     // In leptonAnalyzerIso.cc
     double getRelIso03(const pat::Muon&, const double) const;
     double getRelIso03(const pat::Electron&, const double) const;
-    double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta=false) const;
+    double getRelIso04(const pat::Muon&, const double, const bool DeltaBeta=false) const;
+    double getRelIso04( const pat::Electron&, const double ) const;
     double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged=false) const;
     double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false) const;
+    template< typename T > double getMiniIsolation( const T&, const double rho, const bool onlyCharged = false ) const;
 
     // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*) const;
@@ -290,26 +292,12 @@ class LeptonAnalyzer {
     bool  passingElectronMvaLooseSusy(const pat::Electron*, double, double) const;
     bool  passingElectronMvaMediumSusy(const pat::Electron*, double) const;
     bool  passingElectronMvaTightSusy(const pat::Electron*, double) const;
-    bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double) const;
-    bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue) const;
-
-    //analysis specific lepton selection (please do NOT delete for now, will be deleted when analysis code is updated 
-    bool isEwkLoose(const pat::Muon&) const;
-    bool isEwkLoose(const pat::Electron&) const;
-    bool isEwkLoose(const pat::Tau&) const;
-    bool isEwkFO(const pat::Muon&) const;
-    bool isEwkFO(const pat::Electron&) const;
-    bool isEwkFO(const pat::Tau&) const;
-    bool isEwkTight(const pat::Muon&) const;
-    bool isEwkTight(const pat::Electron&) const;
-    bool isEwkTight(const pat::Tau&) const;
 
     //compute lepton MVA value 
     double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);
     double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
 
     //for lepton MVA calculation
-    LeptonMvaHelper* leptonMvaComputerSUSY;
     LeptonMvaHelper* leptonMvaComputerTTH;
     LeptonMvaHelper* leptonMvaComputertZq;
 
@@ -320,4 +308,36 @@ class LeptonAnalyzer {
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&, const edm::EventSetup&, const reco::Vertex&);
 };
+
+
+//specific definition for Electrons, using the eta of the supercluster is given in LeptonAnalyzerIso.cc
+template< typename T > double etaForEffectiveArea( const T& lepton ){
+    return lepton.eta();
+}
+
+
+template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton, const double rho, const bool onlyCharged ) const{
+    auto iso = lepton.miniPFIsolation();
+    double absIso;
+    if( onlyCharged ){
+        absIso = iso.chargedHadronIso();
+    } else {
+        double cone_size = 10.0 / std::min( std::max( lepton.pt(), 50. ), 200. );
+        double effective_area = 0;
+        if( lepton.isMuon() ){
+            effective_area = muonsEffectiveAreas.getEffectiveArea( etaForEffectiveArea( lepton ) );
+        } else if( lepton.isElectron() ){
+            effective_area = electronsEffectiveAreasMiniIso.getEffectiveArea( etaForEffectiveArea( lepton ) );
+        } else {
+            throw std::invalid_argument( "getMiniIsolation is only defined for Muon and Electron objects." );
+        }
+        effective_area *= ( cone_size*cone_size )/ ( 0.3*0.3 );
+        double pu_corr = effective_area*rho;
+        absIso = iso.chargedHadronIso() + std::max( iso.neutralHadronIso() + iso.photonIso() - pu_corr, 0. ); 
+    }
+    return ( absIso / lepton.pt() );
+
+}
+
+
 #endif
