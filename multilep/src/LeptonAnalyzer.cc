@@ -53,16 +53,16 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/b");
     outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/b");
     outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
-    outputTree->Branch("_nVFit_os",                     &_nVFit_os,                     "_nVFit_os/i");                   // displaced specific
-    outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/i");                   // displaced specific
-    outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/i");            // "
-    outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/i");          // "
-//  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");             // DELETED (simply use your index+1 instead in case you have some crazy situation where you need your index to start from 1 instead of 0)
-    outputTree->Branch("_vertices_os",                     &_vertices_os,                     "_vertices_os[_nVFit_os][12]/D");    // displaced specific
-    outputTree->Branch("_lDisplaced_os",                   &_lDisplaced_os,                   "_lDisplaced_os[_nVFit_os][24]/D");  // "
-    outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");    // displaced specific
-    outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");  // "
-    outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/i");        // "
+    //outputTree->Branch("_nVFit_os",                     &_nVFit_os,                     "_nVFit_os/i");                   // displaced specific
+    //outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/i");                   // displaced specific
+   // outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/i");            // "
+    //outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/i");          // "
+//this does not have to be uncommented  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");             // DELETED (simply use your index+1 instead in case you have some crazy situation where you need your index to start from 1 instead of 0)
+   // outputTree->Branch("_vertices_os",                     &_vertices_os,                     "_vertices_os[_nVFit_os][12]/D");    // displaced specific
+   // outputTree->Branch("_lDisplaced_os",                   &_lDisplaced_os,                   "_lDisplaced_os[_nVFit_os][24]/D");  // "
+    //outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");    // displaced specific
+    //outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");  // "
+    //outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/i");        // "
     outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
     outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
     outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
@@ -151,7 +151,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
 //  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    "_deltaBIso[_nLight]/D");                   // DELETED (what was been filled was effective areas-based iso, not deltaBeta)
     outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            "_ecalPFClusterIso[_nLight]/D");            // displaced specific
     outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            "_hcalPFClusterIso[_nLight]/D");            // "
-    outputTree->Branch("_tauMuonVeto",                  &_tauMuonVeto,                  "_tauMuonVeto[_nL]/O");
+    /*outputTree->Branch("_tauMuonVeto",                  &_tauMuonVeto,                  "_tauMuonVeto[_nL]/O");
     outputTree->Branch("_tauEleVeto",                   &_tauEleVeto,                   "_tauEleVeto[_nL]/O");
     outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
     outputTree->Branch("_tauVLooseMvaNew",              &_tauVLooseMvaNew,              "_tauVLooseMvaNew[_nL]/O");
@@ -167,7 +167,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauIsoMVADBdR03newDMwLT",      &_tauIsoMVADBdR03newDMwLT,      "_tauIsoMVADBdR03newDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWnewDMwLT",          &_tauIsoMVAPWnewDMwLT,          "_tauIsoMVAPWnewDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D");
-    outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
+    */outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
     outputTree->Branch("_relIso0p4",                    &_relIso0p4,                    "_relIso0p4[_nLight]/D");
     outputTree->Branch("_relIso0p4MuDeltaBeta",         &_relIso0p4MuDeltaBeta,         "_relIso0p4MuDeltaBeta[_nMu]/D");
     outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
