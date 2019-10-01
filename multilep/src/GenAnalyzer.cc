@@ -5,7 +5,7 @@
 //include ROOT classes
 #include "TLorentzVector.h"
 
-//include other parts of code 
+//include other parts of code
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenTools.h"
 
@@ -47,13 +47,13 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lIsPrompt",             &_gen_lIsPrompt,             "_gen_lIsPrompt[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
+    outputTree->Branch("_hasInternalConversion",     &_hasInternalConversion,     "_hasInternalConversion/O");
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> genParticles; iEvent.getByToken(multilepAnalyzer->genParticleToken, genParticles);
 
     if(!genParticles.isValid()) return;
-
     // TODO: when applying overlap for new photon samples: check the pt and eta cuts of the photon
     _ttgEventType   = overlapEventType(*genParticles, 13., 3.0, 0.1);
     _zgEventType    = overlapEventType(*genParticles, 15., 2.6, 0.05);
@@ -61,6 +61,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    _hasInternalConversion = false;
     for(unsigned ig=0; ig<gen_nL_max ; ++ig) _gen_lRefs[ig]  = nullptr;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
@@ -77,8 +78,6 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
         //store generator level lepton info
         if((p.status() == 1 and (absId == 11 or absId == 13)) || (p.status() == 2 and p.isLastCopy() and absId == 15)){
-    //    if(p.status() == 1 || (p.status() == 2 && p.isLastCopy() && std::abs(p.pdgId()) == 15)){  // TODO: confusing, strange code in displaced branch; if there is a good reason to use it instead of the above, make a good comment
-    //        if(p.pdgId()== 2212) continue;
             if(_gen_nL != gen_nL_max){
                 _gen_lRefs[_gen_nL]          = &p;
                 _gen_pdgID[_gen_nL]          = p.pdgId();
@@ -116,7 +115,12 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_phMinDeltaR[_gen_nPh]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_phPassParentage[_gen_nPh] = GenTools::passParentage(p, *genParticles);
                 ++_gen_nPh;
-            } 
+            }
+        }
+
+        //check if there is an lhe photon being turned into an internal conversion by pythia
+        if(p.status() == 23 and absId == 22){
+          _hasInternalConversion = photonToInternalConversion(p, *genParticles);
         }
     }
     _gen_met    = genMetVector.Pt();
@@ -157,6 +161,15 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
     }
 
     return type;
+}
+
+/*
+ * Find out if a photon becomes an internal conversion
+ */
+bool GenAnalyzer::photonToInternalConversion(const reco::GenParticle& photon, const std::vector<reco::GenParticle>& genParticles) const{
+  if(photon.numberOfDaughters() == 1)      return photonToInternalConversion(genParticles[photon.daughterRef(0).key()], genParticles); // move down to the next photon daughter
+  else if(photon.numberOfDaughters() == 0) return false;                                                                                  // chain probably ends at status-1 photon
+  else                                     return true;                                                                                   // multiple daughters -> conversion (+0, 1 or 2 low-energy photons)
 }
 
 unsigned GenAnalyzer::getGenLeptonIndex(const reco::GenParticle* match){

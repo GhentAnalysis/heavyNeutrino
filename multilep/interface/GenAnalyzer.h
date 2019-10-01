@@ -17,6 +17,7 @@ class GenAnalyzer {
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
     unsigned    _zgOldEventType;
+    unsigned    _hasInternalConversion;
 
     //generator level MET
     double   _gen_met;
@@ -52,6 +53,7 @@ class GenAnalyzer {
     double   _gen_lMinDeltaR[gen_nL_max];
 
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut, double genCone) const;
+    bool photonToInternalConversion(const reco::GenParticle& photon, const std::vector<reco::GenParticle>& genParticles) const;
 
     // Array of pointers to genLeptons (NOT saved in the tree!)
     // (only charged leptons for now, no photons)
