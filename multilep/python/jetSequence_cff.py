@@ -11,12 +11,24 @@ def addJetSequence(process, isData, is2017, is2018):
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
+  
   updateJetCollection(
     process,
     jetSource = cms.InputTag('slimmedJets'),
     labelName = 'UpdatedJEC',
-    jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
+    jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
+    pvSource = cms.InputTag('offlineSlimmedPrimaryVertices'),
+    svSource = cms.InputTag('slimmedSecondaryVertices'),
+    btagDiscriminators = [
+      'pfDeepFlavourJetTags:probb',
+      'pfDeepFlavourJetTags:probbb',
+      'pfDeepFlavourJetTags:problepb',
+      'pfDeepFlavourJetTags:probc',
+      'pfDeepFlavourJetTags:probuds',
+      'pfDeepFlavourJetTags:probg'
+    ],
   )
+
 
   process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
 
