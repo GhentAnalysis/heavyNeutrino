@@ -105,6 +105,9 @@ class LeptonAnalyzer {
     bool _lElectronChargeConst[nL_max];
     unsigned _lElectronMissingHits[nL_max];
     double _lEtaSC[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWP80[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWP90[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWPLoose[nL_max];
 
     //muon properties
     double _lMuonSegComp[nL_max];
