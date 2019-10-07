@@ -701,7 +701,6 @@ void LeptonAnalyzer::fillDileptonVertexArrays_os(unsigned iL_plus, unsigned iL_m
     std::cout << " *** WARNING: refitted dilepton vertex OS is not valid! " << std::endl;
     return;
   }
-if (dvtx.isValid()) std::cout<<"inside OS fit"<< std::endl;
   _vertices_os[_nVFit_os][0]  = (iL_plus+1)*100 + (iL_minus+1); // indices i and j stored as i*100+j, but start counting at 1 instead of 0 (historical, backwards compatibility)
   _vertices_os[_nVFit_os][1]  = dvtx.position().x();
   _vertices_os[_nVFit_os][2]  = dvtx.position().y();
