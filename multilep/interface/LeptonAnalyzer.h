@@ -108,6 +108,12 @@ class LeptonAnalyzer {
     bool _lElectronPassMVAFall17NoIsoWP80[nL_max];
     bool _lElectronPassMVAFall17NoIsoWP90[nL_max];
     bool _lElectronPassMVAFall17NoIsoWPLoose[nL_max];
+    double _lElectronSigmaIetaIeta[nL_max];
+    double _lElectronDeltaPhiSuperClusterTrack[nL_max];
+    double _lElectronDeltaEtaSuperClusterTrack[nL_max];
+    double _lElectronEInvMinusPInv[nL_max];
+    double _lElectronHOverE[nL_max];
+
 
     //muon properties
     double _lMuonSegComp[nL_max];
@@ -220,10 +226,8 @@ class LeptonAnalyzer {
 };
 
 
-//specific definition for Electrons, using the eta of the supercluster is given in LeptonAnalyzerIso.cc
-template< typename T > double etaForEffectiveArea( const T& lepton ){
-    return lepton.eta();
-}
+double etaForEffectiveArea( const pat::Muon& muon );
+double etaForEffectiveArea( const pat::Electron& electron );
 
 
 template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton, const double rho, const bool onlyCharged ) const{
@@ -234,8 +238,10 @@ template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton,
     } else {
         double cone_size = 10.0 / std::min( std::max( lepton.pt(), 50. ), 200. );
         double effective_area = 0;
+
         if( lepton.isMuon() ){
             effective_area = muonsEffectiveAreas.getEffectiveArea( etaForEffectiveArea( lepton ) );
+
         } else if( lepton.isElectron() ){
             effective_area = electronsEffectiveAreasMiniIso.getEffectiveArea( etaForEffectiveArea( lepton ) );
         } else {
@@ -246,7 +252,6 @@ template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton,
         absIso = iso.chargedHadronIso() + std::max( iso.neutralHadronIso() + iso.photonIso() - pu_corr, 0. ); 
     }
     return ( absIso / lepton.pt() );
-
 }
 
 
