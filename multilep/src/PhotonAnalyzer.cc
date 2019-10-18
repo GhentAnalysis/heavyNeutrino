@@ -207,7 +207,7 @@ void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::v
         if(passParentage)                                _phTTGMatchCategory[_nPh] = GENUINE;
         else                                             _phTTGMatchCategory[_nPh] = HADRONICPHOTON;
       } else if(matched and abs(matched->pdgId())==11){
-        if(passParentage and minOtherDeltaR > 0.2)       _phTTGMatchCategory[_nPh] = MISIDELE;
+        if(passParentage)                                _phTTGMatchCategory[_nPh] = MISIDELE;
       } else                                             _phTTGMatchCategory[_nPh] = HADRONICFAKE;
     } else                                               _phTTGMatchCategory[_nPh] = HADRONICFAKE;
 }
