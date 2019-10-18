@@ -204,7 +204,7 @@ void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::v
       bool passParentage   = GenTools::passParentage(*matched, *genParticles);
       float minOtherDeltaR = GenTools::getMinDeltaR(*matched, *genParticles);
       if(matched and matched->pdgId() == 22){
-        if(passParentage and minOtherDeltaR > 0.2)       _phTTGMatchCategory[_nPh] = GENUINE;
+        if(passParentage)                                _phTTGMatchCategory[_nPh] = GENUINE;
         else                                             _phTTGMatchCategory[_nPh] = HADRONICPHOTON;
       } else if(matched and abs(matched->pdgId())==11){
         if(passParentage and minOtherDeltaR > 0.2)       _phTTGMatchCategory[_nPh] = MISIDELE;
