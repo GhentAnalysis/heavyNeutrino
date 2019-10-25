@@ -35,6 +35,9 @@ class TriggerAnalyzer {
     bool passCombinedFlagAND(TString combinedFlag);
     bool passCombinedFlagOR(TString combinedFlag);
 
+    bool passEle32WPTight(const edm::Event&, edm::Handle<edm::TriggerResults>&);
+    std::vector<const pat::TriggerObjectStandAlone*> getMatchedObjects(const pat::Electron&, const std::vector<pat::TriggerObjectStandAlone>&,const float);
+
   public:
     TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
     ~TriggerAnalyzer(){};

@@ -19,7 +19,7 @@ class JetAnalyzer {
 
     static const unsigned nJets_max = 20;
 
-    unsigned _nJets;
+    unsigned _nJets = 0;
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
     double   _jetPt_JECDown[nJets_max];
@@ -40,6 +40,14 @@ class JetAnalyzer {
     double   _jetDeepCsv_b[nJets_max];
     double   _jetDeepCsv_c[nJets_max];
     double   _jetDeepCsv_bb[nJets_max];
+    double   _jetDeepCsv[nJets_max];
+    double   _jetDeepFlavor_b[nJets_max];
+    double   _jetDeepFlavor_bb[nJets_max];
+    double   _jetDeepFlavor_lepb[nJets_max];
+    double   _jetDeepFlavor[nJets_max];
+    double   _jetDeepFlavor_c[nJets_max];
+    double   _jetDeepFlavor_uds[nJets_max];
+    double   _jetDeepFlavor_g[nJets_max];
     unsigned _jetHadronFlavor[nJets_max];
     bool     _jetIsLoose[nJets_max];
     bool     _jetIsTight[nJets_max];
@@ -68,8 +76,8 @@ class JetAnalyzer {
     multilep* multilepAnalyzer;
 
     bool jetIsLoose(const pat::Jet& jet, const bool is2017) const;
-    bool jetIsTight(const pat::Jet& jet, const bool is2017) const;
-    bool jetIsTightLepVeto(const pat::Jet& jet, const bool is2017) const;
+    bool jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const;
+    bool jetIsTightLepVeto(const pat::Jet& jet, const bool is2017, const bool is2018) const;
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

@@ -9,7 +9,7 @@ SUSYMassAnalyzer::SUSYMassAnalyzer(const edm::ParameterSet& iConfig, multilep* m
 
 
 void SUSYMassAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
-    if(!multilepAnalyzer->isSUSY) return;    //only run this module on SUSY samples
+    if( !multilepAnalyzer->isSUSY() ) return;    //only run this module on SUSY samples
     //Counter to determine the amount of events for every SUSY mass point
     //Note, too small binning is used to be sure the binning is smaller than the sample's mass point separation
     //There is no way to access the amount of mass points or there splitting while running over the sample!!!
@@ -21,8 +21,7 @@ void SUSYMassAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& f
 
 void SUSYMassAnalyzer::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iEventSetup){
     //Extract model string corresponding to this lumi block.
-    edm::Handle<GenLumiInfoHeader> genHeader;
-    iLumi.getByToken(multilepAnalyzer->genLumiInfoToken, genHeader);
+    edm::Handle<GenLumiInfoHeader> genHeader = getHandle(iLumi, multilepAnalyzer->genLumiInfoToken);
     std::string model = genHeader->configDescription(); 
     //Extract mass values from model string 
     for(unsigned m = 0; m < 2; ++m){

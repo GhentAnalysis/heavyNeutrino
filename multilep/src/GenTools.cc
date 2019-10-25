@@ -231,6 +231,7 @@ bool GenTools::passParentage(const reco::GenParticle& gen, const std::vector<rec
  * The madgraph run card often contains deltaR cuts, such that events with getMinDeltaR(ptCut=5)<0.2
  * are typically out of the phase space of the generated sample
  * [but this is based on tuning and agreement with other groups, so maybe room for more studies/tuning]
+ * [note: maybe to be checked if this is still correctly tuned for new samples]
  */
 double GenTools::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut){
     double minDeltaR = 10;
@@ -268,10 +269,11 @@ const reco::GenParticle* GenTools::geometricMatch(const reco::Candidate& reco, c
                 match = &*genIt;
             }
         }
-    } 
+    }
     if(minDeltaR > 0.2){
       if(!differentId) match = geometricMatch(reco, genParticles, true);
       else             return nullptr;
     }
     return match;
 }
+

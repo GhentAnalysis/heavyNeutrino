@@ -6,6 +6,7 @@
 #include "TrackingTools/GeomPropagators/interface/AnalyticalPropagator.h" // for displaced
 #include "TrackingTools/GsfTools/interface/GsfPropagatorAdapter.h"        // for displaced
 #include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"      // for displaced
+#include "heavyNeutrino/multilep/interface/TauTools.h"
 #include "TLorentzVector.h"
 #include <algorithm>
 
@@ -13,28 +14,21 @@
 // TODO: we should maybe stop indentifying effective areas by year, as they are typically more connected to a specific ID than to a specific year
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer),
-    electronsEffectiveAreas(iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreas").fullPath()),
-    muonsEffectiveAreas    ((multilepAnalyzer->is2017 || multilepAnalyzer->is2018)? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath()),
-    singleEleTrigs(multilepAnalyzer->is2017 ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2017") : (multilepAnalyzer->is2018 ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers"))),
-    singleMuoTrigs(multilepAnalyzer->is2017 ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2017") : (multilepAnalyzer->is2018 ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers")))
+    electronsEffectiveAreas( ( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ) ? iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17").fullPath() : iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasRelIso2016").fullPath() ),
+    electronsEffectiveAreasMiniIso( ( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ) ? iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17").fullPath() : iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasMiniIso2016").fullPath() ),
+    muonsEffectiveAreas    ((multilepAnalyzer->is2017() || multilepAnalyzer->is2018() )? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() ),
+    singleEleTrigs(multilepAnalyzer->is2017() ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2017") : (multilepAnalyzer->is2018() ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers"))),
+    singleMuoTrigs(multilepAnalyzer->is2017() ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2017") : (multilepAnalyzer->is2018() ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers")))
 {
-    leptonMvaComputerSUSY16   = new LeptonMvaHelper(iConfig, 0, false); // SUSY         // TODO: all of these really needed? could use some clean-up
-    leptonMvaComputerTTH16    = new LeptonMvaHelper(iConfig, 1, false); // TTH
-    leptonMvaComputerSUSY17   = new LeptonMvaHelper(iConfig, 0, true);  // SUSY
-    leptonMvaComputerTTH17    = new LeptonMvaHelper(iConfig, 1, true);  // TTH
-    leptonMvaComputertZqTTV16 = new LeptonMvaHelper(iConfig, 2, false); // tZq/TTV
-    leptonMvaComputertZqTTV17 = new LeptonMvaHelper(iConfig, 2, true);  // tZq/TTV
-    if(!multilepAnalyzer->isData) genMatcher = new GenMatching(iConfig); // displaced specific
+    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, true, !multilepAnalyzer->is2016() );
+    leptonMvaComputertZq = new LeptonMvaHelper(iConfig, false, !multilepAnalyzer->is2016() );
+    if(multilepAnalyzer->isMC()) genMatcher = new GenMatching(iConfig); // displaced specific
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
-    delete leptonMvaComputerSUSY16;
-    delete leptonMvaComputerTTH16;
-    delete leptonMvaComputertZqTTV16;
-    delete leptonMvaComputerSUSY17;
-    delete leptonMvaComputerTTH17;
-    delete leptonMvaComputertZqTTV17;
-    if(!multilepAnalyzer->isData) delete genMatcher; // displaced specific
+    delete leptonMvaComputerTTH;
+    delete leptonMvaComputertZq;
+    if(multilepAnalyzer->isMC()) delete genMatcher; // displaced specific
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
@@ -53,16 +47,6 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/b");
     outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/b");
     outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
-    //outputTree->Branch("_nVFit_os",                     &_nVFit_os,                     "_nVFit_os/i");                   // displaced specific
-    //outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/i");                   // displaced specific
-   // outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/i");            // "
-    //outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/i");          // "
-//this does not have to be uncommented  outputTree->Branch("_lIndex",                       &_lIndex,                       "_lIndex[_nL]/i");             // DELETED (simply use your index+1 instead in case you have some crazy situation where you need your index to start from 1 instead of 0)
-   // outputTree->Branch("_vertices_os",                     &_vertices_os,                     "_vertices_os[_nVFit_os][12]/D");    // displaced specific
-   // outputTree->Branch("_lDisplaced_os",                   &_lDisplaced_os,                   "_lDisplaced_os[_nVFit_os][24]/D");  // "
-    //outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");    // displaced specific
-    //outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");  // "
-    //outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/i");        // "
     outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
     outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
     outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
@@ -86,24 +70,20 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElectronPassConvVeto",        &_lElectronPassConvVeto,        "_lElectronPassConvVeto[_nLight]/O");
     outputTree->Branch("_lElectronChargeConst",         &_lElectronChargeConst,         "_lElectronChargeConst[_nLight]/O");
     outputTree->Branch("_lElectronMissingHits",         &_lElectronMissingHits,         "_lElectronMissingHits[_nLight]/i");
-    //outputTree->Branch("_leptonMvaSUSY16",              &_leptonMvaSUSY16,              "_leptonMvaSUSY16[_nLight]/D");
-    //outputTree->Branch("_leptonMvaTTH16",               &_leptonMvaTTH16,               "_leptonMvaTTH16[_nLight]/D");
-    //outputTree->Branch("_leptonMvaSUSY17",              &_leptonMvaSUSY17,              "_leptonMvaSUSY17[_nLight]/D");
-    //outputTree->Branch("_leptonMvaTTH17",               &_leptonMvaTTH17,               "_leptonMvaTTH17[_nLight]/D");
-    //outputTree->Branch("_leptonMvatZqTTV16",            &_leptonMvatZqTTV16,            "_leptonMvatZqTTV16[_nLight]/D");
-    //outputTree->Branch("_leptonMvatZqTTV17",            &_leptonMvatZqTTV17,            "_leptonMvatZqTTV17[_nLight]/D");
-    //outputTree->Branch("_lHNLoose",                     &_lHNLoose,                     "_lHNLoose[_nLight]/O");
-    //outputTree->Branch("_lHNFO",                        &_lHNFO,                        "_lHNFO[_nLight]/O");
-    //outputTree->Branch("_lHNTight",                     &_lHNTight,                     "_lHNTight[_nLight]/O");
-    //outputTree->Branch("_lEwkLoose",                    &_lEwkLoose,                    "_lEwkLoose[_nL]/O");
-    //outputTree->Branch("_lEwkFO",                       &_lEwkFO,                       "_lEwkFO[_nL]/O");
-    //outputTree->Branch("_lEwkTight",                    &_lEwkTight,                    "_lEwkTight[_nL]/O");
+    outputTree->Branch("_lElectronPassMVAFall17NoIsoWP80",    &_lElectronPassMVAFall17NoIsoWP80,    "_lElectronPassMVAFall17NoIsoWP80[_nLight]/O");
+    outputTree->Branch("_lElectronPassMVAFall17NoIsoWP90",    &_lElectronPassMVAFall17NoIsoWP90,    "_lElectronPassMVAFall17NoIsoWP90[_nLight]/O");
+    outputTree->Branch("_lElectronPassMVAFall17NoIsoWPLoose", &_lElectronPassMVAFall17NoIsoWPLoose, "_lElectronPassMVAFall17NoIsoWPLoose[_nLight]/O");
+    outputTree->Branch("_lElectronSigmaIetaIeta",               &_lElectronSigmaIetaIeta,               "_lElectronSigmaIetaIeta[_nLight]/D");
+    outputTree->Branch("_lElectronDeltaPhiSuperClusterTrack",   &_lElectronDeltaPhiSuperClusterTrack,   "_lElectronDeltaPhiSuperClusterTrack[_nLight]/D");
+    outputTree->Branch("_lElectronDeltaEtaSuperClusterTrack",   &_lElectronDeltaEtaSuperClusterTrack,   "_lElectronDeltaEtaSuperClusterTrack[_nLight]/D");
+    outputTree->Branch("_lElectronEInvMinusPInv",               &_lElectronEInvMinusPInv,               "_lElectronEInvMinusPInv[_nLight]/D");
+    outputTree->Branch("_lElectronHOverE",                      &_lElectronHOverE,                      "_lElectronHOverE[_nLight]/D");
+    outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
+    outputTree->Branch("_leptonMvatZq",                 &_leptonMvatZq,                 "_leptonMvatZq[_nLight]/D");
     outputTree->Branch("_lPOGVeto",                     &_lPOGVeto,                     "_lPOGVeto[_nL]/O");
     outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
     outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
     outputTree->Branch("_lPOGTight",                    &_lPOGTight,                    "_lPOGTight[_nL]/O");
-   //outputTree->Branch("_lpassConversionVeto",          &_lpassConversionVeto,          "_lpassConversionVeto[_nL]/O");             // DELETED (same as the original lElectronPassConvVeto)
-   //outputTree->Branch("_eleNumberInnerHitsMissing",    &_eleNumberInnerHitsMissing,    "_eleNumberInnerHitsMissing[_nL]/D");       // DELETED (same as the original lElectronMissingHits)
     outputTree->Branch("_lGlobalMuon",                  &_lGlobalMuon,                  "_lGlobalMuon[_nMu]/O");                    // displaced specific
     outputTree->Branch("_lTrackerMuon",                 &_lTrackerMuon,                 "_lTrackerMuon[_nMu]/O");                   // "
     outputTree->Branch("_lInnerTrackValidFraction",     &_lInnerTrackValidFraction,     "_lInnerTrackValidFraction[_nMu]/D");       // "
@@ -148,18 +128,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_trackIso",                     &_trackIso ,                    "_trackIso[_nLight]/D");                    // "
     outputTree->Branch("_ecalIso",                      &_ecalIso ,                     "_ecalIso[_nLight]/D");                     // "
     outputTree->Branch("_hcalIso",                      &_hcalIso ,                     "_hcalIso[_nLight]/D");                     // "
-//  outputTree->Branch("_deltaBIso",                    &_deltaBIso,                    "_deltaBIso[_nLight]/D");                   // DELETED (what was been filled was effective areas-based iso, not deltaBeta)
     outputTree->Branch("_ecalPFClusterIso",             &_ecalPFClusterIso ,            "_ecalPFClusterIso[_nLight]/D");            // displaced specific
     outputTree->Branch("_hcalPFClusterIso",             &_hcalPFClusterIso ,            "_hcalPFClusterIso[_nLight]/D");            // "
-    /*outputTree->Branch("_tauMuonVeto",                  &_tauMuonVeto,                  "_tauMuonVeto[_nL]/O");
-    outputTree->Branch("_tauEleVeto",                   &_tauEleVeto,                   "_tauEleVeto[_nL]/O");
-    outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
-    outputTree->Branch("_tauVLooseMvaNew",              &_tauVLooseMvaNew,              "_tauVLooseMvaNew[_nL]/O");
-    outputTree->Branch("_tauLooseMvaNew",               &_tauLooseMvaNew,               "_tauLooseMvaNew[_nL]/O");
-    outputTree->Branch("_tauMediumMvaNew",              &_tauMediumMvaNew,              "_tauMediumMvaNew[_nL]/O");
-    outputTree->Branch("_tauTightMvaNew",               &_tauTightMvaNew,               "_tauTightMvaNew[_nL]/O");
-    outputTree->Branch("_tauVTightMvaNew",              &_tauVTightMvaNew,              "_tauVTightMvaNew[_nL]/O");
-    outputTree->Branch("_tauVTightMvaOld",              &_tauVTightMvaOld,              "_tauVTightMvaOld[_nL]/O");
     outputTree->Branch("_tauAgainstElectronMVA6Raw",    &_tauAgainstElectronMVA6Raw,    "_tauAgainstElectronMVA6Raw[_nL]/D");
     outputTree->Branch("_tauCombinedIsoDBRaw3Hits",     &_tauCombinedIsoDBRaw3Hits,     "_tauCombinedIsoDBRaw3Hits[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWdR03oldDMwLT",      &_tauIsoMVAPWdR03oldDMwLT,      "_tauIsoMVAPWdR03oldDMwLT[_nL]/D");
@@ -167,7 +137,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauIsoMVADBdR03newDMwLT",      &_tauIsoMVADBdR03newDMwLT,      "_tauIsoMVADBdR03newDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWnewDMwLT",          &_tauIsoMVAPWnewDMwLT,          "_tauIsoMVAPWnewDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D");
-    */outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
+    outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
     outputTree->Branch("_relIso0p4",                    &_relIso0p4,                    "_relIso0p4[_nLight]/D");
     outputTree->Branch("_relIso0p4MuDeltaBeta",         &_relIso0p4MuDeltaBeta,         "_relIso0p4MuDeltaBeta[_nMu]/D");
     outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
@@ -192,53 +162,83 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_closest_lJetPy",          &_closest_lJetPy,          "_closest_lJetPy[_nLight]/D");
     outputTree->Branch("_closest_lJetPz",          &_closest_lJetPz,          "_closest_lJetPz[_nLight]/D");  
     outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
+    outputTree->Branch("_closestJetDeepCsv",            &_closestJetDeepCsv,            "_closestJetDeepCsv[_nLight]/D");
+    outputTree->Branch("_closestJetDeepFlavor_b",       &_closestJetDeepFlavor_b,       "_closestJetDeepFlavor_b[_nLight]/D");
+    outputTree->Branch("_closestJetDeepFlavor_bb",      &_closestJetDeepFlavor_bb,      "_closestJetDeepFlavor_bb[_nLight]/D");
+    outputTree->Branch("_closestJetDeepFlavor_lepb",    &_closestJetDeepFlavor_lepb,    "_closestJetDeepFlavor_lepb[_nLight]/D");
+    outputTree->Branch("_closestJetDeepFlavor",         &_closestJetDeepFlavor,         "_closestJetDeepFlavor[_nLight]/D");
     outputTree->Branch("_selectedTrackMult",            &_selectedTrackMult,            "_selectedTrackMult[_nLight]/i");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");
-    if(!multilepAnalyzer->isData){
-      outputTree->Branch("_lGenIndex",                  &_lGenIndex,                    "_lGenIndex[_nL]/i");
-      outputTree->Branch("_lMatchType",                 &_lMatchType,                   "_lMatchType[_nL]/i");
-      outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
-      outputTree->Branch("_lIsPromptFinalState",        &_lIsPromptFinalState,          "_lIsPromptFinalState[_nL]/O");
-      outputTree->Branch("_lIsPromptDecayed",           &_lIsPromptDecayed,             "_lIsPromptDecayed[_nL]/O");
-      outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
-      outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
-      outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
-      outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
-      outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
-      outputTree->Branch("_lMatchPt",                   &_lMatchPt,                     "_lMatchPt[_nL]/D");
-      outputTree->Branch("_lMatchEta",                  &_lMatchEta,                    "_lMatchEta[_nL]/D");
-      outputTree->Branch("_lMatchPhi",                  &_lMatchPhi,                    "_lMatchPhi[_nL]/D");
-      outputTree->Branch("_lMatchVertexX",              &_lMatchVertexX,                "_lMatchVertexX[_nL]/D");
-      outputTree->Branch("_lMatchVertexY",              &_lMatchVertexY,                "_lMatchVertexY[_nL]/D");
-      outputTree->Branch("_lMatchVertexZ",              &_lMatchVertexZ,                "_lMatchVertexZ[_nL]/D");
+    if( multilepAnalyzer->isMC() ){
+        outputTree->Branch("_lGenIndex",                  &_lGenIndex,                    "_lGenIndex[_nL]/i");
+        outputTree->Branch("_lMatchType",                 &_lMatchType,                   "_lMatchType[_nL]/i");
+        outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
+        outputTree->Branch("_lIsPromptFinalState",        &_lIsPromptFinalState,          "_lIsPromptFinalState[_nL]/O");
+        outputTree->Branch("_lIsPromptDecayed",           &_lIsPromptDecayed,             "_lIsPromptDecayed[_nL]/O");
+        outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
+        outputTree->Branch("_lMatchCharge",               &_lMatchCharge,                 "_lMatchCharge[_nL]/I");
+        outputTree->Branch("_tauGenStatus",               &_tauGenStatus,                 "_tauGenStatus[_nL]/i");
+        outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
+        outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
+        outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
+        outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
+        outputTree->Branch("_lMatchPt",                   &_lMatchPt,                     "_lMatchPt[_nL]/D");
+        outputTree->Branch("_lMatchEta",                  &_lMatchEta,                    "_lMatchEta[_nL]/D");
+        outputTree->Branch("_lMatchPhi",                  &_lMatchPhi,                    "_lMatchPhi[_nL]/D");
+        outputTree->Branch("_lMatchVertexX",              &_lMatchVertexX,                "_lMatchVertexX[_nL]/D");
+        outputTree->Branch("_lMatchVertexY",              &_lMatchVertexY,                "_lMatchVertexY[_nL]/D");
+        outputTree->Branch("_lMatchVertexZ",              &_lMatchVertexZ,                "_lMatchVertexZ[_nL]/D");
     }
-    if(!multilepAnalyzer->is2018){
-      outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nLight]/D");
-      outputTree->Branch("_lPtScaleUp",                 &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
-      outputTree->Branch("_lPtScaleDown",               &_lPtScaleDown,                 "_lPtScaleDown[_nLight]/D");
-      outputTree->Branch("_lPtResUp",                   &_lPtResUp,                     "_lPtResUp[_nLight]/D");
-      outputTree->Branch("_lPtResDown",                 &_lPtResDown,                   "_lPtResDown[_nLight]/D");
-      outputTree->Branch("_lECorr",                     &_lECorr,                       "_lECorr[_nLight]/D");
-      outputTree->Branch("_lEScaleUp",                  &_lEScaleUp,                    "_lEScaleUp[_nLight]/D");
-      outputTree->Branch("_lEScaleDown",                &_lEScaleDown,                  "_lEScaleDown[_nLight]/D");
-      outputTree->Branch("_lEResUp",                    &_lEResUp,                      "_lEResUp[_nLight]/D");
-      outputTree->Branch("_lEResDown",                  &_lEResDown,                    "_lEResDown[_nLight]/D");
-    }
+    outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nLight]/D");
+    outputTree->Branch("_lPtScaleUp",                 &_lPtScaleUp,                   "_lPtScaleUp[_nLight]/D");
+    outputTree->Branch("_lPtScaleDown",               &_lPtScaleDown,                 "_lPtScaleDown[_nLight]/D");
+    outputTree->Branch("_lPtResUp",                   &_lPtResUp,                     "_lPtResUp[_nLight]/D");
+    outputTree->Branch("_lPtResDown",                 &_lPtResDown,                   "_lPtResDown[_nLight]/D");
+    outputTree->Branch("_lECorr",                     &_lECorr,                       "_lECorr[_nLight]/D");
+    outputTree->Branch("_lEScaleUp",                  &_lEScaleUp,                    "_lEScaleUp[_nLight]/D");
+    outputTree->Branch("_lEScaleDown",                &_lEScaleDown,                  "_lEScaleDown[_nLight]/D");
+    outputTree->Branch("_lEResUp",                    &_lEResUp,                      "_lEResUp[_nLight]/D");
+    outputTree->Branch("_lEResDown",                  &_lEResDown,                    "_lEResDown[_nLight]/D");
+    if(multilepAnalyzer->storeAllTauID){
+      outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
+      outputTree->Branch("_tauPOGVLoose2015",             &_tauPOGVLoose2015,             "_tauPOGVLoose2015[_nL]/O");
+      outputTree->Branch("_tauPOGLoose2015",              &_tauPOGLoose2015,              "_tauPOGLoose2015[_nL]/O");
+      outputTree->Branch("_tauPOGMedium2015",             &_tauPOGMedium2015,             "_tauPOGMedium2015[_nL]/O");
+      outputTree->Branch("_tauPOGTight2015",              &_tauPOGTight2015,              "_tauPOGTight2015[_nL]/O");
+      outputTree->Branch("_tauPOGVTight2015",             &_tauPOGVTight2015,             "_tauPOGVTight2015[_nL]/O");
+      outputTree->Branch("_tauVLooseMvaNew2015",          &_tauVLooseMvaNew2015,          "_tauVLooseMvaNew2015[_nL]/O");
+      outputTree->Branch("_tauLooseMvaNew2015",           &_tauLooseMvaNew2015,           "_tauLooseMvaNew2015[_nL]/O");
+      outputTree->Branch("_tauMediumMvaNew2015",          &_tauMediumMvaNew2015,          "_tauMediumMvaNew2015[_nL]/O");
+      outputTree->Branch("_tauTightMvaNew2015",           &_tauTightMvaNew2015,           "_tauTightMvaNew2015[_nL]/O");
+      outputTree->Branch("_tauVTightMvaNew2015",          &_tauVTightMvaNew2015,          "_tauVTightMvaNew2015[_nL]/O");
+      outputTree->Branch("_tauPOGVVLoose2017v2",          &_tauPOGVVLoose2017v2,          "_tauPOGVVLoose2017v2[_nL]/O");
+      outputTree->Branch("_tauPOGVVTight2017v2",          &_tauPOGVVTight2017v2,          "_tauPOGVVTight2017v2[_nL]/O");
+      outputTree->Branch("_tauVLooseMvaNew2017v2",        &_tauVLooseMvaNew2017v2,        "_tauVLooseMvaNew2017v2[_nL]/O");
+      outputTree->Branch("_tauLooseMvaNew2017v2",         &_tauLooseMvaNew2017v2,         "_tauLooseMvaNew2017v2[_nL]/O");
+      outputTree->Branch("_tauMediumMvaNew2017v2",        &_tauMediumMvaNew2017v2,        "_tauMediumMvaNew2017v2[_nL]/O");
+      outputTree->Branch("_tauTightMvaNew2017v2",         &_tauTightMvaNew2017v2,         "_tauTightMvaNew2017v2[_nL]/O");
+      outputTree->Branch("_tauVTightMvaNew2017v2",        &_tauVTightMvaNew2017v2,        "_tauVTightMvaNew2017v2[_nL]/O");
+      outputTree->Branch("_tauMuonVetoTight",             &_tauMuonVetoTight,             "_tauMuonVetoTight[_nL]/O");
+      outputTree->Branch("_tauEleVetoVLoose",             &_tauEleVetoVLoose,             "_tauEleVetoVLoose[_nL]/O");
+      outputTree->Branch("_tauEleVetoMedium",             &_tauEleVetoMedium,             "_tauEleVetoMedium[_nL]/O");
+      outputTree->Branch("_tauEleVetoTight",              &_tauEleVetoTight,              "_tauEleVetoTight[_nL]/O");
+      outputTree->Branch("_tauEleVetoVTight",             &_tauEleVetoVTight,             "_tauEleVetoVTight[_nL]/O");
+     }
 }
 
 bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup, const reco::Vertex& primaryVertex){
-    edm::Handle<std::vector<pat::Electron>> electrons;               iEvent.getByToken(multilepAnalyzer->eleToken,                          electrons);
-    edm::Handle<std::vector<pat::Muon>> muons;                       iEvent.getByToken(multilepAnalyzer->muonToken,                         muons);
-    edm::Handle<std::vector<pat::Tau>> taus;                         iEvent.getByToken(multilepAnalyzer->tauToken,                          taus);
-    edm::Handle<std::vector<pat::PackedCandidate>> packedCands;      iEvent.getByToken(multilepAnalyzer->packedCandidatesToken,             packedCands);
-    edm::Handle<double> rho;                                         iEvent.getByToken(multilepAnalyzer->rhoToken,                          rho);
-    edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetToken,                          jets);
-  //edm::Handle<std::vector<pat::Jet>> jets;                         iEvent.getByToken(multilepAnalyzer->jetSmearedToken,                   jets);  // Are we sure we do not want the smeared jets here???
-    edm::Handle<std::vector<reco::GenParticle>> genParticles;        iEvent.getByToken(multilepAnalyzer->genParticleToken,                  genParticles);
-    edm::Handle<edm::TriggerResults> trigBits;                       iEvent.getByToken(multilepAnalyzer->triggerToken,                      trigBits);
-    edm::Handle<pat::TriggerObjectStandAloneCollection> trigObjs;    iEvent.getByToken(multilepAnalyzer->trigObjToken,                      trigObjs);
+    edm::Handle<std::vector<pat::Electron>> electrons          = getHandle(iEvent, multilepAnalyzer->eleToken);
+    edm::Handle<std::vector<pat::Muon>> muons                  = getHandle(iEvent, multilepAnalyzer->muonToken);
+    edm::Handle<std::vector<pat::Tau>> taus                    = getHandle(iEvent, multilepAnalyzer->tauToken);
+    edm::Handle<std::vector<pat::PackedCandidate>> packedCands = getHandle(iEvent, multilepAnalyzer->packedCandidatesToken);
+    edm::Handle<double> rho                                    = getHandle(iEvent, multilepAnalyzer->rhoToken);
+    edm::Handle<std::vector<pat::Jet>> jets                    = getHandle(iEvent, multilepAnalyzer->jetToken);
+  //edm::Handle<std::vector<pat::Jet>> jets                    = getHandle(iEvent, multilepAnalyzer->jetSmearedToken);  // Are we sure we do not want the smeared jets here???
+    edm::Handle<std::vector<reco::GenParticle>> genParticles   = getHandle(iEvent, multilepAnalyzer->genParticleToken);
+    edm::Handle<edm::TriggerResults> trigBits                  = getHandle(iEvent, multilepAnalyzer->triggerToken);
+    edm::Handle<pat::TriggerObjectStandAloneCollection> trigObjs = getHandle(iEvent, multilepAnalyzer->trigObjToken);
 
     iSetup.get<IdealMagneticFieldRecord>().get(_bField);
     iSetup.get<TrackingComponentsRecord>().get("SteppingHelixPropagatorAny", _shProp);
@@ -288,7 +288,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }
 
     // Run the RECO-GEN matching based on the genParticles and the selected pat::Lepton collections
-    if(!multilepAnalyzer->isData){
+    if(multilepAnalyzer->isMC()){
       genMatcher->matchGenToReco(*genParticles, selelectrons, selmuons, seltaus);
     }
 
@@ -314,11 +314,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _lMuRPCTime[_nL]     = rpc.timeAtIpInOut;
         _lMuRPCTimeErr[_nL]  = rpc.timeAtIpInOutErr;
 
-        fillLeptonImpactParameters(mu, primaryVertex);
+        fillLeptonImpactParameters(mu);
 
         fillLeptonKinVars(mu);
         fillLeptonIsoVars(mu, *rho);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(mu, *genParticles);
+        if( multilepAnalyzer->isMC() ) fillLeptonGenVars(mu, *genParticles);
 
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
         _lGlobalMuon[_nL]                   = mu.isGlobalMuon();
@@ -345,29 +345,22 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
         _relIso0p4[_nL]      = getRelIso04(mu, *rho);
         _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, true);
-        _miniIso[_nL]        = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, false); // TODO: check how this compares with the MiniIsoLoose,etc... booleans
-        _miniIsoCharged[_nL] = getMiniIsolation(mu, packedCands, 0.05, 0.2, 10, *rho, true);
-
-        _lHNLoose[_nL]       = isHNLoose(mu);                                                       // ID variables
-        _lHNFO[_nL]          = isHNFO(mu);                                                          // don't change order, they rely on above variables
-        _lHNTight[_nL]       = isHNTight(mu);
+        _miniIso[_nL]        = getMiniIsolation( mu, *rho, false );
+        _miniIsoCharged[_nL] = getMiniIsolation( mu, *rho, true );
 
         _lPOGVeto[_nL]       = mu.passed(reco::Muon::CutBasedIdLoose); // no veto available, so we take loose here
         _lPOGLoose[_nL]      = mu.passed(reco::Muon::CutBasedIdLoose);
         _lPOGMedium[_nL]     = mu.passed(reco::Muon::CutBasedIdMedium);
         _lPOGTight[_nL]      = mu.passed(reco::Muon::CutBasedIdTight);
-        // TODO: consider to add muon MVA
 
-        _leptonMvaSUSY16[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY16);
-        _leptonMvaTTH16[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH16);
-        _leptonMvaSUSY17[_nL]  = leptonMvaVal(mu, leptonMvaComputerSUSY17);
-        _leptonMvaTTH17[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH17);
-        _leptonMvatZqTTV16[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV16);
-        _leptonMvatZqTTV17[_nL] = leptonMvaVal(mu, leptonMvaComputertZqTTV17);
+        //fillLeptonJetVariables MUST be called after setting isolation variables since _relIso0p4 is used to set ptRatio in the absence of a closest jet 
+        //tZq lepton MVA uses old matching scheme, first set the lepton jet variables with old matching to compute this MVA
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho, true);
+        _leptonMvatZq[_nL]   = leptonMvaVal(mu, leptonMvaComputertZq);
 
-        _lEwkLoose[_nL]      = isEwkLoose(mu);
-        _lEwkFO[_nL]         = isEwkFO(mu);
-        _lEwkTight[_nL]      = isEwkTight(mu);
+        //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho, false);
+        _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
 
         _muDTStationsWithValidHits[_nL]   = mu.bestTrack()->hitPattern().dtStationsWithValidHits();
         _muCSCStationsWithValidHits[_nL]  = mu.bestTrack()->hitPattern().cscStationsWithValidHits();
@@ -397,10 +390,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         const pat::Electron *ele = selelectrons[iele];
 
         fillLeptonKinVars(*ele);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(*ele, *genParticles);
-        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho);
+        if( multilepAnalyzer->isMC() ) fillLeptonGenVars(*ele, *genParticles);
 
-        fillLeptonImpactParameters(*ele, primaryVertex);
+        fillLeptonImpactParameters(*ele);
         fillLeptonIsoVars(*ele, *rho);
 
 
@@ -408,9 +400,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _lEtaSC[_nL]                    = ele->superCluster()->eta();
 
         _relIso[_nL]                    = getRelIso03(*ele, *rho);
-        _relIso0p4[_nL]                 = getRelIso(*ele, packedCands, 0.4, *rho, false);
-        _miniIso[_nL]                   = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, false);
-        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, packedCands, 0.05, 0.2, 10, *rho, true);
+        _relIso0p4[_nL]                 = getRelIso04(*ele, *rho);
+        _miniIso[_nL]                   = getMiniIsolation( *ele, *rho, false );
+        _miniIsoCharged[_nL]            = getMiniIsolation( *ele, *rho, true );
         _lElectronMvaSummer16GP[_nL]    = ele->userFloat("ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"); // OLD, do not use it
         _lElectronMvaSummer16HZZ[_nL]   = ele->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"); // OLD, do not use it
         _lElectronMvaFall17v1NoIso[_nL] = ele->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"); // OLD, do not use it
@@ -434,42 +426,43 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele);
 
-        _lHNLoose[_nL]                  = isHNLoose(*ele);
-        _lHNFO[_nL]                     = isHNFO(*ele);
-        _lHNTight[_nL]                  = isHNTight(*ele);
-
         _lPOGVeto[_nL]                  = ele->electronID("cutBasedElectronID-Fall17-94X-V1-veto");
         _lPOGLoose[_nL]                 = ele->electronID("cutBasedElectronID-Fall17-94X-V1-loose");
         _lPOGMedium[_nL]                = ele->electronID("cutBasedElectronID-Fall17-94X-V1-medium");
         _lPOGTight[_nL]                 = ele->electronID("cutBasedElectronID-Fall17-94X-V1-tight");
 
-        _leptonMvaSUSY16[_nL]           = leptonMvaVal(*ele, leptonMvaComputerSUSY16);
-        _leptonMvaTTH16[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTTH16);
-        _leptonMvaSUSY17[_nL]           = leptonMvaVal(*ele, leptonMvaComputerSUSY17);
-        _leptonMvaTTH17[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTTH17);
-        _leptonMvatZqTTV16[_nL]         = leptonMvaVal(*ele, leptonMvaComputertZqTTV16);
-        _leptonMvatZqTTV17[_nL]         = leptonMvaVal(*ele, leptonMvaComputertZqTTV17);
+        _lElectronPassMVAFall17NoIsoWPLoose[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wpLoose");
+        _lElectronPassMVAFall17NoIsoWP90[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wp90");
+        _lElectronPassMVAFall17NoIsoWP80[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wp80");
 
-        _lEwkLoose[_nL]                 = isEwkLoose(*ele);
-        _lEwkFO[_nL]                    = isEwkFO(*ele);
-        _lEwkTight[_nL]                 = isEwkTight(*ele);
+        _lElectronSigmaIetaIeta[_nL] = ele->full5x5_sigmaIetaIeta();
+        _lElectronDeltaPhiSuperClusterTrack[_nL] = fabs(ele->deltaPhiSuperClusterTrackAtVtx());
+        _lElectronDeltaEtaSuperClusterTrack[_nL] = fabs(ele->deltaEtaSuperClusterTrackAtVtx());
+        _lElectronEInvMinusPInv[_nL] = (1.0 - ele->eSuperClusterOverP())/ele->correctedEcalEnergy();
+        _lElectronHOverE[_nL] = ele->hadronicOverEm();
+
+        //fillLeptonJetVariables MUST be called after setting isolation variables since _relIso0p4 is used to set ptRatio in the absence of a closest jet 
+        //tZq lepton MVA uses old matching scheme, first set the lepton jet variables with old matching to compute this MVA
+        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, true);
+        _leptonMvatZq[_nL]              = leptonMvaVal(*ele, leptonMvaComputertZq);
+
+        //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
+        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, false);
+        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
 
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
-        // Currently only available for 2016/2017
-        if(!multilepAnalyzer->is2018){
-          _lPtCorr[_nL]                 = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
-          _lPtScaleUp[_nL]              = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
-          _lPtScaleDown[_nL]            = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
-          _lPtResUp[_nL]                = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
-          _lPtResDown[_nL]              = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
-          _lECorr[_nL]                  = ele->userFloat("ecalTrkEnergyPostCorr");
-          _lEScaleUp[_nL]               = ele->userFloat("energyScaleUp");
-          _lEScaleDown[_nL]             = ele->userFloat("energyScaleDown");
-          _lEResUp[_nL]                 = ele->userFloat("energySigmaUp");
-          _lEResDown[_nL]               = ele->userFloat("energySigmaDown");
-        }
+        _lPtCorr[_nL]                   = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
+        _lPtScaleUp[_nL]                = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
+        _lPtScaleDown[_nL]              = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
+        _lPtResUp[_nL]                  = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
+        _lPtResDown[_nL]                = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
+        _lECorr[_nL]                    = ele->userFloat("ecalTrkEnergyPostCorr");
+        _lEScaleUp[_nL]                 = ele->userFloat("energyScaleUp");
+        _lEScaleDown[_nL]               = ele->userFloat("energyScaleDown");
+        _lEResUp[_nL]                   = ele->userFloat("energySigmaUp");
+        _lEResDown[_nL]                 = ele->userFloat("energySigmaDown");
 
 
         // maybe put this simply in a function in LeptonAnalyzerId.cc???
@@ -491,17 +484,19 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }
 
     //Initialize with default values for those electron-only arrays which weren't filled with muons [to allow correct comparison by the test script]
-    for(auto array : {&_lEtaSC}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lElectronMvaSummer16GP, &_lElectronMvaSummer16HZZ, &_lElectronMvaFall17v1NoIso}) std::fill_n(*array, _nMu, 0.); // OLD, do not use them
-    for(auto array : {&_lElectronMvaFall17Iso, &_lElectronMvaFall17NoIso}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lElectronPassEmu, &_lElectronPassConvVeto, &_lElectronChargeConst}) std::fill_n(*array, _nMu, false);
-    for(auto array : {&_lElectronMissingHits}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lPtCorr, &_lPtScaleUp, &_lPtScaleDown, &_lPtResUp, &_lPtResDown}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lECorr, &_lEScaleUp, &_lEScaleDown, &_lEResUp, &_lEResDown}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto, &_lEleIsEB, &_lEleIsEE}) std::fill_n(*array, _nMu, false);       // displaced specific
-    for(auto array : {&_lEleSuperClusterOverP, &_lEleEcalEnergy, &_lElefull5x5SigmaIetaIeta, &_lEleDEtaInSeed}) std::fill_n(*array, _nMu, -1.); // displaced speficic
-    for(auto array : {&_lEleDeltaPhiSuperClusterTrackAtVtx, &_lElehadronicOverEm, &_lEleInvMinusPInv}) std::fill_n(*array, _nMu, -1.);          // displaced specific
-    for(auto array : {&_ecalPFClusterIso, &_hcalPFClusterIso}) std::fill_n(*array, _nMu, -1.);                                                  // displaced specific
+    for(auto array : {_lEtaSC}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lElectronMvaSummer16GP, _lElectronMvaSummer16HZZ, _lElectronMvaFall17v1NoIso}) std::fill_n(array, _nMu, 0.); // OLD, do not use them
+    for(auto array : {_lElectronMvaFall17Iso, _lElectronMvaFall17NoIso}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lElectronPassMVAFall17NoIsoWPLoose, _lElectronPassMVAFall17NoIsoWP90, _lElectronPassMVAFall17NoIsoWP80}) std::fill_n(array, _nMu, false);
+    for(auto array : {_lElectronPassEmu, _lElectronPassConvVeto, _lElectronChargeConst}) std::fill_n(array, _nMu, false);
+    for(auto array : {_lElectronMissingHits}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lElectronSigmaIetaIeta, _lElectronDeltaPhiSuperClusterTrack, _lElectronDeltaEtaSuperClusterTrack, _lElectronEInvMinusPInv, _lElectronHOverE} ) std::fill_n( array, _nMu, 0. );
+    for(auto array : {_lPtCorr, _lPtScaleUp, _lPtScaleDown, _lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lECorr, _lEScaleUp, _lEScaleDown, _lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto, _lEleIsEB, _lEleIsEE}) std::fill_n(array, _nMu, false);      // displaced specific
+    for(auto array : {_lEleSuperClusterOverP, _lEleEcalEnergy, _lElefull5x5SigmaIetaIeta, _lEleDEtaInSeed}) std::fill_n(array, _nMu, -1.); // displaced speficic
+    for(auto array : {_lEleDeltaPhiSuperClusterTrackAtVtx, _lElehadronicOverEm, _lEleInvMinusPInv}) std::fill_n(array, _nMu, -1.);         // displaced specific
+    for(auto array : {_ecalPFClusterIso, _hcalPFClusterIso}) std::fill_n(array, _nMu, -1.);                                                // displaced specific
 
     //loop over taus
     for(const pat::Tau* tauptr : seltaus) {
@@ -509,26 +504,25 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         const pat::Tau& tau = (*tauptr);
 
         fillLeptonKinVars(tau);
-        if(!multilepAnalyzer->isData) fillLeptonGenVars(tau, *genParticles);
+        
+        if(multilepAnalyzer->isMC()) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
         fillLeptonImpactParameters(tau, primaryVertex);
 
-        _lFlavor[_nL]                   = 2;
-        _tauMuonVeto[_nL]               = tau.tauID("againstMuonLoose3");                        //Light lepton vetos
-        _tauEleVeto[_nL]                = tau.tauID("againstElectronLooseMVA6");
+        _lFlavor[_nL]  = 2;
+        _tauDecayMode[_nL] = tau.decayMode();
+        _tauMuonVetoLoose[_nL] = tau.tauID("againstMuonLoose3");                                        //Light lepton vetos
+        _tauEleVetoLoose[_nL] = tau.tauID("againstElectronLooseMVA6");
 
-        _lPOGVeto[_nL]                  = tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT");     //old tau ID
-        _lPOGLoose[_nL]                 = tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT");
-        _lPOGMedium[_nL]                = tau.tauID("byMediumIsolationMVArun2v1DBoldDMwLT");
-        _lPOGTight[_nL]                 = tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT");
-        _tauVTightMvaOld[_nL]           = tau.tauID("byVTightIsolationMVArun2v1DBoldDMwLT");
+        _decayModeFinding[_nL] = tau.tauID("decayModeFinding");                           //old tau ID
 
-        _decayModeFindingNew[_nL]       = tau.tauID("decayModeFindingNewDMs");                   //new Tau ID
-        _tauVLooseMvaNew[_nL]           = tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT");
-        _tauLooseMvaNew[_nL]            = tau.tauID("byLooseIsolationMVArun2v1DBnewDMwLT");
-        _tauMediumMvaNew[_nL]           = tau.tauID("byMediumIsolationMVArun2v1DBnewDMwLT");
-        _tauTightMvaNew[_nL]            = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
-        _tauVTightMvaNew[_nL]           = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
+        _lPOGVeto[_nL] = tau.tauID("byVLooseIsolationMVArun2017v2DBoldDMwLT2017");
+        _lPOGLoose[_nL] = tau.tauID("byLooseIsolationMVArun2017v2DBoldDMwLT2017");
+        _lPOGMedium[_nL] = tau.tauID("byMediumIsolationMVArun2017v2DBoldDMwLT2017");
+        _lPOGTight[_nL] = tau.tauID("byTightIsolationMVArun2017v2DBoldDMwLT2017");
+        _tauPOGVTight2017v2[_nL] = tau.tauID("byVTightIsolationMVArun2017v2DBoldDMwLT2017");
 
+
+        
         _tauAgainstElectronMVA6Raw[_nL] = tau.tauID("againstElectronMVA6Raw");
         _tauCombinedIsoDBRaw3Hits[_nL]  = tau.tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits");
         _tauIsoMVAPWdR03oldDMwLT[_nL]   = tau.tauID("byIsolationMVArun2v1PWdR03oldDMwLTraw");
@@ -536,11 +530,38 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _tauIsoMVADBdR03newDMwLT[_nL]   = tau.tauID("byIsolationMVArun2v1DBnewDMwLTraw");
         _tauIsoMVAPWnewDMwLT[_nL]       = tau.tauID("byIsolationMVArun2v1PWnewDMwLTraw");
         _tauIsoMVAPWoldDMwLT[_nL]       = tau.tauID("byIsolationMVArun2v1PWoldDMwLTraw");
-        // TODO:  Should try also deepTau?
 
-        _lEwkLoose[_nL] = isEwkLoose(tau);
-        _lEwkFO[_nL]    = isEwkFO(tau);
-        _lEwkTight[_nL] = isEwkTight(tau);
+        if(multilepAnalyzer->storeAllTauID){
+            _tauMuonVetoTight[_nL] = tau.tauID("againstMuonTight3");                                        //Light lepton vetos
+            _tauEleVetoVLoose[_nL] = tau.tauID("againstElectronVLooseMVA6");
+            _tauEleVetoMedium[_nL] = tau.tauID("againstElectronMediumMVA6");
+            _tauEleVetoTight[_nL] = tau.tauID("againstElectronTightMVA6");
+            _tauEleVetoVTight[_nL] = tau.tauID("againstElectronVTightMVA6");
+            
+            _tauPOGVLoose2015[_nL] = tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT");                        
+            _tauPOGLoose2015[_nL] = tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT");
+            _tauPOGMedium2015[_nL] = tau.tauID("byMediumIsolationMVArun2v1DBoldDMwLT");
+            _tauPOGTight2015[_nL] = tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT");
+            _tauPOGVTight2015[_nL] = tau.tauID("byVTightIsolationMVArun2v1DBoldDMwLT");
+            
+            _tauPOGVVLoose2017v2[_nL] = tau.tauID("byVVLooseIsolationMVArun2017v2DBoldDMwLT2017");
+            _tauPOGVVTight2017v2[_nL] = tau.tauID("byVVTightIsolationMVArun2017v2DBoldDMwLT2017");
+            
+            _decayModeFindingNew[_nL]       = tau.tauID("decayModeFindingNewDMs");                   //new Tau ID
+            _tauVLooseMvaNew2015[_nL]           = tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT");
+            _tauLooseMvaNew2015[_nL]            = tau.tauID("byLooseIsolationMVArun2v1DBnewDMwLT");
+            _tauMediumMvaNew2015[_nL]           = tau.tauID("byMediumIsolationMVArun2v1DBnewDMwLT");
+            _tauTightMvaNew2015[_nL]            = tau.tauID("byTightIsolationMVArun2v1DBnewDMwLT");
+            _tauVTightMvaNew2015[_nL]           = tau.tauID("byVTightIsolationMVArun2v1DBnewDMwLT");
+
+            _tauVLooseMvaNew2017v2[_nL]           = tau.tauID("byVLooseIsolationMVArun2017v2DBnewDMwLT2017");
+            _tauLooseMvaNew2017v2[_nL]            = tau.tauID("byLooseIsolationMVArun2017v2DBnewDMwLT2017");
+            _tauMediumMvaNew2017v2[_nL]           = tau.tauID("byMediumIsolationMVArun2017v2DBnewDMwLT2017");
+            _tauTightMvaNew2017v2[_nL]            = tau.tauID("byTightIsolationMVArun2017v2DBnewDMwLT2017");
+            _tauVTightMvaNew2017v2[_nL]           = tau.tauID("byVTightIsolationMVArun2017v2DBnewDMwLT2017");
+    
+        }
+
         ++_nTau;
         ++_nL;
     }
@@ -570,11 +591,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }
 
     //Initialize with default values for those tau-only arrays which weren't filled with electrons and muons [to allow correct comparison by the test script]
-    for(auto array : {&_tauMuonVeto, &_tauEleVeto, &_decayModeFindingNew, &_tauVLooseMvaNew, &_tauLooseMvaNew}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauMediumMvaNew, &_tauTightMvaNew, &_tauVTightMvaNew, &_tauVTightMvaOld}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_tauMuonVetoLoose, &_tauEleVetoLoose, &_decayModeFinding, &_decayModeFindingNew}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_tauEleVetoVLoose, &_tauEleVetoMedium, &_tauEleVetoTight, &_tauEleVetoVTight, &_tauMuonVetoTight, &_decayModeFindingNew}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_tauVLooseMvaNew2015, &_tauLooseMvaNew2015, &_tauMediumMvaNew2015, &_tauTightMvaNew2015, &_tauVTightMvaNew2015}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_tauVLooseMvaNew2017v2, &_tauLooseMvaNew2017v2, &_tauMediumMvaNew2017v2, &_tauTightMvaNew2017v2, &_tauVTightMvaNew2017v2}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_tauPOGVLoose2015, &_tauPOGLoose2015, &_tauPOGMedium2015, &_tauPOGTight2015, &_tauPOGVTight2015}) std::fill_n(*array, _nLight, false);
+    for(auto array : {&_tauPOGVVLoose2017v2, &_tauPOGVTight2017v2, &_tauPOGVVTight2017v2}) std::fill_n(*array, _nLight, false);
     for(auto array : {&_tauAgainstElectronMVA6Raw, &_tauCombinedIsoDBRaw3Hits, &_tauIsoMVAPWdR03oldDMwLT}) std::fill_n(*array, _nLight, 0.);
+    for(auto array : {&_tauDecayMode}) std::fill_n(*array, _nLight, 0.);
     for(auto array : {&_tauIsoMVADBdR03oldDMwLT, &_tauIsoMVADBdR03newDMwLT, &_tauIsoMVAPWnewDMwLT, &_tauIsoMVAPWoldDMwLT}) std::fill_n(*array, _nLight, 0.);
-
 
     if(multilepAnalyzer->skim == "trilep"      and (_nLight < 3 || _nGoodLeading < 1                       ) ) return false;
     if(multilepAnalyzer->skim == "displtrilep" and (_nLight < 3 || _nGoodLeading < 1 || _nGoodDisplaced < 2) ) return false;
@@ -582,8 +607,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     if(multilepAnalyzer->skim == "dilep"       and _nLight <  2) return false;
     if(multilepAnalyzer->skim == "ttg"         and _nLight <  2) return false;
     if(multilepAnalyzer->skim == "singlelep"   and _nLight <  1) return false;
-    if(multilepAnalyzer->skim == "FR"          and _nLight != 1 ) return false; // TODO: this _lHasTrigger[0] seems to be an unsigned but the name sounds as if it is a boolean, in which case "not _lHasTrigger" would make more sense
-    if(multilepAnalyzer->skim == "FRsM"        and _nLight != 1 ) return false; // TODO: this _lHasTrigger[0] seems to be an unsigned but the name sounds as if it is a boolean, in which case "not _lHasTrigger" would make more sense
+    if(multilepAnalyzer->skim == "FR"          and _nLight != 1 ) return false;
+    if(multilepAnalyzer->skim == "FRsM"        and _nLight != 1 ) return false;
 
     return true;
 }
@@ -801,12 +826,15 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lIsPromptFinalState[_nL]   = match ? match->isPromptFinalState(): false; 
     _lIsPromptDecayed[_nL]      = match ? match->isPromptDecayed() : false; 
 
-    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0; 
     _lProvenance[_nL]           = GenTools::provenance(match, genParticles); 
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]); 
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
     _lMomPdgId[_nL]             = match ? GenTools::getMotherPdgId(*match, genParticles) : 0;
 
+    _tauGenStatus[_nL]          = TauTools::tauGenStatus(match);        
+
+    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
+    _lMatchCharge[_nL]          = match ? match->charge() : 0;
     _lMatchPt[_nL]              = match ? match->pt() : 0; 
     _lMatchEta[_nL]             = match ? match->eta() : 0;
     _lMatchPhi[_nL]             = match ? match->phi() : 0;
@@ -815,23 +843,37 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lMatchVertexZ[_nL]         = match ? match->vertex().z() : 0;
 }
 
+void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco::GenParticle>& genParticles){
+    
+    const reco::GenParticle* match = TauTools::findMatch(tau, genParticles);
+
+    _tauGenStatus[_nL]          = TauTools::tauGenStatus(match);        
+    _lIsPrompt[_nL]             = match && _tauGenStatus[_nL] != 6; 
+    _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
+    _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
+    _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
+    _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
+    _lMomPdgId[_nL]             = match ? GenTools::getMotherPdgId(*match, genParticles) : 0;
+}
+
 /*
  * Impact parameters:
- * Provide PV to dxy/dz otherwise you get dxy/dz to the beamspot instead of the primary vertex
+ * Note: dB function seems to be preferred and more accurate over track->dxy and dz functions 
+ * as the latter ones have some simplified extrapolation used (leading to slightly different values or opposite sign)
  * For taus: dxy is pre-computed with PV it was constructed with
  */
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele, const reco::Vertex& vertex){
-    _dxy[_nL]     = ele.gsfTrack()->dxy(vertex.position());
-    _dz[_nL]      = ele.gsfTrack()->dz(vertex.position());
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Electron& ele){
+    _dxy[_nL]     = ele.dB(pat::Electron::PV2D);
+    _dz[_nL]      = ele.dB(pat::Electron::PVDZ);
     _3dIP[_nL]    = ele.dB(pat::Electron::PV3D);
     _3dIPSig[_nL] = fabs(ele.dB(pat::Electron::PV3D)/ele.edB(pat::Electron::PV3D));
     _2dIP[_nL]    = ele.dB();
     _2dIPSig[_nL] = ele.dB()/ele.edB();
 }
 
-void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon, const reco::Vertex& vertex){
-    _dxy[_nL]     = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dxy(vertex.position()) : muon.outerTrack()->dxy(vertex.position());
-    _dz[_nL]      = (!muon.innerTrack().isNull()) ? muon.innerTrack()->dz(vertex.position()) : muon.outerTrack()->dz(vertex.position());
+void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon){
+    _dxy[_nL]     = muon.dB(pat::Muon::PV2D);
+    _dz[_nL]      = muon.dB(pat::Muon::PVDZ);
     _3dIP[_nL]    = muon.dB(pat::Muon::PV3D);
     _3dIPSig[_nL] = fabs(muon.dB(pat::Muon::PV3D)/muon.edB(pat::Muon::PV3D));
     _2dIP[_nL]    = muon.dB();
@@ -882,24 +924,69 @@ bool LeptonAnalyzer::passTauPreselection(const pat::Tau& tau, const reco::Vertex
 }
 
 
-void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::Handle<std::vector<pat::Jet>>& jets, const reco::Vertex& vertex, const double rho){
-    //Make skimmed "close jet" collection
-    std::vector<pat::Jet> selectedJetsAll;
-    for(auto jet = jets->cbegin(); jet != jets->cend(); ++jet){
-        if(jet->pt() > 5 && fabs( jet->eta() ) < 3) selectedJetsAll.push_back(*jet);
+//fucking disgusting lepton-jet matching based on obscure pointer defined somewhere in the abyss of CMSSW. (I feel ashamed for using this, but one has to be in sync with the POG - Willem )
+template< typename T1, typename T2 > bool isSourceCandidatePtrMatch( const T1& lhs, const T2& rhs ){
+    for( size_t lhsIndex = 0; lhsIndex < lhs.numberOfSourceCandidatePtrs(); ++lhsIndex ){
+        auto lhsSourcePtr = lhs.sourceCandidatePtr( lhsIndex );
+        for( size_t rhsIndex = 0; rhsIndex < rhs.numberOfSourceCandidatePtrs(); ++rhsIndex ){
+            auto rhsSourcePtr = rhs.sourceCandidatePtr( rhsIndex );
+            if( lhsSourcePtr == rhsSourcePtr ){
+                return true;
+            }
+        }
     }
-    // Find closest selected jet
-    unsigned closestIndex = 0;
-    for(unsigned j = 1; j < selectedJetsAll.size(); ++j){
-        if(reco::deltaR(selectedJetsAll[j], lepton) < reco::deltaR(selectedJetsAll[closestIndex], lepton)) closestIndex = j;
-    }
+    return false;
+}
 
-    const pat::Jet& jet = selectedJetsAll[closestIndex];
-    if(selectedJetsAll.size() == 0 || reco::deltaR(jet, lepton) > 0.4){ //Now includes safeguard for 0 jet events
-        _ptRatio[_nL]              = 1;
-        _ptRel[_nL]                = 0;
-        _closestJetCsvV2[_nL]      = 0;
-        _closestJetDeepCsv_b[_nL]  = 0;
+
+const pat::Jet* findMatchedJet( const reco::Candidate& lepton, const edm::Handle< std::vector< pat::Jet > >& jets, const bool oldMatching ){
+    
+    //Look for jet that matches with lepton
+    const pat::Jet* matchedJetPtr = nullptr;
+
+    //old matching scheme looks for closest jet in terms of delta R, and required this to be within delta R 0.4 of the lepton
+    if( oldMatching ){
+        for( auto& jet : *jets ){
+            if( jet.pt() <= 5 || fabs( jet.eta() ) >= 3 ) continue;
+            if( ( matchedJetPtr == nullptr) || reco::deltaR( jet, lepton ) < reco::deltaR( *matchedJetPtr, lepton ) ){
+                matchedJetPtr = &jet;
+            }
+        }
+        if( matchedJetPtr != nullptr && reco::deltaR( lepton, *matchedJetPtr ) > 0.4 ){
+            matchedJetPtr = nullptr;
+        }
+    } else {
+        for( auto& jet : *jets ){
+            if( isSourceCandidatePtrMatch( lepton, jet ) ){
+
+                //immediately returning guarantees that the leading jet matched to the lepton is returned
+                return &jet;
+            }
+        }
+    }
+    return matchedJetPtr;
+}
+
+
+//compute closest jet variables using new matching scheme 
+void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm::Handle< std::vector< pat::Jet > >& jets, const reco::Vertex& vertex, const double rho, const bool oldMatching ){
+
+    //find closest jet based on source candidate pointer matching
+    const pat::Jet* matchedJetPtr = findMatchedJet( lepton, jets, oldMatching );
+
+    if( matchedJetPtr == nullptr ){
+        if( _lFlavor[_nL] == 1 ){
+            _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4MuDeltaBeta[_nL] ) );
+        } else{
+            _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4[_nL] ) );
+        }
+        _ptRel[_nL] = 0;
+        _selectedTrackMult[_nL] = 0;
+        _closestJetDeepFlavor_b[_nL] = 0;
+        _closestJetDeepFlavor_bb[_nL] = 0;
+        _closestJetDeepFlavor_lepb[_nL] = 0;
+        _closestJetDeepFlavor[_nL] = 0;
+        _closestJetDeepCsv_b[_nL] = 0;
         _closestJetDeepCsv_bb[_nL] = 0;
         _selectedTrackMult[_nL]    = 0;
         _closestJEC[_nL]           = 0;
@@ -915,57 +1002,98 @@ void LeptonAnalyzer::fillLeptonJetVariables(const reco::Candidate& lepton, edm::
         _closest_lJetPx [_nL]        = 0;
         _closest_lJetPy [_nL]        = 0;
         _closest_lJetPz [_nL]        = 0;
+        _closestJetDeepCsv[_nL] = 0;
+        _closestJetCsvV2[_nL] = 0;
     } else {
-        auto  l1Jet       = jet.correctedP4("L1FastJet");
-        float JEC         = jet.p4().E()/l1Jet.E();
-        auto  l           = lepton.p4();
-        auto  lepAwareJet = (l1Jet - l)*JEC + l;
+        const pat::Jet& jet = *matchedJetPtr;
 
-        TLorentzVector lV(l.Px(), l.Py(), l.Pz(), l.E());
-        TLorentzVector jV(lepAwareJet.Px(), lepAwareJet.Py(), lepAwareJet.Pz(), lepAwareJet.E());
-        _ptRatio[_nL]              = l.Pt()/lepAwareJet.Pt();
-        _ptRel[_nL]                = lV.Perp((jV - lV).Vect());
+        auto rawJetP4 = jet.correctedP4("Uncorrected"); 
+        auto leptonP4 = lepton.p4();
+
+        bool leptonEqualsJet = ( ( rawJetP4 - leptonP4 ).P() < 1e-4 );
+
+        //if lepton and jet vector are equal set _ptRatio, _ptRel and track multipliticy to defaults 
+        if( leptonEqualsJet && !oldMatching ){
+            _ptRatio[_nL] = 1;
+            _ptRel[_nL] = 0;
+            _selectedTrackMult[_nL] = 0;
+            //displaced specific (TODO: cleanup?)
+            _closestJEC[_nL]            = 0;
+            _closest_lepAwareJetE[_nL]  = 0;
+            _closest_lepAwareJetPx[_nL] = 0;
+            _closest_lepAwareJetPy[_nL] = 0;
+            _closest_lepAwareJetPz[_nL] = 0;
+            _closest_l1JetE[_nL]        = 0;
+            _closest_l1JetPx[_nL]       = 0;
+            _closest_l1JetPy[_nL]       = 0;
+            _closest_l1JetPz[_nL]       = 0;
+            _closest_lJetE[_nL]         = 0;
+            _closest_lJetPx[_nL]        = 0;
+            _closest_lJetPy[_nL]        = 0;
+            _closest_lJetPz[_nL]        = 0;
+        } else {
+
+            //remove all corrections above L1 from the lepton
+            auto L1JetP4 = jet.correctedP4("L1FastJet");
+            double L2L3JEC = jet.pt()/L1JetP4.pt(); 
+            auto lepAwareJetP4 = ( L1JetP4 - leptonP4 )*L2L3JEC + leptonP4;
+
+            _ptRatio[_nL] = lepton.pt() / lepAwareJetP4.pt();
+
+            //lepton momentum orthogonal to the jet axis
+            //magnitude of cross-product between lepton and rest of jet 
+            _ptRel[_nL ] = leptonP4.Vect().Cross( (lepAwareJetP4 - leptonP4 ).Vect().Unit() ).R();
+
+            _selectedTrackMult[_nL] = 0;
+            for( const auto daughterPtr : jet.daughterPtrVector() ){
+                const pat::PackedCandidate& daughter = *( (const pat::PackedCandidate*) daughterPtr.get() );
+            
+                if( daughter.charge() == 0 ) continue;
+                if( daughter.fromPV() < 2 ) continue;
+                if( reco::deltaR( daughter, lepton ) > 0.4 ) continue;
+                if( !daughter.hasTrackDetails() ) continue;
+
+                auto daughterTrack = daughter.pseudoTrack();
+                if( daughterTrack.pt() <= 1 ) continue;
+                if( daughterTrack.hitPattern().numberOfValidHits() < 8 ) continue;
+                if( daughterTrack.hitPattern().numberOfValidPixelHits() < 2 ) continue;
+                if( daughterTrack.normalizedChi2() >= 5 ) continue;
+                if( std::abs( daughterTrack.dz( vertex.position() ) ) >= 17 ) continue;
+                if( std::abs( daughterTrack.dxy( vertex.position() ) ) >= 0.2 ) continue;
+                ++_selectedTrackMult[_nL];
+ 
+            }
+            //displaced specific
+            _closestJEC[_nL]            = L2L3JEC;
+            _closest_lepAwareJetE[_nL]  = lepAwareJetP4.E();
+            _closest_lepAwareJetPx[_nL] = lepAwareJetP4.Px();
+            _closest_lepAwareJetPy[_nL] = lepAwareJetP4.Py();
+            _closest_lepAwareJetPz[_nL] = lepAwareJetP4.Pz();
+            _closest_l1JetE[_nL]        = L1JetP4.E();
+            _closest_l1JetPx[_nL]       = L1JetP4.Px();
+            _closest_l1JetPy[_nL]       = L1JetP4.Py();
+            _closest_l1JetPz[_nL]       = L1JetP4.Pz();
+            _closest_lJetE[_nL]         = jet.p4().E();
+            _closest_lJetPx[_nL]        = jet.p4().Px();
+            _closest_lJetPy[_nL]        = jet.p4().Py();
+            _closest_lJetPz[_nL]        = jet.p4().Pz();
+        }
+
+        //CSVv2 of closest jet
         _closestJetCsvV2[_nL]      = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+
+        //DeepCSV of closest jet
         _closestJetDeepCsv_b[_nL]  = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _closestJetDeepCsv_bb[_nL] = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
-        _closestJEC[_nL]           = JEC;
-        _closest_lepAwareJetE[_nL]  =lepAwareJet.E();
-        _closest_lepAwareJetPx[_nL]  =lepAwareJet.Px();
-        _closest_lepAwareJetPy[_nL]  =lepAwareJet.Py();
-        _closest_lepAwareJetPz[_nL]  =lepAwareJet.Pz();
-        _closest_l1JetE[_nL]        = l1Jet.E();
-        _closest_l1JetPx[_nL]        = l1Jet.Px();
-        _closest_l1JetPy[_nL]        = l1Jet.Py();
-        _closest_l1JetPz[_nL]        = l1Jet.Pz();
-        _closest_lJetE [_nL]        = jet.p4().E();
-        _closest_lJetPx [_nL]        = jet.p4().Px();
-        _closest_lJetPy [_nL]        = jet.p4().Py();
-        _closest_lJetPz [_nL]        = jet.p4().Pz();
+        _closestJetDeepCsv[_nL]    = _closestJetDeepCsv_b[_nL] + _closestJetDeepCsv_bb[_nL];
+        if( std::isnan( _closestJetDeepCsv[_nL] ) ) _closestJetDeepCsv[_nL] = 0.;
 
-
-        //compute selected track multiplicity of closest jet
-        _selectedTrackMult[_nL] = 0;
-        for(unsigned d = 0; d < jet.numberOfDaughters(); ++d){
-            const pat::PackedCandidate* daughter = (const pat::PackedCandidate*) jet.daughter(d);
-            if(daughter->hasTrackDetails()){
-                const reco::Track& daughterTrack = daughter->pseudoTrack();
-                if(daughterTrack.pt() <= 1)                                 continue;
-                if(daughterTrack.charge() == 0)                             continue;
-                if(daughter->fromPV() < 2)                                  continue;
-                if(daughterTrack.hitPattern().numberOfValidHits() < 8)      continue;
-                if(daughterTrack.hitPattern().numberOfValidPixelHits() < 2) continue;
-                if(daughterTrack.normalizedChi2() >= 5)                     continue;
-                if(fabs(daughterTrack.dz(vertex.position())) >= 17)         continue;
-                if(fabs(daughterTrack.dxy(vertex.position())) >= 0.2)       continue;
-
-
-                //distance from jet core
-                TLorentzVector trackVec(daughterTrack.px(), daughterTrack.py(), daughterTrack.pz(), daughterTrack.p());
-                double daughterDeltaR = trackVec.DeltaR(jV);
-
-                if(daughterDeltaR <= 0.4) ++_selectedTrackMult[_nL];
-            }
-        }
+        //DeepFlavor b-tag values of closest jet
+        _closestJetDeepFlavor_b[_nL] = jet.bDiscriminator("pfDeepFlavourJetTags:probb");
+        _closestJetDeepFlavor_bb[_nL] = jet.bDiscriminator("pfDeepFlavourJetTags:probbb");
+        _closestJetDeepFlavor_lepb[_nL] = jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
+        _closestJetDeepFlavor[_nL] = _closestJetDeepFlavor_b[_nL] + _closestJetDeepFlavor_bb[_nL] + _closestJetDeepFlavor_lepb[_nL];
+        if( std::isnan( _closestJetDeepFlavor[_nL] ) ) _closestJetDeepFlavor[_nL] = 0.;
     }
 }
 

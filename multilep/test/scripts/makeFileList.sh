@@ -11,20 +11,11 @@ fileList(){
     fi
     touch fileList.txt
     
-    #T2-BE-IIHE redirector
-    dcap=dcap://maite.iihe.ac.be
-
     #check if sample is private or official production
-    if [[ $input == *"/user/"* ]]; then    #pricate sample
+    if [[ $input == *"/user/"* ]]; then    #private sample
         #add all files to list 
         for file in $input/*
-            do echo "${dcap}${file}" >> fileList.txt
-        done
-    elif [[ $input == "/pnfs/"* ]] ; then  #local path to offical sample
-        ##TO DO -> TRANSLATE THE PNFS NAME TO AN OFFICIAL CMSDAS NAME##
-        #add all files to list 
-        for file in $input/*/*
-            do echo "${dcap}${file}" >> fileList.txt
+            do echo "dcap://maite.iihe.ac.be${file}" >> fileList.txt
         done
     else                                #official sample
 
