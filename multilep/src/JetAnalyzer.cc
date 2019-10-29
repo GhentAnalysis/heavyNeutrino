@@ -93,6 +93,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017() || multilepAnalyzer->is2018() );
         _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
+        if(!_jetIsLoose[_nJets]) continue;  // displaced specific, though it would make more sense to cut on tight if you want to have a cut on jet Id
 
         //find smeared equivalents of nominal jet
         auto jetSmearedIt = jetsSmeared->begin();
@@ -133,7 +134,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         std::vector<double> ptVector = {_jetPt[_nJets], _jetPt_JECDown[_nJets], _jetPt_JECUp[_nJets],
             _jetSmearedPt[_nJets], _jetSmearedPt_JECDown[_nJets], _jetSmearedPt_JECUp[_nJets], _jetSmearedPt_JERDown[_nJets],  _jetSmearedPt_JERUp[_nJets]};
         double maxpT = *(std::max_element(ptVector.cbegin(), ptVector.cend()));
-        if(maxpT <= 20) continue;
+        if(maxpT <= 25) continue; // displaced specific (is 20 GeV in the masterbranch)
 
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
