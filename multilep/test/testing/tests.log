@@ -1,340 +1,187 @@
-commit 1d28db476dbc427a97fe36bece18903be7f302fd
+commit 2894186e8fb7ff002ac649f14246b01a8f17d3c6
 Author: tomc <tomc@cern.ch>
-Date:   Tue Oct 29 16:41:54 2019 +0100
+Date:   Tue Oct 29 17:29:31 2019 +0100
 
-    fix following typo in e06422136b991cdfeb3cc7576969fbceb280a9df
+    Align with the master
+    
+    Probably not impacting the displaced analysis too much
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _Flag_globalSuperTightHalo2016Filter,_HLT_AK8PFJet400_TrimMass30,_HLT_AK8PFJet400_TrimMass30_prescale,_HLT_AK8PFJet500,_HLT_AK8PFJet500_prescale,_HLT_CaloJet500_NoJetID,_HLT_CaloJet500_NoJetID_prescale,_HLT_CaloMET350_HBHECleaned,_HLT_CaloMET350_HBHECleaned_prescale,_HLT_DiJet110_35_Mjj650_PFMET110,_HLT_DiJet110_35_Mjj650_PFMET110_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_prescale,_HLT_DoubleEle25_CaloIdL_MW,_HLT_DoubleEle25_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1_prescale,_HLT_IsoMu27_LooseChargedIsoPFTau20_Trk1_eta2p1_SingleL1,_HLT_IsoMu27_LooseChargedIsoPFTau20_Trk1_eta2p1_SingleL1_prescale,_HLT_IsoMu27_LooseChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1,_HLT_IsoMu27_LooseChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1_prescale,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu17,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu17_prescale,_HLT_Mu20,_HLT_Mu20_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu27,_HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu27_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale,_HLT_Mu3_PFJet40,_HLT_Mu3_PFJet40_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu8,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu8_TrkIsoVVL_prescale,_HLT_Mu8_prescale,_HLT_OldMu100,_HLT_OldMu100_prescale,_HLT_PFHT1050,_HLT_PFHT1050_prescale,_HLT_PFHT500_PFMET100_PFMHT100_IDTight,_HLT_PFHT500_PFMET100_PFMHT100_IDTight_prescale,_HLT_PFHT700_PFMET85_PFMHT85_IDTight,_HLT_PFHT700_PFMET85_PFMHT85_IDTight_prescale,_HLT_PFHT800_PFMET75_PFMHT75_IDTight,_HLT_PFHT800_PFMET75_PFMHT75_IDTight_prescale,_HLT_PFJet500,_HLT_PFJet500_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET200_HBHE_BeamHaloCleaned,_HLT_PFMET200_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET250_HBHECleaned,_HLT_PFMET250_HBHECleaned_prescale,_HLT_PFMETTypeOne140_PFMHT140_IDTight,_HLT_PFMETTypeOne140_PFMHT140_IDTight_prescale,_HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned,_HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_HLT_TkMu100,_HLT_TkMu100_prescale,_HLT_TripleJet110_35_35_Mjj650_PFMET110,_HLT_TripleJet110_35_35_Mjj650_PFMET110_prescale,_HLT_TripleMu_10_5_5_DZ,_HLT_TripleMu_10_5_5_DZ_prescale,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_prescale,_TripleMu_12_10_5,_closestJetDeepCsv,_closestJetDeepFlavor,_closestJetDeepFlavor_b,_closestJetDeepFlavor_bb,_closestJetDeepFlavor_lepb,_is2017,_is2018,_jetDeepCsv,_jetDeepFlavor,_jetDeepFlavor_b,_jetDeepFlavor_bb,_jetDeepFlavor_c,_jetDeepFlavor_g,_jetDeepFlavor_lepb,_jetDeepFlavor_uds,_lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp,_leptonMvaTTH,_leptonMvatZq,_passTrigger_FR,_passTrigger_FR_iso,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_ref,_phECorr,_phEResDown,_phEResUp,_phEScaleDown,_phEScaleUp,_phHadTowOverEm,_phPtCorr,_phPtResDown,_phPtResUp,_phPtScaleDown,_phPtScaleUp,_tauAgainstElectronMVA6Raw,_tauCombinedIsoDBRaw3Hits,_tauIsoMVADBdR03newDMwLT,_tauIsoMVADBdR03oldDMwLT,_tauIsoMVAPWdR03oldDMwLT,_tauIsoMVAPWnewDMwLT,_tauIsoMVAPWoldDMwLT
-   Removed: _jetIsLoose
    Changed:
-      _closestJEC                                        mean:   1.0722 -->   1.0804     rms:   0.3272 -->   0.3304    
-      _closest_l1JetE                                    mean:  85.5006 -->  85.3475     rms:  74.2379 -->  74.3609    
-      _closest_l1JetPx                                   mean:   5.7727 -->   5.7565     rms:  38.9461 -->  38.8282    
-      _closest_l1JetPy                                   mean:  -0.7300 -->  -0.7468     rms:  39.4986 -->  39.3718    
-      _closest_l1JetPz                                   mean:   7.7230 -->   7.6285     rms:  98.0055 -->  98.0733    
-      _closest_lJetE                                     mean:  99.1631 -->  99.6420     rms:  86.9365 -->  87.5760    
-      _closest_lJetPx                                    mean:   6.3001 -->   6.3029     rms:  43.0995 -->  43.1898    
-      _closest_lJetPy                                    mean:  -0.8230 -->  -0.8443     rms:  43.3805 -->  43.4703    
-      _closest_lJetPz                                    mean:   8.2534 -->   8.1647     rms: 116.1300 --> 116.9555    
-      _closest_lepAwareJetE                              mean:  88.5742 -->  88.5843     rms:  76.9343 -->  77.1720    
-      _closest_lepAwareJetPx                             mean:   6.0075 -->   6.0027     rms:  40.4692 -->  40.4171    
-      _closest_lepAwareJetPy                             mean:  -0.7783 -->  -0.7979     rms:  40.7309 -->  40.6710    
-      _closest_lepAwareJetPz                             mean:   7.8526 -->   7.7227     rms: 101.5676 --> 101.8115    
-      _dxy                                               mean:  -0.0012 -->  -0.0100     rms:   0.1230 -->   0.1229    
-      _dz                                                mean:  -0.0617 -->  -0.0186     rms:   1.7392 -->   1.5658    
-      _jetChargedEmFraction                              mean:   0.0030 -->   0.0034     rms:   0.0191 -->   0.0201    
-      _jetChargedHadronFraction                          mean:   0.2891 -->   0.3190     rms:   0.2826 -->   0.2840    
-      _jetCsvV2                                          mean:  -1.9111 -->  -1.0693     rms:   4.2908 -->   3.5772    
-      _jetDeepCsv_b                                      mean:  -0.1984 -->  -0.1100     rms:   0.5806 -->   0.5438    
-      _jetDeepCsv_bb                                     mean:  -0.3062 -->  -0.2299     rms:   0.4653 -->   0.4261    
-      _jetDeepCsv_c                                      mean:  -0.2184 -->  -0.1323     rms:   0.5308 -->   0.4879    
-      _jetDeepCsv_udsg                                   mean:   0.1734 -->   0.3024     rms:   0.8240 -->   0.7651    
-      _jetE                                              mean: 215.5188 --> 204.9315     rms: 268.1300 --> 292.1582    
-      _jetEta                                            mean:   0.0735 -->   0.1801     rms:   1.9920 -->   1.7919    
-      _jetHFEmFraction                                   mean:   0.0195 -->   0.0089     rms:   0.0510 -->   0.0328    
-      _jetHFHadronFraction                               mean:   0.1721 -->   0.1045     rms:   0.3457 -->   0.2867    
-      _jetIsTightLepVeto                                 mean:   0.7851 -->   0.7615     rms:   0.4107 -->   0.4262    
-      _jetNeutralEmFraction                              mean:   0.1672 -->   0.1685     rms:   0.1758 -->   0.1804    
-      _jetNeutralHadronFraction                          mean:   0.2469 -->   0.1830     rms:   0.3372 -->   0.2873    
-      _jetPhi                                            mean:  -0.1109 -->  -0.0726     rms:   1.8041 -->   1.7863    
-      _jetPt                                             mean:  56.7441 -->  60.6544     rms:  49.8750 -->  52.1508    
-      _jetPt_JECDown                                     mean:  54.6596 -->  59.2323     rms:  49.7408 -->  51.6400    
-      _jetPt_JECUp                                       mean:  58.8286 -->  62.0765     rms:  50.1526 -->  52.6820    
-      _jetPt_L1                                          mean:  48.9739 -->  52.3102     rms:  46.5918 -->  47.7638    
-      _jetPt_L2                                          mean:  54.7565 -->  58.0853     rms:  49.5392 -->  50.9719    
-      _jetPt_L3                                          mean:  54.7565 -->  58.0853     rms:  49.5392 -->  50.9719    
-      _jetPt_Uncorrected                                 mean:  53.6233 -->  56.5684     rms:  44.8392 -->  46.2708    
-      _jetSmearedPt                                      mean:  56.7441 -->  60.6544     rms:  49.8750 -->  52.1508    
-      _jetSmearedPt_JECDown                              mean:  54.6596 -->  59.2323     rms:  49.7408 -->  51.6400    
-      _jetSmearedPt_JECUp                                mean:  58.8286 -->  62.0765     rms:  50.1526 -->  52.6820    
-      _jetSmearedPt_JERDown                              mean:  56.7441 -->  60.6544     rms:  49.8750 -->  52.1508    
-      _jetSmearedPt_JERUp                                mean:  56.7441 -->  60.6544     rms:  49.8750 -->  52.1508    
-      _lPOGLoose                                         mean:   0.6838 -->   0.7115     rms:   0.4650 -->   0.4531    
-      _lPOGMedium                                        mean:   0.6285 -->   0.6601     rms:   0.4832 -->   0.4737    
-      _lPOGTight                                         mean:   0.5494 -->   0.6047     rms:   0.4976 -->   0.4889    
-      _lPOGVeto                                          mean:   0.7273 -->   0.7470     rms:   0.4454 -->   0.4347    
-      _met                                               mean:  40.8538 -->  41.0787     rms:  20.9900 -->  20.7535    
-      _metJECDown                                        mean:  39.7405 -->  39.5097     rms:  19.9566 -->  19.9440    
-      _metJECUp                                          mean:  43.0893 -->  43.2505     rms:  22.7767 -->  22.9017    
-      _metPhiJECDown                                     mean:  -0.0617 -->  -0.0848     rms:   1.5442 -->   1.5276    
-      _metPhiJECUp                                       mean:  -0.0553 -->  -0.1120     rms:   1.5434 -->   1.5186    
-      _metPhiUnclDown                                    mean:   0.0612 -->  -0.0371     rms:   1.5442 -->   1.5568    
-      _metPhiUnclUp                                      mean:  -0.0957 -->  -0.0967     rms:   1.5165 -->   1.5177    
-      _metSignificance                                   mean:   3.4511 -->   3.4410     rms:   3.1812 -->   3.1396    
-      _metUnclDown                                       mean:  40.8238 -->  40.5272     rms:  21.8258 -->  20.4563    
-      _metUnclUp                                         mean:  41.8298 -->  42.3720     rms:  20.8908 -->  21.5195    
-      _nJets                                             mean:   2.4200 -->   2.1800     rms:   1.6624 -->   1.5835    
-      _ptRatio                                           mean:   0.7534 -->   0.7572     rms:   0.2481 -->   0.2503    
-      _ptRel                                             mean:   6.4158 -->   6.9719     rms:   8.4714 -->  12.0846    
-      _relIso0p4                                         mean:   0.4053 -->   0.4002     rms:   0.7349 -->   0.7091    
-      _selectedTrackMult                                 mean:   1.6614 -->   1.6378     rms:   1.4593 -->   1.4563    
+      _closestJEC                                        mean:   1.0804 -->   1.0906     rms:   0.3304 -->   0.3166    
+      _closestJetCsvV2                                   mean:  -0.3552 -->  -0.3525     rms:   2.5182 -->   2.5187    
+      _closestJetDeepCsv                                 mean:  -0.1189 -->  -0.1161     rms:   0.7906 -->   0.7931    
+      _closestJetDeepCsv_b                               mean:   0.0096 -->   0.0139     rms:   0.4800 -->   0.4853    
+      _closestJetDeepCsv_bb                              mean:  -0.1284 -->  -0.1301     rms:   0.3436 -->   0.3423    
+      _closestJetDeepFlavor                              mean:   0.1472 -->   0.1499     rms:   0.2946 -->   0.3000    
+      _closestJetDeepFlavor_b                            mean:   0.0697 -->   0.0697     rms:   0.1439 -->   0.1428    
+      _closestJetDeepFlavor_bb                           mean:   0.0024 -->   0.0020     rms:   0.0097 -->   0.0082    
+      _closestJetDeepFlavor_lepb                         mean:   0.0751 -->   0.0783     rms:   0.1703 -->   0.1752    
+      _closest_l1JetE                                    mean:  85.3475 -->  85.7519     rms:  74.3609 -->  74.1994    
+      _closest_l1JetPx                                   mean:   5.7565 -->   6.2233     rms:  38.8282 -->  39.2118    
+      _closest_l1JetPy                                   mean:  -0.7468 -->  -0.6287     rms:  39.3718 -->  39.4740    
+      _closest_l1JetPz                                   mean:   7.6285 -->   7.6885     rms:  98.0733 -->  98.0704    
+      _closest_lJetE                                     mean:  99.6420 --> 100.0915     rms:  87.5760 -->  87.3561    
+      _closest_lJetPx                                    mean:   6.3029 -->   6.8151     rms:  43.1898 -->  43.5786    
+      _closest_lJetPy                                    mean:  -0.8443 -->  -0.7115     rms:  43.4703 -->  43.5727    
+      _closest_lJetPz                                    mean:   8.1647 -->   8.2381     rms: 116.9555 --> 116.9526    
+      _closest_lepAwareJetE                              mean:  88.5843 -->  89.0164     rms:  77.1720 -->  77.0010    
+      _closest_lepAwareJetPx                             mean:   6.0027 -->   6.4999     rms:  40.4171 -->  40.8302    
+      _closest_lepAwareJetPy                             mean:  -0.7979 -->  -0.6665     rms:  40.6710 -->  40.7797    
+      _closest_lepAwareJetPz                             mean:   7.7227 -->   7.7869     rms: 101.8115 --> 101.8086    
+      _leptonMvaTTH                                      mean:   0.1042 -->   0.0994     rms:   0.9390 -->   0.9429    
+      _ptRatio                                           mean:   0.7572 -->   0.7451     rms:   0.2503 -->   0.2490    
+      _ptRel                                             mean:   6.9719 -->   7.0181     rms:  12.0846 -->  12.0692    
+      _selectedTrackMult                                 mean:   1.6378 -->   1.6614     rms:   1.4563 -->   1.4539    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _Flag_globalSuperTightHalo2016Filter,_HLT_AK8PFJet400_TrimMass30,_HLT_AK8PFJet400_TrimMass30_prescale,_HLT_AK8PFJet500,_HLT_AK8PFJet500_prescale,_HLT_CaloJet500_NoJetID,_HLT_CaloJet500_NoJetID_prescale,_HLT_CaloMET350_HBHECleaned,_HLT_CaloMET350_HBHECleaned_prescale,_HLT_DiJet110_35_Mjj650_PFMET110,_HLT_DiJet110_35_Mjj650_PFMET110_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_prescale,_HLT_DoubleEle25_CaloIdL_MW,_HLT_DoubleEle25_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1_prescale,_HLT_IsoMu27_LooseChargedIsoPFTau20_Trk1_eta2p1_SingleL1,_HLT_IsoMu27_LooseChargedIsoPFTau20_Trk1_eta2p1_SingleL1_prescale,_HLT_IsoMu27_LooseChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1,_HLT_IsoMu27_LooseChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1_prescale,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu17,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu17_prescale,_HLT_Mu20,_HLT_Mu20_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu27,_HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu27_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale,_HLT_Mu3_PFJet40,_HLT_Mu3_PFJet40_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu8,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu8_TrkIsoVVL_prescale,_HLT_Mu8_prescale,_HLT_OldMu100,_HLT_OldMu100_prescale,_HLT_PFHT1050,_HLT_PFHT1050_prescale,_HLT_PFHT500_PFMET100_PFMHT100_IDTight,_HLT_PFHT500_PFMET100_PFMHT100_IDTight_prescale,_HLT_PFHT700_PFMET85_PFMHT85_IDTight,_HLT_PFHT700_PFMET85_PFMHT85_IDTight_prescale,_HLT_PFHT800_PFMET75_PFMHT75_IDTight,_HLT_PFHT800_PFMET75_PFMHT75_IDTight_prescale,_HLT_PFJet500,_HLT_PFJet500_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET200_HBHE_BeamHaloCleaned,_HLT_PFMET200_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET250_HBHECleaned,_HLT_PFMET250_HBHECleaned_prescale,_HLT_PFMETTypeOne140_PFMHT140_IDTight,_HLT_PFMETTypeOne140_PFMHT140_IDTight_prescale,_HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned,_HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_HLT_TkMu100,_HLT_TkMu100_prescale,_HLT_TripleJet110_35_35_Mjj650_PFMET110,_HLT_TripleJet110_35_35_Mjj650_PFMET110_prescale,_HLT_TripleMu_10_5_5_DZ,_HLT_TripleMu_10_5_5_DZ_prescale,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_prescale,_TripleMu_12_10_5,_closestJetDeepCsv,_closestJetDeepFlavor,_closestJetDeepFlavor_b,_closestJetDeepFlavor_bb,_closestJetDeepFlavor_lepb,_is2017,_is2018,_jetDeepCsv,_jetDeepFlavor,_jetDeepFlavor_b,_jetDeepFlavor_bb,_jetDeepFlavor_c,_jetDeepFlavor_g,_jetDeepFlavor_lepb,_jetDeepFlavor_uds,_lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp,_leptonMvaTTH,_leptonMvatZq,_passTrigger_FR,_passTrigger_FR_iso,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_ref,_phECorr,_phEResDown,_phEResUp,_phEScaleDown,_phEScaleUp,_phHadTowOverEm,_phPtCorr,_phPtResDown,_phPtResUp,_phPtScaleDown,_phPtScaleUp,_tauAgainstElectronMVA6Raw,_tauCombinedIsoDBRaw3Hits,_tauIsoMVADBdR03newDMwLT,_tauIsoMVADBdR03oldDMwLT,_tauIsoMVAPWdR03oldDMwLT,_tauIsoMVAPWnewDMwLT,_tauIsoMVAPWoldDMwLT
-   Removed: _jetIsLoose
    Changed:
-      _closestJEC                                        mean:   1.0860 -->   1.0907     rms:   0.3077 -->   0.3039    
-      _closest_l1JetE                                    mean:  94.2361 -->  94.2536     rms:  93.1417 -->  93.4655    
-      _closest_l1JetPx                                   mean:   3.1422 -->   3.1422     rms:  36.1633 -->  36.0409    
-      _closest_l1JetPy                                   mean:   4.7612 -->   4.7733     rms:  40.7966 -->  40.7059    
-      _closest_l1JetPz                                   mean: -14.8202 --> -14.8756     rms: 119.5083 --> 119.8363    
-      _closest_lJetE                                     mean: 110.1381 --> 110.0120     rms: 111.5882 --> 109.9313    
-      _closest_lJetPx                                    mean:   3.5336 -->   3.5807     rms:  40.4047 -->  40.6654    
-      _closest_lJetPy                                    mean:   5.6068 -->   5.6554     rms:  46.2421 -->  46.3771    
-      _closest_lJetPz                                    mean: -18.0788 --> -17.5680     rms: 142.7471 --> 141.2988    
-      _closest_lepAwareJetE                              mean:  99.5355 -->  99.4209     rms: 102.3290 --> 101.6756    
-      _closest_lepAwareJetPx                             mean:   3.2426 -->   3.2648     rms:  37.9371 -->  37.9783    
-      _closest_lepAwareJetPy                             mean:   5.1666 -->   5.2307     rms:  43.0858 -->  43.0898    
-      _closest_lepAwareJetPz                             mean: -16.3146 --> -15.9842     rms: 129.3075 --> 128.7271    
-      _dxy                                               mean:  -0.0052 -->  -0.0017     rms:   0.0865 -->   0.0866    
-      _dz                                                mean:   0.2363 -->   0.1919     rms:   2.0253 -->   1.9663    
-      _jetChargedEmFraction                              mean:   0.0064 -->   0.0074     rms:   0.0351 -->   0.0375    
-      _jetChargedHadronFraction                          mean:   0.2488 -->   0.2780     rms:   0.2767 -->   0.2862    
-      _jetCsvV2                                          mean:  -2.7195 -->  -1.8752     rms:   4.7335 -->   4.2546    
-      _jetDeepCsv_b                                      mean:  -0.2426 -->  -0.1511     rms:   0.5563 -->   0.5184    
-      _jetDeepCsv_bb                                     mean:  -0.3278 -->  -0.2458     rms:   0.4724 -->   0.4341    
-      _jetDeepCsv_c                                      mean:  -0.2352 -->  -0.1415     rms:   0.5432 -->   0.5014    
-      _jetDeepCsv_udsg                                   mean:   0.1530 -->   0.2945     rms:   0.8334 -->   0.7739    
-      _jetE                                              mean: 258.8479 --> 239.2421     rms: 282.0549 --> 288.9504    
-      _jetEta                                            mean:  -0.2857 -->  -0.2007     rms:   2.1627 -->   1.9439    
-      _jetHFEmFraction                                   mean:   0.0273 -->   0.0144     rms:   0.0664 -->   0.0528    
-      _jetHFHadronFraction                               mean:   0.2149 -->   0.1459     rms:   0.3825 -->   0.3362    
-      _jetIsTightLepVeto                                 mean:   0.7415 -->   0.7024     rms:   0.4378 -->   0.4572    
-      _jetNeutralEmFraction                              mean:   0.1430 -->   0.1360     rms:   0.1564 -->   0.1532    
-      _jetNeutralHadronFraction                          mean:   0.2774 -->   0.2053     rms:   0.3694 -->   0.3279    
-      _jetPhi                                            mean:   0.0771 -->   0.1214     rms:   1.7975 -->   1.8029    
-      _jetPt                                             mean:  55.2553 -->  59.6015     rms:  45.6781 -->  47.8630    
-      _jetPt_JECDown                                     mean:  52.9723 -->  58.1292     rms:  45.9153 -->  47.3824    
-      _jetPt_JECUp                                       mean:  57.5384 -->  61.0738     rms:  45.5733 -->  48.3528    
-      _jetPt_L1                                          mean:  47.1138 -->  51.5483     rms:  42.5629 -->  43.6971    
-      _jetPt_L2                                          mean:  53.1177 -->  57.4942     rms:  45.1528 -->  46.6474    
-      _jetPt_L3                                          mean:  53.1177 -->  57.4942     rms:  45.1528 -->  46.6474    
-      _jetPt_Uncorrected                                 mean:  52.1436 -->  56.0358     rms:  40.3821 -->  41.9126    
-      _jetSmearedPt                                      mean:  55.2553 -->  59.6015     rms:  45.6781 -->  47.8630    
-      _jetSmearedPt_JECDown                              mean:  52.9723 -->  58.1292     rms:  45.9153 -->  47.3824    
-      _jetSmearedPt_JECUp                                mean:  57.5384 -->  61.0738     rms:  45.5733 -->  48.3528    
-      _jetSmearedPt_JERDown                              mean:  55.2553 -->  59.6015     rms:  45.6781 -->  47.8630    
-      _jetSmearedPt_JERUp                                mean:  55.2553 -->  59.6015     rms:  45.6781 -->  47.8630    
-      _lPOGLoose                                         mean:   0.7020 -->   0.7333     rms:   0.4574 -->   0.4422    
-      _lPOGMedium                                        mean:   0.6118 -->   0.6667     rms:   0.4873 -->   0.4714    
-      _lPOGTight                                         mean:   0.5608 -->   0.6118     rms:   0.4963 -->   0.4873    
-      _lPOGVeto                                          mean:   0.7451 -->   0.7608     rms:   0.4358 -->   0.4266    
-      _met                                               mean:  50.0421 -->  49.7489     rms:  28.2272 -->  28.2670    
-      _metJECDown                                        mean:  48.2055 -->  48.1294     rms:  27.0585 -->  27.4392    
-      _metJECUp                                          mean:  52.2748 -->  51.5209     rms:  29.6907 -->  29.2693    
-      _metPhi                                            mean:  -0.0308 -->  -0.1284     rms:   1.3705 -->   1.3540    
-      _metPhiJECDown                                     mean:  -0.0256 -->  -0.0715     rms:   1.3484 -->   1.3411    
-      _metPhiJECUp                                       mean:  -0.0430 -->  -0.1308     rms:   1.3830 -->   1.3726    
-      _metPhiUnclDown                                    mean:   0.0664 -->  -0.1258     rms:   1.4078 -->   1.3834    
-      _metPhiUnclUp                                      mean:  -0.0358 -->  -0.0797     rms:   1.3466 -->   1.3393    
-      _metSignificance                                   mean:   4.9229 -->   4.8449     rms:   4.4419 -->   4.4516    
-      _metUnclDown                                       mean:  49.9192 -->  49.1598     rms:  27.6921 -->  28.1232    
-      _metUnclUp                                         mean:  50.9134 -->  51.0032     rms:  29.0198 -->  28.7850    
-      _nJets                                             mean:   2.3600 -->   2.0500     rms:   1.4319 -->   1.2679    
-      _ptRatio                                           mean:   0.7325 -->   0.7337     rms:   0.2691 -->   0.2712    
-      _ptRel                                             mean:   5.8926 -->   5.8640     rms:   6.4633 -->   6.4723    
-      _selectedTrackMult                                 mean:   1.5778 -->   1.5556     rms:   1.4528 -->   1.3806    
+      _leptonMvaTTH                                      mean:   0.1410 -->   0.1399     rms:   0.9045 -->   0.9058    
+      _ptRatio                                           mean:   0.7337 -->   0.7277     rms:   0.2712 -->   0.2687    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _Flag_globalSuperTightHalo2016Filter,_HLT_AK8PFJet500,_HLT_AK8PFJet500_prescale,_HLT_CaloJet500_NoJetID,_HLT_CaloJet500_NoJetID_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_prescale,_HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1_prescale,_HLT_IsoMu24_eta2p1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1_prescale,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1_prescale,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1_prescale,_HLT_IsoMu24_eta2p1_prescale,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu17,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu17_prescale,_HLT_Mu20,_HLT_Mu20_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu27,_HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu27_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale,_HLT_Mu3_PFJet40,_HLT_Mu3_PFJet40_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu8,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu8_TrkIsoVVL_prescale,_HLT_Mu8_prescale,_HLT_OldMu100,_HLT_OldMu100_prescale,_HLT_PFHT500_PFMET100_PFMHT100_IDTight,_HLT_PFHT500_PFMET100_PFMHT100_IDTight_prescale,_HLT_PFHT700_PFMET85_PFMHT85_IDTight,_HLT_PFHT700_PFMET85_PFMHT85_IDTight_prescale,_HLT_PFHT800_PFMET75_PFMHT75_IDTight,_HLT_PFHT800_PFMET75_PFMHT75_IDTight_prescale,_HLT_PFJet500,_HLT_PFJet500_prescale,_HLT_PFMET140_PFMHT140_IDTight,_HLT_PFMET140_PFMHT140_IDTight_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_HLT_TkMu100,_HLT_TkMu100_prescale,_HLT_TripleMu_10_5_5_DZ,_HLT_TripleMu_10_5_5_DZ_prescale,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_prescale,_TripleMu_12_10_5,_closestJetDeepCsv,_closestJetDeepFlavor,_closestJetDeepFlavor_b,_closestJetDeepFlavor_bb,_closestJetDeepFlavor_lepb,_is2017,_is2018,_jetDeepCsv,_jetDeepFlavor,_jetDeepFlavor_b,_jetDeepFlavor_bb,_jetDeepFlavor_c,_jetDeepFlavor_g,_jetDeepFlavor_lepb,_jetDeepFlavor_uds,_lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_leptonMvaTTH,_leptonMvatZq,_passTrigger_FR,_passTrigger_FR_iso,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_ref,_phHadTowOverEm,_tauAgainstElectronMVA6Raw,_tauCombinedIsoDBRaw3Hits,_tauIsoMVADBdR03newDMwLT,_tauIsoMVADBdR03oldDMwLT,_tauIsoMVAPWdR03oldDMwLT,_tauIsoMVAPWnewDMwLT,_tauIsoMVAPWoldDMwLT
    Changed:
-      _HLT_Ele32_WPTight_Gsf                             mean:   0.0000 -->   0.1200     rms:   0.0000 -->   0.3250    
-      _dz                                                mean:  -0.2130 -->  -0.1741     rms:   2.5866 -->   2.8510    
-      _ecalPFClusterIso                                  mean:  -1.0000 -->   4.3975     rms:   0.0000 -->   7.5304    
-      _hcalPFClusterIso                                  mean:  -1.0000 -->   3.2335     rms:   0.0000 -->   4.5018    
-      _jetChargedEmFraction                              mean:   0.0927 -->   0.1005     rms:   0.2418 -->   0.2502    
-      _jetChargedHadronFraction                          mean:   0.3680 -->   0.3758     rms:   0.2567 -->   0.2545    
-      _jetCsvV2                                          mean:  -1.1732 -->  -0.8002     rms:   3.7195 -->   3.3094    
-      _jetDeepCsv_b                                      mean:  -0.2543 -->  -0.2036     rms:   0.5312 -->   0.5110    
-      _jetDeepCsv_bb                                     mean:  -0.3240 -->  -0.2780     rms:   0.4699 -->   0.4501    
-      _jetDeepCsv_c                                      mean:  -0.2303 -->  -0.1778     rms:   0.5382 -->   0.5162    
-      _jetDeepCsv_udsg                                   mean:   0.1796 -->   0.2599     rms:   0.8330 -->   0.8002    
-      _jetE                                              mean: 210.6096 --> 206.4288     rms: 249.4190 --> 253.5792    
-      _jetEta                                            mean:   0.0468 -->   0.0555     rms:   1.9212 -->   1.7839    
-      _jetHFEmFraction                                   mean:   0.0160 -->   0.0093     rms:   0.0509 -->   0.0370    
-      _jetHFHadronFraction                               mean:   0.0629 -->   0.0431     rms:   0.2139 -->   0.1806    
-      _jetIsTight                                        mean:   0.9749 -->   0.9728     rms:   0.1563 -->   0.1626    
-      _jetIsTightLepVeto                                 mean:   0.9273 -->   0.9212     rms:   0.2596 -->   0.2694    
-      _jetNeutralEmFraction                              mean:   0.3821 -->   0.4010     rms:   0.2854 -->   0.2863    
-      _jetNeutralHadronFraction                          mean:   0.1543 -->   0.1196     rms:   0.2429 -->   0.2052    
-      _jetPhi                                            mean:  -0.0295 -->  -0.0022     rms:   1.8154 -->   1.8261    
-      _jetPt                                             mean:  62.2149 -->  65.7619     rms:  74.8936 -->  76.9379    
-      _jetPt_JECDown                                     mean:  59.4183 -->  64.2838     rms:  74.9338 -->  76.6848    
-      _jetPt_JECUp                                       mean:  65.0114 -->  67.2401     rms:  75.0158 -->  77.2149    
-      _jetPt_L1                                          mean:  53.3326 -->  56.9010     rms:  70.3488 -->  72.1208    
-      _jetPt_L2                                          mean:  59.5069 -->  63.0722     rms:  74.3979 -->  76.4038    
-      _jetPt_L3                                          mean:  59.5069 -->  63.0722     rms:  74.3979 -->  76.4038    
-      _jetPt_Uncorrected                                 mean:  56.9183 -->  60.0574     rms:  68.7417 -->  70.6663    
-      _jetSmearedPt                                      mean:  62.2149 -->  65.7619     rms:  74.8936 -->  76.9379    
-      _jetSmearedPt_JECDown                              mean:  59.4183 -->  64.2838     rms:  74.9338 -->  76.6848    
-      _jetSmearedPt_JECUp                                mean:  65.0114 -->  67.2401     rms:  75.0158 -->  77.2149    
-      _jetSmearedPt_JERDown                              mean:  62.2149 -->  65.7619     rms:  74.8936 -->  76.9379    
-      _jetSmearedPt_JERUp                                mean:  62.2149 -->  65.7619     rms:  74.8936 -->  76.9379    
-      _lPOGLoose                                         mean:   0.2532 -->   0.2658     rms:   0.4348 -->   0.4418    
-      _lPOGMedium                                        mean:   0.2068 -->   0.2194     rms:   0.4050 -->   0.4138    
-      _lPOGTight                                         mean:   0.1561 -->   0.1646     rms:   0.3630 -->   0.3708    
-      _lPOGVeto                                          mean:   0.2954 -->   0.3122     rms:   0.4562 -->   0.4634    
-      _nJets                                             mean:   3.9900 -->   3.6800     rms:   1.6643 -->   1.5419    
-      _relIso0p4                                         mean:   0.6745 -->   0.6743     rms:   1.0854 -->   1.0856    
-      _selectedTrackMult                                 mean:   2.1622 -->   2.1081     rms:   2.0337 -->   1.9652    
+      _closestJEC                                        mean:   1.1187 -->   1.1169     rms:   0.2983 -->   0.2971    
+      _closestJetDeepCsv                                 mean:  -0.3682 -->  -0.3686     rms:   0.8885 -->   0.8883    
+      _closestJetDeepCsv_b                               mean:  -0.1446 -->  -0.1450     rms:   0.4771 -->   0.4769    
+      _closestJetDeepFlavor                              mean:   0.0863 -->   0.0858     rms:   0.1473 -->   0.1475    
+      _closestJetDeepFlavor_b                            mean:   0.0439 -->   0.0435     rms:   0.0859 -->   0.0859    
+      _closestJetDeepFlavor_bb                           mean:   0.0010 -->   0.0010     rms:   0.0017 -->   0.0017    
+      _closestJetDeepFlavor_lepb                         mean:   0.0414 -->   0.0413     rms:   0.0772 -->   0.0772    
+      _closest_l1JetE                                    mean: 131.6941 --> 132.5025     rms: 118.0101 --> 117.5361    
+      _closest_l1JetPx                                   mean:  -0.1983 -->  -0.1308     rms:  42.8995 -->  42.9187    
+      _closest_l1JetPy                                   mean:   0.8452 -->   0.5879     rms:  53.7555 -->  53.8276    
+      _closest_l1JetPz                                   mean:  -2.1507 -->  -2.9309     rms: 162.5950 --> 162.8672    
+      _closest_lJetE                                     mean: 154.7668 --> 155.7097     rms: 137.5587 --> 137.0271    
+      _closest_lJetPx                                    mean:  -0.0785 -->  -0.0118     rms:  47.8658 -->  47.8872    
+      _closest_lJetPy                                    mean:   0.8145 -->   0.5044     rms:  59.5459 -->  59.6396    
+      _closest_lJetPz                                    mean:  -4.9013 -->  -5.8141     rms: 192.0717 --> 192.3936    
+      _closest_lepAwareJetE                              mean: 140.0869 --> 141.0616     rms: 123.9560 --> 123.4185    
+      _closest_lepAwareJetPx                             mean:  -0.3101 -->  -0.2302     rms:  44.6726 -->  44.6965    
+      _closest_lepAwareJetPy                             mean:   0.9175 -->   0.6073     rms:  56.2353 -->  56.3349    
+      _closest_lepAwareJetPz                             mean:  -3.4523 -->  -4.3941     rms: 172.3508 --> 172.7015    
+      _leptonMvaTTH                                      mean:  -0.5461 -->  -0.5507     rms:   0.6924 -->   0.6939    
+      _ptRatio                                           mean:   0.6481 -->   0.6392     rms:   0.2401 -->   0.2396    
+      _ptRel                                             mean:   6.2703 -->   6.1804     rms:  15.7480 -->  15.7104    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _Flag_globalSuperTightHalo2016Filter,_HLT_CaloJet500_NoJetID,_HLT_CaloJet500_NoJetID_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_DoubleEle33_CaloIdL_GsfTrkIdVL,_HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW,_HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_prescale,_HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_prescale,_HLT_Ele105_CaloIdVT_GsfTrkIdT,_HLT_Ele105_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele12_CaloIdM_TrackIdM_PFJet30,_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_prescale,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30_prescale,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu22,_HLT_IsoMu22_eta2p1,_HLT_IsoMu22_eta2p1_prescale,_HLT_IsoMu22_prescale,_HLT_IsoTkMu22,_HLT_IsoTkMu22_eta2p1,_HLT_IsoTkMu22_eta2p1_prescale,_HLT_IsoTkMu22_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale,_HLT_MET200,_HLT_MET200_prescale,_HLT_Mu17,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale,_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ,_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu17_prescale,_HLT_Mu20,_HLT_Mu20_prescale,_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu27,_HLT_Mu27_prescale,_HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL,_HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL_prescale,_HLT_Mu30_TkMu11,_HLT_Mu30_TkMu11_prescale,_HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL,_HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL_prescale,_HLT_Mu3_PFJet40,_HLT_Mu3_PFJet40_prescale,_HLT_Mu45_eta2p1,_HLT_Mu45_eta2p1_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu8,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu8_TrkIsoVVL_prescale,_HLT_Mu8_prescale,_HLT_PFHT300_PFMET110,_HLT_PFHT300_PFMET110_prescale,_HLT_PFHT350_DiPFJetAve90_PFAlphaT0p53,_HLT_PFHT350_DiPFJetAve90_PFAlphaT0p53_prescale,_HLT_PFHT400_DiPFJetAve90_PFAlphaT0p52,_HLT_PFHT400_DiPFJetAve90_PFAlphaT0p52_prescale,_HLT_PFHT400_SixJet30_DoubleBTagCSV_p056,_HLT_PFHT400_SixJet30_DoubleBTagCSV_p056_prescale,_HLT_PFHT650_WideJetMJJ900DEtaJJ1p5,_HLT_PFHT650_WideJetMJJ900DEtaJJ1p5_prescale,_HLT_PFHT900,_HLT_PFHT900_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET170_HBHECleaned,_HLT_PFMET170_HBHECleaned_prescale,_HLT_PFMET300,_HLT_PFMET300_prescale,_HLT_Photon175,_HLT_Photon175_prescale,_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL,_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ,_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale,_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale,_HLT_TkMu50,_HLT_TkMu50_prescale,_HLT_TripleMu_12_10_5,_HLT_TripleMu_12_10_5_prescale,_closestJetDeepCsv,_closestJetDeepFlavor,_closestJetDeepFlavor_b,_closestJetDeepFlavor_bb,_closestJetDeepFlavor_lepb,_is2017,_is2018,_jetDeepCsv,_jetDeepFlavor,_jetDeepFlavor_b,_jetDeepFlavor_bb,_jetDeepFlavor_c,_jetDeepFlavor_g,_jetDeepFlavor_lepb,_jetDeepFlavor_uds,_lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_leptonMvaTTH,_leptonMvatZq,_passTrigger_FR,_passTrigger_FR_iso,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mAN094,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_ref,_phHadTowOverEm,_tauAgainstElectronMVA6Raw,_tauCombinedIsoDBRaw3Hits,_tauIsoMVADBdR03newDMwLT,_tauIsoMVADBdR03oldDMwLT,_tauIsoMVAPWdR03oldDMwLT,_tauIsoMVAPWnewDMwLT,_tauIsoMVAPWoldDMwLT
    Changed:
-      _dz                                                mean:  -0.2283 -->  -0.3831     rms:   3.0151 -->   3.2495    
-      _ecalPFClusterIso                                  mean:  -1.0000 -->   8.8572     rms:   0.0000 -->  15.8849    
-      _hcalPFClusterIso                                  mean:  -1.0000 -->   5.4547     rms:   0.0000 -->   6.9352    
-      _lPOGLoose                                         mean:   0.2007 -->   0.2268     rms:   0.4006 -->   0.4187    
-      _lPOGMedium                                        mean:   0.1264 -->   0.1487     rms:   0.3323 -->   0.3558    
-      _lPOGTight                                         mean:   0.1041 -->   0.1227     rms:   0.3054 -->   0.3281    
-      _lPOGVeto                                          mean:   0.2528 -->   0.2677     rms:   0.4346 -->   0.4427    
-      _miniIso                                           mean:   0.4718 -->   0.4622     rms:   0.5396 -->   0.5374    
-      _relIso0p4                                         mean:   0.7453 -->   0.7455     rms:   0.9756 -->   0.9758    
-      _selectedTrackMult                                 mean:   2.3158 -->   2.2556     rms:   2.3440 -->   2.2366    
+      _closestJEC                                        mean:   1.1054 -->   1.1157     rms:   0.2747 -->   0.2583    
+      _closestJetCsvV2                                   mean:  -0.1811 -->  -0.1771     rms:   2.3272 -->   2.3279    
+      _closestJetDeepCsv                                 mean:  -0.3556 -->  -0.3706     rms:   0.9817 -->   0.9914    
+      _closestJetDeepCsv_b                               mean:  -0.1056 -->  -0.1131     rms:   0.5543 -->   0.5596    
+      _closestJetDeepCsv_bb                              mean:  -0.2500 -->  -0.2575     rms:   0.4397 -->   0.4439    
+      _closestJetDeepFlavor                              mean:   0.0824 -->   0.0828     rms:   0.1399 -->   0.1398    
+      _closestJetDeepFlavor_b                            mean:   0.0420 -->   0.0424     rms:   0.0638 -->   0.0637    
+      _closestJetDeepFlavor_bb                           mean:   0.0010 -->   0.0010     rms:   0.0015 -->   0.0015    
+      _closestJetDeepFlavor_lepb                         mean:   0.0394 -->   0.0394     rms:   0.0877 -->   0.0877    
+      _closest_l1JetE                                    mean: 148.7861 --> 148.9025     rms: 141.4982 --> 141.3820    
+      _closest_l1JetPx                                   mean:   1.6055 -->   1.5578     rms:  55.7981 -->  55.8021    
+      _closest_lJetE                                     mean: 171.0591 --> 171.2184     rms: 161.4092 --> 161.2506    
+      _closest_lJetPx                                    mean:   1.4032 -->   1.3380     rms:  62.7283 -->  62.7343    
+      _closest_lepAwareJetE                              mean: 156.9285 --> 157.0575     rms: 148.5607 --> 148.4318    
+      _closest_lepAwareJetPx                             mean:   1.5568 -->   1.5023     rms:  58.2661 -->  58.2709    
+      _closest_lepAwareJetPz                             mean:   1.0834 -->   0.9685     rms: 197.6569 --> 197.6620    
+      _leptonMvaTTH                                      mean:  -0.6986 -->  -0.6994     rms:   0.5832 -->   0.5835    
+      _ptRatio                                           mean:   0.6430 -->   0.6362     rms:   0.2448 -->   0.2396    
+      _ptRel                                             mean:   7.0347 -->   7.0829     rms:   8.8503 -->   8.8293    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _Flag_globalSuperTightHalo2016Filter,_HLT_AK8PFJet400_TrimMass30,_HLT_AK8PFJet400_TrimMass30_prescale,_HLT_AK8PFJet500,_HLT_AK8PFJet500_prescale,_HLT_CaloJet500_NoJetID,_HLT_CaloJet500_NoJetID_prescale,_HLT_CaloMET350_HBHECleaned,_HLT_CaloMET350_HBHECleaned_prescale,_HLT_DiJet110_35_Mjj650_PFMET110,_HLT_DiJet110_35_Mjj650_PFMET110_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_prescale,_HLT_DoubleEle25_CaloIdL_MW,_HLT_DoubleEle25_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1_prescale,_HLT_IsoMu27_LooseChargedIsoPFTau20_Trk1_eta2p1_SingleL1,_HLT_IsoMu27_LooseChargedIsoPFTau20_Trk1_eta2p1_SingleL1_prescale,_HLT_IsoMu27_LooseChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1,_HLT_IsoMu27_LooseChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1_prescale,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu17,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu17_prescale,_HLT_Mu20,_HLT_Mu20_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu27,_HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu27_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale,_HLT_Mu3_PFJet40,_HLT_Mu3_PFJet40_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu8,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu8_TrkIsoVVL_prescale,_HLT_Mu8_prescale,_HLT_OldMu100,_HLT_OldMu100_prescale,_HLT_PFHT1050,_HLT_PFHT1050_prescale,_HLT_PFHT500_PFMET100_PFMHT100_IDTight,_HLT_PFHT500_PFMET100_PFMHT100_IDTight_prescale,_HLT_PFHT700_PFMET85_PFMHT85_IDTight,_HLT_PFHT700_PFMET85_PFMHT85_IDTight_prescale,_HLT_PFHT800_PFMET75_PFMHT75_IDTight,_HLT_PFHT800_PFMET75_PFMHT75_IDTight_prescale,_HLT_PFJet500,_HLT_PFJet500_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET200_HBHE_BeamHaloCleaned,_HLT_PFMET200_HBHE_BeamHaloCleaned_prescale,_HLT_PFMET250_HBHECleaned,_HLT_PFMET250_HBHECleaned_prescale,_HLT_PFMETTypeOne140_PFMHT140_IDTight,_HLT_PFMETTypeOne140_PFMHT140_IDTight_prescale,_HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned,_HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_HLT_TkMu100,_HLT_TkMu100_prescale,_HLT_TripleJet110_35_35_Mjj650_PFMET110,_HLT_TripleJet110_35_35_Mjj650_PFMET110_prescale,_HLT_TripleMu_10_5_5_DZ,_HLT_TripleMu_10_5_5_DZ_prescale,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_prescale,_TripleMu_12_10_5,_closestJetDeepCsv,_closestJetDeepFlavor,_closestJetDeepFlavor_b,_closestJetDeepFlavor_bb,_closestJetDeepFlavor_lepb,_gen_lDecayedHadr,_is2017,_is2018,_jetDeepCsv,_jetDeepFlavor,_jetDeepFlavor_b,_jetDeepFlavor_bb,_jetDeepFlavor_c,_jetDeepFlavor_g,_jetDeepFlavor_lepb,_jetDeepFlavor_uds,_lECorr,_lEResDown,_lEResUp,_lEScaleDown,_lEScaleUp,_lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_lMatchCharge,_lPtCorr,_lPtResDown,_lPtResUp,_lPtScaleDown,_lPtScaleUp,_leptonMvaTTH,_leptonMvatZq,_passTrigger_FR,_passTrigger_FR_iso,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_ref,_phECorr,_phEResDown,_phEResUp,_phEScaleDown,_phEScaleUp,_phHadTowOverEm,_phPtCorr,_phPtResDown,_phPtResUp,_phPtScaleDown,_phPtScaleUp,_pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJets,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt,_tauAgainstElectronMVA6Raw,_tauCombinedIsoDBRaw3Hits,_tauGenStatus,_tauIsoMVADBdR03newDMwLT,_tauIsoMVADBdR03oldDMwLT,_tauIsoMVAPWdR03oldDMwLT,_tauIsoMVAPWnewDMwLT,_tauIsoMVAPWoldDMwLT
-   Removed: _jetIsLoose
    Changed:
-      _dxy                                               mean:   0.0065 -->   0.0072     rms:   0.1850 -->   0.1850    
-      _jetChargedEmFraction                              mean:   0.1477 -->   0.1548     rms:   0.3000 -->   0.3054    
-      _jetChargedHadronFraction                          mean:   0.2696 -->   0.2753     rms:   0.2630 -->   0.2662    
-      _jetCsvV2                                          mean:  -2.4077 -->  -2.1360     rms:   4.5641 -->   4.4072    
-      _jetDeepCsv_b                                      mean:  -0.3646 -->  -0.3304     rms:   0.5440 -->   0.5378    
-      _jetDeepCsv_bb                                     mean:  -0.4166 -->  -0.3853     rms:   0.4943 -->   0.4881    
-      _jetDeepCsv_c                                      mean:  -0.3435 -->  -0.3083     rms:   0.5582 -->   0.5513    
-      _jetDeepCsv_udsg                                   mean:   0.0353 -->   0.0905     rms:   0.8853 -->   0.8745    
-      _jetE                                              mean: 160.5150 --> 155.5209     rms: 169.4504 --> 166.5447    
-      _jetEta                                            mean:  -0.1003 -->  -0.1073     rms:   1.8953 -->   1.8150    
-      _jetHFEmFraction                                   mean:   0.0105 -->   0.0084     rms:   0.0400 -->   0.0380    
-      _jetHFHadronFraction                               mean:   0.0784 -->   0.0671     rms:   0.2421 -->   0.2299    
-      _jetHadronFlavor                                   mean:   0.1383 -->   0.1329     rms:   0.7309 -->   0.7170    
-      _jetIsTight                                        mean:   0.9625 -->   0.9607     rms:   0.1899 -->   0.1942    
-      _jetIsTightLepVeto                                 mean:   0.7781 -->   0.7644     rms:   0.4155 -->   0.4244    
-      _jetNeutralEmFraction                              mean:   0.2776 -->   0.2846     rms:   0.2940 -->   0.2964    
-      _jetNeutralHadronFraction                          mean:   0.1951 -->   0.1698     rms:   0.2906 -->   0.2680    
-      _jetPhi                                            mean:  -0.0331 -->  -0.0348     rms:   1.8066 -->   1.8180    
-      _jetPt                                             mean:  45.7466 -->  46.9608     rms:  34.7861 -->  35.1640    
-      _jetPt_JECDown                                     mean:  43.4959 -->  45.7097     rms:  35.1910 -->  34.8685    
-      _jetPt_JECUp                                       mean:  47.9973 -->  48.2118     rms:  34.5876 -->  35.4683    
-      _jetPt_L1                                          mean:  40.3073 -->  41.6563     rms:  33.4435 -->  33.6596    
-      _jetPt_L2                                          mean:  45.7466 -->  46.9608     rms:  34.7861 -->  35.1640    
-      _jetPt_L3                                          mean:  45.7466 -->  46.9608     rms:  34.7861 -->  35.1640    
-      _jetPt_Uncorrected                                 mean:  44.0567 -->  45.1222     rms:  32.1734 -->  32.5453    
-      _jetSmearedPt                                      mean:  46.7674 -->  48.2816     rms:  35.0216 -->  35.1295    
-      _jetSmearedPt_JECDown                              mean:  43.5166 -->  47.0017     rms:  35.1938 -->  34.8332    
-      _jetSmearedPt_JECUp                                mean:  47.9766 -->  49.5615     rms:  34.5809 -->  35.4352    
-      _jetSmearedPt_JERDown                              mean:  46.3437 -->  47.7916     rms:  34.8604 -->  35.0276    
-      _jetSmearedPt_JERUp                                mean:  47.2184 -->  48.7843     rms:  35.1742 -->  35.2377    
-      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.4702 -->  24.0066     rms:   0.4991 -->  65.0162    
-      _lPOGLoose                                         mean:   0.6523 -->   0.6887     rms:   0.4762 -->   0.4630    
-      _lPOGMedium                                        mean:   0.5927 -->   0.6258     rms:   0.4913 -->   0.4839    
-      _lPOGTight                                         mean:   0.5099 -->   0.5629     rms:   0.4999 -->   0.4960    
-      _lPOGVeto                                          mean:   0.7384 -->   0.7616     rms:   0.4395 -->   0.4261    
-      _nJets                                             mean:   3.4700 -->   3.3100     rms:   1.4796 -->   1.4050    
-      _phTTGMatchCategory                                mean:   1.9267 -->   1.7906     rms:   1.1044 -->   0.9964    
-      _relIso0p4                                         mean:   0.3488 -->   0.3485     rms:   0.6410 -->   0.6409    
-      _selectedTrackMult                                 mean:   1.2611 -->   1.2229     rms:   0.8680 -->   0.8491    
+      _lGenIndex                                         mean:  50.0000 --> 49770903.0795 rms:   0.0000 --> 169386018.7814
+      _lIsPrompt                                         mean:   0.5828 -->   0.8477     rms:   0.4931 -->   0.3593    
+      _lIsPromptDecayed                                  mean:   0.0960 -->  11.5265     rms:   0.2946 -->  34.1194    
+      _lIsPromptFinalState                               mean:   0.4603 -->   8.6821     rms:   0.4984 -->  28.2826    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:  24.0066 -->  11.3377     rms:  65.0162 -->  33.2221    
+      _lMatchCharge                                      mean:  -0.0331 --> 32420669.5397 rms:   0.7180 --> 147034016.0742
+      _lMatchEta                                         mean:   0.0686 -->   0.5004     rms:   1.0920 -->   1.2459    
+      _lMatchPdgId                                       mean:   3.0795 -->   2.4272     rms:  21.7435 -->  14.3930    
+      _lMatchPhi                                         mean:  -0.0059 -->   0.2068     rms:   1.5026 -->   1.9244    
+      _lMatchPt                                          mean:  23.5795 -->  23.9158     rms:  31.6867 -->  28.8604    
+      _lMatchType                                        mean:   2.7550 --> 55555932.0132 rms:   2.8072 --> 189075114.0133
+      _lMatchVertexX                                     mean:   0.0043 -->   0.0056     rms:   0.0753 -->   0.0742    
+      _lMatchVertexY                                     mean:   0.0294 -->   0.0372     rms:   0.0481 -->   0.0372    
+      _lMatchVertexZ                                     mean:  -0.0426 -->   0.3575     rms:   2.5821 -->   3.0951    
+      _lMomPdgId                                         mean:  11.3609 -->  16.7152     rms:  42.3230 -->  41.6511    
+      _lProvenance                                       mean:   7.7980 -->   3.1391     rms:   8.7240 -->   6.6213    
+      _lProvenanceCompressed                             mean:   1.5795 -->   0.5662     rms:   1.9306 -->   1.3668    
+      _lProvenanceConversion                             mean:  88.8742 -->  90.8411     rms:  29.9397 -->  27.1594    
+      _leptonMvaTTH                                      mean:   0.2092 -->   0.2081     rms:   0.8043 -->   0.8057    
+      _ptRatio                                           mean:   0.7508 -->   0.7482     rms:   0.2406 -->   0.2395    
+      _tauGenStatus                                      mean:   4.1060 -->   2.7351     rms:   2.1428 -->   1.9707    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _Flag_globalSuperTightHalo2016Filter,_HLT_AK8PFJet500,_HLT_AK8PFJet500_prescale,_HLT_CaloJet500_NoJetID,_HLT_CaloJet500_NoJetID_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_prescale,_HLT_DoubleEle33_CaloIdL_MW,_HLT_DoubleEle33_CaloIdL_MW_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_prescale,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1,_HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1_prescale,_HLT_IsoMu24_eta2p1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1_prescale,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1_prescale,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1,_HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1_prescale,_HLT_IsoMu24_eta2p1_prescale,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu17,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu17_prescale,_HLT_Mu20,_HLT_Mu20_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu27,_HLT_Mu27_Ele37_CaloIdL_MW,_HLT_Mu27_Ele37_CaloIdL_MW_prescale,_HLT_Mu27_prescale,_HLT_Mu37_Ele27_CaloIdL_MW,_HLT_Mu37_Ele27_CaloIdL_MW_prescale,_HLT_Mu37_TkMu27,_HLT_Mu37_TkMu27_prescale,_HLT_Mu3_PFJet40,_HLT_Mu3_PFJet40_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu8,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu8_TrkIsoVVL_prescale,_HLT_Mu8_prescale,_HLT_OldMu100,_HLT_OldMu100_prescale,_HLT_PFHT500_PFMET100_PFMHT100_IDTight,_HLT_PFHT500_PFMET100_PFMHT100_IDTight_prescale,_HLT_PFHT700_PFMET85_PFMHT85_IDTight,_HLT_PFHT700_PFMET85_PFMHT85_IDTight_prescale,_HLT_PFHT800_PFMET75_PFMHT75_IDTight,_HLT_PFHT800_PFMET75_PFMHT75_IDTight_prescale,_HLT_PFJet500,_HLT_PFJet500_prescale,_HLT_PFMET140_PFMHT140_IDTight,_HLT_PFMET140_PFMHT140_IDTight_prescale,_HLT_Photon200,_HLT_Photon200_prescale,_HLT_TkMu100,_HLT_TkMu100_prescale,_HLT_TripleMu_10_5_5_DZ,_HLT_TripleMu_10_5_5_DZ_prescale,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ,_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_prescale,_TripleMu_12_10_5,_closestJetDeepCsv,_closestJetDeepFlavor,_closestJetDeepFlavor_b,_closestJetDeepFlavor_bb,_closestJetDeepFlavor_lepb,_gen_lDecayedHadr,_is2017,_is2018,_jetDeepCsv,_jetDeepFlavor,_jetDeepFlavor_b,_jetDeepFlavor_bb,_jetDeepFlavor_c,_jetDeepFlavor_g,_jetDeepFlavor_lepb,_jetDeepFlavor_uds,_lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_lMatchCharge,_leptonMvaTTH,_leptonMvatZq,_passTrigger_FR,_passTrigger_FR_iso,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_ref,_phHadTowOverEm,_pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJets,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt,_prefireWeight,_prefireWeightDown,_prefireWeightUp,_tauAgainstElectronMVA6Raw,_tauCombinedIsoDBRaw3Hits,_tauGenStatus,_tauIsoMVADBdR03newDMwLT,_tauIsoMVADBdR03oldDMwLT,_tauIsoMVAPWdR03oldDMwLT,_tauIsoMVAPWnewDMwLT,_tauIsoMVAPWoldDMwLT
    Changed:
-      _ecalPFClusterIso                                  mean:  -1.0000 -->   0.2970     rms:   0.0000 -->   2.0120    
-      _hcalPFClusterIso                                  mean:  -1.0000 -->   0.4603     rms:   0.0000 -->   2.4176    
-      _jetChargedEmFraction                              mean:   0.0959 -->   0.0994     rms:   0.2615 -->   0.2655    
-      _jetChargedHadronFraction                          mean:   0.3419 -->   0.3508     rms:   0.3108 -->   0.3109    
-      _jetCsvV2                                          mean:  -2.6463 -->  -2.4494     rms:   4.7016 -->   4.6035    
-      _jetDeepCsv_b                                      mean:  -0.4167 -->  -0.3999     rms:   0.5489 -->   0.5468    
-      _jetDeepCsv_bb                                     mean:  -0.4638 -->  -0.4476     rms:   0.4999 -->   0.4985    
-      _jetDeepCsv_c                                      mean:  -0.3913 -->  -0.3731     rms:   0.5712 -->   0.5696    
-      _jetDeepCsv_udsg                                   mean:  -0.0531 -->  -0.0235     rms:   0.8909 -->   0.8896    
-      _jetE                                              mean: 205.5193 --> 197.9518     rms: 250.4918 --> 244.2356    
-      _jetEta                                            mean:  -0.1512 -->  -0.1036     rms:   2.2129 -->   2.1542    
-      _jetHFEmFraction                                   mean:   0.0208 -->   0.0190     rms:   0.0524 -->   0.0496    
-      _jetHFHadronFraction                               mean:   0.1529 -->   0.1371     rms:   0.3261 -->   0.3128    
-      _jetHadronFlavor                                   mean:   0.0892 -->   0.0792     rms:   0.5905 -->   0.5573    
-      _jetIsTight                                        mean:   0.9936 -->   0.9934     rms:   0.0796 -->   0.0810    
-      _jetIsTightLepVeto                                 mean:   0.8089 -->   0.8020     rms:   0.3932 -->   0.3985    
-      _jetNeutralEmFraction                              mean:   0.1635 -->   0.1673     rms:   0.1885 -->   0.1908    
-      _jetNeutralHadronFraction                          mean:   0.2682 -->   0.2473     rms:   0.3328 -->   0.3196    
-      _jetPhi                                            mean:   0.0870 -->   0.0774     rms:   1.8333 -->   1.8353    
-      _jetPt                                             mean:  40.1152 -->  40.8043     rms:  24.0268 -->  24.1813    
-      _jetPt_JECDown                                     mean:  37.5703 -->  39.3611     rms:  24.6411 -->  24.2990    
-      _jetPt_JECUp                                       mean:  42.6602 -->  42.2476     rms:  23.7557 -->  24.1138    
-      _jetPt_L1                                          mean:  34.4907 -->  35.2500     rms:  23.7211 -->  23.8033    
-      _jetPt_L2                                          mean:  40.1152 -->  40.8043     rms:  24.0268 -->  24.1813    
-      _jetPt_L3                                          mean:  40.1152 -->  40.8043     rms:  24.0268 -->  24.1813    
-      _jetPt_Uncorrected                                 mean:  39.4844 -->  40.1190     rms:  22.1331 -->  22.2435    
-      _jetSmearedPt                                      mean:  42.9846 -->  44.1369     rms:  23.8817 -->  23.4879    
-      _jetSmearedPt_JECDown                              mean:  37.6215 -->  42.5214     rms:  24.5909 -->  23.4996    
-      _jetSmearedPt_JECUp                                mean:  42.6090 -->  45.7524     rms:  23.8015 -->  23.5627    
-      _jetSmearedPt_JERDown                              mean:  41.2449 -->  42.1592     rms:  24.0688 -->  23.9902    
-      _jetSmearedPt_JERUp                                mean:  44.2742 -->  45.5479     rms:  24.5041 -->  23.9682    
-      _lPOGLoose                                         mean:   0.6708 -->   0.7160     rms:   0.4699 -->   0.4509    
-      _lPOGMedium                                        mean:   0.5926 -->   0.6543     rms:   0.4914 -->   0.4756    
-      _lPOGTight                                         mean:   0.5144 -->   0.5844     rms:   0.4998 -->   0.4928    
-      _lPOGVeto                                          mean:   0.7407 -->   0.7572     rms:   0.4382 -->   0.4288    
-      _nJets                                             mean:   3.1400 -->   3.0300     rms:   2.3665 -->   2.3726    
-      _phTTGMatchCategory                                mean:   2.3548 -->   2.4194     rms:   0.9349 -->   0.8337    
-      _selectedTrackMult                                 mean:   1.1500 -->   1.1333     rms:   0.8332 -->   0.8260    
+      _lGenIndex                                         mean:  50.0000 -->   0.0000     rms:   0.0000 -->   0.0000    
+      _lIsPrompt                                         mean:   0.5103 -->   0.7778     rms:   0.4999 -->   0.4157    
+      _lIsPromptDecayed                                  mean:   0.0905 -->  32.1358     rms:   0.2869 -->  61.0144    
+      _lIsPromptFinalState                               mean:   0.3539 -->   4.8436     rms:   0.4782 -->  16.7369    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.2387 -->  34.3086     rms:   0.4263 -->  61.8015    
+      _lMatchCharge                                      mean:  -0.0123 --> -275560209.7325 rms:   0.7285 --> 650210912.6314
+      _lMatchEta                                         mean:  -0.0289 -->   0.0161     rms:   1.0479 -->   0.9948    
+      _lMatchPdgId                                       mean:  -4.5473 -->  -1.6626     rms:  35.0689 -->  22.1101    
+      _lMatchPhi                                         mean:   0.0930 -->   0.1184     rms:   1.3405 -->   1.3702    
+      _lMatchPt                                          mean:  19.6835 -->  19.4159     rms:  23.1135 -->  23.1059    
+      _lMatchType                                        mean:   2.8642 -->   0.0000     rms:   2.9457 -->   0.0000    
+      _lMatchVertexX                                     mean:  -0.0148 -->  -0.0148     rms:   0.0758 -->   0.0751    
+      _lMatchVertexY                                     mean:   0.0369 -->   0.0374     rms:   0.0767 -->   0.0769    
+      _lMatchVertexZ                                     mean:   0.4968 -->   0.1467     rms:   2.5585 -->   2.5924    
+      _lMomPdgId                                         mean:  13.1770 -->  14.6872     rms:  52.8889 -->  36.6702    
+      _lProvenance                                       mean:   8.8066 -->   4.0658     rms:   8.7423 -->   7.3089    
+      _lProvenanceCompressed                             mean:   1.8807 -->   0.8601     rms:   1.9642 -->   1.6245    
+      _lProvenanceConversion                             mean:  96.9877 -->  98.1934     rms:  13.8844 -->   8.8545    
+      _leptonMvaTTH                                      mean:   0.4237 -->   0.4219     rms:   0.7440 -->   0.7471    
+      _ptRatio                                           mean:   0.8270 -->   0.8240     rms:   0.1901 -->   0.1883    
+      _tauGenStatus                                      mean:   4.2099 -->   2.9671     rms:   2.0451 -->   1.9349    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _Flag_globalSuperTightHalo2016Filter,_HLT_CaloJet500_NoJetID,_HLT_CaloJet500_NoJetID_prescale,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL,_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_prescale,_HLT_DoubleEle33_CaloIdL_GsfTrkIdVL,_HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW,_HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_prescale,_HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_prescale,_HLT_Ele105_CaloIdVT_GsfTrkIdT,_HLT_Ele105_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele115_CaloIdVT_GsfTrkIdT,_HLT_Ele115_CaloIdVT_GsfTrkIdT_prescale,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele12_CaloIdM_TrackIdM_PFJet30,_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL,_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_prescale,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30,_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30,_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_prescale,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30_prescale,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1,_HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFtau20_SingleL1_prescale,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30,_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_prescale,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30,_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_prescale,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1,_HLT_IsoMu16_eta2p1_MET30_LooseIsoPFTau50_Trk30_eta2p1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu19_eta2p1_LooseIsoPFTau20_prescale,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu19_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau20_SingleL1_prescale,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1,_HLT_IsoMu21_eta2p1_LooseIsoPFTau50_Trk30_eta2p1_SingleL1_prescale,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg,_HLT_IsoMu21_eta2p1_MediumIsoPFTau32_Trk1_eta2p1_Reg_prescale,_HLT_IsoMu22,_HLT_IsoMu22_eta2p1,_HLT_IsoMu22_eta2p1_prescale,_HLT_IsoMu22_prescale,_HLT_IsoTkMu22,_HLT_IsoTkMu22_eta2p1,_HLT_IsoTkMu22_eta2p1_prescale,_HLT_IsoTkMu22_prescale,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90,_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_prescale,_HLT_MET200,_HLT_MET200_prescale,_HLT_Mu17,_HLT_Mu17_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_prescale,_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL,_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ,_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale,_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale,_HLT_Mu17_TrkIsoVVL_prescale,_HLT_Mu17_prescale,_HLT_Mu20,_HLT_Mu20_prescale,_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL,_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu27,_HLT_Mu27_prescale,_HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL,_HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL_prescale,_HLT_Mu30_TkMu11,_HLT_Mu30_TkMu11_prescale,_HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL,_HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL_prescale,_HLT_Mu3_PFJet40,_HLT_Mu3_PFJet40_prescale,_HLT_Mu45_eta2p1,_HLT_Mu45_eta2p1_prescale,_HLT_Mu50,_HLT_Mu50_prescale,_HLT_Mu8,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL,_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_prescale,_HLT_Mu8_TrkIsoVVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_prescale,_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_prescale,_HLT_Mu8_TrkIsoVVL_prescale,_HLT_Mu8_prescale,_HLT_PFHT300_PFMET110,_HLT_PFHT300_PFMET110_prescale,_HLT_PFHT350_DiPFJetAve90_PFAlphaT0p53,_HLT_PFHT350_DiPFJetAve90_PFAlphaT0p53_prescale,_HLT_PFHT400_DiPFJetAve90_PFAlphaT0p52,_HLT_PFHT400_DiPFJetAve90_PFAlphaT0p52_prescale,_HLT_PFHT400_SixJet30_DoubleBTagCSV_p056,_HLT_PFHT400_SixJet30_DoubleBTagCSV_p056_prescale,_HLT_PFHT650_WideJetMJJ900DEtaJJ1p5,_HLT_PFHT650_WideJetMJJ900DEtaJJ1p5_prescale,_HLT_PFHT900,_HLT_PFHT900_prescale,_HLT_PFMET120_PFMHT120_IDTight,_HLT_PFMET120_PFMHT120_IDTight_prescale,_HLT_PFMET170_HBHECleaned,_HLT_PFMET170_HBHECleaned_prescale,_HLT_PFMET300,_HLT_PFMET300_prescale,_HLT_Photon175,_HLT_Photon175_prescale,_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL,_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ,_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_prescale,_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_prescale,_HLT_TkMu50,_HLT_TkMu50_prescale,_HLT_TripleMu_12_10_5,_HLT_TripleMu_12_10_5_prescale,_closestJetDeepCsv,_closestJetDeepFlavor,_closestJetDeepFlavor_b,_closestJetDeepFlavor_bb,_closestJetDeepFlavor_lepb,_gen_lDecayedHadr,_is2017,_is2018,_jetDeepCsv,_jetDeepFlavor,_jetDeepFlavor_b,_jetDeepFlavor_bb,_jetDeepFlavor_c,_jetDeepFlavor_g,_jetDeepFlavor_lepb,_jetDeepFlavor_uds,_lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_lMatchCharge,_leptonMvaTTH,_leptonMvatZq,_passTrigger_FR,_passTrigger_FR_iso,_passTrigger_e,_passTrigger_ee,_passTrigger_eee,_passTrigger_eem,_passTrigger_em,_passTrigger_emm,_passTrigger_et,_passTrigger_m,_passTrigger_mAN094,_passTrigger_mm,_passTrigger_mmm,_passTrigger_mt,_passTrigger_ref,_phHadTowOverEm,_pl_jetE,_pl_jetEta,_pl_jetHadronFlavor,_pl_jetPhi,_pl_jetPt,_pl_lCharge,_pl_lE,_pl_lEta,_pl_lFlavor,_pl_lPhi,_pl_lPt,_pl_met,_pl_metPhi,_pl_nJets,_pl_nL,_pl_nPh,_pl_phE,_pl_phEta,_pl_phPhi,_pl_phPt,_prefireWeight,_prefireWeightDown,_prefireWeightUp,_tauAgainstElectronMVA6Raw,_tauCombinedIsoDBRaw3Hits,_tauGenStatus,_tauIsoMVADBdR03newDMwLT,_tauIsoMVADBdR03oldDMwLT,_tauIsoMVAPWdR03oldDMwLT,_tauIsoMVAPWnewDMwLT,_tauIsoMVAPWoldDMwLT
    Changed:
-      _dz                                                mean:   0.0448 -->  -0.0056     rms:   1.0133 -->   0.9904    
-      _ecalPFClusterIso                                  mean:  -1.0000 -->  -0.7090     rms:   0.0000 -->   1.3938    
-      _hcalPFClusterIso                                  mean:  -1.0000 -->  -0.7846     rms:   0.0000 -->   1.0726    
-      _jetChargedEmFraction                              mean:   0.0121 -->   0.0121     rms:   0.0736 -->   0.0734    
-      _jetChargedHadronFraction                          mean:   0.2022 -->   0.2013     rms:   0.2730 -->   0.2727    
-      _jetCsvV2                                          mean:  -3.5264 -->  -3.5546     rms:   4.9298 -->   4.9375    
-      _jetDeepCsv_b                                      mean:  -0.3017 -->  -0.3047     rms:   0.5663 -->   0.5669    
-      _jetDeepCsv_bb                                     mean:  -0.3821 -->  -0.3848     rms:   0.4883 -->   0.4889    
-      _jetDeepCsv_c                                      mean:  -0.3085 -->  -0.3115     rms:   0.5477 -->   0.5484    
-      _jetDeepCsv_udsg                                   mean:   0.0709 -->   0.0662     rms:   0.8582 -->   0.8592    
-      _jetE                                              mean: 205.5556 --> 207.5753     rms: 254.4344 --> 255.7137    
-      _jetEta                                            mean:  -0.0448 -->  -0.0624     rms:   1.9488 -->   1.9626    
-      _jetHFEmFraction                                   mean:   0.0129 -->   0.0129     rms:   0.0496 -->   0.0495    
-      _jetHFHadronFraction                               mean:   0.1066 -->   0.1105     rms:   0.2828 -->   0.2882    
-      _jetHadronFlavor                                   mean:   0.2707 -->   0.2696     rms:   1.0680 -->   1.0658    
-      _jetIsTight                                        mean:   0.9956 -->   0.9957     rms:   0.0659 -->   0.0658    
-      _jetIsTightLepVeto                                 mean:   0.5764 -->   0.5783     rms:   0.4941 -->   0.4938    
-      _jetNeutralEmFraction                              mean:   0.1703 -->   0.1696     rms:   0.2100 -->   0.2099    
-      _jetNeutralHadronFraction                          mean:   0.1878 -->   0.1914     rms:   0.3079 -->   0.3119    
-      _jetPhi                                            mean:  -0.0030 -->  -0.0067     rms:   1.9055 -->   1.9022    
-      _jetPt                                             mean:  52.6197 -->  52.4890     rms:  34.0057 -->  33.9893    
-      _jetPt_JECDown                                     mean:  51.6334 -->  51.5007     rms:  33.8390 -->  33.8251    
-      _jetPt_JECUp                                       mean:  53.6060 -->  53.4772     rms:  34.1761 -->  34.1574    
-      _jetPt_L1                                          mean:  46.2129 -->  46.0946     rms:  31.5071 -->  31.4895    
-      _jetPt_L2                                          mean:  52.6197 -->  52.4890     rms:  34.0057 -->  33.9893    
-      _jetPt_L3                                          mean:  52.6197 -->  52.4890     rms:  34.0057 -->  33.9893    
-      _jetPt_Uncorrected                                 mean:  49.8983 -->  49.8398     rms:  30.9134 -->  30.8588    
-      _jetSmearedPt                                      mean:  54.0932 -->  53.9628     rms:  33.6659 -->  33.6505    
-      _jetSmearedPt_JECDown                              mean:  51.6618 -->  52.9478     rms:  33.8143 -->  33.4875    
-      _jetSmearedPt_JECUp                                mean:  53.5776 -->  54.9779     rms:  34.2005 -->  33.8182    
-      _jetSmearedPt_JERDown                              mean:  53.3822 -->  53.2513     rms:  33.6811 -->  33.6661    
-      _jetSmearedPt_JERUp                                mean:  54.7369 -->  54.6063     rms:  33.7486 -->  33.7331    
-      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.0326 -->  33.2536     rms:   0.1776 -->  67.8155    
-      _lPOGLoose                                         mean:   0.8297 -->   0.8551     rms:   0.3759 -->   0.3520    
-      _lPOGMedium                                        mean:   0.7609 -->   0.8080     rms:   0.4266 -->   0.3939    
-      _lPOGTight                                         mean:   0.7246 -->   0.7681     rms:   0.4467 -->   0.4220    
-      _lPOGVeto                                          mean:   0.8623 -->   0.8696     rms:   0.3446 -->   0.3368    
-      _miniIso                                           mean:   0.0576 -->   0.0554     rms:   0.1834 -->   0.1817    
-      _nJets                                             mean:   2.2900 -->   2.3000     rms:   1.4512 -->   1.4595    
-      _phTTGMatchCategory                                mean:   3.3000 -->   3.2000     rms:   0.9000 -->   1.0296    
-      _relIso0p4                                         mean:   0.1360 -->   0.1318     rms:   0.4505 -->   0.4490    
-      _selectedTrackMult                                 mean:   1.2394 -->   1.2183     rms:   0.7309 -->   0.7033    
+      _closestJEC                                        mean:   1.1053 -->   1.0721     rms:   0.2223 -->   0.2874    
+      _closest_l1JetE                                    mean: 109.6621 --> 104.8162     rms:  80.1344 -->  81.3923    
+      _closest_l1JetPx                                   mean:   2.0925 -->   2.4325     rms:  39.6951 -->  39.3653    
+      _closest_l1JetPy                                   mean:   3.5220 -->   4.3837     rms:  39.0732 -->  38.6170    
+      _closest_l1JetPz                                   mean:  -4.5785 -->  -6.7341     rms: 123.6004 --> 120.2899    
+      _closest_lJetE                                     mean: 126.4253 --> 120.7148     rms:  94.5129 -->  95.8216    
+      _closest_lJetPx                                    mean:   2.4440 -->   2.8332     rms:  44.5156 -->  44.1269    
+      _closest_lJetPy                                    mean:   3.7179 -->   4.7358     rms:  43.5503 -->  42.9878    
+      _closest_lJetPz                                    mean:  -5.5202 -->  -8.0581     rms: 144.7417 --> 140.8048    
+      _closest_lepAwareJetE                              mean: 111.1784 --> 106.3737     rms:  81.4744 -->  82.8332    
+      _closest_lepAwareJetPx                             mean:   2.2497 -->   2.5878     rms:  40.1836 -->  39.8598    
+      _closest_lepAwareJetPy                             mean:   3.5064 -->   4.3605     rms:  39.3870 -->  38.9419    
+      _closest_lepAwareJetPz                             mean:  -4.3272 -->  -6.4536     rms: 125.5496 --> 122.3527    
+      _lGenIndex                                         mean:  50.0000 --> 88966243.8623 rms:   0.0000 --> 309999609.9841
+      _lIsPrompt                                         mean:   0.4674 -->   0.8696     rms:   0.4989 -->   0.3368    
+      _lIsPromptDecayed                                  mean:   0.0000 -->  19.4529     rms:   0.0000 -->  40.3546    
+      _lIsPromptFinalState                               mean:   0.4674 -->   7.5254     rms:   0.4989 -->  29.7087    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:  33.2536 -->  14.9384     rms:  67.8155 -->  31.0201    
+      _lMatchCharge                                      mean:   0.0797 --> 165321489.5688 rms:   0.6870 --> 407533758.0219
+      _lMatchEta                                         mean:  -0.0272 -->   0.0177     rms:   1.0260 -->   1.0195    
+      _lMatchPdgId                                       mean:   0.4130 -->  -1.6957     rms:  21.4254 -->  12.1125    
+      _lMatchPhi                                         mean:  -0.0727 -->  -0.0263     rms:   1.2860 -->   1.3300    
+      _lMatchPt                                          mean:  23.1748 -->  27.2954     rms:  29.0844 -->  29.0219    
+      _lMatchType                                        mean:   3.1341 --> 88971769.0797 rms:   2.9831 --> 310019006.2623
+      _lMatchVertexX                                     mean:   0.0506 -->   0.0601     rms:   0.0530 -->   0.0519    
+      _lMatchVertexY                                     mean:   0.0821 -->   0.0965     rms:   0.0841 -->   0.0834    
+      _lMatchVertexZ                                     mean:  -0.3187 -->  -0.2968     rms:   3.3897 -->   3.7606    
+      _lMomPdgId                                         mean:   6.9457 -->  15.4239     rms:  50.0357 -->  28.0665    
+      _lProvenance                                       mean:   9.5000 -->   2.3116     rms:   8.9234 -->   5.9810    
+      _lProvenanceCompressed                             mean:   2.0942 -->   0.5072     rms:   1.9796 -->   1.3174    
+      _lProvenanceConversion                             mean:  97.9457 -->  98.6486     rms:  10.0578 -->   5.8281    
+      _leptonMvaTTH                                      mean:   0.7491 -->   0.7465     rms:   0.5951 -->   0.6019    
+      _ptRatio                                           mean:   0.9162 -->   0.9048     rms:   0.1634 -->   0.1713    
+      _selectedTrackMult                                 mean:   1.2183 -->   1.1901     rms:   0.7033 -->   0.7309    
+      _tauGenStatus                                      mean:   4.1232 -->   2.5217     rms:   1.9907 -->   1.3471    
