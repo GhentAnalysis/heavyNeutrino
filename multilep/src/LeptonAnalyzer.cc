@@ -359,7 +359,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _leptonMvatZq[_nL]   = leptonMvaVal(mu, leptonMvaComputertZq);
 
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
-        fillLeptonJetVariables(mu, jets, primaryVertex, *rho, true); // TODO: temporary to check things
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho, false);
         _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
 
         _muDTStationsWithValidHits[_nL]   = mu.bestTrack()->hitPattern().dtStationsWithValidHits();
@@ -447,7 +447,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _leptonMvatZq[_nL]              = leptonMvaVal(*ele, leptonMvaComputertZq);
 
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
-        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, true); // temporry to check things
+        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, false);
         _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
 
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
@@ -505,8 +505,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         fillLeptonKinVars(tau);
         
-     //   if(multilepAnalyzer->isMC()) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
-        if(multilepAnalyzer->isMC()) fillLeptonGenVars(tau, *genParticles);                    //TODO: temporary to check the differences in the test
+        if(multilepAnalyzer->isMC()) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
         fillLeptonImpactParameters(tau, primaryVertex);
 
         _lFlavor[_nL]  = 2;
