@@ -359,7 +359,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _leptonMvatZq[_nL]   = leptonMvaVal(mu, leptonMvaComputertZq);
 
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
-        fillLeptonJetVariables(mu, jets, primaryVertex, *rho, false);
+        fillLeptonJetVariables(mu, jets, primaryVertex, *rho, true); // TODO: temporary to check things
         _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
 
         _muDTStationsWithValidHits[_nL]   = mu.bestTrack()->hitPattern().dtStationsWithValidHits();
@@ -447,7 +447,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _leptonMvatZq[_nL]              = leptonMvaVal(*ele, leptonMvaComputertZq);
 
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
-        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, false);
+        fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, true); // temporry to check things
         _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
 
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
@@ -971,7 +971,6 @@ const pat::Jet* findMatchedJet( const reco::Candidate& lepton, const edm::Handle
 
 //compute closest jet variables using new matching scheme 
 void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm::Handle< std::vector< pat::Jet > >& jets, const reco::Vertex& vertex, const double rho, const bool oldMatching ){
-    oldMatching = true; // TODO temporary switched off to check if it explains the differences in the tests
     //find closest jet based on source candidate pointer matching
     const pat::Jet* matchedJetPtr = findMatchedJet( lepton, jets, oldMatching );
 
