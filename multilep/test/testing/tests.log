@@ -1,187 +1,62 @@
-commit 2894186e8fb7ff002ac649f14246b01a8f17d3c6
+commit 85757e46345667d28b104b3da0ca63d27f0c50c2
 Author: tomc <tomc@cern.ch>
-Date:   Tue Oct 29 17:29:31 2019 +0100
+Date:   Tue Oct 29 17:59:18 2019 +0100
 
-    Align with the master
-    
-    Probably not impacting the displaced analysis too much
+    Avoid unitialized values
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
    Changed:
-      _closestJEC                                        mean:   1.0804 -->   1.0906     rms:   0.3304 -->   0.3166    
-      _closestJetCsvV2                                   mean:  -0.3552 -->  -0.3525     rms:   2.5182 -->   2.5187    
-      _closestJetDeepCsv                                 mean:  -0.1189 -->  -0.1161     rms:   0.7906 -->   0.7931    
-      _closestJetDeepCsv_b                               mean:   0.0096 -->   0.0139     rms:   0.4800 -->   0.4853    
-      _closestJetDeepCsv_bb                              mean:  -0.1284 -->  -0.1301     rms:   0.3436 -->   0.3423    
-      _closestJetDeepFlavor                              mean:   0.1472 -->   0.1499     rms:   0.2946 -->   0.3000    
-      _closestJetDeepFlavor_b                            mean:   0.0697 -->   0.0697     rms:   0.1439 -->   0.1428    
-      _closestJetDeepFlavor_bb                           mean:   0.0024 -->   0.0020     rms:   0.0097 -->   0.0082    
-      _closestJetDeepFlavor_lepb                         mean:   0.0751 -->   0.0783     rms:   0.1703 -->   0.1752    
-      _closest_l1JetE                                    mean:  85.3475 -->  85.7519     rms:  74.3609 -->  74.1994    
-      _closest_l1JetPx                                   mean:   5.7565 -->   6.2233     rms:  38.8282 -->  39.2118    
-      _closest_l1JetPy                                   mean:  -0.7468 -->  -0.6287     rms:  39.3718 -->  39.4740    
-      _closest_l1JetPz                                   mean:   7.6285 -->   7.6885     rms:  98.0733 -->  98.0704    
-      _closest_lJetE                                     mean:  99.6420 --> 100.0915     rms:  87.5760 -->  87.3561    
-      _closest_lJetPx                                    mean:   6.3029 -->   6.8151     rms:  43.1898 -->  43.5786    
-      _closest_lJetPy                                    mean:  -0.8443 -->  -0.7115     rms:  43.4703 -->  43.5727    
-      _closest_lJetPz                                    mean:   8.1647 -->   8.2381     rms: 116.9555 --> 116.9526    
-      _closest_lepAwareJetE                              mean:  88.5843 -->  89.0164     rms:  77.1720 -->  77.0010    
-      _closest_lepAwareJetPx                             mean:   6.0027 -->   6.4999     rms:  40.4171 -->  40.8302    
-      _closest_lepAwareJetPy                             mean:  -0.7979 -->  -0.6665     rms:  40.6710 -->  40.7797    
-      _closest_lepAwareJetPz                             mean:   7.7227 -->   7.7869     rms: 101.8115 --> 101.8086    
-      _leptonMvaTTH                                      mean:   0.1042 -->   0.0994     rms:   0.9390 -->   0.9429    
-      _ptRatio                                           mean:   0.7572 -->   0.7451     rms:   0.2503 -->   0.2490    
-      _ptRel                                             mean:   6.9719 -->   7.0181     rms:  12.0846 -->  12.0692    
-      _selectedTrackMult                                 mean:   1.6378 -->   1.6614     rms:   1.4563 -->   1.4539    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.0040 -->   0.0079     rms:   0.0627 -->   0.0884    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
    Changed:
-      _leptonMvaTTH                                      mean:   0.1410 -->   0.1399     rms:   0.9045 -->   0.9058    
-      _ptRatio                                           mean:   0.7337 -->   0.7277     rms:   0.2712 -->   0.2687    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.0275 -->   0.0296     rms:   0.1634 -->   0.1696    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
    Changed:
-      _closestJEC                                        mean:   1.1187 -->   1.1169     rms:   0.2983 -->   0.2971    
-      _closestJetDeepCsv                                 mean:  -0.3682 -->  -0.3686     rms:   0.8885 -->   0.8883    
-      _closestJetDeepCsv_b                               mean:  -0.1446 -->  -0.1450     rms:   0.4771 -->   0.4769    
-      _closestJetDeepFlavor                              mean:   0.0863 -->   0.0858     rms:   0.1473 -->   0.1475    
-      _closestJetDeepFlavor_b                            mean:   0.0439 -->   0.0435     rms:   0.0859 -->   0.0859    
-      _closestJetDeepFlavor_bb                           mean:   0.0010 -->   0.0010     rms:   0.0017 -->   0.0017    
-      _closestJetDeepFlavor_lepb                         mean:   0.0414 -->   0.0413     rms:   0.0772 -->   0.0772    
-      _closest_l1JetE                                    mean: 131.6941 --> 132.5025     rms: 118.0101 --> 117.5361    
-      _closest_l1JetPx                                   mean:  -0.1983 -->  -0.1308     rms:  42.8995 -->  42.9187    
-      _closest_l1JetPy                                   mean:   0.8452 -->   0.5879     rms:  53.7555 -->  53.8276    
-      _closest_l1JetPz                                   mean:  -2.1507 -->  -2.9309     rms: 162.5950 --> 162.8672    
-      _closest_lJetE                                     mean: 154.7668 --> 155.7097     rms: 137.5587 --> 137.0271    
-      _closest_lJetPx                                    mean:  -0.0785 -->  -0.0118     rms:  47.8658 -->  47.8872    
-      _closest_lJetPy                                    mean:   0.8145 -->   0.5044     rms:  59.5459 -->  59.6396    
-      _closest_lJetPz                                    mean:  -4.9013 -->  -5.8141     rms: 192.0717 --> 192.3936    
-      _closest_lepAwareJetE                              mean: 140.0869 --> 141.0616     rms: 123.9560 --> 123.4185    
-      _closest_lepAwareJetPx                             mean:  -0.3101 -->  -0.2302     rms:  44.6726 -->  44.6965    
-      _closest_lepAwareJetPy                             mean:   0.9175 -->   0.6073     rms:  56.2353 -->  56.3349    
-      _closest_lepAwareJetPz                             mean:  -3.4523 -->  -4.3941     rms: 172.3508 --> 172.7015    
-      _leptonMvaTTH                                      mean:  -0.5461 -->  -0.5507     rms:   0.6924 -->   0.6939    
-      _ptRatio                                           mean:   0.6481 -->   0.6392     rms:   0.2401 -->   0.2396    
-      _ptRel                                             mean:   6.2703 -->   6.1804     rms:  15.7480 -->  15.7104    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.3755 -->   0.4955     rms:   0.4843 -->   0.5000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
    Changed:
-      _closestJEC                                        mean:   1.1054 -->   1.1157     rms:   0.2747 -->   0.2583    
-      _closestJetCsvV2                                   mean:  -0.1811 -->  -0.1771     rms:   2.3272 -->   2.3279    
-      _closestJetDeepCsv                                 mean:  -0.3556 -->  -0.3706     rms:   0.9817 -->   0.9914    
-      _closestJetDeepCsv_b                               mean:  -0.1056 -->  -0.1131     rms:   0.5543 -->   0.5596    
-      _closestJetDeepCsv_bb                              mean:  -0.2500 -->  -0.2575     rms:   0.4397 -->   0.4439    
-      _closestJetDeepFlavor                              mean:   0.0824 -->   0.0828     rms:   0.1399 -->   0.1398    
-      _closestJetDeepFlavor_b                            mean:   0.0420 -->   0.0424     rms:   0.0638 -->   0.0637    
-      _closestJetDeepFlavor_bb                           mean:   0.0010 -->   0.0010     rms:   0.0015 -->   0.0015    
-      _closestJetDeepFlavor_lepb                         mean:   0.0394 -->   0.0394     rms:   0.0877 -->   0.0877    
-      _closest_l1JetE                                    mean: 148.7861 --> 148.9025     rms: 141.4982 --> 141.3820    
-      _closest_l1JetPx                                   mean:   1.6055 -->   1.5578     rms:  55.7981 -->  55.8021    
-      _closest_lJetE                                     mean: 171.0591 --> 171.2184     rms: 161.4092 --> 161.2506    
-      _closest_lJetPx                                    mean:   1.4032 -->   1.3380     rms:  62.7283 -->  62.7343    
-      _closest_lepAwareJetE                              mean: 156.9285 --> 157.0575     rms: 148.5607 --> 148.4318    
-      _closest_lepAwareJetPx                             mean:   1.5568 -->   1.5023     rms:  58.2661 -->  58.2709    
-      _closest_lepAwareJetPz                             mean:   1.0834 -->   0.9685     rms: 197.6569 --> 197.6620    
-      _leptonMvaTTH                                      mean:  -0.6986 -->  -0.6994     rms:   0.5832 -->   0.5835    
-      _ptRatio                                           mean:   0.6430 -->   0.6362     rms:   0.2448 -->   0.2396    
-      _ptRel                                             mean:   7.0347 -->   7.0829     rms:   8.8503 -->   8.8293    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.3420 -->   0.3609     rms:   0.4744 -->   0.4803    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
    Changed:
-      _lGenIndex                                         mean:  50.0000 --> 49770903.0795 rms:   0.0000 --> 169386018.7814
-      _lIsPrompt                                         mean:   0.5828 -->   0.8477     rms:   0.4931 -->   0.3593    
-      _lIsPromptDecayed                                  mean:   0.0960 -->  11.5265     rms:   0.2946 -->  34.1194    
-      _lIsPromptFinalState                               mean:   0.4603 -->   8.6821     rms:   0.4984 -->  28.2826    
-      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:  24.0066 -->  11.3377     rms:  65.0162 -->  33.2221    
-      _lMatchCharge                                      mean:  -0.0331 --> 32420669.5397 rms:   0.7180 --> 147034016.0742
-      _lMatchEta                                         mean:   0.0686 -->   0.5004     rms:   1.0920 -->   1.2459    
-      _lMatchPdgId                                       mean:   3.0795 -->   2.4272     rms:  21.7435 -->  14.3930    
-      _lMatchPhi                                         mean:  -0.0059 -->   0.2068     rms:   1.5026 -->   1.9244    
-      _lMatchPt                                          mean:  23.5795 -->  23.9158     rms:  31.6867 -->  28.8604    
-      _lMatchType                                        mean:   2.7550 --> 55555932.0132 rms:   2.8072 --> 189075114.0133
-      _lMatchVertexX                                     mean:   0.0043 -->   0.0056     rms:   0.0753 -->   0.0742    
-      _lMatchVertexY                                     mean:   0.0294 -->   0.0372     rms:   0.0481 -->   0.0372    
-      _lMatchVertexZ                                     mean:  -0.0426 -->   0.3575     rms:   2.5821 -->   3.0951    
-      _lMomPdgId                                         mean:  11.3609 -->  16.7152     rms:  42.3230 -->  41.6511    
-      _lProvenance                                       mean:   7.7980 -->   3.1391     rms:   8.7240 -->   6.6213    
-      _lProvenanceCompressed                             mean:   1.5795 -->   0.5662     rms:   1.9306 -->   1.3668    
-      _lProvenanceConversion                             mean:  88.8742 -->  90.8411     rms:  29.9397 -->  27.1594    
-      _leptonMvaTTH                                      mean:   0.2092 -->   0.2081     rms:   0.8043 -->   0.8057    
-      _ptRatio                                           mean:   0.7508 -->   0.7482     rms:   0.2406 -->   0.2395    
-      _tauGenStatus                                      mean:   4.1060 -->   2.7351     rms:   2.1428 -->   1.9707    
+      _lGenIndex                                         mean: 49770903.0795 -->   0.0000 rms: 169386018.7814 -->   0.0000
+      _lIsPromptDecayed                                  mean:  11.5265 -->  21.1788     rms:  34.1194 -->  60.6352    
+      _lIsPromptFinalState                               mean:   8.6821 -->  11.4934     rms:  28.2826 -->  35.9828    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:  11.3377 -->   0.4713     rms:  33.2221 -->   0.4992    
+      _lMatchCharge                                      mean: 32420669.5397 --> -52706038.0629 rms: 147034016.0742 --> 239064492.1604
+      _lMatchType                                        mean: 55555932.0132 -->   0.0000 rms: 189075114.0133 -->   0.0000
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
    Changed:
-      _lGenIndex                                         mean:  50.0000 -->   0.0000     rms:   0.0000 -->   0.0000    
-      _lIsPrompt                                         mean:   0.5103 -->   0.7778     rms:   0.4999 -->   0.4157    
-      _lIsPromptDecayed                                  mean:   0.0905 -->  32.1358     rms:   0.2869 -->  61.0144    
-      _lIsPromptFinalState                               mean:   0.3539 -->   4.8436     rms:   0.4782 -->  16.7369    
-      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:   0.2387 -->  34.3086     rms:   0.4263 -->  61.8015    
-      _lMatchCharge                                      mean:  -0.0123 --> -275560209.7325 rms:   0.7285 --> 650210912.6314
-      _lMatchEta                                         mean:  -0.0289 -->   0.0161     rms:   1.0479 -->   0.9948    
-      _lMatchPdgId                                       mean:  -4.5473 -->  -1.6626     rms:  35.0689 -->  22.1101    
-      _lMatchPhi                                         mean:   0.0930 -->   0.1184     rms:   1.3405 -->   1.3702    
-      _lMatchPt                                          mean:  19.6835 -->  19.4159     rms:  23.1135 -->  23.1059    
-      _lMatchType                                        mean:   2.8642 -->   0.0000     rms:   2.9457 -->   0.0000    
-      _lMatchVertexX                                     mean:  -0.0148 -->  -0.0148     rms:   0.0758 -->   0.0751    
-      _lMatchVertexY                                     mean:   0.0369 -->   0.0374     rms:   0.0767 -->   0.0769    
-      _lMatchVertexZ                                     mean:   0.4968 -->   0.1467     rms:   2.5585 -->   2.5924    
-      _lMomPdgId                                         mean:  13.1770 -->  14.6872     rms:  52.8889 -->  36.6702    
-      _lProvenance                                       mean:   8.8066 -->   4.0658     rms:   8.7423 -->   7.3089    
-      _lProvenanceCompressed                             mean:   1.8807 -->   0.8601     rms:   1.9642 -->   1.6245    
-      _lProvenanceConversion                             mean:  96.9877 -->  98.1934     rms:  13.8844 -->   8.8545    
-      _leptonMvaTTH                                      mean:   0.4237 -->   0.4219     rms:   0.7440 -->   0.7471    
-      _ptRatio                                           mean:   0.8270 -->   0.8240     rms:   0.1901 -->   0.1883    
-      _tauGenStatus                                      mean:   4.2099 -->   2.9671     rms:   2.0451 -->   1.9349    
+      _lGenIndex                                         mean:   0.0000 --> 44865073.7202 rms:   0.0000 --> 149793557.5382
+      _lIsPromptDecayed                                  mean:  32.1358 -->  11.3704     rms:  61.0144 -->  26.3544    
+      _lIsPromptFinalState                               mean:   4.8436 -->  12.4856     rms:  16.7369 -->  43.7758    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:  34.3086 -->   0.3583     rms:  61.8015 -->   0.4795    
+      _lMatchCharge                                      mean: -275560209.7325 --> 83048125.2469 rms: 650210912.6314 --> 195950355.2594
+      _lMatchType                                        mean:   0.0000 --> 44872811.9012 rms:   0.0000 --> 149819530.8366
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
    Changed:
-      _closestJEC                                        mean:   1.1053 -->   1.0721     rms:   0.2223 -->   0.2874    
-      _closest_l1JetE                                    mean: 109.6621 --> 104.8162     rms:  80.1344 -->  81.3923    
-      _closest_l1JetPx                                   mean:   2.0925 -->   2.4325     rms:  39.6951 -->  39.3653    
-      _closest_l1JetPy                                   mean:   3.5220 -->   4.3837     rms:  39.0732 -->  38.6170    
-      _closest_l1JetPz                                   mean:  -4.5785 -->  -6.7341     rms: 123.6004 --> 120.2899    
-      _closest_lJetE                                     mean: 126.4253 --> 120.7148     rms:  94.5129 -->  95.8216    
-      _closest_lJetPx                                    mean:   2.4440 -->   2.8332     rms:  44.5156 -->  44.1269    
-      _closest_lJetPy                                    mean:   3.7179 -->   4.7358     rms:  43.5503 -->  42.9878    
-      _closest_lJetPz                                    mean:  -5.5202 -->  -8.0581     rms: 144.7417 --> 140.8048    
-      _closest_lepAwareJetE                              mean: 111.1784 --> 106.3737     rms:  81.4744 -->  82.8332    
-      _closest_lepAwareJetPx                             mean:   2.2497 -->   2.5878     rms:  40.1836 -->  39.8598    
-      _closest_lepAwareJetPy                             mean:   3.5064 -->   4.3605     rms:  39.3870 -->  38.9419    
-      _closest_lepAwareJetPz                             mean:  -4.3272 -->  -6.4536     rms: 125.5496 --> 122.3527    
-      _lGenIndex                                         mean:  50.0000 --> 88966243.8623 rms:   0.0000 --> 309999609.9841
-      _lIsPrompt                                         mean:   0.4674 -->   0.8696     rms:   0.4989 -->   0.3368    
-      _lIsPromptDecayed                                  mean:   0.0000 -->  19.4529     rms:   0.0000 -->  40.3546    
-      _lIsPromptFinalState                               mean:   0.4674 -->   7.5254     rms:   0.4989 -->  29.7087    
-      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:  33.2536 -->  14.9384     rms:  67.8155 -->  31.0201    
-      _lMatchCharge                                      mean:   0.0797 --> 165321489.5688 rms:   0.6870 --> 407533758.0219
-      _lMatchEta                                         mean:  -0.0272 -->   0.0177     rms:   1.0260 -->   1.0195    
-      _lMatchPdgId                                       mean:   0.4130 -->  -1.6957     rms:  21.4254 -->  12.1125    
-      _lMatchPhi                                         mean:  -0.0727 -->  -0.0263     rms:   1.2860 -->   1.3300    
-      _lMatchPt                                          mean:  23.1748 -->  27.2954     rms:  29.0844 -->  29.0219    
-      _lMatchType                                        mean:   3.1341 --> 88971769.0797 rms:   2.9831 --> 310019006.2623
-      _lMatchVertexX                                     mean:   0.0506 -->   0.0601     rms:   0.0530 -->   0.0519    
-      _lMatchVertexY                                     mean:   0.0821 -->   0.0965     rms:   0.0841 -->   0.0834    
-      _lMatchVertexZ                                     mean:  -0.3187 -->  -0.2968     rms:   3.3897 -->   3.7606    
-      _lMomPdgId                                         mean:   6.9457 -->  15.4239     rms:  50.0357 -->  28.0665    
-      _lProvenance                                       mean:   9.5000 -->   2.3116     rms:   8.9234 -->   5.9810    
-      _lProvenanceCompressed                             mean:   2.0942 -->   0.5072     rms:   1.9796 -->   1.3174    
-      _lProvenanceConversion                             mean:  97.9457 -->  98.6486     rms:  10.0578 -->   5.8281    
-      _leptonMvaTTH                                      mean:   0.7491 -->   0.7465     rms:   0.5951 -->   0.6019    
-      _ptRatio                                           mean:   0.9162 -->   0.9048     rms:   0.1634 -->   0.1713    
-      _selectedTrackMult                                 mean:   1.2183 -->   1.1901     rms:   0.7033 -->   0.7309    
-      _tauGenStatus                                      mean:   4.1232 -->   2.5217     rms:   1.9907 -->   1.3471    
+      _lGenIndex                                         mean: 88966243.8623 -->  39.1304 rms: 309999609.9841 -->  20.6235
+      _lIsPromptDecayed                                  mean:  19.4529 -->   0.0000     rms:  40.3546 -->   0.0000    
+      _lIsPromptFinalState                               mean:   7.5254 -->   0.5688     rms:  29.7087 -->   0.4952    
+      _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto mean:  14.9384 -->   0.0141     rms:  31.0201 -->   0.1178    
+      _lMatchCharge                                      mean: 165321489.5688 -->   0.0688 rms: 407533758.0219 -->   0.7511
+      _lMatchType                                        mean: 88971769.0797 -->   1.2754 rms: 310019006.2623 -->   2.4488
