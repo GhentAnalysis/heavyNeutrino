@@ -505,7 +505,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         fillLeptonKinVars(tau);
         
-        if(multilepAnalyzer->isMC()) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
+     //   if(multilepAnalyzer->isMC()) fillTauGenVars(tau, *genParticles);                    //Still needs to be tested
+        if(multilepAnalyzer->isMC()) fillLeptonGenVars(tau, *genParticles);                    //TODO: temporary to check the differences in the test
         fillLeptonImpactParameters(tau, primaryVertex);
 
         _lFlavor[_nL]  = 2;
@@ -970,7 +971,7 @@ const pat::Jet* findMatchedJet( const reco::Candidate& lepton, const edm::Handle
 
 //compute closest jet variables using new matching scheme 
 void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm::Handle< std::vector< pat::Jet > >& jets, const reco::Vertex& vertex, const double rho, const bool oldMatching ){
-
+    oldMatching = true; // TODO temporary switched off to check if it explains the differences in the tests
     //find closest jet based on source candidate pointer matching
     const pat::Jet* matchedJetPtr = findMatchedJet( lepton, jets, oldMatching );
 
@@ -1013,7 +1014,7 @@ void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm:
         bool leptonEqualsJet = ( ( rawJetP4 - leptonP4 ).P() < 1e-4 );
 
         //if lepton and jet vector are equal set _ptRatio, _ptRel and track multipliticy to defaults 
-        if( leptonEqualsJet && !oldMatching ){
+        if( leptonEqualsJet && !oldMatching){
             _ptRatio[_nL] = 1;
             _ptRel[_nL] = 0;
             _selectedTrackMult[_nL] = 0;
