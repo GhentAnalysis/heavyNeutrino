@@ -25,7 +25,9 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_phCutBasedLoose",                    &_phCutBasedLoose,                "_phCutBasedLoose[_nPh]/O");
     outputTree->Branch("_phCutBasedMedium",                   &_phCutBasedMedium,               "_phCutBasedMedium[_nPh]/O");
     outputTree->Branch("_phCutBasedTight",                    &_phCutBasedTight,                "_phCutBasedTight[_nPh]/O");
-    outputTree->Branch("_phMva",                              &_phMva,                          "_phMva[_nPh]/D");
+    outputTree->Branch("_phMvaS16v1",                         &_phMvaS16v1,                     "_phMvaS16v1[_nPh]/D");
+    outputTree->Branch("_phMvaF17v1p1",                       &_phMvaF17v1p1,                   "_phMvaF17v1p1[_nPh]/D");
+    outputTree->Branch("_phMvaF17v2",                         &_phMvaF17v2,                     "_phMvaF17v2[_nPh]/D");
     outputTree->Branch("_phRandomConeChargedIsolation",       &_phRandomConeChargedIsolation,   "_phRandomConeChargedIsolation[_nPh]/D");
     outputTree->Branch("_phChargedIsolation",                 &_phChargedIsolation,             "_phChargedIsolation[_nPh]/D");
     outputTree->Branch("_phNeutralHadronIsolation",           &_phNeutralHadronIsolation,       "_phNeutralHadronIsolation[_nPh]/D");
@@ -89,7 +91,9 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         _phCutBasedLoose[_nPh]              = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-loose");
         _phCutBasedMedium[_nPh]             = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-medium");
         _phCutBasedTight[_nPh]              = photon->photonID("cutBasedPhotonID-Fall17-94X-V2-tight");
-        _phMva[_nPh]                        = photon->userFloat("PhotonMVAEstimatorRunIIFall17v2Values");
+        _phMvaS16v1[_nPh]                   = photon->userFloat("PhotonMVAEstimatorRun2Spring16NonTrigV1Values");
+        _phMvaF17v1p1[_nPh]                 = photon->userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values");
+        _phMvaF17v2[_nPh]                   = photon->userFloat("PhotonMVAEstimatorRunIIFall17v2Values");
 
         _phRandomConeChargedIsolation[_nPh] = randomConeIsoUnCorr < 0 ? -1 : std::max(0., randomConeIsoUnCorr - rhoCorrCharged); // keep -1 when randomConeIso algorithm failed
         _phChargedIsolation[_nPh]           = std::max(0., photon->userFloat("phoChargedIsolation") - rhoCorrCharged);
