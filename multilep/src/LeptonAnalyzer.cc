@@ -7,6 +7,9 @@
 #include <algorithm>
 
 // TODO: we should maybe stop indentifying effective areas by year, as they are typically more connected to a specific ID than to a specific year
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! we should really take action on this todo
+//     it seems at some point the default relIso/miniIso values went back to the old effective areas, simply because to be in sync with ttH leptonMva
+//     we should implement ellectronsEffectiveAreas (without splitting up by year) for default values, and separate electronsEffectiveAreasTTH_RelIso2016 and electronsEffectiveAreasTTH_MiniIso2016 or something like that
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer),
     electronsEffectiveAreas( ( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ) ? iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17").fullPath() : iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasRelIso2016").fullPath() ),

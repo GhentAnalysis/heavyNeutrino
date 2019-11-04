@@ -63,6 +63,7 @@ with open('tests.log', 'w') as logFile:
       compare(logFile, name)
       system('mv ' + name + '.root ' + name + '-ref.root')
     except subprocess.CalledProcessError, e:
+      global doCommit
       doCommit = False
       logFile.write( ' --> FAILED\nOutput:')
       for line in e.output.splitlines():
