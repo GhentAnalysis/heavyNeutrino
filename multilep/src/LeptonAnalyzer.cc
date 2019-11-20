@@ -409,20 +409,20 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     }
 
     //Initialize with default values for those tau-only arrays which weren't filled with electrons and muons [to allow correct comparison by the test script]
-    for(auto array : {&_tauMuonVetoLoose, &_tauEleVetoLoose, &_decayModeFinding, &_decayModeFindingNew, &_decayModeFindingDeepTau}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauEleVetoVLoose, &_tauEleVetoMedium, &_tauEleVetoTight, &_tauEleVetoVTight, &_tauMuonVetoTight, &_decayModeFindingNew}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauVLooseMvaNew2015, &_tauLooseMvaNew2015, &_tauMediumMvaNew2015, &_tauTightMvaNew2015, &_tauVTightMvaNew2015}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauVLooseMvaNew2017v2, &_tauLooseMvaNew2017v2, &_tauMediumMvaNew2017v2, &_tauTightMvaNew2017v2, &_tauVTightMvaNew2017v2}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauVVVLooseDeepTauVsJets, &_tauVVLooseDeepTauVsJets, &_tauVLooseDeepTauVsJets, &_tauMediumDeepTauVsJets}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauTightDeepTauVsJets, &_tauVTightDeepTauVsJets, &_tauVVTightDeepTauVsJets}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauVVVLooseDeepTauVsEle, &_tauVVLooseDeepTauVsEle, &_tauVLooseDeepTauVsEle, &_tauMediumDeepTauVsEle}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauTightDeepTauVsEle, &_tauVTightDeepTauVsEle, &_tauVVTightDeepTauVsEle}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauVLooseDeepTauVsMu, &_tauLooseDeepTauVsMu, &_tauMediumDeepTauVsMu, &_tauTightDeepTauVsMu}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauPOGVLoose2015, &_tauPOGLoose2015, &_tauPOGMedium2015, &_tauPOGTight2015, &_tauPOGVTight2015}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauPOGVVLoose2017v2, &_tauPOGVTight2017v2, &_tauPOGVVTight2017v2}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauAgainstElectronMVA6Raw, &_tauCombinedIsoDBRaw3Hits, &_tauIsoMVAPWdR03oldDMwLT}) std::fill_n(*array, _nLight, 0.);
-    for(auto array : {&_tauDecayMode}) std::fill_n(*array, _nLight, 0.);
-    for(auto array : {&_tauIsoMVADBdR03oldDMwLT, &_tauIsoMVADBdR03newDMwLT, &_tauIsoMVAPWnewDMwLT, &_tauIsoMVAPWoldDMwLT}) std::fill_n(*array, _nLight, 0.);
+    for(auto array : {_tauMuonVetoLoose, _tauEleVetoLoose, _decayModeFinding, _decayModeFindingNew, _decayModeFindingDeepTau}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauEleVetoVLoose, _tauEleVetoMedium, _tauEleVetoTight, _tauEleVetoVTight, _tauMuonVetoTight, _decayModeFindingNew}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVLooseMvaNew2015, _tauLooseMvaNew2015, _tauMediumMvaNew2015, _tauTightMvaNew2015, _tauVTightMvaNew2015}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVLooseMvaNew2017v2, _tauLooseMvaNew2017v2, _tauMediumMvaNew2017v2, _tauTightMvaNew2017v2, _tauVTightMvaNew2017v2}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVVVLooseDeepTauVsJets, _tauVVLooseDeepTauVsJets, _tauVLooseDeepTauVsJets, _tauMediumDeepTauVsJets}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauTightDeepTauVsJets, _tauVTightDeepTauVsJets, _tauVVTightDeepTauVsJets}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVVVLooseDeepTauVsEle, _tauVVLooseDeepTauVsEle, _tauVLooseDeepTauVsEle, _tauMediumDeepTauVsEle}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauTightDeepTauVsEle, _tauVTightDeepTauVsEle, _tauVVTightDeepTauVsEle}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVLooseDeepTauVsMu, _tauLooseDeepTauVsMu, _tauMediumDeepTauVsMu, _tauTightDeepTauVsMu}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauPOGVLoose2015, _tauPOGLoose2015, _tauPOGMedium2015, _tauPOGTight2015, _tauPOGVTight2015}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauPOGVVLoose2017v2, _tauPOGVTight2017v2, _tauPOGVVTight2017v2}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauAgainstElectronMVA6Raw, _tauCombinedIsoDBRaw3Hits, _tauIsoMVAPWdR03oldDMwLT}) std::fill_n(array, _nLight, 0.);
+    for(auto array : {_tauDecayMode}) std::fill_n(array, _nLight, 0);
+    for(auto array : {_tauIsoMVADBdR03oldDMwLT, _tauIsoMVADBdR03newDMwLT, _tauIsoMVAPWnewDMwLT, _tauIsoMVAPWoldDMwLT}) std::fill_n(array, _nLight, 0.);
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
     if(multilepAnalyzer->skim == "dilep"     &&  _nL     < 2) return false;
