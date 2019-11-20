@@ -1,109 +1,210 @@
-commit de42c30653c39efab4dfb662fe65e8a9c40ff8fa
-Author: willem <willem.verbeke@cern.ch>
-Date:   Wed Oct 2 12:26:28 2019 +0200
+commit 725dfbf7c318d72bc1e77bbbff6ab5fca9ff474e
+Author: gmestdac <30909932+gmestdac@users.noreply.github.com>
+Date:   Mon Nov 4 11:42:10 2019 +0100
 
-    recompute DeepFlavor on top of miniAOD
+    saving different phoMva versions (#81)
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _is2017,_is2018
+   New: _lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_phMvaF17v1p1,_phMvaF17v2,_phMvaS16v1
+   Removed: _phMva
+   Changed:
+      _jetChargedEmFraction                              mean:   0.0029 -->   0.0032     rms:   0.0222 -->   0.0237    
+      _jetChargedHadronFraction                          mean:   0.2754 -->   0.3293     rms:   0.2895 -->   0.2967    
+      _jetCsvV2                                          mean:  -3.0313 -->  -1.8656     rms:   4.8715 -->   4.2713    
+      _jetDeepCsv                                        mean:  -0.8307 -->  -0.6539     rms:   1.0899 -->   1.0618    
+      _jetDeepCsv_b                                      mean:  -0.3761 -->  -0.2820     rms:   0.6012 -->   0.5891    
+      _jetDeepCsv_bb                                     mean:  -0.4546 -->  -0.3719     rms:   0.5009 -->   0.4868    
+      _jetDeepCsv_c                                      mean:  -0.3856 -->  -0.2930     rms:   0.5686 -->   0.5528    
+      _jetDeepCsv_udsg                                   mean:  -0.0702 -->   0.0719     rms:   0.8782 -->   0.8585    
+      _jetDeepFlavor                                     mean:   0.0978 -->   0.1045     rms:   0.2038 -->   0.2170    
+      _jetDeepFlavor_b                                   mean:   0.0576 -->   0.0601     rms:   0.1052 -->   0.1122    
+      _jetDeepFlavor_bb                                  mean:   0.0015 -->   0.0017     rms:   0.0059 -->   0.0063    
+      _jetDeepFlavor_c                                   mean:   0.0840 -->   0.0840     rms:   0.0752 -->   0.0794    
+      _jetDeepFlavor_g                                   mean:   0.4517 -->   0.4425     rms:   0.2247 -->   0.2383    
+      _jetDeepFlavor_lepb                                mean:   0.0387 -->   0.0428     rms:   0.1113 -->   0.1183    
+      _jetDeepFlavor_uds                                 mean:   0.3665 -->   0.3690     rms:   0.2366 -->   0.2519    
+      _jetE                                              mean: 209.1504 --> 202.8759     rms: 238.8474 --> 273.8895    
+      _jetEta                                            mean:  -0.0348 -->   0.1552     rms:   2.2601 -->   2.0778    
+      _jetHFEmFraction                                   mean:   0.0373 -->   0.0202     rms:   0.0739 -->   0.0564    
+      _jetHFHadronFraction                               mean:   0.2672 -->   0.1742     rms:   0.3995 -->   0.3484    
+      _jetIsTight                                        mean:   0.9972 -->   0.9938     rms:   0.0524 -->   0.0788    
+      _jetIsTightLepVeto                                 mean:   0.8512 -->   0.8281     rms:   0.3559 -->   0.3773    
+      _jetNeutralEmFraction                              mean:   0.1701 -->   0.1690     rms:   0.1652 -->   0.1720    
+      _jetNeutralHadronFraction                          mean:   0.3503 -->   0.2701     rms:   0.3788 -->   0.3425    
+      _jetPhi                                            mean:  -0.0148 -->  -0.0199     rms:   1.7927 -->   1.8254    
+      _jetPt                                             mean:  44.7066 -->  48.1047     rms:  44.1815 -->  46.8342    
+      _jetPt_JECDown                                     mean:  42.8448 -->  46.7906     rms:  43.2125 -->  46.3842    
+      _jetPt_JECUp                                       mean:  46.5685 -->  49.4189     rms:  45.3870 -->  47.3006    
+      _jetPt_L1                                          mean:  37.7500 -->  40.4494     rms:  41.2804 -->  43.1354    
+      _jetPt_L2                                          mean:  43.0298 -->  45.8165     rms:  43.7626 -->  45.7822    
+      _jetPt_L3                                          mean:  43.0298 -->  45.8165     rms:  43.7626 -->  45.7822    
+      _jetPt_Uncorrected                                 mean:  43.8135 -->  45.8559     rms:  39.2571 -->  41.3963    
+      _jetSmearedPt                                      mean:  44.7066 -->  48.1047     rms:  44.1815 -->  46.8342    
+      _jetSmearedPt_JECDown                              mean:  42.8448 -->  46.7906     rms:  43.2125 -->  46.3842    
+      _jetSmearedPt_JECUp                                mean:  46.5685 -->  49.4189     rms:  45.3870 -->  47.3006    
+      _jetSmearedPt_JERDown                              mean:  44.7066 -->  48.1047     rms:  44.1815 -->  46.8342    
+      _jetSmearedPt_JERUp                                mean:  44.7066 -->  48.1047     rms:  44.1815 -->  46.8342    
+      _leptonMvaTTH                                      mean:   0.2773 -->   0.2798     rms:   0.9162 -->   0.9163    
+      _leptonMvatZq                                      mean:   0.2261 -->   0.2270     rms:   0.8970 -->   0.8974    
+      _met                                               mean:  40.8538 -->  41.0787     rms:  20.9900 -->  20.7535    
+      _metJECDown                                        mean:  39.7405 -->  39.5097     rms:  19.9566 -->  19.9440    
+      _metJECUp                                          mean:  43.0893 -->  43.2505     rms:  22.7767 -->  22.9017    
+      _metPhiJECDown                                     mean:  -0.0617 -->  -0.0848     rms:   1.5442 -->   1.5276    
+      _metPhiJECUp                                       mean:  -0.0553 -->  -0.1120     rms:   1.5434 -->   1.5186    
+      _metPhiUnclDown                                    mean:   0.0612 -->  -0.0371     rms:   1.5442 -->   1.5568    
+      _metPhiUnclUp                                      mean:  -0.0957 -->  -0.0967     rms:   1.5165 -->   1.5177    
+      _metSignificance                                   mean:   3.4511 -->   3.4410     rms:   3.1812 -->   3.1396    
+      _metUnclDown                                       mean:  40.8238 -->  40.5272     rms:  21.8258 -->  20.4563    
+      _metUnclUp                                         mean:  41.8298 -->  42.3720     rms:  20.8908 -->  21.5195    
+      _nJets                                             mean:   3.6300 -->   3.2000     rms:   2.1617 -->   1.9748    
+      _ptRatio                                           mean:   0.7440 -->   0.7488     rms:   0.2635 -->   0.2664    
+      _ptRel                                             mean:   7.4879 -->   8.1693     rms:   8.9121 -->  12.9491    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _is2017,_is2018
+   New: _lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_phMvaF17v1p1,_phMvaF17v2,_phMvaS16v1
+   Removed: _phMva
    Changed:
-      _closestJetDeepFlavor                              mean:   0.1489 -->   0.1134     rms:   0.2518 -->   0.2398    
-      _closestJetDeepFlavor_b                            mean:   0.0794 -->   0.0517     rms:   0.1381 -->   0.1257    
-      _closestJetDeepFlavor_bb                           mean:   0.0073 -->   0.0028     rms:   0.0417 -->   0.0160    
-      _closestJetDeepFlavor_lepb                         mean:   0.0622 -->   0.0588     rms:   0.1119 -->   0.1228    
-      _jetDeepFlavor                                     mean:   0.1361 -->   0.0764     rms:   0.1706 -->   0.1496    
-      _jetDeepFlavor_b                                   mean:   0.0950 -->   0.0460     rms:   0.1061 -->   0.0817    
-      _jetDeepFlavor_bb                                  mean:   0.0077 -->   0.0027     rms:   0.0317 -->   0.0211    
-      _jetDeepFlavor_c                                   mean:   0.1192 -->   0.0896     rms:   0.1016 -->   0.0847    
-      _jetDeepFlavor_g                                   mean:   0.3999 -->   0.4384     rms:   0.2077 -->   0.2143    
-      _jetDeepFlavor_lepb                                mean:   0.0334 -->   0.0277     rms:   0.0669 -->   0.0722    
-      _jetDeepFlavor_uds                                 mean:   0.3448 -->   0.3957     rms:   0.2314 -->   0.2304    
-      _leptonMvaTTH                                      mean:   0.3664 -->   0.4372     rms:   0.8066 -->   0.7990    
+      _jetChargedEmFraction                              mean:   0.0052 -->   0.0063     rms:   0.0305 -->   0.0333    
+      _jetChargedHadronFraction                          mean:   0.2581 -->   0.3008     rms:   0.2946 -->   0.2986    
+      _jetCsvV2                                          mean:  -3.5834 -->  -2.4212     rms:   5.0422 -->   4.5996    
+      _jetDeepCsv                                        mean:  -0.8197 -->  -0.5951     rms:   1.0691 -->   1.0203    
+      _jetDeepCsv_b                                      mean:  -0.3755 -->  -0.2575     rms:   0.5769 -->   0.5533    
+      _jetDeepCsv_bb                                     mean:  -0.4441 -->  -0.3376     rms:   0.4991 -->   0.4756    
+      _jetDeepCsv_c                                      mean:  -0.3648 -->  -0.2430     rms:   0.5751 -->   0.5495    
+      _jetDeepCsv_udsg                                   mean:  -0.0472 -->   0.1374     rms:   0.8725 -->   0.8378    
+      _jetDeepFlavor                                     mean:   0.0764 -->   0.0793     rms:   0.1496 -->   0.1633    
+      _jetDeepFlavor_b                                   mean:   0.0460 -->   0.0457     rms:   0.0817 -->   0.0891    
+      _jetDeepFlavor_bb                                  mean:   0.0027 -->   0.0030     rms:   0.0211 -->   0.0231    
+      _jetDeepFlavor_c                                   mean:   0.0896 -->   0.0909     rms:   0.0847 -->   0.0928    
+      _jetDeepFlavor_g                                   mean:   0.4384 -->   0.4181     rms:   0.2143 -->   0.2288    
+      _jetDeepFlavor_lepb                                mean:   0.0277 -->   0.0306     rms:   0.0722 -->   0.0789    
+      _jetDeepFlavor_uds                                 mean:   0.3957 -->   0.4117     rms:   0.2304 -->   0.2483    
+      _jetE                                              mean: 232.9496 --> 224.0495     rms: 246.1866 --> 270.6991    
+      _jetEta                                            mean:  -0.2748 -->  -0.3581     rms:   2.3280 -->   2.0984    
+      _jetHFEmFraction                                   mean:   0.0480 -->   0.0203     rms:   0.0883 -->   0.0567    
+      _jetHFHadronFraction                               mean:   0.2833 -->   0.2011     rms:   0.4041 -->   0.3797    
+      _jetIsTight                                        mean:   0.9915 -->   0.9932     rms:   0.0917 -->   0.0822    
+      _jetIsTightLepVeto                                 mean:   0.8164 -->   0.7823     rms:   0.3872 -->   0.4127    
+      _jetNeutralEmFraction                              mean:   0.1574 -->   0.1453     rms:   0.1477 -->   0.1482    
+      _jetNeutralHadronFraction                          mean:   0.3538 -->   0.2766     rms:   0.3808 -->   0.3628    
+      _jetPhi                                            mean:   0.0002 -->   0.0243     rms:   1.8695 -->   1.8314    
+      _jetPt                                             mean:  43.7849 -->  48.0424     rms:  40.7013 -->  43.6764    
+      _jetPt_JECDown                                     mean:  41.9416 -->  46.7025     rms:  40.2013 -->  43.2296    
+      _jetPt_JECUp                                       mean:  45.6283 -->  49.3822     rms:  41.2566 -->  44.1313    
+      _jetPt_L1                                          mean:  36.6222 -->  40.8775     rms:  37.8361 -->  39.9597    
+      _jetPt_L2                                          mean:  42.0165 -->  46.2104     rms:  40.1043 -->  42.5839    
+      _jetPt_L3                                          mean:  42.0165 -->  46.2104     rms:  40.1043 -->  42.5839    
+      _jetPt_Uncorrected                                 mean:  42.6679 -->  46.4389     rms:  35.6651 -->  38.0012    
+      _jetSmearedPt                                      mean:  43.7849 -->  48.0424     rms:  40.7013 -->  43.6764    
+      _jetSmearedPt_JECDown                              mean:  41.9416 -->  46.7025     rms:  40.2013 -->  43.2296    
+      _jetSmearedPt_JECUp                                mean:  45.6283 -->  49.3822     rms:  41.2566 -->  44.1313    
+      _jetSmearedPt_JERDown                              mean:  43.7849 -->  48.0424     rms:  40.7013 -->  43.6764    
+      _jetSmearedPt_JERUp                                mean:  43.7849 -->  48.0424     rms:  40.7013 -->  43.6764    
+      _leptonMvaTTH                                      mean:   0.4372 -->   0.4398     rms:   0.7990 -->   0.7990    
+      _leptonMvatZq                                      mean:   0.3542 -->   0.3596     rms:   0.8190 -->   0.8234    
+      _met                                               mean:  50.0421 -->  49.7489     rms:  28.2272 -->  28.2670    
+      _metJECDown                                        mean:  48.2055 -->  48.1294     rms:  27.0585 -->  27.4392    
+      _metJECUp                                          mean:  52.2748 -->  51.5209     rms:  29.6907 -->  29.2693    
+      _metPhi                                            mean:  -0.0308 -->  -0.1284     rms:   1.3705 -->   1.3540    
+      _metPhiJECDown                                     mean:  -0.0256 -->  -0.0715     rms:   1.3484 -->   1.3411    
+      _metPhiJECUp                                       mean:  -0.0430 -->  -0.1308     rms:   1.3830 -->   1.3726    
+      _metPhiUnclDown                                    mean:   0.0664 -->  -0.1258     rms:   1.4078 -->   1.3834    
+      _metPhiUnclUp                                      mean:  -0.0358 -->  -0.0797     rms:   1.3466 -->   1.3393    
+      _metSignificance                                   mean:   4.9229 -->   4.8449     rms:   4.4419 -->   4.4516    
+      _metUnclDown                                       mean:  49.9192 -->  49.1598     rms:  27.6921 -->  28.1232    
+      _metUnclUp                                         mean:  50.9134 -->  51.0032     rms:  29.0198 -->  28.7850    
+      _nJets                                             mean:   3.5400 -->   2.9400     rms:   1.8784 -->   1.6482    
+      _ptRatio                                           mean:   0.7784 -->   0.7829     rms:   0.2241 -->   0.2259    
+      _ptRel                                             mean:   7.1732 -->   7.2507     rms:   6.6667 -->   6.7116    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _is2017,_is2018
+   New: _lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_phMvaF17v1p1,_phMvaF17v2,_phMvaS16v1
+   Removed: _phMva
    Changed:
-      _closestJetDeepFlavor                              mean:   0.1103 -->   0.0901     rms:   0.1915 -->   0.1625    
-      _closestJetDeepFlavor_b                            mean:   0.0580 -->   0.0431     rms:   0.1066 -->   0.0968    
-      _closestJetDeepFlavor_bb                           mean:   0.0023 -->   0.0007     rms:   0.0068 -->   0.0015    
-      _closestJetDeepFlavor_lepb                         mean:   0.0500 -->   0.0463     rms:   0.0985 -->   0.0844    
-      _jetDeepFlavor                                     mean:   0.1246 -->   0.0648     rms:   0.1851 -->   0.1229    
-      _jetDeepFlavor_b                                   mean:   0.0917 -->   0.0441     rms:   0.1398 -->   0.0894    
-      _jetDeepFlavor_bb                                  mean:   0.0060 -->   0.0010     rms:   0.0159 -->   0.0022    
-      _jetDeepFlavor_c                                   mean:   0.1147 -->   0.0910     rms:   0.0933 -->   0.0729    
-      _jetDeepFlavor_g                                   mean:   0.3741 -->   0.5114     rms:   0.2117 -->   0.1958    
-      _jetDeepFlavor_lepb                                mean:   0.0270 -->   0.0198     rms:   0.0490 -->   0.0438    
-      _jetDeepFlavor_uds                                 mean:   0.3865 -->   0.3328     rms:   0.2310 -->   0.1787    
-      _leptonMvaTTH                                      mean:  -0.4789 -->  -0.4731     rms:   0.7896 -->   0.7912    
+      _leptonMvaTTH                                      mean:  -0.4731 -->  -0.4731     rms:   0.7912 -->   0.7913    
+      _miniIso                                           mean:   0.8970 -->   0.8971     rms:   1.3857 -->   1.3858    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _is2017,_is2018
+   New: _lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_phMvaF17v1p1,_phMvaF17v2,_phMvaS16v1
+   Removed: _phMva
    Changed:
-      _closestJetDeepFlavor                              mean:   0.0736 -->   0.0714     rms:   0.1475 -->   0.1463    
-      _closestJetDeepFlavor_b                            mean:   0.0364 -->   0.0315     rms:   0.0622 -->   0.0575    
-      _closestJetDeepFlavor_bb                           mean:   0.0018 -->   0.0006     rms:   0.0061 -->   0.0010    
-      _closestJetDeepFlavor_lepb                         mean:   0.0354 -->   0.0394     rms:   0.0847 -->   0.1018    
-      _jetDeepFlavor                                     mean:   0.0871 -->   0.0622     rms:   0.1290 -->   0.1137    
-      _jetDeepFlavor_b                                   mean:   0.0617 -->   0.0404     rms:   0.0831 -->   0.0697    
-      _jetDeepFlavor_bb                                  mean:   0.0039 -->   0.0012     rms:   0.0229 -->   0.0073    
-      _jetDeepFlavor_c                                   mean:   0.1092 -->   0.0904     rms:   0.0696 -->   0.0539    
-      _jetDeepFlavor_g                                   mean:   0.3818 -->   0.4995     rms:   0.2144 -->   0.1908    
-      _jetDeepFlavor_lepb                                mean:   0.0215 -->   0.0206     rms:   0.0493 -->   0.0533    
-      _jetDeepFlavor_uds                                 mean:   0.4219 -->   0.3479     rms:   0.2252 -->   0.1758    
-      _leptonMvaTTH                                      mean:  -0.6068 -->  -0.6022     rms:   0.6976 -->   0.7013    
+      _miniIso                                           mean:   1.1082 -->   1.1081     rms:   1.3775 -->   1.3774    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _is2017,_is2018
+   New: _lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_phMvaF17v1p1,_phMvaF17v2,_phMvaS16v1
+   Removed: _phMva
    Changed:
-      _jetDeepFlavor_g                                   mean:   0.4609 -->   0.4609     rms:   0.1995 -->   0.1995    
-      _jetDeepFlavor_uds                                 mean:   0.3991 -->   0.3991     rms:   0.2017 -->   0.2018    
-      _lMatchCharge                                      mean: 85100843.5719 --> -61897257.6702 rms: 337886778.5982 --> 245766142.2992
+      _jetChargedEmFraction                              mean:   0.1171 -->   0.1213     rms:   0.2750 -->   0.2789    
+      _jetChargedHadronFraction                          mean:   0.2804 -->   0.2751     rms:   0.2661 -->   0.2671    
+      _jetCsvV2                                          mean:  -3.0509 -->  -3.0035     rms:   4.8723 -->   4.8495    
+      _jetDeepCsv                                        mean:  -0.9154 -->  -0.9088     rms:   1.0524 -->   1.0510    
+      _jetDeepCsv_b                                      mean:  -0.4331 -->  -0.4301     rms:   0.5535 -->   0.5523    
+      _jetDeepCsv_bb                                     mean:  -0.4824 -->  -0.4787     rms:   0.5011 -->   0.5009    
+      _jetDeepCsv_c                                      mean:  -0.4167 -->  -0.4125     rms:   0.5662 -->   0.5661    
+      _jetDeepCsv_udsg                                   mean:  -0.0865 -->  -0.0787     rms:   0.8909 -->   0.8920    
+      _jetDeepFlavor                                     mean:   0.0581 -->   0.0577     rms:   0.0742 -->   0.0753    
+      _jetDeepFlavor_b                                   mean:   0.0371 -->   0.0364     rms:   0.0436 -->   0.0441    
+      _jetDeepFlavor_bb                                  mean:   0.0010 -->   0.0010     rms:   0.0024 -->   0.0024    
+      _jetDeepFlavor_c                                   mean:   0.0819 -->   0.0816     rms:   0.0567 -->   0.0576    
+      _jetDeepFlavor_g                                   mean:   0.4609 -->   0.4564     rms:   0.1995 -->   0.2013    
+      _jetDeepFlavor_lepb                                mean:   0.0201 -->   0.0203     rms:   0.0348 -->   0.0354    
+      _jetDeepFlavor_uds                                 mean:   0.3991 -->   0.4043     rms:   0.2018 -->   0.2028    
+      _jetE                                              mean: 164.2929 --> 168.6273     rms: 185.9351 --> 196.8738    
+      _jetEta                                            mean:  -0.0103 -->  -0.0414     rms:   2.1443 -->   2.1258    
+      _jetHFEmFraction                                   mean:   0.0142 -->   0.0131     rms:   0.0419 -->   0.0412    
+      _jetHFHadronFraction                               mean:   0.1258 -->   0.1309     rms:   0.3066 -->   0.3136    
+      _jetHadronFlavor                                   mean:   0.1057 -->   0.1095     rms:   0.6416 -->   0.6526    
+      _jetIsTight                                        mean:   0.9411 -->   0.9432     rms:   0.2355 -->   0.2315    
+      _jetIsTightLepVeto                                 mean:   0.7988 -->   0.7958     rms:   0.4009 -->   0.4031    
+      _jetNeutralEmFraction                              mean:   0.2386 -->   0.2445     rms:   0.2774 -->   0.2804    
+      _jetNeutralHadronFraction                          mean:   0.2804 -->   0.2728     rms:   0.3381 -->   0.3402    
+      _jetPhi                                            mean:   0.0109 -->   0.0115     rms:   1.8199 -->   1.8207    
+      _jetPt                                             mean:  37.7278 -->  38.5749     rms:  31.9336 -->  32.1749    
+      _jetPt_JECDown                                     mean:  35.9824 -->  37.3929     rms:  31.7154 -->  31.9107    
+      _jetPt_JECUp                                       mean:  39.4732 -->  39.7569     rms:  32.2422 -->  32.4468    
+      _jetPt_L1                                          mean:  32.5365 -->  33.4159     rms:  30.7842 -->  30.9703    
+      _jetPt_L2                                          mean:  37.7278 -->  38.5749     rms:  31.9336 -->  32.1749    
+      _jetPt_L3                                          mean:  37.7278 -->  38.5749     rms:  31.9336 -->  32.1749    
+      _jetPt_Uncorrected                                 mean:  37.2531 -->  38.0105     rms:  29.2647 -->  29.4967    
+      _jetSmearedPt                                      mean:  38.9011 -->  39.7494     rms:  32.0396 -->  32.2795    
+      _jetSmearedPt_JECDown                              mean:  37.0534 -->  38.5468     rms:  31.7921 -->  32.0042    
+      _jetSmearedPt_JECUp                                mean:  40.7487 -->  40.9520     rms:  32.4018 -->  32.5632    
+      _jetSmearedPt_JERDown                              mean:  38.3693 -->  39.2865     rms:  31.9882 -->  32.1698    
+      _jetSmearedPt_JERUp                                mean:  39.4066 -->  40.3227     rms:  32.1461 -->  32.3198    
+      _lMatchCharge                                      mean: -61897257.6702 --> 12835022.6737 rms: 245766142.2992 --> 142186234.3220
+      _leptonMvaTTH                                      mean:   0.3897 -->   0.3897     rms:   0.7200 -->   0.7199    
+      _leptonMvatZq                                      mean:   0.3437 -->   0.3436     rms:   0.7623 -->   0.7624    
+      _miniIso                                           mean:   0.2974 -->   0.2974     rms:   0.7590 -->   0.7590    
+      _nJets                                             mean:   4.9200 -->   4.7500     rms:   2.1526 -->   2.0706    
+      _phTTGMatchCategory                                mean:   1.9267 -->   1.7906     rms:   1.1044 -->   0.9964    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _is2017,_is2018
+   New: _lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_phMvaF17v1p1,_phMvaF17v2,_phMvaS16v1
+   Removed: _phMva
    Changed:
-      _closestJetDeepFlavor                              mean:   0.1115 -->   0.0735     rms:   0.1833 -->   0.1303    
-      _closestJetDeepFlavor_b                            mean:   0.0594 -->   0.0313     rms:   0.0882 -->   0.0569    
-      _closestJetDeepFlavor_bb                           mean:   0.0022 -->   0.0007     rms:   0.0051 -->   0.0014    
-      _closestJetDeepFlavor_lepb                         mean:   0.0499 -->   0.0415     rms:   0.0954 -->   0.0739    
-      _jetDeepFlavor                                     mean:   0.1339 -->   0.0555     rms:   0.1518 -->   0.0555    
-      _jetDeepFlavor_b                                   mean:   0.0992 -->   0.0371     rms:   0.1080 -->   0.0330    
-      _jetDeepFlavor_bb                                  mean:   0.0065 -->   0.0010     rms:   0.0138 -->   0.0012    
-      _jetDeepFlavor_c                                   mean:   0.1191 -->   0.0891     rms:   0.1010 -->   0.0813    
-      _jetDeepFlavor_g                                   mean:   0.4085 -->   0.4868     rms:   0.1996 -->   0.2004    
-      _jetDeepFlavor_lepb                                mean:   0.0282 -->   0.0174     rms:   0.0481 -->   0.0275    
-      _jetDeepFlavor_uds                                 mean:   0.3384 -->   0.3686     rms:   0.2232 -->   0.2090    
-      _leptonMvaTTH                                      mean:   0.5873 -->   0.6403     rms:   0.6155 -->   0.5768    
+      _lMatchCharge                                      mean: 983706.6577 --> -50943329.3153 rms: 2144639.2736 --> 120108883.8682
+      _leptonMvaTTH                                      mean:   0.6403 -->   0.6402     rms:   0.5768 -->   0.5768    
+      _leptonMvatZq                                      mean:   0.5618 -->   0.5622     rms:   0.6355 -->   0.6350    
+      _miniIso                                           mean:   0.1311 -->   0.1310     rms:   0.5414 -->   0.5414    
+      _phTTGMatchCategory                                mean:   2.3871 -->   2.4516     rms:   0.9220 -->   0.8167    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _is2017,_is2018
+   New: _lElectronDeltaEtaSuperClusterTrack,_lElectronDeltaPhiSuperClusterTrack,_lElectronEInvMinusPInv,_lElectronHOverE,_lElectronPassMVAFall17NoIsoWP80,_lElectronPassMVAFall17NoIsoWP90,_lElectronPassMVAFall17NoIsoWPLoose,_lElectronSigmaIetaIeta,_phMvaF17v1p1,_phMvaF17v2,_phMvaS16v1
+   Removed: _phMva
    Changed:
-      _closestJetDeepFlavor                              mean:   0.0442 -->   0.0209     rms:   0.0922 -->   0.0709    
-      _closestJetDeepFlavor_b                            mean:   0.0310 -->   0.0116     rms:   0.0671 -->   0.0490    
-      _closestJetDeepFlavor_bb                           mean:   0.0006 -->   0.0004     rms:   0.0021 -->   0.0035    
-      _closestJetDeepFlavor_lepb                         mean:   0.0127 -->   0.0088     rms:   0.0320 -->   0.0216    
-      _jetDeepFlavor                                     mean:   0.0855 -->   0.0482     rms:   0.1100 -->   0.1002    
-      _jetDeepFlavor_b                                   mean:   0.0664 -->   0.0338     rms:   0.0876 -->   0.0703    
-      _jetDeepFlavor_bb                                  mean:   0.0034 -->   0.0009     rms:   0.0051 -->   0.0035    
-      _jetDeepFlavor_c                                   mean:   0.1017 -->   0.0690     rms:   0.0520 -->   0.0455    
-      _jetDeepFlavor_g                                   mean:   0.4287 -->   0.4126     rms:   0.1834 -->   0.2259    
-      _jetDeepFlavor_lepb                                mean:   0.0157 -->   0.0134     rms:   0.0230 -->   0.0322    
-      _jetDeepFlavor_uds                                 mean:   0.3841 -->   0.4702     rms:   0.2080 -->   0.2642    
-      _leptonMvaTTH                                      mean:   0.8330 -->   0.8596     rms:   0.4461 -->   0.4301    
+      _lMatchCharge                                      mean: 1456721.7052 --> -362725.9590 rms: 9383651.4436 --> 5928994.4465
+      _phTTGMatchCategory                                mean:   3.3000 -->   3.2000     rms:   0.9000 -->   1.0296    
