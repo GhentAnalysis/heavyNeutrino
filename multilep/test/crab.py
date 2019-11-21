@@ -19,7 +19,7 @@ config = Configuration()
 config.section_('General')
 config.General.transferLogs            = True
 config.General.requestName             = requestName
-config.General.workArea                = os.path.join('crab', productionLabel, dataset.split('/')[1])
+config.General.workArea                = os.path.join(os.environ['CMSSW_BASE'], 'src/heavyNeutrino/multilep/test/crab', productionLabel, dataset.split('/')[1])
 
 config.section_('JobType')
 config.JobType.psetName                = 'multilep.py'
