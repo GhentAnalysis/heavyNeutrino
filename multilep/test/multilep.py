@@ -53,7 +53,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v15'
 
 #TO FIX RUN DEPENDENT JEC IN 2018!!! 102X_dataRun2_v12 (ABC)/ 102X_dataRun2_Prompt_v15 (D)
-elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_v12' if isData else '102X_upgrade2018_realistic_v18' #'102X_upgrade2018_realistic_v20' this seems broken???
+elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_v12' if isData else '102X_upgrade2018_realistic_v20'
 elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'            if isData else '94X_mc2017_realistic_v17'
 else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'            if isData else '94X_mcRun2_asymptotic_v3'
 
