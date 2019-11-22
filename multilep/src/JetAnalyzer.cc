@@ -8,21 +8,14 @@
 JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer)
 {
-    std::string jecFile;
-    if(multilepAnalyzer->is2018)      jecFile = "jecUncertaintyFile17"; // TODO: update when 2018 JEC become available
-    else if(multilepAnalyzer->is2017) jecFile = "jecUncertaintyFile17";
-    else                              jecFile = "jecUncertaintyFile16";
-
-    jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>(jecFile)).fullPath());
+    jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile")).fullPath());
 };
 
 JetAnalyzer::~JetAnalyzer(){
     delete jecUnc;
 }
 
-// Note that here only the uncertainty is saved, the Up and Down variations still need to be calculated later, probably easier to do on python level
-// Also b-tagging up/down is easier on python level (see https://github.com/GhentAnalysis/StopsDilepton/blob/leptonSelectionUpdate_80X/tools/python/btagEfficiency.py)
-// Storing here jet id variables, id itself also to be implemented at python level https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016, or maybe still here as the loose wp does not change often?
+// Note: the JEC are already applied through the GT, if you need back the old way (JEC.cc) check the code before c3564f71a2e7dca3cb963ef69481894cb04bbf53
 // WARNING: the _nJets is number of stored jets (i.e. including those where JECUp/JERUp passes the cut), do not use as selection
 void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/i");
@@ -47,8 +40,15 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetDeepCsv_b",              &_jetDeepCsv_b,             "_jetDeepCsv_b[_nJets]/D");
     outputTree->Branch("_jetDeepCsv_c",              &_jetDeepCsv_c,             "_jetDeepCsv_c[_nJets]/D");
     outputTree->Branch("_jetDeepCsv_bb",             &_jetDeepCsv_bb,            "_jetDeepCsv_bb[_nJets]/D");
+    outputTree->Branch("_jetDeepCsv",                &_jetDeepCsv,               "_jetDeepCsv[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_b",           &_jetDeepFlavor_b,          "_jetDeepFlavor_b[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_bb",          &_jetDeepFlavor_bb,         "_jetDeepFlavor_bb[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_lepb",        &_jetDeepFlavor_lepb,       "_jetDeepFlavor_lepb[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor",             &_jetDeepFlavor,            "_jetDeepFlavor[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_c",           &_jetDeepFlavor_c,          "_jetDeepFlavor_c[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_uds",         &_jetDeepFlavor_uds,        "_jetDeepFlavor_uds[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_g",           &_jetDeepFlavor_g,          "_jetDeepFlavor_g[_nJets]/D");
     outputTree->Branch("_jetHadronFlavor",           &_jetHadronFlavor,          "_jetHadronFlavor[_nJets]/i");
-    outputTree->Branch("_jetIsLoose",                &_jetIsLoose,               "_jetIsLoose[_nJets]/O");
     outputTree->Branch("_jetIsTight",                &_jetIsTight,               "_jetIsTight[_nJets]/O");
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/O");
 
@@ -74,17 +74,15 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
     outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
 
+    if(!multilepAnalyzer->is2018() ) outputTree->Branch("_jetIsLoose", _jetIsLoose, "_jetIsLoose[_nJets]/O"); // WARNING, not recommended to be used, only exists for 2016
 }
 
 bool JetAnalyzer::analyze(const edm::Event& iEvent){
-    edm::Handle<std::vector<pat::Jet>> jets;            iEvent.getByToken(multilepAnalyzer->jetToken,            jets);
-    edm::Handle<std::vector<pat::Jet>> jetsSmeared;     iEvent.getByToken(multilepAnalyzer->jetSmearedToken,     jetsSmeared);
-    edm::Handle<std::vector<pat::Jet>> jetsSmearedUp;   iEvent.getByToken(multilepAnalyzer->jetSmearedUpToken,   jetsSmearedUp);
-    edm::Handle<std::vector<pat::Jet>> jetsSmearedDown; iEvent.getByToken(multilepAnalyzer->jetSmearedDownToken, jetsSmearedDown);
-    edm::Handle<std::vector<pat::MET>> mets;            iEvent.getByToken(multilepAnalyzer->metToken, mets);
-
-    //to apply JEC from txt files
-    edm::Handle<double> rho;                            iEvent.getByToken(multilepAnalyzer->rhoToken,            rho);
+    edm::Handle<std::vector<pat::Jet>> jets            = getHandle(iEvent, multilepAnalyzer->jetToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmeared     = getHandle(iEvent, multilepAnalyzer->jetSmearedToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmearedUp   = getHandle(iEvent, multilepAnalyzer->jetSmearedUpToken);
+    edm::Handle<std::vector<pat::Jet>> jetsSmearedDown = getHandle(iEvent, multilepAnalyzer->jetSmearedDownToken);
+    edm::Handle<std::vector<pat::MET>> mets            = getHandle(iEvent, multilepAnalyzer->metToken);
 
     _nJets = 0;
 
@@ -92,11 +90,10 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     for(const auto& jet : *jets){
         if(_nJets == nJets_max) break;
 
-        //only store loose jets
-        _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
-        if(!_jetIsLoose[_nJets]) continue;
-        _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
-        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017 || multilepAnalyzer->is2018);
+        _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017() || multilepAnalyzer->is2018() );
+        _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
+        _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
+        if(!_jetIsLoose[_nJets]) continue;  // displaced specific, though it would make more sense to cut on tight if you want to have a cut on jet Id
 
         //find smeared equivalents of nominal jet
         auto jetSmearedIt = jetsSmeared->begin();
@@ -128,8 +125,8 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         jecUnc->setJetPt(jetSmearedIt->pt());
         double uncSmeared = jecUnc->getUncertainty(true);
         _jetSmearedPt[_nJets]         = jetSmearedIt->pt();
-        _jetSmearedPt_JECDown[_nJets] = _jetPt[_nJets]*( 1. - uncSmeared );
-        _jetSmearedPt_JECUp[_nJets]   = _jetPt[_nJets]*( 1. + uncSmeared );
+        _jetSmearedPt_JECDown[_nJets] = _jetSmearedPt[_nJets]*( 1. - uncSmeared );
+        _jetSmearedPt_JECUp[_nJets]   = _jetSmearedPt[_nJets]*( 1. + uncSmeared );
         _jetSmearedPt_JERDown[_nJets] = jetSmearedDownIt->pt();
         _jetSmearedPt_JERUp[_nJets]   = jetSmearedUpIt->pt();
 
@@ -137,7 +134,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         std::vector<double> ptVector = {_jetPt[_nJets], _jetPt_JECDown[_nJets], _jetPt_JECUp[_nJets],
             _jetSmearedPt[_nJets], _jetSmearedPt_JECDown[_nJets], _jetSmearedPt_JECUp[_nJets], _jetSmearedPt_JERDown[_nJets],  _jetSmearedPt_JERUp[_nJets]};
         double maxpT = *(std::max_element(ptVector.cbegin(), ptVector.cend()));
-        if(maxpT <= 25) continue;
+        if(maxpT <= 25) continue; // displaced specific (is 20 GeV in the masterbranch)
 
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
@@ -150,11 +147,25 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
-        //new DeepFlavour tagger
+
+        //DeepCSV tagger
         _jetDeepCsv_udsg[_nJets]          = jet.bDiscriminator("pfDeepCSVJetTags:probudsg");
         _jetDeepCsv_b[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _jetDeepCsv_c[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probc");
         _jetDeepCsv_bb[_nJets]            = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+        _jetDeepCsv[_nJets]               = _jetDeepCsv_b[_nJets] + _jetDeepCsv_bb[_nJets];
+        if( std::isnan( _jetDeepCsv[_nJets] ) ) _jetDeepCsv[_nJets] = 0.;
+
+        //DeepFlavor taggeer 
+        _jetDeepFlavor_b[_nJets]          = jet.bDiscriminator("pfDeepFlavourJetTags:probb");
+        _jetDeepFlavor_bb[_nJets]         = jet.bDiscriminator("pfDeepFlavourJetTags:probbb");
+        _jetDeepFlavor_lepb[_nJets]       = jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
+        _jetDeepFlavor[_nJets]            = _jetDeepFlavor_b[_nJets] + _jetDeepFlavor_bb[_nJets] + _jetDeepFlavor_lepb[_nJets];
+        if( std::isnan( _jetDeepFlavor[_nJets] ) ) _jetDeepFlavor[_nJets] = 0.;
+        _jetDeepFlavor_c[_nJets]          = jet.bDiscriminator("pfDeepFlavourJetTags:probc");
+        _jetDeepFlavor_uds[_nJets]        = jet.bDiscriminator("pfDeepFlavourJetTags:probuds");
+        _jetDeepFlavor_g[_nJets]          = jet.bDiscriminator("pfDeepFlavourJetTags:probg");
+
         _jetHadronFlavor[_nJets]          = jet.hadronFlavour();
 
         _jetNeutralHadronFraction[_nJets] = jet.neutralHadronEnergyFraction();
@@ -202,10 +213,10 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
  * JetID implementations, references:
  * https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016
  * https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2017
- * 2018, currently takes the same as 2017
+ * https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2018
  */
 
-// There should be no loose Jet ID for 2017, not sure where the cuts for this below originate, so use at own risk
+// WARNING: There should be no loose Jet ID for 2017, not sure where the cuts for this below originate, so use at own risk
 bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
     if(fabs(jet.eta()) <= 2.7){
         if(jet.neutralHadronEnergyFraction() >=  0.99)               return false;
@@ -231,28 +242,45 @@ bool JetAnalyzer::jetIsLoose(const pat::Jet& jet, const bool is2017) const{
     return true;
 }
 
-bool JetAnalyzer::jetIsTight(const pat::Jet& jet, const bool is2017) const{
-    if(!jetIsLoose(jet, is2017))                            return false;
+bool JetAnalyzer::jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const{
+    if(is2018){
+      if(fabs(jet.eta()) <= 2.7){
+        if(jet.neutralHadronEnergyFraction() >=  0.9)                         return false;
+        if(jet.neutralEmEnergyFraction() >= 0.9)                              return false;
+        if(jet.chargedMultiplicity()+jet.neutralMultiplicity() <= 1)          return false;
+        if(jet.chargedHadronEnergyFraction() <= 0 and fabs(jet.eta()) <= 2.6) return false; // only for |eta|<2.6
+        if(jet.chargedMultiplicity() <= 0)                                    return false;
+      } else if(fabs(jet.eta()) <= 3.0){
+        if(jet.neutralHadronEnergyFraction() >= 0.99)                         return false;
+        if(jet.neutralEmEnergyFraction() <= 0.02)                             return false;
+        if(jet.neutralMultiplicity() <= 2)                                    return false;
+      } else {
+        if(jet.neutralEmEnergyFraction() >= 0.90)                             return false;
+        if(jet.neutralMultiplicity() <= 10)                                   return false;
+        if(jet.neutralHadronEnergyFraction() <= 0.02)                         return false;
+      }
+      return true;
+    } else {
+      if(!jetIsLoose(jet, is2017))                                            return false;
 
-    if(fabs(jet.eta()) <= 2.7){
-        if(jet.neutralHadronEnergyFraction() >= 0.9)        return false;
-        if(jet.neutralEmEnergyFraction() >= 0.9)            return false;
+      if(fabs(jet.eta()) <= 2.7){
+          if(jet.neutralHadronEnergyFraction() >= 0.9)                        return false;
+          if(jet.neutralEmEnergyFraction() >= 0.9)                            return false;
 
-    } else if(fabs(jet.eta()) <= 3.0){
-        if(is2017 && jet.neutralEmEnergyFraction() >= 0.99) return false;
+      } else if(fabs(jet.eta()) <= 3.0){
+          if(is2017 && jet.neutralEmEnergyFraction() >= 0.99)                 return false;
+      }
+      return true;
     }
-    return true;
 }
 
-bool JetAnalyzer::jetIsTightLepVeto(const pat::Jet& jet, const bool is2017) const{
-    if(!jetIsTight(jet, is2017))                                      return false;
-
+bool JetAnalyzer::jetIsTightLepVeto(const pat::Jet& jet, const bool is2017, const bool is2018) const{
+    if(!jetIsTight(jet, is2017, is2018))                                                  return false; // Similar to tight ID except with additional cuts:
     if(fabs(jet.eta()) <= 2.7){
-        if(jet.chargedMuEnergyFraction() >= 0.8 )                     return false;
-
-        if(fabs(jet.eta()) <= 2.4){
-            if(jet.chargedEmEnergyFraction() >= (is2017 ? 0.8 : 0.9)) return false;
-        }
+      if(jet.chargedMuEnergyFraction() >= 0.8 )                                           return false; // Muon energy fraction cut
+      if(is2018 and jet.chargedEmEnergyFraction() >= 0.8)                                 return false; // EM fraction cut 2018
+      else if(is2017 and fabs(jet.eta()) <= 2.4 and jet.chargedEmEnergyFraction() >= 0.8) return false; // EM fraction cut 2017
+      else if(fabs(jet.eta()) <= 2.4 and jet.chargedEmEnergyFraction() >= 0.9)            return false; // EM fraction cut 2016
     }
     return true;
 }

@@ -21,7 +21,7 @@ class PhotonAnalyzer {
 
         static const unsigned nPhoton_max = 20;
 
-        unsigned _nPh;
+        unsigned _nPh = 0;
         double   _phPt[nPhoton_max];
         double   _phPtCorr[nPhoton_max];
         double   _phPtScaleUp[nPhoton_max];
@@ -40,13 +40,16 @@ class PhotonAnalyzer {
         bool     _phCutBasedLoose[nPhoton_max];
         bool     _phCutBasedMedium[nPhoton_max];
         bool     _phCutBasedTight[nPhoton_max];
-        double   _phMva[nPhoton_max];
+        double   _phMvaS16v1[nPhoton_max];
+        double   _phMvaF17v1p1[nPhoton_max];
+        double   _phMvaF17v2[nPhoton_max]; 
         double   _phRandomConeChargedIsolation[nPhoton_max];
         double   _phChargedIsolation[nPhoton_max];
         double   _phNeutralHadronIsolation[nPhoton_max];
         double   _phPhotonIsolation[nPhoton_max];
         double   _phSigmaIetaIeta[nPhoton_max];
         double   _phHadronicOverEm[nPhoton_max];
+        double   _phHadTowOverEm[nPhoton_max];
         bool     _phPassElectronVeto[nPhoton_max];
         bool     _phHasPixelSeed[nPhoton_max];
         bool     _phIsPrompt[nPhoton_max];
