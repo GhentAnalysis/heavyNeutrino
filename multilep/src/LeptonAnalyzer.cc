@@ -527,6 +527,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     //loop over taus
     for(const pat::Tau* tauptr : seltaus) {
+        break; // displaced specific: do not consider tau's in the displaced branch [note: switching this back on without reviewing the code will put unitialized values in the tree, breaking the tests]
         if(_nL == nL_max) break;
         const pat::Tau& tau = (*tauptr);
 
