@@ -1,5 +1,5 @@
 # Setup script for branch: displacedLegacy
-RELEASE=CMSSW_10_2_17
+RELEASE=CMSSW_10_2_18
 BRANCH=displacedLegacy
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
