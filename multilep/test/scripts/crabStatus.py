@@ -4,7 +4,7 @@
 # crabStatus.py <options> DIRECTORY
 # DIRECTORY is also optional, it will check everything in the crab directory
 
-import os
+import os, shutil
 from optparse import OptionParser
 
 #
@@ -63,6 +63,8 @@ def resubmitCrabConfig(dir):
           config.write(line)
         if line.count('from WMCore.Configuration import Configuration'):
           foundConfigLines = True
+          config.write('from WMCore.Configuration import Configuration')
+  shutil.rmtree(dir)
   os.system('crab submit -c crab_temp.py')
   os.remove('crab_temp.py')
 
@@ -94,8 +96,6 @@ def checkCrabDir(dir):
     print('Could not get crab status:')
     if submitFailed:
       print('   SUBMITFAILED --> resubmiting!')
-      import shutil
-      shutil.rmtree(dir)
       resubmitCrabConfig(dir)
     else:
       with open(".status.txt") as statusFile:
