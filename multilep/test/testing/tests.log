@@ -1,9 +1,8 @@
-commit ced2821d4f679d4c3db6dfa827103347507c3991
-Merge: 0fe3a4a 5921d63
+commit 1861d1f945d2fe1fec596c2586f7135523d42575
 Author: tomc <tomc@cern.ch>
-Date:   Fri Nov 29 18:29:54 2019 +0100
+Date:   Fri Nov 29 19:29:55 2019 +0100
 
-    Merge remote-tracking branch 'ghent/master'
+    lMatchCharge does not get filled for taus
 
 --------------------------------------------------------------------------------------------------
 
@@ -25,59 +24,16 @@ Running test: Run2016-17Jul2018 --> OK
 
 Running test: Autumn18MiniAOD --> OK
    Changed:
-      _jetChargedEmFraction                              mean:   0.1213 -->   0.1269     rms:   0.2789 -->   0.2841    
-      _jetChargedHadronFraction                          mean:   0.2751 -->   0.2770     rms:   0.2671 -->   0.2670    
-      _jetCsvV2                                          mean:  -3.0035 -->  -2.7495     rms:   4.8495 -->   4.7452    
-      _jetDeepCsv                                        mean:  -0.9088 -->  -0.8584     rms:   1.0510 -->   1.0479    
-      _jetDeepCsv_b                                      mean:  -0.4301 -->  -0.4038     rms:   0.5523 -->   0.5508    
-      _jetDeepCsv_bb                                     mean:  -0.4787 -->  -0.4546     rms:   0.5009 -->   0.4993    
-      _jetDeepCsv_c                                      mean:  -0.4125 -->  -0.3854     rms:   0.5661 -->   0.5643    
-      _jetDeepCsv_udsg                                   mean:  -0.0787 -->  -0.0359     rms:   0.8920 -->   0.8897    
-      _jetDeepFlavor                                     mean:   0.0577 -->   0.0567     rms:   0.0753 -->   0.0753    
-      _jetDeepFlavor_b                                   mean:   0.0364 -->   0.0354     rms:   0.0441 -->   0.0435    
-      _jetDeepFlavor_bb                                  mean:   0.0010 -->   0.0009     rms:   0.0024 -->   0.0024    
-      _jetDeepFlavor_c                                   mean:   0.0816 -->   0.0813     rms:   0.0576 -->   0.0589    
-      _jetDeepFlavor_g                                   mean:   0.4564 -->   0.4540     rms:   0.2013 -->   0.2057    
-      _jetDeepFlavor_lepb                                mean:   0.0203 -->   0.0203     rms:   0.0354 -->   0.0359    
-      _jetDeepFlavor_uds                                 mean:   0.4043 -->   0.4079     rms:   0.2028 -->   0.2066    
-      _jetE                                              mean: 168.6273 --> 169.8410     rms: 196.8738 --> 208.6235    
-      _jetEta                                            mean:  -0.0414 -->  -0.0539     rms:   2.1258 -->   2.0623    
-      _jetHFEmFraction                                   mean:   0.0131 -->   0.0114     rms:   0.0412 -->   0.0399    
-      _jetHFHadronFraction                               mean:   0.1309 -->   0.1176     rms:   0.3136 -->   0.3000    
-      _jetHadronFlavor                                   mean:   0.1095 -->   0.1233     rms:   0.6526 -->   0.6915    
-      _jetIsTight                                        mean:   0.9432 -->   0.9361     rms:   0.2315 -->   0.2445    
-      _jetIsTightLepVeto                                 mean:   0.7958 -->   0.7819     rms:   0.4031 -->   0.4129    
-      _jetNeutralEmFraction                              mean:   0.2445 -->   0.2544     rms:   0.2804 -->   0.2824    
-      _jetNeutralHadronFraction                          mean:   0.2728 -->   0.2506     rms:   0.3402 -->   0.3286    
-      _jetPhi                                            mean:   0.0115 -->   0.0042     rms:   1.8207 -->   1.8157    
-      _jetPt                                             mean:  38.5749 -->  39.7279     rms:  32.1749 -->  32.4486    
-      _jetPt_JECDown                                     mean:  37.3929 -->  38.5448     rms:  31.9107 -->  32.1762    
-      _jetPt_JECUp                                       mean:  39.7569 -->  40.9109     rms:  32.4468 -->  32.7289    
-      _jetPt_L1                                          mean:  33.4159 -->  34.5453     rms:  30.9703 -->  31.2178    
-      _jetPt_L2                                          mean:  38.5749 -->  39.7279     rms:  32.1749 -->  32.4486    
-      _jetPt_L3                                          mean:  38.5749 -->  39.7279     rms:  32.1749 -->  32.4486    
-      _jetPt_Uncorrected                                 mean:  38.0105 -->  38.8085     rms:  29.4967 -->  29.8929    
-      _jetSmearedPt                                      mean:  39.7494 -->  40.6980     rms:  32.2795 -->  32.8059    
-      _jetSmearedPt_JECDown                              mean:  38.5468 -->  39.4956     rms:  32.0042 -->  32.5252    
-      _jetSmearedPt_JECUp                                mean:  40.9520 -->  41.9004     rms:  32.5632 -->  33.0948    
-      _jetSmearedPt_JERDown                              mean:  39.2865 -->  40.1924     rms:  32.1698 -->  32.7374    
-      _jetSmearedPt_JERUp                                mean:  40.3227 -->  41.2256     rms:  32.3198 -->  32.9486    
-      _lMatchCharge                                      mean: 12835022.6737 --> -29332627.2947 rms: 142186234.3220 --> 200278760.6196
-      _metJECDown                                        mean:  33.4084 -->  34.1895     rms:  21.8331 -->  21.7741    
-      _metJECUp                                          mean:  37.1272 -->  36.0612     rms:  23.1150 -->  22.8682    
-      _metPhiJECDown                                     mean:  -0.0698 -->  -0.0226     rms:   1.5326 -->   1.5485    
-      _metPhiJECUp                                       mean:   0.0830 -->   0.0905     rms:   1.5539 -->   1.5485    
-      _metSignificance                                   mean:   2.6848 -->   2.7124     rms:   3.2220 -->   3.2612    
-      _nJets                                             mean:   4.7500 -->   4.5400     rms:   2.0706 -->   1.9361    
+      _lMatchCharge                                      mean: -29332627.2947 -->  -0.0519 rms: 200278760.6196 -->   0.9531
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
    Changed:
-      _lMatchCharge                                      mean: -50943329.3153 --> 4725844.1036 rms: 120108883.8682 --> 70182248.9796
+      _lMatchCharge                                      mean: 4725844.1036 -->   0.0101 rms: 70182248.9796 -->   0.9795
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
    Changed:
-      _lMatchCharge                                      mean: -362725.9590 --> 2405603.2612 rms: 5928994.4465 --> 39303893.9143
+      _lMatchCharge                                      mean: 2405603.2612 -->   0.1579 rms: 39303893.9143 -->   0.9721
