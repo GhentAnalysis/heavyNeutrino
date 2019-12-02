@@ -63,7 +63,7 @@ def resubmitCrabConfig(dir):
           config.write(line)
         if line.count('from WMCore.Configuration import Configuration'):
           foundConfigLines = True
-          config.write('from WMCore.Configuration import Configuration')
+          config.write('from WMCore.Configuration import Configuration\n')
   shutil.rmtree(dir)
   os.system('crab submit -c crab_temp.py')
   os.remove('crab_temp.py')
