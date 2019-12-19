@@ -181,7 +181,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
         outputTree->Branch("_lIsPromptFinalState",        &_lIsPromptFinalState,          "_lIsPromptFinalState[_nL]/O");
         outputTree->Branch("_lIsPromptDecayed",           &_lIsPromptDecayed,             "_lIsPromptDecayed[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
-        outputTree->Branch("_lMatchCharge",               &_lMatchCharge,                 "_lMatchCharge[_nL]/I");
+        outputTree->Branch("_lMatchCharge",               &_lMatchCharge,                 "_lMatchCharge[_nLight]/I");
         outputTree->Branch("_tauGenStatus",               &_tauGenStatus,                 "_tauGenStatus[_nL]/i");
         outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
         outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");

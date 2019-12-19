@@ -3,9 +3,12 @@ import FWCore.ParameterSet.Config as cms
 
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root"
-inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
+#inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
-#inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_TuneCP5_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/70000/F447BDAD-6642-BD46-B8E9-750F7F961BA7.root'
+inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_TuneCP5_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/70000/F447BDAD-6642-BD46-B8E9-750F7F961BA7.root'
+#inputFile       = '/store/mc/RunIISummer16MiniAODv3/SMS-TChiWZ_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16v3Fast_94X_mcRun2_asymptotic_v3-v1/100000/502F9078-3296-E911-BFB6-0025905B85EC.root'
+#inputFile       = '/store/mc/RunIIFall17MiniAODv2/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall17Fast_94X_mc2017_realistic_v15-v1/10000/00071D11-4C7A-E911-8E48-0CC47A1E0484.root'
+#inputFile       = '/store/mc/RunIIAutumn18MiniAOD/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall18Fast_102X_upgrade2018_realistic_v15-v1/50000/FBA243F4-DA64-3A40-8DD8-58A72064AD86.root'
 
 # Other default arguments
 
@@ -30,8 +33,9 @@ for i in range(1,len(sys.argv)):
 
 isData = not ('SIM' in inputFile or '/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in inputFile
-is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile
+is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
 isSUSY = "SMS-T" in inputFile
+isFastSim = ( 'PUSummer16v3Fast' in inputFile ) or ( 'PUFall17Fast' in inputFile ) or ( 'PUFall18Fast' in inputFile )
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -74,10 +78,20 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 # Import some objectsequences sequence (details in cff files)
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
-addJetSequence(process, isData, is2017, is2018)
-if is2018:   jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
-elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
-else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
+addJetSequence( process, isData, is2017, is2018, isFastSim )
+if is2018 and ( not isFastSim ):
+  jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
+elif is2018 and isFastSim:
+  jecUncertaintyFile = 'Autumn18_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+elif is2017 and ( not isFastSim ):
+  jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
+elif is2017 and isFastSim:
+ jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+elif not isFastSim:
+  jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
+else:
+  jecUncertaintyFile = 'Spring16_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+
 
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # Updated scale and smearings
@@ -180,6 +194,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
   is2018                        = cms.untracked.bool(is2018),
+  isFastSim                     = cms.untracked.bool(isFastSim),
   isSUSY                        = cms.untracked.bool(isSUSY),
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
   storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),

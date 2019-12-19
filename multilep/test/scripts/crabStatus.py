@@ -4,7 +4,7 @@
 # crabStatus.py <options> DIRECTORY
 # DIRECTORY is also optional, it will check everything in the crab directory
 
-import os
+import os, shutil
 from optparse import OptionParser
 
 #
@@ -63,6 +63,8 @@ def resubmitCrabConfig(dir):
           config.write(line)
         if line.count('from WMCore.Configuration import Configuration'):
           foundConfigLines = True
+          config.write('from WMCore.Configuration import Configuration\n')
+  shutil.rmtree(dir)
   os.system('crab submit -c crab_temp.py')
   os.remove('crab_temp.py')
 
@@ -94,8 +96,6 @@ def checkCrabDir(dir):
     print('Could not get crab status:')
     if submitFailed:
       print('   SUBMITFAILED --> resubmiting!')
-      import shutil
-      shutil.rmtree(dir)
       resubmitCrabConfig(dir)
     else:
       with open(".status.txt") as statusFile:
@@ -126,7 +126,7 @@ def checkCrabDir(dir):
   for job in jobs:
     if job['Exit code'] in ['50660']: raiseMemoryLimit = True
     if job['Exit code'] in ['50664']: raiseWalltime    = True
-    if job['Exit code'] in ['-1','65','83','60311','60318','8001','8002','8012','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662','8010','7002','50665']: jobsToResubmit.append(job['Job'])
+    if job['Exit code'] in ['-1','65','83','60311','60318','8001','8002','8012','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662','8010','7002','50665', '60324']: jobsToResubmit.append(job['Job'])
     if job['State'] == 'failed' and job['Exit code'] == '0':                                  jobsToResubmit.append(job['Job'])
     if job['State'] == 'failed' and job['Exit code'] == '-1':                                 jobsToResubmit.append(job['Job'])
     if 'failed' in job['Exit code']:                                                          jobsToResubmit.append(job['Job'])
