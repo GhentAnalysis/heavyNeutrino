@@ -1,9 +1,8 @@
-commit b90eb687835f42e4526b87de5c62d585f66552fd
-Merge: b07d9bc 207a802
+commit 2afdec4403f718a51ec5c2940825ea140b1cc49d
 Author: tomc <tomc@cern.ch>
-Date:   Thu Dec 19 16:28:11 2019 +0100
+Date:   Fri Dec 20 14:41:05 2019 +0100
 
-    Merge remote-tracking branch 'ghent/master' into displacedLegacy
+    Implement HLT_Ele32_WPTight also for lepton matching
 
 --------------------------------------------------------------------------------------------------
 
