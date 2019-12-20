@@ -87,6 +87,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool is2016() const{ return !(sampleIs2017 || sampleIs2018); }
         bool is2017() const{ return sampleIs2017; }
         bool is2018() const{ return sampleIs2018; }
+        bool isFastSim() const{ return sampleIsFastSim; }
         bool isSUSY() const{ return sampleIsSUSY; }
 
         ~multilep();
@@ -126,6 +127,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     sampleIsData;
         bool                                                     sampleIs2017;
         bool                                                     sampleIs2018;
+        bool                                                     sampleIsFastSim;
         bool                                                     sampleIsSUSY;
         bool                                                     storeLheParticles;
         bool                                                     storeParticleLevel;

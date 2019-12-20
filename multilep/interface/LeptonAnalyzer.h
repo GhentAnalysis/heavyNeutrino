@@ -360,7 +360,7 @@ class LeptonAnalyzer {
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho, const bool oldMatching = false);
-    unsigned matchSingleTrigger(bool, double, double, const edm::TriggerNames&, edm::Handle<pat::TriggerObjectStandAloneCollection>);
+    unsigned matchSingleTrigger(const edm::Event& iEvent, bool isele, double aeta, double aphi);
 
     // To synchronize lepton selection
     bool passElectronPreselection(const pat::Electron&, const double rho) const;
