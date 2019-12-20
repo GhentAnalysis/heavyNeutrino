@@ -264,8 +264,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     edm::Handle<std::vector<pat::Jet>> jets                    = getHandle(iEvent, multilepAnalyzer->jetToken);
   //edm::Handle<std::vector<pat::Jet>> jets                    = getHandle(iEvent, multilepAnalyzer->jetSmearedToken);  // Are we sure we do not want the smeared jets here???
     edm::Handle<std::vector<reco::GenParticle>> genParticles   = getHandle(iEvent, multilepAnalyzer->genParticleToken);
-    edm::Handle<edm::TriggerResults> trigBits                  = getHandle(iEvent, multilepAnalyzer->triggerToken);
-    edm::Handle<pat::TriggerObjectStandAloneCollection> trigObjs = getHandle(iEvent, multilepAnalyzer->trigObjToken);
 
     iSetup.get<IdealMagneticFieldRecord>().get(_bField);
     iSetup.get<TrackingComponentsRecord>().get("SteppingHelixPropagatorAny", _shProp);
@@ -402,8 +400,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
                                   and (mu.isTrackerMuon() or mu.isGlobalMuon()));
 
         if(someIdWithoutName) ++_nGoodLeading;
-        if((multilepAnalyzer->skim == "trilep" or multilepAnalyzer->skim == "displtrilep") && someIdWithoutName) _lHasTrigger[_nL] = matchSingleTrigger(false, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
-        else                                                    _lHasTrigger[_nL] = 0;
+        if((multilepAnalyzer->skim == "trilep" or multilepAnalyzer->skim == "displtrilep") && someIdWithoutName) _lHasTrigger[_nL] = matchSingleTrigger(iEvent, false, _lEta[_nL], _lPhi[_nL]);
+        else                                                                                                     _lHasTrigger[_nL] = 0;
 
         ++_nMu;
         ++_nL;
@@ -502,8 +500,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         if(ele->pt() > 7 && fabs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced;
         if(someIdWithoutName) ++_nGoodLeading;
-        if((multilepAnalyzer->skim == "trilep" or multilepAnalyzer->skim == "displtrilep")  && someIdWithoutName) _lHasTrigger[_nL] = matchSingleTrigger(true, _lEta[_nL], _lPhi[_nL], iEvent.triggerNames(*trigBits), trigObjs);
-        else                                                    _lHasTrigger[_nL] = 0;
+        if((multilepAnalyzer->skim == "trilep" or multilepAnalyzer->skim == "displtrilep")  && someIdWithoutName) _lHasTrigger[_nL] = matchSingleTrigger(iEvent, true, _lEta[_nL], _lPhi[_nL]);
+        else                                                                                                      _lHasTrigger[_nL] = 0;
 
         ++_nEle;
         ++_nL;
@@ -1157,22 +1155,29 @@ void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm:
     }
 }
 
-unsigned LeptonAnalyzer::matchSingleTrigger(bool isele, double aeta, double aphi, const edm::TriggerNames &names, edm::Handle<pat::TriggerObjectStandAloneCollection> objs){
+unsigned LeptonAnalyzer::matchSingleTrigger(const edm::Event& iEvent, bool isele, double aeta, double aphi){
+  auto triggerResults = getHandle(iEvent, multilepAnalyzer->triggerToken);
+  auto triggerObjects = getHandle(iEvent, multilepAnalyzer->trigObjToken);
+
+  std::vector<std::string> &singletrigs = isele ? singleEleTrigs : singleMuoTrigs;
+
   unsigned trigmask(0);
-  for(pat::TriggerObjectStandAlone iobj : *objs) { // NOTE: not const nor by reference, because we need to 'unpackPathNames'
+  for(pat::TriggerObjectStandAlone iobj : *triggerObjects) { // NOTE: not const nor by reference, because we need to 'unpackPathNames'
     if(reco::deltaR(iobj.eta(), iobj.phi(), aeta, aphi)<0.15) {
-      iobj.unpackPathNames(names);
-      std::vector<std::string> &singletrigs = isele ? singleEleTrigs : singleMuoTrigs;
+      iobj.unpackPathNames(iEvent.triggerNames(*triggerResults));
+      iobj.unpackFilterLabels(iEvent, *triggerResults);
       int ipath(-1);
       for(std::string& itrig : singletrigs) {
         ++ipath;
-        if(iobj.hasPathName(itrig.c_str(), true, true)){
-          trigmask |= (1<<ipath);
-          //return true; // do not return, because we need the list of all paths that fired!
+        if(multilepAnalyzer->is2017() and itrig == "HLT_Ele32_WPTight_Gsf"){ // special case for the 2017 Ele32 trigger
+          if(!iobj.hasFilterLabel("hltEle32L1DoubleEGWPTightGsfTrackIsoFilter")) continue;
+          if(!iobj.hasFilterLabel("hltEGL1SingleEGOrFilter")) continue;
+        } else {
+          if(!iobj.hasPathName(itrig.c_str(), true, true)) continue;
         }
+        trigmask |= (1<<ipath);
       }
     }
   }
-
   return trigmask;
 }

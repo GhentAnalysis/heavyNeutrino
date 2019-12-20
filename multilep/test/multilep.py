@@ -9,7 +9,6 @@ inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_Tun
 #inputFile       = '/store/mc/RunIISummer16MiniAODv3/SMS-TChiWZ_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16v3Fast_94X_mcRun2_asymptotic_v3-v1/100000/502F9078-3296-E911-BFB6-0025905B85EC.root'
 #inputFile       = '/store/mc/RunIIFall17MiniAODv2/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall17Fast_94X_mc2017_realistic_v15-v1/10000/00071D11-4C7A-E911-8E48-0CC47A1E0484.root'
 #inputFile       = '/store/mc/RunIIAutumn18MiniAOD/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall18Fast_102X_upgrade2018_realistic_v15-v1/50000/FBA243F4-DA64-3A40-8DD8-58A72064AD86.root'
-
 # Other default arguments
 
 nEvents         = 1000
@@ -212,7 +211,7 @@ def getJSON(is2017, is2018):
 
 process.blackJackAndHookers.SingleEleTriggers.extend(["HLT_Ele27_WPTight_Gsf_v*"])
 process.blackJackAndHookers.SingleMuoTriggers.extend(["HLT_IsoMu24_v*", "HLT_IsoTkMu24_v*"])
-process.blackJackAndHookers.SingleEleTriggers2017.extend(["HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*","HLT_Ele35_WPTight_Gsf_v*","HLT_Ele32_WPTight_Gsf_v*"])
+process.blackJackAndHookers.SingleEleTriggers2017.extend(["HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*","HLT_Ele35_WPTight_Gsf_v*","HLT_Ele32_WPTight_Gsf"])
 process.blackJackAndHookers.SingleMuoTriggers2017.extend(["HLT_IsoMu24_*","HLT_IsoMu27_v*"])
 process.blackJackAndHookers.SingleEleTriggers2018.extend(["HLT_Ele32_WPTight_Gsf_v*"])
 process.blackJackAndHookers.SingleMuoTriggers2018.extend(["HLT_IsoMu24_*","HLT_IsoMu27_v*"])
