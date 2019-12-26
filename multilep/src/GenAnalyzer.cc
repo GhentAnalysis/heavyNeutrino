@@ -124,7 +124,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lE[_gen_nL]                = p.energy();
                 _gen_lCharge[_gen_nL]           = p.charge();
                 _gen_lIsPrompt[_gen_nL]         = GenTools::isPrompt(p, *genParticles); 
-                _gen_lMomPdg[_gen_nL]           = GenTools::getMother(p, *genParticles)->pdgId();
+                _gen_lMomPdg[_gen_nL]           = GenTools::getMotherPdgId(p, *genParticles);
                 _gen_lDecayedHadr[_gen_nL]      = TauTools::decayedHadronically(p, *genParticles);
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
@@ -148,7 +148,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_phPhi[_gen_nPh]           = p.phi();
                 _gen_phE[_gen_nPh]             = p.energy();
                 _gen_phIsPrompt[_gen_nPh]      = p.isPromptFinalState();
-                _gen_phMomPdg[_gen_nPh]        = GenTools::getMother(p, *genParticles)->pdgId();
+                _gen_phMomPdg[_gen_nPh]        = GenTools::getMotherPdgId(p, *genParticles);
                 _gen_phMinDeltaR[_gen_nPh]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_phPassParentage[_gen_nPh] = GenTools::passParentage(p, *genParticles);
                 ++_gen_nPh;
