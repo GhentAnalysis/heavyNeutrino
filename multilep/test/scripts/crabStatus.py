@@ -54,6 +54,8 @@ def jobsToPythonList(jobs):
 
 # Get the crab config from the log file
 def resubmitCrabConfig(dir):
+  cwd = os.getcwd()
+  os.chdir(os.path.join(os.environ['CMSSW_BASE'], 'src/heavyNeutrino/multilep/test/'))
   with open('crab_temp.py', 'w') as config:
     with open(os.path.join(dir, 'crab.log')) as f:
       foundConfigLines = False
@@ -67,6 +69,8 @@ def resubmitCrabConfig(dir):
   shutil.rmtree(dir)
   os.system('crab submit -c crab_temp.py')
   os.remove('crab_temp.py')
+  os.remove('crab_temp.pyc')
+  os.chdir(cwd)
 
 def checkCrabDir(dir):
   if options.checkCrab:
