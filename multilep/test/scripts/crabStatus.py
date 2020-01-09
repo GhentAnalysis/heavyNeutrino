@@ -99,8 +99,17 @@ def checkCrabDir(dir):
   if not outputIsGood:
     print('Could not get crab status:')
     if submitFailed:
-      print('   SUBMITFAILED --> resubmiting!')
-      resubmitCrabConfig(dir)
+      with open(".status.txt") as statusFile:
+        for str in statusFile:
+          if "is not 'VALID' but 'DELETED'" in str:
+            print("    SUBMITFAILED --> Dataset is not 'VALID' but 'DELETED'")
+            for str in statusFile:
+              if 'dataset=' in str: print('                     %s' % str.split('dataset=')[-1].replace('.',''))
+            shutil.rmtree(dir)
+            break
+        else:
+          print('   SUBMITFAILED --> resubmiting!')
+          resubmitCrabConfig(dir)
     else:
       with open(".status.txt") as statusFile:
         for str in statusFile: print(str, end='')
