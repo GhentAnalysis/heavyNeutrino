@@ -101,8 +101,8 @@ def checkCrabDir(dir):
     if submitFailed:
       with open(".status.txt") as statusFile:
         for str in statusFile:
-          if "is not 'VALID' but 'DELETED'" in str:
-            print("    SUBMITFAILED --> Dataset is not 'VALID' but 'DELETED'")
+          if "is not 'VALID' but 'DELETED'" in str or "is not 'VALID' but 'INVALID'" in str:
+            print("    SUBMITFAILED --> Dataset is not 'VALID' but 'DELETED' or 'INVALID")
             for str in statusFile:
               if 'dataset=' in str: print('                     %s' % str.split('dataset=')[-1].replace('.',''))
             shutil.rmtree(dir)
