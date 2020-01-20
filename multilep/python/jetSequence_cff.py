@@ -19,7 +19,7 @@ def addJetSequence( process, isData, is2017, is2018, isFastSim ):
     elif is2017:
         JECVersion = 'Fall17_FastSimV1_MC'
     else :
-        JECVersion = 'Spring16_25nsFastSimV1_MC'
+        JECVersion = 'Summer16_FastSimV1_MC'
 
     CondDBJECFile = CondDB.clone( connect = cms.string('sqlite_fip:heavyNeutrino/multilep/data/JEC/{}.db'.format( JECVersion ) ) )
     process.jec = cms.ESSource('PoolDBESSource',
