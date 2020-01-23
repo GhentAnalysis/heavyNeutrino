@@ -32,7 +32,7 @@ std::string JEC::getJECRunName(const unsigned long runNumber){
     ///////////////////////////
     static const std::string version2016 = "_V11";
     static const std::string version2017 = "_V32";
-    static const std::string version2018 = "_V15";
+    static const std::string version2018 = "_V19";
     //////////////////////////
     std::string jecName;
     if(isData){
