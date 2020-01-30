@@ -46,10 +46,15 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_pvXErr",                       &_pvXErr,                       "_pvXErr/D");    // "
     outputTree->Branch("_pvYErr",                       &_pvYErr,                       "_pvYErr/D");    // "
     outputTree->Branch("_pvZErr",                       &_pvZErr,                       "_pvZErr/D");    // "
-    outputTree->Branch("_nMu",                          &_nMu,                          "_nMu/b");
-    outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/b");
-    outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/b");
-    outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/b");
+    outputTree->Branch("_nVFit_os",                     &_nVFit_os,                     "_nVFit_os/i");                      // displaced specific
+    outputTree->Branch("_nVFit",                        &_nVFit,                        "_nVFit/i");                         // displaced specific
+    outputTree->Branch("_nGoodLeading",                 &_nGoodLeading,                 "_nGoodLeading/i");                  // "
+    outputTree->Branch("_nGoodDisplaced",               &_nGoodDisplaced,               "_nGoodDisplaced/i");                // "
+    outputTree->Branch("_vertices_os",                  &_vertices_os,                  "_vertices_os[_nVFit_os][12]/D");    // displaced specific
+    outputTree->Branch("_lDisplaced_os",                &_lDisplaced_os,                "_lDisplaced_os[_nVFit_os][24]/D");  // "
+    outputTree->Branch("_vertices",                     &_vertices,                     "_vertices[_nVFit][12]/D");          // displaced specific
+    outputTree->Branch("_lDisplaced",                   &_lDisplaced,                   "_lDisplaced[_nVFit][24]/D");        // "
+    outputTree->Branch("_lHasTrigger",                  &_lHasTrigger,                  "_lHasTrigger[_nL]/i");              // "
     outputTree->Branch("_lPt",                          &_lPt,                          "_lPt[_nL]/D");
     outputTree->Branch("_lEta",                         &_lEta,                         "_lEta[_nL]/D");
     outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
