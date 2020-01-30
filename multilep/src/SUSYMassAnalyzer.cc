@@ -17,7 +17,8 @@ void SUSYMassAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& f
     //Counter to determine the amount of events for every SUSY mass point
     //Note, too small binning is used to be sure the binning is smaller than the sample's mass point separation
     //There is no way to access the amount of mass points or there splitting while running over the sample!!!
-    hCounterSUSY = fs->make<TH2D>("hCounterSUSY", "SUSY Events counter", 400,0,2000, 300, 0, 1500);
+    //Center each bin at integer masses to avoid edge effects
+    hCounterSUSY = fs->make<TH2D>( "hCounterSUSY", "SUSY Events counter", 2001, -0.5, 2000.5, 1501, -0.5, 1500.5 );
 
     //Store SUSY particle masses for event
     outputTree->Branch("_mChi1", &_mChi1, "_mChi1/D");
@@ -52,5 +53,5 @@ void SUSYMassAnalyzer::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, c
 
 
 void SUSYMassAnalyzer::analyze(const edm::Event& iEvent){
-    hCounterSUSY->Fill(_mChi2, _mChi1, lheAnalyzer->getWeight());
+    hCounterSUSY->Fill( _mChi2, _mChi1, lheAnalyzer->getWeight() );
 }

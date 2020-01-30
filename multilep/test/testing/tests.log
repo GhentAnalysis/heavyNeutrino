@@ -1,33 +1,44 @@
-commit 2afdec4403f718a51ec5c2940825ea140b1cc49d
+commit 7f2f1e31e7b95c19d4e5df3ce9ea60e6d495a5bf
 Author: tomc <tomc@cern.ch>
-Date:   Fri Dec 20 14:41:05 2019 +0100
+Date:   Thu Jan 30 15:20:22 2020 +0100
 
-    Implement HLT_Ele32_WPTight also for lepton matching
+    Re-adding variables which got accidently lost during merge
+    
+    aaaaaaaaargh, this is the problem with huge merges like 2d5ef0b5b54b71d1429371404e77a70b4e67f5ff
+    which had 176,217 additions and 96,334 deletions. Of course you miss something which the merge
+    algorithm does wrongly. We should merge more often to avoid this.
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   New: _lDisplaced,_lDisplaced_os,_lHasTrigger,_nGoodDisplaced,_nGoodLeading,_nVFit,_nVFit_os,_vertices,_vertices_os
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   New: _lDisplaced,_lDisplaced_os,_lHasTrigger,_nGoodDisplaced,_nGoodLeading,_nVFit,_nVFit_os,_vertices,_vertices_os
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   New: _lDisplaced,_lDisplaced_os,_lHasTrigger,_nGoodDisplaced,_nGoodLeading,_nVFit,_nVFit_os,_vertices,_vertices_os
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   New: _lDisplaced,_lDisplaced_os,_lHasTrigger,_nGoodDisplaced,_nGoodLeading,_nVFit,_nVFit_os,_vertices,_vertices_os
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   New: _lDisplaced,_lDisplaced_os,_lHasTrigger,_nGoodDisplaced,_nGoodLeading,_nVFit,_nVFit_os,_vertices,_vertices_os
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   New: _lDisplaced,_lDisplaced_os,_lHasTrigger,_nGoodDisplaced,_nGoodLeading,_nVFit,_nVFit_os,_vertices,_vertices_os
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _lDisplaced,_lDisplaced_os,_lHasTrigger,_nGoodDisplaced,_nGoodLeading,_nVFit,_nVFit_os,_vertices,_vertices_os
