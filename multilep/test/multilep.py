@@ -186,6 +186,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
   storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),
   storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
+  headerPart1                   = cms.FileInPath("heavyNeutrino/multilep/data/header/soviet.txt"),
+  headerPart2                   = cms.FileInPath("heavyNeutrino/multilep/data/header/text.txt")
 )
 
 def getJSON(is2017, is2018):
