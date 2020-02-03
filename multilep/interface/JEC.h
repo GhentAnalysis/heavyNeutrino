@@ -24,10 +24,12 @@ class JEC {
 
         void updateJEC(const unsigned long);
         void setJEC(const std::string&);
+        void setRunEra(const unsigned long);
 
         double jetCorrection(double rawPt, double eta, double rho, double area, const std::string& level = "L3Absolute");     // this function returns, for a given jet the correction factor
         double jetUncertainty(double pt, double eta);
         std::pair <double, double > correctedMETAndPhi(const pat::MET& met, const std::vector< pat::Jet >& jets, const double rho);
+        std::pair <double, double > METXYCorr_Met_MetPhi(double uncormet, double uncormet_phi, int npv);
 
     private:
         std::string path;
@@ -36,6 +38,8 @@ class JEC {
         bool is2018;
         bool isPuppi;
         std::string currentJEC; 
+        int runera;
+        bool usemetv2;
 
         std::shared_ptr<FactorizedJetCorrector> jetCorrector;
         std::shared_ptr<JetCorrectionUncertainty> jetUncertainties;

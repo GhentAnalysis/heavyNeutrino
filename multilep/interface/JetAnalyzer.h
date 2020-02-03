@@ -23,6 +23,7 @@ class JetAnalyzer {
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
     double   _jetPt_JECDown[nJets_max];
+    double   _jetPt_JECUnc[nJets_max];
     double   _jetSmearedPt[nJets_max];
     double   _jetSmearedPt_JECDown[nJets_max];
     double   _jetSmearedPt_JECUp[nJets_max];
@@ -52,19 +53,38 @@ class JetAnalyzer {
     double   _jetHFHadronFraction[nJets_max];
     double   _jetHFEmFraction[nJets_max];
 
+    unsigned _nJetsPuppi = 0;
+    double   _jetPuppiPt[nJets_max];
+    double   _jetPuppiPt_JECUp[nJets_max];
+    double   _jetPuppiPt_JECDown[nJets_max];
+    double   _jetPuppiPt_JECUnc[nJets_max];
+    double   _jetPuppiEta[nJets_max];
+    double   _jetPuppiPhi[nJets_max];
+
     double   _met;                                                                              //met kinematics
     double   _metPhi;
+    double   _metType1;
+    double   _metType1Phi;
     double   _metRaw;
     double   _metRawPhi;
     double   _metJECDown;
-    double   _metPhiJECDown;
+    double   _metJECDownPhi;
     double   _metJECUp;
-    double   _metPhiJECUp;
+    double   _metJECUpPhi;
     double   _metUnclDown;
     double   _metPhiUnclDown;
     double   _metUnclUp;
     double   _metPhiUnclUp;
     double   _metSignificance;
+
+    double   _metPuppi;
+    double   _metPuppiPhi;
+    //double   _metPuppiJECDown;
+    //double   _metPuppiPhiJECDown;
+    //double   _metPuppiJECUp;
+    //double   _metPuppiPhiJECUp;
+    double   _metPuppiRaw;
+    double   _metPuppiRawPhi;
 
     std::string jecLevel;
 
@@ -79,7 +99,7 @@ class JetAnalyzer {
     ~JetAnalyzer();
 
     void beginJob(TTree* outputTree);
-    bool analyze(const edm::Event&);
+    bool analyze(const edm::Event&, const int);
 };
 
 #endif
