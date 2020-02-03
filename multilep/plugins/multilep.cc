@@ -19,10 +19,12 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     packedCandidatesToken(    consumes<std::vector<pat::PackedCandidate>>(     iConfig.getParameter<edm::InputTag>("packedCandidates"))),
     rhoToken(                 consumes<double>(                                iConfig.getParameter<edm::InputTag>("rho"))),
     metToken(                 consumes<std::vector<pat::MET>>(                 iConfig.getParameter<edm::InputTag>("met"))),
+    metPuppiToken(            consumes<std::vector<pat::MET>>(                 iConfig.getParameter<edm::InputTag>("metPuppi"))),
     jetToken(                 consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jets"))),
     jetSmearedToken(          consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
     jetSmearedUpToken(        consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
     jetSmearedDownToken(      consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
+    jetPuppiToken(            consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsPuppi"))),
     jecPath(                                                                   iConfig.getParameter<edm::FileInPath>("JECtxtPath").fullPath()),
     recoResultsPrimaryToken(  consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("recoResultsPrimary"))),
     recoResultsSecondaryToken(consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("recoResultsSecondary"))),
@@ -53,7 +55,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
 
     std::string dirtyHack = "dummy.txt";
     std::string path = jecPath.substr(0, jecPath.size() - dirtyHack.size() );
-    jec = new JEC(path, isData(), is2017(), is2018());
+    jec = new JEC(path, isData(), is2017(), is2018(), false);
+    jecPuppi = new JEC(path, isData(), is2017(), is2018(), true);
 }
 
 multilep::~multilep(){
@@ -66,6 +69,7 @@ multilep::~multilep(){
     delete lheAnalyzer;
     delete susyMassAnalyzer;
     delete jec;
+    delete jecPuppi;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -111,6 +115,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     _runNb = (unsigned long) iRun.id().run();
     triggerAnalyzer->reIndex = true;                                   // HLT results could have different size/order in new run, so look up again the index positions
     jec->updateJEC(_runNb);
+    jecPuppi->updateJEC(_runNb);
 }
 
 // ------------ method called for each event  ------------

@@ -6,8 +6,10 @@
 
 #include "heavyNeutrino/multilep/interface/JEC.h"
 
-JEC::JEC(const std::string& JECPath, bool dataSample, bool is2017sample, bool is2018sample):
-    path(JECPath), isData(dataSample), is2017(is2017sample), is2018(is2018sample), currentJEC("none") {}
+enum TheRunEra{y2016B,y2016C,y2016D,y2016E,y2016F,y2016G,y2016H,y2017B,y2017C,y2017D,y2017E,y2017F,y2018A,y2018B,y2018C,y2018D,y2016MC,y2017MC,y2018MC};
+
+JEC::JEC(const std::string& JECPath, bool dataSample, bool is2017sample, bool is2018sample, bool isPuppiJEC):
+    path(JECPath), isData(dataSample), is2017(is2017sample), is2018(is2018sample), isPuppi(isPuppiJEC), currentJEC("none") {}
 
 JEC::~JEC(){}
 
@@ -19,13 +21,15 @@ void JEC::updateJEC(const unsigned long runNumber){
 }
 
 void JEC::setJEC(const std::string& JECName){
+    std::string jettype = (isPuppi)? "Puppi" : "chs";
+    if(!is2018) jettype = "chs"; //currently Puppi JEC corrections are only loaded for 2018!
     std::vector< JetCorrectorParameters > JECParameters;
-    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L1FastJet_AK4PFchs.txt") );
-    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2Relative_AK4PFchs.txt") );
-    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L3Absolute_AK4PFchs.txt") );
-    if(isData) JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2L3Residual_AK4PFchs.txt") );
+    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L1FastJet_AK4PF" + jettype + ".txt") );
+    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2Relative_AK4PF" + jettype + ".txt") );
+    JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L3Absolute_AK4PF" + jettype + ".txt") );
+    if(isData) JECParameters.push_back(JetCorrectorParameters( path + JECName + "_L2L3Residual_AK4PF" + jettype + ".txt") );
     jetCorrector.reset(new FactorizedJetCorrector(JECParameters) );
-    jetUncertainties.reset(new JetCorrectionUncertainty(path + JECName + "_Uncertainty_AK4PFchs.txt") );
+    jetUncertainties.reset(new JetCorrectionUncertainty(path + JECName + "_Uncertainty_AK4PF" + jettype + ".txt") );
 }
    
 std::string JEC::getJECRunName(const unsigned long runNumber){

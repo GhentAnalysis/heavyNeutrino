@@ -19,7 +19,7 @@ class to apply JEC from txt files
 
 class JEC {
     public:
-        JEC(const std::string& JECpath, const bool dataSample, const bool is2017sample, const bool is2018sample);
+        JEC(const std::string& JECpath, const bool dataSample, const bool is2017sample, const bool is2018sample, const bool isPuppiJEC);
         ~JEC();
 
         void updateJEC(const unsigned long);
@@ -34,6 +34,7 @@ class JEC {
         bool isData;
         bool is2017;
         bool is2018;
+        bool isPuppi;
         std::string currentJEC; 
 
         std::shared_ptr<FactorizedJetCorrector> jetCorrector;

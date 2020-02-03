@@ -80,7 +80,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jetsSmeared     = getHandle(iEvent, multilepAnalyzer->jetSmearedToken);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedUp   = getHandle(iEvent, multilepAnalyzer->jetSmearedUpToken);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedDown = getHandle(iEvent, multilepAnalyzer->jetSmearedDownToken);
+    edm::Handle<std::vector<pat::Jet>> jetsPuppi       = getHandle(iEvent, multilepAnalyzer->jetPuppiToken);
     edm::Handle<std::vector<pat::MET>> mets            = getHandle(iEvent, multilepAnalyzer->metToken);
+    edm::Handle<std::vector<pat::MET>> metsPuppi       = getHandle(iEvent, multilepAnalyzer->metPuppiToken);
     //to apply JEC from txt files
     edm::Handle<double> rho                            = getHandle(iEvent, multilepAnalyzer->rhoToken);
 

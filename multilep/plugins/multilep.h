@@ -106,10 +106,12 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<std::vector<pat::PackedCandidate>>      packedCandidatesToken;                       //particle collection used to calculate isolation variables
         edm::EDGetTokenT<double>                                 rhoToken;
         edm::EDGetTokenT<std::vector<pat::MET>>                  metToken;
+        edm::EDGetTokenT<std::vector<pat::MET>>                  metPuppiToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedUpToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedDownToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetPuppiToken;
         std::string                                              jecPath;
         edm::EDGetTokenT<edm::TriggerResults>                    recoResultsPrimaryToken;                     //MET filter information
         edm::EDGetTokenT<edm::TriggerResults>                    recoResultsSecondaryToken;                   //MET filter information (fallback if primary is not available)
@@ -147,6 +149,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         ParticleLevelAnalyzer* particleLevelAnalyzer;
         SUSYMassAnalyzer*      susyMassAnalyzer;
         JEC*                   jec;
+        JEC*                   jecPuppi;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;
