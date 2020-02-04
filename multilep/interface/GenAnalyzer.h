@@ -13,8 +13,8 @@ class GenAnalyzer {
   private:
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
-    static const unsigned gen_n_max = 10000;
-   
+    static const unsigned gen_n_max = 1000;
+
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
 
@@ -63,7 +63,7 @@ class GenAnalyzer {
     int      _gen_index[gen_n_max];
     int      _gen_motherIndex[gen_n_max];
     int      _gen_daughter_n[gen_n_max];
-    int      _gen_daughterIndex[gen_n_max][100];
+    int      _gen_daughterIndex[gen_n_max][10];
    
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut, double genCone) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
