@@ -125,6 +125,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     sampleIsFastSim;
         bool                                                     sampleIsSUSY;
         bool                                                     storeLheParticles;
+        bool                                                     storeGenParticles;
         bool                                                     storeParticleLevel;
         bool                                                     storeAllTauID;
 

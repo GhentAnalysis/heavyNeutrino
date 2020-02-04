@@ -44,6 +44,25 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lDecayedHadr",          &_gen_lDecayedHadr,          "_gen_lDecayedHadr[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
+
+    if( multilepAnalyzer->storeGenParticles )
+     {	
+	outputTree->Branch("_gen_n",                                        &_gen_n,                                        "_gen_n/I");
+	outputTree->Branch("_gen_pt",                                       &_gen_pt,                                       "_gen_pt[_gen_n]/D");
+	outputTree->Branch("_gen_eta",                                      &_gen_eta,                                      "_gen_eta[_gen_n]/D");
+	outputTree->Branch("_gen_phi",                                      &_gen_phi,                                      "_gen_phi[_gen_n]/D");
+	outputTree->Branch("_gen_E",                                        &_gen_E,                                        "_gen_E[_gen_n]/D");
+	outputTree->Branch("_gen_pdgId",                                    &_gen_pdgId,                                    "_gen_pdgId[_gen_n]/I");
+	outputTree->Branch("_gen_charge",                                   &_gen_charge,                                   "_gen_charge[_gen_n]/I");
+	outputTree->Branch("_gen_status",                                   &_gen_status,                                   "_gen_status[_gen_n]/I");
+	outputTree->Branch("_gen_isPromptFinalState",                       &_gen_isPromptFinalState,                       "_gen_isPromptFinalState[_gen_n]/O");
+	outputTree->Branch("_gen_isDirectPromptTauDecayProductFinalState",  &_gen_isDirectPromptTauDecayProductFinalState,  "_gen_isDirectPromptTauDecayProductFinalState[_gen_n]/O");
+	outputTree->Branch("_gen_isLastCopy",                               &_gen_isLastCopy,                               "_gen_isLastCopy[_gen_n]/O");
+	outputTree->Branch("_gen_index",                                    &_gen_index,                                    "_gen_index[_gen_n]/I");
+	outputTree->Branch("_gen_motherIndex",                              &_gen_motherIndex,                              "_gen_motherIndex[_gen_n]/I");
+	outputTree->Branch("_gen_daughter_n",                               &_gen_daughter_n,                               "_gen_daughter_n[_gen_n]/I");
+	outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][100]/I");
+     }   
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
@@ -57,6 +76,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    _gen_n = 0;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
         int absId = abs(p.pdgId());
@@ -105,8 +125,84 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_phPassParentage[_gen_nPh] = GenTools::passParentage(p, *genParticles);
                 ++_gen_nPh;
             } 
-        }
-    }
+	}
+
+       //store all generator level particles
+       if( multilepAnalyzer->storeGenParticles )
+	 {	    
+	    float ptGen = p.pt();
+	    float etaGen = p.eta();
+	    float phiGen = p.phi();
+	    float EGen = p.energy();
+	    int idGen = p.pdgId();
+	    int statusGen = p.status();
+	    int chargeGen = p.charge();
+	    bool isPromptFinalStateGen = p.isPromptFinalState();
+	    bool isDirectPromptTauDecayProductFinalState = p.isDirectPromptTauDecayProductFinalState();
+	    bool isLastCopy = p.isLastCopy();
+	    int indexGen = _gen_n;
+
+	    if( _gen_n == gen_n_max )
+	      {		      
+		 std::cout << "Reached max" << std::endl;
+		 exit(1);
+	      }
+       
+	    const reco::GenParticle* mom = GenTools::getMother(p, *genParticles);
+       
+	    int mother_index = 0;
+	    if( mom )
+	      {		 
+		 reco::GenParticleCollection genParticles_m = *genParticles;
+		 for(reco::GenParticleCollection::const_iterator pp = genParticles_m.begin(); pp != genParticles_m.end(); pp++)
+		   {
+		      if( fabs(pp->pt()-mom->pt()) < 10E-6 && fabs(pp->eta()-mom->eta()) < 10E-6 ) break;
+		      mother_index++;
+		   }
+	      }
+	    else mother_index = -1;
+       
+	    _gen_daughter_n[_gen_n] = 0;
+       
+	    const reco::GenParticleRefVector& daughterRefs = p.daughterRefVector();
+       
+	    for(reco::GenParticleRefVector::const_iterator idr = daughterRefs.begin(); idr!= daughterRefs.end(); ++idr)
+	      {	    
+		 if( idr->isAvailable() )
+		   {
+		      const reco::GenParticleRef& genParticle = (*idr);
+		      const reco::GenParticle *d = genParticle.get();
+		      
+		      int index = 0;
+		      reco::GenParticleCollection genParticles_d = *genParticles;
+		      for(reco::GenParticleCollection::const_iterator pp = genParticles_d.begin(); pp != genParticles_d.end(); pp++)
+			{
+			   reco::GenParticle *mcp_d = &(const_cast<reco::GenParticle&>(*pp));
+			   if( fabs(mcp_d->pt()-(*d).pt()) < 10E-6 && fabs(mcp_d->eta()-(*d).eta()) < 10E-6 ) break;
+			   index++;
+			}
+
+		      _gen_daughterIndex[_gen_n][_gen_daughter_n[_gen_n]] = index;
+		      _gen_daughter_n[_gen_n]++;
+		   }
+	      }
+	    
+	    _gen_pt[_gen_n]                                      = ptGen;
+	    _gen_eta[_gen_n]                                     = etaGen;
+	    _gen_phi[_gen_n]                                     = phiGen;
+	    _gen_E[_gen_n]                                       = EGen;
+	    _gen_pdgId[_gen_n]                                   = idGen;
+	    _gen_charge[_gen_n]                                  = chargeGen;
+	    _gen_status[_gen_n]                                  = statusGen;
+	    _gen_isPromptFinalState[_gen_n]                      = isPromptFinalStateGen;
+	    _gen_isDirectPromptTauDecayProductFinalState[_gen_n] = isDirectPromptTauDecayProductFinalState;
+	    _gen_isLastCopy[_gen_n]                              = isLastCopy;
+	    _gen_index[_gen_n]                                   = indexGen;
+	    _gen_motherIndex[_gen_n]                             = mother_index;
+	    ++_gen_n;
+	 }
+    }   
+
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
 
@@ -128,7 +224,7 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
         if(GenTools::getMinDeltaR(*p, genParticles) < genCone) continue;
-        if(not GenTools::passParentage(*p, genParticles))  continue;
+        if(not GenTools::noMesonsInChain(*p, genParticles))  continue;
 
         // Everything below is *signal*
         std::set<int> decayChain;

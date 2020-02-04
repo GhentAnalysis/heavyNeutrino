@@ -38,6 +38,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     sampleIsFastSim(                                                           iConfig.getUntrackedParameter<bool>("isFastSim")),
     sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
+    storeGenParticles(                                                         iConfig.getUntrackedParameter<bool>("storeGenParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
     storeAllTauID(                                                                iConfig.getUntrackedParameter<bool>("storeAllTauID"))
 {
@@ -112,6 +113,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     auto vertices = getHandle(iEvent, vtxToken);
+
     if( isMC() ) lheAnalyzer->analyze(iEvent);                                            // needs to be run before selection to get correct uncertainties on MC xsection
     if( isSUSY() ) susyMassAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
