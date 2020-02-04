@@ -206,7 +206,6 @@ void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::v
       _phTTGMatchPt[_nPh]  = matched->pt();
       _phTTGMatchEta[_nPh] = matched->eta();
       bool passParentage   = GenTools::passParentage(*matched, *genParticles);
-      float minOtherDeltaR = GenTools::getMinDeltaR(*matched, *genParticles);
       if(matched and matched->pdgId() == 22){
         if(passParentage)                                _phTTGMatchCategory[_nPh] = GENUINE;
         else                                             _phTTGMatchCategory[_nPh] = HADRONICPHOTON;

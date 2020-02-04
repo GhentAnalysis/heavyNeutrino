@@ -229,7 +229,7 @@ void TriggerAnalyzer::analyze(const edm::Event& iEvent){
   getResults(iEvent, recoResults,    filtersToSave,  false);
 
   // In 2017: emulate the non-existing HLT_Ele32_WPTight_Gsf
-  if(multilepAnalyzer->is2017()){
+  if(multilepAnalyzer->is2017() && ! multilepAnalyzer->isFastSim() ){
     flag["HLT_Ele32_WPTight_Gsf"] = passEle32WPTight(iEvent, triggerResults);
   }
 

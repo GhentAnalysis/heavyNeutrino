@@ -1,4 +1,5 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
+#include "heavyNeutrino/multilep/interface/Header.h"
 
 
 multilep::multilep(const edm::ParameterSet& iConfig):
@@ -35,10 +36,15 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     sampleIsData(                                                              iConfig.getUntrackedParameter<bool>("isData")),
     sampleIs2017(                                                              iConfig.getUntrackedParameter<bool>("is2017")),
     sampleIs2018(                                                              iConfig.getUntrackedParameter<bool>("is2018")),
+    sampleIsFastSim(                                                           iConfig.getUntrackedParameter<bool>("isFastSim")),
     sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
-    storeAllTauID(                                                                iConfig.getUntrackedParameter<bool>("storeAllTauID"))
+    storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
+    //headerPart1(                                                               iConfig.getUntrackedParameter<std::string>("headerPart1")),
+    //headerPart2(                                                               iConfig.getUntrackedParameter<std::string>("headerPart2"))
+    headerPart1(                                                               iConfig.getParameter<edm::FileInPath>("headerPart1").fullPath()),
+    headerPart2(                                                               iConfig.getParameter<edm::FileInPath>("headerPart2").fullPath())
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -94,6 +100,10 @@ void multilep::beginJob(){
     jetAnalyzer->beginJob(outputTree);
 
     _runNb = 0;
+
+    //print header
+    Header header( {headerPart1, headerPart2} );
+    header.print();
 }
 
 // ------------ method called for each lumi block ---------

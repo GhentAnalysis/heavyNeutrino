@@ -1,109 +1,39 @@
-commit de42c30653c39efab4dfb662fe65e8a9c40ff8fa
-Author: willem <willem.verbeke@cern.ch>
-Date:   Wed Oct 2 12:26:28 2019 +0200
+commit 1861d1f945d2fe1fec596c2586f7135523d42575
+Author: tomc <tomc@cern.ch>
+Date:   Fri Nov 29 19:29:55 2019 +0100
 
-    recompute DeepFlavor on top of miniAOD
+    lMatchCharge does not get filled for taus
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _is2017,_is2018
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _is2017,_is2018
-   Changed:
-      _closestJetDeepFlavor                              mean:   0.1489 -->   0.1134     rms:   0.2518 -->   0.2398    
-      _closestJetDeepFlavor_b                            mean:   0.0794 -->   0.0517     rms:   0.1381 -->   0.1257    
-      _closestJetDeepFlavor_bb                           mean:   0.0073 -->   0.0028     rms:   0.0417 -->   0.0160    
-      _closestJetDeepFlavor_lepb                         mean:   0.0622 -->   0.0588     rms:   0.1119 -->   0.1228    
-      _jetDeepFlavor                                     mean:   0.1361 -->   0.0764     rms:   0.1706 -->   0.1496    
-      _jetDeepFlavor_b                                   mean:   0.0950 -->   0.0460     rms:   0.1061 -->   0.0817    
-      _jetDeepFlavor_bb                                  mean:   0.0077 -->   0.0027     rms:   0.0317 -->   0.0211    
-      _jetDeepFlavor_c                                   mean:   0.1192 -->   0.0896     rms:   0.1016 -->   0.0847    
-      _jetDeepFlavor_g                                   mean:   0.3999 -->   0.4384     rms:   0.2077 -->   0.2143    
-      _jetDeepFlavor_lepb                                mean:   0.0334 -->   0.0277     rms:   0.0669 -->   0.0722    
-      _jetDeepFlavor_uds                                 mean:   0.3448 -->   0.3957     rms:   0.2314 -->   0.2304    
-      _leptonMvaTTH                                      mean:   0.3664 -->   0.4372     rms:   0.8066 -->   0.7990    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _is2017,_is2018
-   Changed:
-      _closestJetDeepFlavor                              mean:   0.1103 -->   0.0901     rms:   0.1915 -->   0.1625    
-      _closestJetDeepFlavor_b                            mean:   0.0580 -->   0.0431     rms:   0.1066 -->   0.0968    
-      _closestJetDeepFlavor_bb                           mean:   0.0023 -->   0.0007     rms:   0.0068 -->   0.0015    
-      _closestJetDeepFlavor_lepb                         mean:   0.0500 -->   0.0463     rms:   0.0985 -->   0.0844    
-      _jetDeepFlavor                                     mean:   0.1246 -->   0.0648     rms:   0.1851 -->   0.1229    
-      _jetDeepFlavor_b                                   mean:   0.0917 -->   0.0441     rms:   0.1398 -->   0.0894    
-      _jetDeepFlavor_bb                                  mean:   0.0060 -->   0.0010     rms:   0.0159 -->   0.0022    
-      _jetDeepFlavor_c                                   mean:   0.1147 -->   0.0910     rms:   0.0933 -->   0.0729    
-      _jetDeepFlavor_g                                   mean:   0.3741 -->   0.5114     rms:   0.2117 -->   0.1958    
-      _jetDeepFlavor_lepb                                mean:   0.0270 -->   0.0198     rms:   0.0490 -->   0.0438    
-      _jetDeepFlavor_uds                                 mean:   0.3865 -->   0.3328     rms:   0.2310 -->   0.1787    
-      _leptonMvaTTH                                      mean:  -0.4789 -->  -0.4731     rms:   0.7896 -->   0.7912    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _is2017,_is2018
-   Changed:
-      _closestJetDeepFlavor                              mean:   0.0736 -->   0.0714     rms:   0.1475 -->   0.1463    
-      _closestJetDeepFlavor_b                            mean:   0.0364 -->   0.0315     rms:   0.0622 -->   0.0575    
-      _closestJetDeepFlavor_bb                           mean:   0.0018 -->   0.0006     rms:   0.0061 -->   0.0010    
-      _closestJetDeepFlavor_lepb                         mean:   0.0354 -->   0.0394     rms:   0.0847 -->   0.1018    
-      _jetDeepFlavor                                     mean:   0.0871 -->   0.0622     rms:   0.1290 -->   0.1137    
-      _jetDeepFlavor_b                                   mean:   0.0617 -->   0.0404     rms:   0.0831 -->   0.0697    
-      _jetDeepFlavor_bb                                  mean:   0.0039 -->   0.0012     rms:   0.0229 -->   0.0073    
-      _jetDeepFlavor_c                                   mean:   0.1092 -->   0.0904     rms:   0.0696 -->   0.0539    
-      _jetDeepFlavor_g                                   mean:   0.3818 -->   0.4995     rms:   0.2144 -->   0.1908    
-      _jetDeepFlavor_lepb                                mean:   0.0215 -->   0.0206     rms:   0.0493 -->   0.0533    
-      _jetDeepFlavor_uds                                 mean:   0.4219 -->   0.3479     rms:   0.2252 -->   0.1758    
-      _leptonMvaTTH                                      mean:  -0.6068 -->  -0.6022     rms:   0.6976 -->   0.7013    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _is2017,_is2018
    Changed:
-      _jetDeepFlavor_g                                   mean:   0.4609 -->   0.4609     rms:   0.1995 -->   0.1995    
-      _jetDeepFlavor_uds                                 mean:   0.3991 -->   0.3991     rms:   0.2017 -->   0.2018    
-      _lMatchCharge                                      mean: 85100843.5719 --> -61897257.6702 rms: 337886778.5982 --> 245766142.2992
+      _lMatchCharge                                      mean: -29332627.2947 -->  -0.0519 rms: 200278760.6196 -->   0.9531
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _is2017,_is2018
    Changed:
-      _closestJetDeepFlavor                              mean:   0.1115 -->   0.0735     rms:   0.1833 -->   0.1303    
-      _closestJetDeepFlavor_b                            mean:   0.0594 -->   0.0313     rms:   0.0882 -->   0.0569    
-      _closestJetDeepFlavor_bb                           mean:   0.0022 -->   0.0007     rms:   0.0051 -->   0.0014    
-      _closestJetDeepFlavor_lepb                         mean:   0.0499 -->   0.0415     rms:   0.0954 -->   0.0739    
-      _jetDeepFlavor                                     mean:   0.1339 -->   0.0555     rms:   0.1518 -->   0.0555    
-      _jetDeepFlavor_b                                   mean:   0.0992 -->   0.0371     rms:   0.1080 -->   0.0330    
-      _jetDeepFlavor_bb                                  mean:   0.0065 -->   0.0010     rms:   0.0138 -->   0.0012    
-      _jetDeepFlavor_c                                   mean:   0.1191 -->   0.0891     rms:   0.1010 -->   0.0813    
-      _jetDeepFlavor_g                                   mean:   0.4085 -->   0.4868     rms:   0.1996 -->   0.2004    
-      _jetDeepFlavor_lepb                                mean:   0.0282 -->   0.0174     rms:   0.0481 -->   0.0275    
-      _jetDeepFlavor_uds                                 mean:   0.3384 -->   0.3686     rms:   0.2232 -->   0.2090    
-      _leptonMvaTTH                                      mean:   0.5873 -->   0.6403     rms:   0.6155 -->   0.5768    
+      _lMatchCharge                                      mean: 4725844.1036 -->   0.0101 rms: 70182248.9796 -->   0.9795
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _is2017,_is2018
    Changed:
-      _closestJetDeepFlavor                              mean:   0.0442 -->   0.0209     rms:   0.0922 -->   0.0709    
-      _closestJetDeepFlavor_b                            mean:   0.0310 -->   0.0116     rms:   0.0671 -->   0.0490    
-      _closestJetDeepFlavor_bb                           mean:   0.0006 -->   0.0004     rms:   0.0021 -->   0.0035    
-      _closestJetDeepFlavor_lepb                         mean:   0.0127 -->   0.0088     rms:   0.0320 -->   0.0216    
-      _jetDeepFlavor                                     mean:   0.0855 -->   0.0482     rms:   0.1100 -->   0.1002    
-      _jetDeepFlavor_b                                   mean:   0.0664 -->   0.0338     rms:   0.0876 -->   0.0703    
-      _jetDeepFlavor_bb                                  mean:   0.0034 -->   0.0009     rms:   0.0051 -->   0.0035    
-      _jetDeepFlavor_c                                   mean:   0.1017 -->   0.0690     rms:   0.0520 -->   0.0455    
-      _jetDeepFlavor_g                                   mean:   0.4287 -->   0.4126     rms:   0.1834 -->   0.2259    
-      _jetDeepFlavor_lepb                                mean:   0.0157 -->   0.0134     rms:   0.0230 -->   0.0322    
-      _jetDeepFlavor_uds                                 mean:   0.3841 -->   0.4702     rms:   0.2080 -->   0.2642    
-      _leptonMvaTTH                                      mean:   0.8330 -->   0.8596     rms:   0.4461 -->   0.4301    
+      _lMatchCharge                                      mean: 2405603.2612 -->   0.1579 rms: 39303893.9143 -->   0.9721

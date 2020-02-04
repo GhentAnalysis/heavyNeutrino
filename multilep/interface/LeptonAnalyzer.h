@@ -132,7 +132,7 @@ class LeptonAnalyzer {
     unsigned _tauGenStatus[nL_max];                                                             //1: prompt ele, 2:prompt mu, 3: ele from leptonic tau, 4:mu from leptonic tau, 5: hadronically decayed tau, 6:rest 
     bool _tauPOGVLoose2015[nL_max];                                                             //version of ID to use in MiniAOD: MC 80X_mcRun2_asymptotic_2016_TrancheIV_v6, Data 03Feb2017
     bool _tauPOGLoose2015[nL_max];                                                              //More info at https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Isolation
-    bool _tauPOGMedium2015[nL_max];
+    bool _tauPOGMedium2015[nL_max];                                                             // # WARNING # NO LONGER SUPPORTED BY TAU POG, kept for testing reasons, will remove this soon
     bool _tauPOGTight2015[nL_max];
     bool _tauPOGVTight2015[nL_max];
     
@@ -140,8 +140,9 @@ class LeptonAnalyzer {
     bool _tauPOGVTight2017v2[nL_max];                                                            //Other WPs contained in _lPOG variables (vloose = veto)
     bool _tauPOGVVTight2017v2[nL_max];
 
-    bool _decayModeFindingNew[nL_max];                      
-    bool _tauVLooseMvaNew[nL_max];                                                               
+    bool _decayModeFindingNew[nL_max];                                           
+    bool _decayModeFindingDeepTau[nL_max];                                           
+    bool _tauVLooseMvaNew[nL_max];                                                              // # WARNING # NO LONGER SUPPORTED BY TAU POG, kept for testing reasons, will remove this soon                 
     bool _tauVLooseMvaNew2015[nL_max];
     bool _tauLooseMvaNew2015[nL_max];
     bool _tauMediumMvaNew2015[nL_max];
@@ -153,6 +154,32 @@ class LeptonAnalyzer {
     bool _tauMediumMvaNew2017v2[nL_max];
     bool _tauTightMvaNew2017v2[nL_max];
     bool _tauVTightMvaNew2017v2[nL_max];
+
+    bool _tauDeepTauVsJetsRaw[nL_max];    
+    bool _tauVVVLooseDeepTauVsJets[nL_max];    
+    bool _tauVVLooseDeepTauVsJets[nL_max];    
+    bool _tauVLooseDeepTauVsJets[nL_max];    
+    bool _tauLooseDeepTauVsJets[nL_max];    
+    bool _tauMediumDeepTauVsJets[nL_max];    
+    bool _tauTightDeepTauVsJets[nL_max];    
+    bool _tauVTightDeepTauVsJets[nL_max];    
+    bool _tauVVTightDeepTauVsJets[nL_max];    
+    
+    bool _tauDeepTauVsEleRaw[nL_max];    
+    bool _tauVVVLooseDeepTauVsEle[nL_max];    
+    bool _tauVVLooseDeepTauVsEle[nL_max];    
+    bool _tauVLooseDeepTauVsEle[nL_max];    
+    bool _tauLooseDeepTauVsEle[nL_max];    
+    bool _tauMediumDeepTauVsEle[nL_max];    
+    bool _tauTightDeepTauVsEle[nL_max];    
+    bool _tauVTightDeepTauVsEle[nL_max];    
+    bool _tauVVTightDeepTauVsEle[nL_max];    
+    
+    bool _tauDeepTauVsMuRaw[nL_max];    
+    bool _tauVLooseDeepTauVsMu[nL_max];    
+    bool _tauLooseDeepTauVsMu[nL_max];    
+    bool _tauMediumDeepTauVsMu[nL_max];    
+    bool _tauTightDeepTauVsMu[nL_max];    
     
     double _tauAgainstElectronMVA6Raw[nL_max];
     double _tauCombinedIsoDBRaw3Hits[nL_max];
