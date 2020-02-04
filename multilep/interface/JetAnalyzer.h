@@ -16,6 +16,7 @@ class JetAnalyzer {
   friend class multilep;
   private:
     JetCorrectionUncertainty* jecUnc;
+    JetCorrectionUncertainty* jecUncPuppi;
 
     static const unsigned nJets_max = 20;
 
@@ -23,7 +24,6 @@ class JetAnalyzer {
     double   _jetPt[nJets_max];
     double   _jetPt_JECUp[nJets_max];
     double   _jetPt_JECDown[nJets_max];
-    double   _jetPt_JECUnc[nJets_max];
     double   _jetSmearedPt[nJets_max];
     double   _jetSmearedPt_JECDown[nJets_max];
     double   _jetSmearedPt_JECUp[nJets_max];
@@ -57,7 +57,6 @@ class JetAnalyzer {
     double   _jetPuppiPt[nJets_max];
     double   _jetPuppiPt_JECUp[nJets_max];
     double   _jetPuppiPt_JECDown[nJets_max];
-    double   _jetPuppiPt_JECUnc[nJets_max];
     double   _jetPuppiEta[nJets_max];
     double   _jetPuppiPhi[nJets_max];
 
@@ -68,23 +67,35 @@ class JetAnalyzer {
     double   _metRaw;
     double   _metRawPhi;
     double   _metJECDown;
-    double   _metJECDownPhi;
+    double   _metPhiJECDown;
     double   _metJECUp;
-    double   _metJECUpPhi;
+    double   _metPhiJECUp;
     double   _metUnclDown;
     double   _metPhiUnclDown;
     double   _metUnclUp;
     double   _metPhiUnclUp;
+    double   _metResDown;
+    double   _metPhiResDown;
+    double   _metResUp;
+    double   _metPhiResUp;
     double   _metSignificance;
 
-    double   _metPuppi;
+    double   _metPuppi;                                                                              //metPuppi kinematics
     double   _metPuppiPhi;
-    //double   _metPuppiJECDown;
-    //double   _metPuppiPhiJECDown;
-    //double   _metPuppiJECUp;
-    //double   _metPuppiPhiJECUp;
     double   _metPuppiRaw;
     double   _metPuppiRawPhi;
+    double   _metPuppiJECDown;
+    double   _metPuppiPhiJECDown;
+    double   _metPuppiJECUp;
+    double   _metPuppiPhiJECUp;
+    double   _metPuppiUnclDown;
+    double   _metPuppiPhiUnclDown;
+    double   _metPuppiUnclUp;
+    double   _metPuppiPhiUnclUp;
+    double   _metPuppiResDown;
+    double   _metPuppiPhiResDown;
+    double   _metPuppiResUp;
+    double   _metPuppiPhiResUp;
 
     std::string jecLevel;
 

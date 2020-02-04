@@ -14,10 +14,12 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
         jecLevel = "L3Absolute";
     }
     jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile")).fullPath());
+    jecUncPuppi = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFilePuppi")).fullPath());
 };
 
 JetAnalyzer::~JetAnalyzer(){
     delete jecUnc;
+    delete jecUncPuppi;
 }
 
 // Note: the JEC are already applied through the GT, if you need back the old way (JEC.cc) check the code before c3564f71a2e7dca3cb963ef69481894cb04bbf53
@@ -25,7 +27,6 @@ JetAnalyzer::~JetAnalyzer(){
 void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nJets",                     &_nJets,                    "_nJets/i");
     outputTree->Branch("_jetPt",                     &_jetPt,                    "_jetPt[_nJets]/D");
-    outputTree->Branch("_jetPt_JECUnc",              &_jetPt_JECUnc,             "_jetPt_JECUnc[_nJets]/D");
     outputTree->Branch("_jetPt_JECDown",             &_jetPt_JECDown,            "_jetPt_JECDown[_nJets]/D");
     outputTree->Branch("_jetPt_JECUp",               &_jetPt_JECUp,              "_jetPt_JECUp[_nJets]/D");
     outputTree->Branch("_jetSmearedPt",              &_jetSmearedPt,             "_jetSmearedPt[_nJets]/D");
@@ -62,7 +63,6 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetPuppiPt",                &_jetPuppiPt,               "_jetPuppiPt[_nJetsPuppi]/D");
     outputTree->Branch("_jetPuppiEta",               &_jetPuppiEta,              "_jetPuppiEta[_nJetsPuppi]/D");
     outputTree->Branch("_jetPuppiPhi",               &_jetPuppiPhi,              "_jetPuppiPhi[_nJetsPuppi]/D");
-    outputTree->Branch("_jetPuppiPt_JECUnc",         &_jetPuppiPt_JECUnc,        "_jetPuppiPt_JECUnc[_nJetsPuppi]/D");
     outputTree->Branch("_jetPuppiPt_JECDown",        &_jetPuppiPt_JECDown,       "_jetPuppiPt_JECDown[_nJetsPuppi]/D");
     outputTree->Branch("_jetPuppiPt_JECUp",          &_jetPuppiPt_JECUp,         "_jetPuppiPt_JECUp[_nJetsPuppi]/D");
 
@@ -73,24 +73,37 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_metJECUp",                     &_metJECUp,                     "_metJECUp/D");
     outputTree->Branch("_metUnclDown",                  &_metUnclDown,                  "_metUnclDown/D");
     outputTree->Branch("_metUnclUp",                    &_metUnclUp,                    "_metUnclUp/D");
+    outputTree->Branch("_metResDown",                   &_metResDown,                   "_metResDown/D");
+    outputTree->Branch("_metResUp",                     &_metResUp,                     "_metResUp/D");
 
     outputTree->Branch("_metPhi",                       &_metPhi,                       "_metPhi/D");
     outputTree->Branch("_metType1Phi",                  &_metType1Phi,                  "_metType1Phi/D");
     outputTree->Branch("_metRawPhi",                    &_metRawPhi,                    "_metRawPhi/D");
-    outputTree->Branch("_metJECDownPhi",                &_metJECDownPhi,                "_metJECDownPhi/D");
-    outputTree->Branch("_metJECUpPhi",                  &_metJECUpPhi,                  "_metJECUpPhi/D");
+    outputTree->Branch("_metPhiJECDown",                &_metPhiJECDown,                "_metPhiJECDown/D");
+    outputTree->Branch("_metPhiJECUp",                  &_metPhiJECUp,                  "_metPhiJECUp/D");
     outputTree->Branch("_metPhiUnclDown",               &_metPhiUnclDown,               "_metPhiUnclDown/D");
     outputTree->Branch("_metPhiUnclUp",                 &_metPhiUnclUp,                 "_metPhiUnclUp/D");
+    outputTree->Branch("_metPhiResDown",                &_metPhiResDown,                "_metPhiResDown/D");
+    outputTree->Branch("_metPhiResUp",                  &_metPhiResUp,                  "_metPhiResUp/D");
     outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
 
-    outputTree->Branch("_metPuppi",                     &_metPuppi,                     "_metPuppi/D");
-    outputTree->Branch("_metPuppiPhi",                  &_metPuppiPhi,                  "_metPuppiPhi/D");
-    //outputTree->Branch("_metPuppiJECDown",              &_metPuppiJECDown,              "_metPuppiJECDown/D");
-    //outputTree->Branch("_metPuppiJECDownPhi",           &_metPuppiJECDownPhi,           "_metPuppiJECDownPhi/D");
-    //outputTree->Branch("_metPuppiJECUp",                &_metPuppiJECUp,                "_metPuppiJECUp/D");
-    //outputTree->Branch("_metPuppiJECUpPhi",             &_metPuppiJECUpPhi,             "_metPuppiJECUpPhi/D");
-    outputTree->Branch("_metPuppiRaw",                  &_metPuppiRaw,                  "_metPuppiRaw/D");
-    outputTree->Branch("_metPuppiRawPhi",               &_metPuppiRawPhi,               "_metPuppiRawPhi/D");
+    outputTree->Branch("_metPuppi",                          &_metPuppi,                          "_metPuppi/D");
+    outputTree->Branch("_metPuppiRaw",                       &_metPuppiRaw,                       "_metPuppiRaw/D");
+    outputTree->Branch("_metPuppiJECDown",                   &_metPuppiJECDown,                   "_metPuppiJECDown/D");
+    outputTree->Branch("_metPuppiJECUp",                     &_metPuppiJECUp,                     "_metPuppiJECUp/D");
+    outputTree->Branch("_metPuppiUnclDown",                  &_metPuppiUnclDown,                  "_metPuppiUnclDown/D");
+    outputTree->Branch("_metPuppiUnclUp",                    &_metPuppiUnclUp,                    "_metPuppiUnclUp/D");
+    outputTree->Branch("_metPuppiResDown",                   &_metPuppiResDown,                   "_metPuppiResDown/D");
+    outputTree->Branch("_metPuppiResUp",                     &_metPuppiResUp,                     "_metPuppiResUp/D");
+
+    outputTree->Branch("_metPuppiPhi",                       &_metPuppiPhi,                       "_metPuppiPhi/D");
+    outputTree->Branch("_metPuppiRawPhi",                    &_metPuppiRawPhi,                    "_metPuppiRawPhi/D");
+    outputTree->Branch("_metPuppiPhiJECDown",                &_metPuppiPhiJECDown,                "_metPuppiPhiJECDown/D");
+    outputTree->Branch("_metPuppiPhiJECUp",                  &_metPuppiPhiJECUp,                  "_metPuppiPhiJECUp/D");
+    outputTree->Branch("_metPuppiPhiUnclDown",               &_metPuppiPhiUnclDown,               "_metPuppiPhiUnclDown/D");
+    outputTree->Branch("_metPuppiPhiUnclUp",                 &_metPuppiPhiUnclUp,                 "_metPuppiPhiUnclUp/D");
+    outputTree->Branch("_metPuppiPhiResDown",                &_metPuppiPhiResDown,                "_metPuppiPhiResDown/D");
+    outputTree->Branch("_metPuppiPhiResUp",                  &_metPuppiPhiResUp,                  "_metPuppiPhiResUp/D");
 
     if(!multilepAnalyzer->is2018() ) outputTree->Branch("_jetIsLoose", _jetIsLoose, "_jetIsLoose[_nJets]/O"); // WARNING, not recommended to be used, only exists for 2016
 }
@@ -132,9 +145,22 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent, const int npv){
             if(reco::deltaR(jet, *j) < reco::deltaR(jet, *jetSmearedDownIt))  jetSmearedDownIt = j;
         }
 
-        // JEC implementation based on txt
-        double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
-        _jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
+        // JEC implementation based on txt, if needed for newer JEC versions
+        //double corrTxt = multilepAnalyzer->jec->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
+        //_jetPt[_nJets] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
+        //double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], _jetEta[_nJets]);
+        //_jetPt_JECDown[_nJets] = _jetPt[_nJets]*(1 - unc);
+        //_jetPt_JECUp[_nJets]   = _jetPt[_nJets]*(1 + unc);
+
+        
+        //nominal jet pt and uncertainties, through global tag
+        jecUnc->setJetEta(jet.eta());
+        jecUnc->setJetPt(jet.pt());
+        double unc = jecUnc->getUncertainty(true);
+        
+        _jetPt[_nJets]         = jet.pt();
+        _jetPt_JECDown[_nJets] = _jetPt[_nJets]*(1 - unc);
+        _jetPt_JECUp[_nJets]   = _jetPt[_nJets]*(1 + unc);
 
         //smeared jet pt and uncertainties
         jecUnc->setJetEta(jetSmearedIt->eta());
@@ -159,13 +185,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent, const int npv){
 
         _jetEta[_nJets]                   = jet.eta();
         _jetPhi[_nJets]                   = jet.phi();
-        _jetE[_nJets]                     = jet.correctedP4("Uncorrected").E()*corrTxt;
-
-        //JEC uncertainties
-        double unc = multilepAnalyzer->jec->jetUncertainty(_jetPt[_nJets], _jetEta[_nJets]);
-        _jetPt_JECUnc[_nJets]  = unc;
-        _jetPt_JECDown[_nJets] = _jetPt[_nJets]*(1 - unc);
-        _jetPt_JECUp[_nJets]   = _jetPt[_nJets]*(1 + unc);
+        _jetE[_nJets]                     = jet.energy();
 
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
@@ -192,34 +212,47 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent, const int npv){
     for(const auto& jet : *jetsPuppi){
         if(_nJetsPuppi == nJets_max) break;
 
-        // JEC implementation based on txt
-        double corrTxt = multilepAnalyzer->jecPuppi->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
-        _jetPuppiPt[_nJetsPuppi] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
+        // Implementation based on global tag
+        jecUncPuppi->setJetEta(jet.eta());
+        jecUncPuppi->setJetPt(jet.pt());
+        double unc = jecUncPuppi->getUncertainty(true);
+
+        _jetPuppiPt[_nJetsPuppi] = jet.pt();
         _jetPuppiEta[_nJetsPuppi] = jet.eta();
         _jetPuppiPhi[_nJetsPuppi] = jet.phi();
 
-        //JEC uncertainties
-        double unc = multilepAnalyzer->jecPuppi->jetUncertainty(_jetPt[_nJetsPuppi], _jetEta[_nJetsPuppi]);
-        _jetPuppiPt_JECUnc[_nJetsPuppi]  = unc;
+        ////JEC uncertainties
         _jetPuppiPt_JECDown[_nJetsPuppi] = _jetPuppiPt[_nJetsPuppi]*(1 - unc);
         _jetPuppiPt_JECUp[_nJetsPuppi]   = _jetPuppiPt[_nJetsPuppi]*(1 + unc);
+
+
+        // JEC implementation based on txt
+        //double corrTxt = multilepAnalyzer->jecPuppi->jetCorrection(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), *rho, jet.jetArea(), jecLevel);
+        //_jetPuppiPt[_nJetsPuppi] = jet.correctedP4("Uncorrected").Pt()*corrTxt;
+        //_jetPuppiEta[_nJetsPuppi] = jet.eta();
+        //_jetPuppiPhi[_nJetsPuppi] = jet.phi();
+
+        ////JEC uncertainties
+        //double unc = multilepAnalyzer->jecPuppi->jetUncertainty(_jetPt[_nJetsPuppi], _jetEta[_nJetsPuppi]);
+        //_jetPuppiPt_JECDown[_nJetsPuppi] = _jetPuppiPt[_nJetsPuppi]*(1 - unc);
+        //_jetPuppiPt_JECUp[_nJetsPuppi]   = _jetPuppiPt[_nJetsPuppi]*(1 + unc);
 
         ++_nJetsPuppi;
     }
 
     //determine the met of the event and its uncertainties
-    //nominal MET value
+    //nominal Type 1 MET value
     const pat::MET& met = (*mets).front();
-    _met             = met.pt();
-    _metPhi          = met.phi();
+    _metType1             = met.pt();
+    _metType1Phi          = met.phi();
 
-    //Type 1 Corrections
-    std::pair< double, double> metAndPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho);
-    _metType1    = metAndPhi.first;
-    _metType1Phi = metAndPhi.second;
+    //Type 1 Corrections if JEC from txt file
+    //std::pair< double, double> metAndPhi = multilepAnalyzer->jec->correctedMETAndPhi(met, *jets, *rho);
+    //_metType1    = metAndPhi.first;
+    //_metType1Phi = metAndPhi.second;
 
     //XY Corrections
-    std::pair< double, double> metAndPhi_XYCorr = multilepAnalyzer->jec->METXYCorr_Met_MetPhi(metAndPhi.first, metAndPhi.second, npv);
+    std::pair< double, double> metAndPhi_XYCorr = multilepAnalyzer->jec->METXYCorr_Met_MetPhi(_metType1, _metType1Phi, npv);
     _met    = metAndPhi_XYCorr.first;
     _metPhi = metAndPhi_XYCorr.second;
 
@@ -231,10 +264,14 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent, const int npv){
     _metJECUp        = met.shiftedPt(pat::MET::JetEnUp);
     _metUnclDown     = met.shiftedPt(pat::MET::UnclusteredEnDown);
     _metUnclUp       = met.shiftedPt(pat::MET::UnclusteredEnUp);
-    _metJECDownPhi   = met.shiftedPhi(pat::MET::JetEnDown);
-    _metJECUpPhi     = met.shiftedPhi(pat::MET::JetEnUp);
+    _metResDown      = met.shiftedPt(pat::MET::JetResDown);
+    _metResUp        = met.shiftedPt(pat::MET::JetResUp);
+    _metPhiJECDown   = met.shiftedPhi(pat::MET::JetEnDown);
+    _metPhiJECUp     = met.shiftedPhi(pat::MET::JetEnUp);
     _metPhiUnclUp    = met.shiftedPhi(pat::MET::UnclusteredEnUp);
     _metPhiUnclDown  = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+    _metPhiResDown   = met.shiftedPhi(pat::MET::JetResDown);
+    _metPhiResUp     = met.shiftedPhi(pat::MET::JetResUp);
 
     //significance of met
     //note: this is the only one variable which changed between 94X and 102X see https://github.com/cms-sw/cmssw/commit/f7aacfd2ffaac9899ea07d0355afe49bb10a0aeb
@@ -244,13 +281,26 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent, const int npv){
     //PUPPI MET
     const pat::MET& metPuppi = (*metsPuppi).front();
 
-    //Type 1 Corrections
-    std::pair< double, double > metAndPhiPuppi = multilepAnalyzer->jecPuppi->correctedMETAndPhi(metPuppi, *jetsPuppi, *rho);
+    //Type 1 Corrections based on txt file
+    //std::pair< double, double > metAndPhiPuppi = multilepAnalyzer->jecPuppi->correctedMETAndPhi(metPuppi, *jetsPuppi, *rho);
 
-    _metPuppi           = metAndPhiPuppi.first;
-    _metPuppiPhi        = metAndPhiPuppi.second;
-    _metPuppiRaw        = metPuppi.uncorPt();
-    _metPuppiRawPhi     = metPuppi.uncorPhi();
+    _metPuppi             = metPuppi.pt();
+    _metPuppiPhi          = metPuppi.phi();
+
+    _metPuppiRaw          = metPuppi.uncorPt();
+    _metPuppiRawPhi       = metPuppi.uncorPhi();
+    _metPuppiJECDown      = metPuppi.shiftedPt(pat::MET::JetEnDown);
+    _metPuppiJECUp        = metPuppi.shiftedPt(pat::MET::JetEnUp);
+    _metPuppiUnclDown     = metPuppi.shiftedPt(pat::MET::UnclusteredEnDown);
+    _metPuppiUnclUp       = metPuppi.shiftedPt(pat::MET::UnclusteredEnUp);
+    _metPuppiResDown      = metPuppi.shiftedPt(pat::MET::JetResDown);
+    _metPuppiResUp        = metPuppi.shiftedPt(pat::MET::JetResUp);
+    _metPuppiPhiJECDown   = metPuppi.shiftedPhi(pat::MET::JetEnDown);
+    _metPuppiPhiJECUp     = metPuppi.shiftedPhi(pat::MET::JetEnUp);
+    _metPuppiPhiUnclUp    = metPuppi.shiftedPhi(pat::MET::UnclusteredEnUp);
+    _metPuppiPhiUnclDown  = metPuppi.shiftedPhi(pat::MET::UnclusteredEnDown);
+    _metPuppiPhiResDown   = metPuppi.shiftedPhi(pat::MET::JetResDown);
+    _metPuppiPhiResUp     = metPuppi.shiftedPhi(pat::MET::JetResUp);
 
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
     if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;
