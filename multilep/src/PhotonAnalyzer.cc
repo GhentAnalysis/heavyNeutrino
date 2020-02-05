@@ -31,6 +31,18 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_phRandomConeChargedIsolation",       &_phRandomConeChargedIsolation,   "_phRandomConeChargedIsolation[_nPh]/D");
     outputTree->Branch("_phChargedIsolation",                 &_phChargedIsolation,             "_phChargedIsolation[_nPh]/D");
     outputTree->Branch("_phNeutralHadronIsolation",           &_phNeutralHadronIsolation,       "_phNeutralHadronIsolation[_nPh]/D");
+
+    outputTree->Branch("_rhoCorrCharged",                     &_rhoCorrCharged,                 "_rhoCorrCharged[_nPh]/D");
+    outputTree->Branch("_rhoCorrNeutral",                     &_rhoCorrNeutral,                 "_rhoCorrNeutral[_nPh]/D");
+    outputTree->Branch("_rhoCorrPhotons",                     &_rhoCorrPhotons,                 "_rhoCorrPhotons[_nPh]/D");
+    outputTree->Branch("_puChargedHadronIso",                       &_puChargedHadronIso,                          "_puChargedHadronIso[_nPh]/D");
+    // outputTree->Branch("_puppiChargedHadronIso",                    &_puppiChargedHadronIso,                       "_puppiChargedHadronIso[_nPh]/D");
+    // outputTree->Branch("_puppiNeutralHadronIso",                    &_puppiNeutralHadronIso,                       "_puppiNeutralHadronIso[_nPh]/D");
+    // outputTree->Branch("_puppiPhotonIso",                           &_puppiPhotonIso,                              "_puppiPhotonIso[_nPh]/D");
+    outputTree->Branch("_phoWorstChargedIsolation",                 &_phoWorstChargedIsolation,                    "_phoWorstChargedIsolation[_nPh]/D");
+    // outputTree->Branch("_phoWorstChargedIsolationConeVeto",         &_phoWorstChargedIsolationConeVeto,            "_phoWorstChargedIsolationConeVeto[_nPh]/D");
+    // outputTree->Branch("_phoWorstChargedIsolationConeVetoPVConstr", &_phoWorstChargedIsolationConeVetoPVConstr,    "_phoWorstChargedIsolationConeVetoPVConstr[_nPh]/D");
+
     outputTree->Branch("_phPhotonIsolation",                  &_phPhotonIsolation,              "_phPhotonIsolation[_nPh]/D");
     outputTree->Branch("_phSigmaIetaIeta",                    &_phSigmaIetaIeta,                "_phSigmaIetaIeta[_nPh]/D");
     outputTree->Branch("_phHadronicOverEm",                   &_phHadronicOverEm,               "_phHadronicOverEm[_nPh]/D");
@@ -80,7 +92,9 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         double rhoCorrCharged      = (*rho)*chargedEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
         double rhoCorrNeutral      = (*rho)*neutralEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
         double rhoCorrPhotons      = (*rho)*photonsEffectiveAreas.getEffectiveArea(photon->superCluster()->eta());
-
+        _rhoCorrCharged[_nPh] = rhoCorrCharged;
+        _rhoCorrNeutral[_nPh] = rhoCorrNeutral;
+        _rhoCorrPhotons[_nPh] = rhoCorrPhotons;
         double randomConeIsoUnCorr = randomConeIso(photon->superCluster()->eta(), packedCands, *(vertices->begin()), electrons, muons, jets, photons);
 
         _phPt[_nPh]                         = photon->pt();
@@ -99,6 +113,13 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         _phChargedIsolation[_nPh]           = std::max(0., photon->userFloat("phoChargedIsolation") - rhoCorrCharged);
         _phNeutralHadronIsolation[_nPh]     = std::max(0., photon->userFloat("phoNeutralHadronIsolation") - rhoCorrNeutral);
         _phPhotonIsolation[_nPh]            = std::max(0., photon->userFloat("phoPhotonIsolation") - rhoCorrPhotons);
+        _puChargedHadronIso[_nPh]                       = photon->userIsolation(pat::PfPUChargedHadronIso);
+        // _puppiChargedHadronIso[_nPh]                    = photon->userFloat("puppiChargedHadronIso_");
+        // _puppiNeutralHadronIso[_nPh]                    = photon->userFloat("puppiNeutralHadronIso_");
+        // _puppiPhotonIso[_nPh]                           = photon->userFloat("puppiPhotonIso_");
+        _phoWorstChargedIsolation[_nPh]                 = photon->userFloat("phoWorstChargedIsolation");
+        // _phoWorstChargedIsolationConeVeto[_nPh]         = photon->userFloat("phoWorstChargedIsolationConeVeto");
+        // _phoWorstChargedIsolationConeVetoPVConstr[_nPh] = photon->userFloat("phoWorstChargedIsolationConeVetoPVConstr");
 
         _phSigmaIetaIeta[_nPh]              = photon->full5x5_sigmaIetaIeta();
         _phHadronicOverEm[_nPh]             = photon->hadronicOverEm();
@@ -183,9 +204,8 @@ double PhotonAnalyzer::randomConeIso(double eta, edm::Handle<std::vector<pat::Pa
 }
 
 
-// Photon matching as used in TOP-18-010, following https://indico.cern.ch/event/686540/contributions/2816395/attachments/1578345/2493189/Dec20_TTGammaChanges.pdf
 void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::vector<reco::GenParticle>>& genParticles){
-    enum matchCategory {UNDEFINED, GENUINE, MISIDELE, HADRONICPHOTON, HADRONICFAKE};
+    enum matchCategory {UNDEFINED, GENUINE, MISIDELE, HADRONICPHOTON, HADRONICFAKE, MAGIC, UNMHADRONICPHOTON, UNMHADRONICFAKE};
     _phTTGMatchCategory[_nPh] = UNDEFINED;
     _phTTGMatchPt[_nPh]       = -1.;
     _phTTGMatchEta[_nPh]      = -10.;
@@ -194,10 +214,11 @@ void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::v
     const reco::GenParticle* matched = nullptr;
 
     for(auto& p : *genParticles){
-      if(p.status()!=1 and p.status()!=71)  continue;
+      // if(p.status()!=1 and p.status()!=71)  continue;
+      if(p.status()!=1)  continue;
       if(fabs(p.pt()-photon.pt())/p.pt() > 0.5) continue;
       float myDeltaR = deltaR(p.eta(), p.phi(), photon.eta(), photon.phi());
-      if(myDeltaR > 0.1 or myDeltaR > minDeltaR) continue;
+      if(myDeltaR > 0.3 or myDeltaR > minDeltaR) continue;
       minDeltaR  = myDeltaR;
       matched    = &p;
     }
@@ -205,12 +226,25 @@ void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::v
     if(matched){
       _phTTGMatchPt[_nPh]  = matched->pt();
       _phTTGMatchEta[_nPh] = matched->eta();
-      bool passParentage   = GenTools::passParentage(*matched, *genParticles);
-      if(matched and matched->pdgId() == 22){
-        if(passParentage)                                _phTTGMatchCategory[_nPh] = GENUINE;
-        else                                             _phTTGMatchCategory[_nPh] = HADRONICPHOTON;
-      } else if(matched and abs(matched->pdgId())==11){
-        if(passParentage)                                _phTTGMatchCategory[_nPh] = MISIDELE;
-      } else                                             _phTTGMatchCategory[_nPh] = HADRONICFAKE;
-    } else                                               _phTTGMatchCategory[_nPh] = HADRONICFAKE;
+      bool noMesonsInChain   = GenTools::noMesonsInChain(*matched, *genParticles);
+      if(matched->pdgId() == 22){
+        if(noMesonsInChain)                                   _phTTGMatchCategory[_nPh] = GENUINE;
+        else                                                  _phTTGMatchCategory[_nPh] = HADRONICPHOTON;
+      }
+        else if(abs(matched->pdgId())==11)                    _phTTGMatchCategory[_nPh] = MISIDELE;
+        else                                                  _phTTGMatchCategory[_nPh] = HADRONICFAKE;
+    } else{
+        bool anyNear= false;
+        for(auto& p : *genParticles){
+          if(not(p.pdgId() > 0)) continue;
+          if(p.pt() < 5.) continue;
+          if(abs(p.pdgId()) == 12 or abs(p.pdgId()) == 14 or abs(p.pdgId()) == 16) continue;
+          float myDeltaR = deltaR(p.eta(), p.phi(), photon.eta(), photon.phi());
+          if(myDeltaR > 0.2) continue;
+          anyNear = true;
+        }
+        if(GenTools::phoAndPiNear(photon, *genParticles))     _phTTGMatchCategory[_nPh] = UNMHADRONICPHOTON;
+        else if(not anyNear)                                  _phTTGMatchCategory[_nPh] = MAGIC;
+        else                                                  _phTTGMatchCategory[_nPh] = UNMHADRONICFAKE;
+    }
 }
