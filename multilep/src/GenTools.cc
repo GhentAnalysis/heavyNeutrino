@@ -1,12 +1,17 @@
 #include "heavyNeutrino/multilep/interface/GenTools.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/Math/interface/deltaR.h"
+#include "DataFormats/PatCandidates/interface/Photon.h"
 
 //include ROOT classes
 #include "TLorentzVector.h"
 
 const reco::GenParticle* GenTools::getFirstMother(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     return (gen.numberOfMothers() == 0) ? nullptr : &genParticles[gen.motherRef(0).key()];
+}
+
+const int GenTools::getFirstMotherIndex(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    return (gen.numberOfMothers() == 0) ? -1 : gen.motherRef(0).key();
 }
 
 const reco::GenParticle* GenTools::getMother(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
@@ -218,6 +223,30 @@ bool GenTools::passParentage(const reco::GenParticle& gen, const std::vector<rec
     if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) return false;
     if(not GenTools::hasOnlyIncomingGluonsInChain(gen, genParticles))           return false;
     return true;
+}
+
+// passParentage without the gluon check
+bool GenTools::noMesonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
+    std::set<int> decayChain;
+    setDecayChain(gen, genParticles, decayChain);
+    if(decayChain.size()==0)                                                    return true;
+    if(*(std::max_element(std::begin(decayChain), std::end(decayChain))) > 37)  return false;
+    if(*(std::min_element(std::begin(decayChain), std::end(decayChain))) < -37) return false;
+    return true;
+}
+
+bool GenTools::phoAndPiNear(const pat::Photon& photon, const std::vector<reco::GenParticle>& genParticles){
+  bool genPhoNear = false;
+  bool piZeroNear = false;
+  for(auto& p : genParticles){
+    if(not(p.pdgId() > 0)) continue;
+    if(p.pt() < 5.) continue;
+    float myDeltaR = deltaR(p.eta(), p.phi(), photon.eta(), photon.phi());
+    if(abs(p.pdgId())==22 and myDeltaR < 0.2)     genPhoNear = true;
+    if(p.pdgId()==111 and myDeltaR < 0.2)         piZeroNear = true;
+  }
+  if(genPhoNear and piZeroNear)  return true;
+  else                           return false;
 }
 
 /*

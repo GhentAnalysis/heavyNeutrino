@@ -44,6 +44,25 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lDecayedHadr",          &_gen_lDecayedHadr,          "_gen_lDecayedHadr[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
+
+    if( multilepAnalyzer->storeGenParticles )
+     {	
+	outputTree->Branch("_gen_n",                                        &_gen_n,                                        "_gen_n/I");
+	outputTree->Branch("_gen_pt",                                       &_gen_pt,                                       "_gen_pt[_gen_n]/D");
+	outputTree->Branch("_gen_eta",                                      &_gen_eta,                                      "_gen_eta[_gen_n]/D");
+	outputTree->Branch("_gen_phi",                                      &_gen_phi,                                      "_gen_phi[_gen_n]/D");
+	outputTree->Branch("_gen_E",                                        &_gen_E,                                        "_gen_E[_gen_n]/D");
+	outputTree->Branch("_gen_pdgId",                                    &_gen_pdgId,                                    "_gen_pdgId[_gen_n]/I");
+	outputTree->Branch("_gen_charge",                                   &_gen_charge,                                   "_gen_charge[_gen_n]/I");
+	outputTree->Branch("_gen_status",                                   &_gen_status,                                   "_gen_status[_gen_n]/I");
+	outputTree->Branch("_gen_isPromptFinalState",                       &_gen_isPromptFinalState,                       "_gen_isPromptFinalState[_gen_n]/O");
+	outputTree->Branch("_gen_isDirectPromptTauDecayProductFinalState",  &_gen_isDirectPromptTauDecayProductFinalState,  "_gen_isDirectPromptTauDecayProductFinalState[_gen_n]/O");
+	outputTree->Branch("_gen_isLastCopy",                               &_gen_isLastCopy,                               "_gen_isLastCopy[_gen_n]/O");
+	outputTree->Branch("_gen_index",                                    &_gen_index,                                    "_gen_index[_gen_n]/I");
+	outputTree->Branch("_gen_motherIndex",                              &_gen_motherIndex,                              "_gen_motherIndex[_gen_n]/I");
+	outputTree->Branch("_gen_daughter_n",                               &_gen_daughter_n,                               "_gen_daughter_n[_gen_n]/I");
+	outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][100]/I");
+     }   
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
@@ -57,6 +76,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    _gen_n = 0;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
         int absId = abs(p.pdgId());
@@ -105,8 +125,44 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_phPassParentage[_gen_nPh] = GenTools::passParentage(p, *genParticles);
                 ++_gen_nPh;
             } 
-        }
-    }
+	}
+
+       //store all generator level particles
+       if( multilepAnalyzer->storeGenParticles )
+	 {	    
+	    int indexGen = _gen_n;
+
+	    if( _gen_n == gen_n_max )
+	      {
+		 throw cms::Exception ("GenAnalyzer") << "Reaching the max number of stored gen particles (" << gen_n_max << ")\n";
+	      }
+       
+	    int nDaughters = p.numberOfDaughters();
+	    
+	    _gen_daughter_n[_gen_n] = nDaughters;
+	    
+	    for( int d=0;d<nDaughters;++d )
+	      {		 
+		 _gen_daughterIndex[_gen_n][nDaughters] = p.daughterRef(d).key();
+		 ++_gen_daughter_n[_gen_n];
+	      }
+	    
+	    _gen_pt[_gen_n]                                      = p.pt();
+	    _gen_eta[_gen_n]                                     = p.eta();
+	    _gen_phi[_gen_n]                                     = p.phi();
+	    _gen_E[_gen_n]                                       = p.energy();
+	    _gen_pdgId[_gen_n]                                   = p.pdgId();
+	    _gen_charge[_gen_n]                                  = p.charge();
+	    _gen_status[_gen_n]                                  = p.status();
+	    _gen_isPromptFinalState[_gen_n]                      = p.isPromptFinalState();
+	    _gen_isDirectPromptTauDecayProductFinalState[_gen_n] = p.isDirectPromptTauDecayProductFinalState();
+	    _gen_isLastCopy[_gen_n]                              = p.isLastCopy();
+	    _gen_index[_gen_n]                                   = indexGen;
+	    _gen_motherIndex[_gen_n]                             = GenTools::getFirstMotherIndex(p, *genParticles);
+	    ++_gen_n;
+	 }
+    }   
+
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
 
@@ -128,7 +184,7 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
         if(GenTools::getMinDeltaR(*p, genParticles) < genCone) continue;
-        if(not GenTools::passParentage(*p, genParticles))  continue;
+        if(not GenTools::noMesonsInChain(*p, genParticles))  continue;
 
         // Everything below is *signal*
         std::set<int> decayChain;

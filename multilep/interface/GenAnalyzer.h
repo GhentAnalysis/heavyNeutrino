@@ -13,7 +13,8 @@ class GenAnalyzer {
   private:
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
-   
+    static const unsigned gen_n_max = 1000;
+
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
 
@@ -46,7 +47,24 @@ class GenAnalyzer {
     bool     _gen_lIsPrompt[gen_nL_max];
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
-
+   
+    //Generator particles (all)
+    unsigned _gen_n = 0;
+    double   _gen_pt[gen_n_max];
+    double   _gen_eta[gen_n_max];
+    double   _gen_phi[gen_n_max];
+    double   _gen_E[gen_n_max];
+    int      _gen_pdgId[gen_n_max];
+    int      _gen_charge[gen_n_max];
+    int      _gen_status[gen_n_max];
+    bool     _gen_isPromptFinalState[gen_n_max];
+    bool     _gen_isDirectPromptTauDecayProductFinalState[gen_n_max];
+    bool     _gen_isLastCopy[gen_n_max];
+    int      _gen_index[gen_n_max];
+    int      _gen_motherIndex[gen_n_max];
+    int      _gen_daughter_n[gen_n_max];
+    int      _gen_daughterIndex[gen_n_max][10];
+   
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut, double genCone) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
 
