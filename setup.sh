@@ -1,5 +1,5 @@
 # Setup script for branch: master
-RELEASE=CMSSW_10_2_14
+RELEASE=CMSSW_10_2_20
 BRANCH=METResolution
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
