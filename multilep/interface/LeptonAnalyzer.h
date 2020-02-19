@@ -64,6 +64,8 @@ class LeptonAnalyzer {
     unsigned _nLight = 0;
     unsigned _nTau = 0;
 
+    double _rho;
+
     double _pvX;
     double _pvY;
     double _pvZ;
@@ -97,6 +99,7 @@ class LeptonAnalyzer {
     double _lEta[nL_max];
     double _lPhi[nL_max];
     double _lE[nL_max];
+    double _lEnergySC[nL_max];
     double _lECorr[nL_max];
     double _lEScaleUp[nL_max]; //probably useless? I guess ECorr/E = pTCorr/pT (same for up- down variations)
     double _lEScaleDown[nL_max]; //probably useless? I guess ECorr/E = pTCorr/pT (same for up- down variations)
