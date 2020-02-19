@@ -40,6 +40,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_nEle",                         &_nEle,                         "_nEle/i");
     outputTree->Branch("_nLight",                       &_nLight,                       "_nLight/i");
     outputTree->Branch("_nTau",                         &_nTau,                         "_nTau/i");
+    outputTree->Branch("_rho",                          &_rho,                          "_rho/D");       // displaced specific: needed to manually apply the H/E id cut
     outputTree->Branch("_pvX",                          &_pvX,                          "_pvX/D");       // displaced specific [TODO: it seems these should be moved to multilep.cc or so]
     outputTree->Branch("_pvY",                          &_pvY,                          "_pvY/D");       // "
     outputTree->Branch("_pvZ",                          &_pvZ,                          "_pvZ/D");       // "
@@ -60,6 +61,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lEtaSC",                       &_lEtaSC,                       "_lEtaSC[_nLight]/D");
     outputTree->Branch("_lPhi",                         &_lPhi,                         "_lPhi[_nL]/D");
     outputTree->Branch("_lE",                           &_lE,                           "_lE[_nL]/D");
+    outputTree->Branch("_lEnergySC",                    &_lEnergySC,                    "_lEnergySC[_nL]/D"); // displaced specific: supercluster energy
     outputTree->Branch("_lFlavor",                      &_lFlavor,                      "_lFlavor[_nL]/i");
     outputTree->Branch("_lCharge",                      &_lCharge,                      "_lCharge[_nL]/I");
     outputTree->Branch("_dxy",                          &_dxy,                          "_dxy[_nL]/D");
@@ -280,6 +282,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     _nMu    = 0;
     _nEle   = 0;
     _nTau   = 0;
+    _rho    = *rho;
     _nVFit  = 0;
     _nVFit_os = 0;
     _nGoodLeading = 0;
@@ -453,6 +456,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] = std::abs(ele->deltaPhiSuperClusterTrackAtVtx());
         _lElehadronicOverEm[_nL]        = ele->hadronicOverEm();
         _lEleInvMinusPInv[_nL]          = std::abs(1.0 - ele->eSuperClusterOverP())/ele->ecalEnergy();
+        _lEnergySC[_nL]                 = ele->superCluster()->energy();
 
         _lLooseCBwoIsolationwoMissingInnerhitswoConversionVeto[_nL] = isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&*ele);
 
@@ -514,7 +518,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }
 
     //Initialize with default values for those electron-only arrays which weren't filled with muons [to allow correct comparison by the test script]
-    for(auto array : {_lEtaSC}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lEtaSC, _lEnergySC}) std::fill_n(array, _nMu, 0.);
     for(auto array : {_lElectronMvaSummer16GP, _lElectronMvaSummer16HZZ, _lElectronMvaFall17v1NoIso}) std::fill_n(array, _nMu, 0.); // OLD, do not use them
     for(auto array : {_lElectronMvaFall17Iso, _lElectronMvaFall17NoIso}) std::fill_n(array, _nMu, 0.);
     for(auto array : {_lElectronPassMVAFall17NoIsoWPLoose, _lElectronPassMVAFall17NoIsoWP90, _lElectronPassMVAFall17NoIsoWP80}) std::fill_n(array, _nMu, false);
