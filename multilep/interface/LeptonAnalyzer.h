@@ -161,17 +161,21 @@ class LeptonAnalyzer {
     bool _lElectronPassConvVeto[nL_max];
     bool _lElectronChargeConst[nL_max];
     unsigned _lElectronMissingHits[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWP80[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWP90[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWPLoose[nL_max];
+    double _lElectronSigmaIetaIeta[nL_max];
+    double _lElectronDeltaPhiSuperClusterTrack[nL_max];
+    double _lElectronDeltaEtaSuperClusterTrack[nL_max];
+    double _lElectronEInvMinusPInv[nL_max];
+    double _lElectronHOverE[nL_max];
      
-    bool _lEleIsEB[nL_max];                                                                         //electron specific variables for displaced electron ID
-    bool _lEleIsEE[nL_max];
-    double _lEleSuperClusterOverP[nL_max];
-    double _lEleEcalEnergy[nL_max];
-    double _lElefull5x5SigmaIetaIeta[nL_max];
-    double _lEleDEtaInSeed[nL_max];
-    double _lEleDeltaPhiSuperClusterTrackAtVtx[nL_max];
-    double _lElehadronicOverEm[nL_max];
-    double _lEleInvMinusPInv[nL_max];
-    double _eleNumberInnerHitsMissing[nL_max];
+    bool _lElectronIsEB[nL_max];                                                                         //electron specific variables for displaced electron ID
+    bool _lElectronIsEE[nL_max];
+    double _lElectronSuperClusterOverP[nL_max];
+    double _lElectronEcalEnergy[nL_max];
+    double _lElectronDEtaInSeed[nL_max];
+    double _lElectronNumberInnerHitsMissing[nL_max];
 
     bool _lGlobalMuon[nL_max];                                                                       //muon speficic variables, also for displaced muon ID
     bool _lTrackerMuon[nL_max];
@@ -184,8 +188,11 @@ class LeptonAnalyzer {
     unsigned _lNumberOfValidTrackerHits[nL_max];
     unsigned _muNumberInnerHits[nL_max];
     unsigned _lTrackerLayersWithMeasurement[nL_max];
-    double _lMuonSegComp[nL_max];                                                                     
     double _lEtaSC[nL_max];
+
+
+    //muon properties
+    double _lMuonSegComp[nL_max];
     double _lMuonTrackPt[nL_max];
     double _lMuonTrackPtErr[nL_max];
     //unsigned _trackmatch[nL_max];
@@ -202,7 +209,7 @@ class LeptonAnalyzer {
     unsigned _tauGenStatus[nL_max];                                                             //1: prompt ele, 2:prompt mu, 3: ele from leptonic tau, 4:mu from leptonic tau, 5: hadronically decayed tau, 6:rest 
     bool _tauPOGVLoose2015[nL_max];                                                             //version of ID to use in MiniAOD: MC 80X_mcRun2_asymptotic_2016_TrancheIV_v6, Data 03Feb2017
     bool _tauPOGLoose2015[nL_max];                                                              //More info at https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Isolation
-    bool _tauPOGMedium2015[nL_max];
+    bool _tauPOGMedium2015[nL_max];                                                             // # WARNING # NO LONGER SUPPORTED BY TAU POG, kept for testing reasons, will remove this soon
     bool _tauPOGTight2015[nL_max];
     bool _tauPOGVTight2015[nL_max];
     
@@ -210,8 +217,9 @@ class LeptonAnalyzer {
     bool _tauPOGVTight2017v2[nL_max];                                                            //Other WPs contained in _lPOG variables (vloose = veto)
     bool _tauPOGVVTight2017v2[nL_max];
 
-    bool _decayModeFindingNew[nL_max];                      
-    bool _tauVLooseMvaNew[nL_max];                                                               
+    bool _decayModeFindingNew[nL_max];                                           
+    bool _decayModeFindingDeepTau[nL_max];                                           
+    bool _tauVLooseMvaNew[nL_max];                                                              // # WARNING # NO LONGER SUPPORTED BY TAU POG, kept for testing reasons, will remove this soon                 
     bool _tauVLooseMvaNew2015[nL_max];
     bool _tauLooseMvaNew2015[nL_max];
     bool _tauMediumMvaNew2015[nL_max];
@@ -223,6 +231,32 @@ class LeptonAnalyzer {
     bool _tauMediumMvaNew2017v2[nL_max];
     bool _tauTightMvaNew2017v2[nL_max];
     bool _tauVTightMvaNew2017v2[nL_max];
+
+    bool _tauDeepTauVsJetsRaw[nL_max];    
+    bool _tauVVVLooseDeepTauVsJets[nL_max];    
+    bool _tauVVLooseDeepTauVsJets[nL_max];    
+    bool _tauVLooseDeepTauVsJets[nL_max];    
+    bool _tauLooseDeepTauVsJets[nL_max];    
+    bool _tauMediumDeepTauVsJets[nL_max];    
+    bool _tauTightDeepTauVsJets[nL_max];    
+    bool _tauVTightDeepTauVsJets[nL_max];    
+    bool _tauVVTightDeepTauVsJets[nL_max];    
+    
+    bool _tauDeepTauVsEleRaw[nL_max];    
+    bool _tauVVVLooseDeepTauVsEle[nL_max];    
+    bool _tauVVLooseDeepTauVsEle[nL_max];    
+    bool _tauVLooseDeepTauVsEle[nL_max];    
+    bool _tauLooseDeepTauVsEle[nL_max];    
+    bool _tauMediumDeepTauVsEle[nL_max];    
+    bool _tauTightDeepTauVsEle[nL_max];    
+    bool _tauVTightDeepTauVsEle[nL_max];    
+    bool _tauVVTightDeepTauVsEle[nL_max];    
+    
+    bool _tauDeepTauVsMuRaw[nL_max];    
+    bool _tauVLooseDeepTauVsMu[nL_max];    
+    bool _tauLooseDeepTauVsMu[nL_max];    
+    bool _tauMediumDeepTauVsMu[nL_max];    
+    bool _tauTightDeepTauVsMu[nL_max];    
     
     double _tauAgainstElectronMVA6Raw[nL_max];
     double _tauCombinedIsoDBRaw3Hits[nL_max];
@@ -311,10 +345,8 @@ class LeptonAnalyzer {
 };
 
 
-//specific definition for Electrons, using the eta of the supercluster is given in LeptonAnalyzerIso.cc
-template< typename T > double etaForEffectiveArea( const T& lepton ){
-    return lepton.eta();
-}
+double etaForEffectiveArea( const pat::Muon& muon );
+double etaForEffectiveArea( const pat::Electron& electron );
 
 
 template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton, const double rho, const bool onlyCharged ) const{
@@ -325,8 +357,10 @@ template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton,
     } else {
         double cone_size = 10.0 / std::min( std::max( lepton.pt(), 50. ), 200. );
         double effective_area = 0;
+
         if( lepton.isMuon() ){
             effective_area = muonsEffectiveAreas.getEffectiveArea( etaForEffectiveArea( lepton ) );
+
         } else if( lepton.isElectron() ){
             effective_area = electronsEffectiveAreasMiniIso.getEffectiveArea( etaForEffectiveArea( lepton ) );
         } else {
@@ -337,7 +371,6 @@ template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton,
         absIso = iso.chargedHadronIso() + std::max( iso.neutralHadronIso() + iso.photonIso() - pu_corr, 0. ); 
     }
     return ( absIso / lepton.pt() );
-
 }
 
 

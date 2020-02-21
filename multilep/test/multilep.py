@@ -39,6 +39,7 @@ isData = not ('SIM' in inputFile or '/pnfs/iihe/cms/store/user/tomc/heavyNeutrin
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in inputFile
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
 isSUSY = "SMS-T" in inputFile
+isFastSim = ( 'PUSummer16v3Fast' in inputFile ) or ( 'PUFall17Fast' in inputFile ) or ( 'PUFall18Fast' in inputFile )
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -56,8 +57,10 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 
 # Latest recommended global tags can always be checked here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v13'
-elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_Sep2018ABC_v2' if isData else '102X_upgrade2018_realistic_v18'
+if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v15'
+
+#TO FIX RUN DEPENDENT JEC IN 2018!!! 102X_dataRun2_v12 (ABC)/ 102X_dataRun2_Prompt_v15 (D)
+elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_v12' if isData else '102X_upgrade2018_realistic_v20'
 elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'            if isData else '94X_mc2017_realistic_v17'
 else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'            if isData else '94X_mcRun2_asymptotic_v3'
 
@@ -79,10 +82,20 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 # Import some objectsequences sequence (details in cff files)
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
-addJetSequence(process, isData, is2017, is2018)
-if is2018:   jecUncertaintyFile = 'Autumn18_V8_MC_Uncertainty_AK4PFchs.txt'
-elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
-else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
+addJetSequence( process, isData, is2017, is2018, isFastSim )
+if is2018 and ( not isFastSim ):
+  jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
+elif is2018 and isFastSim:
+  jecUncertaintyFile = 'Autumn18_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+elif is2017 and ( not isFastSim ):
+  jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
+elif is2017 and isFastSim:
+ jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+elif not isFastSim:
+  jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
+else:
+  jecUncertaintyFile = 'Summer16_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+
 
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # Updated scale and smearings
@@ -128,6 +141,7 @@ import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
 tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
                     updatedTauName = updatedTauName,
                     toKeep = [ "2017v2", "newDM2017v2", #classic MVAIso tau-Ids
+                                "deepTau2017v2p1" #latest deepTau2017v2p1
                                ])
 tauIdEmbedder.runTauID()
 
@@ -150,6 +164,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
   muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt'),
   electrons                     = cms.InputTag("slimmedElectrons"),
+  # FIXME: currently the next two lines are used for all electron values, not only the ttH leptonMva!
   electronsEffectiveAreasMiniIso2016  = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'),
   electronsEffectiveAreasRelIso2016  = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt'), #old effective areas are used in 2016 computation of ttH MVA
   electronsEffectiveAreasFall17 = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'), # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
@@ -181,10 +196,14 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
   is2018                        = cms.untracked.bool(is2018),
+  isFastSim                     = cms.untracked.bool(isFastSim),
   isSUSY                        = cms.untracked.bool(isSUSY),
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
+  storeGenParticles             = cms.untracked.bool('storeGenParticles' in extraContent),
   storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),
   storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
+  headerPart1                   = cms.FileInPath("heavyNeutrino/multilep/data/header/soviet.txt"),
+  headerPart2                   = cms.FileInPath("heavyNeutrino/multilep/data/header/text.txt")
 )
 
 def getJSON(is2017, is2018):

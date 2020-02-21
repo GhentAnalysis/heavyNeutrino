@@ -6,6 +6,7 @@
 if [[ $USER == "tutran" ]]; then     proxy=/user/tutran/private/x509up_u23068
 elif [[ $USER == "wverbeke" ]]; then proxy=/user/wverbeke/x509up_u20640
 elif [[ $USER == "gmestdac" ]]; then proxy=/user/gmestdac/x509up_u20676
+elif [[ $USER == "kskovpen" ]]; then proxy=/tmp/x509up_u20657
 elif [[ $USER == "lwezenbe" ]]; then proxy=/user/lwezenbe/x509up_u20675
 elif [[ $USER == "tomc" ]]; then     proxy=/user/$USER/production/proxyExpect.sh
 elif [[ $USER == "bvermass" ]]; then proxy=/user/bvermass/x509up_u20663

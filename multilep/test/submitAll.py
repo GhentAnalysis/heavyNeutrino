@@ -2,6 +2,13 @@
 import os, glob, sys, subprocess
 
 #
+# Check if we have already done cmsenv
+#
+if os.environ['CMSSW_BASE'].replace('/storage_mnt/storage','') not in os.getcwd():
+  print '\033[1m\033[91mPlease do cmsenv first!'
+  exit(0)
+
+#
 # Special git diff check for special people like Willem
 #
 def confirm(prompt, resp=False):
@@ -25,7 +32,6 @@ if len(system('git diff')):
   print
   if not confirm('\033[1m\033[94mAre you sure you would want to continue?'):
     exit(0)
-
 #
 # Proceed with the submission script
 #

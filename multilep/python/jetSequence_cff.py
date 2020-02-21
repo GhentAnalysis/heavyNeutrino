@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-def addJetSequence(process, isData, is2017, is2018):
+def addJetSequence( process, isData, is2017, is2018, isFastSim ):
   #
   # Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
   #
@@ -11,11 +11,45 @@ def addJetSequence(process, isData, is2017, is2018):
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
+ 
+  if isFastSim : 
+    from CondCore.CondDB.CondDB_cfi import CondDB
+    if is2018:
+        JECVersion = 'Autumn18_FastSimV1_MC'
+    elif is2017:
+        JECVersion = 'Fall17_FastSimV1_MC'
+    else :
+        JECVersion = 'Summer16_FastSimV1_MC'
+
+    CondDBJECFile = CondDB.clone( connect = cms.string('sqlite_fip:heavyNeutrino/multilep/data/JEC/{}.db'.format( JECVersion ) ) )
+    process.jec = cms.ESSource('PoolDBESSource',
+      CondDBJECFile,
+      toGet = cms.VPSet(
+        cms.PSet(
+          record = cms.string('JetCorrectionsRecord'),
+          tag    = cms.string('JetCorrectorParametersCollection_{}_AK4PFchs'.format( JECVersion ) ),
+          label  = cms.untracked.string('AK4PFchs')
+        ),
+      )
+    )
+    process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
+
+
   updateJetCollection(
     process,
     jetSource = cms.InputTag('slimmedJets'),
     labelName = 'UpdatedJEC',
-    jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None')
+    jetCorrections = ('AK4PFchs', cms.vstring(jetCorrectorLevels), 'None'),
+    pvSource = cms.InputTag('offlineSlimmedPrimaryVertices'),
+    svSource = cms.InputTag('slimmedSecondaryVertices'),
+    btagDiscriminators = [
+      'pfDeepFlavourJetTags:probb',
+      'pfDeepFlavourJetTags:probbb',
+      'pfDeepFlavourJetTags:problepb',
+      'pfDeepFlavourJetTags:probc',
+      'pfDeepFlavourJetTags:probuds',
+      'pfDeepFlavourJetTags:probg'
+    ],
   )
 
   process.jetSequence = cms.Sequence(process.patAlgosToolsTask)

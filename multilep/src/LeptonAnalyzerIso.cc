@@ -1,8 +1,14 @@
 #include "../interface/LeptonAnalyzer.h"
 
-template<> double etaForEffectiveArea( const pat::Electron& electron ){
+double etaForEffectiveArea( const pat::Muon& muon ){
+    return muon.eta();
+}
+
+
+double etaForEffectiveArea( const pat::Electron& electron ){
     return electron.superCluster()->eta();
 }
+
 
 double LeptonAnalyzer::getRelIso04(const pat::Muon& mu, const double rho, const bool DeltaBeta) const{ //Note: effective area correction is used instead of delta-beta correction
     double puCorr;

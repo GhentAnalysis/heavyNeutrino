@@ -50,36 +50,54 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
 
-  //jet stuff
-  outputTree->Branch("_gen_nN",		               &_gen_nN,			        "_gen_nN/i");
-  outputTree->Branch("_gen_NPt",		           &_gen_NPt,			        "_gen_NPt/D");
-  outputTree->Branch("_gen_NEta",		           &_gen_NEta,			        "_gen_NEta/D");
-  outputTree->Branch("_gen_NPhi",		           &_gen_NPhi,			        "_gen_NPhi/D");
-  outputTree->Branch("_gen_NE",		   	           &_gen_NE,			        "_gen_NE/D");
-  outputTree->Branch("_gen_Nvertex_x",		   	   &_gen_Nvertex_x,			    "_gen_Nvertex_x/D");
-  outputTree->Branch("_gen_Nvertex_y",		   	   &_gen_Nvertex_y,			    "_gen_Nvertex_y/D");
-  outputTree->Branch("_gen_Nvertex_z",		   	   &_gen_Nvertex_z,			    "_gen_Nvertex_z/D");
+    //jet stuff
+    outputTree->Branch("_gen_nN",		             &_gen_nN,			          "_gen_nN/i");
+    outputTree->Branch("_gen_NPt",		             &_gen_NPt,			          "_gen_NPt/D");
+    outputTree->Branch("_gen_NEta",		             &_gen_NEta,			      "_gen_NEta/D");
+    outputTree->Branch("_gen_NPhi",		             &_gen_NPhi,			      "_gen_NPhi/D");
+    outputTree->Branch("_gen_NE",		   	         &_gen_NE,			          "_gen_NE/D");
+    outputTree->Branch("_gen_Nvertex_x",		   	 &_gen_Nvertex_x,			  "_gen_Nvertex_x/D");
+    outputTree->Branch("_gen_Nvertex_y",		   	 &_gen_Nvertex_y,			  "_gen_Nvertex_y/D");
+    outputTree->Branch("_gen_Nvertex_z",		   	 &_gen_Nvertex_z,			  "_gen_Nvertex_z/D");
 
-  outputTree->Branch("_gen_nNPackedDtrs",		   &_gen_nNPackedDtrs,			"_gen_nNPackedDtrs/i");
-  outputTree->Branch("_gen_NPackedDtrsPt",		   &_gen_NPackedDtrsPt,			"_gen_NPackedDtrsPt[_gen_nNPackedDtrs]/D");
-  outputTree->Branch("_gen_NPackedDtrsEta",		   &_gen_NPackedDtrsEta,		"_gen_NPackedDtrsEta[_gen_nNPackedDtrs]/D");
-  outputTree->Branch("_gen_NPackedDtrsPhi",		   &_gen_NPackedDtrsPhi,		"_gen_NPackedDtrsPhi[_gen_nNPackedDtrs]/D");
-  outputTree->Branch("_gen_NPackedDtrsE",		   &_gen_NPackedDtrsE,			"_gen_NPackedDtrsE[_gen_nNPackedDtrs]/D");
-  outputTree->Branch("_gen_NPackedDtrsPdgId",      &_gen_NPackedDtrsPdgId,	    "_gen_NPackedDtrsPdgId[_gen_nNPackedDtrs]/I");
-  outputTree->Branch("_gen_NPackedDtrsCharge",     &_gen_NPackedDtrsCharge,	    "_gen_NPackedDtrsCharge[_gen_nNPackedDtrs]/I");
-  
-  outputTree->Branch("_gen_nNdaughters",	       &_gen_nNdaughters,		    "_gen_nNdaughters/i");
-  outputTree->Branch("_gen_Ndaughters_pdg",   	   &_gen_Ndaughters_pdg,	    "_gen_Ndaughters_pdg[_gen_nNdaughters]/I");
-  outputTree->Branch("_gen_Ndaughters_Pt",   	   &_gen_Ndaughters_Pt,	        "_gen_Ndaughters_Pt[_gen_nNdaughters]/D");
-  outputTree->Branch("_gen_Ndaughters_Eta",   	   &_gen_Ndaughters_Eta,        "_gen_Ndaughters_Eta[_gen_nNdaughters]/D");
-  outputTree->Branch("_gen_Ndaughters_Phi",   	   &_gen_Ndaughters_Phi,        "_gen_Ndaughters_Phi[_gen_nNdaughters]/D");
-  outputTree->Branch("_gen_Ndaughters_E",   	   &_gen_Ndaughters_E,	        "_gen_Ndaughters_E[_gen_nNdaughters]/D");
-  outputTree->Branch("_gen_Ndaughters_Charge",     &_gen_Ndaughters_Charge,     "_gen_Ndaughters_Charge[_gen_nNdaughters]/D");
-  outputTree->Branch("_gen_nq",		               &_gen_nq,			        "_gen_nq/i");
-  outputTree->Branch("_gen_qPt",		           &_gen_qPt,			        "_gen_qPt[_gen_nq]/D");
-  outputTree->Branch("_gen_qEta",		           &_gen_qEta,			        "_gen_qEta[_gen_nq]/D");
-  outputTree->Branch("_gen_qPhi",		           &_gen_qPhi,			        "_gen_qPhi[_gen_nq]/D");
-  outputTree->Branch("_gen_qE",		   	           &_gen_qE,			        "_gen_qE[_gen_nq]/D");
+    outputTree->Branch("_gen_nNPackedDtrs",		     &_gen_nNPackedDtrs,		  "_gen_nNPackedDtrs/i");
+    outputTree->Branch("_gen_NPackedDtrsPt",		 &_gen_NPackedDtrsPt,		  "_gen_NPackedDtrsPt[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsEta",		 &_gen_NPackedDtrsEta,		  "_gen_NPackedDtrsEta[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsPhi",		 &_gen_NPackedDtrsPhi,		  "_gen_NPackedDtrsPhi[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsE",		     &_gen_NPackedDtrsE,		  "_gen_NPackedDtrsE[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsPdgId",      &_gen_NPackedDtrsPdgId,	  "_gen_NPackedDtrsPdgId[_gen_nNPackedDtrs]/I");
+    outputTree->Branch("_gen_NPackedDtrsCharge",     &_gen_NPackedDtrsCharge,	  "_gen_NPackedDtrsCharge[_gen_nNPackedDtrs]/I");
+    
+    outputTree->Branch("_gen_nNdaughters",	         &_gen_nNdaughters,		      "_gen_nNdaughters/i");
+    outputTree->Branch("_gen_Ndaughters_pdg",   	 &_gen_Ndaughters_pdg,	      "_gen_Ndaughters_pdg[_gen_nNdaughters]/I");
+    outputTree->Branch("_gen_Ndaughters_Pt",   	     &_gen_Ndaughters_Pt,	      "_gen_Ndaughters_Pt[_gen_nNdaughters]/D");
+    outputTree->Branch("_gen_Ndaughters_Eta",   	 &_gen_Ndaughters_Eta,        "_gen_Ndaughters_Eta[_gen_nNdaughters]/D");
+    outputTree->Branch("_gen_Ndaughters_Phi",   	 &_gen_Ndaughters_Phi,        "_gen_Ndaughters_Phi[_gen_nNdaughters]/D");
+    outputTree->Branch("_gen_Ndaughters_E",   	     &_gen_Ndaughters_E,	      "_gen_Ndaughters_E[_gen_nNdaughters]/D");
+    outputTree->Branch("_gen_Ndaughters_Charge",     &_gen_Ndaughters_Charge,     "_gen_Ndaughters_Charge[_gen_nNdaughters]/D");
+    outputTree->Branch("_gen_nq",		             &_gen_nq,			          "_gen_nq/i");
+    outputTree->Branch("_gen_qPt",		             &_gen_qPt,			          "_gen_qPt[_gen_nq]/D");
+    outputTree->Branch("_gen_qEta",		             &_gen_qEta,			      "_gen_qEta[_gen_nq]/D");
+    outputTree->Branch("_gen_qPhi",		             &_gen_qPhi,			      "_gen_qPhi[_gen_nq]/D");
+    outputTree->Branch("_gen_qE",		   	         &_gen_qE,			          "_gen_qE[_gen_nq]/D");
+    if( multilepAnalyzer->storeGenParticles )
+     {	
+	outputTree->Branch("_gen_n",                                        &_gen_n,                                        "_gen_n/I");
+	outputTree->Branch("_gen_pt",                                       &_gen_pt,                                       "_gen_pt[_gen_n]/D");
+	outputTree->Branch("_gen_eta",                                      &_gen_eta,                                      "_gen_eta[_gen_n]/D");
+	outputTree->Branch("_gen_phi",                                      &_gen_phi,                                      "_gen_phi[_gen_n]/D");
+	outputTree->Branch("_gen_E",                                        &_gen_E,                                        "_gen_E[_gen_n]/D");
+	outputTree->Branch("_gen_pdgId",                                    &_gen_pdgId,                                    "_gen_pdgId[_gen_n]/I");
+	outputTree->Branch("_gen_charge",                                   &_gen_charge,                                   "_gen_charge[_gen_n]/I");
+	outputTree->Branch("_gen_status",                                   &_gen_status,                                   "_gen_status[_gen_n]/I");
+	outputTree->Branch("_gen_isPromptFinalState",                       &_gen_isPromptFinalState,                       "_gen_isPromptFinalState[_gen_n]/O");
+	outputTree->Branch("_gen_isDirectPromptTauDecayProductFinalState",  &_gen_isDirectPromptTauDecayProductFinalState,  "_gen_isDirectPromptTauDecayProductFinalState[_gen_n]/O");
+	outputTree->Branch("_gen_isLastCopy",                               &_gen_isLastCopy,                               "_gen_isLastCopy[_gen_n]/O");
+	outputTree->Branch("_gen_index",                                    &_gen_index,                                    "_gen_index[_gen_n]/I");
+	outputTree->Branch("_gen_motherIndex",                              &_gen_motherIndex,                              "_gen_motherIndex[_gen_n]/I");
+	outputTree->Branch("_gen_daughter_n",                               &_gen_daughter_n,                               "_gen_daughter_n[_gen_n]/I");
+	outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][100]/I");
+     }   
 }
 
 
@@ -102,6 +120,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    _gen_n = 0;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
         int absId = abs(p.pdgId());
@@ -207,7 +226,43 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 }
 	        }
         }
+
+       //store all generator level particles
+       if( multilepAnalyzer->storeGenParticles )
+	 {	    
+	    int indexGen = _gen_n;
+
+	    if( _gen_n == gen_n_max )
+	      {
+		 throw cms::Exception ("GenAnalyzer") << "Reaching the max number of stored gen particles (" << gen_n_max << ")\n";
+	      }
+       
+	    int nDaughters = p.numberOfDaughters();
+	    
+	    _gen_daughter_n[_gen_n] = nDaughters;
+	    
+	    for( int d=0;d<nDaughters;++d )
+	      {		 
+		 _gen_daughterIndex[_gen_n][nDaughters] = p.daughterRef(d).key();
+		 ++_gen_daughter_n[_gen_n];
+	      }
+	    
+	    _gen_pt[_gen_n]                                      = p.pt();
+	    _gen_eta[_gen_n]                                     = p.eta();
+	    _gen_phi[_gen_n]                                     = p.phi();
+	    _gen_E[_gen_n]                                       = p.energy();
+	    _gen_pdgId[_gen_n]                                   = p.pdgId();
+	    _gen_charge[_gen_n]                                  = p.charge();
+	    _gen_status[_gen_n]                                  = p.status();
+	    _gen_isPromptFinalState[_gen_n]                      = p.isPromptFinalState();
+	    _gen_isDirectPromptTauDecayProductFinalState[_gen_n] = p.isDirectPromptTauDecayProductFinalState();
+	    _gen_isLastCopy[_gen_n]                              = p.isLastCopy();
+	    _gen_index[_gen_n]                                   = indexGen;
+	    _gen_motherIndex[_gen_n]                             = GenTools::getFirstMotherIndex(p, *genParticles);
+	    ++_gen_n;
+	 }
     }
+
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
 
@@ -227,7 +282,7 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
         if(GenTools::getMinDeltaR(*p, genParticles) < genCone) continue;
-        if(not GenTools::passParentage(*p, genParticles))  continue;
+        if(not GenTools::noMesonsInChain(*p, genParticles))  continue;
 
         // Everything below is *signal*
         std::set<int> decayChain;

@@ -15,6 +15,9 @@
 
 
 // TODO: we should maybe stop indentifying effective areas by year, as they are typically more connected to a specific ID than to a specific year
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! we should really take action on this todo
+//     it seems at some point the default relIso/miniIso values went back to the old effective areas, simply because to be in sync with ttH leptonMva
+//     we should implement ellectronsEffectiveAreas (without splitting up by year) for default values, and separate electronsEffectiveAreasTTH_RelIso2016 and electronsEffectiveAreasTTH_MiniIso2016 or something like that
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer),
     electronsEffectiveAreas( ( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ) ? iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17").fullPath() : iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasRelIso2016").fullPath() ),
@@ -56,16 +59,20 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElectronPassConvVeto",        &_lElectronPassConvVeto,        "_lElectronPassConvVeto[_nLight]/O");
     outputTree->Branch("_lElectronChargeConst",         &_lElectronChargeConst,         "_lElectronChargeConst[_nLight]/O");
     outputTree->Branch("_lElectronMissingHits",         &_lElectronMissingHits,         "_lElectronMissingHits[_nLight]/i");
-    outputTree->Branch("_lEleIsEB",                     &_lEleIsEB ,                    "_lEleIsEB[_nLight]/O");
-    outputTree->Branch("_lEleIsEE",                     &_lEleIsEE ,                    "_lEleIsEE[_nLight]/O");
-    outputTree->Branch("_lEleSuperClusterOverP",        &_lEleSuperClusterOverP ,       "_lEleSuperClusterOverP[_nLight]/D");
-    outputTree->Branch("_lEleEcalEnergy",               &_lEleEcalEnergy ,              "_lEleEcalEnergy[_nLight]/D");
-    outputTree->Branch("_lElefull5x5SigmaIetaIeta",     &_lElefull5x5SigmaIetaIeta ,    "_lElefull5x5SigmaIetaIeta[_nLight]/D");
-    outputTree->Branch("_lEleDEtaInSeed",               &_lEleDEtaInSeed ,              "_lEleDEtaInSeed[_nLight]/D");
-    outputTree->Branch("_lEleDeltaPhiSuperClusterTrackAtVtx", &_lEleDeltaPhiSuperClusterTrackAtVtx , "_lEleDeltaPhiSuperClusterTrackAtVtx[_nLight]/D");
-    outputTree->Branch("_lElehadronicOverEm",           &_lElehadronicOverEm ,          "_lElehadronicOverEm[_nLight]/D");
-    outputTree->Branch("_lEleInvMinusPInv",             &_lEleInvMinusPInv ,            "_lEleInvMinusPInv[_nLight]/D");
-    outputTree->Branch("_eleNumberInnerHitsMissing",    &_eleNumberInnerHitsMissing,    "_eleNumberInnerHitsMissing[_nLight]/D");
+    outputTree->Branch("_lElectronPassMVAFall17NoIsoWP80",    &_lElectronPassMVAFall17NoIsoWP80,    "_lElectronPassMVAFall17NoIsoWP80[_nLight]/O");
+    outputTree->Branch("_lElectronPassMVAFall17NoIsoWP90",    &_lElectronPassMVAFall17NoIsoWP90,    "_lElectronPassMVAFall17NoIsoWP90[_nLight]/O");
+    outputTree->Branch("_lElectronPassMVAFall17NoIsoWPLoose", &_lElectronPassMVAFall17NoIsoWPLoose, "_lElectronPassMVAFall17NoIsoWPLoose[_nLight]/O");
+    outputTree->Branch("_lElectronIsEB",                      &_lElectronIsEB ,                     "_lElectronIsEB[_nLight]/O");
+    outputTree->Branch("_lElectronIsEE",                      &_lElectronIsEE ,                     "_lElectronIsEE[_nLight]/O");
+    outputTree->Branch("_lElectronSuperClusterOverP",         &_lElectronSuperClusterOverP ,        "_lElectronSuperClusterOverP[_nLight]/D");
+    outputTree->Branch("_lElectronEcalEnergy",                &_lElectronEcalEnergy ,               "_lElectronEcalEnergy[_nLight]/D");
+    outputTree->Branch("_lElectronDEtaInSeed",                &_lElectronDEtaInSeed ,               "_lElectronDEtaInSeed[_nLight]/D");
+    outputTree->Branch("_lElectronNumberInnerHitsMissing",    &_lElectronNumberInnerHitsMissing,    "_lElectronNumberInnerHitsMissing[_nLight]/D");
+    outputTree->Branch("_lElectronSigmaIetaIeta",             &_lElectronSigmaIetaIeta,             "_lElectronSigmaIetaIeta[_nLight]/D");
+    outputTree->Branch("_lElectronDeltaPhiSuperClusterTrack", &_lElectronDeltaPhiSuperClusterTrack, "_lElectronDeltaPhiSuperClusterTrack[_nLight]/D");
+    outputTree->Branch("_lElectronDeltaEtaSuperClusterTrack", &_lElectronDeltaEtaSuperClusterTrack, "_lElectronDeltaEtaSuperClusterTrack[_nLight]/D");
+    outputTree->Branch("_lElectronEInvMinusPInv",             &_lElectronEInvMinusPInv,             "_lElectronEInvMinusPInv[_nLight]/D");
+    outputTree->Branch("_lElectronHOverE",                    &_lElectronHOverE,                    "_lElectronHOverE[_nLight]/D");
     outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
     outputTree->Branch("_leptonMvatZq",                 &_leptonMvatZq,                 "_leptonMvatZq[_nLight]/D");
     outputTree->Branch("_lPOGVeto",                     &_lPOGVeto,                     "_lPOGVeto[_nL]/O");
@@ -161,7 +168,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     if( multilepAnalyzer->isMC() ){
         outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
-        outputTree->Branch("_lMatchCharge",               &_lMatchCharge,                 "_lMatchCharge[_nL]/I");
+        outputTree->Branch("_lMatchCharge",               &_lMatchCharge,                 "_lMatchCharge[_nLight]/I");
         outputTree->Branch("_tauGenStatus",               &_tauGenStatus,                 "_tauGenStatus[_nL]/i");
         outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
         outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
@@ -180,6 +187,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lEResDown",                  &_lEResDown,                    "_lEResDown[_nLight]/D");
     if(multilepAnalyzer->storeAllTauID){
       outputTree->Branch("_decayModeFindingNew",          &_decayModeFindingNew,          "_decayModeFindingNew[_nL]/O");
+      outputTree->Branch("_decayModeFindingDeepTau",          &_decayModeFindingDeepTau,          "_decayModeFindingDeepTau[_nL]/O");
       outputTree->Branch("_tauPOGVLoose2015",             &_tauPOGVLoose2015,             "_tauPOGVLoose2015[_nL]/O");
       outputTree->Branch("_tauPOGLoose2015",              &_tauPOGLoose2015,              "_tauPOGLoose2015[_nL]/O");
       outputTree->Branch("_tauPOGMedium2015",             &_tauPOGMedium2015,             "_tauPOGMedium2015[_nL]/O");
@@ -197,6 +205,29 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_tauMediumMvaNew2017v2",        &_tauMediumMvaNew2017v2,        "_tauMediumMvaNew2017v2[_nL]/O");
       outputTree->Branch("_tauTightMvaNew2017v2",         &_tauTightMvaNew2017v2,         "_tauTightMvaNew2017v2[_nL]/O");
       outputTree->Branch("_tauVTightMvaNew2017v2",        &_tauVTightMvaNew2017v2,        "_tauVTightMvaNew2017v2[_nL]/O");
+      outputTree->Branch("_tauDeepTauVsJetsRaw",          &_tauDeepTauVsJetsRaw,          "_tauDeepTauVsJetsRaw[_nL]/O");
+      outputTree->Branch("_tauVVVLooseDeepTauVsJets",      &_tauVVVLooseDeepTauVsJets,      "_tauVVVLooseDeepTauVsJets[_nL]/O");
+      outputTree->Branch("_tauVVLooseDeepTauVsJets",      &_tauVVLooseDeepTauVsJets,      "_tauVVLooseDeepTauVsJets[_nL]/O");
+      outputTree->Branch("_tauVLooseDeepTauVsJets",       &_tauVLooseDeepTauVsJets,       "_tauVLooseDeepTauVsJets[_nL]/O");
+      outputTree->Branch("_tauLooseDeepTauVsJets",        &_tauLooseDeepTauVsJets,        "_tauLooseDeepTauVsJets[_nL]/O");
+      outputTree->Branch("_tauMediumDeepTauVsJets",       &_tauMediumDeepTauVsJets,       "_tauMediumDeepTauVsJets[_nL]/O");
+      outputTree->Branch("_tauTightDeepTauVsJets",        &_tauTightDeepTauVsJets,        "_tauTightDeepTauVsJets[_nL]/O");
+      outputTree->Branch("_tauVTightDeepTauVsJets",       &_tauVTightDeepTauVsJets,       "_tauVTightDeepTauVsJets[_nL]/O");
+      outputTree->Branch("_tauVVTightDeepTauVsJets",      &_tauVVTightDeepTauVsJets,      "_tauVVTightDeepTauVsJets[_nL]/O");
+      outputTree->Branch("_tauDeepTauVsEleRaw",           &_tauDeepTauVsEleRaw,           "_tauDeepTauVsEleRaw[_nL]/O");
+      outputTree->Branch("_tauVVVLooseDeepTauVsEle",       &_tauVVVLooseDeepTauVsEle,       "_tauVVVLooseDeepTauVsEle[_nL]/O");
+      outputTree->Branch("_tauVVLooseDeepTauVsEle",       &_tauVVLooseDeepTauVsEle,       "_tauVVLooseDeepTauVsEle[_nL]/O");
+      outputTree->Branch("_tauVLooseDeepTauVsEle",        &_tauVLooseDeepTauVsEle,        "_tauVLooseDeepTauVsEle[_nL]/O");
+      outputTree->Branch("_tauLooseDeepTauVsEle",         &_tauLooseDeepTauVsEle,         "_tauLooseDeepTauVsEle[_nL]/O");
+      outputTree->Branch("_tauMediumDeepTauVsEle",        &_tauMediumDeepTauVsEle,        "_tauMediumDeepTauVsEle[_nL]/O");
+      outputTree->Branch("_tauTightDeepTauVsEle",         &_tauTightDeepTauVsEle,         "_tauTightDeepTauVsEle[_nL]/O");
+      outputTree->Branch("_tauVTightDeepTauVsEle",        &_tauVTightDeepTauVsEle,        "_tauVTightDeepTauVsEle[_nL]/O");
+      outputTree->Branch("_tauVVTightDeepTauVsEle",       &_tauVVTightDeepTauVsEle,       "_tauVVTightDeepTauVsEle[_nL]/O");
+      outputTree->Branch("_tauDeepTauMuRaw",              &_tauDeepTauVsMuRaw,            "_tauDeepTauVsEleMu[_nL]/O");
+      outputTree->Branch("_tauVLooseDeepTauVsMu",         &_tauVLooseDeepTauVsMu,         "_tauVLooseDeepTauVsMu[_nL]/O");
+      outputTree->Branch("_tauLooseDeepTauVsMu",          &_tauLooseDeepTauVsMu,          "_tauLooseDeepTauVsMu[_nL]/O");
+      outputTree->Branch("_tauMediumDeepTauVsMu",         &_tauMediumDeepTauVsMu,         "_tauMediumDeepTauVsMu[_nL]/O");
+      outputTree->Branch("_tauTightDeepTauVsMu",          &_tauTightDeepTauVsMu,          "_tauTightDeepTauVsMu[_nL]/O");
       outputTree->Branch("_tauMuonVetoTight",             &_tauMuonVetoTight,             "_tauMuonVetoTight[_nL]/O");
       outputTree->Branch("_tauEleVetoVLoose",             &_tauEleVetoVLoose,             "_tauEleVetoVLoose[_nL]/O");
       outputTree->Branch("_tauEleVetoMedium",             &_tauEleVetoMedium,             "_tauEleVetoMedium[_nL]/O");
@@ -331,6 +362,16 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _lPOGMedium[_nL]                = ele->electronID("cutBasedElectronID-Fall17-94X-V1-medium");
         _lPOGTight[_nL]                 = ele->electronID("cutBasedElectronID-Fall17-94X-V1-tight");
 
+        _lElectronPassMVAFall17NoIsoWPLoose[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wpLoose");
+        _lElectronPassMVAFall17NoIsoWP90[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wp90");
+        _lElectronPassMVAFall17NoIsoWP80[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wp80");
+
+        _lElectronSigmaIetaIeta[_nL] = ele->full5x5_sigmaIetaIeta();
+        _lElectronDeltaPhiSuperClusterTrack[_nL] = fabs(ele->deltaPhiSuperClusterTrackAtVtx());
+        _lElectronDeltaEtaSuperClusterTrack[_nL] = fabs(ele->deltaEtaSuperClusterTrackAtVtx());
+        _lElectronEInvMinusPInv[_nL] = (1.0 - ele->eSuperClusterOverP())/ele->correctedEcalEnergy();
+        _lElectronHOverE[_nL] = ele->hadronicOverEm();
+
         //fillLeptonJetVariables MUST be called after setting isolation variables since _relIso0p4 is used to set ptRatio in the absence of a closest jet 
         //tZq lepton MVA uses old matching scheme, first set the lepton jet variables with old matching to compute this MVA
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, true);
@@ -360,13 +401,15 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }
 
     //Initialize with default values for those electron-only arrays which weren't filled with muons [to allow correct comparison by the test script]
-    for(auto array : {&_lEtaSC}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lElectronMvaSummer16GP, &_lElectronMvaSummer16HZZ, &_lElectronMvaFall17v1NoIso}) std::fill_n(*array, _nMu, 0.); // OLD, do not use them
-    for(auto array : {&_lElectronMvaFall17Iso, &_lElectronMvaFall17NoIso}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lElectronPassEmu, &_lElectronPassConvVeto, &_lElectronChargeConst}) std::fill_n(*array, _nMu, false);
-    for(auto array : {&_lElectronMissingHits}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lPtCorr, &_lPtScaleUp, &_lPtScaleDown, &_lPtResUp, &_lPtResDown}) std::fill_n(*array, _nMu, 0.);
-    for(auto array : {&_lECorr, &_lEScaleUp, &_lEScaleDown, &_lEResUp, &_lEResDown}) std::fill_n(*array, _nMu, 0.);
+    for(auto array : {_lEtaSC}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lElectronMvaSummer16GP, _lElectronMvaSummer16HZZ, _lElectronMvaFall17v1NoIso}) std::fill_n(array, _nMu, 0.); // OLD, do not use them
+    for(auto array : {_lElectronMvaFall17Iso, _lElectronMvaFall17NoIso}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lElectronPassMVAFall17NoIsoWPLoose, _lElectronPassMVAFall17NoIsoWP90, _lElectronPassMVAFall17NoIsoWP80}) std::fill_n(array, _nMu, false);
+    for(auto array : {_lElectronPassEmu, _lElectronPassConvVeto, _lElectronChargeConst}) std::fill_n(array, _nMu, false);
+    for(auto array : {_lElectronMissingHits}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lElectronSigmaIetaIeta, _lElectronDeltaPhiSuperClusterTrack, _lElectronDeltaEtaSuperClusterTrack, _lElectronEInvMinusPInv, _lElectronHOverE} ) std::fill_n( array, _nMu, 0. );
+    for(auto array : {_lPtCorr, _lPtScaleUp, _lPtScaleDown, _lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lECorr, _lEScaleUp, _lEScaleDown, _lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
 
     //loop over taus
     for(const pat::Tau& tau : *taus){
@@ -390,6 +433,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _lPOGMedium[_nL] = tau.tauID("byMediumIsolationMVArun2017v2DBoldDMwLT2017");
         _lPOGTight[_nL] = tau.tauID("byTightIsolationMVArun2017v2DBoldDMwLT2017");
         _tauPOGVTight2017v2[_nL] = tau.tauID("byVTightIsolationMVArun2017v2DBoldDMwLT2017");
+
+
         
         _tauAgainstElectronMVA6Raw[_nL] = tau.tauID("againstElectronMVA6Raw");
         _tauCombinedIsoDBRaw3Hits[_nL]  = tau.tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits");
@@ -416,6 +461,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
             _tauPOGVVTight2017v2[_nL] = tau.tauID("byVVTightIsolationMVArun2017v2DBoldDMwLT2017");
             
             _decayModeFindingNew[_nL]       = tau.tauID("decayModeFindingNewDMs");                   //new Tau ID
+            _decayModeFindingDeepTau[_nL]       = tau.tauID("decayModeFindingNewDMs") and _tauDecayMode[_nL] != 5 and _tauDecayMode[_nL] != 6;                   //new Tau ID
             _tauVLooseMvaNew2015[_nL]           = tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT");
             _tauLooseMvaNew2015[_nL]            = tau.tauID("byLooseIsolationMVArun2v1DBnewDMwLT");
             _tauMediumMvaNew2015[_nL]           = tau.tauID("byMediumIsolationMVArun2v1DBnewDMwLT");
@@ -427,6 +473,33 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
             _tauMediumMvaNew2017v2[_nL]           = tau.tauID("byMediumIsolationMVArun2017v2DBnewDMwLT2017");
             _tauTightMvaNew2017v2[_nL]            = tau.tauID("byTightIsolationMVArun2017v2DBnewDMwLT2017");
             _tauVTightMvaNew2017v2[_nL]           = tau.tauID("byVTightIsolationMVArun2017v2DBnewDMwLT2017");
+           
+             
+            _tauDeepTauVsJetsRaw[_nL]           = tau.tauID("byDeepTau2017v2p1VSjetraw");
+            _tauVVVLooseDeepTauVsJets[_nL]           = tau.tauID("byVVVLooseDeepTau2017v2p1VSjet");
+            _tauVVLooseDeepTauVsJets[_nL]           = tau.tauID("byVVLooseDeepTau2017v2p1VSjet");
+            _tauVLooseDeepTauVsJets[_nL]           = tau.tauID("byVLooseDeepTau2017v2p1VSjet");
+            _tauLooseDeepTauVsJets[_nL]           = tau.tauID("byLooseDeepTau2017v2p1VSjet");
+            _tauMediumDeepTauVsJets[_nL]           = tau.tauID("byMediumDeepTau2017v2p1VSjet");
+            _tauTightDeepTauVsJets[_nL]           = tau.tauID("byTightDeepTau2017v2p1VSjet");
+            _tauVTightDeepTauVsJets[_nL]           = tau.tauID("byVTightDeepTau2017v2p1VSjet");
+            _tauVVTightDeepTauVsJets[_nL]           = tau.tauID("byVVTightDeepTau2017v2p1VSjet");
+            
+            _tauDeepTauVsEleRaw[_nL]           = tau.tauID("byDeepTau2017v2p1VSeraw");
+            _tauVVVLooseDeepTauVsEle[_nL]           = tau.tauID("byVVVLooseDeepTau2017v2p1VSe");
+            _tauVVLooseDeepTauVsEle[_nL]           = tau.tauID("byVVLooseDeepTau2017v2p1VSe");
+            _tauVLooseDeepTauVsEle[_nL]           = tau.tauID("byVLooseDeepTau2017v2p1VSe");
+            _tauLooseDeepTauVsEle[_nL]           = tau.tauID("byLooseDeepTau2017v2p1VSe");
+            _tauMediumDeepTauVsEle[_nL]           = tau.tauID("byMediumDeepTau2017v2p1VSe");
+            _tauTightDeepTauVsEle[_nL]           = tau.tauID("byTightDeepTau2017v2p1VSe");
+            _tauVTightDeepTauVsEle[_nL]           = tau.tauID("byVTightDeepTau2017v2p1VSe");
+            _tauVVTightDeepTauVsEle[_nL]           = tau.tauID("byVVTightDeepTau2017v2p1VSe");
+            
+            _tauDeepTauVsMuRaw[_nL]           = tau.tauID("byDeepTau2017v2p1VSmuraw");
+            _tauVLooseDeepTauVsMu[_nL]           = tau.tauID("byVLooseDeepTau2017v2p1VSmu");
+            _tauLooseDeepTauVsMu[_nL]           = tau.tauID("byLooseDeepTau2017v2p1VSmu");
+            _tauMediumDeepTauVsMu[_nL]           = tau.tauID("byMediumDeepTau2017v2p1VSmu");
+            _tauTightDeepTauVsMu[_nL]           = tau.tauID("byTightDeepTau2017v2p1VSmu");
     
         }
 
@@ -447,15 +520,20 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     //if(tightlepton) tightlepton = true;
 
     //Initialize with default values for those tau-only arrays which weren't filled with electrons and muons [to allow correct comparison by the test script]
-    for(auto array : {&_tauMuonVetoLoose, &_tauEleVetoLoose, &_decayModeFinding, &_decayModeFindingNew}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauEleVetoVLoose, &_tauEleVetoMedium, &_tauEleVetoTight, &_tauEleVetoVTight, &_tauMuonVetoTight, &_decayModeFindingNew}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauVLooseMvaNew2015, &_tauLooseMvaNew2015, &_tauMediumMvaNew2015, &_tauTightMvaNew2015, &_tauVTightMvaNew2015}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauVLooseMvaNew2017v2, &_tauLooseMvaNew2017v2, &_tauMediumMvaNew2017v2, &_tauTightMvaNew2017v2, &_tauVTightMvaNew2017v2}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauPOGVLoose2015, &_tauPOGLoose2015, &_tauPOGMedium2015, &_tauPOGTight2015, &_tauPOGVTight2015}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauPOGVVLoose2017v2, &_tauPOGVTight2017v2, &_tauPOGVVTight2017v2}) std::fill_n(*array, _nLight, false);
-    for(auto array : {&_tauAgainstElectronMVA6Raw, &_tauCombinedIsoDBRaw3Hits, &_tauIsoMVAPWdR03oldDMwLT}) std::fill_n(*array, _nLight, 0.);
-    for(auto array : {&_tauDecayMode}) std::fill_n(*array, _nLight, 0.);
-    for(auto array : {&_tauIsoMVADBdR03oldDMwLT, &_tauIsoMVADBdR03newDMwLT, &_tauIsoMVAPWnewDMwLT, &_tauIsoMVAPWoldDMwLT}) std::fill_n(*array, _nLight, 0.);
+    for(auto array : {_tauMuonVetoLoose, _tauEleVetoLoose, _decayModeFinding, _decayModeFindingNew, _decayModeFindingDeepTau}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauEleVetoVLoose, _tauEleVetoMedium, _tauEleVetoTight, _tauEleVetoVTight, _tauMuonVetoTight, _decayModeFindingNew}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVLooseMvaNew2015, _tauLooseMvaNew2015, _tauMediumMvaNew2015, _tauTightMvaNew2015, _tauVTightMvaNew2015}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVLooseMvaNew2017v2, _tauLooseMvaNew2017v2, _tauMediumMvaNew2017v2, _tauTightMvaNew2017v2, _tauVTightMvaNew2017v2}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVVVLooseDeepTauVsJets, _tauVVLooseDeepTauVsJets, _tauVLooseDeepTauVsJets, _tauMediumDeepTauVsJets}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauTightDeepTauVsJets, _tauVTightDeepTauVsJets, _tauVVTightDeepTauVsJets}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVVVLooseDeepTauVsEle, _tauVVLooseDeepTauVsEle, _tauVLooseDeepTauVsEle, _tauMediumDeepTauVsEle}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauTightDeepTauVsEle, _tauVTightDeepTauVsEle, _tauVVTightDeepTauVsEle}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauVLooseDeepTauVsMu, _tauLooseDeepTauVsMu, _tauMediumDeepTauVsMu, _tauTightDeepTauVsMu}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauPOGVLoose2015, _tauPOGLoose2015, _tauPOGMedium2015, _tauPOGTight2015, _tauPOGVTight2015}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauPOGVVLoose2017v2, _tauPOGVTight2017v2, _tauPOGVVTight2017v2}) std::fill_n(array, _nLight, false);
+    for(auto array : {_tauAgainstElectronMVA6Raw, _tauCombinedIsoDBRaw3Hits, _tauIsoMVAPWdR03oldDMwLT}) std::fill_n(array, _nLight, 0.);
+    for(auto array : {_tauDecayMode}) std::fill_n(array, _nLight, 0);
+    for(auto array : {_tauIsoMVADBdR03oldDMwLT, _tauIsoMVADBdR03newDMwLT, _tauIsoMVAPWnewDMwLT, _tauIsoMVAPWoldDMwLT}) std::fill_n(array, _nLight, 0.);
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
     if(multilepAnalyzer->skim == "dilep"     &&  _nLight < 2 /*|| !tightlepton)*/) return false;
@@ -524,16 +602,12 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon){
 }
 
 void LeptonAnalyzer::fillDisplacedIDVariables(const pat::Electron& ele){
-    _lEleIsEB [_nL] = ele.isEB();
-    _lEleIsEE[_nL] = ele.isEE();
-    _lEleSuperClusterOverP[_nL] = ele.eSuperClusterOverP();
-    _lEleEcalEnergy[_nL]= ele.ecalEnergy();
-    _lElefull5x5SigmaIetaIeta[_nL] = ele.full5x5_sigmaIetaIeta();
-    _lEleDEtaInSeed[_nL] = std::abs(dEtaInSeed(&ele));
-    _lEleDeltaPhiSuperClusterTrackAtVtx[_nL] = std::abs(ele.deltaPhiSuperClusterTrackAtVtx());
-    _lElehadronicOverEm[_nL] = ele.hadronicOverEm();
-    _lEleInvMinusPInv[_nL] = std::abs(1.0 - ele.eSuperClusterOverP())/ele.ecalEnergy();
-    _eleNumberInnerHitsMissing[_nL] = ele.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
+    _lElectronIsEB [_nL] = ele.isEB();
+    _lElectronIsEE[_nL] = ele.isEE();
+    _lElectronSuperClusterOverP[_nL] = ele.eSuperClusterOverP();
+    _lElectronEcalEnergy[_nL]= ele.ecalEnergy();
+    _lElectronDEtaInSeed[_nL] = std::abs(dEtaInSeed(&ele));
+    _lElectronNumberInnerHitsMissing[_nL] = ele.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
     _lNumberOfValidPixelHits[_nL] = (!ele.gsfTrack().isNull())? ele.gsfTrack()->hitPattern().numberOfValidPixelHits() : 0;
     _lNumberOfValidTrackerHits[_nL] = (!ele.gsfTrack().isNull())? ele.gsfTrack()->hitPattern().numberOfValidTrackerHits() : 0;
 }   

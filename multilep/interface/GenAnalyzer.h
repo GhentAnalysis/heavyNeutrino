@@ -13,9 +13,9 @@ class GenAnalyzer {
   private:
     static const unsigned gen_nL_max = 20;
     static const unsigned gen_nPh_max = 10;
-    static const unsigned gen_n_max = 20;
     static const unsigned gen_ndtr_max = 50;
-   
+    static const unsigned gen_n_max = 1000;
+
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
 
@@ -72,18 +72,18 @@ class GenAnalyzer {
     int      _gen_NPackedDtrsCharge[gen_ndtr_max];
 
     unsigned _gen_nNdaughters = 0;
-    int      _gen_Ndaughters_pdg[gen_n_max];
-    double   _gen_Ndaughters_Pt[gen_n_max];
-    double   _gen_Ndaughters_Eta[gen_n_max];
-    double   _gen_Ndaughters_Phi[gen_n_max];
-    double   _gen_Ndaughters_E[gen_n_max];
-    int      _gen_Ndaughters_Charge[gen_n_max];
+    int      _gen_Ndaughters_pdg[gen_ndtr_max];
+    double   _gen_Ndaughters_Pt[gen_ndtr_max];
+    double   _gen_Ndaughters_Eta[gen_ndtr_max];
+    double   _gen_Ndaughters_Phi[gen_ndtr_max];
+    double   _gen_Ndaughters_E[gen_ndtr_max];
+    int      _gen_Ndaughters_Charge[gen_ndtr_max];
     
     unsigned _gen_nq = 0;
-    double   _gen_qPt[gen_n_max];
-    double   _gen_qEta[gen_n_max];
-    double   _gen_qPhi[gen_n_max];
-    double   _gen_qE[gen_n_max];
+    double   _gen_qPt[gen_nPh_max];
+    double   _gen_qEta[gen_nPh_max];
+    double   _gen_qPhi[gen_nPh_max];
+    double   _gen_qE[gen_nPh_max];
     
     //Functions to find the mother of a gen particle
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
@@ -91,6 +91,24 @@ class GenAnalyzer {
     void     getMotherList(const reco::GenParticle&, const std::vector<reco::GenParticle>&, std::vector<int>&);
     unsigned ttgEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const;
     
+   
+    //Generator particles (all)
+    unsigned _gen_n = 0;
+    double   _gen_pt[gen_n_max];
+    double   _gen_eta[gen_n_max];
+    double   _gen_phi[gen_n_max];
+    double   _gen_E[gen_n_max];
+    int      _gen_pdgId[gen_n_max];
+    int      _gen_charge[gen_n_max];
+    int      _gen_status[gen_n_max];
+    bool     _gen_isPromptFinalState[gen_n_max];
+    bool     _gen_isDirectPromptTauDecayProductFinalState[gen_n_max];
+    bool     _gen_isLastCopy[gen_n_max];
+    int      _gen_index[gen_n_max];
+    int      _gen_motherIndex[gen_n_max];
+    int      _gen_daughter_n[gen_n_max];
+    int      _gen_daughterIndex[gen_n_max][10];
+   
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut, double genCone) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
     bool     isAncestor(const reco::Candidate*, const reco::Candidate*);
