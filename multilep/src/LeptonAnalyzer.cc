@@ -26,6 +26,7 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
 {
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, true, !multilepAnalyzer->is2016() );
     leptonMvaComputertZq = new LeptonMvaHelper(iConfig, false, !multilepAnalyzer->is2016() );
+    if(multilepAnalyzer->isMC()) genMatcher = new GenMatching(iConfig); // 3l HNL specific gen matching method
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
@@ -165,6 +166,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");
+    outputTree->Branch("_lMuonTimenDof",                &_lMuonTimenDof,                "_lMuonTimenDof[_nMu]/I");
+    outputTree->Branch("_lMuonTime",                    &_lMuonTime,                    "_lMuonTime[_nMu]/D");
+    outputTree->Branch("_lMuonTimeErr",                 &_lMuonTimeErr,                 "_lMuonTimeErr[_nMu]/D");
+    outputTree->Branch("_lMuonRPCTimenDof",             &_lMuonRPCTimenDof,             "_lMuonRPCTimenDof[_nMu]/I");
+    outputTree->Branch("_lMuonRPCTime",                 &_lMuonRPCTime,                 "_lMuonRPCTime[_nMu]/D");
+    outputTree->Branch("_lMuonRPCTimeErr",              &_lMuonRPCTimeErr,              "_lMuonRPCTimeErr[_nMu]/D");
     if( multilepAnalyzer->isMC() ){
         outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
@@ -173,6 +180,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
         outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
         outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
         outputTree->Branch("_lProvenanceCompressed",      &_lProvenanceCompressed,        "_lProvenanceCompressed[_nL]/i");
+        outputTree->Branch("_lProvenanceCompressed_v2",   &_lProvenanceCompressed_v2,     "_lProvenanceCompressed_v2[_nL]/i");
         outputTree->Branch("_lProvenanceConversion",      &_lProvenanceConversion,        "_lProvenanceConversion[_nL]/i");
     }
     outputTree->Branch("_lPtCorr",                    &_lPtCorr,                      "_lPtCorr[_nLight]/D");
@@ -276,6 +284,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if( multilepAnalyzer->isMC() ) fillLeptonGenVars(mu, *genParticles);
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
         fillDisplacedIDVariables(mu);
+        fillMuonTimingVariables(mu);
 
 	    //std::vector<reco::Track> vertex_tracks;
 	    //vertex_tracks.push_back(*mu.bestTrack());
@@ -555,7 +564,9 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 
 template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* match = lepton.genParticle();
-    if(!match || match->pdgId() != lepton.pdgId()) match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
+    if(!match || match->pdgId() != lepton.pdgId()){
+        match = GenTools::geometricMatch(lepton, genParticles); // if no match or pdgId is different, try the geometric match
+    }
 
     _tauGenStatus[_nL]          = TauTools::tauGenStatus(match);        
     _lIsPrompt[_nL]             = match && (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) && GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
@@ -565,6 +576,9 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
     _lMomPdgId[_nL]             = match ? GenTools::getMotherPdgId(*match, genParticles) : 0;
+
+    // 3l HNL specific matching method
+    genMatcher->returnGenMatch(lepton, _lProvenanceCompressed_v2[_nL]);
 }
 
 void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco::GenParticle>& genParticles){
@@ -624,6 +638,22 @@ void LeptonAnalyzer::fillDisplacedIDVariables(const pat::Muon& mu){
     _lNumberOfValidTrackerHits[_nL] = (!mu.innerTrack().isNull()) ? mu.innerTrack()->hitPattern().numberOfValidTrackerHits() : 0;
     _lTrackerLayersWithMeasurement[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().trackerLayersWithMeasurement()  : 0; // cannot be -1 !! 
     _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : 0); // cannot be -1 !!!
+}
+
+void LeptonAnalyzer::fillMuonTimingVariables(const pat::Muon& mu){
+
+        const reco::MuonTime cmb = mu.time();
+        const reco::MuonTime rpc = mu.rpcTime();
+
+        //csc + dt
+        _lMuonTimenDof[_nL] = cmb.nDof;
+        _lMuonTime[_nL]     = cmb.timeAtIpInOut;
+        _lMuonTimeErr[_nL]  = cmb.timeAtIpInOutErr;
+
+        //RPC
+        _lMuonRPCTimenDof[_nL] = rpc.nDof;
+        _lMuonRPCTime[_nL]     = rpc.timeAtIpInOut;
+        _lMuonRPCTimeErr[_nL]  = rpc.timeAtIpInOutErr;
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
