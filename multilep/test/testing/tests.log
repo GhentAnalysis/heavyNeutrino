@@ -1,58 +1,33 @@
-commit e61cece0994bf8a273ebdfe0ec0a2bb66eaf4847
+commit 2230b169127953a8b81705fb716a365229a481fe
 Author: tomc <tomc@cern.ch>
-Date:   Wed Feb 19 16:40:24 2020 +0100
+Date:   Wed Feb 19 17:08:40 2020 +0100
 
-    Adding rho and supercluster energy, allowing for applying scaled H/E cut in ID
+    New test run: see tests.log
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _lEnergySC,_rho
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _lEnergySC,_rho
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _lEnergySC,_rho
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _lEnergySC,_rho
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _lEnergySC,_rho
-   Changed:
-      _pl_nPh                                            mean:   1.5300 -->   0.6300     rms:   0.8995 -->   0.5031    
-      _pl_phE                                            mean:  35.7928 -->  50.9938     rms:  52.0021 -->  30.5419    
-      _pl_phEta                                          mean:  -0.0543 -->  -0.0512     rms:   1.5471 -->   1.3176    
-      _pl_phPhi                                          mean:   0.0052 -->  -0.2374     rms:   1.8012 -->   1.7899    
-      _pl_phPt                                           mean:  15.3451 -->  25.7089     rms:  16.3791 -->  13.8103    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _lEnergySC,_rho
-   Changed:
-      _pl_nPh                                            mean:   1.0600 -->   0.0300     rms:   1.1560 -->   0.1706    
-      _pl_phE                                            mean:   5.9414 -->  49.5209     rms:  22.2676 -->  38.7319    
-      _pl_phEta                                          mean:  -0.0325 -->  -0.1895     rms:   2.4040 -->   1.0994    
-      _pl_phPhi                                          mean:  -0.0510 -->  -0.0820     rms:   1.8443 -->   1.8670    
-      _pl_phPt                                           mean:   1.1311 -->  24.2862     rms:   4.7342 -->   8.1114    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _lEnergySC,_rho
-   Changed:
-      _pl_nPh                                            mean:   1.0200 -->   0.0200     rms:   1.1044 -->   0.1400    
-      _pl_phE                                            mean:  11.5589 --> 131.6479     rms:  43.6035 -->  50.8364    
-      _pl_phEta                                          mean:  -0.2308 -->   2.3241     rms:   2.4039 -->   0.0572    
-      _pl_phPhi                                          mean:  -0.0330 -->   0.7001     rms:   1.8356 -->   2.4122    
-      _pl_phPt                                           mean:   1.4202 -->  26.1155     rms:   4.5215 -->  11.3029    
