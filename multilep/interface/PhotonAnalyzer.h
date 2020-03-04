@@ -47,6 +47,20 @@ class PhotonAnalyzer {
         double   _phChargedIsolation[nPhoton_max];
         double   _phNeutralHadronIsolation[nPhoton_max];
         double   _phPhotonIsolation[nPhoton_max];
+
+        double   _rhoCorrCharged[nPhoton_max];
+        double   _rhoCorrNeutral[nPhoton_max];
+        double   _rhoCorrPhotons[nPhoton_max];
+
+        double   _puChargedHadronIso[nPhoton_max];
+        // double   _puppiChargedHadronIso[nPhoton_max];
+        // double   _puppiNeutralHadronIso[nPhoton_max];
+        // double   _puppiPhotonIso[nPhoton_max];
+
+        double   _phoWorstChargedIsolation[nPhoton_max];
+        // double   _phoWorstChargedIsolationConeVeto[nPhoton_max];
+        // double   _phoWorstChargedIsolationConeVetoPVConstr[nPhoton_max];
+
         double   _phSigmaIetaIeta[nPhoton_max];
         double   _phHadronicOverEm[nPhoton_max];
         double   _phHadTowOverEm[nPhoton_max];
