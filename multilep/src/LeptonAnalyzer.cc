@@ -6,15 +6,12 @@
 #include "TLorentzVector.h"
 #include <algorithm>
 
-// TODO: we should maybe stop indentifying effective areas by year, as they are typically more connected to a specific ID than to a specific year
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! we should really take action on this todo
-//     it seems at some point the default relIso/miniIso values went back to the old effective areas, simply because to be in sync with ttH leptonMva
-//     we should implement ellectronsEffectiveAreas (without splitting up by year) for default values, and separate electronsEffectiveAreasTTH_RelIso2016 and electronsEffectiveAreasTTH_MiniIso2016 or something like that
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer),
-    electronsEffectiveAreas( ( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ) ? iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17").fullPath() : iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasRelIso2016").fullPath() ),
-    electronsEffectiveAreasMiniIso( ( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ) ? iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17").fullPath() : iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasMiniIso2016").fullPath() ),
-    muonsEffectiveAreas    ((multilepAnalyzer->is2017() || multilepAnalyzer->is2018() )? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() )
+    electronsEffectiveAreas(            iConfig.getParameter<edm::FileInPath>("electronsEffAreas").fullPath()),
+    electronsEffectiveAreas_ttH_relIso( iConfig.getParameter<edm::FileInPath>("electronsEffAreas_ttH_relIso").fullPath()),
+    electronsEffectiveAreas_ttH_miniIso(iConfig.getParameter<edm::FileInPath>("electronsEffAreas_ttH_miniIso").fullPath()),
+    muonsEffectiveAreas(                iConfig.getParameter<edm::FileInPath>("muonsEffAreas").fullPath())
 {
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, true, !multilepAnalyzer->is2016() );
     leptonMvaComputertZq = new LeptonMvaHelper(iConfig, false, !multilepAnalyzer->is2016() );
@@ -203,11 +200,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lMuonTrackPt[_nL]    = mu.innerTrack()->pt();
         _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
 
-        _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
-        _relIso0p4[_nL]      = getRelIso04(mu, *rho);
-        _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, true);
-        _miniIso[_nL]        = getMiniIsolation( mu, *rho, false );
-        _miniIsoCharged[_nL] = getMiniIsolation( mu, *rho, true );
+        _relIso[_nL]         = getRelIso03(mu, *rho, muonsEffectiveAreas);                     // Isolation variables
+        _relIso0p4[_nL]      = getRelIso04(mu, *rho, muonsEffectiveAreas);
+        _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, muonsEffectiveAreas, true);
+        _miniIso[_nL]        = getMiniIsolation(mu, *rho, muonsEffectiveAreas, false);
+        _miniIsoCharged[_nL] = getMiniIsolation(mu, *rho, muonsEffectiveAreas, true);
 
         _lPOGVeto[_nL]       = mu.passed(reco::Muon::CutBasedIdLoose); // no veto available, so we take loose here
         _lPOGLoose[_nL]      = mu.passed(reco::Muon::CutBasedIdLoose);
@@ -244,10 +241,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lFlavor[_nL]                   = 0;
         _lEtaSC[_nL]                    = ele->superCluster()->eta();
 
-        _relIso[_nL]                    = getRelIso03(*ele, *rho);
-        _relIso0p4[_nL]                 = getRelIso04(*ele, *rho);
-        _miniIso[_nL]                   = getMiniIsolation( *ele, *rho, false );
-        _miniIsoCharged[_nL]            = getMiniIsolation( *ele, *rho, true );
+        _relIso[_nL]                    = getRelIso03(*ele, *rho, electronsEffectiveAreas);
+        _relIso0p4[_nL]                 = getRelIso04(*ele, *rho, electronsEffectiveAreas);
+        _relIso_ttH[_nL]                = getRelIso03(*ele, *rho, electronsEffectiveAreas_ttH_relIso);
+        _relIso0p4_ttH[_nL]             = getRelIso04(*ele, *rho, electronsEffectiveAreas_ttH_relIso);
+        _miniIso[_nL]                   = getMiniIsolation(*ele, *rho, electronsEffectiveAreas_ttH_miniIso, false);
+        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, *rho, electronsEffectiveAreas_ttH_miniIso, true);
         _lElectronMvaSummer16GP[_nL]    = ele->userFloat("ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"); // OLD, do not use it
         _lElectronMvaSummer16HZZ[_nL]   = ele->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"); // OLD, do not use it
         _lElectronMvaFall17v1NoIso[_nL] = ele->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"); // OLD, do not use it
@@ -558,7 +557,7 @@ void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm:
         if( _lFlavor[_nL] == 1 ){
             _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4MuDeltaBeta[_nL] ) );
         } else{
-            _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4[_nL] ) );
+            _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4_ttH[_nL] ) );
         }
         _ptRel[_nL] = 0;
         _selectedTrackMult[_nL] = 0;
