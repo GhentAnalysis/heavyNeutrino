@@ -1,8 +1,14 @@
-commit 2230b169127953a8b81705fb716a365229a481fe
+commit cef1d0297b14709adcc92df7170afef2c7d5f319
 Author: tomc <tomc@cern.ch>
-Date:   Wed Feb 19 17:08:40 2020 +0100
+Date:   Wed Mar 4 15:07:55 2020 +0100
 
-    New test run: see tests.log
+    Refactor displaced vertex code
+    
+    - Fix rare segmentation fault due to invalid trajectoryStateOnSurface (whatever it might be)
+    - Avoid excessive code duplication
+    
+    I only fixed above two points from a technical point of view,
+    I am not responsible for this code, both for what it actually calculates as how its output variables are used
 
 --------------------------------------------------------------------------------------------------
 
