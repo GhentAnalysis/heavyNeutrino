@@ -348,8 +348,7 @@ class LeptonAnalyzer {
     TransientVertex dileptonVertex(const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2);
 
     void cleanDileptonVertexArrays(unsigned);
-    void fillDileptonVertexArrays(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
-    void fillDileptonVertexArrays_os(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
+    void fillDileptonVertexArrays(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*, const bool ensureOppositeSign=false);
 
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
     void fillTauGenVars(const pat::Tau&, const std::vector<reco::GenParticle>& genParticles);
