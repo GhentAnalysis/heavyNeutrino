@@ -6,12 +6,14 @@ import FWCore.ParameterSet.Config as cms
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
 #inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_TuneCP5_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/70000/F447BDAD-6642-BD46-B8E9-750F7F961BA7.root'
-inputFile       = '/store/mc/RunIISummer16MiniAODv3/SMS-TChiWZ_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16v3Fast_94X_mcRun2_asymptotic_v3-v1/100000/502F9078-3296-E911-BFB6-0025905B85EC.root'
+inputFile = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/prompt/ttGamma_Dilept_5f_ckm_LO_1line/heavyNeutrino_429.root'
+###inputFile = '/store/mc/RunIISummer16MiniAODv3/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3-v1/50000/FEB45979-7B72-E911-9CD8-0242AC1C0505.root'
+#inputFile       = '/store/mc/RunIISummer16MiniAODv3/SMS-TChiWZ_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16v3Fast_94X_mcRun2_asymptotic_v3-v1/100000/502F9078-3296-E911-BFB6-0025905B85EC.root'
 #inputFile       = '/store/mc/RunIIFall17MiniAODv2/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall17Fast_94X_mc2017_realistic_v15-v1/10000/00071D11-4C7A-E911-8E48-0CC47A1E0484.root'
 #inputFile       = '/store/mc/RunIIAutumn18MiniAOD/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall18Fast_102X_upgrade2018_realistic_v15-v1/50000/FBA243F4-DA64-3A40-8DD8-58A72064AD86.root'
 # Other default arguments
 
-nEvents         =-1
+nEvents         = -1
 extraContent    = 'storeAllTauID'
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
@@ -140,6 +142,16 @@ tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
                                ])
 tauIdEmbedder.runTauID()
 
+
+#
+# Paths to effective areas
+#
+effAreasMuons            = 'heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt'
+effAreasMuons80X         = 'heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'
+effAreasElectrons        = 'RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'
+effAreasElectronsOld     = 'RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt'
+effAreasElectronsVeryOld = 'RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'
+
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
@@ -153,13 +165,11 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   particleLevelJets             = cms.InputTag("particleLevel:jets"),
   particleLevelMets             = cms.InputTag("particleLevel:mets"),
   muons                         = cms.InputTag("slimmedMuons"),
-  muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
-  muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt'),
+  muonsEffAreas                 = cms.FileInPath(effAreasMuons if is2017 or is2018 else effAreasMuons80X), # Warning: not sure if using the 80X for 2016 is ok for everyone, but this is how it is used in lepton MVA
   electrons                     = cms.InputTag("slimmedElectrons"),
-  # FIXME: currently the next two lines are used for all electron values, not only the ttH leptonMva!
-  electronsEffectiveAreasMiniIso2016  = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'),
-  electronsEffectiveAreasRelIso2016  = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'), #TODO: fix this is the master branch, for some reason (probably because of ttH syncing) the old effective areas slipped back into here; it seems we need a separate ttH
-  electronsEffectiveAreasFall17 = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'), # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
+  electronsEffAreas             = cms.FileInPath(effAreasElectrons), # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
+  electronsEffAreas_ttH_relIso  = cms.FileInPath(effAreasElectrons if is2017 or is2018 else effAreasElectronsOld),     #old effective aras are used in 2016 computation of ttH MVA
+  electronsEffAreas_ttH_miniIso = cms.FileInPath(effAreasElectrons if is2017 or is2018 else effAreasElectronsVeryOld), #prehistoric effective aras are used in 2016 computation of ttH MVA
   leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH"+yy+"_BDTG.weights.xml"),
   leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH"+yy+"_BDTG.weights.xml"),
   leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV"+yy+"_BDTG.weights.xml"),
@@ -196,8 +206,11 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isFastSim                     = cms.untracked.bool(isFastSim),
   isSUSY                        = cms.untracked.bool(isSUSY),
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
+  storeGenParticles             = cms.untracked.bool('storeGenParticles' in extraContent),
   storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),
   storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
+  headerPart1                   = cms.FileInPath("heavyNeutrino/multilep/data/header/soviet.txt"),
+  headerPart2                   = cms.FileInPath("heavyNeutrino/multilep/data/header/text.txt")
 )
 
 def getJSON(is2017, is2018):

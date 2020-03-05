@@ -11,17 +11,12 @@
 #include <algorithm>
 
 
-// TODO: we should maybe stop indentifying effective areas by year, as they are typically more connected to a specific ID than to a specific year
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! we should really take action on this todo
-//     it seems at some point the default relIso/miniIso values went back to the old effective areas, simply because to be in sync with ttH leptonMva
-//     we should implement ellectronsEffectiveAreas (without splitting up by year) for default values, and separate electronsEffectiveAreasTTH_RelIso2016 and electronsEffectiveAreasTTH_MiniIso2016 or something like that
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer),
-    electronsEffectiveAreas( ( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ) ? iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17").fullPath() : iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasRelIso2016").fullPath() ),
-    electronsEffectiveAreasMiniIso( ( multilepAnalyzer->is2017() || multilepAnalyzer->is2018() ) ? iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasFall17").fullPath() : iConfig.getParameter<edm::FileInPath>("electronsEffectiveAreasMiniIso2016").fullPath() ),
-    muonsEffectiveAreas    ((multilepAnalyzer->is2017() || multilepAnalyzer->is2018() )? (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreasFall17")).fullPath() : (iConfig.getParameter<edm::FileInPath>("muonsEffectiveAreas")).fullPath() ),
-    singleEleTrigs(multilepAnalyzer->is2017() ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2017") : (multilepAnalyzer->is2018() ? iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleEleTriggers"))),
-    singleMuoTrigs(multilepAnalyzer->is2017() ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2017") : (multilepAnalyzer->is2018() ? iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers2018") : iConfig.getParameter<std::vector<std::string> >("SingleMuoTriggers")))
+    electronsEffectiveAreas(            iConfig.getParameter<edm::FileInPath>("electronsEffAreas").fullPath()),
+    electronsEffectiveAreas_ttH_relIso( iConfig.getParameter<edm::FileInPath>("electronsEffAreas_ttH_relIso").fullPath()),
+    electronsEffectiveAreas_ttH_miniIso(iConfig.getParameter<edm::FileInPath>("electronsEffAreas_ttH_miniIso").fullPath()),
+    muonsEffectiveAreas(                iConfig.getParameter<edm::FileInPath>("muonsEffAreas").fullPath())
 {
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, true, !multilepAnalyzer->is2016() );
     leptonMvaComputertZq = new LeptonMvaHelper(iConfig, false, !multilepAnalyzer->is2016() );
@@ -375,11 +370,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         // TODO: this is a possible solution to the missing trackRef, but maybe not what you want
         _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : 0); // cannot be -1 !!!
 
-        _relIso[_nL]         = getRelIso03(mu, *rho);                     // Isolation variables
-        _relIso0p4[_nL]      = getRelIso04(mu, *rho);
-        _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, true);
-        _miniIso[_nL]        = getMiniIsolation( mu, *rho, false );
-        _miniIsoCharged[_nL] = getMiniIsolation( mu, *rho, true );
+        _relIso[_nL]         = getRelIso03(mu, *rho, muonsEffectiveAreas);                     // Isolation variables
+        _relIso0p4[_nL]      = getRelIso04(mu, *rho, muonsEffectiveAreas);
+        _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, muonsEffectiveAreas, true);
+        _miniIso[_nL]        = getMiniIsolation(mu, *rho, muonsEffectiveAreas, false);
+        _miniIsoCharged[_nL] = getMiniIsolation(mu, *rho, muonsEffectiveAreas, true);
 
         _lPOGVeto[_nL]       = mu.passed(reco::Muon::CutBasedIdLoose); // no veto available, so we take loose here
         _lPOGLoose[_nL]      = mu.passed(reco::Muon::CutBasedIdLoose);
@@ -403,7 +398,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         // maybe put this simply in a function in LeptonAnalyzerId.cc???
         bool someIdWithoutName = (mu.pt() > 24 and _lPOGMedium[_nL]
                                   and fabs(_dxy[_nL]) < 0.05 and fabs(_dz[_nL])< 0.1
-                                  and getRelIso03(mu, *rho) < 0.2
+                                  and _relIso[_nL] < 0.2
                                   and !mu.innerTrack().isNull()
                                   and (mu.isTrackerMuon() or mu.isGlobalMuon()));
 
@@ -432,10 +427,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         _lFlavor[_nL]                   = 0;
         _lEtaSC[_nL]                    = ele->superCluster()->eta();
 
-        _relIso[_nL]                    = getRelIso03(*ele, *rho);
-        _relIso0p4[_nL]                 = getRelIso04(*ele, *rho);
-        _miniIso[_nL]                   = getMiniIsolation( *ele, *rho, false );
-        _miniIsoCharged[_nL]            = getMiniIsolation( *ele, *rho, true );
+        _relIso[_nL]                    = getRelIso03(*ele, *rho, electronsEffectiveAreas);
+        _relIso0p4[_nL]                 = getRelIso04(*ele, *rho, electronsEffectiveAreas);
+        _relIso_ttH[_nL]                = getRelIso03(*ele, *rho, electronsEffectiveAreas_ttH_relIso);
+        _relIso0p4_ttH[_nL]             = getRelIso04(*ele, *rho, electronsEffectiveAreas_ttH_relIso);
+        _miniIso[_nL]                   = getMiniIsolation(*ele, *rho, electronsEffectiveAreas_ttH_miniIso, false);
+        _miniIsoCharged[_nL]            = getMiniIsolation(*ele, *rho, electronsEffectiveAreas_ttH_miniIso, true);
         _lElectronMvaSummer16GP[_nL]    = ele->userFloat("ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"); // OLD, do not use it
         _lElectronMvaSummer16HZZ[_nL]   = ele->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"); // OLD, do not use it
         _lElectronMvaFall17v1NoIso[_nL] = ele->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"); // OLD, do not use it
@@ -636,12 +633,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
      */
     cleanDileptonVertexArrays(_nVFit);
     for(unsigned i=0; i < selmuons.size(); ++i){
-      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays_os(i, j,      selmuons.at(i), selmuons.at(j));
-      for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays_os(i, _nMu+j, selmuons.at(i), selelectrons.at(j));
+      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(i, j,      selmuons.at(i), selmuons.at(j), true);
+      for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(i, _nMu+j, selmuons.at(i), selelectrons.at(j), true);
     }
     for(unsigned i=0; i < selelectrons.size(); ++i){
-      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays_os(_nMu+i, j,      selelectrons.at(i), selmuons.at(j));
-      for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays_os(_nMu+i, _nMu+j, selelectrons.at(i), selelectrons.at(j));
+      for(unsigned j=0; j < selmuons.size(); ++j)     fillDileptonVertexArrays(_nMu+i, j,      selelectrons.at(i), selmuons.at(j), true);
+      for(unsigned j=0; j < selelectrons.size(); ++j) fillDileptonVertexArrays(_nMu+i, _nMu+j, selelectrons.at(i), selelectrons.at(j), true);
     }
     
    for(unsigned i=0; i < selmuons.size(); ++i){
@@ -722,10 +719,10 @@ const reco::Track& LeptonAnalyzer::getTrack(const reco::RecoCandidate* lep){
 }
 
 // Fill the arrays of displaced vertices and leptons
-void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minus, const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2){
-  //if(lep1->charge() < 0) return; // ensure opposite charge
-  //if(lep2->charge() > 0) return;
-  if (iL_plus == iL_minus) return;
+void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minus, const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2, const bool ensureOppositeSign){
+  if(iL_plus==iL_minus) return;
+  if(ensureOppositeSign and lep1->charge() < 0) return; // ensure opposite charge
+  if(ensureOppositeSign and lep2->charge() > 0) return;
     
   TransientVertex dvtx = dileptonVertex(lep1, lep2);
   if(!dvtx.isValid()){
@@ -733,18 +730,22 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minu
     return;
   }
 
-  _vertices[_nVFit][0]  = (iL_plus+1)*100 + (iL_minus+1); // indices i and j stored as i*100+j, but start counting at 1 instead of 0 (historical, backwards compatibility)
-  _vertices[_nVFit][1]  = dvtx.position().x();
-  _vertices[_nVFit][2]  = dvtx.position().y();
-  _vertices[_nVFit][3]  = dvtx.position().z();
-  _vertices[_nVFit][4]  = dvtx.positionError().cxx();
-  _vertices[_nVFit][5]  = dvtx.positionError().cyy();
-  _vertices[_nVFit][6]  = dvtx.positionError().czz();
-  _vertices[_nVFit][7]  = dvtx.positionError().cyx();
-  _vertices[_nVFit][8]  = dvtx.positionError().czy();
-  _vertices[_nVFit][9]  = dvtx.positionError().czx();
-  _vertices[_nVFit][10] = dvtx.degreesOfFreedom();
-  _vertices[_nVFit][11] = dvtx.totalChiSquared();
+  auto& vertexArray = ensureOppositeSign ? _vertices_os : _vertices;
+  auto& displArray  = ensureOppositeSign ? _lDisplaced_os : _lDisplaced;
+  auto& vertexIndex = ensureOppositeSign ? _nVFit_os : _nVFit;
+
+  vertexArray[vertexIndex][0]  = (iL_plus+1)*100 + (iL_minus+1); // indices i and j stored as i*100+j, but start counting at 1 instead of 0 (historical, backwards compatibility)
+  vertexArray[vertexIndex][1]  = dvtx.position().x();
+  vertexArray[vertexIndex][2]  = dvtx.position().y();
+  vertexArray[vertexIndex][3]  = dvtx.position().z();
+  vertexArray[vertexIndex][4]  = dvtx.positionError().cxx();
+  vertexArray[vertexIndex][5]  = dvtx.positionError().cyy();
+  vertexArray[vertexIndex][6]  = dvtx.positionError().czz();
+  vertexArray[vertexIndex][7]  = dvtx.positionError().cyx();
+  vertexArray[vertexIndex][8]  = dvtx.positionError().czy();
+  vertexArray[vertexIndex][9]  = dvtx.positionError().czx();
+  vertexArray[vertexIndex][10] = dvtx.degreesOfFreedom();
+  vertexArray[vertexIndex][11] = dvtx.totalChiSquared();
 
   int i=0;
   for(auto lep : {lep1, lep2}){
@@ -755,8 +756,12 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minu
     FreeTrajectoryState tempFreeTrajectoryState(globTrajParam, track.covariance());
     FreeTrajectoryState freeTrajectoryState;
 
-    if(lep->isMuon()) freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, dvtx.position());
-    else              freeTrajectoryState = *(_gsfProp->extrapolate(tempFreeTrajectoryState, dvtx.position()).freeState());
+    if(lep->isMuon()){
+      freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, dvtx.position());
+    } else {
+      auto trajectoryOnSurface = _gsfProp->extrapolate(tempFreeTrajectoryState, dvtx.position());
+      if(trajectoryOnSurface.isValid()) freeTrajectoryState = *(trajectoryOnSurface.freeState());
+    }
 
     if(!freeTrajectoryState.hasCurvilinearError()){
       std::cout << "Propagation of lepton to dilepton vertex (" << _vertices[_nVFit][0] << ") failed!" << std::endl;
@@ -764,90 +769,25 @@ void LeptonAnalyzer::fillDileptonVertexArrays(unsigned iL_plus, unsigned iL_minu
     }
 
     // fill _lDisplaced[nVFit] with 2x12=24 elements structured as 3 position + 3 momentum + 3 position error + 3 momentum error
-    _lDisplaced[_nVFit][i++] = freeTrajectoryState.position().x();
-    _lDisplaced[_nVFit][i++] = freeTrajectoryState.position().y();
-    _lDisplaced[_nVFit][i++] = freeTrajectoryState.position().z();
+    displArray[vertexIndex][i++] = freeTrajectoryState.position().x();
+    displArray[vertexIndex][i++] = freeTrajectoryState.position().y();
+    displArray[vertexIndex][i++] = freeTrajectoryState.position().z();
 
-    _lDisplaced[_nVFit][i++] = freeTrajectoryState.momentum().x();
-    _lDisplaced[_nVFit][i++] = freeTrajectoryState.momentum().y();
-    _lDisplaced[_nVFit][i++] = freeTrajectoryState.momentum().z();
+    displArray[vertexIndex][i++] = freeTrajectoryState.momentum().x();
+    displArray[vertexIndex][i++] = freeTrajectoryState.momentum().y();
+    displArray[vertexIndex][i++] = freeTrajectoryState.momentum().z();
 
-    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(0, 0); //position error
-    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(1, 1);
-    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(2, 2);
+    displArray[vertexIndex][i++] = (freeTrajectoryState.cartesianError().matrix())(0, 0); //position error
+    displArray[vertexIndex][i++] = (freeTrajectoryState.cartesianError().matrix())(1, 1);
+    displArray[vertexIndex][i++] = (freeTrajectoryState.cartesianError().matrix())(2, 2);
 
-    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(3, 3); // momentum error
-    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(4, 4);
-    _lDisplaced[_nVFit][i++] = (freeTrajectoryState.cartesianError().matrix())(5, 5);
+    displArray[vertexIndex][i++] = (freeTrajectoryState.cartesianError().matrix())(3, 3); // momentum error
+    displArray[vertexIndex][i++] = (freeTrajectoryState.cartesianError().matrix())(4, 4);
+    displArray[vertexIndex][i++] = (freeTrajectoryState.cartesianError().matrix())(5, 5);
   }
 
-  _nVFit++;
+  vertexIndex++;
 }
-
-void LeptonAnalyzer::fillDileptonVertexArrays_os(unsigned iL_plus, unsigned iL_minus, const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2){
-  if(lep1->charge() < 0) return; // ensure opposite charge
-  if(lep2->charge() > 0) return;
-  //if (iL_plus == iL_minus) return;
-    
-  TransientVertex dvtx = dileptonVertex(lep1, lep2);
-  if(!dvtx.isValid()){
-    std::cout << " *** WARNING: refitted dilepton vertex OS is not valid! " << std::endl;
-    return;
-  }
-  _vertices_os[_nVFit_os][0]  = (iL_plus+1)*100 + (iL_minus+1); // indices i and j stored as i*100+j, but start counting at 1 instead of 0 (historical, backwards compatibility)
-  _vertices_os[_nVFit_os][1]  = dvtx.position().x();
-  _vertices_os[_nVFit_os][2]  = dvtx.position().y();
-  _vertices_os[_nVFit_os][3]  = dvtx.position().z();
-  _vertices_os[_nVFit_os][4]  = dvtx.positionError().cxx();
-  _vertices_os[_nVFit_os][5]  = dvtx.positionError().cyy();
-  _vertices_os[_nVFit_os][6]  = dvtx.positionError().czz();
-  _vertices_os[_nVFit_os][7]  = dvtx.positionError().cyx();
-  _vertices_os[_nVFit_os][8]  = dvtx.positionError().czy();
-  _vertices_os[_nVFit_os][9]  = dvtx.positionError().czx();
-  _vertices_os[_nVFit_os][10] = dvtx.degreesOfFreedom();
-  _vertices_os[_nVFit_os][11] = dvtx.totalChiSquared();
-
-  int i=0;
-  for(auto lep : {lep1, lep2}){
-    const reco::Track& track = getTrack(lep);
-    GlobalPoint  globPoint(track.vx(), track.vy(), track.vz());
-    GlobalVector globVector(track.px(), track.py(), track.pz());
-    GlobalTrajectoryParameters globTrajParam(globPoint, globVector, track.charge(), _bField.product());
-    FreeTrajectoryState tempFreeTrajectoryState(globTrajParam, track.covariance());
-    FreeTrajectoryState freeTrajectoryState;
-
-    if(lep->isMuon()) freeTrajectoryState = _shProp->propagate(tempFreeTrajectoryState, dvtx.position());
-    else              freeTrajectoryState = *(_gsfProp->extrapolate(tempFreeTrajectoryState, dvtx.position()).freeState());
-
-    if(!freeTrajectoryState.hasCurvilinearError()){
-      std::cout << "Propagation of lepton to dilepton vertex (" << _vertices[_nVFit][0] << ") failed!" << std::endl;
-      freeTrajectoryState = tempFreeTrajectoryState;
-    }
-
-    // fill _lDisplaced[nVFit] with 2x12=24 elements structured as 3 position + 3 momentum + 3 position error + 3 momentum error
-    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.position().x();
-    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.position().y();
-    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.position().z();
-
-    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.momentum().x();
-    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.momentum().y();
-    _lDisplaced_os[_nVFit_os][i++] = freeTrajectoryState.momentum().z();
-
-    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(0, 0); //position error
-    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(1, 1);
-    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(2, 2);
-
-    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(3, 3); // momentum error
-    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(4, 4);
-    _lDisplaced_os[_nVFit_os][i++] = (freeTrajectoryState.cartesianError().matrix())(5, 5);
-  }
-
-  _nVFit_os++;
-}
-
-
-
-
 
 void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
   _lPt[_nL]     = lepton.pt();
@@ -859,8 +799,8 @@ void LeptonAnalyzer::fillLeptonKinVars(const reco::Candidate& lepton){
 
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){  // TODO: is all this stuff really still needed?
   _puCorr[_nL]               = rho*muonsEffectiveAreas.getEffectiveArea(mu.eta());
-  _absIso03[_nL]             = getRelIso03(mu, rho)*mu.pt();
-  _absIso04[_nL]             = getRelIso04(mu, rho, false)*mu.pt();
+  _absIso03[_nL]             = getRelIso03(mu, rho, muonsEffectiveAreas)*mu.pt();
+  _absIso04[_nL]             = getRelIso04(mu, rho, muonsEffectiveAreas, false)*mu.pt();
   _sumNeutralHadronEt04[_nL] = mu.pfIsolationR04().sumNeutralHadronEt;
   _sumChargedHadronPt04[_nL] = mu.pfIsolationR04().sumChargedHadronPt;
   _sumPhotonEt04[_nL]        = mu.pfIsolationR04().sumPhotonEt;
@@ -874,7 +814,7 @@ void LeptonAnalyzer::fillLeptonIsoVars(const pat::Muon& mu, const double rho){  
 
 void LeptonAnalyzer::fillLeptonIsoVars(const pat::Electron& ele, const double rho){
   _puCorr[_nL]               = rho*electronsEffectiveAreas.getEffectiveArea(ele.superCluster()->eta());
-  _absIso03[_nL]             = getRelIso03(ele, rho)*ele.pt();
+  _absIso03[_nL]             = getRelIso03(ele, rho, electronsEffectiveAreas)*ele.pt();
   _sumNeutralHadronEt03[_nL] = ele.pfIsolationVariables().sumNeutralHadronEt;
   _sumChargedHadronPt03[_nL] = ele.pfIsolationVariables().sumChargedHadronPt;
   _sumPhotonEt03[_nL]        = ele.pfIsolationVariables().sumPhotonEt;
@@ -967,7 +907,7 @@ double LeptonAnalyzer::tau_dz(const pat::Tau& tau, const reco::Vertex::Point& ve
  */
 bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const double rho) const {
   if(elec.gsfTrack().isNull())                                                                    return false;
-  if(getRelIso03(elec, rho) >  2)                                                               return false;
+  if(getRelIso03(elec, rho, electronsEffectiveAreas) >  2)                                        return false;
   if(elec.pt()<5.)                                                                                return false;
   if(std::abs(elec.eta())>2.5)                                                                    return false;
   //if(!isLooseCutBasedElectronWithoutIsolationWithoutMissingInnerhitsWithoutConversionVeto(&elec)) return false; // Note: should be reviewd, especially for 2017-2018
@@ -976,11 +916,11 @@ bool LeptonAnalyzer::passElectronPreselection(const pat::Electron& elec, const d
 }
 
 bool LeptonAnalyzer::passMuonPreselection(const pat::Muon& muon, const double rho) const {
-  if(!muon.isPFMuon())           return false;
-  if(!muon.isLooseMuon())        return false;
-  if(getRelIso03(muon, rho) > 2) return false;
-  if(muon.pt() < 3.)             return false;
-  if(std::abs(muon.eta()) > 2.4) return false;
+  if(!muon.isPFMuon())                                return false;
+  if(!muon.isLooseMuon())                             return false;
+  if(getRelIso03(muon, rho, muonsEffectiveAreas) > 2) return false;
+  if(muon.pt() < 3.)                                  return false;
+  if(std::abs(muon.eta()) > 2.4)                      return false;
   return true;
 }
 
@@ -1045,7 +985,7 @@ void LeptonAnalyzer::fillLeptonJetVariables( const reco::Candidate& lepton, edm:
         if( _lFlavor[_nL] == 1 ){
             _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4MuDeltaBeta[_nL] ) );
         } else{
-            _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4[_nL] ) );
+            _ptRatio[_nL] = ( oldMatching ? 1. : 1. / ( 1. + _relIso0p4_ttH[_nL] ) );
         }
         _ptRel[_nL] = 0;
         _selectedTrackMult[_nL] = 0;

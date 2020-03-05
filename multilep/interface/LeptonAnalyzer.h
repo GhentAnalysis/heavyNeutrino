@@ -50,7 +50,8 @@ class LeptonAnalyzer {
     multilep* multilepAnalyzer;
   
     EffectiveAreas electronsEffectiveAreas;
-    EffectiveAreas electronsEffectiveAreasMiniIso;
+    EffectiveAreas electronsEffectiveAreas_ttH_relIso;  // lepton MVA's are using old effective areas
+    EffectiveAreas electronsEffectiveAreas_ttH_miniIso; // lepton MVA's are using old effective areas
     EffectiveAreas muonsEffectiveAreas;
 
     //maximum number of leptons to be stored 
@@ -112,7 +113,9 @@ class LeptonAnalyzer {
 
     //lepton isolation
     double _relIso[nL_max];
+    double _relIso_ttH[nL_max];
     double _relIso0p4[nL_max];
+    double _relIso0p4_ttH[nL_max];
     double _relIso0p4MuDeltaBeta[nL_max];
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];
@@ -348,8 +351,7 @@ class LeptonAnalyzer {
     TransientVertex dileptonVertex(const reco::RecoCandidate* lep1, const reco::RecoCandidate* lep2);
 
     void cleanDileptonVertexArrays(unsigned);
-    void fillDileptonVertexArrays(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
-    void fillDileptonVertexArrays_os(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*);
+    void fillDileptonVertexArrays(unsigned, unsigned, const reco::RecoCandidate*, const reco::RecoCandidate*, const bool ensureOppositeSign=false);
 
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
     void fillTauGenVars(const pat::Tau&, const std::vector<reco::GenParticle>& genParticles);
@@ -371,13 +373,13 @@ class LeptonAnalyzer {
     bool passTauPreselection(const pat::Tau&, const reco::Vertex::Point&) const;
 
     // In leptonAnalyzerIso.cc
-    double getRelIso03(const pat::Muon&, const double) const;
-    double getRelIso03(const pat::Electron&, const double) const;
-    double getRelIso04(const pat::Muon&, const double, const bool DeltaBeta=false) const;
-    double getRelIso04( const pat::Electron&, const double ) const;
-    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged=false) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false) const;
-    template< typename T > double getMiniIsolation( const T&, const double rho, const bool onlyCharged = false ) const;
+    double getRelIso03(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas) const;
+    double getRelIso03(const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
+    double getRelIso04(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
+    double getRelIso04( const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
+    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const EffectiveAreas& effectiveAreas, const bool onlyCharged=false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, const EffectiveAreas& effectiveAreas, bool onlyCharged=false) const;
+    template< typename T > double getMiniIsolation( const T&, const double rho, const EffectiveAreas& effectiveAreas, const bool onlyCharged = false ) const;
 
     // In LeptonAnalyzerId.cc
     float dEtaInSeed(const pat::Electron*) const;                                                                          // displaced specific
@@ -412,24 +414,15 @@ class LeptonAnalyzer {
 double etaForEffectiveArea( const pat::Muon& muon );
 double etaForEffectiveArea( const pat::Electron& electron );
 
-
-template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton, const double rho, const bool onlyCharged ) const{
+// Here because of template I assume
+template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton, const double rho, const EffectiveAreas& effectiveAreas, const bool onlyCharged ) const{
     auto iso = lepton.miniPFIsolation();
     double absIso;
     if( onlyCharged ){
         absIso = iso.chargedHadronIso();
     } else {
         double cone_size = 10.0 / std::min( std::max( lepton.pt(), 50. ), 200. );
-        double effective_area = 0;
-
-        if( lepton.isMuon() ){
-            effective_area = muonsEffectiveAreas.getEffectiveArea( etaForEffectiveArea( lepton ) );
-
-        } else if( lepton.isElectron() ){
-            effective_area = electronsEffectiveAreasMiniIso.getEffectiveArea( etaForEffectiveArea( lepton ) );
-        } else {
-            throw std::invalid_argument( "getMiniIsolation is only defined for Muon and Electron objects." );
-        }
+        double effective_area = effectiveAreas.getEffectiveArea( etaForEffectiveArea( lepton ) );
         effective_area *= ( cone_size*cone_size )/ ( 0.3*0.3 );
         double pu_corr = effective_area*rho;
         absIso = iso.chargedHadronIso() + std::max( iso.neutralHadronIso() + iso.photonIso() - pu_corr, 0. ); 

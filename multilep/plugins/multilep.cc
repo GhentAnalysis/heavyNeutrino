@@ -1,5 +1,6 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "TLorentzVector.h"                               // displaced specific
+#include "heavyNeutrino/multilep/interface/Header.h"
 
 multilep::multilep(const edm::ParameterSet& iConfig):
     vtxToken(                 consumes<std::vector<reco::Vertex>>(             iConfig.getParameter<edm::InputTag>("vertices"))),
@@ -38,8 +39,13 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     sampleIsFastSim(                                                           iConfig.getUntrackedParameter<bool>("isFastSim")),
     sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
+    storeGenParticles(                                                         iConfig.getUntrackedParameter<bool>("storeGenParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
-    storeAllTauID(                                                                iConfig.getUntrackedParameter<bool>("storeAllTauID"))
+    storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
+    //headerPart1(                                                               iConfig.getUntrackedParameter<std::string>("headerPart1")),
+    //headerPart2(                                                               iConfig.getUntrackedParameter<std::string>("headerPart2"))
+    headerPart1(                                                               iConfig.getParameter<edm::FileInPath>("headerPart1").fullPath()),
+    headerPart2(                                                               iConfig.getParameter<edm::FileInPath>("headerPart2").fullPath())
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -95,6 +101,10 @@ void multilep::beginJob(){
     jetAnalyzer->beginJob(outputTree);
 
     _runNb = 0;
+
+    //print header
+    Header header( {headerPart1, headerPart2} );
+    header.print();
 }
 
 // ------------ method called for each lumi block ---------
@@ -112,6 +122,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     auto vertices = getHandle(iEvent, vtxToken);
+
     if( isMC() ) lheAnalyzer->analyze(iEvent);                                            // needs to be run before selection to get correct uncertainties on MC xsection
     if( isSUSY() ) susyMassAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
