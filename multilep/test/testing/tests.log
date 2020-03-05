@@ -1,39 +1,56 @@
-commit cef1d0297b14709adcc92df7170afef2c7d5f319
+commit b79684d459f4b3503e26bbe9bfabe9aeb2fc2e42
+Merge: c3a19d4 2390ad0
 Author: tomc <tomc@cern.ch>
-Date:   Wed Mar 4 15:07:55 2020 +0100
+Date:   Thu Mar 5 11:31:58 2020 +0100
 
-    Refactor displaced vertex code
-    
-    - Fix rare segmentation fault due to invalid trajectoryStateOnSurface (whatever it might be)
-    - Avoid excessive code duplication
-    
-    I only fixed above two points from a technical point of view,
-    I am not responsible for this code, both for what it actually calculates as how its output variables are used
+    Merge remote-tracking branch 'ghent/master' into displacedLegacy
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   Changed:
+      _leptonMvatZq                                      mean:  -0.7099 -->  -0.7091     rms:   0.6132 -->   0.6142    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   Changed:
+      _phTTGMatchCategory                                mean:   1.7906 -->   2.0105     rms:   0.9964 -->   1.6114    
+      _phTTGMatchEta                                     mean:  -0.3869 -->  -0.9565     rms:   2.5614 -->   3.3894    
+      _phTTGMatchPt                                      mean:  29.6048 -->  27.4402     rms:  27.6051 -->  28.2201    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   Changed:
+      _phTTGMatchCategory                                mean:   2.4194 -->   2.7419     rms:   0.8337 -->   1.5754    
+      _phTTGMatchEta                                     mean:  -1.2373 -->  -1.5575     rms:   3.3275 -->   3.6513    
+      _phTTGMatchPt                                      mean:  26.8576 -->  25.2846     rms:  19.6712 -->  19.9436    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   Changed:
+      _leptonMvatZq                                      mean:   0.7056 -->   0.7057     rms:   0.6211 -->   0.6209    
+      _phTTGMatchCategory                                mean:   3.2000 -->   4.1500     rms:   1.0296 -->   2.0316    
+      _phTTGMatchEta                                     mean:  -2.7577 -->  -4.2748     rms:   4.4073 -->   4.8344    
+      _phTTGMatchPt                                      mean:  18.0530 -->  10.6882     rms:  17.4330 -->  12.1145    
