@@ -1,39 +1,63 @@
-commit 1861d1f945d2fe1fec596c2586f7135523d42575
+commit 179174fd8d0e348658a590c1dd84431f68b1dc64
 Author: tomc <tomc@cern.ch>
-Date:   Fri Nov 29 19:29:55 2019 +0100
+Date:   Wed Mar 4 17:37:24 2020 +0100
 
-    lMatchCharge does not get filled for taus
+    Finally getting back the correct effective areas
+    
+    Long-standing issue that our relIso was reverted to old effective areas,
+    because the ttH people stuck with those outdated ones for the lepton MVA
+    Refactored the stuff a bit, such that the lepton MVA can still use the outdated ones
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   Changed:
+      _relIso                                            mean:   1.4134 -->   1.4265     rms:   1.8535 -->   1.8597    
+      _relIso0p4                                         mean:   1.5603 -->   1.5819     rms:   2.0084 -->   2.0218    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
    Changed:
-      _lMatchCharge                                      mean: -29332627.2947 -->  -0.0519 rms: 200278760.6196 -->   0.9531
+      _phTTGMatchCategory                                mean:   1.7906 -->   2.0105     rms:   0.9964 -->   1.6114    
+      _phTTGMatchEta                                     mean:  -0.3869 -->  -0.9565     rms:   2.5614 -->   3.3894    
+      _phTTGMatchPt                                      mean:  29.6048 -->  27.4402     rms:  27.6051 -->  28.2201    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
    Changed:
-      _lMatchCharge                                      mean: 4725844.1036 -->   0.0101 rms: 70182248.9796 -->   0.9795
+      _phTTGMatchCategory                                mean:   2.4516 -->   2.7419     rms:   0.8167 -->   1.5754    
+      _phTTGMatchEta                                     mean:  -1.2373 -->  -1.5575     rms:   3.3275 -->   3.6513    
+      _phTTGMatchPt                                      mean:  26.8576 -->  25.2846     rms:  19.6712 -->  19.9436    
+      _ttgEventType                                      mean:   1.2000 -->   1.2600     rms:   1.1576 -->   1.3388    
+      _zgEventType                                       mean:   1.0600 -->   1.1200     rms:   1.1119 -->   1.3060    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
+   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
    Changed:
-      _lMatchCharge                                      mean: 2405603.2612 -->   0.1579 rms: 39303893.9143 -->   0.9721
+      _phTTGMatchCategory                                mean:   3.2000 -->   4.1500     rms:   1.0296 -->   2.0316    
+      _phTTGMatchEta                                     mean:  -2.7577 -->  -4.2748     rms:   4.4073 -->   4.8344    
+      _phTTGMatchPt                                      mean:  18.0530 -->  10.6882     rms:  17.4330 -->  12.1145    
+      _relIso                                            mean:   0.1458 -->   0.1470     rms:   0.6325 -->   0.6380    
+      _relIso0p4                                         mean:   0.2045 -->   0.2066     rms:   0.8251 -->   0.8354    

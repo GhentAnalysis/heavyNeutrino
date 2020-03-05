@@ -104,7 +104,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron, LeptonMvaHelp
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
-            _relIso[_nL],
+            _relIso_ttH[_nL],
             _lElectronMvaSummer16GP[_nL],
             _lElectronMvaFall17v1NoIso[_nL],
             _lElectronMvaFall17NoIso[_nL]
