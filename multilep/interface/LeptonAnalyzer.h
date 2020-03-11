@@ -23,7 +23,6 @@
 //include other parts of the framework
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 #include "heavyNeutrino/multilep/interface/LeptonMvaHelper.h"
-#include "heavyNeutrino/multilep/interface/GenMatching.h" // for 3l HNL gen matching method
 
 //include ROOT classes
 #include "TTree.h"
@@ -196,12 +195,6 @@ class LeptonAnalyzer {
     double _lMuonSegComp[nL_max];
     double _lMuonTrackPt[nL_max];
     double _lMuonTrackPtErr[nL_max];
-    int    _lMuonTimenDof[nL_max];
-    double _lMuonTime[nL_max];
-    double _lMuonTimeErr[nL_max];
-    int    _lMuonRPCTimenDof[nL_max];
-    double _lMuonRPCTime[nL_max];
-    double _lMuonRPCTimeErr[nL_max];
     //unsigned _trackmatch[nL_max];
 
     bool _tauMuonVetoLoose[nL_max];                                                                       //tau specific variables
@@ -290,7 +283,6 @@ class LeptonAnalyzer {
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];
     unsigned _lProvenanceCompressed[nL_max];
-    unsigned _lProvenanceCompressed_v2[nL_max];
     unsigned _lProvenanceConversion[nL_max];
 
     //for kalman vertex fit
@@ -307,7 +299,6 @@ class LeptonAnalyzer {
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
     void fillDisplacedIDVariables(const pat::Electron&);
     void fillDisplacedIDVariables(const pat::Muon&);
-    void fillMuonTimingVariables(const pat::Muon&);
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
@@ -344,7 +335,6 @@ class LeptonAnalyzer {
     //for lepton MVA calculation
     LeptonMvaHelper* leptonMvaComputerTTH;
     LeptonMvaHelper* leptonMvaComputertZq;
-    GenMatching* genMatcher; // 3l HNL specific gen matching method
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
