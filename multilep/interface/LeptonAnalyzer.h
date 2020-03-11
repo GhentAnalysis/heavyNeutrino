@@ -195,6 +195,12 @@ class LeptonAnalyzer {
     double _lMuonSegComp[nL_max];
     double _lMuonTrackPt[nL_max];
     double _lMuonTrackPtErr[nL_max];
+    int    _lMuonTimenDof[nL_max];
+    double _lMuonTime[nL_max];
+    double _lMuonTimeErr[nL_max];
+    int    _lMuonRPCTimenDof[nL_max];
+    double _lMuonRPCTime[nL_max];
+    double _lMuonRPCTimeErr[nL_max];
     //unsigned _trackmatch[nL_max];
 
     bool _tauMuonVetoLoose[nL_max];                                                                       //tau specific variables
@@ -299,6 +305,7 @@ class LeptonAnalyzer {
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
     void fillDisplacedIDVariables(const pat::Electron&);
     void fillDisplacedIDVariables(const pat::Muon&);
+    void fillMuonTimingVariables(const pat::Muon&);
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;

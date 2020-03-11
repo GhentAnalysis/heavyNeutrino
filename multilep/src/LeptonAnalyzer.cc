@@ -165,6 +165,12 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
     outputTree->Branch("_lMuonTrackPt",                 &_lMuonTrackPt,                 "_lMuonTrackPt[_nMu]/D");
     outputTree->Branch("_lMuonTrackPtErr",              &_lMuonTrackPtErr,              "_lMuonTrackPtErr[_nMu]/D");
+    outputTree->Branch("_lMuonTimenDof",                &_lMuonTimenDof,                "_lMuonTimenDof[_nMu]/I");
+    outputTree->Branch("_lMuonTime",                    &_lMuonTime,                    "_lMuonTime[_nMu]/D");
+    outputTree->Branch("_lMuonTimeErr",                 &_lMuonTimeErr,                 "_lMuonTimeErr[_nMu]/D");
+    outputTree->Branch("_lMuonRPCTimenDof",             &_lMuonRPCTimenDof,             "_lMuonRPCTimenDof[_nMu]/I");
+    outputTree->Branch("_lMuonRPCTime",                 &_lMuonRPCTime,                 "_lMuonRPCTime[_nMu]/D");
+    outputTree->Branch("_lMuonRPCTimeErr",              &_lMuonRPCTimeErr,              "_lMuonRPCTimeErr[_nMu]/D");
     if( multilepAnalyzer->isMC() ){
         outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
@@ -276,6 +282,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if( multilepAnalyzer->isMC() ) fillLeptonGenVars(mu, *genParticles);
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho);
         fillDisplacedIDVariables(mu);
+        fillMuonTimingVariables(mu);
 
 	    //std::vector<reco::Track> vertex_tracks;
 	    //vertex_tracks.push_back(*mu.bestTrack());
@@ -624,6 +631,22 @@ void LeptonAnalyzer::fillDisplacedIDVariables(const pat::Muon& mu){
     _lNumberOfValidTrackerHits[_nL] = (!mu.innerTrack().isNull()) ? mu.innerTrack()->hitPattern().numberOfValidTrackerHits() : 0;
     _lTrackerLayersWithMeasurement[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().trackerLayersWithMeasurement()  : 0; // cannot be -1 !! 
     _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : 0); // cannot be -1 !!!
+}
+
+void LeptonAnalyzer::fillMuonTimingVariables(const pat::Muon& mu){
+
+        const reco::MuonTime cmb = mu.time();
+        const reco::MuonTime rpc = mu.rpcTime();
+
+        //csc + dt
+        _lMuonTimenDof[_nL] = cmb.nDof;
+        _lMuonTime[_nL]     = cmb.timeAtIpInOut;
+        _lMuonTimeErr[_nL]  = cmb.timeAtIpInOutErr;
+
+        //RPC
+        _lMuonRPCTimenDof[_nL] = rpc.nDof;
+        _lMuonRPCTime[_nL]     = rpc.timeAtIpInOut;
+        _lMuonRPCTimeErr[_nL]  = rpc.timeAtIpInOutErr;
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
