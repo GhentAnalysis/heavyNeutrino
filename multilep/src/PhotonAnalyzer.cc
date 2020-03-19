@@ -227,7 +227,7 @@ void PhotonAnalyzer::matchCategory(const pat::Photon& photon, edm::Handle<std::v
           if(p.pt() < 5.) continue;
           if(abs(p.pdgId()) == 12 or abs(p.pdgId()) == 14 or abs(p.pdgId()) == 16) continue;
           float myDeltaR = deltaR(p.eta(), p.phi(), photon.eta(), photon.phi());
-          if(myDeltaR > 0.2) continue;
+          if(myDeltaR > 0.3) continue;
           anyNear = true;
         }
         if(GenTools::phoAndPiNear(photon, *genParticles))     _phTTGMatchCategory[_nPh] = UNMHADRONICPHOTON;

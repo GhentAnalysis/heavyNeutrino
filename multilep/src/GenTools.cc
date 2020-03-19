@@ -242,8 +242,8 @@ bool GenTools::phoAndPiNear(const pat::Photon& photon, const std::vector<reco::G
     if(not(p.pdgId() > 0)) continue;
     if(p.pt() < 5.) continue;
     float myDeltaR = deltaR(p.eta(), p.phi(), photon.eta(), photon.phi());
-    if(abs(p.pdgId())==22 and myDeltaR < 0.2)     genPhoNear = true;
-    if(p.pdgId()==111 and myDeltaR < 0.2)         piZeroNear = true;
+    if(abs(p.pdgId())==22 and myDeltaR < 0.3)     genPhoNear = true;
+    if(p.pdgId()==111 and myDeltaR < 0.3)         piZeroNear = true;
   }
   if(genPhoNear and piZeroNear)  return true;
   else                           return false;
