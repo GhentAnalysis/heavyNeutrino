@@ -37,7 +37,7 @@ isData = not ('SIM' in inputFile or '/pnfs/iihe/cms/store/user/tomc/heavyNeutrin
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in inputFile
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
 isSUSY = "SMS-T" in inputFile
-isFastSim = ( 'PUSummer16v3Fast' in inputFile ) or ( 'PUFall17Fast' in inputFile ) or ( 'PUFall18Fast' in inputFile )
+isFastSim = 'Fast' in inputFile
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -59,8 +59,8 @@ if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dat
 
 #TO FIX RUN DEPENDENT JEC IN 2018!!! 102X_dataRun2_v12 (ABC)/ 102X_dataRun2_Prompt_v15 (D)
 elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_v12' if isData else '102X_upgrade2018_realistic_v20'
-elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'            if isData else '94X_mc2017_realistic_v17'
-else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'            if isData else '94X_mcRun2_asymptotic_v3'
+elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'  if isData else '94X_mc2017_realistic_v17'
+else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'  if isData else '94X_mcRun2_asymptotic_v3'
 
 #
 # Vertex collection
@@ -75,18 +75,14 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 addJetSequence( process, isData, is2017, is2018, isFastSim )
-if is2018 and ( not isFastSim ):
-  jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
-elif is2018 and isFastSim:
-  jecUncertaintyFile = 'Autumn18_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
-elif is2017 and ( not isFastSim ):
-  jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
-elif is2017 and isFastSim:
- jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
-elif not isFastSim:
-  jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
+if isFastSim:
+  if is2018:   jecUncertaintyFile = 'Autumn18_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+  elif is2017: jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+  else:        jecUncertaintyFile = 'Summer16_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
 else:
-  jecUncertaintyFile = 'Summer16_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+  if is2018:   jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
+  elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
+  else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
 
 
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
@@ -137,6 +133,16 @@ tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
                                ])
 tauIdEmbedder.runTauID()
 
+
+#
+# Paths to effective areas
+#
+effAreasMuons            = 'heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt'
+effAreasMuons80X         = 'heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'
+effAreasElectrons        = 'RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'
+effAreasElectronsOld     = 'RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt'
+effAreasElectronsVeryOld = 'RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'
+
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
@@ -149,13 +155,11 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   particleLevelJets             = cms.InputTag("particleLevel:jets"),
   particleLevelMets             = cms.InputTag("particleLevel:mets"),
   muons                         = cms.InputTag("slimmedMuons"),
-  muonsEffectiveAreas           = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
-  muonsEffectiveAreasFall17     = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt'),
+  muonsEffAreas                 = cms.FileInPath(effAreasMuons if is2017 or is2018 else effAreasMuons80X), # Warning: not sure if using the 80X for 2016 is ok for everyone, but this is how it is used in lepton MVA
   electrons                     = cms.InputTag("slimmedElectrons"),
-  # FIXME: currently the next two lines are used for all electron values, not only the ttH leptonMva!
-  electronsEffectiveAreasMiniIso2016  = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'),
-  electronsEffectiveAreasRelIso2016  = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt'), #old effective areas are used in 2016 computation of ttH MVA
-  electronsEffectiveAreasFall17 = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'), # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
+  electronsEffAreas             = cms.FileInPath(effAreasElectrons), # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
+  electronsEffAreas_ttH_relIso  = cms.FileInPath(effAreasElectrons if is2017 or is2018 else effAreasElectronsOld),     #old effective aras are used in 2016 computation of ttH MVA
+  electronsEffAreas_ttH_miniIso = cms.FileInPath(effAreasElectrons if is2017 or is2018 else effAreasElectronsVeryOld), #prehistoric effective aras are used in 2016 computation of ttH MVA
   leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH"+yy+"_BDTG.weights.xml"),
   leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH"+yy+"_BDTG.weights.xml"),
   leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV"+yy+"_BDTG.weights.xml"),
