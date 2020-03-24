@@ -192,9 +192,10 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
     
-    //lepton MVA definitions for TTH and tZq 
+    //lepton MVA definitions
     double _leptonMvaTTH[nL_max];
     double _leptonMvatZq[nL_max];
+    double _leptonMvaTOP[nL_max];
 
     //official POG selection definitions
     bool _lPOGVeto[nL_max];
@@ -246,6 +247,7 @@ class LeptonAnalyzer {
     //for lepton MVA calculation
     LeptonMvaHelper* leptonMvaComputerTTH;
     LeptonMvaHelper* leptonMvaComputertZq;
+    LeptonMvaHelper* leptonMvaComputerTOP;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

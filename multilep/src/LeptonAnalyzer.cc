@@ -13,13 +13,19 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     electronsEffectiveAreas_ttH_miniIso(iConfig.getParameter<edm::FileInPath>("electronsEffAreas_ttH_miniIso").fullPath()),
     muonsEffectiveAreas(                iConfig.getParameter<edm::FileInPath>("muonsEffAreas").fullPath())
 {
-    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, true, !multilepAnalyzer->is2016() );
-    leptonMvaComputertZq = new LeptonMvaHelper(iConfig, false, !multilepAnalyzer->is2016() );
+    int year = 2016;
+    if( multilepAnalyzer->is2017() ) year = 2017;
+    else if( multilepAnalyzer->is2018() ) year = 2018;
+   
+    leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, "TTH", year );
+    leptonMvaComputertZq = new LeptonMvaHelper(iConfig, "TZQ", year );
+    leptonMvaComputerTOP = new LeptonMvaHelper(iConfig, "TOP", year );
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
     delete leptonMvaComputerTTH;
     delete leptonMvaComputertZq;
+    delete leptonMvaComputerTOP;
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
@@ -58,6 +64,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElectronHOverE",                      &_lElectronHOverE,                      "_lElectronHOverE[_nLight]/D");
     outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
     outputTree->Branch("_leptonMvatZq",                 &_leptonMvatZq,                 "_leptonMvatZq[_nLight]/D");
+    outputTree->Branch("_leptonMvaTOP",                 &_leptonMvaTOP,                 "_leptonMvaTOP[_nLight]/D");
     outputTree->Branch("_lPOGVeto",                     &_lPOGVeto,                     "_lPOGVeto[_nL]/O");
     outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
     outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
@@ -220,6 +227,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho, false);
         _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
 
+        _leptonMvaTOP[_nL]   = leptonMvaVal(mu, leptonMvaComputerTOP);
+       
         ++_nMu;
         ++_nL;
         ++_nLight;
@@ -280,7 +289,9 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, false);
         _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
-
+       
+        _leptonMvaTOP[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTOP);
+	 
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
