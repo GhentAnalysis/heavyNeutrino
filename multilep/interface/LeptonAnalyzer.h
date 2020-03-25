@@ -71,6 +71,7 @@ class LeptonAnalyzer {
 
     //lepton isolation
     double _relIso[nL_max];
+    double _relIsoDB[nL_max];
     double _relIso_ttH[nL_max];
     double _relIso0p4[nL_max];
     double _relIso0p4_ttH[nL_max];
@@ -224,7 +225,7 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho, const bool oldMatching = false);
 
     // In leptonAnalyzerIso.cc
-    double getRelIso03(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas) const;
+    double getRelIso03(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
     double getRelIso03(const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
     double getRelIso04(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
     double getRelIso04( const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
