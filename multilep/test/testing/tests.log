@@ -1,61 +1,58 @@
-commit 03c13da578619314661f891e79441029afc9a909
+commit 1af26d973779324b374381ccc43f866013d4abf4
 Author: tomc <tomc@cern.ch>
-Date:   Thu Mar 26 12:46:58 2020 +0100
+Date:   Thu Mar 26 14:38:12 2020 +0100
 
-    Only store relIsoDeltaBeta up to _nMu
+    Yet another way to implement the outdated effective areas cleanly
     
-    To avoid uninitialized values in the tuples
-    Also changed name from relIsoDB into relIsoDeltaBeta, for constitency with the relIso0p4DeltaBeta variable
+    Adding now variations like relIso_Summer16, miniIso_Spring15 and relIso_80X in the code.
+    These variations are then used to keep the old leptonMva's in sync.
+    
+    The default relIso and miniIso variables store the versions based on the most
+    recent and recommended (Fall17/94X) effective areas,
+    such that we don't get trapped in using outdated values anymore.
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _leptonMvaTOP,_relIsoDeltaBeta
+   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _leptonMvaTOP,_relIsoDeltaBeta
+   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _leptonMvaTOP,_relIsoDeltaBeta
+   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _leptonMvaTOP,_relIsoDeltaBeta
+   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
+   Changed:
+      _miniIso                                           mean:   1.1081 -->   1.1165     rms:   1.3774 -->   1.3829    
+      _relIso                                            mean:   1.4265 -->   1.4273     rms:   1.8597 -->   1.8612    
+      _relIso0p4                                         mean:   1.5819 -->   1.5828     rms:   2.0218 -->   2.0243    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _leptonMvaTOP,_relIsoDeltaBeta
-   Changed:
-      _pl_nPh                                            mean:   1.5300 -->   0.6300     rms:   0.8995 -->   0.5031    
-      _pl_phE                                            mean:  35.7928 -->  50.9938     rms:  52.0021 -->  30.5419    
-      _pl_phEta                                          mean:  -0.0543 -->  -0.0512     rms:   1.5471 -->   1.3176    
-      _pl_phPhi                                          mean:   0.0052 -->  -0.2374     rms:   1.8012 -->   1.7899    
-      _pl_phPt                                           mean:  15.3451 -->  25.7089     rms:  16.3791 -->  13.8103    
+   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _leptonMvaTOP,_relIsoDeltaBeta
-   Changed:
-      _pl_nPh                                            mean:   1.0600 -->   0.0300     rms:   1.1560 -->   0.1706    
-      _pl_phE                                            mean:   5.9414 -->  49.5209     rms:  22.2676 -->  38.7319    
-      _pl_phEta                                          mean:  -0.0325 -->  -0.1895     rms:   2.4040 -->   1.0994    
-      _pl_phPhi                                          mean:  -0.0510 -->  -0.0820     rms:   1.8443 -->   1.8670    
-      _pl_phPt                                           mean:   1.1311 -->  24.2862     rms:   4.7342 -->   8.1114    
+   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _leptonMvaTOP,_relIsoDeltaBeta
+   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
    Changed:
-      _pl_nPh                                            mean:   1.0200 -->   0.0200     rms:   1.1044 -->   0.1400    
-      _pl_phE                                            mean:  11.5589 --> 131.6479     rms:  43.6035 -->  50.8364    
-      _pl_phEta                                          mean:  -0.2308 -->   2.3241     rms:   2.4039 -->   0.0572    
-      _pl_phPhi                                          mean:  -0.0330 -->   0.7001     rms:   1.8356 -->   2.4122    
-      _pl_phPt                                           mean:   1.4202 -->  26.1155     rms:   4.5215 -->  11.3029    
+      _leptonMvaTOP                                      mean:   0.8233 -->   0.8204     rms:   0.4705 -->   0.4736    
+      _leptonMvaTTH                                      mean:   0.8596 -->   0.8582     rms:   0.4301 -->   0.4314    
+      _leptonMvatZq                                      mean:   0.8139 -->   0.8088     rms:   0.4742 -->   0.4806    
+      _miniIso                                           mean:   0.0971 -->   0.0982     rms:   0.5215 -->   0.5236    
+      _relIso                                            mean:   0.1470 -->   0.1494     rms:   0.6380 -->   0.6387    
+      _relIso0p4                                         mean:   0.2066 -->   0.2126     rms:   0.8354 -->   0.8382    
