@@ -12,7 +12,7 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     electronsEffectiveAreas_Summer16(iConfig.getParameter<edm::FileInPath>("electronsEffAreas_Summer16").fullPath()),
     electronsEffectiveAreas_Spring15(iConfig.getParameter<edm::FileInPath>("electronsEffAreas_Spring15").fullPath()),
     muonsEffectiveAreas(             iConfig.getParameter<edm::FileInPath>("muonsEffAreas").fullPath()),
-    muonsEffectiveAreas_80X(         iConfig.getParameter<edm::FileInPath>("muonsEffAreas").fullPath())
+    muonsEffectiveAreas_80X(         iConfig.getParameter<edm::FileInPath>("muonsEffAreas_80X").fullPath())
 {
     int year = 2016;
     if( multilepAnalyzer->is2017() ) year = 2017;
