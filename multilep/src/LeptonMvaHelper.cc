@@ -7,8 +7,8 @@
 
 //Default constructor
 //This will set up both MVA readers and book the correct variables
-LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool isTTHMVA, const bool sampleIs2017or2018): //0 : ttH, 1: tZq/TTV
-    isTTH( isTTHMVA ), is2017Or2018( sampleIs2017or2018 )
+LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const std::string taggerName, const int yearTrain):
+    tagger( taggerName ), year( yearTrain )
 {
     for(unsigned i = 0; i < 2; ++i){
 
@@ -17,7 +17,7 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool is
     }
 
     //TTH Lepton MVA
-    if( isTTH ){
+    if( tagger == "TTH" ){
         for(unsigned i = 0; i < 2; ++i){
 
             //Book Common variables
@@ -42,7 +42,7 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool is
         reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsElettH").fullPath());
 
     //tZq lepton MVA
-    } else {
+    } else if( tagger == "TZQ" ) {
         for(unsigned i = 0; i < 2; ++i){
             reader[i]->AddVariable( "pt", &LepGood_pt );
             reader[i]->AddVariable( "eta", &LepGood_eta );
@@ -58,24 +58,47 @@ LeptonMvaHelper::LeptonMvaHelper(const edm::ParameterSet& iConfig, const bool is
             reader[i]->AddVariable( "dz", &LepGood_dz);
         }
         reader[0]->AddVariable("segmentCompatibility", &LepGood_segmentCompatibility);
-        if(  !is2017Or2018  ){
+        if(  year == 2016  ){
             reader[1]->AddVariable("electronMvaSpring16GP", &LepGood_mvaIdSummer16GP);
         } else{
             reader[1]->AddVariable("electronMvaFall17NoIso", &LepGood_mvaIdFall17v1noIso);
         }
         reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMutZqTTV").fullPath());
         reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEletZqTTV").fullPath());
+       
+    //TOP lepton MVA
+    } else if( tagger == "TOP" ) {
+        for(unsigned i = 0; i < 2; ++i){
+	    reader[i]->AddVariable( "dxylog", &LepGood_dxy);
+	    reader[i]->AddVariable( "miniIsoCharged", &LepGood_miniRelIsoCharged );
+	    reader[i]->AddVariable( "miniIsoNeutral", &LepGood_miniRelIsoNeutral );
+	    reader[i]->AddVariable( "pTRel", &LepGood_jetPtRelv2 );
+	    reader[i]->AddVariable( "sip3d", &LepGood_sip3d );
+	}
+        reader[0]->AddVariable("segmentCompatibility", &LepGood_segmentCompatibility);
+        reader[1]->AddVariable("mvaIdFall17v2noIso", &LepGood_mvaIdFall17v2noIso);
+        for(unsigned i = 0; i < 2; ++i){
+	    reader[i]->AddVariable( "ptRatio", &LepGood_jetPtRatio );
+	    reader[i]->AddVariable( "bTagDeepJetClosestJet", &LepGood_jetBTag );
+            reader[i]->AddVariable( "pt", &LepGood_pt );
+	    reader[i]->AddVariable( "trackMultClosestJet", &LepGood_jetNDauChargedMVASel );
+            reader[i]->AddVariable( "etaAbs", &LepGood_eta );
+	    reader[i]->AddVariable( "dzlog", &LepGood_dz);
+            reader[i]->AddVariable( "relIso", &LepGood_relIso0p3); 
+	}       
+        reader[0]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsMuTOP").fullPath());
+        reader[1]->BookMVA("BDTG method", iConfig.getParameter<edm::FileInPath>("leptonMvaWeightsEleTOP").fullPath());
     }
 }
 
 
-void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, 
+void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio,
         double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3 )
 {
     LepGood_pt = pt;
-    if( isTTH ){
+    if( tagger == "TTH" ){
         LepGood_eta = eta;
-    } else{
+    } else {
         LepGood_eta = fabs(eta);
     }
     LepGood_jetNDauChargedMVASel = selectedTrackMult;
@@ -83,7 +106,7 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
     LepGood_miniRelIsoNeutral = miniIsoNeutral;
     LepGood_jetPtRelv2 = ptRel;
     LepGood_jetPtRatio = std::min(ptRatio, 1.5);
-    if( isTTH ){
+    if( tagger != "TZQ" ){
         LepGood_jetBTag = std::max( ( std::isnan( closestJetDeepFlavor ) ? 0. : closestJetDeepFlavor ), 0. );
     } else {
         LepGood_jetBTag = std::max( ( std::isnan( closestJetDeepCsv ) ? 0. : closestJetDeepCsv ), 0. );

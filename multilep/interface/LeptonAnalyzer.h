@@ -71,6 +71,7 @@ class LeptonAnalyzer {
 
     //lepton isolation
     double _relIso[nL_max];
+    double _relIsoDB[nL_max];
     double _relIso_ttH[nL_max];
     double _relIso0p4[nL_max];
     double _relIso0p4_ttH[nL_max];
@@ -192,9 +193,10 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
     
-    //lepton MVA definitions for TTH and tZq 
+    //lepton MVA definitions
     double _leptonMvaTTH[nL_max];
     double _leptonMvatZq[nL_max];
+    double _leptonMvaTOP[nL_max];
 
     //official POG selection definitions
     bool _lPOGVeto[nL_max];
@@ -223,7 +225,7 @@ class LeptonAnalyzer {
     void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho, const bool oldMatching = false);
 
     // In leptonAnalyzerIso.cc
-    double getRelIso03(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas) const;
+    double getRelIso03(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
     double getRelIso03(const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
     double getRelIso04(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
     double getRelIso04( const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
@@ -246,6 +248,7 @@ class LeptonAnalyzer {
     //for lepton MVA calculation
     LeptonMvaHelper* leptonMvaComputerTTH;
     LeptonMvaHelper* leptonMvaComputertZq;
+    LeptonMvaHelper* leptonMvaComputerTOP;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);

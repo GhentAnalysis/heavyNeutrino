@@ -119,7 +119,12 @@ if 'storeParticleLevel' in extraContent and not isData:
 else:
   process.particleLevelSequence = cms.Sequence()
 
-yy = '17' if is2017 or is2018 else '16'
+yy = '16'
+if is2017: yy = '17'
+elif is2018: yy = '18'
+
+yyy = '16'
+if is2017 or is2018: yyy = '17'
 
 #
 #Latest tau ID
@@ -160,10 +165,12 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   electronsEffAreas             = cms.FileInPath(effAreasElectrons), # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
   electronsEffAreas_ttH_relIso  = cms.FileInPath(effAreasElectrons if is2017 or is2018 else effAreasElectronsOld),     #old effective aras are used in 2016 computation of ttH MVA
   electronsEffAreas_ttH_miniIso = cms.FileInPath(effAreasElectrons if is2017 or is2018 else effAreasElectronsVeryOld), #prehistoric effective aras are used in 2016 computation of ttH MVA
-  leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH"+yy+"_BDTG.weights.xml"),
-  leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH"+yy+"_BDTG.weights.xml"),
-  leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV"+yy+"_BDTG.weights.xml"),
-  leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV"+yy+"_BDTG.weights.xml"),
+  leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH"+yyy+"_BDTG.weights.xml"),
+  leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH"+yyy+"_BDTG.weights.xml"),
+  leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV"+yyy+"_BDTG.weights.xml"),
+  leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV"+yyy+"_BDTG.weights.xml"),
+  leptonMvaWeightsEleTOP        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOP"+yy+"_BDTG.weights.xml"),
+  leptonMvaWeightsMuTOP         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOP"+yy+"_BDTG.weights.xml"),
   photons                       = cms.InputTag("slimmedPhotons"),
   photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfChargedHadrons_90percentBased_V2.txt'),
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),

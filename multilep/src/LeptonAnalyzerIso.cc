@@ -20,9 +20,11 @@ double LeptonAnalyzer::getRelIso04(const pat::Muon& mu, const double rho, const 
 }
 
 
-double LeptonAnalyzer::getRelIso03(const pat::Muon& mu, const double rho, const EffectiveAreas& effectiveAreas) const{ //Note: effective area correction is used instead of delta-beta correction
+double LeptonAnalyzer::getRelIso03(const pat::Muon& mu, const double rho, const EffectiveAreas& effectiveAreas, const bool DeltaBeta) const{ //Note: effective area correction is used instead of delta-beta correction
     double puCorr = rho*effectiveAreas.getEffectiveArea( etaForEffectiveArea( mu ) );
     double absIso = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - puCorr);
+    if( DeltaBeta )
+      absIso = mu.pfIsolationR03().sumChargedHadronPt + std::max(0., mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - mu.pfIsolationR03().sumPUPt/2.);
     return absIso/mu.pt();
 }
 
