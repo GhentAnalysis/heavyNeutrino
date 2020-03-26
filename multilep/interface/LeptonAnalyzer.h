@@ -35,9 +35,10 @@ class LeptonAnalyzer {
     multilep* multilepAnalyzer;
 
     EffectiveAreas electronsEffectiveAreas;
-    EffectiveAreas electronsEffectiveAreas_ttH_relIso;  // lepton MVA's are using old effective areas
-    EffectiveAreas electronsEffectiveAreas_ttH_miniIso; // lepton MVA's are using old effective areas
+    EffectiveAreas electronsEffectiveAreas_Summer16; // lepton MVA's are using old effective areas
+    EffectiveAreas electronsEffectiveAreas_Spring15; // lepton MVA's are using old effective areas
     EffectiveAreas muonsEffectiveAreas;
+    EffectiveAreas muonsEffectiveAreas_80X;
 
     //maximum number of leptons to be stored 
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
@@ -72,16 +73,22 @@ class LeptonAnalyzer {
     //lepton isolation
     double _relIso[nL_max];
     double _relIsoDeltaBeta[nL_max];
-    double _relIso_ttH[nL_max];
+    double _relIso_Summer16[nL_max];
+    double _relIso_80X[nL_max];
     double _relIso0p4[nL_max];
-    double _relIso0p4_ttH[nL_max];
+    double _relIso0p4_Summer16[nL_max];
     double _relIso0p4MuDeltaBeta[nL_max];
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];
+    double _miniIso_Spring15[nL_max];
+    double _miniIsoCharged_Spring15[nL_max];
+    double _miniIso_80X[nL_max];
+    double _miniIsoCharged_80X[nL_max];
 
     //variables based on closest jet to lepton (typically containing lepton)
     double _ptRel[nL_max];
     double _ptRatio[nL_max];
+    double _ptRatio_Summer16[nL_max];
     double _closestJetCsvV2[nL_max];
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
