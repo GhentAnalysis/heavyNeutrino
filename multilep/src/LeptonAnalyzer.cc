@@ -92,9 +92,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
     outputTree->Branch("_miniIsoCharged",               &_miniIsoCharged,               "_miniIsoCharged[_nLight]/D");
     outputTree->Branch("_miniIso_80X",                  &_miniIso_80X,                  "_miniIso_80X[_nMu]/D"); // old, for backwards compatibility in lepton mva's
-    outputTree->Branch("_miniIsoCharged_80X",           &_miniIsoCharged_80X,           "_miniIsoCharged_80X[_nMu]/D"); // old, for backwards compatibility in lepton mva's
     outputTree->Branch("_miniIso_Spring15",             &_miniIso_Spring15,             "_miniIso_Spring15[_nLight]/D"); // old, for backwards compatibility in lepton mva's
-    outputTree->Branch("_miniIsoCharged_Spring15",      &_miniIsoCharged_Spring15,      "_miniIsoCharged_Spring15[_nLight]/D"); // old, for backwards compatibility in lepton mva's
     outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
     outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
     outputTree->Branch("_closestJetCsvV2",              &_closestJetCsvV2,              "_closestJetCsvV2[_nLight]/D");
@@ -224,7 +222,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _miniIso[_nL]              = getMiniIsolation(mu, *rho, muonsEffectiveAreas, false);
         _miniIsoCharged[_nL]       = getMiniIsolation(mu, *rho, muonsEffectiveAreas, true);
         _miniIso_80X[_nL]          = getMiniIsolation(mu, *rho, muonsEffectiveAreas_80X, false);
-        _miniIsoCharged_80X[_nL]   = getMiniIsolation(mu, *rho, muonsEffectiveAreas_80X, true);
 
         _lPOGVeto[_nL]       = mu.passed(reco::Muon::CutBasedIdLoose); // no veto available, so we take loose here
         _lPOGLoose[_nL]      = mu.passed(reco::Muon::CutBasedIdLoose);
@@ -270,7 +267,6 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _miniIso[_nL]                   = getMiniIsolation(*ele, *rho, electronsEffectiveAreas, false);
         _miniIsoCharged[_nL]            = getMiniIsolation(*ele, *rho, electronsEffectiveAreas, true);
         _miniIso_Spring15[_nL]          = getMiniIsolation(*ele, *rho, electronsEffectiveAreas_Spring15, false);
-        _miniIsoCharged_Spring15[_nL]   = getMiniIsolation(*ele, *rho, electronsEffectiveAreas_Spring15, true);
         _lElectronMvaSummer16GP[_nL]    = ele->userFloat("ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"); // OLD, do not use it
         _lElectronMvaSummer16HZZ[_nL]   = ele->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"); // OLD, do not use it
         _lElectronMvaFall17v1NoIso[_nL] = ele->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"); // OLD, do not use it
@@ -336,7 +332,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {_lElectronSigmaIetaIeta, _lElectronDeltaPhiSuperClusterTrack, _lElectronDeltaEtaSuperClusterTrack, _lElectronEInvMinusPInv, _lElectronHOverE} ) std::fill_n( array, _nMu, 0. );
     for(auto array : {_lPtCorr, _lPtScaleUp, _lPtScaleDown, _lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
     for(auto array : {_lECorr, _lEScaleUp, _lEScaleDown, _lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
-    for(auto array : {_relIso_Summer16, _miniIso_Spring15, _miniIsoCharged_Spring15, _ptRatio_Summer16}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_relIso_Summer16, _miniIso_Spring15, _ptRatio_Summer16}) std::fill_n(array, _nMu, 0.);
 
     //loop over taus
     for(const pat::Tau& tau : *taus){

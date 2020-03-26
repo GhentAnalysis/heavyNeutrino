@@ -81,9 +81,7 @@ class LeptonAnalyzer {
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];
     double _miniIso_Spring15[nL_max];
-    double _miniIsoCharged_Spring15[nL_max];
     double _miniIso_80X[nL_max];
-    double _miniIsoCharged_80X[nL_max];
 
     //variables based on closest jet to lepton (typically containing lepton)
     double _ptRel[nL_max];
