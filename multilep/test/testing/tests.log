@@ -1,58 +1,42 @@
-commit 1af26d973779324b374381ccc43f866013d4abf4
+commit 71cd5808f29530fb8ebe3aacb95d4808e83cc573
 Author: tomc <tomc@cern.ch>
-Date:   Thu Mar 26 14:38:12 2020 +0100
+Date:   Thu Mar 26 20:23:32 2020 +0100
 
-    Yet another way to implement the outdated effective areas cleanly
+    No need to have different versions for miniIsoCharged
     
-    Adding now variations like relIso_Summer16, miniIso_Spring15 and relIso_80X in the code.
-    These variations are then used to keep the old leptonMva's in sync.
-    
-    The default relIso and miniIso variables store the versions based on the most
-    recent and recommended (Fall17/94X) effective areas,
-    such that we don't get trapped in using outdated values anymore.
+    Effective areas have of course no effect on the charged component
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
+   Removed: _miniIsoCharged_80X,_miniIsoCharged_Spring15
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
+   Removed: _miniIsoCharged_80X,_miniIsoCharged_Spring15
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
+   Removed: _miniIsoCharged_80X,_miniIsoCharged_Spring15
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
-   Changed:
-      _miniIso                                           mean:   1.1081 -->   1.1165     rms:   1.3774 -->   1.3829    
-      _relIso                                            mean:   1.4265 -->   1.4273     rms:   1.8597 -->   1.8612    
-      _relIso0p4                                         mean:   1.5819 -->   1.5828     rms:   2.0218 -->   2.0243    
+   Removed: _miniIsoCharged_80X,_miniIsoCharged_Spring15
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
+   Removed: _miniIsoCharged_80X,_miniIsoCharged_Spring15
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
+   Removed: _miniIsoCharged_80X,_miniIsoCharged_Spring15
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _miniIsoCharged_80X,_miniIsoCharged_Spring15,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIso_80X,_relIso_Summer16
-   Changed:
-      _leptonMvaTOP                                      mean:   0.8233 -->   0.8204     rms:   0.4705 -->   0.4736    
-      _leptonMvaTTH                                      mean:   0.8596 -->   0.8582     rms:   0.4301 -->   0.4314    
-      _leptonMvatZq                                      mean:   0.8139 -->   0.8088     rms:   0.4742 -->   0.4806    
-      _miniIso                                           mean:   0.0971 -->   0.0982     rms:   0.5215 -->   0.5236    
-      _relIso                                            mean:   0.1470 -->   0.1494     rms:   0.6380 -->   0.6387    
-      _relIso0p4                                         mean:   0.2066 -->   0.2126     rms:   0.8354 -->   0.8382    
+   Removed: _miniIsoCharged_80X,_miniIsoCharged_Spring15
