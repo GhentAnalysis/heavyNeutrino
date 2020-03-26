@@ -1,63 +1,57 @@
-commit 179174fd8d0e348658a590c1dd84431f68b1dc64
+commit 0df76f19c1e46cd98107ecd3484526bce106257d
 Author: tomc <tomc@cern.ch>
-Date:   Wed Mar 4 17:37:24 2020 +0100
+Date:   Thu Mar 26 21:03:20 2020 +0100
 
-    Finally getting back the correct effective areas
-    
-    Long-standing issue that our relIso was reverted to old effective areas,
-    because the ttH people stuck with those outdated ones for the lepton MVA
-    Refactored the stuff a bit, such that the lepton MVA can still use the outdated ones
+    Small fix
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   Changed:
+      _miniIso_80X                                       mean:   0.2014 -->   0.1991     rms:   0.4842 -->   0.4833    
+      _relIso_80X                                        mean:   0.2742 -->   0.2681     rms:   0.5991 -->   0.5962    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   Changed:
+      _miniIso_80X                                       mean:   0.1213 -->   0.1197     rms:   0.3497 -->   0.3490    
+      _relIso_80X                                        mean:   0.1555 -->   0.1494     rms:   0.3839 -->   0.3813    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   Changed:
+      _miniIso_80X                                       mean:   0.7857 -->   0.7806     rms:   0.1427 -->   0.1440    
+      _relIso_80X                                        mean:   0.9415 -->   0.9301     rms:   0.0738 -->   0.0767    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
    Changed:
-      _relIso                                            mean:   1.4134 -->   1.4265     rms:   1.8535 -->   1.8597    
-      _relIso0p4                                         mean:   1.5603 -->   1.5819     rms:   2.0084 -->   2.0218    
+      _miniIso_80X                                       mean:   1.6979 -->   1.6896     rms:   1.5892 -->   1.5889    
+      _relIso_80X                                        mean:   3.7779 -->   3.7619     rms:   4.4042 -->   4.3997    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
    Changed:
-      _phTTGMatchCategory                                mean:   1.7906 -->   2.0105     rms:   0.9964 -->   1.6114    
-      _phTTGMatchEta                                     mean:  -0.3869 -->  -0.9565     rms:   2.5614 -->   3.3894    
-      _phTTGMatchPt                                      mean:  29.6048 -->  27.4402     rms:  27.6051 -->  28.2201    
+      _miniIso_80X                                       mean:   0.1723 -->   0.1706     rms:   0.5232 -->   0.5215    
+      _relIso_80X                                        mean:   0.2647 -->   0.2601     rms:   0.6006 -->   0.5966    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
    Changed:
-      _phTTGMatchCategory                                mean:   2.4516 -->   2.7419     rms:   0.8167 -->   1.5754    
-      _phTTGMatchEta                                     mean:  -1.2373 -->  -1.5575     rms:   3.3275 -->   3.6513    
-      _phTTGMatchPt                                      mean:  26.8576 -->  25.2846     rms:  19.6712 -->  19.9436    
-      _ttgEventType                                      mean:   1.2000 -->   1.2600     rms:   1.1576 -->   1.3388    
-      _zgEventType                                       mean:   1.0600 -->   1.1200     rms:   1.1119 -->   1.3060    
+      _miniIso_80X                                       mean:   0.0261 -->   0.0249     rms:   0.0780 -->   0.0762    
+      _relIso_80X                                        mean:   0.0761 -->   0.0697     rms:   0.1926 -->   0.1861    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
    Changed:
-      _phTTGMatchCategory                                mean:   3.2000 -->   4.1500     rms:   1.0296 -->   2.0316    
-      _phTTGMatchEta                                     mean:  -2.7577 -->  -4.2748     rms:   4.4073 -->   4.8344    
-      _phTTGMatchPt                                      mean:  18.0530 -->  10.6882     rms:  17.4330 -->  12.1145    
-      _relIso                                            mean:   0.1458 -->   0.1470     rms:   0.6325 -->   0.6380    
-      _relIso0p4                                         mean:   0.2045 -->   0.2066     rms:   0.8251 -->   0.8354    
+      _leptonMvaTOP                                      mean:   0.8204 -->   0.8233     rms:   0.4736 -->   0.4705    
+      _leptonMvaTTH                                      mean:   0.8582 -->   0.8596     rms:   0.4314 -->   0.4301    
+      _leptonMvatZq                                      mean:   0.8088 -->   0.8139     rms:   0.4806 -->   0.4742    
+      _miniIso_80X                                       mean:   0.0147 -->   0.0139     rms:   0.0396 -->   0.0379    
+      _relIso_80X                                        mean:   0.0465 -->   0.0441     rms:   0.1711 -->   0.1666    

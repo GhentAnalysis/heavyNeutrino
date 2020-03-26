@@ -138,16 +138,6 @@ tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
                                ])
 tauIdEmbedder.runTauID()
 
-
-#
-# Paths to effective areas
-#
-effAreasMuons            = 'heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt'
-effAreasMuons80X         = 'heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'
-effAreasElectrons        = 'RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'
-effAreasElectronsOld     = 'RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt'
-effAreasElectronsVeryOld = 'RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'
-
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
@@ -160,11 +150,12 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   particleLevelJets             = cms.InputTag("particleLevel:jets"),
   particleLevelMets             = cms.InputTag("particleLevel:mets"),
   muons                         = cms.InputTag("slimmedMuons"),
-  muonsEffAreas                 = cms.FileInPath(effAreasMuons if is2017 or is2018 else effAreasMuons80X), # Warning: not sure if using the 80X for 2016 is ok for everyone, but this is how it is used in lepton MVA
+  muonsEffAreas                 = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt'),
+  muonsEffAreas_80X             = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt'),
   electrons                     = cms.InputTag("slimmedElectrons"),
-  electronsEffAreas             = cms.FileInPath(effAreasElectrons), # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
-  electronsEffAreas_ttH_relIso  = cms.FileInPath(effAreasElectrons if is2017 or is2018 else effAreasElectronsOld),     #old effective aras are used in 2016 computation of ttH MVA
-  electronsEffAreas_ttH_miniIso = cms.FileInPath(effAreasElectrons if is2017 or is2018 else effAreasElectronsVeryOld), #prehistoric effective aras are used in 2016 computation of ttH MVA
+  electronsEffAreas             = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'),    # Recommended, used by standard IDs (the difference with the outdated effective areas is typically small)
+  electronsEffAreas_Summer16    = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt'),  # old effective aras are used in 2016 computation of ttH MVA
+  electronsEffAreas_Spring15    = cms.FileInPath('RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'), # prehistoric effective aras are used in 2016 computation of ttH MVA
   leptonMvaWeightsMuttH         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_ttH"+yyy+"_BDTG.weights.xml"),
   leptonMvaWeightsElettH        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_ttH"+yyy+"_BDTG.weights.xml"),
   leptonMvaWeightsEletZqTTV     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_tZqTTV"+yyy+"_BDTG.weights.xml"),
