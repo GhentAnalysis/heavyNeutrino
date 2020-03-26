@@ -82,7 +82,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauIsoMVAPWnewDMwLT",          &_tauIsoMVAPWnewDMwLT,          "_tauIsoMVAPWnewDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D");
     outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
-    outputTree->Branch("_relIsoDB",                     &_relIsoDB,                     "_relIsoDB[_nLight]/D");
+    outputTree->Branch("_relIsoDeltaBeta",              &_relIsoDeltaBeta,              "_relIsoDeltaBetaB[_nMu]/D");
     outputTree->Branch("_relIso0p4",                    &_relIso0p4,                    "_relIso0p4[_nLight]/D");
     outputTree->Branch("_relIso0p4MuDeltaBeta",         &_relIso0p4MuDeltaBeta,         "_relIso0p4MuDeltaBeta[_nMu]/D");
     outputTree->Branch("_miniIso",                      &_miniIso,                      "_miniIso[_nLight]/D");
@@ -208,12 +208,12 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lMuonTrackPt[_nL]    = mu.innerTrack()->pt();
         _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
 
-        _relIso[_nL]         = getRelIso03(mu, *rho, muonsEffectiveAreas, false);                     // Isolation variables
-        _relIsoDB[_nL]       = getRelIso03(mu, *rho, muonsEffectiveAreas, true);
-        _relIso0p4[_nL]      = getRelIso04(mu, *rho, muonsEffectiveAreas);
+        _relIso[_nL]               = getRelIso03(mu, *rho, muonsEffectiveAreas, false);                     // Isolation variables
+        _relIsoDeltaBeta[_nL]      = getRelIso03(mu, *rho, muonsEffectiveAreas, true);
+        _relIso0p4[_nL]            = getRelIso04(mu, *rho, muonsEffectiveAreas, false);
         _relIso0p4MuDeltaBeta[_nL] = getRelIso04(mu, *rho, muonsEffectiveAreas, true);
-        _miniIso[_nL]        = getMiniIsolation(mu, *rho, muonsEffectiveAreas, false);
-        _miniIsoCharged[_nL] = getMiniIsolation(mu, *rho, muonsEffectiveAreas, true);
+        _miniIso[_nL]              = getMiniIsolation(mu, *rho, muonsEffectiveAreas, false);
+        _miniIsoCharged[_nL]       = getMiniIsolation(mu, *rho, muonsEffectiveAreas, true);
 
         _lPOGVeto[_nL]       = mu.passed(reco::Muon::CutBasedIdLoose); // no veto available, so we take loose here
         _lPOGLoose[_nL]      = mu.passed(reco::Muon::CutBasedIdLoose);

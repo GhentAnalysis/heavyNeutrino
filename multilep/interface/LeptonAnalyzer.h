@@ -71,7 +71,7 @@ class LeptonAnalyzer {
 
     //lepton isolation
     double _relIso[nL_max];
-    double _relIsoDB[nL_max];
+    double _relIsoDeltaBeta[nL_max];
     double _relIso_ttH[nL_max];
     double _relIso0p4[nL_max];
     double _relIso0p4_ttH[nL_max];
