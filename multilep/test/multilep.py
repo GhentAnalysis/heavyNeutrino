@@ -201,6 +201,7 @@ def getJSON(is2017, is2018):
     else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
 if isData:
+  print('Sample is found to be 20%s data, will process using %s' % (yy, getJSON(is2017, is2018)))
   import FWCore.PythonUtilities.LumiList as LumiList
   jsonDir = os.path.expandvars('$CMSSW_BASE/src/heavyNeutrino/multilep/data/JSON')
   process.source.lumisToProcess = LumiList.LumiList(filename = os.path.join(jsonDir, getJSON(is2017, is2018))).getVLuminosityBlockRange()
