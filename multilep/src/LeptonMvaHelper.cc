@@ -118,10 +118,11 @@ void LeptonMvaHelper::bookCommonVars(double pt, double eta, double selectedTrack
 }
 
 double LeptonMvaHelper::leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, 
-    double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double segComp)
+    double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p3DB, double segComp)
 {
     bookCommonVars(pt, eta, selectedTrackMult, miniIsoCharged, miniIsoNeutral, ptRel, ptRatio, closestJetDeepCsv, closestJetDeepFlavor, sip3d, dxy, dz, relIso0p3);
-    LepGood_segmentCompatibility = segComp;
+    if( tagger == "TOP" ) LepGood_relIso0p3 = relIso0p3DB;
+    LepGood_segmentCompatibility = segComp;  
     return reader[0]->EvaluateMVA("BDTG method");
 }
 

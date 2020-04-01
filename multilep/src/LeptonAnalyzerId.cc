@@ -87,6 +87,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon, LeptonMvaHelper* mvaH
             _dxy[_nL],
             _dz[_nL],
             multilepAnalyzer->is2016() ? _relIso_80X[_nL] : _relIso[_nL],
+	    _relIsoDeltaBeta[_nL],
             muon.segmentCompatibility()
             );
 }
