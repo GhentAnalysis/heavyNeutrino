@@ -206,6 +206,19 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   headerPart2                   = cms.FileInPath("heavyNeutrino/multilep/data/header/text.txt")
 )
 
+#
+# Additional dilep filter and trigger filter to be run before the IVF in order to avoid running out of walltime
+#
+process.dilepFilter = cms.EDFilter('multilepFilter',
+  vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
+  muons                         = cms.InputTag("slimmedMuons"),
+  electrons                     = cms.InputTag("slimmedElectrons"),
+  triggers                      = cms.InputTag("TriggerResults::HLT"),
+  triggerObjects                = cms.InputTag("slimmedPatTrigger"),
+  is2017                        = cms.untracked.bool(is2017),
+  is2018                        = cms.untracked.bool(is2018),
+)
+
 def getJSON(is2017, is2018):
     if is2018:   return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
     elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
@@ -217,6 +230,7 @@ if isData:
   process.source.lumisToProcess = LumiList.LumiList(filename = os.path.join(jsonDir, getJSON(is2017, is2018))).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
+                     process.dilepFilter *
                      process.egammaPostRecoSeq *
                      process.jetSequence *
                      process.fullPatMetSequence *
