@@ -68,7 +68,7 @@ bool multilepFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup){
     // Trigger
     std::vector<std::string> triggers;
     if(sampleIs2018 or sampleIs2017) triggers = {"HLT_Ele32_WPTight_Gsf", "HLT_IsoMu24"};
-    else                             triggers = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24"};
+    else                             triggers = {"HLT_Ele27_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoTkMu24"};
 
     bool passedTrigger = false;
     for(auto triggerName : triggers){
