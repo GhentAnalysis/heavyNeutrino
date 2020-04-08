@@ -35,7 +35,10 @@ class LeptonAnalyzer {
     multilep* multilepAnalyzer;
 
     EffectiveAreas electronsEffectiveAreas;
+    EffectiveAreas electronsEffectiveAreas_Summer16; // lepton MVA's are using old effective areas
+    EffectiveAreas electronsEffectiveAreas_Spring15; // lepton MVA's are using old effective areas
     EffectiveAreas muonsEffectiveAreas;
+    EffectiveAreas muonsEffectiveAreas_80X;
 
     //maximum number of leptons to be stored 
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
@@ -69,18 +72,29 @@ class LeptonAnalyzer {
 
     //lepton isolation
     double _relIso[nL_max];
+    double _relIsoDeltaBeta[nL_max];
+    double _relIso_Summer16[nL_max];
+    double _relIso_80X[nL_max];
     double _relIso0p4[nL_max];
+    double _relIso0p4_Summer16[nL_max];
     double _relIso0p4MuDeltaBeta[nL_max];
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];
+    double _miniIso_Spring15[nL_max];
+    double _miniIso_80X[nL_max];
 
     //variables based on closest jet to lepton (typically containing lepton)
     double _ptRel[nL_max];
     double _ptRatio[nL_max];
+    double _ptRatio_Summer16[nL_max];
     double _closestJetCsvV2[nL_max];
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
     double _closestJetDeepCsv[nL_max];
+    double _closestJetDeepFlavor_b[nL_max];
+    double _closestJetDeepFlavor_bb[nL_max];
+    double _closestJetDeepFlavor_lepb[nL_max];
+    double _closestJetDeepFlavor[nL_max];
     unsigned _selectedTrackMult[nL_max];
 
     //pointing variables
@@ -100,6 +114,15 @@ class LeptonAnalyzer {
     bool _lElectronChargeConst[nL_max];
     unsigned _lElectronMissingHits[nL_max];
     double _lEtaSC[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWP80[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWP90[nL_max];
+    bool _lElectronPassMVAFall17NoIsoWPLoose[nL_max];
+    double _lElectronSigmaIetaIeta[nL_max];
+    double _lElectronDeltaPhiSuperClusterTrack[nL_max];
+    double _lElectronDeltaEtaSuperClusterTrack[nL_max];
+    double _lElectronEInvMinusPInv[nL_max];
+    double _lElectronHOverE[nL_max];
+
 
     //muon properties
     double _lMuonSegComp[nL_max];
@@ -114,11 +137,11 @@ class LeptonAnalyzer {
     bool _tauEleVetoTight[nL_max];
     bool _tauEleVetoVTight[nL_max];
     bool _decayModeFinding[nL_max];                      
-    unsigned int _tauDecayMode[nL_max];                                                         // As in https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Decay_Mode_Reconstruction 
-    unsigned int _tauGenStatus[nL_max];                                                         //1: prompt ele, 2:prompt mu, 3: ele from leptonic tau, 4:mu from leptonic tau, 5: hadronically decayed tau, 6:rest 
+    unsigned _tauDecayMode[nL_max];                                                             // As in https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Decay_Mode_Reconstruction 
+    unsigned _tauGenStatus[nL_max];                                                             //1: prompt ele, 2:prompt mu, 3: ele from leptonic tau, 4:mu from leptonic tau, 5: hadronically decayed tau, 6:rest 
     bool _tauPOGVLoose2015[nL_max];                                                             //version of ID to use in MiniAOD: MC 80X_mcRun2_asymptotic_2016_TrancheIV_v6, Data 03Feb2017
     bool _tauPOGLoose2015[nL_max];                                                              //More info at https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV#Isolation
-    bool _tauPOGMedium2015[nL_max];
+    bool _tauPOGMedium2015[nL_max];                                                             // # WARNING # NO LONGER SUPPORTED BY TAU POG, kept for testing reasons, will remove this soon
     bool _tauPOGTight2015[nL_max];
     bool _tauPOGVTight2015[nL_max];
     
@@ -126,8 +149,9 @@ class LeptonAnalyzer {
     bool _tauPOGVTight2017v2[nL_max];                                                            //Other WPs contained in _lPOG variables (vloose = veto)
     bool _tauPOGVVTight2017v2[nL_max];
 
-    bool _decayModeFindingNew[nL_max];                      
-    bool _tauVLooseMvaNew[nL_max];                                                               
+    bool _decayModeFindingNew[nL_max];                                           
+    bool _decayModeFindingDeepTau[nL_max];                                           
+    bool _tauVLooseMvaNew[nL_max];                                                              // # WARNING # NO LONGER SUPPORTED BY TAU POG, kept for testing reasons, will remove this soon                 
     bool _tauVLooseMvaNew2015[nL_max];
     bool _tauLooseMvaNew2015[nL_max];
     bool _tauMediumMvaNew2015[nL_max];
@@ -139,6 +163,32 @@ class LeptonAnalyzer {
     bool _tauMediumMvaNew2017v2[nL_max];
     bool _tauTightMvaNew2017v2[nL_max];
     bool _tauVTightMvaNew2017v2[nL_max];
+
+    bool _tauDeepTauVsJetsRaw[nL_max];    
+    bool _tauVVVLooseDeepTauVsJets[nL_max];    
+    bool _tauVVLooseDeepTauVsJets[nL_max];    
+    bool _tauVLooseDeepTauVsJets[nL_max];    
+    bool _tauLooseDeepTauVsJets[nL_max];    
+    bool _tauMediumDeepTauVsJets[nL_max];    
+    bool _tauTightDeepTauVsJets[nL_max];    
+    bool _tauVTightDeepTauVsJets[nL_max];    
+    bool _tauVVTightDeepTauVsJets[nL_max];    
+    
+    bool _tauDeepTauVsEleRaw[nL_max];    
+    bool _tauVVVLooseDeepTauVsEle[nL_max];    
+    bool _tauVVLooseDeepTauVsEle[nL_max];    
+    bool _tauVLooseDeepTauVsEle[nL_max];    
+    bool _tauLooseDeepTauVsEle[nL_max];    
+    bool _tauMediumDeepTauVsEle[nL_max];    
+    bool _tauTightDeepTauVsEle[nL_max];    
+    bool _tauVTightDeepTauVsEle[nL_max];    
+    bool _tauVVTightDeepTauVsEle[nL_max];    
+    
+    bool _tauDeepTauVsMuRaw[nL_max];    
+    bool _tauVLooseDeepTauVsMu[nL_max];    
+    bool _tauLooseDeepTauVsMu[nL_max];    
+    bool _tauMediumDeepTauVsMu[nL_max];    
+    bool _tauTightDeepTauVsMu[nL_max];    
     
     double _tauAgainstElectronMVA6Raw[nL_max];
     double _tauCombinedIsoDBRaw3Hits[nL_max];
@@ -148,15 +198,10 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
     
-    //lepton MVA definitions for SUSY (ewkino), TTH and tZq 
-    double _leptonMvaSUSY[nL_max];
+    //lepton MVA definitions
     double _leptonMvaTTH[nL_max];
     double _leptonMvatZq[nL_max];
-
-    //analysis specific lepton selection (please do NOT delete for now, will be deleted when analysis code is updated 
-    bool _lEwkLoose[nL_max];
-    bool _lEwkFO[nL_max];
-    bool _lEwkTight[nL_max];
+    double _leptonMvaTOP[nL_max];
 
     //official POG selection definitions
     bool _lPOGVeto[nL_max];
@@ -176,20 +221,22 @@ class LeptonAnalyzer {
     template <typename Lepton> void fillLeptonGenVars(const Lepton& lepton, const std::vector<reco::GenParticle>& genParticles);
     void fillTauGenVars(const pat::Tau&, const std::vector<reco::GenParticle>& genParticles);
     void fillLeptonKinVars(const reco::Candidate&);
-    void fillLeptonImpactParameters(const pat::Electron&, const reco::Vertex&);
-    void fillLeptonImpactParameters(const pat::Muon&, const reco::Vertex&);
+    void fillLeptonImpactParameters(const pat::Electron& );
+    void fillLeptonImpactParameters(const pat::Muon& );
     void fillLeptonImpactParameters(const pat::Tau&, const reco::Vertex&);
     double tau_dz(const pat::Tau&, const reco::Vertex::Point&) const;
     bool eleMuOverlap(const pat::Electron& ele, const bool* loose) const;
     bool tauLightOverlap(const pat::Tau& tau, const bool* loose) const;
-    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho);
+    void fillLeptonJetVariables(const reco::Candidate&, edm::Handle<std::vector<pat::Jet>>&, const reco::Vertex&, const double rho, const bool oldMatching = false);
 
     // In leptonAnalyzerIso.cc
-    double getRelIso03(const pat::Muon&, const double) const;
-    double getRelIso03(const pat::Electron&, const double) const;
-    double getRelIso04(const pat::Muon& mu, const double, const bool DeltaBeta=false) const;
-    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const bool onlyCharged=false) const;
-    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, bool onlyCharged=false) const;
+    double getRelIso03(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
+    double getRelIso03(const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
+    double getRelIso04(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
+    double getRelIso04( const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
+    double getRelIso(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, const EffectiveAreas& effectiveAreas, const bool onlyCharged=false) const;
+    double getMiniIsolation(const reco::RecoCandidate&, edm::Handle<pat::PackedCandidateCollection>, double, double, double, double, const EffectiveAreas& effectiveAreas, bool onlyCharged=false) const;
+    template< typename T > double getMiniIsolation( const T&, const double rho, const EffectiveAreas& effectiveAreas, const bool onlyCharged = false ) const;
 
     // In LeptonAnalyzerId.cc
     bool  passTriggerEmulationDoubleEG(const pat::Electron*, const bool hOverE = true) const;               //For ewkino id it needs to be possible to check hOverE separately
@@ -198,28 +245,15 @@ class LeptonAnalyzer {
     bool  passingElectronMvaLooseSusy(const pat::Electron*, double, double) const;
     bool  passingElectronMvaMediumSusy(const pat::Electron*, double) const;
     bool  passingElectronMvaTightSusy(const pat::Electron*, double) const;
-    bool  passingElectronMvaHeavyNeutrinoFO(const pat::Electron*, double) const;
-    bool  passElectronMvaEwkFO(const pat::Electron* ele, double mvaValue) const;
-
-    //analysis specific lepton selection (please do NOT delete for now, will be deleted when analysis code is updated 
-    bool isEwkLoose(const pat::Muon&) const;
-    bool isEwkLoose(const pat::Electron&) const;
-    bool isEwkLoose(const pat::Tau&) const;
-    bool isEwkFO(const pat::Muon&) const;
-    bool isEwkFO(const pat::Electron&) const;
-    bool isEwkFO(const pat::Tau&) const;
-    bool isEwkTight(const pat::Muon&) const;
-    bool isEwkTight(const pat::Electron&) const;
-    bool isEwkTight(const pat::Tau&) const;
 
     //compute lepton MVA value 
     double leptonMvaVal(const pat::Muon&, LeptonMvaHelper*);
     double leptonMvaVal(const pat::Electron&, LeptonMvaHelper*);
 
     //for lepton MVA calculation
-    LeptonMvaHelper* leptonMvaComputerSUSY;
     LeptonMvaHelper* leptonMvaComputerTTH;
     LeptonMvaHelper* leptonMvaComputertZq;
+    LeptonMvaHelper* leptonMvaComputerTOP;
 
   public:
     LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
@@ -228,4 +262,26 @@ class LeptonAnalyzer {
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&, const reco::Vertex&);
 };
+
+
+double etaForEffectiveArea( const pat::Muon& muon );
+double etaForEffectiveArea( const pat::Electron& electron );
+
+// Here because of template I assume
+template< typename T > double LeptonAnalyzer::getMiniIsolation( const T& lepton, const double rho, const EffectiveAreas& effectiveAreas, const bool onlyCharged ) const{
+    auto iso = lepton.miniPFIsolation();
+    double absIso;
+    if( onlyCharged ){
+        absIso = iso.chargedHadronIso();
+    } else {
+        double cone_size = 10.0 / std::min( std::max( lepton.pt(), 50. ), 200. );
+        double effective_area = effectiveAreas.getEffectiveArea( etaForEffectiveArea( lepton ) );
+        effective_area *= ( cone_size*cone_size )/ ( 0.3*0.3 );
+        double pu_corr = effective_area*rho;
+        absIso = iso.chargedHadronIso() + std::max( iso.neutralHadronIso() + iso.photonIso() - pu_corr, 0. ); 
+    }
+    return ( absIso / lepton.pt() );
+}
+
+
 #endif

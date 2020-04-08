@@ -44,6 +44,24 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lDecayedHadr",          &_gen_lDecayedHadr,          "_gen_lDecayedHadr[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
+
+    if(multilepAnalyzer->storeGenParticles){
+      outputTree->Branch("_gen_n",                                        &_gen_n,                                        "_gen_n/I");
+      outputTree->Branch("_gen_pt",                                       &_gen_pt,                                       "_gen_pt[_gen_n]/D");
+      outputTree->Branch("_gen_eta",                                      &_gen_eta,                                      "_gen_eta[_gen_n]/D");
+      outputTree->Branch("_gen_phi",                                      &_gen_phi,                                      "_gen_phi[_gen_n]/D");
+      outputTree->Branch("_gen_E",                                        &_gen_E,                                        "_gen_E[_gen_n]/D");
+      outputTree->Branch("_gen_pdgId",                                    &_gen_pdgId,                                    "_gen_pdgId[_gen_n]/I");
+      outputTree->Branch("_gen_charge",                                   &_gen_charge,                                   "_gen_charge[_gen_n]/I");
+      outputTree->Branch("_gen_status",                                   &_gen_status,                                   "_gen_status[_gen_n]/I");
+      outputTree->Branch("_gen_isPromptFinalState",                       &_gen_isPromptFinalState,                       "_gen_isPromptFinalState[_gen_n]/O");
+      outputTree->Branch("_gen_isDirectPromptTauDecayProductFinalState",  &_gen_isDirectPromptTauDecayProductFinalState,  "_gen_isDirectPromptTauDecayProductFinalState[_gen_n]/O");
+      outputTree->Branch("_gen_isLastCopy",                               &_gen_isLastCopy,                               "_gen_isLastCopy[_gen_n]/O");
+      outputTree->Branch("_gen_index",                                    &_gen_index,                                    "_gen_index[_gen_n]/I");
+      outputTree->Branch("_gen_motherIndex",                              &_gen_motherIndex,                              "_gen_motherIndex[_gen_n]/I");
+      outputTree->Branch("_gen_daughter_n",                               &_gen_daughter_n,                               "_gen_daughter_n[_gen_n]/I");
+      outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][100]/I");
+    }   
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
@@ -52,11 +70,12 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     if(!genParticles.isValid()) return;
 
     // TODO: when applying overlap for new photon samples: check the pt and eta cuts of the photon
-    _ttgEventType = overlapEventType(*genParticles, 10., 5.0); // for TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8
-    _zgEventType  = overlapEventType(*genParticles, 15., 2.6); // for ZGToLLG_01J_5f_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8
+    _ttgEventType = overlapEventType(*genParticles, 10., 5.0, 0.1);
+    _zgEventType  = overlapEventType(*genParticles, 15., 2.6, 0.05);
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    _gen_n = 0;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
         int absId = abs(p.pdgId());
@@ -106,7 +125,40 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 ++_gen_nPh;
             } 
         }
-    }
+
+        //store all generator level particles
+        if(multilepAnalyzer->storeGenParticles){        
+          int indexGen = _gen_n;
+
+          if(_gen_n == gen_n_max){
+            throw cms::Exception ("GenAnalyzer") << "Reaching the max number of stored gen particles (" << gen_n_max << ")\n";
+          }
+       
+          int nDaughters = p.numberOfDaughters();
+        
+          _gen_daughter_n[_gen_n] = nDaughters;
+        
+          for(int d=0;d<nDaughters;++d){         
+            _gen_daughterIndex[_gen_n][nDaughters] = p.daughterRef(d).key();
+            ++_gen_daughter_n[_gen_n];
+          }
+        
+          _gen_pt[_gen_n]                                      = p.pt();
+          _gen_eta[_gen_n]                                     = p.eta();
+          _gen_phi[_gen_n]                                     = p.phi();
+          _gen_E[_gen_n]                                       = p.energy();
+          _gen_pdgId[_gen_n]                                   = p.pdgId();
+          _gen_charge[_gen_n]                                  = p.charge();
+          _gen_status[_gen_n]                                  = p.status();
+          _gen_isPromptFinalState[_gen_n]                      = p.isPromptFinalState();
+          _gen_isDirectPromptTauDecayProductFinalState[_gen_n] = p.isDirectPromptTauDecayProductFinalState();
+          _gen_isLastCopy[_gen_n]                              = p.isLastCopy();
+          _gen_index[_gen_n]                                   = indexGen;
+          _gen_motherIndex[_gen_n]                             = GenTools::getFirstMotherIndex(p, *genParticles);
+          ++_gen_n;
+        }
+    }   
+
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
 
@@ -117,7 +169,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 /*
  * Some event categorization in order to understand/debug/apply overlap removal for TTGamma <--> TTJets and similar photon samples
  */
-unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut) const{
+unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut, double genCone) const{
     int type = 0;
     for(auto p = genParticles.cbegin(); p != genParticles.cend(); ++p){
         if(p->status()<0)         continue;
@@ -127,8 +179,8 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         if(fabs(p->eta())>etaCut) continue;
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
-        if(GenTools::getMinDeltaR(*p, genParticles) < 0.1) continue;
-        if(not GenTools::passParentage(*p, genParticles))  continue;
+        if(GenTools::getMinDeltaR(*p, genParticles) < genCone) continue;
+        if(not GenTools::noMesonsInChain(*p, genParticles))  continue;
 
         // Everything below is *signal*
         std::set<int> decayChain;

@@ -1,4 +1,5 @@
 #include "heavyNeutrino/multilep/plugins/multilep.h"
+#include "heavyNeutrino/multilep/interface/Header.h"
 
 
 multilep::multilep(const edm::ParameterSet& iConfig):
@@ -38,10 +39,16 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     sampleIsData(                                                              iConfig.getUntrackedParameter<bool>("isData")),
     sampleIs2017(                                                              iConfig.getUntrackedParameter<bool>("is2017")),
     sampleIs2018(                                                              iConfig.getUntrackedParameter<bool>("is2018")),
+    sampleIsFastSim(                                                           iConfig.getUntrackedParameter<bool>("isFastSim")),
     sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
+    storeGenParticles(                                                         iConfig.getUntrackedParameter<bool>("storeGenParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
-    storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID"))
+    storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
+    //headerPart1(                                                               iConfig.getUntrackedParameter<std::string>("headerPart1")),
+    //headerPart2(                                                               iConfig.getUntrackedParameter<std::string>("headerPart2"))
+    headerPart1(                                                               iConfig.getParameter<edm::FileInPath>("headerPart1").fullPath()),
+    headerPart2(                                                               iConfig.getParameter<edm::FileInPath>("headerPart2").fullPath())
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -83,7 +90,9 @@ void multilep::beginJob(){
     outputTree->Branch("_runNb",                        &_runNb,                        "_runNb/l");
     outputTree->Branch("_lumiBlock",                    &_lumiBlock,                    "_lumiBlock/l");
     outputTree->Branch("_eventNb",                      &_eventNb,                      "_eventNb/l");
-    outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/b");
+    outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/i");
+    outputTree->Branch("_is2017",                       &sampleIs2017,                  "_is2017/O");
+    outputTree->Branch("_is2018",                       &sampleIs2018,                  "_is2018/O");
 
     if( isMC() && !is2018() ){
         outputTree->Branch("_prefireWeight",              &_prefireWeight,                "_prefireWeight/F");
@@ -102,6 +111,10 @@ void multilep::beginJob(){
     jetAnalyzer->beginJob(outputTree);
 
     _runNb = 0;
+
+    //print header
+    Header header( {headerPart1, headerPart2} );
+    header.print();
 }
 
 // ------------ method called for each lumi block ---------
@@ -121,6 +134,7 @@ void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
 // ------------ method called for each event  ------------
 void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     auto vertices = getHandle(iEvent, vtxToken);
+
     if( isMC() ) lheAnalyzer->analyze(iEvent);                                            // needs to be run before selection to get correct uncertainties on MC xsection
     if( isSUSY() ) susyMassAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 

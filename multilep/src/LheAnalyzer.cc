@@ -1,6 +1,6 @@
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-
+#include "FWCore/Utilities/interface/Exception.h"
 #include "TLorentzVector.h"
 
 /*
@@ -51,7 +51,6 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
 
 void LheAnalyzer::analyze(const edm::Event& iEvent){
     if( multilepAnalyzer->isData() ) return;
-
     edm::Handle<GenEventInfoProduct> genEventInfo          = getHandle(iEvent, multilepAnalyzer->genEventInfoToken);
     edm::Handle<LHEEventProduct> lheEventInfo              = getHandle(iEvent, multilepAnalyzer->lheEventInfoToken);
     edm::Handle<std::vector<PileupSummaryInfo>> pileUpInfo = getHandle(iEvent, multilepAnalyzer->pileUpToken);
@@ -73,7 +72,10 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 
     // See http://home.thep.lu.se/~leif/LHEF/classLHEF_1_1HEPEUP.html for more detailes
     _nLheParticles = lheEventInfo->hepeup().NUP;
-    for(unsigned int i = 0; i < _nLheParticles; ++i){
+    if(_nLheParticles > nLhe_max){
+      throw cms::Exception("maxLheParticles") << "This process has " << _nLheParticles << " lhe particles. Please increase nLhe_max in LheAnalyzer.h.\n";
+    }
+    for(unsigned i = 0; i < _nLheParticles; ++i){
         _lheStatus[i]          = lheEventInfo->hepeup().ISTUP[i];
         _lhePdgId[i]           = lheEventInfo->hepeup().IDUP[i];
         _lheMother1[i]         = lheEventInfo->hepeup().MOTHUP[i].first-1;

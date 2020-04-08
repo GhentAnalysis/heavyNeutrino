@@ -48,6 +48,13 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetDeepCsv_c",              &_jetDeepCsv_c,             "_jetDeepCsv_c[_nJets]/D");
     outputTree->Branch("_jetDeepCsv_bb",             &_jetDeepCsv_bb,            "_jetDeepCsv_bb[_nJets]/D");
     outputTree->Branch("_jetDeepCsv",                &_jetDeepCsv,               "_jetDeepCsv[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_b",           &_jetDeepFlavor_b,          "_jetDeepFlavor_b[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_bb",          &_jetDeepFlavor_bb,         "_jetDeepFlavor_bb[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_lepb",        &_jetDeepFlavor_lepb,       "_jetDeepFlavor_lepb[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor",             &_jetDeepFlavor,            "_jetDeepFlavor[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_c",           &_jetDeepFlavor_c,          "_jetDeepFlavor_c[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_uds",         &_jetDeepFlavor_uds,        "_jetDeepFlavor_uds[_nJets]/D");
+    outputTree->Branch("_jetDeepFlavor_g",           &_jetDeepFlavor_g,          "_jetDeepFlavor_g[_nJets]/D");
     outputTree->Branch("_jetHadronFlavor",           &_jetHadronFlavor,          "_jetHadronFlavor[_nJets]/i");
     outputTree->Branch("_jetIsTight",                &_jetIsTight,               "_jetIsTight[_nJets]/O");
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/O");
@@ -190,13 +197,24 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent, const int npv){
         //Old csvV2 b-tagger
         _jetCsvV2[_nJets]                 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
 
-        //new DeepCSV tagger
+        //DeepCSV tagger
         _jetDeepCsv_udsg[_nJets]          = jet.bDiscriminator("pfDeepCSVJetTags:probudsg");
         _jetDeepCsv_b[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probb");
         _jetDeepCsv_c[_nJets]             = jet.bDiscriminator("pfDeepCSVJetTags:probc");
         _jetDeepCsv_bb[_nJets]            = jet.bDiscriminator("pfDeepCSVJetTags:probbb");
         _jetDeepCsv[_nJets]               = _jetDeepCsv_b[_nJets] + _jetDeepCsv_bb[_nJets];
         if( std::isnan( _jetDeepCsv[_nJets] ) ) _jetDeepCsv[_nJets] = 0.;
+
+        //DeepFlavor taggeer 
+        _jetDeepFlavor_b[_nJets]          = jet.bDiscriminator("pfDeepFlavourJetTags:probb");
+        _jetDeepFlavor_bb[_nJets]         = jet.bDiscriminator("pfDeepFlavourJetTags:probbb");
+        _jetDeepFlavor_lepb[_nJets]       = jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
+        _jetDeepFlavor[_nJets]            = _jetDeepFlavor_b[_nJets] + _jetDeepFlavor_bb[_nJets] + _jetDeepFlavor_lepb[_nJets];
+        if( std::isnan( _jetDeepFlavor[_nJets] ) ) _jetDeepFlavor[_nJets] = 0.;
+        _jetDeepFlavor_c[_nJets]          = jet.bDiscriminator("pfDeepFlavourJetTags:probc");
+        _jetDeepFlavor_uds[_nJets]        = jet.bDiscriminator("pfDeepFlavourJetTags:probuds");
+        _jetDeepFlavor_g[_nJets]          = jet.bDiscriminator("pfDeepFlavourJetTags:probg");
+
         _jetHadronFlavor[_nJets]          = jet.hadronFlavour();
 
         _jetNeutralHadronFraction[_nJets] = jet.neutralHadronEnergyFraction();

@@ -5,9 +5,11 @@
 
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/RecoCandidate/interface/RecoCandidate.h"
+#include "DataFormats/PatCandidates/interface/Photon.h"
 
 namespace GenTools{
     const reco::GenParticle* getFirstMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
+    const int getFirstMotherIndex(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     const reco::GenParticle* getMother(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     int getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //return decay chain for a particle;
@@ -37,6 +39,8 @@ namespace GenTools{
 
     bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&); //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
     bool passParentage(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
+    bool noMesonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
+    bool phoAndPiNear(const pat::Photon& photon, const std::vector<reco::GenParticle>& genParticles);
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
 
     const reco::GenParticle* geometricMatch(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles, const bool differentId=false);
