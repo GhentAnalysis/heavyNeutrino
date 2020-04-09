@@ -1,57 +1,66 @@
-commit 0df76f19c1e46cd98107ecd3484526bce106257d
-Author: tomc <tomc@cern.ch>
-Date:   Thu Mar 26 21:03:20 2020 +0100
+commit 2aacf717f98c8f1d8904ea02b13b9b3235ebde32
+Author: tomcornelis <tomc@cern.ch>
+Date:   Thu Apr 9 17:55:04 2020 +0200
 
-    Small fix
+    Small fix in storing relIso Summer16 values in tree
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
    Changed:
-      _miniIso_80X                                       mean:   0.2014 -->   0.1991     rms:   0.4842 -->   0.4833    
-      _relIso_80X                                        mean:   0.2742 -->   0.2681     rms:   0.5991 -->   0.5962    
+      _leptonMvaTOP                                      mean:   0.2578 -->   0.2623     rms:   0.9239 -->   0.9256    
+      _phNeutralHadronIsolation                          mean:   2.8766 -->   2.8762     rms:   6.6502 -->   6.6487    
+      _relIso0p4_Summer16                                mean:   3.3869 -->   0.2613     rms:   1.2509 -->   1.0791    
+      _relIso_Summer16                                   mean:   0.0000 -->   0.1719     rms:   0.0000 -->   0.8920    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
    Changed:
-      _miniIso_80X                                       mean:   0.1213 -->   0.1197     rms:   0.3497 -->   0.3490    
-      _relIso_80X                                        mean:   0.1555 -->   0.1494     rms:   0.3839 -->   0.3813    
+      _leptonMvaTOP                                      mean:   0.4201 -->   0.4218     rms:   0.8040 -->   0.8049    
+      _phNeutralHadronIsolation                          mean:   2.3094 -->   2.3091     rms:   4.6953 -->   4.6949    
+      _phPhotonIsolation                                 mean:   6.1702 -->   6.1708     rms:  10.2968 -->  10.2988    
+      _relIso0p4_Summer16                                mean:   0.1367 -->   0.0622     rms:   0.5993 -->   0.4792    
+      _relIso_Summer16                                   mean:   0.0000 -->   0.0473     rms:   0.0000 -->   0.4411    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
    Changed:
-      _miniIso_80X                                       mean:   0.7857 -->   0.7806     rms:   0.1427 -->   0.1440    
-      _relIso_80X                                        mean:   0.9415 -->   0.9301     rms:   0.0738 -->   0.0767    
+      _phChargedIsolation                                mean:   8.4130 -->   8.4023     rms:  13.6735 -->  13.6628    
+      _relIso0p4_Summer16                                mean:   1.1032 -->   1.0861     rms:   1.7232 -->   1.7283    
+      _relIso_Summer16                                   mean:   0.0000 -->   0.5252     rms:   0.0000 -->   0.9827    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
    Changed:
-      _miniIso_80X                                       mean:   1.6979 -->   1.6896     rms:   1.5892 -->   1.5889    
-      _relIso_80X                                        mean:   3.7779 -->   3.7619     rms:   4.4042 -->   4.3997    
+      _phNeutralHadronIsolation                          mean:   1.1597 -->   1.1598     rms:   2.3575 -->   2.3578    
+      _relIso0p4_Summer16                                mean:   1.4094 -->   1.3779     rms:   1.6992 -->   1.7078    
+      _relIso_Summer16                                   mean:   0.0000 -->   1.2342     rms:   0.0000 -->   1.5212    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
    Changed:
-      _miniIso_80X                                       mean:   0.1723 -->   0.1706     rms:   0.5232 -->   0.5215    
-      _relIso_80X                                        mean:   0.2647 -->   0.2601     rms:   0.6006 -->   0.5966    
+      _leptonMvaTOP                                      mean:   0.5085 -->   0.5178     rms:   0.7228 -->   0.7141    
+      _phPhotonIsolation                                 mean:   3.7371 -->   3.7368     rms:  11.2617 -->  11.2603    
+      _relIso0p4_Summer16                                mean:   0.4417 -->   0.3147     rms:   1.0895 -->   1.0421    
+      _relIso_Summer16                                   mean:   0.0000 -->   0.2477     rms:   0.0000 -->   0.8621    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
    Changed:
-      _miniIso_80X                                       mean:   0.0261 -->   0.0249     rms:   0.0780 -->   0.0762    
-      _relIso_80X                                        mean:   0.0761 -->   0.0697     rms:   0.1926 -->   0.1861    
+      _leptonMvaTOP                                      mean:   0.7123 -->   0.7122     rms:   0.6071 -->   0.6085    
+      _phNeutralHadronIsolation                          mean:   0.9346 -->   0.9346     rms:   3.3017 -->   3.3013    
+      _relIso0p4_Summer16                                mean:   0.2766 -->   0.1379     rms:   0.8138 -->   0.5995    
+      _relIso_Summer16                                   mean:   0.0000 -->   0.0801     rms:   0.0000 -->   0.3673    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
    Changed:
-      _leptonMvaTOP                                      mean:   0.8204 -->   0.8233     rms:   0.4736 -->   0.4705    
-      _leptonMvaTTH                                      mean:   0.8582 -->   0.8596     rms:   0.4314 -->   0.4301    
-      _leptonMvatZq                                      mean:   0.8088 -->   0.8139     rms:   0.4806 -->   0.4742    
-      _miniIso_80X                                       mean:   0.0147 -->   0.0139     rms:   0.0396 -->   0.0379    
-      _relIso_80X                                        mean:   0.0465 -->   0.0441     rms:   0.1711 -->   0.1666    
+      _leptonMvaTOP                                      mean:   0.8233 -->   0.8239     rms:   0.4705 -->   0.4715    
+      _relIso0p4_Summer16                                mean:   3.2621 -->   0.1219     rms:   1.8814 -->   0.7247    
+      _relIso_Summer16                                   mean:   0.0000 -->   0.1034     rms:   0.0000 -->   0.6181    
