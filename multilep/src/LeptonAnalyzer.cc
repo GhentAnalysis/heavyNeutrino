@@ -84,7 +84,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D");
     outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
     outputTree->Branch("_relIso_80X",                   &_relIso_80X,                   "_relIso_80X[_nMu]/D"); // old, for backwards compatibility in lepton mva's
-    outputTree->Branch("_relIso_Summer16",              &_relIso_Summer16,              "_relIso_Summer16[_nMu]/D"); // old, for backwards compatibility in lepton mva's
+    outputTree->Branch("_relIso_Summer16",              &_relIso_Summer16,              "_relIso_Summer16[_nLight]/D"); // old, for backwards compatibility in lepton mva's
     outputTree->Branch("_relIsoDeltaBeta",              &_relIsoDeltaBeta,              "_relIsoDeltaBeta[_nMu]/D");
     outputTree->Branch("_relIso0p4",                    &_relIso0p4,                    "_relIso0p4[_nLight]/D");
     outputTree->Branch("_relIso0p4_Summer16",           &_relIso0p4_Summer16,           "_relIso0p4_Summer16[_nLight]/D"); // old, for backwards compatibility in lepton mva's
@@ -332,7 +332,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {_lElectronSigmaIetaIeta, _lElectronDeltaPhiSuperClusterTrack, _lElectronDeltaEtaSuperClusterTrack, _lElectronEInvMinusPInv, _lElectronHOverE} ) std::fill_n( array, _nMu, 0. );
     for(auto array : {_lPtCorr, _lPtScaleUp, _lPtScaleDown, _lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
     for(auto array : {_lECorr, _lEScaleUp, _lEScaleDown, _lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
-    for(auto array : {_relIso_Summer16, _miniIso_Spring15, _ptRatio_Summer16}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_relIso_Summer16, _relIso0p4_Summer16, _miniIso_Spring15, _ptRatio_Summer16}) std::fill_n(array, _nMu, 0.);
 
     //loop over taus
     for(const pat::Tau& tau : *taus){
