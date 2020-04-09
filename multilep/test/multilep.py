@@ -7,6 +7,9 @@ import FWCore.ParameterSet.Config as cms
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
 inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root'
 #inputFile       = 'root://ccxrootdcms.in2p3.fr:1094/pnfs/in2p3.fr/data/cms/t2data/store/data/Run2018C/EGamma/MINIAOD/12Nov2019_UL2018-v2/270000/CD1A6E73-92DF-454F-BC1C-31199CB2E02D.root'
+#inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_TuneCP5_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/70000/F447BDAD-6642-BD46-B8E9-750F7F961BA7.root'
+#inputFile       = '/store/mc/RunIIFall17MiniAODv2/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall17Fast_94X_mc2017_realistic_v15-v1/10000/00071D11-4C7A-E911-8E48-0CC47A1E0484.root'
+#inputFile       = '/store/mc/RunIIAutumn18MiniAOD/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall18Fast_102X_upgrade2018_realistic_v15-v1/50000/FBA243F4-DA64-3A40-8DD8-58A72064AD86.root'
 
 # Other default arguments
 
@@ -81,7 +84,7 @@ else:
 #JEC uncertainty for Puppi:
 jecUncertaintyFilePuppi = jecUncertaintyFile.replace('PFchs', 'PFPuppi')
 
-from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
+from EgammaUser.EgammaPostRecoTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # Updated scale and smearings
 elif is2017: setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2017-Nov17ReReco') # Rerun scale and smearings for shiftscale bug
 else:        setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='2016-Legacy')      # Default scale and smearings are ok
