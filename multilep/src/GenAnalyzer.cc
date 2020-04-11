@@ -60,7 +60,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_gen_index",                                    &_gen_index,                                    "_gen_index[_gen_n]/I");
       outputTree->Branch("_gen_motherIndex",                              &_gen_motherIndex,                              "_gen_motherIndex[_gen_n]/I");
       outputTree->Branch("_gen_daughter_n",                               &_gen_daughter_n,                               "_gen_daughter_n[_gen_n]/I");
-      outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][100]/I");
+      outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][10]/I");
     }   
 }
 
@@ -138,9 +138,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
         
           _gen_daughter_n[_gen_n] = nDaughters;
         
-          for(int d=0;d<nDaughters;++d){         
-            _gen_daughterIndex[_gen_n][nDaughters] = p.daughterRef(d).key();
-            ++_gen_daughter_n[_gen_n];
+          for(int d=0;d<nDaughters;++d){
+            _gen_daughterIndex[_gen_n][d] = p.daughterRef(d).key();
           }
         
           _gen_pt[_gen_n]                                      = p.pt();
