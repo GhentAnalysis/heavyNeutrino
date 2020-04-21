@@ -87,7 +87,7 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon, LeptonMvaHelper* mvaH
             _lEta[_nL],
             _selectedTrackMult[_nL],
             _miniIsoCharged[_nL],
-            _miniIso[_nL] - _miniIsoCharged[_nL],
+            (multilepAnalyzer->is2016() ? _miniIso_80X[_nL] : _miniIso[_nL]) - _miniIsoCharged[_nL],
             _ptRel[_nL],
             _ptRatio[_nL],
             _closestJetDeepCsv[_nL],
@@ -95,7 +95,8 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Muon& muon, LeptonMvaHelper* mvaH
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
-            _relIso[_nL],
+            multilepAnalyzer->is2016() ? _relIso_80X[_nL] : _relIso[_nL],
+	    _relIsoDeltaBeta[_nL],
             muon.segmentCompatibility()
             );
 }
@@ -105,15 +106,15 @@ double LeptonAnalyzer::leptonMvaVal(const pat::Electron& electron, LeptonMvaHelp
             _lEta[_nL],
             _selectedTrackMult[_nL],
             _miniIsoCharged[_nL],
-            _miniIso[_nL] - _miniIsoCharged[_nL],
+            (multilepAnalyzer->is2016() ? _miniIso_Spring15[_nL] : _miniIso[_nL]) - _miniIsoCharged[_nL],
             _ptRel[_nL],
-            _ptRatio[_nL],
+            multilepAnalyzer->is2016() ? _ptRatio_Summer16[_nL] : _ptRatio[_nL],
             _closestJetDeepCsv[_nL],
             _closestJetDeepFlavor[_nL],
             _3dIPSig[_nL],
             _dxy[_nL],
             _dz[_nL],
-            _relIso[_nL],
+            multilepAnalyzer->is2016() ? _relIso_Summer16[_nL] : _relIso[_nL],
             _lElectronMvaSummer16GP[_nL],
             _lElectronMvaFall17v1NoIso[_nL],
             _lElectronMvaFall17NoIso[_nL]

@@ -80,24 +80,23 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_qEta",		             &_gen_qEta,			      "_gen_qEta[_gen_nq]/D");
     outputTree->Branch("_gen_qPhi",		             &_gen_qPhi,			      "_gen_qPhi[_gen_nq]/D");
     outputTree->Branch("_gen_qE",		   	         &_gen_qE,			          "_gen_qE[_gen_nq]/D");
-    if( multilepAnalyzer->storeGenParticles )
-     {	
-	outputTree->Branch("_gen_n",                                        &_gen_n,                                        "_gen_n/I");
-	outputTree->Branch("_gen_pt",                                       &_gen_pt,                                       "_gen_pt[_gen_n]/D");
-	outputTree->Branch("_gen_eta",                                      &_gen_eta,                                      "_gen_eta[_gen_n]/D");
-	outputTree->Branch("_gen_phi",                                      &_gen_phi,                                      "_gen_phi[_gen_n]/D");
-	outputTree->Branch("_gen_E",                                        &_gen_E,                                        "_gen_E[_gen_n]/D");
-	outputTree->Branch("_gen_pdgId",                                    &_gen_pdgId,                                    "_gen_pdgId[_gen_n]/I");
-	outputTree->Branch("_gen_charge",                                   &_gen_charge,                                   "_gen_charge[_gen_n]/I");
-	outputTree->Branch("_gen_status",                                   &_gen_status,                                   "_gen_status[_gen_n]/I");
-	outputTree->Branch("_gen_isPromptFinalState",                       &_gen_isPromptFinalState,                       "_gen_isPromptFinalState[_gen_n]/O");
-	outputTree->Branch("_gen_isDirectPromptTauDecayProductFinalState",  &_gen_isDirectPromptTauDecayProductFinalState,  "_gen_isDirectPromptTauDecayProductFinalState[_gen_n]/O");
-	outputTree->Branch("_gen_isLastCopy",                               &_gen_isLastCopy,                               "_gen_isLastCopy[_gen_n]/O");
-	outputTree->Branch("_gen_index",                                    &_gen_index,                                    "_gen_index[_gen_n]/I");
-	outputTree->Branch("_gen_motherIndex",                              &_gen_motherIndex,                              "_gen_motherIndex[_gen_n]/I");
-	outputTree->Branch("_gen_daughter_n",                               &_gen_daughter_n,                               "_gen_daughter_n[_gen_n]/I");
-	outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][100]/I");
-     }   
+    if(multilepAnalyzer->storeGenParticles){
+      outputTree->Branch("_gen_n",                                        &_gen_n,                                        "_gen_n/I");
+      outputTree->Branch("_gen_pt",                                       &_gen_pt,                                       "_gen_pt[_gen_n]/D");
+      outputTree->Branch("_gen_eta",                                      &_gen_eta,                                      "_gen_eta[_gen_n]/D");
+      outputTree->Branch("_gen_phi",                                      &_gen_phi,                                      "_gen_phi[_gen_n]/D");
+      outputTree->Branch("_gen_E",                                        &_gen_E,                                        "_gen_E[_gen_n]/D");
+      outputTree->Branch("_gen_pdgId",                                    &_gen_pdgId,                                    "_gen_pdgId[_gen_n]/I");
+      outputTree->Branch("_gen_charge",                                   &_gen_charge,                                   "_gen_charge[_gen_n]/I");
+      outputTree->Branch("_gen_status",                                   &_gen_status,                                   "_gen_status[_gen_n]/I");
+      outputTree->Branch("_gen_isPromptFinalState",                       &_gen_isPromptFinalState,                       "_gen_isPromptFinalState[_gen_n]/O");
+      outputTree->Branch("_gen_isDirectPromptTauDecayProductFinalState",  &_gen_isDirectPromptTauDecayProductFinalState,  "_gen_isDirectPromptTauDecayProductFinalState[_gen_n]/O");
+      outputTree->Branch("_gen_isLastCopy",                               &_gen_isLastCopy,                               "_gen_isLastCopy[_gen_n]/O");
+      outputTree->Branch("_gen_index",                                    &_gen_index,                                    "_gen_index[_gen_n]/I");
+      outputTree->Branch("_gen_motherIndex",                              &_gen_motherIndex,                              "_gen_motherIndex[_gen_n]/I");
+      outputTree->Branch("_gen_daughter_n",                               &_gen_daughter_n,                               "_gen_daughter_n[_gen_n]/I");
+      outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][10]/I");
+    }   
 }
 
 
@@ -227,41 +226,37 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 	        }
         }
 
-       //store all generator level particles
-       if( multilepAnalyzer->storeGenParticles )
-	 {	    
-	    int indexGen = _gen_n;
+        //store all generator level particles
+        if(multilepAnalyzer->storeGenParticles){        
+          int indexGen = _gen_n;
 
-	    if( _gen_n == gen_n_max )
-	      {
-		 throw cms::Exception ("GenAnalyzer") << "Reaching the max number of stored gen particles (" << gen_n_max << ")\n";
-	      }
+          if(_gen_n == gen_n_max){
+            throw cms::Exception ("GenAnalyzer") << "Reaching the max number of stored gen particles (" << gen_n_max << ")\n";
+          }
        
-	    int nDaughters = p.numberOfDaughters();
-	    
-	    _gen_daughter_n[_gen_n] = nDaughters;
-	    
-	    for( int d=0;d<nDaughters;++d )
-	      {		 
-		 _gen_daughterIndex[_gen_n][nDaughters] = p.daughterRef(d).key();
-		 ++_gen_daughter_n[_gen_n];
-	      }
-	    
-	    _gen_pt[_gen_n]                                      = p.pt();
-	    _gen_eta[_gen_n]                                     = p.eta();
-	    _gen_phi[_gen_n]                                     = p.phi();
-	    _gen_E[_gen_n]                                       = p.energy();
-	    _gen_pdgId[_gen_n]                                   = p.pdgId();
-	    _gen_charge[_gen_n]                                  = p.charge();
-	    _gen_status[_gen_n]                                  = p.status();
-	    _gen_isPromptFinalState[_gen_n]                      = p.isPromptFinalState();
-	    _gen_isDirectPromptTauDecayProductFinalState[_gen_n] = p.isDirectPromptTauDecayProductFinalState();
-	    _gen_isLastCopy[_gen_n]                              = p.isLastCopy();
-	    _gen_index[_gen_n]                                   = indexGen;
-	    _gen_motherIndex[_gen_n]                             = GenTools::getFirstMotherIndex(p, *genParticles);
-	    ++_gen_n;
-	 }
-    }
+          int nDaughters = p.numberOfDaughters();
+        
+          _gen_daughter_n[_gen_n] = nDaughters;
+        
+          for(int d=0;d<nDaughters;++d){
+            _gen_daughterIndex[_gen_n][d] = p.daughterRef(d).key();
+          }
+        
+          _gen_pt[_gen_n]                                      = p.pt();
+          _gen_eta[_gen_n]                                     = p.eta();
+          _gen_phi[_gen_n]                                     = p.phi();
+          _gen_E[_gen_n]                                       = p.energy();
+          _gen_pdgId[_gen_n]                                   = p.pdgId();
+          _gen_charge[_gen_n]                                  = p.charge();
+          _gen_status[_gen_n]                                  = p.status();
+          _gen_isPromptFinalState[_gen_n]                      = p.isPromptFinalState();
+          _gen_isDirectPromptTauDecayProductFinalState[_gen_n] = p.isDirectPromptTauDecayProductFinalState();
+          _gen_isLastCopy[_gen_n]                              = p.isLastCopy();
+          _gen_index[_gen_n]                                   = indexGen;
+          _gen_motherIndex[_gen_n]                             = GenTools::getFirstMotherIndex(p, *genParticles);
+          ++_gen_n;
+        }
+    }   
 
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();
