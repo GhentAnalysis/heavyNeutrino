@@ -101,7 +101,8 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     tauCounter->Fill(_nTau, _weight);
 
     //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
-    _nLheWeights = std::min( (unsigned) 110, (unsigned) lheEventInfo->weights().size()); // 110 for MC@NLO, 254 for powheg, 446(!) for madgraph, 0 for some old samples,...
+    _nLheWeights = std::min( (unsigned) 148, (unsigned) lheEventInfo->weights().size());
+    //most samples: 9 q2 weights + 101 pdfs + 2 alpha s (=pdf variation 101 and 102) = 112 || new ttg and maybe other exceptions: 45 q2 weights -> 148 total
     for(unsigned i = 0; i < _nLheWeights; ++i){
         _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP();
         lheCounter->Fill(i + 0.5, _lheWeight[i]*_weight);
