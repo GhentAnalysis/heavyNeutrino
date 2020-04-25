@@ -1,5 +1,5 @@
-#ifndef MULTILEP_H
-#define MULTILEP_H
+#ifndef MULTILEPFILTER_H
+#define MULTILEPFILTER_H
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/one/EDFilter.h"
