@@ -221,6 +221,17 @@ process.dilepFilter = cms.EDFilter('multilepFilter',
   is2018                        = cms.untracked.bool(is2018),
 )
 
+#
+# if using a filter before running blackJackAndHookers module, run this module first to calculate hCounter and other 'global sample' variables before filtering events
+#
+process.blackJackAndHookersGlobal = cms.EDAnalyzer('multilepGlobal',
+  vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
+  genEventInfo                  = cms.InputTag("generator"),
+  lheEventInfo                  = cms.InputTag("externalLHEProducer"),
+  pileUpInfo                    = cms.InputTag("slimmedAddPileupInfo"),
+  isData                        = cms.untracked.bool(isData),
+)
+
 def getJSON(is2017, is2018):
     if is2018:   return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
     elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
@@ -233,6 +244,7 @@ if isData:
   process.source.lumisToProcess = LumiList.LumiList(filename = os.path.join(jsonDir, getJSON(is2017, is2018))).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
+                     process.blackJackAndHookersGlobal *
                      process.dilepFilter *
                      process.egammaPostRecoSeq *
                      process.jetSequence *
