@@ -243,20 +243,28 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _leptonMvaTOP[_nL]   = leptonMvaVal(mu, leptonMvaComputerTOP);
 
         //apply rochester corrections for muons
+        //NOTE : the uncertainties computed are conservative envelopes. For more precision they can be split into several independent components, probably resulting in a smaller total unc. because of correlation effects.
         double rochesterCorr = 1.;
+        double rochesterCorrUnc = 0.;
         if( multilepAnalyzer->isData() ){
             rochesterCorr = rochesterCorrections.kScaleDT( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL] );
+            rochesterCorrUnc = rochesterCorrections.kScaleDTerror( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL] );
         } else {
-            if( _lHasMatch[_nL] ){
+            if( _lHasMatch[_nL] && _lMatchPt[_nL] > 1e-6 ){
                 rochesterCorr = rochesterCorrections.kSpreadMC( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], _lMatchPt[_nL] );
+                rochesterCorrUnc = rochesterCorrections.kSpreadMCerror( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], _lMatchPt[_nL] );
             } else {
-                rochesterCorr = rochesterCorrections.kSmearMC( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], mu.bestTrack()->hitPattern().trackerLayersWithMeasurement(), gRandom->Rndm() );
+                double randomNum = gRandom->Rndm();
+                rochesterCorr = rochesterCorrections.kSmearMC( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], mu.bestTrack()->hitPattern().trackerLayersWithMeasurement(), randomNum );
+                rochesterCorrUnc = rochesterCorrections.kSmearMCerror( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], mu.bestTrack()->hitPattern().trackerLayersWithMeasurement(), randomNum );
             }
         }
         _lPtCorr[_nL]                   = _lPt[_nL]*rochesterCorr;
-
+        _lPtScaleDown[_nL]              = _lPtCorr[_nL]*( 1. - rochesterCorrUnc );
+        _lPtScaleUp[_nL]                = _lPtCorr[_nL]*( 1. + rochesterCorrUnc );
         _lECorr[_nL]                    = _lE[_nL]*rochesterCorr;
-
+        _lEScaleDown[_nL]               = _lECorr[_nL]*( 1. - rochesterCorrUnc );
+        _lEScaleUp[_nL]                 = _lECorr[_nL]*( 1. + rochesterCorrUnc );
         ++_nMu;
         ++_nL;
         ++_nLight;
@@ -348,10 +356,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {_lElectronPassEmu, _lElectronPassConvVeto, _lElectronChargeConst}) std::fill_n(array, _nMu, false);
     for(auto array : {_lElectronMissingHits}) std::fill_n(array, _nMu, 0.);
     for(auto array : {_lElectronSigmaIetaIeta, _lElectronDeltaPhiSuperClusterTrack, _lElectronDeltaEtaSuperClusterTrack, _lElectronEInvMinusPInv, _lElectronHOverE} ) std::fill_n( array, _nMu, 0. );
-    //for(auto array : {_lPtCorr, _lPtScaleUp, _lPtScaleDown, _lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
-    //for(auto array : {_lECorr, _lEScaleUp, _lEScaleDown, _lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
-    for(auto array : {_lPtScaleUp, _lPtScaleDown, _lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
-    for(auto array : {_lEScaleUp, _lEScaleDown, _lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
     for(auto array : {_relIso_Summer16, _relIso0p4_Summer16, _miniIso_Spring15, _ptRatio_Summer16}) std::fill_n(array, _nMu, 0.);
 
     //loop over taus
