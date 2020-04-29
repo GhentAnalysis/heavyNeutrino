@@ -27,7 +27,7 @@ class LheAnalyzer {
 
     unsigned _nLheWeights = 0;
     unsigned _nTau;
-    double _lheWeight[110];
+    double _lheWeight[148];
 
     unsigned _nPsWeights = 0;
     double _psWeight[14];
