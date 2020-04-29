@@ -25,14 +25,16 @@ class LheAnalyzer {
     TH1D*  tauCounter;
     TH1D*  nTrueInteractions;
 
+    static constexpr unsigned maxNumberOfLheWeights;
     unsigned _nLheWeights = 0;
     unsigned _nTau;
-    double _lheWeight[148];
+    double _lheWeight[ maxNumberOfLheWeights ];
 
+    static constexpr unsigned maxNumberOfPsWeights;
     unsigned _nPsWeights = 0;
-    double _psWeight[14];
+    double _psWeight[ maxNumberOfPsWeights ];
 
-    static const unsigned nLhe_max = 25;  // maximum number of LHE particles stored (the exact number of LHE particles will typically be the same for all events of a given process)
+    static constexpr unsigned nLhe_max = 25;  // maximum number of LHE particles stored (the exact number of LHE particles will typically be the same for all events of a given process)
     unsigned              _nLheParticles = 0;
     int                   _lheStatus[nLhe_max];
     int                   _lhePdgId[nLhe_max];
