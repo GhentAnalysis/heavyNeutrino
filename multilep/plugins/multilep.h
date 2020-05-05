@@ -154,7 +154,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         ParticleLevelAnalyzer* particleLevelAnalyzer;
         SUSYMassAnalyzer*      susyMassAnalyzer;
         JEC*                   jec;
-        JEC*                   jecPuppi;
+        //JEC*                   jecPuppi;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;

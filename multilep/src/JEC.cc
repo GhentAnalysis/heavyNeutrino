@@ -16,7 +16,7 @@ JEC::~JEC(){}
 void JEC::updateJEC(const unsigned long runNumber){
     if(getJECName(runNumber) != currentJEC){
         currentJEC = getJECName(runNumber);
-        setJEC(getJECName(runNumber) );
+        //setJEC(getJECName(runNumber) );
         setRunEra(runNumber);//purely for XY corrections
     }
 }

@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-def addJetSequence( process, isData, is2017, is2018, isFastSim ):
+def addJetSequence( process, isData, is2017, is2018, isFastSim, isUL ):
   #
   # Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
   #
@@ -11,29 +11,45 @@ def addJetSequence( process, isData, is2017, is2018, isFastSim ):
   else:      jetCorrectorLevels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
+  from CondCore.CondDB.CondDB_cfi import CondDB
  
-  if isFastSim : 
-    from CondCore.CondDB.CondDB_cfi import CondDB
-    if is2018:
-        JECVersion = 'Autumn18_FastSimV1_MC'
-    elif is2017:
-        JECVersion = 'Fall17_FastSimV1_MC'
-    else :
-        JECVersion = 'Summer16_FastSimV1_MC'
+  #
+  # Load specific JEC through sqlite file
+  #
+  if not isData:
+    if isUL:
+        #if is2017:   JECVersion = 'Fall17_17Nov2017_V32_102X_MC'
+        if is2017:   JECVersion = 'Summer19UL17_V4_MC'
+        #if is2017:   JECVersion = 'Summer19UL17_V1_ComplexL1_MC'
+        else:        JECVersion = ''
+    else:
+      if isFastSim : 
+        if is2018:   JECVersion = 'Autumn18_FastSimV1_MC'
+        elif is2017: JECVersion = 'Fall17_FastSimV1_MC'
+        else :       JECVersion = 'Summer16_FastSimV1_MC'
+      else:
+        if is2018:   JECVersion = 'Autumn18_V19_MC'
+        elif is2017: JECVersion = 'Fall17_17Nov2017_V32_102X_MC'
+        else:        JECVersion = 'Summer16_07Aug2017_V11_MC'
 
-    CondDBJECFile = CondDB.clone( connect = cms.string('sqlite_fip:heavyNeutrino/multilep/data/JEC/{}.db'.format( JECVersion ) ) )
-    process.jec = cms.ESSource('PoolDBESSource',
-      CondDBJECFile,
-      toGet = cms.VPSet(
-        cms.PSet(
-          record = cms.string('JetCorrectionsRecord'),
-          tag    = cms.string('JetCorrectorParametersCollection_{}_AK4PFchs'.format( JECVersion ) ),
-          label  = cms.untracked.string('AK4PFchs')
-        ),
+    if not JECVersion == '':
+      CondDBJECFile = CondDB.clone( connect = cms.string('sqlite_fip:heavyNeutrino/multilep/data/JEC/{}.db'.format( JECVersion ) ) )
+      process.jec = cms.ESSource('PoolDBESSource',
+        CondDBJECFile,
+        toGet = cms.VPSet(
+          cms.PSet(
+            record = cms.string('JetCorrectionsRecord'),
+            tag    = cms.string('JetCorrectorParametersCollection_{}_AK4PFchs'.format( JECVersion ) ),
+            label  = cms.untracked.string('AK4PFchs')
+          ),
+          #cms.PSet(
+          #    record = cms.string('JetCorrectionsRecord'),
+          #    tag    = cms.string('JetCorrectorParametersCollection_{}_AK4PFPuppi'.format( JECVersion ) ),
+          #    label  = cms.untracked.string('AK4PFPuppi')
+          #) 
+        )
       )
-    )
-    process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
-
+      process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
   updateJetCollection(
     process,
@@ -55,6 +71,35 @@ def addJetSequence( process, isData, is2017, is2018, isFastSim ):
   process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
 
   #
+  # Recompute MET with preferred JEC (need to add fullPatMetSequence to path)
+  # https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_or_10
+  # Make sure the correct JEC has been loaded
+  #
+  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+  #Type 1 PFMET
+  runMetCorAndUncFromMiniAOD (
+      process,
+      isData = isData
+  )
+  
+  #PUPPI MET
+  from PhysicsTools.PatAlgos.slimming.puppiForMET_cff import makePuppiesFromMiniAOD
+  makePuppiesFromMiniAOD( process, True );
+  runMetCorAndUncFromMiniAOD(process,
+                             isData= isData,
+                             metType="Puppi",
+                             postfix="Puppi",
+                             jetFlavor="AK4PFPuppi",
+                             )
+  process.puppiNoLep.useExistingWeights = False
+  process.puppi.useExistingWeights = False
+  
+  #Add MET sequences to path
+  process.jetSequence *= process.puppiMETSequence
+  process.jetSequence *= process.fullPatMetSequence
+  process.jetSequence *= process.fullPatMetSequencePuppi
+  
+  #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
   # Run three times the SmearedPATJetProducer for nominal, up and down variations
   #
@@ -75,19 +120,11 @@ def addJetSequence( process, isData, is2017, is2018, isFastSim ):
       setattr(process, 'slimmedJetsCorrectedAndSmeared'+j, jetSmearing)
       process.jetSequence *= jetSmearing
 
-  # Propagate JEC to MET (need to add fullPatMetSequence to path)
-  # https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_or_10
-  from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-  runMetCorAndUncFromMiniAOD(process,
-    isData = isData,
-    fixEE2017 = is2017,
-    fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139}
-  )
-
   #
   # To get updated ecalBadCalibReducedMINIAODFilter
   # See https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#How_to_run_ecal_BadCalibReducedM
   # Recipe is preliminary, i.e. recommended to check for updates
+  # UltraLegacy doesn't have working filters yet! add them when available
   #
   if(is2017 or is2018):
     process.load('RecoMET.METFilters.ecalBadCalibFilter_cfi')

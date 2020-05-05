@@ -29,16 +29,16 @@ void PhotonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_phMvaF17v1p1",                       &_phMvaF17v1p1,                   "_phMvaF17v1p1[_nPh]/D");
     outputTree->Branch("_phMvaF17v2",                         &_phMvaF17v2,                     "_phMvaF17v2[_nPh]/D");
     outputTree->Branch("_phRandomConeChargedIsolation",       &_phRandomConeChargedIsolation,   "_phRandomConeChargedIsolation[_nPh]/D");
-    outputTree->Branch("_phChargedIsolation",                 &_phChargedIsolation,             "_phChargedIsolation[_nPh]/D");
-    outputTree->Branch("_phNeutralHadronIsolation",           &_phNeutralHadronIsolation,       "_phNeutralHadronIsolation[_nPh]/D");
+    //outputTree->Branch("_phChargedIsolation",                 &_phChargedIsolation,             "_phChargedIsolation[_nPh]/D");
+    //outputTree->Branch("_phNeutralHadronIsolation",           &_phNeutralHadronIsolation,       "_phNeutralHadronIsolation[_nPh]/D");
 
     outputTree->Branch("_rhoCorrCharged",                     &_rhoCorrCharged,                 "_rhoCorrCharged[_nPh]/D");
     outputTree->Branch("_rhoCorrNeutral",                     &_rhoCorrNeutral,                 "_rhoCorrNeutral[_nPh]/D");
     outputTree->Branch("_rhoCorrPhotons",                     &_rhoCorrPhotons,                 "_rhoCorrPhotons[_nPh]/D");
     outputTree->Branch("_puChargedHadronIso",                 &_puChargedHadronIso,             "_puChargedHadronIso[_nPh]/D");
-    outputTree->Branch("_phoWorstChargedIsolation",           &_phoWorstChargedIsolation,       "_phoWorstChargedIsolation[_nPh]/D");
+    //outputTree->Branch("_phoWorstChargedIsolation",           &_phoWorstChargedIsolation,       "_phoWorstChargedIsolation[_nPh]/D");
 
-    outputTree->Branch("_phPhotonIsolation",                  &_phPhotonIsolation,              "_phPhotonIsolation[_nPh]/D");
+    //outputTree->Branch("_phPhotonIsolation",                  &_phPhotonIsolation,              "_phPhotonIsolation[_nPh]/D");
     outputTree->Branch("_phSigmaIetaIeta",                    &_phSigmaIetaIeta,                "_phSigmaIetaIeta[_nPh]/D");
     outputTree->Branch("_phHadronicOverEm",                   &_phHadronicOverEm,               "_phHadronicOverEm[_nPh]/D");
     outputTree->Branch("_phHadTowOverEm",                     &_phHadTowOverEm,                 "_phHadTowOverEm[_nPh]/D");
@@ -102,11 +102,11 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         _phMvaF17v2[_nPh]                   = photon->userFloat("PhotonMVAEstimatorRunIIFall17v2Values");
 
         _phRandomConeChargedIsolation[_nPh] = randomConeIsoUnCorr < 0 ? -1 : std::max(0., randomConeIsoUnCorr - _rhoCorrCharged[_nPh]); // keep -1 when randomConeIso algorithm failed
-        _phChargedIsolation[_nPh]           = std::max(0., photon->userFloat("phoChargedIsolation") - _rhoCorrCharged[_nPh]);
-        _phNeutralHadronIsolation[_nPh]     = std::max(0., photon->userFloat("phoNeutralHadronIsolation") - _rhoCorrNeutral[_nPh]);
-        _phPhotonIsolation[_nPh]            = std::max(0., photon->userFloat("phoPhotonIsolation") - _rhoCorrPhotons[_nPh]);
+        //_phChargedIsolation[_nPh]           = std::max(0., photon->userFloat("phoChargedIsolation") - _rhoCorrCharged[_nPh]);
+        //_phNeutralHadronIsolation[_nPh]     = std::max(0., photon->userFloat("phoNeutralHadronIsolation") - _rhoCorrNeutral[_nPh]);
+        //_phPhotonIsolation[_nPh]            = std::max(0., photon->userFloat("phoPhotonIsolation") - _rhoCorrPhotons[_nPh]);
         _puChargedHadronIso[_nPh]           = photon->userIsolation(pat::PfPUChargedHadronIso);
-        _phoWorstChargedIsolation[_nPh]     = photon->userFloat("phoWorstChargedIsolation");
+        //_phoWorstChargedIsolation[_nPh]     = photon->userFloat("phoWorstChargedIsolation");
 
         _phSigmaIetaIeta[_nPh]              = photon->full5x5_sigmaIetaIeta();
         _phHadronicOverEm[_nPh]             = photon->hadronicOverEm();
