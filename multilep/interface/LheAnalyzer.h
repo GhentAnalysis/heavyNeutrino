@@ -25,12 +25,12 @@ class LheAnalyzer {
     TH1D*  tauCounter;
     TH1D*  nTrueInteractions;
 
-    static constexpr unsigned maxNumberOfLheWeights;
+    static constexpr unsigned maxNumberOfLheWeights = 148;
     unsigned _nLheWeights = 0;
     unsigned _nTau;
     double _lheWeight[ maxNumberOfLheWeights ];
 
-    static constexpr unsigned maxNumberOfPsWeights;
+    static constexpr unsigned maxNumberOfPsWeights = 14;
     unsigned _nPsWeights = 0;
     double _psWeight[ maxNumberOfPsWeights ];
 
