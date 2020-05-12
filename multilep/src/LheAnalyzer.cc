@@ -19,8 +19,8 @@ LheAnalyzer::LheAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     if( multilepAnalyzer->isData() ) return;
     hCounter   = fs->make<TH1D>("hCounter",   "Events counter", 1, 0, 1);
-    lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",    110, 0, 110); //Counter to determine effect of pdf and scale uncertainties on the MC cross section
-    psCounter  = fs->make<TH1D>("psCounter",  "Lhe weights",    14, 0, 14);
+    lheCounter = fs->make<TH1D>("lheCounter", "Lhe weights",    maxNumberOfLheWeights, 0, maxNumberOfLheWeights); //Counter to determine effect of pdf and scale uncertainties on the MC cross section
+    psCounter  = fs->make<TH1D>("psCounter",  "Lhe weights",    maxNumberOfPsWeights, 0, maxNumberOfPsWeights);
     tauCounter = fs->make<TH1D>("tauCounter", "Number of taus", 3, 0, 3);
 
     nTrueInteractions = fs->make<TH1D>("nTrueInteractions", "nTrueInteractions", 100, 0, 100);
@@ -36,16 +36,16 @@ void LheAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     outputTree->Branch("_psWeight",      &_psWeight,      "_psWeight[_nPsWeights]/D");
 
     if(multilepAnalyzer->storeLheParticles){
-      outputTree->Branch("_nLheParticles", &_nLheParticles, "_nLheParticles/i");
-      outputTree->Branch("_lheStatus",     &_lheStatus,     "_lheStatus[_nLheParticles]/I");
-      outputTree->Branch("_lhePdgId",      &_lhePdgId,      "_lhePdgId[_nLheParticles]/I");
-      outputTree->Branch("_lheMother1",    &_lheMother1,    "_lheMother1[_nLheParticles]/I");
-      outputTree->Branch("_lheMother2",    &_lheMother2,    "_lheMother2[_nLheParticles]/I");
-      outputTree->Branch("_lhePt",         &_lhePt,         "_lhePt[_nLheParticles]/F");
-      outputTree->Branch("_lheEta",        &_lheEta,        "_lheEta[_nLheParticles]/F");
-      outputTree->Branch("_lhePhi",        &_lhePhi,        "_lhePhi[_nLheParticles]/F");
-      outputTree->Branch("_lheE",          &_lheE,          "_lheE[_nLheParticles]/F");
-      outputTree->Branch("_lheMass",       &_lheMass,       "_lheMass[_nLheParticles]/F");
+        outputTree->Branch("_nLheParticles", &_nLheParticles, "_nLheParticles/i");
+        outputTree->Branch("_lheStatus",     &_lheStatus,     "_lheStatus[_nLheParticles]/I");
+        outputTree->Branch("_lhePdgId",      &_lhePdgId,      "_lhePdgId[_nLheParticles]/I");
+        outputTree->Branch("_lheMother1",    &_lheMother1,    "_lheMother1[_nLheParticles]/I");
+        outputTree->Branch("_lheMother2",    &_lheMother2,    "_lheMother2[_nLheParticles]/I");
+        outputTree->Branch("_lhePt",         &_lhePt,         "_lhePt[_nLheParticles]/F");
+        outputTree->Branch("_lheEta",        &_lheEta,        "_lheEta[_nLheParticles]/F");
+        outputTree->Branch("_lhePhi",        &_lhePhi,        "_lhePhi[_nLheParticles]/F");
+        outputTree->Branch("_lheE",          &_lheE,          "_lheE[_nLheParticles]/F");
+        outputTree->Branch("_lheMass",       &_lheMass,       "_lheMass[_nLheParticles]/F");
     }
 }
 
@@ -73,7 +73,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     // See http://home.thep.lu.se/~leif/LHEF/classLHEF_1_1HEPEUP.html for more detailes
     _nLheParticles = lheEventInfo->hepeup().NUP;
     if(_nLheParticles > nLhe_max){
-      throw cms::Exception("maxLheParticles") << "This process has " << _nLheParticles << " lhe particles. Please increase nLhe_max in LheAnalyzer.h.\n";
+        throw cms::Exception("maxLheParticles") << "This process has " << _nLheParticles << " lhe particles. Please increase nLhe_max in LheAnalyzer.h.\n";
     }
     for(unsigned i = 0; i < _nLheParticles; ++i){
         _lheStatus[i]          = lheEventInfo->hepeup().ISTUP[i];
@@ -101,7 +101,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
     tauCounter->Fill(_nTau, _weight);
 
     //Store LHE weights to compute pdf and scale uncertainties, as described on https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
-    _nLheWeights = std::min( (unsigned) 148, (unsigned) lheEventInfo->weights().size());
+    _nLheWeights = std::min( maxNumberOfLheWeights, static_cast< unsigned >( lheEventInfo->weights().size() ) );
     //most samples: 9 q2 weights + 101 pdfs + 2 alpha s (=pdf variation 101 and 102) = 112 || new ttg and maybe other exceptions: 45 q2 weights -> 148 total
     for(unsigned i = 0; i < _nLheWeights; ++i){
         _lheWeight[i] = lheEventInfo->weights()[i].wgt/lheEventInfo->originalXWGTUP();
@@ -110,7 +110,7 @@ void LheAnalyzer::analyze(const edm::Event& iEvent){
 
     //some tests for PS weight extraction
     const std::vector<double>& psWeights = genEventInfo->weights();
-    _nPsWeights = std::min( (unsigned) 14, (unsigned) psWeights.size() );
+    _nPsWeights = std::min( maxNumberOfPsWeights, static_cast< unsigned >( psWeights.size() ) );
     for(unsigned ps = 0; ps < _nPsWeights; ++ps){
         _psWeight[ps] = psWeights[ps]/_weight;
         psCounter->Fill(ps + 0.5, _psWeight[ps]*_weight);

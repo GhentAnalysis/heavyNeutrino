@@ -4,6 +4,7 @@
 #include "heavyNeutrino/multilep/interface/GenTools.h"
 #include "heavyNeutrino/multilep/interface/TauTools.h"
 #include "TLorentzVector.h"
+#include "TRandom.h"
 #include <algorithm>
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
@@ -21,6 +22,7 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, "TTH", year );
     leptonMvaComputertZq = new LeptonMvaHelper(iConfig, "TZQ", year );
     leptonMvaComputerTOP = new LeptonMvaHelper(iConfig, "TOP", year );
+    rochesterCorrections.init( iConfig.getParameter<edm::FileInPath>("rochesterCorrectionFile").fullPath() );
 };
 
 LeptonAnalyzer::~LeptonAnalyzer(){
@@ -111,6 +113,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
         outputTree->Branch("_lIsPrompt",                  &_lIsPrompt,                    "_lIsPrompt[_nL]/O");
         outputTree->Branch("_lMatchPdgId",                &_lMatchPdgId,                  "_lMatchPdgId[_nL]/I");
         outputTree->Branch("_lMatchCharge",               &_lMatchCharge,                 "_lMatchCharge[_nLight]/I");
+        outputTree->Branch("_lMatchPt",                   &_lMatchPt,                     "_lMatchPt[_nLight]/D");
+        outputTree->Branch("_lHasMatch",                  &_lHasMatch,                    "_lHasMatch[_nLight]/O");
         outputTree->Branch("_tauGenStatus",               &_tauGenStatus,                 "_tauGenStatus[_nL]/i");
         outputTree->Branch("_lMomPdgId",                  &_lMomPdgId,                    "_lMomPdgId[_nL]/I");
         outputTree->Branch("_lProvenance",                &_lProvenance,                  "_lProvenance[_nL]/i");
@@ -236,9 +240,31 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho, false);
         _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
-
         _leptonMvaTOP[_nL]   = leptonMvaVal(mu, leptonMvaComputerTOP);
-       
+
+        //apply rochester corrections for muons
+        //NOTE : the uncertainties computed are conservative envelopes. For more precision they can be split into several independent components, probably resulting in a smaller total unc. because of correlation effects.
+        double rochesterCorr = 1.;
+        double rochesterCorrUnc = 0.;
+        if( multilepAnalyzer->isData() ){
+            rochesterCorr = rochesterCorrections.kScaleDT( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL] );
+            rochesterCorrUnc = rochesterCorrections.kScaleDTerror( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL] );
+        } else {
+            if( _lHasMatch[_nL] && _lMatchPt[_nL] > 1e-6 ){
+                rochesterCorr = rochesterCorrections.kSpreadMC( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], _lMatchPt[_nL] );
+                rochesterCorrUnc = rochesterCorrections.kSpreadMCerror( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], _lMatchPt[_nL] );
+            } else {
+                double randomNum = gRandom->Rndm();
+                rochesterCorr = rochesterCorrections.kSmearMC( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], mu.bestTrack()->hitPattern().trackerLayersWithMeasurement(), randomNum );
+                rochesterCorrUnc = rochesterCorrections.kSmearMCerror( _lCharge[_nL], _lPt[_nL], _lEta[_nL], _lPhi[_nL], mu.bestTrack()->hitPattern().trackerLayersWithMeasurement(), randomNum );
+            }
+        }
+        _lPtCorr[_nL]                   = _lPt[_nL]*rochesterCorr;
+        _lPtScaleDown[_nL]              = _lPtCorr[_nL]*( 1. - rochesterCorrUnc );
+        _lPtScaleUp[_nL]                = _lPtCorr[_nL]*( 1. + rochesterCorrUnc );
+        _lECorr[_nL]                    = _lE[_nL]*rochesterCorr;
+        _lEScaleDown[_nL]               = _lECorr[_nL]*( 1. - rochesterCorrUnc );
+        _lEScaleUp[_nL]                 = _lECorr[_nL]*( 1. + rochesterCorrUnc );
         ++_nMu;
         ++_nL;
         ++_nLight;
@@ -330,8 +356,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {_lElectronPassEmu, _lElectronPassConvVeto, _lElectronChargeConst}) std::fill_n(array, _nMu, false);
     for(auto array : {_lElectronMissingHits}) std::fill_n(array, _nMu, 0.);
     for(auto array : {_lElectronSigmaIetaIeta, _lElectronDeltaPhiSuperClusterTrack, _lElectronDeltaEtaSuperClusterTrack, _lElectronEInvMinusPInv, _lElectronHOverE} ) std::fill_n( array, _nMu, 0. );
-    for(auto array : {_lPtCorr, _lPtScaleUp, _lPtScaleDown, _lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
-    for(auto array : {_lECorr, _lEScaleUp, _lEScaleDown, _lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lPtResUp, _lPtResDown}) std::fill_n(array, _nMu, 0.);
+    for(auto array : {_lEResUp, _lEResDown}) std::fill_n(array, _nMu, 0.);
     for(auto array : {_relIso_Summer16, _relIso0p4_Summer16, _miniIso_Spring15, _ptRatio_Summer16}) std::fill_n(array, _nMu, 0.);
 
     //loop over taus
@@ -472,6 +498,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lIsPrompt[_nL]             = match && (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) && GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
     _lMatchPdgId[_nL]           = match != nullptr ? match->pdgId() : 0;
     _lMatchCharge[_nL]          = match != nullptr ? match->charge() : 0;
+    _lHasMatch[_nL]             = ( match != nullptr );
     _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
@@ -485,6 +512,7 @@ void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco:
     _tauGenStatus[_nL]          = TauTools::tauGenStatus(match);        
     _lIsPrompt[_nL]             = match && _tauGenStatus[_nL] != 6; 
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
+    _lMatchPt[_nL]              = match ? match->pt() : 0.;
     _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);
