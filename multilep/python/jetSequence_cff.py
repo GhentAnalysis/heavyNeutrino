@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-def addJetSequence( process, isData, is2017, is2018, isFastSim, isUL ):
+def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL ):
   #
   # Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
   #
@@ -16,9 +16,18 @@ def addJetSequence( process, isData, is2017, is2018, isFastSim, isUL ):
   #
   # Load specific JEC through sqlite file
   #
-  if not isData:
+  if isData:
     if isUL:
-        #if is2017:   JECVersion = 'Fall17_17Nov2017_V32_102X_MC'
+        if is2017:
+            if 'Run2017B' in inputFile: JECVersion = 'Summer19UL17_RunB_V4_DATA'
+            if 'Run2017C' in inputFile: JECVersion = 'Summer19UL17_RunC_V4_DATA'
+            if 'Run2017D' in inputFile: JECVersion = 'Summer19UL17_RunD_V4_DATA'
+            if 'Run2017E' in inputFile: JECVersion = 'Summer19UL17_RunE_V4_DATA'
+            if 'Run2017F' in inputFile: JECVersion = 'Summer19UL17_RunF_V4_DATA'
+        else: JECVersion = ''
+    else: JECVersion = ''
+  else:
+    if isUL:
         if is2017:   JECVersion = 'Summer19UL17_V4_MC'
         #if is2017:   JECVersion = 'Summer19UL17_V1_ComplexL1_MC'
         else:        JECVersion = ''
@@ -32,24 +41,25 @@ def addJetSequence( process, isData, is2017, is2018, isFastSim, isUL ):
         elif is2017: JECVersion = 'Fall17_17Nov2017_V32_102X_MC'
         else:        JECVersion = 'Summer16_07Aug2017_V11_MC'
 
-    if not JECVersion == '':
-      CondDBJECFile = CondDB.clone( connect = cms.string('sqlite_fip:heavyNeutrino/multilep/data/JEC/{}.db'.format( JECVersion ) ) )
-      process.jec = cms.ESSource('PoolDBESSource',
-        CondDBJECFile,
-        toGet = cms.VPSet(
-          cms.PSet(
-            record = cms.string('JetCorrectionsRecord'),
-            tag    = cms.string('JetCorrectorParametersCollection_{}_AK4PFchs'.format( JECVersion ) ),
-            label  = cms.untracked.string('AK4PFchs')
-          ),
-          #cms.PSet(
-          #    record = cms.string('JetCorrectionsRecord'),
-          #    tag    = cms.string('JetCorrectorParametersCollection_{}_AK4PFPuppi'.format( JECVersion ) ),
-          #    label  = cms.untracked.string('AK4PFPuppi')
-          #) 
-        )
+
+  if not JECVersion == '':
+    CondDBJECFile = CondDB.clone( connect = cms.string('sqlite_fip:heavyNeutrino/multilep/data/JEC/{}.db'.format( JECVersion ) ) )
+    process.jec = cms.ESSource('PoolDBESSource',
+      CondDBJECFile,
+      toGet = cms.VPSet(
+        cms.PSet(
+          record = cms.string('JetCorrectionsRecord'),
+          tag    = cms.string('JetCorrectorParametersCollection_{}_AK4PFchs'.format( JECVersion ) ),
+          label  = cms.untracked.string('AK4PFchs')
+        ),
+        #cms.PSet(
+        #    record = cms.string('JetCorrectionsRecord'),
+        #    tag    = cms.string('JetCorrectorParametersCollection_{}_AK4PFPuppi'.format( JECVersion ) ),
+        #    label  = cms.untracked.string('AK4PFPuppi')
+        #)
       )
-      process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
+    )
+    process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
   updateJetCollection(
     process,

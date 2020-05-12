@@ -54,6 +54,8 @@ for dataset in datasets:
   else:
     skim, dataset = dataset.split(':')
 
+    isUL   = "Summer19UL" in dataset or "21Feb2020_UL2016" in dataset or "09Aug2019_UL2017" in dataset or "12Nov2019_UL2018" in dataset
+
     if submitLocal or 'user' in dataset:
       print 'Submitting ' + dataset + ' on the local resources:'
       if 'user' in dataset:   outputDir = dataset.split('/')[-1]
@@ -73,7 +75,12 @@ for dataset in datasets:
       os.environ['CRAB_DATASET']         = dataset
       os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
       os.environ['CRAB_EXTRACONTENT']    = ','.join(extraContent)
-      if 'Run2017' in dataset :   os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/ReReco/" +       getJSON(True, False)
-      elif 'Run2018' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/ReReco/" +   getJSON(False, True)
-      else :                      os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/" + getJSON(False, False)
+      if isUL:
+        if 'Run2017' in dataset :   os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/Legacy_2017/" +       getJSON(isUL, True, False)
+        elif 'Run2018' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/Legacy_2018/" +   getJSON(isUL, False, True)
+        else :                      os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Legacy_2016/" + getJSON(isUL, False, False)
+      else: 
+        if 'Run2017' in dataset :   os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/ReReco/" +       getJSON(isUL, True, False)
+        elif 'Run2018' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/ReReco/" +   getJSON(isUL, False, True)
+        else :                      os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/" + getJSON(isUL, False, False)
       os.system('crab submit -c crab.py')

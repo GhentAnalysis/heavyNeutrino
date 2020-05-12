@@ -6,7 +6,10 @@ import FWCore.ParameterSet.Config as cms
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root'
-inputFile       = '/store/mc/RunIISummer19UL17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v2/70000/FBC4E43E-2C35-974A-84C9-29AD0430BD39.root'
+
+#inputFile       = '/store/mc/RunIISummer19UL17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v2/70000/FBC4E43E-2C35-974A-84C9-29AD0430BD39.root'
+inputFile       = '/store/data/Run2017E/SingleElectron/MINIAOD/09Aug2019_UL2017-v1/130000/1428BFE4-BCE6-EA4D-9E49-CE5DC19AFFCE.root'
+
 #inputFile       = 'root://ccxrootdcms.in2p3.fr:1094/pnfs/in2p3.fr/data/cms/t2data/store/data/Run2018C/EGamma/MINIAOD/12Nov2019_UL2018-v2/270000/CD1A6E73-92DF-454F-BC1C-31199CB2E02D.root'
 #inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_TuneCP5_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/70000/F447BDAD-6642-BD46-B8E9-750F7F961BA7.root'
 #inputFile       = '/store/mc/RunIIFall17MiniAODv2/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall17Fast_94X_mc2017_realistic_v15-v1/10000/00071D11-4C7A-E911-8E48-0CC47A1E0484.root'
@@ -38,7 +41,7 @@ is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in input
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
 isSUSY = "SMS-T" in inputFile
 isFastSim = 'Fast' in inputFile
-isUL   = "Summer19UL" in inputFile
+isUL   = (is2017 and "Summer19UL" in inputFile) or (isData and ("21Feb2020_UL2016" in inputFile or "09Aug2019_UL2017" in inputFile or "12Nov2019_UL2018" in inputFile))
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -80,7 +83,7 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 # Import some objectsequences sequence (details in cff files)
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
-addJetSequence( process, isData, is2017, is2018, isFastSim, isUL )
+addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL )
 if isFastSim:
   if is2018:   jecUncertaintyFile = 'Autumn18_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
   elif is2017: jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
@@ -206,16 +209,22 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   headerPart2                   = cms.FileInPath("heavyNeutrino/multilep/data/header/text.txt")
 )
 
-def getJSON(is2017, is2018):
-    if is2018:   return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
-    elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
-    else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+def getJSON(isUL, is2017, is2018):
+    if is2018:
+        if isUL: return ""#not available yet
+        else:    return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
+    elif is2017:
+        if isUL: return "Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt"
+        else:    return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
+    else:
+        if isUL: return ""#not available yet
+        else:    return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 
 if isData:
-  print('Sample is found to be 20%s data, will process using %s' % (yy, getJSON(is2017, is2018)))
+  print('Sample is found to be 20%s data, will process using %s' % (yy, getJSON(isUL, is2017, is2018)))
   import FWCore.PythonUtilities.LumiList as LumiList
   jsonDir = os.path.expandvars('$CMSSW_BASE/src/heavyNeutrino/multilep/data/JSON')
-  process.source.lumisToProcess = LumiList.LumiList(filename = os.path.join(jsonDir, getJSON(is2017, is2018))).getVLuminosityBlockRange()
+  process.source.lumisToProcess = LumiList.LumiList(filename = os.path.join(jsonDir, getJSON(isUL, is2017, is2018))).getVLuminosityBlockRange()
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.egammaPostRecoSeq *
