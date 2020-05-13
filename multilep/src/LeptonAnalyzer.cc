@@ -170,6 +170,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lNumberOfMatchedStation",      &_lNumberOfMatchedStation,      "_lNumberOfMatchedStation[_nMu]/i");
     outputTree->Branch("_lNumberOfValidPixelHits",      &_lNumberOfValidPixelHits,      "_lNumberOfValidPixelHits[_nLight]/i");
     outputTree->Branch("_lNumberOfValidTrackerHits",    &_lNumberOfValidTrackerHits,    "_lNumberOfValidTrackerHits[_nLight]/i");
+    outputTree->Branch("_lNumberInnerHitsMissing",      &_lNumberInnerHitsMissing,      "_lNumberInnerHitsMissing[_nLight]/i");
     outputTree->Branch("_muNumberInnerHits",            &_muNumberInnerHits,            "_muNumberInnerHits[_nMu]/i");
     outputTree->Branch("_lTrackerLayersWithMeasurement",&_lTrackerLayersWithMeasurement,"_lTrackerLayersWithMeasurement[_nMu]/i");
     outputTree->Branch("_lMuonSegComp",                 &_lMuonSegComp,                 "_lMuonSegComp[_nMu]/D");
@@ -636,6 +637,7 @@ void LeptonAnalyzer::fillDisplacedIDVariables(const pat::Electron& ele){
     _lElectronEcalEnergy[_nL]= ele.ecalEnergy();
     _lElectronDEtaInSeed[_nL] = std::abs(dEtaInSeed(&ele));
     _lElectronNumberInnerHitsMissing[_nL] = ele.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
+    _lNumberInnerHitsMissing[_nL] = ele.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
     _lNumberOfValidPixelHits[_nL] = (!ele.gsfTrack().isNull())? ele.gsfTrack()->hitPattern().numberOfValidPixelHits() : 0;
     _lNumberOfValidTrackerHits[_nL] = (!ele.gsfTrack().isNull())? ele.gsfTrack()->hitPattern().numberOfValidTrackerHits() : 0;
 }   
@@ -650,6 +652,7 @@ void LeptonAnalyzer::fillDisplacedIDVariables(const pat::Muon& mu){
     _lNumberOfMatchedStation[_nL] = mu.numberOfMatchedStations();
     _lNumberOfValidPixelHits[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().numberOfValidPixelHits()  : 0; // cannot be -1 !!
     _lNumberOfValidTrackerHits[_nL] = (!mu.innerTrack().isNull()) ? mu.innerTrack()->hitPattern().numberOfValidTrackerHits() : 0;
+    _lNumberInnerHitsMissing[_nL] = mu.innerTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
     _lTrackerLayersWithMeasurement[_nL] = (!mu.innerTrack().isNull()) ?   mu.innerTrack()->hitPattern().trackerLayersWithMeasurement()  : 0; // cannot be -1 !! 
     _muNumberInnerHits[_nL]= (!mu.globalTrack().isNull()) ?   mu.globalTrack()->hitPattern().numberOfValidMuonHits() : (!mu.outerTrack().isNull() ? mu.outerTrack()->hitPattern().numberOfValidMuonHits() : 0); // cannot be -1 !!!
 }

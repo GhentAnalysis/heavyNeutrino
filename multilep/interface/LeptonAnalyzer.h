@@ -195,6 +195,7 @@ class LeptonAnalyzer {
     unsigned _lNumberOfMatchedStation[nL_max];
     unsigned _lNumberOfValidPixelHits[nL_max];
     unsigned _lNumberOfValidTrackerHits[nL_max];
+    unsigned _lNumberInnerHitsMissing[nL_max];
     unsigned _muNumberInnerHits[nL_max];
     unsigned _lTrackerLayersWithMeasurement[nL_max];
     double _lEtaSC[nL_max];
