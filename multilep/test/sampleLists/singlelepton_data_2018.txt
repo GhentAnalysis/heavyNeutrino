@@ -8,7 +8,7 @@ singlelep:/EGamma/Run2018A-17Sep2018-v2/MINIAOD
 singlelep:/EGamma/Run2018B-17Sep2018-v1/MINIAOD
 singlelep:/EGamma/Run2018C-17Sep2018-v1/MINIAOD
 singlelep:/EGamma/Run2018D-PromptReco-v1/MINIAOD
-singlelep:/EGamma/Run2018D-PromptReco-v2/MINIAOD
+singlelep:/EGamma/Run2018D-22Jan2019-v2/MINIAOD
 singlelep:/JetHT/Run2018A-17Sep2018-v1/MINIAOD
 singlelep:/JetHT/Run2018B-17Sep2018-v1/MINIAOD
 singlelep:/JetHT/Run2018C-17Sep2018-v1/MINIAOD
@@ -24,4 +24,4 @@ singlelep:/MuonEG/Run2018D-PromptReco-v2/MINIAOD
 singlelep:/SingleMuon/Run2018A-17Sep2018-v2/MINIAOD
 singlelep:/SingleMuon/Run2018B-17Sep2018-v1/MINIAOD
 singlelep:/SingleMuon/Run2018C-17Sep2018-v1/MINIAOD
-singlelep:/SingleMuon/Run2018D-PromptReco-v2/MINIAOD
+singlelep:/SingleMuon/Run2018D-22Jan2019-v2/MINIAOD
