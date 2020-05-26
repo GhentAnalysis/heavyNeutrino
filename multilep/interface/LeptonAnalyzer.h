@@ -49,6 +49,8 @@ class LeptonAnalyzer {
     //this has to come before the effective areas as their initialization depends on it!
     multilep* multilepAnalyzer;
   
+    std::vector<std::string> singleEleTrigs, singleMuoTrigs;
+
     EffectiveAreas electronsEffectiveAreas;
     EffectiveAreas electronsEffectiveAreas_ttH_relIso;  // lepton MVA's are using old effective areas
     EffectiveAreas electronsEffectiveAreas_ttH_miniIso; // lepton MVA's are using old effective areas
@@ -341,7 +343,6 @@ class LeptonAnalyzer {
     double _lMatchVertexY[nL_max];
     double _lMatchVertexZ[nL_max];
 
-    std::vector<std::string> singleEleTrigs, singleMuoTrigs;
 
 
     edm::ESHandle<MagneticField> _bField;

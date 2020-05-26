@@ -13,6 +13,8 @@
 
 LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer),
+    singleEleTrigs(                     iConfig.getParameter<std::vector<std::string>>("singleEleTriggers")),
+    singleMuoTrigs(                     iConfig.getParameter<std::vector<std::string>>("singleMuoTriggers")),
     electronsEffectiveAreas(            iConfig.getParameter<edm::FileInPath>("electronsEffAreas").fullPath()),
     electronsEffectiveAreas_ttH_relIso( iConfig.getParameter<edm::FileInPath>("electronsEffAreas_ttH_relIso").fullPath()),
     electronsEffectiveAreas_ttH_miniIso(iConfig.getParameter<edm::FileInPath>("electronsEffAreas_ttH_miniIso").fullPath()),
@@ -403,8 +405,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
                                   and (mu.isTrackerMuon() or mu.isGlobalMuon()));
 
         if(someIdWithoutName) ++_nGoodLeading;
-        if((multilepAnalyzer->skim == "trilep" or multilepAnalyzer->skim == "displtrilep") && someIdWithoutName) _lHasTrigger[_nL] = matchSingleTrigger(iEvent, false, _lEta[_nL], _lPhi[_nL]);
-        else                                                                                                     _lHasTrigger[_nL] = 0;
+
+        if((multilepAnalyzer->skim == "trilep" or multilepAnalyzer->skim == "displtrilep" or multilepAnalyzer->skim == "noskim") && someIdWithoutName)
+          _lHasTrigger[_nL] = matchSingleTrigger(iEvent, false, _lEta[_nL], _lPhi[_nL]);
+        else
+          _lHasTrigger[_nL] = 0;
 
         ++_nMu;
         ++_nL;
@@ -506,8 +511,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         if(ele->pt() > 7 && fabs(_dxy[_nL]) > 0.02) ++_nGoodDisplaced;
         if(someIdWithoutName) ++_nGoodLeading;
-        if((multilepAnalyzer->skim == "trilep" or multilepAnalyzer->skim == "displtrilep")  && someIdWithoutName) _lHasTrigger[_nL] = matchSingleTrigger(iEvent, true, _lEta[_nL], _lPhi[_nL]);
-        else                                                                                                      _lHasTrigger[_nL] = 0;
+        if((multilepAnalyzer->skim == "trilep" or multilepAnalyzer->skim == "displtrilep" or multilepAnalyzer->skim == "noskim") && someIdWithoutName)
+          _lHasTrigger[_nL] = matchSingleTrigger(iEvent, true, _lEta[_nL], _lPhi[_nL]);
+        else
+          _lHasTrigger[_nL] = 0;
 
         ++_nEle;
         ++_nL;

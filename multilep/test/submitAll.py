@@ -54,26 +54,39 @@ for dataset in datasets:
   else:
     skim, dataset = dataset.split(':')
 
+
+    if 'heavyN' in dataset: # just make some similar requestName as standard samples
+      if 'Moriond17_aug2018_miniAODv3' in dataset: miniAODver  = 'MiniAOD2016v3'
+      if 'Fall17' in dataset:                      miniAODver  = 'RunIIFall17MiniAODv2'
+      if 'Autumn18' in dataset:                    miniAODver  = 'RunIIAutumn18MiniAOD'
+      requestName = '%s_%s' % (miniAODver, productionLabel)
+    else:
+      requestName = dataset.split('/')[2] + '_' + productionLabel
+      requestName = requestName.replace('RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3', 'MiniAOD2016v3')
+      requestName = requestName.replace('RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14', 'MiniAOD2017v2')
+      requestName = requestName.replace('RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14', 'MiniAOD2017v2NewPMX')
+      requestName = requestName.replace('RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15', 'MiniAOD2018')
+
     if submitLocal or 'user' in dataset:
-      print 'Submitting ' + dataset + ' on the local resources:'
+      print 'Submitting %s (requestname %s) on the local resources:' % (dataset, requestName)
       if 'user' in dataset:   outputDir = dataset.split('/')[-1]
       else:                   outputDir = dataset.split('/')[1]
 
       if 'Run201' in dataset: outputDir = os.path.join(outputDir, dataset.split('-')[0].split('/')[-1])
 
-      if 'ext' in dataset:    outputDir = os.path.join(outputDir, 'localSubmission_ext' + dataset.split('ext')[-1].split('/')[0] + '_' + productionLabel)
-      else:                   outputDir = os.path.join(outputDir, 'localSubmission_' + productionLabel)
+      outputDir = os.path.join(outputDir, 'localSubmission_%s' % requestName)
 
       extra  = ('extraContent=' + ','.join(extraContent)) if len(extraContent) else ''
       os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + skim + ' ' + str(filesPerJob) + ' ' + extra)
 
     else:
-      print 'Submitting ' + dataset + ' using crab:'
+      print 'Submitting %s (requestname %s) to crab:' % (dataset, requestName)
       os.environ['CRAB_PRODUCTIONLABEL'] = productionLabel
       os.environ['CRAB_DATASET']         = dataset
       os.environ['CRAB_OUTPUTFILE']      = skim + '.root'
       os.environ['CRAB_EXTRACONTENT']    = ','.join(extraContent)
+      os.environ['CRAB_REQUESTNAME']     = requestName
       if 'Run2017' in dataset :   os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/ReReco/" +       getJSON(True, False)
-      elif 'Run2018' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/ReReco/" +   getJSON(False, True)
+      elif 'Run2018' in dataset : os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/ReReco/" +       getJSON(False, True)
       else :                      os.environ['CRAB_LUMIMASK'] = "https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/" + getJSON(False, False)
       os.system('crab submit -c crab.py')

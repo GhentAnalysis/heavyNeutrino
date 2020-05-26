@@ -152,6 +152,21 @@ effAreasElectrons        = 'RecoEgamma/ElectronIdentification/data/Fall17/effAre
 effAreasElectronsOld     = 'RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt'
 effAreasElectronsVeryOld = 'RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt'
 
+
+#
+# Single triggers for matching
+#
+if is2018:
+  singleEleTrigsForMatching = ["HLT_Ele32_WPTight_Gsf_v*"]
+  singleMuoTrigsForMatching = ["HLT_IsoMu24_*","HLT_IsoMu27_v*"]
+elif is2017:
+  singleEleTrigsForMatching = ["HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*","HLT_Ele35_WPTight_Gsf_v*","HLT_Ele32_WPTight_Gsf"]
+  singleMuoTrigsForMatching = ["HLT_IsoMu24_*","HLT_IsoMu27_v*"]
+else:
+  singleEleTrigsForMatching = ["HLT_Ele27_WPTight_Gsf_v*"]
+  singleMuoTrigsForMatching = ["HLT_IsoMu24_v*", "HLT_IsoTkMu24_v*"]
+
+
 # Main Process
 process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   vertices                      = cms.InputTag("goodOfflinePrimaryVertices"),
@@ -193,12 +208,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   recoResultsPrimary            = cms.InputTag("TriggerResults::PAT"),
   recoResultsSecondary          = cms.InputTag("TriggerResults::RECO"),
   triggerObjects                = cms.InputTag("slimmedPatTrigger"),
-  SingleEleTriggers             = cms.vstring(),                       # displaced specific
-  SingleMuoTriggers             = cms.vstring(),                       # displaced specific
-  SingleEleTriggers2017         = cms.vstring(),                       # displaced specific
-  SingleMuoTriggers2017         = cms.vstring(),                       # displaced specific
-  SingleEleTriggers2018         = cms.vstring(),                       # displaced specific
-  SingleMuoTriggers2018         = cms.vstring(),                       # displaced specific
+  singleEleTriggers             = cms.vstring(singleEleTrigsForMatching),                       # displaced specific
+  singleMuoTriggers             = cms.vstring(singleMuoTrigsForMatching),                       # displaced specific
   skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0]),
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
@@ -217,17 +228,6 @@ def getJSON(is2017, is2018):
     if is2018:   return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
     elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
     else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
-
-
-## Single triggers for matching
-
-
-process.blackJackAndHookers.SingleEleTriggers.extend(["HLT_Ele27_WPTight_Gsf_v*"])
-process.blackJackAndHookers.SingleMuoTriggers.extend(["HLT_IsoMu24_v*", "HLT_IsoTkMu24_v*"])
-process.blackJackAndHookers.SingleEleTriggers2017.extend(["HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*","HLT_Ele35_WPTight_Gsf_v*","HLT_Ele32_WPTight_Gsf"])
-process.blackJackAndHookers.SingleMuoTriggers2017.extend(["HLT_IsoMu24_*","HLT_IsoMu27_v*"])
-process.blackJackAndHookers.SingleEleTriggers2018.extend(["HLT_Ele32_WPTight_Gsf_v*"])
-process.blackJackAndHookers.SingleMuoTriggers2018.extend(["HLT_IsoMu24_*","HLT_IsoMu27_v*"])
 
 if isData:
   import FWCore.PythonUtilities.LumiList as LumiList
