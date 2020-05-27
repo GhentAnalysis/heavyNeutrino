@@ -18,7 +18,7 @@ class GenAnalyzer {
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
     unsigned    _zgOldEventType;
-    unsigned    _hasInternalConversion;
+    bool        _hasInternalConversion;
 
     //generator level MET
     double   _gen_met;
