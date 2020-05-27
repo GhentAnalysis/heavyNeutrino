@@ -4,7 +4,7 @@
 # crabStatus.py <options> DIRECTORY
 # DIRECTORY is also optional, it will check everything in the crab directory
 
-import os, shutil
+import os, shutil, subprocess
 from optparse import OptionParser
 
 #
@@ -13,6 +13,10 @@ from optparse import OptionParser
 if os.environ['CMSSW_BASE'].replace('/storage_mnt/storage','') not in os.getcwd():
   print('\033[1m\033[91mPlease do cmsenv first!')
   exit(0)
+
+
+def system(command):
+  return subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode()
 
 
 #Option parser
@@ -67,16 +71,16 @@ def resubmitCrabConfig(dir):
           foundConfigLines = True
           config.write('from WMCore.Configuration import Configuration\n')
   shutil.rmtree(dir)
-  os.system('crab submit -c crab_temp.py')
+  print(system('crab submit -c crab_temp.py'))
   os.remove('crab_temp.py')
   os.remove('crab_temp.pyc')
   os.chdir(cwd)
 
 def checkCrabDir(dir):
   if options.checkCrab:
-    print("Getting the crab status...")
-    if len(dir) > 0: os.system("crab status --long " + dir + "> .status.txt")
-    else:            os.system("crab status --long > .status.txt")
+    print("Getting the crab status for %s..." % dir)
+    if len(dir) > 0: system("crab status --long " + dir + "> .status.txt")
+    else:            system("crab status --long > .status.txt")
 
 
   jobs = []
@@ -107,6 +111,10 @@ def checkCrabDir(dir):
               if 'dataset=' in str: print('                     %s' % str.split('dataset=')[-1].replace('.',''))
             shutil.rmtree(dir)
             break
+          if 'splitting on your task generated' in str and 'maximum number of jobs' in str:
+            print("    SUBMITFAILED --> Too much jobs created, try to raise the splitting unit!")
+            shutil.rmtree(dir)
+            break
         else:
           print('   SUBMITFAILED --> resubmiting!')
           resubmitCrabConfig(dir)
@@ -132,23 +140,24 @@ def checkCrabDir(dir):
   print(" Job State        Most Recent Site        Runtime   Mem (MB)      CPU %    Retries   Restarts      Waste       Exit Code")
   for job in jobs: print(job['Str'], end='')
 
-  # Automatic resubmissions
-  jobsToResubmit = []
-  raiseMemoryLimit = False
-  raiseWallTime    = False
-  for job in jobs:
-    if job['Exit code'] in ['50660']: raiseMemoryLimit = True
-    if job['Exit code'] in ['50664']: raiseWalltime    = True
-    if job['Exit code'] in ['-1','65','83','127', '60311','60318','8001','8002','8012','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662','8010','7002','50665', '60324']: jobsToResubmit.append(job['Job'])
-    if job['State'] == 'failed' and job['Exit code'] == '0':                                  jobsToResubmit.append(job['Job'])
-    if job['State'] == 'failed' and job['Exit code'] == '-1':                                 jobsToResubmit.append(job['Job'])
-    if 'failed' in job['Exit code']:                                                          jobsToResubmit.append(job['Job'])
-    if job['State'] == 'failed' and job['Exit code'] == 'Unknown':                            jobsToResubmit.append(job['Job'])
+  # Automatic resubmissions (if not killed)
+  if not 'KILLED' in system('crab status -d ' + dir):
+    jobsToResubmit = []
+    raiseMemoryLimit = False
+    raiseWallTime    = False
+    for job in jobs:
+      if job['Exit code'] in ['50660']: raiseMemoryLimit = True
+      if job['Exit code'] in ['50664']: raiseWalltime    = True
+      if job['Exit code'] in ['-1','65','83','60311','60318','8001','8002','8012','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662','8010','7002','50665', '60324']: jobsToResubmit.append(job['Job'])
+      if job['State'] == 'failed' and job['Exit code'] == '0':                                  jobsToResubmit.append(job['Job'])
+      if job['State'] == 'failed' and job['Exit code'] == '-1':                                 jobsToResubmit.append(job['Job'])
+      if 'failed' in job['Exit code']:                                                          jobsToResubmit.append(job['Job'])
+      if job['State'] == 'failed' and job['Exit code'] == 'Unknown':                            jobsToResubmit.append(job['Job'])
 
-  if len(jobsToResubmit) > 0:
-    print("Resubmitting " + jobsToCrabList(jobsToResubmit))
-    if len(args) > 1: os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxjobruntime=2800' if raiseWallTime else '') + (' --maxmemory=4000' if raiseMemoryLimit else '') + " " +  args[1])
-    else:             os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxjobruntime=2800' if raiseWallTime else '') + (' --maxmemory=4000' if raiseMemoryLimit else '') + " --siteblacklist=T2_US_UCSD")
+    if len(jobsToResubmit) > 0:
+      print("Resubmitting " + jobsToCrabList(jobsToResubmit))
+      if len(args) > 1: os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxjobruntime=2800' if raiseWallTime else '') + (' --maxmemory=2800' if raiseMemoryLimit else '') + " " +  args[1])
+      else:             os.system("crab resubmit --jobids=" + jobsToCrabList(jobsToResubmit) + (' --maxjobruntime=2800' if raiseWallTime else '') + (' --maxmemory=2800' if raiseMemoryLimit else '') + " --siteblacklist=T2_US_UCSD")
 
 
 # Run this script for all found crab directories

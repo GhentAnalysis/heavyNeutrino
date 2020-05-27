@@ -26,6 +26,7 @@
 //include classes for trigger match
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+#include "heavyNeutrino/multilep/interface/RoccoR.h"
 
 //include ROOT classes
 #include "TTree.h"
@@ -52,9 +53,10 @@ class LeptonAnalyzer {
     std::vector<std::string> singleEleTrigs, singleMuoTrigs;
 
     EffectiveAreas electronsEffectiveAreas;
-    EffectiveAreas electronsEffectiveAreas_ttH_relIso;  // lepton MVA's are using old effective areas
-    EffectiveAreas electronsEffectiveAreas_ttH_miniIso; // lepton MVA's are using old effective areas
+    EffectiveAreas electronsEffectiveAreas_Summer16; // lepton MVA's are using old effective areas
+    EffectiveAreas electronsEffectiveAreas_Spring15; // lepton MVA's are using old effective areas
     EffectiveAreas muonsEffectiveAreas;
+    EffectiveAreas muonsEffectiveAreas_80X;
 
     //maximum number of leptons to be stored 
     static const unsigned nL_max = 20;                                                               //maximum number of particles stored
@@ -115,9 +117,11 @@ class LeptonAnalyzer {
 
     //lepton isolation
     double _relIso[nL_max];
-    double _relIso_ttH[nL_max];
+    double _relIsoDeltaBeta[nL_max];
+    double _relIso_Summer16[nL_max];
+    double _relIso_80X[nL_max];
     double _relIso0p4[nL_max];
-    double _relIso0p4_ttH[nL_max];
+    double _relIso0p4_Summer16[nL_max];
     double _relIso0p4MuDeltaBeta[nL_max];
     double _miniIso[nL_max];
     double _miniIsoCharged[nL_max];
@@ -136,10 +140,13 @@ class LeptonAnalyzer {
     double _deltaBIso[nL_max];
     double _ecalPFClusterIso[nL_max];
     double _hcalPFClusterIso[nL_max];
+    double _miniIso_Spring15[nL_max];
+    double _miniIso_80X[nL_max];
 
     //variables based on closest jet to lepton (typically containing lepton)
     double _ptRel[nL_max];
     double _ptRatio[nL_max];
+    double _ptRatio_Summer16[nL_max];
     double _closestJetCsvV2[nL_max];
     double _closestJetDeepCsv_b[nL_max];
     double _closestJetDeepCsv_bb[nL_max];
@@ -311,9 +318,10 @@ class LeptonAnalyzer {
     double _tauIsoMVAPWnewDMwLT[nL_max];
     double _tauIsoMVAPWoldDMwLT[nL_max];
     
-    //lepton MVA definitions for TTH and tZq 
+    //lepton MVA definitions
     double _leptonMvaTTH[nL_max];
     double _leptonMvatZq[nL_max];
+    double _leptonMvaTOP[nL_max];
 
     //official POG selection definitions
     bool _lPOGVeto[nL_max];
@@ -332,6 +340,7 @@ class LeptonAnalyzer {
 
     int _lMatchPdgId[nL_max];
     int _lMatchCharge[nL_max];
+    bool _lHasMatch[nL_max];
     int _lMomPdgId[nL_max];
     unsigned _lProvenance[nL_max];
     unsigned _lProvenanceCompressed[nL_max];
@@ -374,7 +383,7 @@ class LeptonAnalyzer {
     bool passTauPreselection(const pat::Tau&, const reco::Vertex::Point&) const;
 
     // In leptonAnalyzerIso.cc
-    double getRelIso03(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas) const;
+    double getRelIso03(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
     double getRelIso03(const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
     double getRelIso04(const pat::Muon&, const double, const EffectiveAreas& effectiveAreas, const bool DeltaBeta=false) const;
     double getRelIso04( const pat::Electron&, const double, const EffectiveAreas& effectiveAreas) const;
@@ -399,6 +408,10 @@ class LeptonAnalyzer {
     //for lepton MVA calculation
     LeptonMvaHelper* leptonMvaComputerTTH;
     LeptonMvaHelper* leptonMvaComputertZq;
+    LeptonMvaHelper* leptonMvaComputerTOP;
+
+    //for rochester corrections
+    RoccoR rochesterCorrections;
 
     //for generator matching (displaced specific)
     GenMatching* genMatcher;
