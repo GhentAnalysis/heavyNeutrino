@@ -1,56 +1,67 @@
-commit b79684d459f4b3503e26bbe9bfabe9aeb2fc2e42
-Merge: c3a19d4 2390ad0
+commit 14106740243654907b846c94566b7b82cad94345
+Merge: fbe899c e991559
 Author: tomc <tomc@cern.ch>
-Date:   Thu Mar 5 11:31:58 2020 +0100
+Date:   Wed May 27 11:36:58 2020 +0200
 
     Merge remote-tracking branch 'ghent/master' into displacedLegacy
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   New: _leptonMvaTOP,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIsoDeltaBeta,_relIso_80X,_relIso_Summer16
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   New: _leptonMvaTOP,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIsoDeltaBeta,_relIso_80X,_relIso_Summer16
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   New: _leptonMvaTOP,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIsoDeltaBeta,_relIso_80X,_relIso_Summer16
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   New: _leptonMvaTOP,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIsoDeltaBeta,_relIso_80X,_relIso_Summer16
    Changed:
-      _leptonMvatZq                                      mean:  -0.7099 -->  -0.7091     rms:   0.6132 -->   0.6142    
+      _absIso03                                          mean:  26.7276 -->  26.7425     rms:  42.4502 -->  42.4415    
+      _absIso04                                          mean:   4.6477 -->   4.9949     rms:   8.9992 -->   9.0433    
+      _miniIso                                           mean:   0.4622 -->   0.4731     rms:   0.5374 -->   0.5393    
+      _puCorr                                            mean:   2.9771 -->   2.9416     rms:   1.0292 -->   1.0845    
+      _relIso                                            mean:   0.5763 -->   0.5792     rms:   0.5940 -->   0.5930    
+      _relIso0p4                                         mean:   0.7455 -->   0.7528     rms:   0.9758 -->   0.9821    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   New: _lHasMatch,_leptonMvaTOP,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIsoDeltaBeta,_relIso_80X,_relIso_Summer16
    Changed:
-      _phTTGMatchCategory                                mean:   1.7906 -->   2.0105     rms:   0.9964 -->   1.6114    
-      _phTTGMatchEta                                     mean:  -0.3869 -->  -0.9565     rms:   2.5614 -->   3.3894    
-      _phTTGMatchPt                                      mean:  29.6048 -->  27.4402     rms:  27.6051 -->  28.2201    
+      _ttgEventType                                      mean:   7.2800 -->   8.0000     rms:   1.9498 -->   0.0000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   New: _lHasMatch,_leptonMvaTOP,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIsoDeltaBeta,_relIso_80X,_relIso_Summer16
    Changed:
-      _phTTGMatchCategory                                mean:   2.4194 -->   2.7419     rms:   0.8337 -->   1.5754    
-      _phTTGMatchEta                                     mean:  -1.2373 -->  -1.5575     rms:   3.3275 -->   3.6513    
-      _phTTGMatchPt                                      mean:  26.8576 -->  25.2846     rms:  19.6712 -->  19.9436    
+      _lheWeight                                         mean:   1.0008 -->   1.0039     rms:   0.0653 -->   0.0665    
+      _nLheWeights                                       mean: 110.0000 --> 148.0000     rms:   0.0000 -->   0.0000    
+      _ttgEventType                                      mean:   1.1700 -->   1.2900     rms:   1.3195 -->   1.6266    
+      _zgEventType                                       mean:   1.1200 -->   1.1800     rms:   1.3060 -->   1.4723    
+      _zgOldEventType                                    mean:   1.2300 -->   1.2900     rms:   1.3331 -->   1.4919    
+      lheCounter                                         mean:  54.9852 -->  74.0143     rms:  31.7646 -->  42.7370    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _phoWorstChargedIsolation,_puChargedHadronIso,_rhoCorrCharged,_rhoCorrNeutral,_rhoCorrPhotons
+   New: _lHasMatch,_leptonMvaTOP,_miniIso_80X,_miniIso_Spring15,_relIso0p4_Summer16,_relIsoDeltaBeta,_relIso_80X,_relIso_Summer16
    Changed:
-      _leptonMvatZq                                      mean:   0.7056 -->   0.7057     rms:   0.6211 -->   0.6209    
-      _phTTGMatchCategory                                mean:   3.2000 -->   4.1500     rms:   1.0296 -->   2.0316    
-      _phTTGMatchEta                                     mean:  -2.7577 -->  -4.2748     rms:   4.4073 -->   4.8344    
-      _phTTGMatchPt                                      mean:  18.0530 -->  10.6882     rms:  17.4330 -->  12.1145    
+      _absIso03                                          mean:   2.0822 -->   2.1664     rms:   5.8696 -->   5.9048    
+      _absIso04                                          mean:   2.5367 -->   2.7648     rms:   6.8860 -->   7.0142    
+      _lheWeight                                         mean:   1.0011 -->   1.0011     rms:   0.0896 -->   0.0888    
+      _miniIso                                           mean:   0.0554 -->   0.0588     rms:   0.1817 -->   0.1863    
+      _nLheWeights                                       mean: 110.0000 --> 112.0000     rms:   0.0000 -->   0.0000    
+      _puCorr                                            mean:   0.9124 -->   0.6914     rms:   0.5187 -->   0.5144    
+      _relIso                                            mean:   0.0935 -->   0.0972     rms:   0.2605 -->   0.2682    
+      _relIso0p4                                         mean:   0.1318 -->   0.1402     rms:   0.4490 -->   0.4602    
+      lheCounter                                         mean:  54.9923 -->  55.9892     rms:  31.7263 -->  32.3032    

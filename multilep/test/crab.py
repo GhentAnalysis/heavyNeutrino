@@ -7,12 +7,8 @@ dataset         = os.environ['CRAB_DATASET']
 outputFile      = os.environ['CRAB_OUTPUTFILE']
 lumiMask        = os.environ['CRAB_LUMIMASK']
 extraContent    = os.environ['CRAB_EXTRACONTENT']
+requestName     = os.environ['CRAB_REQUESTNAME']
 
-requestName = dataset.split('/')[2] + '_' + productionLabel
-requestName = requestName.replace('RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3', 'MiniAOD2016v3')
-requestName = requestName.replace('RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14', 'MiniAOD2017v2')
-requestName = requestName.replace('RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14', 'MiniAOD2017v2NewPMX')
-requestName = requestName.replace('RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15', 'MiniAOD2018')
 
 # Crab configuration
 config = Configuration()

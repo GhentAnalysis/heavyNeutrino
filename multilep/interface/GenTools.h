@@ -14,6 +14,7 @@ namespace GenTools{
     int getMotherPdgId(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
     //return decay chain for a particle;
     void setDecayChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, std::set<int>& list);
+    bool particleInChain(const reco::GenParticle&, const std::vector<reco::GenParticle>&, const reco::GenParticle&);
     bool hasOnlyIncomingGluonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
 
     //scan decay chain for certain types of particles
@@ -42,6 +43,7 @@ namespace GenTools{
     bool noMesonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
     bool phoAndPiNear(const pat::Photon& photon, const std::vector<reco::GenParticle>& genParticles);
     double getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
+    double getMinDeltaRTTG(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut=5);
 
     const reco::GenParticle* geometricMatch(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles, const bool differentId=false);
     bool considerForMatching(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId);
