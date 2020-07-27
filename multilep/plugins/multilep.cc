@@ -7,6 +7,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     genEventInfoToken(        consumes<GenEventInfoProduct>(                   iConfig.getParameter<edm::InputTag>("genEventInfo"))),
     genLumiInfoToken(         consumes<GenLumiInfoHeader, edm::InLumi>(        iConfig.getParameter<edm::InputTag>("genEventInfo"))),
     lheEventInfoToken(        consumes<LHEEventProduct>(                       iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
+    //lheRunInfoToken(          consumes<LHERunInfoProduct>(                     iConfig.getParameter<edm::InputTag>("lheEventInfo"))),
     pileUpToken(              consumes<std::vector<PileupSummaryInfo>>(        iConfig.getParameter<edm::InputTag>("pileUpInfo"))),
     genParticleToken(         consumes<reco::GenParticleCollection>(           iConfig.getParameter<edm::InputTag>("genParticles"))),
     particleLevelPhotonsToken(consumes<reco::GenParticleCollection>(           iConfig.getParameter<edm::InputTag>("particleLevelPhotons"))),
@@ -54,7 +55,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     jetAnalyzer           = new JetAnalyzer(iConfig, this);
     genAnalyzer           = new GenAnalyzer(iConfig, this);
     lheAnalyzer           = new LheAnalyzer(iConfig, this);
-    susyMassAnalyzer      = new SUSYMassAnalyzer(iConfig, this, lheAnalyzer);
+    susyAnalyzer          = new SUSYAnalyzer(iConfig, this, lheAnalyzer);
     particleLevelAnalyzer = new ParticleLevelAnalyzer(iConfig, this);
 }
 
@@ -66,7 +67,7 @@ multilep::~multilep(){
     delete genAnalyzer;
     delete particleLevelAnalyzer;
     delete lheAnalyzer;
-    delete susyMassAnalyzer;
+    delete susyAnalyzer;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -91,7 +92,7 @@ void multilep::beginJob(){
     }
 
     if( isMC() ) lheAnalyzer->beginJob(outputTree, fs);
-    if( isSUSY() )  susyMassAnalyzer->beginJob(outputTree, fs);
+    if( isSUSY() )  susyAnalyzer->beginJob(outputTree, fs);
     if( isMC() ) genAnalyzer->beginJob(outputTree);
     if( isMC() && storeParticleLevel) particleLevelAnalyzer->beginJob(outputTree);
     
@@ -109,7 +110,7 @@ void multilep::beginJob(){
 
 // ------------ method called for each lumi block ---------
 void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm::EventSetup& iSetup){
-    if( isSUSY() ) susyMassAnalyzer->beginLuminosityBlock(iLumi, iSetup);
+    if( isSUSY() ) susyAnalyzer->beginLuminosityBlock(iLumi, iSetup);
     _lumiBlock = (unsigned long) iLumi.id().luminosityBlock();
 }
 
@@ -117,6 +118,7 @@ void multilep::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, const edm
 void multilep::beginRun(const edm::Run& iRun, edm::EventSetup const& iSetup){
     _runNb = (unsigned long) iRun.id().run();
     triggerAnalyzer->reIndex = true;                                   // HLT results could have different size/order in new run, so look up again the index positions
+    //lheAnalyzer->beginRun( iRun );
 }
 
 // ------------ method called for each event  ------------
@@ -124,7 +126,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     auto vertices = getHandle(iEvent, vtxToken);
 
     if( isMC() ) lheAnalyzer->analyze(iEvent);                                            // needs to be run before selection to get correct uncertainties on MC xsection
-    if( isSUSY() ) susyMassAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
+    if( isSUSY() ) susyAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
     _nVertex = vertices->size();
     nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
