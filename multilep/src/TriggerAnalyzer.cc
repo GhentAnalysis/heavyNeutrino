@@ -87,7 +87,7 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["passTrigger_mt"]  = {"HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1", "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_TightID_CrossL1",
                                    "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1", "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_TightID_SingleL1", // Both off for ~3/fb
                                    "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1"};
-    allFlags["passTrigger_et"]  = {"HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg", "HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg"};
+    allFlags["passTrigger_tt"]  = {"HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg", "HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg"};
 
     allFlags["passTrigger_mmm"] = {"HLT_TripleMu_10_5_5_DZ", "HLT_TripleMu_5_3_3_Mass3p8to60_DZ", "TripleMu_12_10_5"}; // HLT_TripleMu_5_3_3_Mass3p8to60_DZ exists only second half of 2017
     allFlags["passTrigger_emm"] = {"HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};

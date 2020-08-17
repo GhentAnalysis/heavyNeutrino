@@ -1,109 +1,47 @@
-commit 4bbf0c61ff6c38f269211d0e24231a1b26d53184
-Author: willem <willem.verbeke@cern.ch>
-Date:   Tue Jul 7 11:32:35 2020 +0200
+commit a4d42037ca4e720c0c22b678a6b995d03094085d
+Author: Liam <liamwezenbeek@hotmail.com>
+Date:   Mon Aug 17 14:12:57 2020 +0200
 
-    add ewkino stau signals
+    New test run: see tests.log
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-17Sep2018 --> OK
-   New: _HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg_prescale,_passTrigger_tt
-   Changed:
-      _lECorr                                            mean:   2.2300 -->  73.5545     rms:   7.9761 -->  58.9741    
-      _lEScaleDown                                       mean:   2.2299 -->  73.5084     rms:   7.9755 -->  58.9164    
-      _lEScaleUp                                         mean:   2.2301 -->  73.6005     rms:   7.9766 -->  59.0318    
-      _lPtCorr                                           mean:   1.4904 -->  35.4772     rms:   5.4706 -->  17.7892    
-      _lPtScaleDown                                      mean:   1.4903 -->  35.4569     rms:   5.4702 -->  17.7733    
-      _lPtScaleUp                                        mean:   1.4905 -->  35.4975     rms:   5.4711 -->  17.8050    
-      _phNeutralHadronIsolation                          mean:   2.8762 -->   2.8766     rms:   6.6487 -->   6.6502    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2018-PromptReco --> OK
-   New: _HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg_prescale,_passTrigger_tt
-   Changed:
-      _lECorr                                            mean:   0.7493 -->  77.9685     rms:   5.5455 -->  56.6631    
-      _lEScaleDown                                       mean:   0.7488 -->  77.9237     rms:   5.5425 -->  56.6219    
-      _lEScaleUp                                         mean:   0.7498 -->  78.0132     rms:   5.5485 -->  56.7042    
-      _lPtCorr                                           mean:   0.2810 -->  36.5589     rms:   2.0117 -->  16.1663    
-      _lPtScaleDown                                      mean:   0.2808 -->  36.5385     rms:   2.0101 -->  16.1528    
-      _lPtScaleUp                                        mean:   0.2812 -->  36.5793     rms:   2.0133 -->  16.1798    
-      _phNeutralHadronIsolation                          mean:   2.3091 -->   2.3094     rms:   4.6949 -->   4.6953    
-      _phPhotonIsolation                                 mean:   6.1708 -->   6.1702     rms:  10.2988 -->  10.2968    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2017-31March2017 --> OK
-   New: _HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_prescale
-   Removed: _HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale
+   New: _HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_passTrigger_tt
    Changed:
-      _lECorr                                            mean:  84.3687 -->  85.9806     rms:  88.7137 -->  87.7393    
-      _lEScaleDown                                       mean:  84.2537 -->  85.8647     rms:  88.5739 -->  87.6003    
-      _lEScaleUp                                         mean:  84.4641 -->  86.0769     rms:  88.8359 -->  87.8609    
-      _lPtCorr                                           mean:  35.6973 -->  36.3226     rms:  24.9736 -->  24.3759    
-      _lPtScaleDown                                      mean:  35.6632 -->  36.2882     rms:  24.9548 -->  24.3577    
-      _lPtScaleUp                                        mean:  35.7338 -->  36.3594     rms:  24.9967 -->  24.3985    
-      _passTrigger_et                                    mean:   0.0700 -->   0.0600     rms:   0.2551 -->   0.2375    
-      _phChargedIsolation                                mean:   8.4023 -->   8.4130     rms:  13.6628 -->  13.6735    
+      _passTrigger_et                                    mean:   0.0600 -->   0.0700     rms:   0.2375 -->   0.2551    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Run2016-17Jul2018 --> OK
-   New: _HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_prescale,_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_prescale,_passTrigger_tt
-   Changed:
-      _lECorr                                            mean:  90.4705 -->  92.4928     rms: 103.9997 --> 102.8127    
-      _lEScaleDown                                       mean:  90.3617 -->  92.3830     rms: 103.8103 --> 102.6236    
-      _lEScaleUp                                         mean:  90.5638 -->  92.5871     rms: 104.1767 --> 102.9897    
-      _lPtCorr                                           mean:  44.2510 -->  44.9717     rms:  38.4217 -->  37.7813    
-      _lPtScaleDown                                      mean:  44.2073 -->  44.9276     rms:  38.3459 -->  37.7052    
-      _lPtScaleUp                                        mean:  44.2868 -->  45.0078     rms:  38.4885 -->  37.8483    
-      _phNeutralHadronIsolation                          mean:   1.1598 -->   1.1597     rms:   2.3578 -->   2.3575    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Autumn18MiniAOD --> OK
-   New: _HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg_prescale,_lHasMatch,_lMatchPt,_passTrigger_tt
    Changed:
-      _lECorr                                            mean:  47.9045 -->  85.3488     rms:  78.0625 --> 106.8349    
-      _lEScaleDown                                       mean:  47.8498 -->  83.8000     rms:  77.8870 -->  99.2085    
-      _lEScaleUp                                         mean:  47.9528 -->  86.8913     rms:  78.2332 --> 115.1257    
-      _lPtCorr                                           mean:  23.0843 -->  39.4603     rms:  35.1563 -->  39.1538    
-      _lPtScaleDown                                      mean:  23.0494 -->  38.8915     rms:  34.9234 -->  36.8499    
-      _lPtScaleUp                                        mean:  23.1176 -->  40.0274     rms:  35.3900 -->  41.6942    
-      _phPhotonIsolation                                 mean:   3.7368 -->   3.7371     rms:  11.2603 -->  11.2617    
-      _ttgEventType                                      mean:   7.2800 -->   8.0000     rms:   1.9498 -->   0.0000    
+      _lECorr                                            mean:  85.3488 -->  85.6083     rms: 106.8349 --> 107.0019    
+      _lEScaleDown                                       mean:  83.8000 -->  84.1398     rms:  99.2085 -->  99.4173    
+      _lEScaleUp                                         mean:  86.8913 -->  87.0703     rms: 115.1257 --> 115.2561    
+      _lMatchPt                                          mean: 25610700571662204.0000 -->  22.1932 rms: 69844939897599824.0000 -->  21.0067
+      _lPtCorr                                           mean:  39.4603 -->  39.5551     rms:  39.1538 -->  39.1597    
+      _lPtScaleDown                                      mean:  38.8915 -->  39.0224     rms:  36.8499 -->  36.8581    
+      _lPtScaleUp                                        mean:  40.0274 -->  40.0862     rms:  41.6942 -->  41.6983    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Fall17MiniAODv2 --> OK
-   New: _HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_prescale,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_prescale,_lHasMatch,_lMatchPt
-   Removed: _HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale
+   New: _HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1,_HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_prescale,_passTrigger_tt
    Changed:
-      _lECorr                                            mean:  27.9735 -->  84.5075     rms:  42.4606 -->  75.2488    
-      _lEScaleDown                                       mean:  27.9210 -->  84.1059     rms:  42.3239 -->  74.9697    
-      _lEScaleUp                                         mean:  27.9968 -->  84.8798     rms:  42.5016 -->  75.5017    
-      _lPtCorr                                           mean:  14.9389 -->  36.9154     rms:  20.7689 -->  20.1796    
-      _lPtScaleDown                                      mean:  14.9210 -->  36.7183     rms:  20.7474 -->  20.0431    
-      _lPtScaleUp                                        mean:  14.9504 -->  37.1061     rms:  20.7870 -->  20.3265    
-      _lheWeight                                         mean:   1.0008 -->   1.0039     rms:   0.0653 -->   0.0665    
-      _nLheWeights                                       mean: 110.0000 --> 148.0000     rms:   0.0000 -->   0.0000    
-      _passTrigger_et                                    mean:   0.0400 -->   0.0100     rms:   0.1960 -->   0.0995    
-      _phNeutralHadronIsolation                          mean:   0.9346 -->   0.9346     rms:   3.3013 -->   3.3017    
-      _ttgEventType                                      mean:   1.2600 -->   1.3800     rms:   1.3388 -->   1.6357    
-      _zgEventType                                       mean:   1.1200 -->   1.1800     rms:   1.3060 -->   1.4723    
-      lheCounter                                         mean:  54.9852 -->  74.0143     rms:  31.7646 -->  42.7370    
+      _passTrigger_et                                    mean:   0.0100 -->   0.0400     rms:   0.0995 -->   0.1960    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: Summer16MiniAODv3 --> OK
-   New: _HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_prescale,_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg,_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_prescale,_lHasMatch,_lMatchPt,_passTrigger_tt
-   Changed:
-      _lECorr                                            mean:   1.4459 --> 118.3678     rms:   8.0215 -->  96.9156    
-      _lEScaleDown                                       mean:   1.4483 --> -475.6270    rms:   8.0400 --> 6695.1615   
-      _lEScaleUp                                         mean:   1.4463 --> 712.3652     rms:   8.0232 --> 6741.4178   
-      _lPtCorr                                           mean:   0.7734 -->  53.1649     rms:   4.5504 -->  34.7276    
-      _lPtScaleDown                                      mean:   0.7754 --> -458.3577    rms:   4.5702 --> 5801.4774   
-      _lPtScaleUp                                        mean:   0.7735 --> 564.6897     rms:   4.5510 --> 5849.9335   
-      _lheWeight                                         mean:   1.0011 -->   1.0011     rms:   0.0896 -->   0.0888    
-      _nLheWeights                                       mean: 110.0000 --> 112.0000     rms:   0.0000 -->   0.0000    
-      lheCounter                                         mean:  54.9923 -->  55.9892     rms:  31.7263 -->  32.3032    
