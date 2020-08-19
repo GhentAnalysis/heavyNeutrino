@@ -145,7 +145,7 @@ if is2017:
 elif is2018:
     rochesterCorrectionFile = 'RoccoR2018.txt'
 else:
-    rochesterCorrectionFile = 'RoccoR2018.txt'
+    rochesterCorrectionFile = 'RoccoR2016.txt'
 
 
 # Main Process
