@@ -260,11 +260,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
             }
         }
         _lPtCorr[_nL]                   = _lPt[_nL]*rochesterCorr;
-        _lPtScaleDown[_nL]              = _lPtCorr[_nL]*( 1. - rochesterCorrUnc );
-        _lPtScaleUp[_nL]                = _lPtCorr[_nL]*( 1. + rochesterCorrUnc );
+        _lPtScaleDown[_nL]              = _lPtCorr[_nL] - rochesterCorrUnc;
+        _lPtScaleUp[_nL]                = _lPtCorr[_nL] + rochesterCorrUnc;
         _lECorr[_nL]                    = _lE[_nL]*rochesterCorr;
-        _lEScaleDown[_nL]               = _lECorr[_nL]*( 1. - rochesterCorrUnc );
-        _lEScaleUp[_nL]                 = _lECorr[_nL]*( 1. + rochesterCorrUnc );
+        _lEScaleDown[_nL]               = _lECorr[_nL] * _lPtScaleDown[ _nL ] / _lPtCorr[ _nL ];
+        _lEScaleUp[_nL]               = _lECorr[_nL] * _lPtScaleUp[ _nL ] / _lPtCorr[ _nL ];
         ++_nMu;
         ++_nL;
         ++_nLight;
