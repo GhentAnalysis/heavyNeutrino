@@ -25,6 +25,10 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+//#include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"
+
+
+
 //New for SUSY masses
 #include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoHeader.h"
 
@@ -40,7 +44,7 @@
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/ParticleLevelAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
-#include "heavyNeutrino/multilep/interface/SUSYMassAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/SUSYAnalyzer.h"
 
 // Allow for easy way to retrieve handles
 namespace {
@@ -62,7 +66,7 @@ class JetAnalyzer;
 class GenAnalyzer;
 class ParticleLevelAnalyzer;
 class LheAnalyzer;
-class SUSYMassAnalyzer;
+class SUSYAnalyzer;
 
 class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, edm::one::WatchRuns, edm::one::SharedResources> {
     //Define other analyzers as friends
@@ -73,7 +77,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
     friend GenAnalyzer;
     friend ParticleLevelAnalyzer;
     friend LheAnalyzer;
-    friend SUSYMassAnalyzer;
+    friend SUSYAnalyzer;
     public:
         explicit multilep(const edm::ParameterSet&);
 
@@ -92,6 +96,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<GenEventInfoProduct>                    genEventInfoToken;
         edm::EDGetTokenT<GenLumiInfoHeader>                      genLumiInfoToken;
         edm::EDGetTokenT<LHEEventProduct>                        lheEventInfoToken;
+        //edm::EDGetTokenT<LHERunInfoProduct>                      lheRunInfoToken;
         edm::EDGetTokenT<std::vector<PileupSummaryInfo>>         pileUpToken;
         edm::EDGetTokenT<reco::GenParticleCollection>            genParticleToken;
         edm::EDGetTokenT<reco::GenParticleCollection>            particleLevelPhotonsToken;
@@ -147,7 +152,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         LheAnalyzer*           lheAnalyzer;
         GenAnalyzer*           genAnalyzer;
         ParticleLevelAnalyzer* particleLevelAnalyzer;
-        SUSYMassAnalyzer*      susyMassAnalyzer;
+        SUSYAnalyzer*          susyAnalyzer;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
         TTree* outputTree;

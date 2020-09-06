@@ -178,7 +178,7 @@ unsigned GenAnalyzer::overlapEventType(const std::vector<reco::GenParticle>& gen
         if(fabs(p->eta())>etaCut) continue;
         type = std::max(type, 2);                                                            // Type 2: photon from pion or other meson
 
-        if(GenTools::getMinDeltaR(*p, genParticles) < genCone) continue;
+        if(GenTools::getMinDeltaRTTG(*p, genParticles) < genCone) continue;
         if(not GenTools::noMesonsInChain(*p, genParticles))  continue;
 
         // Everything below is *signal*

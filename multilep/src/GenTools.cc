@@ -32,6 +32,13 @@ void GenTools::setDecayChain(const reco::GenParticle& gen, const std::vector<rec
     if(gen.numberOfMothers() > 0) setDecayChain(genParticles[gen.motherRef(0).key()], genParticles, list);
 }
 
+bool GenTools::particleInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles, const reco::GenParticle& target){
+    const reco::GenParticle* mom = getFirstMother(gen, genParticles);
+    if(!mom)                             return false;
+    else if(&gen == &target)   return true;
+    else return getMother(*mom, genParticles);
+}
+
 bool GenTools::hasOnlyIncomingGluonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     if(gen.pdgId()==21){
       std::set<int> chain;
@@ -264,6 +271,19 @@ double GenTools::getMinDeltaR(const reco::GenParticle& p, const std::vector<reco
         if(q.status() != 1)                                                      continue;
         if(fabs(p.pt()-q.pt()) < 0.0001)                                         continue; // same particle
         if(abs(q.pdgId()) == 12 or abs(q.pdgId()) == 14 or abs(q.pdgId()) == 16) continue;
+        minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
+    }
+    return minDeltaR;
+}
+
+double GenTools::getMinDeltaRTTG(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles, float ptCut){
+    double minDeltaR = 10;
+    for(auto& q : genParticles){
+        if(q.pt() < ptCut)                                                       continue;
+        if(q.status() != 1)                                                      continue;
+        if(fabs(p.pt()-q.pt()) < 0.0001)                                         continue; // same particle
+        if(abs(q.pdgId()) == 12 or abs(q.pdgId()) == 14 or abs(q.pdgId()) == 16 or abs(q.pdgId()) == 22) continue; //also lease out photons
+        if(GenTools::particleInChain(q, genParticles, p)) continue; // ignore particles coming from the gen photon being looked at
         minDeltaR = std::min(minDeltaR, deltaR(p.eta(), p.phi(), q.eta(), q.phi()));
     }
     return minDeltaR;
