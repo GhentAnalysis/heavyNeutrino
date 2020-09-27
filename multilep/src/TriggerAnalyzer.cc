@@ -60,6 +60,9 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                    "HLT_PFHT500_PFMET100_PFMHT100_IDTight", "HLT_PFHT1050", "HLT_PFJet500", "HLT_PFMET120_PFMHT120_IDTight", 
                                    "HLT_PFMET250_HBHECleaned", "HLT_PFMET200_HBHE_BeamHaloCleaned", "HLT_PFMETTypeOne140_PFMHT140_IDTight",
                                    "HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned", "HLT_TripleJet110_35_35_Mjj650_PFMET110"};
+     
+    allFlags["passTrigger_add"] = {"HLT_Ele25_eta2p1_WPTight_Gsf", "HLT_Ele27_eta2p1_WPLoose_Gsf", "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1", 
+                                   "HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg", "HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg"};     
 
   } else if( multilepAnalyzer->is2017() ){
     allFlags["passTrigger_FR"]     = {"HLT_Mu3_PFJet40", "HLT_Mu8", "HLT_Mu17", "HLT_Mu20", "HLT_Mu27", "HLT_Ele8_CaloIdM_TrackIdM_PFJet30", "HLT_Ele17_CaloIdM_TrackIdM_PFJet30", "HLT_Ele23_CaloIdM_TrackIdM_PFJet30"};
@@ -89,6 +92,14 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                    "HLT_PFHT700_PFMET85_PFMHT85_IDTight", "HLT_PFHT800_PFMET75_PFMHT75_IDTight", "HLT_CaloJet500_NoJetID", // Note: there are prescales in quite some L1 seeds though, assume their effect is small wrt the unprescaled L1 seeds, otherwise almost no triggers can be used
                                    "HLT_AK8PFJet500"};
 
+    allFlags["passTrigger_add"] = {"HLT_Ele35_WPTight_Gsf", "HLT_Ele32_WPTight_Gsf", "HLT_IsoMu24", "HLT_IsoMu27", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                   "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL",
+                                   "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                   "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1",
+                                   "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1", "HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg",
+                                   "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg", "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg",
+                                   "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg", "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
+     
   } else {
     allFlags["passTrigger_FR"]     = {"HLT_Mu3_PFJet40", "HLT_Mu8", "HLT_Mu17", "HLT_Mu20", "HLT_Mu27", "HLT_Ele8_CaloIdM_TrackIdM_PFJet30", "HLT_Ele12_CaloIdM_TrackIdM_PFJet30", "HLT_Ele17_CaloIdM_TrackIdM_PFJet30", "HLT_Ele23_CaloIdM_TrackIdM_PFJet30"};
     allFlags["passTrigger_FR_iso"]     = {"HLT_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL", "HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30", "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30", "HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30", "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30"};
@@ -118,6 +129,15 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["passTrigger_ref"] = {"HLT_MET200", "HLT_PFMET300", "HLT_PFMET170_HBHECleaned", "HLT_PFMET120_PFMHT120_IDTight",                                 // Reference triggers that could be used to select unprescaled, unbiased data for trigger efficiency measurements (extremely important to have triggers here which have prescale 1 for the whole year!)
                                    "HLT_PFHT300_PFMET110", "HLT_PFHT350_DiPFJetAve90_PFAlphaT0p53", "HLT_PFHT400_DiPFJetAve90_PFAlphaT0p52",                  // Note: there are prescales in quite some L1 seeds though, assume their effect is small wrt the unprescaled L1 seeds
                                    "HLT_PFHT400_SixJet30_DoubleBTagCSV_p056", "HLT_PFHT900", "HLT_PFHT650_WideJetMJJ900DEtaJJ1p5", "HLT_CaloJet500_NoJetID"}; // Note: CaloJet not used in previous analyses, maybe it is biased to measure lepton triggers? Should check the correlation factor for this one
+     
+    allFlags["passTrigger_add"] = {"HLT_Ele32_WPTight_Gsf", "HLT_IsoMu27", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                   "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                   "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTauHPS30_eta2p1_CrossL1",
+                                   "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1", "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1",
+                                   "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg", "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg",
+                                   "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg", "HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg",
+                                   "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
+
   }
 
 }
