@@ -473,6 +473,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {_tauPOGVVLoose2017v2, _tauPOGVTight2017v2, _tauPOGVVTight2017v2}) std::fill_n(array, _nLight, false);
     for(auto array : {_tauAgainstElectronMVA6Raw, _tauCombinedIsoDBRaw3Hits, _tauIsoMVAPWdR03oldDMwLT}) std::fill_n(array, _nLight, 0.);
     for(auto array : {_tauDecayMode}) std::fill_n(array, _nLight, 0);
+    for(auto array : {_tauDxyLead, _tauDzLead}) std::fill_n(array, _nLight, 0);
     for(auto array : {_tauIsoMVADBdR03oldDMwLT, _tauIsoMVADBdR03newDMwLT, _tauIsoMVAPWnewDMwLT, _tauIsoMVAPWoldDMwLT}) std::fill_n(array, _nLight, 0.);
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
