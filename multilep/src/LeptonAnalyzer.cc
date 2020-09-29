@@ -556,6 +556,9 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco:
 	_tauDzLead[_nL]       = packedLeadTauCand->dz();
 	_dz[_nL]              = tau_dz(tau, vertex.position());
      }
+   
+   _3dIP[_nL]    = tau.ip3d();
+   _3dIPSig[_nL] = tau.ip3d_Sig();
 }
 
 //Function returning tau dz
