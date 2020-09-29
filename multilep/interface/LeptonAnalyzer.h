@@ -103,6 +103,8 @@ class LeptonAnalyzer {
     double _dz[nL_max];
     double _3dIP[nL_max];
     double _3dIPSig[nL_max];
+    double _tauDxyLead[nL_max];
+    double _tauDzLead[nL_max];
 
     //electron properties 
     float _lElectronMvaSummer16GP[nL_max];                                                           // OLD
