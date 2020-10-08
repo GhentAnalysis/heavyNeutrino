@@ -382,8 +382,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         _lFlavor[_nL]        = 1;
         _lMuonSegComp[_nL]    = mu.segmentCompatibility();
-        _lMuonTrackPt[_nL]    = mu.innerTrack()->pt();
-        _lMuonTrackPtErr[_nL] = mu.innerTrack()->ptError();
+        _lMuonTrackPt[_nL]    = (mu.innerTrack().isNull()) ? -1 : mu.innerTrack()->pt();
+        _lMuonTrackPtErr[_nL] = (mu.innerTrack().isNull()) ? -1 : mu.innerTrack()->ptError();
         _lSimType[_nL]        = mu.simType();
         _lSimExtType[_nL]     = mu.simExtType();
         _lSimFlavour[_nL]     = mu.simFlavour();
