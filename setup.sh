@@ -5,7 +5,7 @@ BRANCH=METResolution
 if [[ $SCRAM_ARCH == *slc6* ]]; then
   RELEASE=CMSSW_10_2_21
 else
-  RELEASE=CMSSW_10_6_11_patch1
+  RELEASE=CMSSW_10_6_17
 fi
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one

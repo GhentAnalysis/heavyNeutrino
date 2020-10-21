@@ -7,8 +7,12 @@ import FWCore.ParameterSet.Config as cms
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root'
 
-#inputFile       = '/store/mc/RunIISummer19UL17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v2/70000/FBC4E43E-2C35-974A-84C9-29AD0430BD39.root'
-inputFile       = '/store/data/Run2017E/SingleElectron/MINIAOD/09Aug2019_UL2017-v1/130000/1428BFE4-BCE6-EA4D-9E49-CE5DC19AFFCE.root'
+
+inputFile       = '/store/mc/RunIISummer19UL17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v2/70000/FBC4E43E-2C35-974A-84C9-29AD0430BD39.root'
+#inputFile       = '/store/data/Run2017E/SingleElectron/MINIAOD/09Aug2019_UL2017-v1/130000/1428BFE4-BCE6-EA4D-9E49-CE5DC19AFFCE.root'
+#inputFile       = '/store/mc/RunIISummer19UL18MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v1/70000/D01D206D-918C-4242-B9C3-07C3D8C106D3.root'
+#inputFile       = '/store/data/Run2018B/DoubleMuon/MINIAOD/12Nov2019_UL2018-v2/70000/F5018BF9-184A-524E-A209-BC7A6BB7D8D4.root'
+
 
 #inputFile       = 'root://ccxrootdcms.in2p3.fr:1094/pnfs/in2p3.fr/data/cms/t2data/store/data/Run2018C/EGamma/MINIAOD/12Nov2019_UL2018-v2/270000/CD1A6E73-92DF-454F-BC1C-31199CB2E02D.root'
 #inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_TuneCP5_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/70000/F447BDAD-6642-BD46-B8E9-750F7F961BA7.root'
@@ -41,7 +45,7 @@ is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in input
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
 isSUSY = "SMS-T" in inputFile
 isFastSim = 'Fast' in inputFile
-isUL   = (is2017 and "Summer19UL" in inputFile) or (isData and ("21Feb2020_UL2016" in inputFile or "09Aug2019_UL2017" in inputFile or "12Nov2019_UL2018" in inputFile))
+isUL   = ("Summer19UL" in inputFile) or (isData and ("21Feb2020_UL2016" in inputFile or "09Aug2019_UL2017" in inputFile or "12Nov2019_UL2018" in inputFile))
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -62,8 +66,8 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 # or on conddb: https://cms-conddb.cern.ch/cmsDbBrowser/index/Prod
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 if isUL:
-    if is2017:                               process.GlobalTag.globaltag = '106X_dataRun2_v20' if isData else '106X_mc2017_realistic_v7'
-    elif is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v24' if isData else ''
+    if is2017:                               process.GlobalTag.globaltag = '106X_dataRun2_v28' if isData else '106X_mc2017_realistic_v7'
+    elif is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v28' if isData else '106X_upgrade2018_realistic_v11_L1v1'
 else:
     #TO FIX RUN DEPENDENT JEC IN 2018!!! 102X_dataRun2_v12 (ABC)/ 102X_dataRun2_Prompt_v15 (D)
     if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v15'
@@ -211,7 +215,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 
 def getJSON(isUL, is2017, is2018):
     if is2018:
-        if isUL: return ""#not available yet
+        if isUL: return "Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt"
         else:    return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
     elif is2017:
         if isUL: return "Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt"
