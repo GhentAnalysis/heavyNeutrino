@@ -84,6 +84,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_tauIsoMVADBdR03newDMwLT",      &_tauIsoMVADBdR03newDMwLT,      "_tauIsoMVADBdR03newDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWnewDMwLT",          &_tauIsoMVAPWnewDMwLT,          "_tauIsoMVAPWnewDMwLT[_nL]/D");
     outputTree->Branch("_tauIsoMVAPWoldDMwLT",          &_tauIsoMVAPWoldDMwLT,          "_tauIsoMVAPWoldDMwLT[_nL]/D");
+    outputTree->Branch("_tauDxyLead",                   &_tauDxyLead,                   "_tauDxyLead[_nL]/D");
+    outputTree->Branch("_tauDzLead",                    &_tauDzLead,                    "_tauDzLead[_nL]/D");
     outputTree->Branch("_relIso",                       &_relIso,                       "_relIso[_nLight]/D");
     outputTree->Branch("_relIso_80X",                   &_relIso_80X,                   "_relIso_80X[_nMu]/D"); // old, for backwards compatibility in lepton mva's
     outputTree->Branch("_relIso_Summer16",              &_relIso_Summer16,              "_relIso_Summer16[_nLight]/D"); // old, for backwards compatibility in lepton mva's
@@ -97,6 +99,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_miniIso_Spring15",             &_miniIso_Spring15,             "_miniIso_Spring15[_nLight]/D"); // old, for backwards compatibility in lepton mva's
     outputTree->Branch("_ptRel",                        &_ptRel,                        "_ptRel[_nLight]/D");
     outputTree->Branch("_ptRatio",                      &_ptRatio,                      "_ptRatio[_nLight]/D");
+    outputTree->Branch("_ptRatio_Summer16",             &_ptRatio_Summer16,             "_ptRatio_Summer16[_nLight]/D");
     outputTree->Branch("_closestJetCsvV2",              &_closestJetCsvV2,              "_closestJetCsvV2[_nLight]/D");
     outputTree->Branch("_closestJetDeepCsv_b",          &_closestJetDeepCsv_b,          "_closestJetDeepCsv_b[_nLight]/D");
     outputTree->Branch("_closestJetDeepCsv_bb",         &_closestJetDeepCsv_bb,         "_closestJetDeepCsv_bb[_nLight]/D");
@@ -260,11 +263,11 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
             }
         }
         _lPtCorr[_nL]                   = _lPt[_nL]*rochesterCorr;
-        _lPtScaleDown[_nL]              = _lPtCorr[_nL]*( 1. - rochesterCorrUnc );
-        _lPtScaleUp[_nL]                = _lPtCorr[_nL]*( 1. + rochesterCorrUnc );
+        _lPtScaleDown[_nL]              = _lPtCorr[_nL] - rochesterCorrUnc;
+        _lPtScaleUp[_nL]                = _lPtCorr[_nL] + rochesterCorrUnc;
         _lECorr[_nL]                    = _lE[_nL]*rochesterCorr;
-        _lEScaleDown[_nL]               = _lECorr[_nL]*( 1. - rochesterCorrUnc );
-        _lEScaleUp[_nL]                 = _lECorr[_nL]*( 1. + rochesterCorrUnc );
+        _lEScaleDown[_nL]               = _lECorr[_nL] * _lPtScaleDown[ _nL ] / _lPtCorr[ _nL ];
+        _lEScaleUp[_nL]               = _lECorr[_nL] * _lPtScaleUp[ _nL ] / _lPtCorr[ _nL ];
         ++_nMu;
         ++_nL;
         ++_nLight;
@@ -470,6 +473,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     for(auto array : {_tauPOGVVLoose2017v2, _tauPOGVTight2017v2, _tauPOGVVTight2017v2}) std::fill_n(array, _nLight, false);
     for(auto array : {_tauAgainstElectronMVA6Raw, _tauCombinedIsoDBRaw3Hits, _tauIsoMVAPWdR03oldDMwLT}) std::fill_n(array, _nLight, 0.);
     for(auto array : {_tauDecayMode}) std::fill_n(array, _nLight, 0);
+    for(auto array : {_tauDxyLead, _tauDzLead}) std::fill_n(array, _nLight, 0);
     for(auto array : {_tauIsoMVADBdR03oldDMwLT, _tauIsoMVADBdR03newDMwLT, _tauIsoMVAPWnewDMwLT, _tauIsoMVAPWoldDMwLT}) std::fill_n(array, _nLight, 0.);
 
     if(multilepAnalyzer->skim == "trilep"    &&  _nL     < 3) return false;
@@ -541,10 +545,20 @@ void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Muon& muon){
 }
 
 void LeptonAnalyzer::fillLeptonImpactParameters(const pat::Tau& tau, const reco::Vertex& vertex){
+   
     _dxy[_nL]     = (double) tau.dxy();                                      // warning: float while dxy of tracks are double; could also return -1000
-    _dz[_nL]      = tau_dz(tau, vertex.position());
-    _3dIP[_nL]    = tau.ip3d();
-    _3dIPSig[_nL] = tau.ip3d_Sig();
+   
+   if( tau.leadChargedHadrCand().isNonnull() )
+     {	
+	pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau.leadChargedHadrCand().get());
+	    
+	_tauDxyLead[_nL]      = packedLeadTauCand->dxy();
+	_tauDzLead[_nL]       = packedLeadTauCand->dz();
+	_dz[_nL]              = tau_dz(tau, vertex.position());
+     }
+   
+   _3dIP[_nL]    = tau.ip3d();
+   _3dIPSig[_nL] = tau.ip3d_Sig();
 }
 
 //Function returning tau dz

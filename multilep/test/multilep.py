@@ -114,7 +114,7 @@ if 'storeParticleLevel' in extraContent and not isData:
   process.load("GeneratorInterface.RivetInterface.genParticles2HepMC_cfi")
   process.genParticles2HepMC.genParticles = cms.InputTag("mergedGenParticles")
   process.genParticles2HepMC.signalParticlePdgIds = cms.vint32(6,-6) # for top analyses, though not yet sure what it exactlye does, I think it is only relevant to find the signal vertex which we currently do not save
-  process.load("GeneratorInterface.RivetInterface.particleLevel_cfi")
+  process.load("heavyNeutrino.multilep.particleLevelTTG_cfi")
   process.particleLevelSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel)
 else:
   process.particleLevelSequence = cms.Sequence()
@@ -145,7 +145,7 @@ if is2017:
 elif is2018:
     rochesterCorrectionFile = 'RoccoR2018.txt'
 else:
-    rochesterCorrectionFile = 'RoccoR2018.txt'
+    rochesterCorrectionFile = 'RoccoR2016.txt'
 
 
 # Main Process
