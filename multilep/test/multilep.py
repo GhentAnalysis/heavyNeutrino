@@ -80,10 +80,18 @@ if isFastSim:
   elif is2017: jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
   else:        jecUncertaintyFile = 'Summer16_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
 else:
-  if is2018:   jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
-  elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
-  else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
-
+  if is2018:
+      jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
+      jecUncertaintySourcesFile = 'Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt'
+      jecUncertaintyRegroupedFile = 'RegroupedV2_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt'
+  elif is2017: 
+      jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
+      jecUncertaintySourcesFile = 'Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt'
+      jecUncertaintyRegroupedFile = 'RegroupedV2_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt'
+  else:        
+      jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
+      jecUncertaintySourcesFile = 'Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt'
+      jecUncertaintyRegroupedFile = 'RegroupedV2_Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt'
 
 from EgammaUser.EgammaPostRecoTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # Updated scale and smearings
@@ -186,6 +194,8 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
   jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
   jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyFile),
+  jecUncertaintySourcesFile     = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintySourcesFile),
+  jecUncertaintyRegroupedFile   = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyRegroupedFile),
   rochesterCorrectionFile       = cms.FileInPath("heavyNeutrino/multilep/data/RochesterCorrections/" + rochesterCorrectionFile ),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),
