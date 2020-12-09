@@ -132,6 +132,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     storeLheParticles;
         bool                                                     storeGenParticles;
         bool                                                     storeParticleLevel;
+        bool                                                     storeJecSources;
         bool                                                     storeAllTauID;
         std::string                                              headerPart1;
         std::string                                              headerPart2;

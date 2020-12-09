@@ -42,6 +42,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
     storeGenParticles(                                                         iConfig.getUntrackedParameter<bool>("storeGenParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
+    storeJecSources(                                                           iConfig.getUntrackedParameter<bool>("storeJecSources")),
     storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
     //headerPart1(                                                               iConfig.getUntrackedParameter<std::string>("headerPart1")),
     //headerPart2(                                                               iConfig.getUntrackedParameter<std::string>("headerPart2"))
