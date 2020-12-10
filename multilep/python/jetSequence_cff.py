@@ -52,6 +52,18 @@ def addJetSequence( process, isData, is2017, is2018, isFastSim ):
     ],
   )
 
+  process.load("RecoJets.JetProducers.PileupJetID_cfi")
+  process.pileupJetIdUpdated = process.pileupJetId.clone(
+      jets=cms.InputTag("slimmedJets"),
+      inputIsCorrected=True,
+      applyJec=True,
+      vertexes=cms.InputTag("offlineSlimmedPrimaryVertices")
+  )
+#  print process.pileupJetId.dumpConfig()
+  
+  process.updatedPatJetsUpdatedJEC.userData.userInts.src += ['pileupJetIdUpdated:fullId']
+  process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
+
   process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
 
   #

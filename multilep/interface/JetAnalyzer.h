@@ -69,6 +69,8 @@ class JetAnalyzer {
     double   _jetChargedEmFraction[nJets_max];
     double   _jetHFHadronFraction[nJets_max];
     double   _jetHFEmFraction[nJets_max];
+    double   _jetPileupIdFullDisc[nJets_max];
+    int      _jetPileupIdFullId[nJets_max];
 
     //split JEC in different sources
     std::map< std::string, double[nJets_max] > _jetPt_groupedVariationsDown;
