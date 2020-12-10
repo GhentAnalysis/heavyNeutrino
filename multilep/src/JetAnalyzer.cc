@@ -92,6 +92,8 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetHadronFlavor",           &_jetHadronFlavor,          "_jetHadronFlavor[_nJets]/i");
     outputTree->Branch("_jetIsTight",                &_jetIsTight,               "_jetIsTight[_nJets]/O");
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/O");
+    outputTree->Branch("_jetPileupIdFullDisc",       &_jetPileupIdFullDisc,      "_jetPileupIdFullDisc[_nJets]/D");
+    outputTree->Branch("_jetPileupIdFullId",         &_jetPileupIdFullId,        "_jetPileupIdFullId[_nJets]/I");
 
     outputTree->Branch("_jetNeutralHadronFraction",  &_jetNeutralHadronFraction, "_jetNeutralHadronFraction[_nJets]/D");
     outputTree->Branch("_jetChargedHadronFraction",  &_jetChargedHadronFraction, "_jetChargedHadronFraction[_nJets]/D");
@@ -164,6 +166,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017() || multilepAnalyzer->is2018() );
         _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
+       
+        if( jet.hasUserFloat("pileupJetId:fullDiscriminant") ) _jetPileupIdFullDisc[_nJets] = jet.userFloat("pileupJetId:fullDiscriminant");
+        if( jet.hasUserInt("pileupJetIdUpdated:fullId") ) _jetPileupIdFullId[_nJets] = jet.userInt("pileupJetIdUpdated:fullId");
 
         //find smeared equivalents of nominal jet
         auto jetSmearedIt = jetsSmeared->begin();

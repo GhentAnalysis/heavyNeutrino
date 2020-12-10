@@ -230,6 +230,7 @@ if isData:
 
 process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.egammaPostRecoSeq *
+                     process.pileupJetIdUpdated *
                      process.jetSequence *
                      process.fullPatMetSequence *
                      process.prefiringweight *
