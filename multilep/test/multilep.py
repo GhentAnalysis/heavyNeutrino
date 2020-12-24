@@ -14,8 +14,10 @@ inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_Tun
 
 # Other default arguments
 
-nEvents         = 1000
-extraContent    = 'storeAllTauID'
+#nEvents         = 1000
+nEvents         = 100
+#extraContent    = 'storeAllTauID'
+extraContent    = 'storeJecSources'
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
@@ -84,14 +86,26 @@ else:
       jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
       jecUncertaintySourcesFile = 'Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt'
       jecUncertaintyRegroupedFile = 'RegroupedV2_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt'
+      jecL1FastJetFile = "Autumn18_V19_MC_L1FastJet_AK4PFchs.txt"
+      jecL2RelativeFile = "Autumn18_V19_MC_L2Relative_AK4PFchs.txt"
+      jecL3AbsoluteFile = "Autumn18_V19_MC_L3Absolute_AK4PFchs.txt"
+      jecL2L3ResidualFile = "Autumn18_V19_MC_L2L3Residual_AK4PFchs.txt"
   elif is2017: 
       jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
       jecUncertaintySourcesFile = 'Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt'
       jecUncertaintyRegroupedFile = 'RegroupedV2_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt'
+      jecL1FastJetFile = "Fall17_17Nov2017_V32_MC_L1FastJet_AK4PFchs.txt"
+      jecL2RelativeFile = "Fall17_17Nov2017_V32_MC_L2Relative_AK4PFchs.txt"
+      jecL3AbsoluteFile = "Fall17_17Nov2017_V32_MC_L3Absolute_AK4PFchs.txt"
+      jecL2L3ResidualFile = "Fall17_17Nov2017_V32_MC_L2L3Residual_AK4PFchs.txt"
   else:        
       jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
       jecUncertaintySourcesFile = 'Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt'
       jecUncertaintyRegroupedFile = 'RegroupedV2_Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt'
+      jecL1FastJetFile = "Summer16_07Aug2017_V11_MC_L1FastJet_AK4PFchs.txt"
+      jecL2RelativeFile = "Summer16_07Aug2017_V11_MC_L2Relative_AK4PFchs.txt"
+      jecL3AbsoluteFile = "Summer16_07Aug2017_V11_MC_L3Absolute_AK4PFchs.txt"
+      jecL2L3ResidualFile = "Summer16_07Aug2017_V11_MC_L2L3Residual_AK4PFchs.txt"
 
 from EgammaUser.EgammaPostRecoTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # Updated scale and smearings
@@ -196,6 +210,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyFile),
   jecUncertaintySourcesFile     = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintySourcesFile),
   jecUncertaintyRegroupedFile   = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyRegroupedFile),
+  jecL1FastJetFile              = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL1FastJetFile),
+  jecL2RelativeFile             = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL2RelativeFile),
+  jecL3AbsoluteFile             = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL3AbsoluteFile),
+  jecL2L3ResidualFile           = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL2L3ResidualFile),
   rochesterCorrectionFile       = cms.FileInPath("heavyNeutrino/multilep/data/RochesterCorrections/" + rochesterCorrectionFile ),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),

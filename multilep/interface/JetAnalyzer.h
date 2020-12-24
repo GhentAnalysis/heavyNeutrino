@@ -12,6 +12,8 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/Event.h"
 
+#include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
+
 //ROOT
 #include "TTree.h"
 
@@ -29,6 +31,8 @@ class JetAnalyzer {
    
     std::map<std::string, std::shared_ptr< JetCorrectorParameters> > jetSourcesCorParameters;
     std::map<std::string, std::shared_ptr< JetCorrectorParameters> > jetGroupedCorParameters;
+   
+    std::shared_ptr<FactorizedJetCorrector> jetCorrector;
 
     unsigned _nJets = 0;
     double   _jetPt[nJets_max];
@@ -82,6 +86,17 @@ class JetAnalyzer {
     std::map< std::string, double[nJets_max] > _jetSmearedPt_groupedVariationsUp;
     std::map< std::string, double[nJets_max] > _jetSmearedPt_allVariationsDown;
     std::map< std::string, double[nJets_max] > _jetSmearedPt_allVariationsUp;
+
+    // MET with propagated JEC sources and uncertainties
+    std::map< std::string, double > _corrMETx_groupedVariationsDown;
+    std::map< std::string, double > _corrMETx_groupedVariationsUp;
+    std::map< std::string, double > _corrMETy_groupedVariationsDown;
+    std::map< std::string, double > _corrMETy_groupedVariationsUp;
+
+    std::map< std::string, double > _corrMETx_allVariationsDown;
+    std::map< std::string, double > _corrMETx_allVariationsUp;
+    std::map< std::string, double > _corrMETy_allVariationsDown;
+    std::map< std::string, double > _corrMETy_allVariationsUp;
    
     double   _met;                                                                              //met kinematics
     double   _metPhi;
@@ -102,6 +117,12 @@ class JetAnalyzer {
     bool jetIsLoose(const pat::Jet& jet, const bool is2017) const;
     bool jetIsTight(const pat::Jet& jet, const bool is2017, const bool is2018) const;
     bool jetIsTightLepVeto(const pat::Jet& jet, const bool is2017, const bool is2018) const;
+   
+    std::vector<float> getSubCorrections(double rawPt, double eta, double rho, double area);
+   std::pair<double, double> getMETCorrectionPxPy(double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area, std::string source, int iJet, std::string shift);
+   
+   double px(double pt, double phi) { return pt*cos(phi); };
+   double py(double pt, double phi) { return pt*sin(phi); };
 
   public:
     JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
@@ -109,6 +130,9 @@ class JetAnalyzer {
 
     void beginJob(TTree* outputTree);
     bool analyze(const edm::Event&);
+   
+//    std::pair <double, double > correctedMETAndPhi(const pat::MET& met, const std::vector< pat::Jet >& jets, const double rho);
+    void correctedMETAndPhi(const pat::MET& met, const std::vector< pat::Jet >& jets, const double rho);
 };
 
 #endif
