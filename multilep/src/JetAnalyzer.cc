@@ -80,28 +80,28 @@ double px(double pt, double phi) { return pt*cos(phi); };
 double py(double pt, double phi) { return pt*sin(phi); };
 
 
-std::pair<double, double> JetAnalyzer::getMETCorrectionPxPy(double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area, const std::string& source, unsigned jetIndex, const std::string& shift)
+std::pair<double, double> JetAnalyzer::getMETCorrectionPxPy(double corrPt, double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area, const std::string& source, unsigned jetIndex, double jecShift)
 {      
     std::vector< float > corrections = getSubCorrections(rawPt, rawEta, rho, area);
 
-    double l1corrpt   = rawMuonSubtractedPt*corrections.front(); // l1fastjet corrections were pushed pack first
-    double fullcorrpt = rawMuonSubtractedPt*corrections.back();  // full corrections are the last in the vector
-
-    // the corrections for the MET are the difference between l1fastjet and the full corrections on the jet!
-    if( emf > 0.9 or fullcorrpt < 15. || ( std::abs(rawEta) > 9.9 ) ) return {0., 0.};
+//    double l1corrptNoMuon   = rawMuonSubtractedPt*corrections.front();
+    double fullcorrpt = rawMuonSubtractedPt*corrections.back();
+    double PT_L1L2L3 = rawMuonSubtractedPt*corrections.back() + (rawPt-rawMuonSubtractedPt);
+    double PT_L1 = rawPt*corrections.front();
    
-    float f = _jetPt_groupedVariationsUp[ source ][ jetIndex ];
-    if( shift == "down" ) f = _jetPt_groupedVariationsDown[ source ][ jetIndex ];
+    float f = PT_L1L2L3*(jecShift/corrPt);
+   
+    // the corrections for the MET are the difference between l1fastjet and the full corrections on the jet!
+    if( emf > 0.90 or fullcorrpt < 15. || ( std::abs(rawEta) > 9.9 ) ) return {0., 0.};
 
-//    float ptdiff = (l1corrpt - fullcorrpt);
+    float ptdiff = (PT_L1 - f);
 
-    float ptdiff = (l1corrpt - f);
-
+//    float ptdiffNominal = (l1corrptNoMuon - fullcorrpt);
+   
     std::pair<double, double> corr = {px(ptdiff, phi), py(ptdiff, phi)};
 
     return corr; 
 }
-
 
 void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat::Jet >& jets, const double rho)
 {
@@ -123,13 +123,11 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
         _corrMETy_allVariationsUp[ source ] = met.uncorPy();
     }   
    
-   std::cout << "-----" << std::endl;
+//   std::cout << "-----" << std::endl;
     //loop over all jets
     int iJet = 0;
     for(auto& jet : jets)
     {
-       std::cout << "jet: pt(uncorrected)=" << jet.correctedP4("Uncorrected").Pt() << " pt(corrected)=" << jet.pt() << " up(total)=" << _jetPt_allVariationsUp["Total"][iJet] << " down(total)=" <<
-	 _jetPt_allVariationsDown["Total"][iJet] << std::endl;
         //make lorentzVector of raw jet pt
         TLorentzVector jetV;
         jetV.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E());
@@ -150,15 +148,18 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
             }
         }
 
+//       std::cout << "jet #" << iJet << ": pt(uncorrected)=" << jet.correctedP4("Uncorrected").Pt() << " pt(corrected)=" << jet.pt() << " up(total)=" << _jetPt_allVariationsUp["Total"][iJet] << " down(total)=" <<
+//	 _jetPt_allVariationsDown["Total"][iJet] << " eta=" << jet.eta() << std::endl;
+
         for (auto it=_corrMETx_groupedVariationsDown.begin(); it!=_corrMETx_groupedVariationsDown.end(); ++it)
         {	
             std::string source = it->first;
 
             //get JEC on px and py 
-            std::pair<double, double> corrUp = getMETCorrectionPxPy(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
-                    jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, "up" );
-            std::pair<double, double> corrDown = getMETCorrectionPxPy(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
-                    jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, "down" );
+            std::pair<double, double> corrUp = getMETCorrectionPxPy(jet.pt(), jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
+                    jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, _jetPt_groupedVariationsUp[source][iJet]);
+            std::pair<double, double> corrDown = getMETCorrectionPxPy(jet.pt(), jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
+                    jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, _jetPt_groupedVariationsDown[source][iJet]);
 	   
             //apply corrections to current met values
             _corrMETx_groupedVariationsDown[ source ] += corrDown.first;
@@ -171,11 +172,14 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
         {	
             std::string source = it->first;
 
-            //get JEC on px and py 
-            std::pair<double, double> corrUp = getMETCorrectionPxPy(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
-                    jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, "up" );
-            std::pair<double, double> corrDown = getMETCorrectionPxPy(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
-                    jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, "down" );
+            //get JEC on px and py
+            std::pair<double, double> corrUp = getMETCorrectionPxPy(jet.pt(), jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
+                    jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, _jetPt_allVariationsUp[source][iJet]);
+            std::pair<double, double> corrDown = getMETCorrectionPxPy(jet.pt(), jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
+                    jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, _jetPt_allVariationsDown[source][iJet]);
+	   
+//	   if( source == "Total" )
+//	     std::cout << "METx contribution from jet #" << iJet << " Up=" << corrUp.first << " Down=" << corrDown.first << std::endl;
 	   
             //apply corrections to current met values
             _corrMETx_allVariationsDown[ source ] += corrDown.first;
@@ -187,21 +191,21 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
         iJet ++;
     }
 
-   float metxUp = _corrMETx_allVariationsUp["Total"];
-   float metyUp = _corrMETy_allVariationsUp["Total"];
-   float metxDown = _corrMETx_allVariationsDown["Total"];
-   float metyDown = _corrMETy_allVariationsDown["Total"];
-   float metPtUp = sqrt(metxUp*metxUp + metyUp*metyUp);
-   float metPtDown = sqrt(metxDown*metxDown + metyDown*metyDown);
+//   float metxUp = _corrMETx_allVariationsUp["Total"];
+//   float metyUp = _corrMETy_allVariationsUp["Total"];
+//   float metxDown = _corrMETx_allVariationsDown["Total"];
+//   float metyDown = _corrMETy_allVariationsDown["Total"];
+//   float metPtUp = sqrt(metxUp*metxUp + metyUp*metyUp);
+//   float metPtDown = sqrt(metxDown*metxDown + metyDown*metyDown);
 
-   std::cout << "met uncorrected: " << met.uncorPt() << std::endl;
-   std::cout << "met corrected: " << _met << std::endl;
-   std::cout << "met up: " << _metJECUp << " " << metPtUp << std::endl;
-   std::cout << "met down: " << _metJECDown << " " << metPtDown << std::endl;
+//   std::cout << "met uncorrected: " << met.uncorPt() << std::endl;
+//   std::cout << "met corrected: " << _met << std::endl;
+//   std::cout << "met up: " << _metJECUp << " " << metPtUp << std::endl;
+//   std::cout << "met down: " << _metJECDown << " " << metPtDown << std::endl;
 
-    //   double correctedMET = sqrt(corrMETx*corrMETx + corrMETy*corrMETy);
-    //   double correctedMETPhi = atan2(corrMETy, corrMETx);
-    //   return {correctedMET, correctedMETPhi};
+//   double correctedMET = sqrt(corrMETx*corrMETx + corrMETy*corrMETy);
+//   double correctedMETPhi = atan2(corrMETy, corrMETx);
+//   return {correctedMET, correctedMETPhi};
 }
 
 //helper function to set branches for jet uncertainty source splitting
@@ -246,10 +250,21 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetDeepFlavor_uds",         &_jetDeepFlavor_uds,        "_jetDeepFlavor_uds[_nJets]/D");
     outputTree->Branch("_jetDeepFlavor_g",           &_jetDeepFlavor_g,          "_jetDeepFlavor_g[_nJets]/D");
     outputTree->Branch("_jetHadronFlavor",           &_jetHadronFlavor,          "_jetHadronFlavor[_nJets]/i");
+    outputTree->Branch("_jetPartonFlavor",           &_jetPartonFlavor,          "_jetPartonFlavor[_nJets]/i");
     outputTree->Branch("_jetIsTight",                &_jetIsTight,               "_jetIsTight[_nJets]/O");
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/O");
     outputTree->Branch("_jetPileupIdFullDisc",       &_jetPileupIdFullDisc,      "_jetPileupIdFullDisc[_nJets]/D");
     outputTree->Branch("_jetPileupIdFullId",         &_jetPileupIdFullId,        "_jetPileupIdFullId[_nJets]/I");
+   
+    if( ! multilepAnalyzer->isData() ) {
+       
+       outputTree->Branch("_jetHasGen",                 &_jetHasGen,                "_jetHasGen[_nJets]/O");
+       outputTree->Branch("_jetGenPt",                  &_jetGenPt,                 "_jetGenPt[_nJets]/D");
+       outputTree->Branch("_jetGenEta",                 &_jetGenEta,                "_jetGenEta[_nJets]/D");
+       outputTree->Branch("_jetGenPhi",                 &_jetGenPhi,                "_jetGenPhi[_nJets]/D");
+       outputTree->Branch("_jetGenE",                   &_jetGenE,                  "_jetGenE[_nJets]/D");
+       
+    }   
 
     outputTree->Branch("_jetNeutralHadronFraction",  &_jetNeutralHadronFraction, "_jetNeutralHadronFraction[_nJets]/D");
     outputTree->Branch("_jetChargedHadronFraction",  &_jetChargedHadronFraction, "_jetChargedHadronFraction[_nJets]/D");
@@ -286,6 +301,16 @@ void JetAnalyzer::beginJob(TTree* outputTree){
         setSourceBranches( outputTree, _jetSmearedPt_allVariationsUp, "_jetSmearedPt_", "_JECSourcesUp" );
         setSourceBranches( outputTree, _jetSmearedPt_groupedVariationsDown, "_jetSmearedPt_", "_JECGroupedDown" );
         setSourceBranches( outputTree, _jetSmearedPt_groupedVariationsUp, "_jetSmearedPt_", "_JECGroupedUp" );
+
+        setSourceBranches( outputTree, _corrMETx_allVariationsDown, "_corrMETx_", "_allVariationsDown" );
+        setSourceBranches( outputTree, _corrMETx_allVariationsUp, "_corrMETx_", "_groupedVariationsUp" );
+        setSourceBranches( outputTree, _corrMETx_groupedVariationsDown, "_corrMETx_", "_groupedVariationsDown" );
+        setSourceBranches( outputTree, _corrMETx_groupedVariationsUp, "_corrMETx_", "_groupedVariationsUp" );
+
+        setSourceBranches( outputTree, _corrMETy_allVariationsDown, "_corrMETy_", "_allVariationsDown" );
+        setSourceBranches( outputTree, _corrMETy_allVariationsUp, "_corrMETy_", "_groupedVariationsUp" );
+        setSourceBranches( outputTree, _corrMETy_groupedVariationsDown, "_corrMETy_", "_groupedVariationsDown" );
+        setSourceBranches( outputTree, _corrMETy_groupedVariationsUp, "_corrMETy_", "_groupedVariationsUp" );
     }
 }
 
@@ -404,6 +429,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetDeepFlavor_g[_nJets]          = jet.bDiscriminator("pfDeepFlavourJetTags:probg");
 
         _jetHadronFlavor[_nJets]          = jet.hadronFlavour();
+        _jetPartonFlavor[_nJets]          = jet.partonFlavour();
 
         _jetNeutralHadronFraction[_nJets] = jet.neutralHadronEnergyFraction();
         _jetChargedHadronFraction[_nJets] = jet.chargedHadronEnergyFraction();
@@ -412,6 +438,24 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetHFHadronFraction[_nJets]      = jet.HFHadronEnergyFraction();
         _jetHFEmFraction[_nJets]          = jet.HFEMEnergyFraction();
 
+        _jetHasGen[_nJets] = 0;
+        _jetGenPt[_nJets] = 0;
+        _jetGenEta[_nJets] = 0;
+        _jetGenPhi[_nJets] = 0;
+        _jetGenE[_nJets] = 0;
+       
+        if( ! multilepAnalyzer->isData() ) {	    
+	   if( jet.genJet() != NULL ) {
+	      
+	      _jetHasGen[_nJets] = 1;
+	      _jetGenPt[_nJets] = jet.genJet()->pt();
+	      _jetGenEta[_nJets] = jet.genJet()->eta();
+	      _jetGenPhi[_nJets] = jet.genJet()->phi();
+	      _jetGenE[_nJets] = jet.genJet()->energy();
+	      
+	   }       
+	}       
+       
         ++_nJets;
     }
 
@@ -440,12 +484,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
     // propagate JEC to MET
     correctedMETAndPhi(met, *jets, *rho);
-    //   std::cout << iEvent.id().event() << std::endl;
-    //    std::cout << "before: " << _met << " " << _metPhi << std::endl;
-    //   _met = correctedMETAndPhi(met, *jets, *rho).first;
-    //   _metPhi = correctedMETAndPhi(met, *jets, *rho).second;
-    //   std::cout << "after: " << _met << " " << _metPhi << std::endl;
-
+   
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
     if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;
     return true;

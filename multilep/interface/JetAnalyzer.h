@@ -27,7 +27,7 @@ class JetAnalyzer {
     private:
         JetCorrectionUncertainty* jecUnc;
 
-        static const unsigned nJets_max = 20;
+        static const unsigned nJets_max = 100;
 
         std::map<std::string, std::shared_ptr< JetCorrectorParameters> > jetSourcesCorParameters;
         std::map<std::string, std::shared_ptr< JetCorrectorParameters> > jetGroupedCorParameters;
@@ -64,6 +64,7 @@ class JetAnalyzer {
         double   _jetDeepFlavor_uds[nJets_max];
         double   _jetDeepFlavor_g[nJets_max];
         unsigned _jetHadronFlavor[nJets_max];
+        unsigned _jetPartonFlavor[nJets_max];
         bool     _jetIsLoose[nJets_max];
         bool     _jetIsTight[nJets_max];
         bool     _jetIsTightLepVeto[nJets_max];
@@ -75,6 +76,11 @@ class JetAnalyzer {
         double   _jetHFEmFraction[nJets_max];
         double   _jetPileupIdFullDisc[nJets_max];
         int      _jetPileupIdFullId[nJets_max];
+        bool     _jetHasGen[nJets_max];
+        double   _jetGenPt[nJets_max];
+        double   _jetGenEta[nJets_max];
+        double   _jetGenPhi[nJets_max];
+        double   _jetGenE[nJets_max];
 
         //split JEC in different sources
         std::map< std::string, double[nJets_max] > _jetPt_groupedVariationsDown;
@@ -119,7 +125,7 @@ class JetAnalyzer {
         bool jetIsTightLepVeto(const pat::Jet& jet, const bool is2017, const bool is2018) const;
 
         std::vector<float> getSubCorrections(double rawPt, double eta, double rho, double area);
-        std::pair<double, double> getMETCorrectionPxPy(double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area, const std::string& source, unsigned jetIndex, const std::string& shift);
+        std::pair<double, double> getMETCorrectionPxPy(double corrPt, double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area, const std::string& source, unsigned jetIndex, double jecShift);
 
     public:
         JetAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
