@@ -15,9 +15,14 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
   // MET Filters: first add common ones for 2016, 2017, 2018
   // MET filter are taken in AND (based on the occurence of capitalized 'MET' in the allFlags key) and always start with "Flag"
   // References: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#Analysis_Recommendations_for_ana
-  allFlags["passMETFilters"] = {"Flag_goodVertices", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter",  "Flag_EcalDeadCellTriggerPrimitiveFilter",
-                                "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"};
+//  allFlags["passMETFilters"] = {"Flag_goodVertices", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter",  "Flag_EcalDeadCellTriggerPrimitiveFilter",
+//                                "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter"};
 
+  allFlags["passMETFilters"] = {"Flag_goodVertices", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter",  "Flag_EcalDeadCellTriggerPrimitiveFilter",
+                                "Flag_BadPFMuonFilter"};
+     
+  allFlags["passBadChargedCandidateFilter"] = {"Flag_BadChargedCandidateFilter"};
+     
   if( !multilepAnalyzer->isSUSY() ){ // This one is only for data and fullSIM, not for fastSim
     allFlags["passMETFilters"].push_back("Flag_globalSuperTightHalo2016Filter");
   }
