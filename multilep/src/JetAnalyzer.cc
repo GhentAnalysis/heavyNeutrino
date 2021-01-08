@@ -121,7 +121,7 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
         _corrMETx_allVariationsUp[ source ] = met.uncorPx();
         _corrMETy_allVariationsDown[ source ] = met.uncorPy();
         _corrMETy_allVariationsUp[ source ] = met.uncorPy();
-    }   
+    }
    
 //   std::cout << "-----" << std::endl;
     //loop over all jets
@@ -215,6 +215,11 @@ template< typename T > void setSourceBranches( TTree* outputTree, T& sourceMap, 
     }
 }
 
+template< typename T > void setMETSourceBranches( TTree* outputTree, T& sourceMap, const std::string& namePrefix, const std::string& namePostfix ){
+    for( auto& entry : sourceMap ){
+        outputTree->Branch( ( namePrefix + entry.first + namePostfix ).c_str(), &entry.second, ( namePrefix + entry.first + namePostfix + "/D" ).c_str() );
+    }
+}
 
 // Note: the JEC are already applied through the GT, if you need back the old way (JEC.cc) check the code before c3564f71a2e7dca3cb963ef69481894cb04bbf53
 // WARNING: the _nJets is number of stored jets (i.e. including those where JECUp/JERUp passes the cut), do not use as selection
@@ -302,15 +307,15 @@ void JetAnalyzer::beginJob(TTree* outputTree){
         setSourceBranches( outputTree, _jetSmearedPt_groupedVariationsDown, "_jetSmearedPt_", "_JECGroupedDown" );
         setSourceBranches( outputTree, _jetSmearedPt_groupedVariationsUp, "_jetSmearedPt_", "_JECGroupedUp" );
 
-        setSourceBranches( outputTree, _corrMETx_allVariationsDown, "_corrMETx_", "_allVariationsDown" );
-        setSourceBranches( outputTree, _corrMETx_allVariationsUp, "_corrMETx_", "_groupedVariationsUp" );
-        setSourceBranches( outputTree, _corrMETx_groupedVariationsDown, "_corrMETx_", "_groupedVariationsDown" );
-        setSourceBranches( outputTree, _corrMETx_groupedVariationsUp, "_corrMETx_", "_groupedVariationsUp" );
+        setMETSourceBranches( outputTree, _corrMETx_allVariationsDown, "_corrMETx_", "_JECSourcesDown" );
+        setMETSourceBranches( outputTree, _corrMETx_allVariationsUp, "_corrMETx_", "_JECSourcesUp" );
+        setMETSourceBranches( outputTree, _corrMETx_groupedVariationsDown, "_corrMETx_", "_JECGroupedDown" );
+        setMETSourceBranches( outputTree, _corrMETx_groupedVariationsUp, "_corrMETx_", "_JECGroupedUp" );
 
-        setSourceBranches( outputTree, _corrMETy_allVariationsDown, "_corrMETy_", "_allVariationsDown" );
-        setSourceBranches( outputTree, _corrMETy_allVariationsUp, "_corrMETy_", "_groupedVariationsUp" );
-        setSourceBranches( outputTree, _corrMETy_groupedVariationsDown, "_corrMETy_", "_groupedVariationsDown" );
-        setSourceBranches( outputTree, _corrMETy_groupedVariationsUp, "_corrMETy_", "_groupedVariationsUp" );
+        setMETSourceBranches( outputTree, _corrMETy_allVariationsDown, "_corrMETy_", "_JECSourcesDown" );
+        setMETSourceBranches( outputTree, _corrMETy_allVariationsUp, "_corrMETy_", "_JECSourcesUp" );
+        setMETSourceBranches( outputTree, _corrMETy_groupedVariationsDown, "_corrMETy_", "_JECGroupedDown" );
+        setMETSourceBranches( outputTree, _corrMETy_groupedVariationsUp, "_corrMETy_", "_JECGroupedUp" );
     }
 }
 
