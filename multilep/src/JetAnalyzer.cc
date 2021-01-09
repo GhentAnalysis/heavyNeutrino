@@ -84,19 +84,17 @@ std::pair<double, double> JetAnalyzer::getMETCorrectionPxPy(double corrPt, doubl
 {      
     std::vector< float > corrections = getSubCorrections(rawPt, rawEta, rho, area);
 
-//    double l1corrptNoMuon   = rawMuonSubtractedPt*corrections.front();
-    double fullcorrpt = rawMuonSubtractedPt*corrections.back();
-    double PT_L1L2L3 = rawMuonSubtractedPt*corrections.back() + (rawPt-rawMuonSubtractedPt);
-    double PT_L1 = rawPt*corrections.front();
+    double l1corrptNoMuon = rawMuonSubtractedPt*corrections.front();
+    double fullcorrpt     = rawMuonSubtractedPt*corrections.back();
+    double PT_muon        = rawPt - rawMuonSubtractedPt;
+    double PT_L1L2L3      = fullcorrpt + PT_muon;
+    double PT_L1          = l1corrptNoMuon + PT_muon;
    
     float f = PT_L1L2L3*(jecShift/corrPt);
    
-    // the corrections for the MET are the difference between l1fastjet and the full corrections on the jet!
     if( emf > 0.90 or fullcorrpt < 15. || ( std::abs(rawEta) > 9.9 ) ) return {0., 0.};
 
     float ptdiff = (PT_L1 - f);
-
-//    float ptdiffNominal = (l1corrptNoMuon - fullcorrpt);
    
     std::pair<double, double> corr = {px(ptdiff, phi), py(ptdiff, phi)};
 
