@@ -1,4 +1,3 @@
-
 trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-13_V-0.00316227766017_e_massiveAndCKM_LO
 trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-13_V-0.00316227766017_mu_massiveAndCKM_LO
 trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-14_V-0.00316227766017_e_massiveAndCKM_LO
