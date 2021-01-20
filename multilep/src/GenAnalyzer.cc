@@ -18,6 +18,7 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
     multilepAnalyzer(multilepAnalyzer){};
 
 void GenAnalyzer::beginJob(TTree* outputTree){
+    outputTree->Branch("_leptonNumber",              &_leptonNumber,              "_leptonNumber/I");
     outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/i");
     outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/i");
     outputTree->Branch("_zgOldEventType",            &_zgOldEventType,            "_zgOldEventType/i");
@@ -85,8 +86,16 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
     for(unsigned ig=0; ig<gen_nL_max ; ++ig) _gen_lRefs[ig]  = nullptr;
     _gen_n = 0;
     TLorentzVector genMetVector(0,0,0,0);
+    int leptNumb = 0;
+    //unsigned nHardIntParts = 0;
     for(const reco::GenParticle& p : *genParticles){
-        int absId = abs(p.pdgId());
+        int absId = std::abs(p.pdgId());
+
+	// Electron, muon, tau, or neutrino from hard scattering
+	if( (p.fromHardProcessFinalState() || p.fromHardProcessDecayed()) && absId>=11 && absId<=16 ) {
+	  leptNumb += (p.pdgId()/absId);
+	  //nHardIntParts++;
+	}
 
         //Calculate generator level MET
         if(p.status() == 1){
@@ -175,7 +184,13 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
           _gen_motherIndex[_gen_n]                             = GenTools::getFirstMotherIndex(p, *genParticles);
           ++_gen_n;
         }
-    }   
+    }
+
+    // if(nHardIntParts!=4) {
+    //   // Maybe find a better solution than a cout, if necessary... 
+    //   std::cout << " >>>> WARNING: number of hard-scattering leptons: " << nHardIntParts << std::endl;
+    // }
+    _leptonNumber = leptNumb;
 
     _gen_met    = genMetVector.Pt();
     _gen_metPhi = genMetVector.Phi();

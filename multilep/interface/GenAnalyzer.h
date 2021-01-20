@@ -15,6 +15,7 @@ class GenAnalyzer {
     static const unsigned gen_nPh_max = 10;
     static const unsigned gen_n_max = 1000;
 
+    int         _leptonNumber;
     unsigned    _ttgEventType;
     unsigned    _zgEventType;
     unsigned    _zgOldEventType;
