@@ -10,6 +10,7 @@ elif [[ $USER == "kskovpen" ]]; then proxy=/tmp/x509up_u20657
 elif [[ $USER == "lwezenbe" ]]; then proxy=/user/lwezenbe/x509up_u20675
 elif [[ $USER == "tomc" ]]; then     proxy=/user/$USER/production/proxyExpect.sh
 elif [[ $USER == "trocino" ]]; then  proxy=/user/trocino/x509up_u20672
+elif [[ $USER == "mvit" ]]; then  proxy=/user/mvit/x509up_u20658
 else
   echo "Add your proxy in RunLocal.sh before submitting jobs!"
   exit 1
