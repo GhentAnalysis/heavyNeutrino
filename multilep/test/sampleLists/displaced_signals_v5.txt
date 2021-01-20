@@ -533,3 +533,16 @@ trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_min
 trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Autumn18/displaced/HeavyNeutrino_trilepton_M-1_V-0.707106781187_mu_massiveAndCKM_LO
 trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-1_V-0.707106781187_mu_massiveAndCKM_LO
 trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_trilepton_M-1_V-0.707106781187_mu_massiveAndCKM_LO
+
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_trilepton_M-13_V-0.00316227766017_e_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_trilepton_M-13_V-0.00316227766017_mu_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_trilepton_M-14_V-0.00316227766017_e_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_trilepton_M-14_V-0.00316227766017_mu_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-13_V-0.00316227766017_e_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-13_V-0.00316227766017_mu_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-14_V-0.00316227766017_e_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Fall17/displaced/HeavyNeutrino_trilepton_M-14_V-0.00316227766017_mu_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Autumn18/displaced/HeavyNeutrino_trilepton_M-13_V-0.00316227766017_e_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Autumn18/displaced/HeavyNeutrino_trilepton_M-13_V-0.00316227766017_mu_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Autumn18/displaced/HeavyNeutrino_trilepton_M-14_V-0.00316227766017_e_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/mvit/heavyNeutrinoMiniAOD/Autumn18/displaced/HeavyNeutrino_trilepton_M-14_V-0.00316227766017_mu_massiveAndCKM_LO
