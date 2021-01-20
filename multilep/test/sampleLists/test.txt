@@ -1,0 +1,2 @@
+trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_trilepton_M-9_V-0.00316227766017_e_massiveAndCKM_LO
+trilep:/pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_trilepton_M-5_V-0.00316227766017_e_massiveAndCKM_LO
