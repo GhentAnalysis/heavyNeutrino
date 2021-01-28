@@ -147,7 +147,7 @@ def checkCrabDir(dir):
     raiseWallTime    = False
     for job in jobs:
       if job['Exit code'] in ['50660']: raiseMemoryLimit = True
-      if job['Exit code'] in ['50664']: raiseWalltime    = True
+      if job['Exit code'] in ['50664']: raiseWallTime    = True
       if job['Exit code'] in ['-1','65','83', '86', '97', '60311','60318','8001','8002','8012','8022','8021','8020','8028','134','135','8004','-15','139','60317','60307','60302','10030','10031','10034','10040','50115','50664','50660','50662','8010','7002','50665', '60324', '47']: jobsToResubmit.append(job['Job'])
       if job['State'] == 'failed' and job['Exit code'] == '0':                                  jobsToResubmit.append(job['Job'])
       if job['State'] == 'failed' and job['Exit code'] == '-1':                                 jobsToResubmit.append(job['Job'])
