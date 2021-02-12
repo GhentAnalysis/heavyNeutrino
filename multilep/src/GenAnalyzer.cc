@@ -49,6 +49,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lDecayedHadr",          &_gen_lDecayedHadr,          "_gen_lDecayedHadr[_gen_nL]/O");
     outputTree->Branch("_gen_lMinDeltaR",            &_gen_lMinDeltaR,            "_gen_lMinDeltaR[_gen_nL]/D");
     outputTree->Branch("_gen_lPassParentage",        &_gen_lPassParentage,        "_gen_lPassParentage[_gen_nL]/O");
+    outputTree->Branch("_hasInternalConversion",     &_hasInternalConversion,     "_hasInternalConversion/O");
 
     //jet stuff
     outputTree->Branch("_gen_nN",		             &_gen_nN,			          "_gen_nN/i");
@@ -119,6 +120,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
 
     _gen_nL = 0;
     _gen_nPh = 0;
+    _hasInternalConversion = false;
     _gen_n = 0;
     TLorentzVector genMetVector(0,0,0,0);
     for(const reco::GenParticle& p : *genParticles){
@@ -171,6 +173,10 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_phPassParentage[_gen_nPh] = GenTools::passParentage(p, *genParticles);
                 ++_gen_nPh;
             } 
+        }
+        //check if there is an lhe photon being turned into an internal conversion by pythia
+        if(p.status() == 23 and absId == 22){
+            _hasInternalConversion = _hasInternalConversion or photonToInternalConversion(p, *genParticles);
         }
 	
         // HNL
@@ -309,4 +315,13 @@ bool GenAnalyzer::isAncestor(const reco::Candidate* ancestor, const reco::Candid
 
     //if we did not return yet, then particle and ancestor are not relatives
     return false;
+}
+
+/*
+ *  * Find out if a photon becomes an internal conversion
+ *   */
+bool GenAnalyzer::photonToInternalConversion(const reco::GenParticle& photon, const std::vector<reco::GenParticle>& genParticles) const{
+    if(photon.numberOfDaughters() == 1)      return photonToInternalConversion(genParticles[photon.daughterRef(0).key()], genParticles); // move down to the next photon daughter
+    else if(photon.numberOfDaughters() == 0) return false;                                                                               // chain probably ends at status-1 photon
+    else                                     return true;                                                                                // multiple daughters -> conversion (+0, 1 or 2 low-energy photons)
 }

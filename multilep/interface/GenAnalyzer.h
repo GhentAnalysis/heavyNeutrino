@@ -50,6 +50,7 @@ class GenAnalyzer {
     bool     _gen_lDecayedHadr[gen_nL_max];
     bool     _gen_lIsPrompt[gen_nL_max];
     bool     _gen_lPassParentage[gen_nL_max];
+    bool     _hasInternalConversion;
     double   _gen_lMinDeltaR[gen_nL_max];
 
 
@@ -112,6 +113,7 @@ class GenAnalyzer {
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut, double genCone) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
     bool     isAncestor(const reco::Candidate*, const reco::Candidate*);
+    bool     photonToInternalConversion(const reco::GenParticle& photon, const std::vector<reco::GenParticle>& genParticles) const;
 
     multilep* multilepAnalyzer;
 
