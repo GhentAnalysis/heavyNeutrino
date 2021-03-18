@@ -68,6 +68,12 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_NPackedDtrsE",		     &_gen_NPackedDtrsE,		  "_gen_NPackedDtrsE[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsPdgId",      &_gen_NPackedDtrsPdgId,	  "_gen_NPackedDtrsPdgId[_gen_nNPackedDtrs]/I");
     outputTree->Branch("_gen_NPackedDtrsCharge",     &_gen_NPackedDtrsCharge,	  "_gen_NPackedDtrsCharge[_gen_nNPackedDtrs]/I");
+    outputTree->Branch("_gen_NPackedDtrsRecoPt",	 &_gen_NPackedDtrsRecoPt,	  "_gen_NPackedDtrsRecoPt[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsRecoEta",	 &_gen_NPackedDtrsRecoEta,	  "_gen_NPackedDtrsRecoEta[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsRecoPhi",	 &_gen_NPackedDtrsRecoPhi,	  "_gen_NPackedDtrsRecoPhi[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsRecoE",	     &_gen_NPackedDtrsRecoE,	  "_gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsRecoPdgId",  &_gen_NPackedDtrsRecoPdgId,  "_gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]/I");
+    outputTree->Branch("_gen_NPackedDtrsHasReco",    &_gen_NPackedDtrsHasReco,    "_gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]/O");
     
     outputTree->Branch("_gen_nNdaughters",	         &_gen_nNdaughters,		      "_gen_nNdaughters/i");
     outputTree->Branch("_gen_Ndaughters_pdg",   	 &_gen_Ndaughters_pdg,	      "_gen_Ndaughters_pdg[_gen_nNdaughters]/I");
@@ -202,6 +208,31 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                     _gen_NPackedDtrsE[_gen_nNPackedDtrs]        = packed.energy();
                     _gen_NPackedDtrsPdgId[_gen_nNPackedDtrs]    = packed.pdgId();
                     _gen_NPackedDtrsCharge[_gen_nNPackedDtrs]   = packed.charge();
+                    _gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]  = false;
+
+                    double mindR = 20;
+                    for(const pat::PackedCandidate& packedreco : *packedCands){
+                        double dR = reco::deltaR(_gen_NPackedDtrsEta[_gen_nNPackedDtrs], _gen_NPackedDtrsPhi[_gen_nNPackedDtrs], packedreco.eta(), packedreco.phi());
+                        double deta = fabs(_gen_NPackedDtrsEta[_gen_nNPackedDtrs] - packedreco.eta());
+                        double dpt = fabs(_gen_NPackedDtrsPt[_gen_nNPackedDtrs] - packedreco.pt());
+                        double chargediff = _gen_NPackedDtrsCharge[_gen_nNPackedDtrs] - packedreco.charge();
+                        if(chargediff == 0 and dpt < 5 and (dR < 0.05 or (dR < 0.1 and deta < 0.03)) and dR < mindR){
+                            mindR = dR;
+                            _gen_NPackedDtrsRecoPt[_gen_nNPackedDtrs]       = packedreco.pt();
+                            _gen_NPackedDtrsRecoEta[_gen_nNPackedDtrs]      = packedreco.eta();
+                            _gen_NPackedDtrsRecoPhi[_gen_nNPackedDtrs]      = packedreco.phi();
+                            _gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]        = packedreco.energy();
+                            _gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]    = packedreco.pdgId();
+                            _gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]  = true;
+                        }
+                    }
+                    if(!_gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]){
+                        _gen_NPackedDtrsRecoPt[_gen_nNPackedDtrs]       = 0.;
+                        _gen_NPackedDtrsRecoEta[_gen_nNPackedDtrs]      = 0.;
+                        _gen_NPackedDtrsRecoPhi[_gen_nNPackedDtrs]      = 0.;
+                        _gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]        = 0.;
+                        _gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]    = 0;
+                    }
                     _gen_nNPackedDtrs++;
                 }
             }

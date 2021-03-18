@@ -71,6 +71,12 @@ class GenAnalyzer {
     double   _gen_NPackedDtrsE[gen_ndtr_max];
     int      _gen_NPackedDtrsPdgId[gen_ndtr_max];
     int      _gen_NPackedDtrsCharge[gen_ndtr_max];
+    double   _gen_NPackedDtrsRecoPt[gen_ndtr_max];
+    double   _gen_NPackedDtrsRecoEta[gen_ndtr_max];
+    double   _gen_NPackedDtrsRecoPhi[gen_ndtr_max];
+    double   _gen_NPackedDtrsRecoE[gen_ndtr_max];
+    int      _gen_NPackedDtrsRecoPdgId[gen_ndtr_max];
+    bool     _gen_NPackedDtrsHasReco[gen_ndtr_max];
 
     unsigned _gen_nNdaughters = 0;
     int      _gen_Ndaughters_pdg[gen_ndtr_max];
