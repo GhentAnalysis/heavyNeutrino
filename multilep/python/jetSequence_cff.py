@@ -103,12 +103,12 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL 
   #PUPPI MET
   from PhysicsTools.PatAlgos.slimming.puppiForMET_cff import makePuppiesFromMiniAOD
   makePuppiesFromMiniAOD( process, True );
-  runMetCorAndUncFromMiniAOD(process,
-                             isData= isData,
-                             metType="Puppi",
-                             postfix="Puppi",
-                             jetFlavor="AK4PFPuppi",
-                             )
+  #runMetCorAndUncFromMiniAOD(process,              # These lines messed with the MET Puppi values, even though the same function is called in UpdatePuppiTuneV15.
+  #                           isData= isData,
+  #                           metType="Puppi",
+  #                           postfix="Puppi",
+  #                           jetFlavor="AK4PFPuppi",
+  #                           )
   process.puppiNoLep.useExistingWeights = False
   process.puppi.useExistingWeights = False
   
@@ -118,7 +118,6 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL 
   #Add MET sequences to path
   process.jetSequence *= process.puppiMETSequence
   process.jetSequence *= process.fullPatMetSequence
-  process.jetSequence *= process.fullPatMetSequencePuppi
   
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
