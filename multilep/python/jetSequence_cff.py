@@ -19,25 +19,27 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL 
   if isData:
     if isUL:
         if is2017:
-            if 'Run2017B' in inputFile: JECVersion = 'Summer19UL17_RunB_V5_DATA'
-            if 'Run2017C' in inputFile: JECVersion = 'Summer19UL17_RunC_V5_DATA'
-            if 'Run2017D' in inputFile: JECVersion = 'Summer19UL17_RunD_V5_DATA'
-            if 'Run2017E' in inputFile: JECVersion = 'Summer19UL17_RunE_V5_DATA'
-            if 'Run2017F' in inputFile: JECVersion = 'Summer19UL17_RunF_V5_DATA'
+            if 'Run2017B' in inputFile: JECVersion = 'Summer19UL17_RunB_V6_DATA'
+            if 'Run2017C' in inputFile: JECVersion = 'Summer19UL17_RunC_V6_DATA'
+            if 'Run2017D' in inputFile: JECVersion = 'Summer19UL17_RunD_V6_DATA'
+            if 'Run2017E' in inputFile: JECVersion = 'Summer19UL17_RunE_V6_DATA'
+            if 'Run2017F' in inputFile: JECVersion = 'Summer19UL17_RunF_V6_DATA'
         elif is2018:
             if 'Run2018A' in inputFile: JECVersion = 'Summer19UL18_RunA_V5_DATA'
             if 'Run2018B' in inputFile: JECVersion = 'Summer19UL18_RunB_V5_DATA'
-            if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V5_DATA'
-            if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V5_DATA'
+            if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V5_HEMV1_DATA'
+            if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V5_HEMV1_DATA'
 
-        else: JECVersion = ''
+        else:
+            if 'Run2016G' in inputFile: JECVersion = 'Summer20UL16_RunGH_V1_DATA'
+            if 'Run2016H' in inputFile: JECVersion = 'Summer20UL16_RunGH_V1_DATA'
+            else: JECVersion = ''
     else: JECVersion = ''
   else:
     if isUL:
-        if is2017:   JECVersion = 'Summer19UL17_V5_MC'
-        #if is2017:   JECVersion = 'Summer19UL17_V1_ComplexL1_MC'
+        if is2017:   JECVersion = 'Summer19UL17_V6_MC'
         elif is2018: JECVersion = 'Summer19UL18_V5_MC'
-        else:        JECVersion = ''
+        else:        JECVersion = 'Summer20UL16_V1_MC'
     else:
       if isFastSim : 
         if is2018:   JECVersion = 'Autumn18_FastSimV1_MC'
