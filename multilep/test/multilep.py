@@ -42,7 +42,8 @@ is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in input
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
 isSUSY = "SMS-T" in inputFile
 isFastSim = 'Fast' in inputFile
-isUL   = ("Summer19UL" in inputFile) or (isData and ("21Feb2020_UL2016" in inputFile or "09Aug2019_UL2017" in inputFile or "12Nov2019_UL2018" in inputFile))
+isUL   = ("Summer19UL" in inputFile) or ("Summer20UL16" in inputFile) or (isData and ("21Feb2020_UL2016" in inputFile or "09Aug2019_UL2017" in inputFile or "12Nov2019_UL2018" in inputFile))
+isAPV  = isUL and ((isData and "UL2016_HIPM" in inputFile) or "RunIISummer20UL16MiniAODAPV-" in inputFile) #In UL, pre(Run B-F) and post(Run G-H + bit of F) APV issue in 2016 are treated separately
 
 process = cms.Process("BlackJackAndHookers")
 
@@ -63,14 +64,17 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 # or on conddb: https://cms-conddb.cern.ch/cmsDbBrowser/index/Prod
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 if isUL:
-    if is2017:                               process.GlobalTag.globaltag = '106X_dataRun2_v28' if isData else '106X_mc2017_realistic_v7'
-    elif is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v28' if isData else '106X_upgrade2018_realistic_v11_L1v1'
+    if is2017:                               process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mc2017_realistic_v8'
+    elif is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_upgrade2018_realistic_v15_L1v1'
+    else:
+        if isAPV:                            process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mcRun2_asymptotic_preVFP_v9'
+        else:                                process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mcRun2_asymptotic_v15'
 else:
     #TO FIX RUN DEPENDENT JEC IN 2018!!! 102X_dataRun2_v12 (ABC)/ 102X_dataRun2_Prompt_v15 (D)
-    if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v15'
-    elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_v12' if isData else '102X_upgrade2018_realistic_v20'
-    elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'  if isData else '94X_mc2017_realistic_v17'
-    else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'  if isData else '94X_mcRun2_asymptotic_v3'
+    if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v16'
+    elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_v13' if isData else '102X_upgrade2018_realistic_v21'
+    elif is2017:                             process.GlobalTag.globaltag = '102X_dataRun2_v13'  if isData else '102X_mc2017_realistic_v8'
+    else:                                    process.GlobalTag.globaltag = '102X_dataRun2_v13'  if isData else '102X_mcRun2_asymptotic_v8'
 
 #
 # Vertex collection
