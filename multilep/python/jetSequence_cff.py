@@ -25,10 +25,10 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL 
             if 'Run2017E' in inputFile: JECVersion = 'Summer19UL17_RunE_V5_DATA'
             if 'Run2017F' in inputFile: JECVersion = 'Summer19UL17_RunF_V5_DATA'
         elif is2018:
-            if 'Run2018A' in inputFile: JECVersion = 'Summer19UL18_RunA_V4_DATA'
-            if 'Run2018B' in inputFile: JECVersion = 'Summer19UL18_RunB_V4_DATA'
-            if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V4_DATA'
-            if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V4_DATA'
+            if 'Run2018A' in inputFile: JECVersion = 'Summer19UL18_RunA_V5_DATA'
+            if 'Run2018B' in inputFile: JECVersion = 'Summer19UL18_RunB_V5_DATA'
+            if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V5_DATA'
+            if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V5_DATA'
 
         else: JECVersion = ''
     else: JECVersion = ''
@@ -36,7 +36,7 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL 
     if isUL:
         if is2017:   JECVersion = 'Summer19UL17_V5_MC'
         #if is2017:   JECVersion = 'Summer19UL17_V1_ComplexL1_MC'
-        elif is2018: JECVersion = 'Summer19UL18_V2_MC'
+        elif is2018: JECVersion = 'Summer19UL18_V5_MC'
         else:        JECVersion = ''
     else:
       if isFastSim : 
