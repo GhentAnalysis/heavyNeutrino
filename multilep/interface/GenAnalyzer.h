@@ -3,6 +3,14 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/Event.h"
 
+#include "MagneticField/Engine/interface/MagneticField.h"
+#include "MagneticField/ParametrizedEngine/src/OAEParametrizedMagneticField.h"
+#include "TrackPropagation/SteppingHelixPropagator/interface/SteppingHelixPropagator.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
+#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
+
 #include "heavyNeutrino/multilep/plugins/multilep.h"
 
 #include "TTree.h"
@@ -77,6 +85,19 @@ class GenAnalyzer {
     double   _gen_NPackedDtrsRecoE[gen_ndtr_max];
     int      _gen_NPackedDtrsRecoPdgId[gen_ndtr_max];
     bool     _gen_NPackedDtrsHasReco[gen_ndtr_max];
+    bool     _gen_NPackedDtrsHasKVFvertex;
+    double   _gen_NPackedDtrs_KVF_x;
+    double   _gen_NPackedDtrs_KVF_y;
+    double   _gen_NPackedDtrs_KVF_z;
+    double   _gen_NPackedDtrs_KVF_cxx;
+    double   _gen_NPackedDtrs_KVF_cyy;
+    double   _gen_NPackedDtrs_KVF_czz;
+    double   _gen_NPackedDtrs_KVF_cyx;
+    double   _gen_NPackedDtrs_KVF_czy;
+    double   _gen_NPackedDtrs_KVF_czx;
+    double   _gen_NPackedDtrs_KVF_df;
+    double   _gen_NPackedDtrs_KVF_chi2;
+    unsigned _gen_NPackedDtrs_KVF_ntracks;
 
     unsigned _gen_nNdaughters = 0;
     int      _gen_Ndaughters_pdg[gen_ndtr_max];
@@ -120,6 +141,9 @@ class GenAnalyzer {
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
     bool     isAncestor(const reco::Candidate*, const reco::Candidate*);
     bool     photonToInternalConversion(const reco::GenParticle& photon, const std::vector<reco::GenParticle>& genParticles) const;
+
+    TransientVertex constructKalmanVertex(std::vector<reco::Track>& tracks);
+    void    fillNPackedDtrsKVFVariables(std::vector<reco::Track>& tracks);
 
     multilep* multilepAnalyzer;
 

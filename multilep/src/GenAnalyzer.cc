@@ -74,6 +74,19 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_NPackedDtrsRecoE",	     &_gen_NPackedDtrsRecoE,	  "_gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsRecoPdgId",  &_gen_NPackedDtrsRecoPdgId,  "_gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]/I");
     outputTree->Branch("_gen_NPackedDtrsHasReco",    &_gen_NPackedDtrsHasReco,    "_gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]/O");
+    outputTree->Branch("_gen_NPackedDtrsHasKVFvertex", &_gen_NPackedDtrsHasKVFvertex, "_gen_NPackedDtrsHasKVFvertex/O");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_x",	   &_gen_NPackedDtrs_KVF_x,		  "_gen_NPackedDtrs_KVF_x/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_y",	   &_gen_NPackedDtrs_KVF_y,		  "_gen_NPackedDtrs_KVF_y/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_z",	   &_gen_NPackedDtrs_KVF_z,		  "_gen_NPackedDtrs_KVF_z/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_cxx",	   &_gen_NPackedDtrs_KVF_cxx,	  "_gen_NPackedDtrs_KVF_cxx/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_cyy",	   &_gen_NPackedDtrs_KVF_cyy,	  "_gen_NPackedDtrs_KVF_cyy/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_czz",	   &_gen_NPackedDtrs_KVF_czz,	  "_gen_NPackedDtrs_KVF_czz/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_cyx",	   &_gen_NPackedDtrs_KVF_cyx,	  "_gen_NPackedDtrs_KVF_cyx/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_czy",	   &_gen_NPackedDtrs_KVF_czy,	  "_gen_NPackedDtrs_KVF_czy/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_czx",	   &_gen_NPackedDtrs_KVF_czx,	  "_gen_NPackedDtrs_KVF_czx/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_df",	   &_gen_NPackedDtrs_KVF_df,	  "_gen_NPackedDtrs_KVF_df/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_chi2",	   &_gen_NPackedDtrs_KVF_chi2,	  "_gen_NPackedDtrs_KVF_chi2/D");
+    outputTree->Branch("_gen_NPackedDtrs_KVF_ntracks", &_gen_NPackedDtrs_KVF_ntracks, "_gen_NPackedDtrs_KVF_ntracks/i");
     
     outputTree->Branch("_gen_nNdaughters",	         &_gen_nNdaughters,		      "_gen_nNdaughters/i");
     outputTree->Branch("_gen_Ndaughters_pdg",   	 &_gen_Ndaughters_pdg,	      "_gen_Ndaughters_pdg[_gen_nNdaughters]/I");
@@ -199,6 +212,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
             }
 
             // get info on packed genparticle daughters from HNL ( = all status 1 genparticles)
+            std::vector<reco::Track> HNLrecotracks;
             for(const pat::PackedGenParticle& packed : *packedGenParticles){
                 const reco::Candidate * motherInPrunedCollection = packed.mother(0);
                 if(packed.pt() > 0.4 && motherInPrunedCollection != nullptr && isAncestor( &p , motherInPrunedCollection)){
@@ -224,6 +238,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                             _gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]        = packedreco.energy();
                             _gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]    = packedreco.pdgId();
                             _gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]  = true;
+                            if(packedreco.charge() != 0 and packedreco.bestTrack()) HNLrecotracks.push_back(*packedreco.bestTrack());
                         }
                     }
                     if(!_gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]){
@@ -236,6 +251,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                     _gen_nNPackedDtrs++;
                 }
             }
+            fillNPackedDtrsKVFVariables(HNLrecotracks);
         }
 	    // daughters of HNL
         if(abs(GenTools::getMotherPdgId(p, *genParticles)) == 9900012){
@@ -356,3 +372,50 @@ bool GenAnalyzer::photonToInternalConversion(const reco::GenParticle& photon, co
     else if(photon.numberOfDaughters() == 0) return false;                                                                               // chain probably ends at status-1 photon
     else                                     return true;                                                                                // multiple daughters -> conversion (+0, 1 or 2 low-energy photons)
 }
+
+TransientVertex GenAnalyzer::constructKalmanVertex(std::vector<reco::Track>& tracks){
+    MagneticField *bfield = new OAEParametrizedMagneticField("3_8T");
+    std::vector<reco::TransientTrack> ttks;
+    for(auto track : tracks){
+	    ttks.push_back(reco::TransientTrack(track, bfield));
+    }
+    KalmanVertexFitter vtxFitter;
+    return vtxFitter.vertex(ttks);
+}
+
+void GenAnalyzer::fillNPackedDtrsKVFVariables(std::vector<reco::Track>& tracks){
+    _gen_NPackedDtrs_KVF_ntracks           = tracks.size();
+    if(tracks.size() < 2){
+        _gen_NPackedDtrsHasKVFvertex = false;
+    } else{
+        TransientVertex vtx = constructKalmanVertex(tracks);
+        _gen_NPackedDtrsHasKVFvertex                = vtx.isValid();
+        if(vtx.isValid()){
+            _gen_NPackedDtrs_KVF_x                 = vtx.position().x();
+            _gen_NPackedDtrs_KVF_y                 = vtx.position().y();
+            _gen_NPackedDtrs_KVF_z                 = vtx.position().z();
+            _gen_NPackedDtrs_KVF_cxx               = vtx.positionError().cxx();
+            _gen_NPackedDtrs_KVF_cyy               = vtx.positionError().cyy();
+            _gen_NPackedDtrs_KVF_czz               = vtx.positionError().czz();
+            _gen_NPackedDtrs_KVF_cyx               = vtx.positionError().cyx();
+            _gen_NPackedDtrs_KVF_czy               = vtx.positionError().czy();
+            _gen_NPackedDtrs_KVF_czx               = vtx.positionError().czx();
+            _gen_NPackedDtrs_KVF_df                = vtx.degreesOfFreedom();
+            _gen_NPackedDtrs_KVF_chi2              = vtx.totalChiSquared();
+        }
+    }
+    if(!_gen_NPackedDtrsHasKVFvertex){
+        _gen_NPackedDtrs_KVF_x                 = 0.;
+        _gen_NPackedDtrs_KVF_y                 = 0.;
+        _gen_NPackedDtrs_KVF_z                 = 0.;
+        _gen_NPackedDtrs_KVF_cxx               = 0.;
+        _gen_NPackedDtrs_KVF_cyy               = 0.;
+        _gen_NPackedDtrs_KVF_czz               = 0.;
+        _gen_NPackedDtrs_KVF_cyx               = 0.;
+        _gen_NPackedDtrs_KVF_czy               = 0.;
+        _gen_NPackedDtrs_KVF_czx               = 0.;
+        _gen_NPackedDtrs_KVF_df                = 0.;
+        _gen_NPackedDtrs_KVF_chi2              = 0.;
+    }
+}
+
