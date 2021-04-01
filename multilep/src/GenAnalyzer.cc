@@ -225,6 +225,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                     _gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]  = false;
 
                     double mindR = 20;
+                    reco::Track tmp_track;
                     for(const pat::PackedCandidate& packedreco : *packedCands){
                         double dR = reco::deltaR(_gen_NPackedDtrsEta[_gen_nNPackedDtrs], _gen_NPackedDtrsPhi[_gen_nNPackedDtrs], packedreco.eta(), packedreco.phi());
                         double deta = fabs(_gen_NPackedDtrsEta[_gen_nNPackedDtrs] - packedreco.eta());
@@ -238,8 +239,13 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                             _gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]        = packedreco.energy();
                             _gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]    = packedreco.pdgId();
                             _gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]  = true;
-                            if(packedreco.charge() != 0 and packedreco.bestTrack()) HNLrecotracks.push_back(*packedreco.bestTrack());
+                            if(packedreco.charge() != 0 and packedreco.bestTrack()){
+                                tmp_track = *packedreco.bestTrack();
+                            }
                         }
+                    }
+                    if(_gen_NPackedDtrsHasReco[_gen_nNPackedDtrs] and packed.charge() != 0 and tmp_track.pt() > 0.8){
+                        HNLrecotracks.push_back(tmp_track);
                     }
                     if(!_gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]){
                         _gen_NPackedDtrsRecoPt[_gen_nNPackedDtrs]       = 0.;
