@@ -68,12 +68,31 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_NPackedDtrsE",		     &_gen_NPackedDtrsE,		  "_gen_NPackedDtrsE[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsPdgId",      &_gen_NPackedDtrsPdgId,	  "_gen_NPackedDtrsPdgId[_gen_nNPackedDtrs]/I");
     outputTree->Branch("_gen_NPackedDtrsCharge",     &_gen_NPackedDtrsCharge,	  "_gen_NPackedDtrsCharge[_gen_nNPackedDtrs]/I");
+    outputTree->Branch("_gen_NPackedDtrsRecodR",	 &_gen_NPackedDtrsRecodR,	  "_gen_NPackedDtrsRecodR[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsRecodptoverpt",	 &_gen_NPackedDtrsRecodptoverpt,	  "_gen_NPackedDtrsRecodptoverpt[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsRecoPt",	 &_gen_NPackedDtrsRecoPt,	  "_gen_NPackedDtrsRecoPt[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsRecoEta",	 &_gen_NPackedDtrsRecoEta,	  "_gen_NPackedDtrsRecoEta[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsRecoPhi",	 &_gen_NPackedDtrsRecoPhi,	  "_gen_NPackedDtrsRecoPhi[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsRecoE",	     &_gen_NPackedDtrsRecoE,	  "_gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsRecoPdgId",  &_gen_NPackedDtrsRecoPdgId,  "_gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]/I");
+    outputTree->Branch("_gen_NPackedDtrsRecodxy",  &_gen_NPackedDtrsRecodxy,  "_gen_NPackedDtrsRecodxy[_gen_nNPackedDtrs]/D");
+    outputTree->Branch("_gen_NPackedDtrsRecodz",  &_gen_NPackedDtrsRecodz,  "_gen_NPackedDtrsRecodz[_gen_nNPackedDtrs]/D");
     outputTree->Branch("_gen_NPackedDtrsHasReco",    &_gen_NPackedDtrsHasReco,    "_gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]/O");
+    outputTree->Branch("_gen_nNPackedDtrsPCA",		     &_gen_nNPackedDtrsPCA,		  "_gen_nNPackedDtrsPCA/i");
+    outputTree->Branch("_gen_NPackedDtrsPCADist",		     &_gen_NPackedDtrsPCADist,		  "_gen_NPackedDtrsPCADist[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAX0",		     &_gen_NPackedDtrsPCAX0,		  "_gen_NPackedDtrsPCAX0[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAY0",		     &_gen_NPackedDtrsPCAY0,		  "_gen_NPackedDtrsPCAY0[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAZ0",		     &_gen_NPackedDtrsPCAZ0,		  "_gen_NPackedDtrsPCAZ0[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAX1",		     &_gen_NPackedDtrsPCAX1,		  "_gen_NPackedDtrsPCAX1[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAY1",		     &_gen_NPackedDtrsPCAY1,		  "_gen_NPackedDtrsPCAY1[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAZ1",		     &_gen_NPackedDtrsPCAZ1,		  "_gen_NPackedDtrsPCAZ1[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAX2",		     &_gen_NPackedDtrsPCAX2,		  "_gen_NPackedDtrsPCAX2[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAY2",		     &_gen_NPackedDtrsPCAY2,		  "_gen_NPackedDtrsPCAY2[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAZ2",		     &_gen_NPackedDtrsPCAZ2,		  "_gen_NPackedDtrsPCAZ2[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAPhi1",		     &_gen_NPackedDtrsPCAPhi1,		  "_gen_NPackedDtrsPCAPhi1[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAPhi2",		     &_gen_NPackedDtrsPCAPhi2,		  "_gen_NPackedDtrsPCAPhi2[_gen_nNPackedDtrsPCA]/D");
+    outputTree->Branch("_gen_NPackedDtrsPCAIndex1",		     &_gen_NPackedDtrsPCAIndex1,		  "_gen_NPackedDtrsPCAIndex1[_gen_nNPackedDtrsPCA]/i");
+    outputTree->Branch("_gen_NPackedDtrsPCAIndex2",		     &_gen_NPackedDtrsPCAIndex2,		  "_gen_NPackedDtrsPCAIndex2[_gen_nNPackedDtrsPCA]/i");
     outputTree->Branch("_gen_NPackedDtrsHasKVFvertex", &_gen_NPackedDtrsHasKVFvertex, "_gen_NPackedDtrsHasKVFvertex/O");
     outputTree->Branch("_gen_NPackedDtrs_KVF_x",	   &_gen_NPackedDtrs_KVF_x,		  "_gen_NPackedDtrs_KVF_x/D");
     outputTree->Branch("_gen_NPackedDtrs_KVF_y",	   &_gen_NPackedDtrs_KVF_y,		  "_gen_NPackedDtrs_KVF_y/D");
@@ -120,7 +139,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 }
 
 
-void GenAnalyzer::analyze(const edm::Event& iEvent){
+void GenAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& primaryVertex){
     edm::Handle<std::vector<reco::GenParticle>> genParticles = getHandle(iEvent, multilepAnalyzer->genParticleToken);
     edm::Handle<std::vector<pat::PackedGenParticle>> packedGenParticles = getHandle(iEvent, multilepAnalyzer->packedGenParticleToken);
     edm::Handle<std::vector<pat::PackedCandidate>> packedCands = getHandle(iEvent, multilepAnalyzer->packedCandidatesToken);
@@ -229,18 +248,23 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                     for(const pat::PackedCandidate& packedreco : *packedCands){
                         double dR = reco::deltaR(_gen_NPackedDtrsEta[_gen_nNPackedDtrs], _gen_NPackedDtrsPhi[_gen_nNPackedDtrs], packedreco.eta(), packedreco.phi());
                         double deta = fabs(_gen_NPackedDtrsEta[_gen_nNPackedDtrs] - packedreco.eta());
-                        double dpt = fabs(_gen_NPackedDtrsPt[_gen_nNPackedDtrs] - packedreco.pt());
-                        double chargediff = _gen_NPackedDtrsCharge[_gen_nNPackedDtrs] - packedreco.charge();
-                        if(chargediff == 0 and dpt < 5 and (dR < 0.05 or (dR < 0.1 and deta < 0.03)) and dR < mindR){
+                        double dptoverpt = fabs(_gen_NPackedDtrsPt[_gen_nNPackedDtrs] - packedreco.pt())/_gen_NPackedDtrsPt[_gen_nNPackedDtrs];
+                        int chargediff = _gen_NPackedDtrsCharge[_gen_nNPackedDtrs] - packedreco.charge();
+                        if(chargediff == 0 and dptoverpt < 1. and (dR < 0.05 or (dR < 0.1 and deta < 0.03)) and dR < mindR){
                             mindR = dR;
+                            _gen_NPackedDtrsRecodR[_gen_nNPackedDtrs]       = dR;
+                            _gen_NPackedDtrsRecodptoverpt[_gen_nNPackedDtrs] = dptoverpt;
                             _gen_NPackedDtrsRecoPt[_gen_nNPackedDtrs]       = packedreco.pt();
                             _gen_NPackedDtrsRecoEta[_gen_nNPackedDtrs]      = packedreco.eta();
                             _gen_NPackedDtrsRecoPhi[_gen_nNPackedDtrs]      = packedreco.phi();
                             _gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]        = packedreco.energy();
                             _gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]    = packedreco.pdgId();
+                            _gen_NPackedDtrsRecodxy[_gen_nNPackedDtrs]      = packedreco.dxy(primaryVertex.position());
+                            _gen_NPackedDtrsRecodz[_gen_nNPackedDtrs]       = packedreco.dz(primaryVertex.position());
                             _gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]  = true;
                             if(packedreco.charge() != 0 and packedreco.bestTrack()){
                                 tmp_track = *packedreco.bestTrack();
+                                _gen_NPackedDtrsTracks[_gen_nNPackedDtrs] = tmp_track;
                             }
                         }
                     }
@@ -248,15 +272,20 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                         HNLrecotracks.push_back(tmp_track);
                     }
                     if(!_gen_NPackedDtrsHasReco[_gen_nNPackedDtrs]){
+                        _gen_NPackedDtrsRecodR[_gen_nNPackedDtrs]        = 0.5;
+                        _gen_NPackedDtrsRecodptoverpt[_gen_nNPackedDtrs] = 1.1;
                         _gen_NPackedDtrsRecoPt[_gen_nNPackedDtrs]       = 0.;
                         _gen_NPackedDtrsRecoEta[_gen_nNPackedDtrs]      = 0.;
                         _gen_NPackedDtrsRecoPhi[_gen_nNPackedDtrs]      = 0.;
                         _gen_NPackedDtrsRecoE[_gen_nNPackedDtrs]        = 0.;
                         _gen_NPackedDtrsRecoPdgId[_gen_nNPackedDtrs]    = 0;
+                        _gen_NPackedDtrsRecodxy[_gen_nNPackedDtrs]    = 0;
+                        _gen_NPackedDtrsRecodz[_gen_nNPackedDtrs]    = 0;
                     }
                     _gen_nNPackedDtrs++;
                 }
             }
+            fillPointOfClosestApproachVariables();
             fillNPackedDtrsKVFVariables(HNLrecotracks);
         }
 	    // daughters of HNL
@@ -425,3 +454,41 @@ void GenAnalyzer::fillNPackedDtrsKVFVariables(std::vector<reco::Track>& tracks){
     }
 }
 
+void GenAnalyzer::fillPointOfClosestApproachVariables(){
+    if(_gen_nNPackedDtrs == 0) return;
+    MagneticField *bfield = new OAEParametrizedMagneticField("3_8T");
+    _gen_nNPackedDtrsPCA = 0;
+    for(unsigned i1 = 0; i1 < _gen_nNPackedDtrs-1; i1++){
+        if(_gen_NPackedDtrsHasReco[i1] and _gen_NPackedDtrsCharge[i1] != 0){
+            for(unsigned i2 = i1+1; i2 < _gen_nNPackedDtrs; i2++){
+                if(_gen_NPackedDtrsHasReco[i2] and _gen_NPackedDtrsCharge[i2] != 0){
+                    GlobalPoint p1(_gen_NPackedDtrsTracks[i1].referencePoint().x(), _gen_NPackedDtrsTracks[i1].referencePoint().y(), _gen_NPackedDtrsTracks[i1].referencePoint().z());
+                    GlobalPoint p2(_gen_NPackedDtrsTracks[i2].referencePoint().x(), _gen_NPackedDtrsTracks[i2].referencePoint().y(), _gen_NPackedDtrsTracks[i2].referencePoint().z());
+                    GlobalVector v1(_gen_NPackedDtrsTracks[i1].px(), _gen_NPackedDtrsTracks[i1].py(), _gen_NPackedDtrsTracks[i1].pz());
+                    GlobalVector v2(_gen_NPackedDtrsTracks[i2].px(), _gen_NPackedDtrsTracks[i2].py(), _gen_NPackedDtrsTracks[i2].pz());
+                    GlobalTrajectoryParameters traj1(p1, v1, _gen_NPackedDtrsCharge[i1], bfield);
+                    GlobalTrajectoryParameters traj2(p2, v2, _gen_NPackedDtrsCharge[i2], bfield);
+
+                    TwoTrackMinimumDistance TTMinDist;
+                    if(TTMinDist.calculate(traj1, traj2)){
+                        _gen_NPackedDtrsPCADist[_gen_nNPackedDtrsPCA] = TTMinDist.distance();
+                        _gen_NPackedDtrsPCAX0[_gen_nNPackedDtrsPCA] = TTMinDist.crossingPoint().x();
+                        _gen_NPackedDtrsPCAY0[_gen_nNPackedDtrsPCA] = TTMinDist.crossingPoint().y();
+                        _gen_NPackedDtrsPCAZ0[_gen_nNPackedDtrsPCA] = TTMinDist.crossingPoint().z();
+                        _gen_NPackedDtrsPCAX1[_gen_nNPackedDtrsPCA] = TTMinDist.points().first.x();
+                        _gen_NPackedDtrsPCAY1[_gen_nNPackedDtrsPCA] = TTMinDist.points().first.y();
+                        _gen_NPackedDtrsPCAZ1[_gen_nNPackedDtrsPCA] = TTMinDist.points().first.z();
+                        _gen_NPackedDtrsPCAX2[_gen_nNPackedDtrsPCA] = TTMinDist.points().second.x();
+                        _gen_NPackedDtrsPCAY2[_gen_nNPackedDtrsPCA] = TTMinDist.points().second.y();
+                        _gen_NPackedDtrsPCAZ2[_gen_nNPackedDtrsPCA] = TTMinDist.points().second.z();
+                        _gen_NPackedDtrsPCAPhi1[_gen_nNPackedDtrsPCA] = TTMinDist.firstAngle();
+                        _gen_NPackedDtrsPCAPhi2[_gen_nNPackedDtrsPCA] = TTMinDist.secondAngle();
+                        _gen_NPackedDtrsPCAIndex1[_gen_nNPackedDtrsPCA] = i1;
+                        _gen_NPackedDtrsPCAIndex2[_gen_nNPackedDtrsPCA] = i2;
+                        _gen_nNPackedDtrsPCA++;
+                    }
+                }
+            }
+        }
+    }
+}

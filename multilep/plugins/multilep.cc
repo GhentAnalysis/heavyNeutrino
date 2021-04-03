@@ -153,7 +153,7 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if(!leptonAnalyzer->analyze(iEvent, iSetup, *(vertices->begin())) and applySkim) return;          // returns false if doesn't pass applySkim condition, so skip event in such case
     if(!photonAnalyzer->analyze(iEvent) and applySkim)                       return;
     if(!jetAnalyzer->analyze(iEvent) and applySkim)                          return;
-    if( isMC() ) genAnalyzer->analyze(iEvent);
+    if( isMC() ) genAnalyzer->analyze(iEvent, *(vertices->begin()));
     if(!triggerAnalyzer->analyze(iEvent))                               return;
 
     _eventNb = (unsigned long) iEvent.id().event();

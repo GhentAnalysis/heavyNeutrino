@@ -3,6 +3,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/Event.h"
 
+#include "TrackingTools/PatternTools/interface/TwoTrackMinimumDistance.h"
 #include "MagneticField/Engine/interface/MagneticField.h"
 #include "MagneticField/ParametrizedEngine/src/OAEParametrizedMagneticField.h"
 #include "TrackPropagation/SteppingHelixPropagator/interface/SteppingHelixPropagator.h"
@@ -79,12 +80,32 @@ class GenAnalyzer {
     double   _gen_NPackedDtrsE[gen_ndtr_max];
     int      _gen_NPackedDtrsPdgId[gen_ndtr_max];
     int      _gen_NPackedDtrsCharge[gen_ndtr_max];
+    double   _gen_NPackedDtrsRecodR[gen_ndtr_max];
+    double   _gen_NPackedDtrsRecodptoverpt[gen_ndtr_max];
     double   _gen_NPackedDtrsRecoPt[gen_ndtr_max];
     double   _gen_NPackedDtrsRecoEta[gen_ndtr_max];
     double   _gen_NPackedDtrsRecoPhi[gen_ndtr_max];
     double   _gen_NPackedDtrsRecoE[gen_ndtr_max];
     int      _gen_NPackedDtrsRecoPdgId[gen_ndtr_max];
+    double   _gen_NPackedDtrsRecodxy[gen_ndtr_max];
+    double   _gen_NPackedDtrsRecodz[gen_ndtr_max];
     bool     _gen_NPackedDtrsHasReco[gen_ndtr_max];
+    reco::Track _gen_NPackedDtrsTracks[gen_ndtr_max];
+    unsigned _gen_nNPackedDtrsPCA = 0;
+    double   _gen_NPackedDtrsPCADist[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAX0[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAY0[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAZ0[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAX1[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAY1[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAZ1[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAX2[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAY2[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAZ2[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAPhi1[gen_ndtr_max];
+    double   _gen_NPackedDtrsPCAPhi2[gen_ndtr_max];
+    unsigned   _gen_NPackedDtrsPCAIndex1[gen_ndtr_max];
+    unsigned   _gen_NPackedDtrsPCAIndex2[gen_ndtr_max];
     bool     _gen_NPackedDtrsHasKVFvertex;
     double   _gen_NPackedDtrs_KVF_x;
     double   _gen_NPackedDtrs_KVF_y;
@@ -144,6 +165,7 @@ class GenAnalyzer {
 
     TransientVertex constructKalmanVertex(std::vector<reco::Track>& tracks);
     void    fillNPackedDtrsKVFVariables(std::vector<reco::Track>& tracks);
+    void    fillPointOfClosestApproachVariables();
 
     multilep* multilepAnalyzer;
 
@@ -152,6 +174,6 @@ class GenAnalyzer {
     ~GenAnalyzer(){};
 
     void beginJob(TTree* outputTree);
-    void analyze(const edm::Event&);
+    void analyze(const edm::Event&, const reco::Vertex&);
 };
 #endif
