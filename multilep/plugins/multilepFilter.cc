@@ -9,7 +9,8 @@ multilepFilter::multilepFilter(const edm::ParameterSet& iConfig):
     triggerToken(             consumes<edm::TriggerResults>(                   iConfig.getParameter<edm::InputTag>("triggers"))),
     trigObjToken(             consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
     sampleIs2017(                                                              iConfig.getUntrackedParameter<bool>("is2017")),
-    sampleIs2018(                                                              iConfig.getUntrackedParameter<bool>("is2018"))
+    sampleIs2018(                                                              iConfig.getUntrackedParameter<bool>("is2018")),
+    skim(                                                                      iConfig.getUntrackedParameter<std::string>("skim"))
 {
 }
 
@@ -58,6 +59,8 @@ bool multilepFilter::passTrigger(const edm::Event& iEvent, std::string name){
 
 // ------------ method called for each event  ------------
 bool multilepFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup){
+    if(skim != "dilep") return true; //don't apply this dilepton filter when not running dilep skim
+
     auto electrons      = getHandle(iEvent, eleToken);
     auto muons          = getHandle(iEvent, muonToken);
     auto vertices       = getHandle(iEvent, vtxToken);

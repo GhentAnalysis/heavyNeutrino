@@ -41,6 +41,7 @@ class multilepFilter : public edm::one::EDFilter<edm::one::SharedResources> {
         edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> trigObjToken;
         bool                                                     sampleIs2017;
         bool                                                     sampleIs2018;
+        std::string                                              skim;
 
         std::vector<const pat::TriggerObjectStandAlone*> getMatchedObjects(const pat::Electron& ele, const std::vector<pat::TriggerObjectStandAlone>& trigObjs, const float maxDeltaR);
         bool passTrigger(const edm::Event& iEvent, std::string name);

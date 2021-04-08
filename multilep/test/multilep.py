@@ -28,6 +28,7 @@ outputFile      = 'dilep.root'  # trilep    --> skim three leptons (basic pt/eta
                                 # singlelep --> skim one lepton
                                 # singlejet --> one jet
                                 # FR        --> one jet and one light lepton
+                                # noskim    --> no skim
 
 def getVal(arg):
     return arg.split('=')[-1]
@@ -224,6 +225,7 @@ process.dilepFilter = cms.EDFilter('multilepFilter',
   triggerObjects                = cms.InputTag("slimmedPatTrigger"),
   is2017                        = cms.untracked.bool(is2017),
   is2018                        = cms.untracked.bool(is2018),
+  skim                          = cms.untracked.string(outputFile.split('/')[-1].split('.')[0].split('_')[0])
 )
 
 #
