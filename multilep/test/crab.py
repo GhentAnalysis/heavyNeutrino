@@ -6,6 +6,8 @@ productionLabel = os.environ['CRAB_PRODUCTIONLABEL']
 dataset         = os.environ['CRAB_DATASET']
 outputFile      = os.environ['CRAB_OUTPUTFILE']
 lumiMask        = os.environ['CRAB_LUMIMASK']
+#lumiMask        = os.path.join('crab', os.environ['CRAB_PRODUCTIONLABEL_UNFINISHED'], dataset.split('/')[1]) + '/crab_' + dataset.split('/')[2] + '_' + os.environ['CRAB_PRODUCTIONLABEL_UNFINISHED'] + '/results/notFinishedLumis.json'
+#lumiMask        = os.path.join('crab', os.environ['CRAB_PRODUCTIONLABEL_UNFINISHED'], dataset.split('/')[1]) + '/crab_' + dataset.split('/')[2] + '_' + os.environ['CRAB_PRODUCTIONLABEL_UNFINISHED'] + '/results/notFinishedLumis.json'
 extraContent    = os.environ['CRAB_EXTRACONTENT']
 
 requestName = dataset.split('/')[2] + '_' + productionLabel

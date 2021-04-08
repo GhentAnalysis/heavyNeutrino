@@ -8,12 +8,17 @@ import FWCore.ParameterSet.Config as cms
 #inputFile      = '/store/data/Run2018A/SingleMuon/MINIAOD/PromptReco-v3/000/316/569/00000/0085320B-4E64-E811-A2D3-FA163E2A55D6.root'
 #inputFile      = '/store/data/Run2018A/MET/MINIAOD/PromptReco-v3/000/316/666/00000/0CC8EDCD-FD64-E811-BCA8-02163E01A020.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
-inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_lljj_M-5_V-0.00547722557505_mu_massiveAndCKM_LO/heavyNeutrino_45.root'
+inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_lljj_M-5_V-0.00126095202129_mu_massiveAndCKM_LO/heavyNeutrino_45.root'
 #inputFile       = '/store/data/Run2016C/SingleMuon/MINIAOD/17Jul2018-v1/20000/FEC97F81-0097-E811-A7B9-90E2BACC5EEC.root'
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/displaced/HeavyNeutrino_lljj_M-2_V-0.0141421356237_e_massiveAndCKM_LO/heavyNeutrino_108.root'
 #inputFile       = 'root://cmsxrootd.fnal.gov//store/mc/RunIISummer16MiniAODv3/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3-v2/20000/76EBF3B8-67EF-E811-95B0-0CC47AC52AFC.root'
 #inputFile       = "root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/00A25ADE-DFD4-E611-8EAC-0025905A48B2.root"
  
+#2018D dataset files for unskimmed synchronisation with Mohamed
+#inputFile       = '/store/data/Run2018D/SingleMuon/MINIAOD/PromptReco-v2/000/325/159/00000/0731BA23-725E-8540-BA91-D6B06D8D7826.root'#60723 events
+#inputFile       = '/store/data/Run2018D/SingleMuon/MINIAOD/PromptReco-v2/000/320/569/00000/3C8C28E7-1A96-E811-BA8D-02163E012DD8.root'#999 events
+#inputFile       = '/store/data/Run2018D/SingleMuon/MINIAOD/PromptReco-v2/000/320/570/00000/34C040A0-4096-E811-A1B7-FA163EEC3A41.root'#1426 events
+
 # Other default arguments
 
 nEvents         = 1000
@@ -235,7 +240,7 @@ process.blackJackAndHookersGlobal = cms.EDAnalyzer('multilepGlobal',
 def getJSON(is2017, is2018):
     if is2018:   return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
     elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
-    else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+    else:        return "Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt"
 
 if isData:
   print('Sample is found to be 20%s data, will process using %s' % (yy, getJSON(is2017, is2018)))
