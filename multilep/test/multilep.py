@@ -223,7 +223,7 @@ def getJSON(isUL, is2017, is2018):
         else:    return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
     else:
         if isUL: return ""#not available yet
-        else:    return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+        else:    return "Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt"
 
 if isData:
   print('Sample is found to be 20%s data, will process using %s' % (yy, getJSON(isUL, is2017, is2018)))

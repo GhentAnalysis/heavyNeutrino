@@ -27,8 +27,8 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL 
         elif is2018:
             if 'Run2018A' in inputFile: JECVersion = 'Summer19UL18_RunA_V5_DATA'
             if 'Run2018B' in inputFile: JECVersion = 'Summer19UL18_RunB_V5_DATA'
-            if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V5_HEMV1_DATA'
-            if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V5_HEMV1_DATA'
+            if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V5_DATA'
+            if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V5_DATA'
 
         else:
             if 'Run2016G' in inputFile: JECVersion = 'Summer20UL16_RunGH_V1_DATA'
