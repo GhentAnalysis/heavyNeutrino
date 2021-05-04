@@ -29,6 +29,7 @@ fi
 git cms-init
 git clone https://github.com/$gitUser/heavyNeutrino
 git clone https://github.com/cms-egamma/EgammaPostRecoTools.git EgammaUser/EgammaPostRecoTools
+git clone https://gitlab.cern.ch/CMS-TOPPAG/BFragmentationAnalyzer.git TopQuarkAnalysis/BFragmentationAnalyzer
 cd $CMSSW_BASE/src/heavyNeutrino
 git checkout --track origin/$BRANCH
 if [[ "$gitUser" != "GhentAnalysis" ]]; then
