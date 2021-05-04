@@ -13,6 +13,13 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     particleLevelPhotonsToken(consumes<reco::GenParticleCollection>(           iConfig.getParameter<edm::InputTag>("particleLevelPhotons"))),
     particleLevelLeptonsToken(consumes<reco::GenJetCollection>(                iConfig.getParameter<edm::InputTag>("particleLevelLeptons"))),
     particleLevelJetsToken(   consumes<reco::GenJetCollection>(                iConfig.getParameter<edm::InputTag>("particleLevelJets"))),
+    genJetsToken(             consumes<reco::GenJetCollection>(                iConfig.getParameter<edm::InputTag>("particleLevelJets"))),
+    fragCP5BLToken(           consumes<edm::ValueMap<float> >(                 iConfig.getParameter<edm::InputTag>("bfragWgtProducerFragCP5BL"))),
+    fragCP5BLdownToken(       consumes<edm::ValueMap<float> >(                 iConfig.getParameter<edm::InputTag>("bfragWgtProducerFragCP5BLdown"))),
+    fragCP5BLupToken(         consumes<edm::ValueMap<float> >(                 iConfig.getParameter<edm::InputTag>("bfragWgtProducerFragCP5BLup"))),
+    fragCP5PetersonToken(     consumes<edm::ValueMap<float> >(                 iConfig.getParameter<edm::InputTag>("bfragWgtProducerFragCP5Peterson"))),
+    fragCP5PetersondownToken( consumes<edm::ValueMap<float> >(                 iConfig.getParameter<edm::InputTag>("bfragWgtProducerFragCP5Petersondown"))),
+    fragCP5PetersonupToken(   consumes<edm::ValueMap<float> >(                 iConfig.getParameter<edm::InputTag>("bfragWgtProducerFragCP5Petersonup"))),
     particleLevelMetsToken(   consumes<reco::METCollection>(                   iConfig.getParameter<edm::InputTag>("particleLevelMets"))),
     muonToken(                consumes<std::vector<pat::Muon>>(                iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                 consumes<std::vector<pat::Electron>>(            iConfig.getParameter<edm::InputTag>("electrons"))),
@@ -42,6 +49,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
     storeGenParticles(                                                         iConfig.getUntrackedParameter<bool>("storeGenParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
+    storeBFrag(                                                                iConfig.getUntrackedParameter<bool>("storeBFrag")),
     storeJecSources(                                                           iConfig.getUntrackedParameter<bool>("storeJecSources")),
     storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
     //headerPart1(                                                               iConfig.getUntrackedParameter<std::string>("headerPart1")),
@@ -58,6 +66,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     lheAnalyzer           = new LheAnalyzer(iConfig, this);
     susyAnalyzer          = new SUSYAnalyzer(iConfig, this, lheAnalyzer);
     particleLevelAnalyzer = new ParticleLevelAnalyzer(iConfig, this);
+    bFragAnalyzer         = new BFragAnalyzer(iConfig, this);
 }
 
 multilep::~multilep(){
@@ -67,6 +76,7 @@ multilep::~multilep(){
     delete jetAnalyzer;
     delete genAnalyzer;
     delete particleLevelAnalyzer;
+    delete bFragAnalyzer;
     delete lheAnalyzer;
     delete susyAnalyzer;
 }
@@ -96,6 +106,7 @@ void multilep::beginJob(){
     if( isSUSY() )  susyAnalyzer->beginJob(outputTree, fs);
     if( isMC() ) genAnalyzer->beginJob(outputTree);
     if( isMC() && storeParticleLevel) particleLevelAnalyzer->beginJob(outputTree);
+    if( isMC() && storeBFrag) bFragAnalyzer->beginJob(outputTree);
     
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
@@ -135,6 +146,8 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     bool applySkim; //better not to shadow class variable with name! // Do not skim if event topology is available on particleLevel 
     if( isMC() && storeParticleLevel ) applySkim = !particleLevelAnalyzer->analyze(iEvent);
     else applySkim = true;
+   
+    if( isMC() && storeBFrag ) bFragAnalyzer->analyze(iEvent);
 
     if(_nVertex == 0)                                                        return;          // Don't consider 0 vertex events
     if(!leptonAnalyzer->analyze(iEvent, *(vertices->begin())) and applySkim) return;          // returns false if doesn't pass applySkim condition, so skip event in such case
