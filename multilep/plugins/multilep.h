@@ -43,6 +43,7 @@
 #include "heavyNeutrino/multilep/interface/JetAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/GenAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/ParticleLevelAnalyzer.h"
+#include "heavyNeutrino/multilep/interface/BFragAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/LheAnalyzer.h"
 #include "heavyNeutrino/multilep/interface/SUSYAnalyzer.h"
 
@@ -65,6 +66,7 @@ class PhotonAnalyzer;
 class JetAnalyzer;
 class GenAnalyzer;
 class ParticleLevelAnalyzer;
+class BFragAnalyzer;
 class LheAnalyzer;
 class SUSYAnalyzer;
 
@@ -76,6 +78,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
     friend JetAnalyzer;
     friend GenAnalyzer;
     friend ParticleLevelAnalyzer;
+    friend BFragAnalyzer;
     friend LheAnalyzer;
     friend SUSYAnalyzer;
     public:
@@ -102,6 +105,13 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<reco::GenParticleCollection>            particleLevelPhotonsToken;
         edm::EDGetTokenT<reco::GenJetCollection>                 particleLevelLeptonsToken;
         edm::EDGetTokenT<reco::GenJetCollection>                 particleLevelJetsToken;
+        edm::EDGetTokenT<reco::GenJetCollection>                 genJetsToken;
+        edm::EDGetTokenT<edm::ValueMap<float> >                  fragCP5BLToken;
+        edm::EDGetTokenT<edm::ValueMap<float> >                  fragCP5BLdownToken;
+        edm::EDGetTokenT<edm::ValueMap<float> >                  fragCP5BLupToken;
+        edm::EDGetTokenT<edm::ValueMap<float> >                  fragCP5PetersonToken;
+        edm::EDGetTokenT<edm::ValueMap<float> >                  fragCP5PetersondownToken;
+        edm::EDGetTokenT<edm::ValueMap<float> >                  fragCP5PetersonupToken;
         edm::EDGetTokenT<reco::METCollection>                    particleLevelMetsToken;
         edm::EDGetTokenT<std::vector<pat::Muon>>                 muonToken;
         edm::EDGetTokenT<std::vector<pat::Electron>>             eleToken;
@@ -132,6 +142,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     storeLheParticles;
         bool                                                     storeGenParticles;
         bool                                                     storeParticleLevel;
+        bool                                                     storeBFrag;
         bool                                                     storeJecSources;
         bool                                                     storeAllTauID;
         std::string                                              headerPart1;
@@ -153,6 +164,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         LheAnalyzer*           lheAnalyzer;
         GenAnalyzer*           genAnalyzer;
         ParticleLevelAnalyzer* particleLevelAnalyzer;
+        BFragAnalyzer*         bFragAnalyzer;
         SUSYAnalyzer*          susyAnalyzer;
 
         edm::Service<TFileService> fs;                                                                   //Root tree and file for storing event info
