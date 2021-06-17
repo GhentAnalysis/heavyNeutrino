@@ -8,13 +8,15 @@ import FWCore.ParameterSet.Config as cms
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIAutumn18MiniAOD/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext1-v2/110000/00707922-8E6F-3042-A709-2DD4DB9AEDED.root'
 #inputFile       = '/store/mc/RunIISummer19UL17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v2/70000/FBC4E43E-2C35-974A-84C9-29AD0430BD39.root'
 #inputFile       = '/store/data/Run2017E/SingleElectron/MINIAOD/09Aug2019_UL2017-v1/130000/1428BFE4-BCE6-EA4D-9E49-CE5DC19AFFCE.root'
-inputFile       = '/store/mc/RunIISummer19UL18MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v1/70000/D01D206D-918C-4242-B9C3-07C3D8C106D3.root'
 #inputFile       = '/store/data/Run2018B/DoubleMuon/MINIAOD/12Nov2019_UL2018-v2/70000/F5018BF9-184A-524E-A209-BC7A6BB7D8D4.root'
 #inputFile       = '/store/mc/RunIISummer19UL18MiniAOD/DYJetsToMuMu_M-50_Zpt-150toInf_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v1/110000/5AA65A39-AEA4-6444-8B0E-1EC4846CCB3B.root'
 #inputFile       = 'root://ccxrootdcms.in2p3.fr:1094/pnfs/in2p3.fr/data/cms/t2data/store/data/Run2018C/EGamma/MINIAOD/12Nov2019_UL2018-v2/270000/CD1A6E73-92DF-454F-BC1C-31199CB2E02D.root'
 #inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_TuneCP5_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/70000/F447BDAD-6642-BD46-B8E9-750F7F961BA7.root'
 #inputFile       = '/store/mc/RunIIFall17MiniAODv2/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall17Fast_94X_mc2017_realistic_v15-v1/10000/00071D11-4C7A-E911-8E48-0CC47A1E0484.root'
 #inputFile       = '/store/mc/RunIIAutumn18MiniAOD/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall18Fast_102X_upgrade2018_realistic_v15-v1/50000/FBA243F4-DA64-3A40-8DD8-58A72064AD86.root'
+
+#inputFile       = '/store/mc/RunIISummer19UL18MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v1/70000/D01D206D-918C-4242-B9C3-07C3D8C106D3.root'
+inputFile       = '/store/mc/RunIISummer20UL16MiniAODAPV/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/000D2FDF-C337-AD46-B5C9-4EEADD3A3CB8.root'
 
 # Other default arguments
 
@@ -89,14 +91,20 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim, isUL )
-if isFastSim:
-  if is2018:   jecUncertaintyFile = 'Autumn18_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
-  elif is2017: jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
-  else:        jecUncertaintyFile = 'Summer16_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+if isUL:
+    if is2018:     jecUncertaintyFile = 'Summer19UL18_V5_MC_Uncertainty_AK4PFchs.txt'
+    elif is2017:   jecUncertaintyFile = 'Summer19UL17_V6_MC_Uncertainty_AK4PFchs.txt'
+    elif isAPV:    jecUncertaintyFile = 'Summer19UL16APV_V7_MC_Uncertainty_AK4PFchs.txt'
+    else:          jecUncertaintyFile = 'Summer19UL16_V7_MC_Uncertainty_AK4PFPuppi.txt'
 else:
-  if is2018:   jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
-  elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
-  else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
+    if isFastSim:
+      if is2018:   jecUncertaintyFile = 'Autumn18_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+      elif is2017: jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+      else:        jecUncertaintyFile = 'Summer16_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+    else:
+      if is2018:   jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
+      elif is2017: jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
+      else:        jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
 #JEC uncertainty for Puppi:
 jecUncertaintyFilePuppi = jecUncertaintyFile.replace('PFchs', 'PFPuppi')
 
@@ -223,7 +231,8 @@ def getJSON(isUL, is2017, is2018):
         if isUL: return "Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt"
         else:    return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
     else:
-        if isUL: return ""#not available yet
+        if isUL and isAPV: return "Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt"
+        elif isUL: return "Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt"
         else:    return "Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt"
 
 if isData:
