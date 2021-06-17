@@ -41,6 +41,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     sampleIs2018(                                                              iConfig.getUntrackedParameter<bool>("is2018")),
     sampleIsFastSim(                                                           iConfig.getUntrackedParameter<bool>("isFastSim")),
     sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
+    sampleIsUL(                                                                iConfig.getUntrackedParameter<bool>("isUL")),
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
     storeGenParticles(                                                         iConfig.getUntrackedParameter<bool>("storeGenParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),

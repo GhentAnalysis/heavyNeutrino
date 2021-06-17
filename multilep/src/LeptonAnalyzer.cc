@@ -58,6 +58,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_lElectronPassMVAFall17NoIsoWP80",    &_lElectronPassMVAFall17NoIsoWP80,    "_lElectronPassMVAFall17NoIsoWP80[_nLight]/O");
     outputTree->Branch("_lElectronPassMVAFall17NoIsoWP90",    &_lElectronPassMVAFall17NoIsoWP90,    "_lElectronPassMVAFall17NoIsoWP90[_nLight]/O");
     outputTree->Branch("_lElectronPassMVAFall17NoIsoWPLoose", &_lElectronPassMVAFall17NoIsoWPLoose, "_lElectronPassMVAFall17NoIsoWPLoose[_nLight]/O");
+    outputTree->Branch("_lElectronPassMVAFall17IsoWP80",    &_lElectronPassMVAFall17IsoWP80,    "_lElectronPassMVAFall17IsoWP80[_nLight]/O");
+    outputTree->Branch("_lElectronPassMVAFall17IsoWP90",    &_lElectronPassMVAFall17IsoWP90,    "_lElectronPassMVAFall17IsoWP90[_nLight]/O");
     outputTree->Branch("_lElectronSigmaIetaIeta",               &_lElectronSigmaIetaIeta,               "_lElectronSigmaIetaIeta[_nLight]/D");
     outputTree->Branch("_lElectronDeltaPhiSuperClusterTrack",   &_lElectronDeltaPhiSuperClusterTrack,   "_lElectronDeltaPhiSuperClusterTrack[_nLight]/D");
     outputTree->Branch("_lElectronDeltaEtaSuperClusterTrack",   &_lElectronDeltaEtaSuperClusterTrack,   "_lElectronDeltaEtaSuperClusterTrack[_nLight]/D");
@@ -285,6 +287,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         _lElectronPassMVAFall17NoIsoWPLoose[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wpLoose");
         _lElectronPassMVAFall17NoIsoWP90[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wp90");
         _lElectronPassMVAFall17NoIsoWP80[_nL] = ele->electronID("mvaEleID-Fall17-noIso-V2-wp80");
+        _lElectronPassMVAFall17IsoWP90[_nL] = ele->electronID("mvaEleID-Fall17-iso-V2-wp90");
+        _lElectronPassMVAFall17IsoWP80[_nL] = ele->electronID("mvaEleID-Fall17-iso-V2-wp80");
 
         _lElectronSigmaIetaIeta[_nL] = ele->full5x5_sigmaIetaIeta();
         _lElectronDeltaPhiSuperClusterTrack[_nL] = fabs(ele->deltaPhiSuperClusterTrackAtVtx());

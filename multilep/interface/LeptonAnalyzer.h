@@ -117,6 +117,8 @@ class LeptonAnalyzer {
     bool _lElectronPassMVAFall17NoIsoWP80[nL_max];
     bool _lElectronPassMVAFall17NoIsoWP90[nL_max];
     bool _lElectronPassMVAFall17NoIsoWPLoose[nL_max];
+    bool _lElectronPassMVAFall17IsoWP80[nL_max];
+    bool _lElectronPassMVAFall17IsoWP90[nL_max];
     double _lElectronSigmaIetaIeta[nL_max];
     double _lElectronDeltaPhiSuperClusterTrack[nL_max];
     double _lElectronDeltaEtaSuperClusterTrack[nL_max];

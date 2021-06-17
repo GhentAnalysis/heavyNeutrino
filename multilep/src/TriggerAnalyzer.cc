@@ -30,6 +30,12 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["passMETFilters"].push_back("updated_ecalBadCalibFilter"); // improved version over the Flag_ecalBadCalibFilter, implementation manually
   }
 
+  if( multilepAnalyzer->isUL() ){
+    allFlags["passMETFilters"].push_back("Flag_BadPFMuonDzFilter");
+    allFlags["passMETFilters"].push_back("Flag_hfNoisyHitsFilter");
+    allFlags["passMETFilters"].push_back("Flag_ecalBadCalibFilter");
+  }
+
   // Triggers, grouped per year
   // Triggers are taken in OR and always start with "HLT"
   // To check if triggers are existing/prescaled/unused, use https://tomc.web.cern.ch/tomc/triggerPrescales
