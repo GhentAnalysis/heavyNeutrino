@@ -51,6 +51,8 @@ for dataset in datasets:
   elif dataset.startswith('-'):
     for toRemove in dataset.replace('-','').split(','):
       extraContent.remove(toRemove)
+  elif dataset.startswith('%'):
+    continue
   else:
     skim, dataset = dataset.split(':')
 

@@ -21,7 +21,9 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     packedCandidatesToken(    consumes<std::vector<pat::PackedCandidate>>(     iConfig.getParameter<edm::InputTag>("packedCandidates"))),
     rhoToken(                 consumes<double>(                                iConfig.getParameter<edm::InputTag>("rho"))),
     metToken(                 consumes<std::vector<pat::MET>>(                 iConfig.getParameter<edm::InputTag>("met"))),
+    metPuppiToken(            consumes<std::vector<pat::MET>>(                 iConfig.getParameter<edm::InputTag>("metPuppi"))),
     jetToken(                 consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jets"))),
+    jetPuppiToken(            consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsPuppi"))),
     jetSmearedToken(          consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmeared"))),
     jetSmearedUpToken(        consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmearedUp"))),
     jetSmearedDownToken(      consumes<std::vector<pat::Jet>>(                 iConfig.getParameter<edm::InputTag>("jetsSmearedDown"))),
@@ -37,6 +39,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     sampleIsData(                                                              iConfig.getUntrackedParameter<bool>("isData")),
     sampleIs2017(                                                              iConfig.getUntrackedParameter<bool>("is2017")),
     sampleIs2018(                                                              iConfig.getUntrackedParameter<bool>("is2018")),
+    sampleIs2016preVFP(                                                        iConfig.getUntrackedParameter<bool>("is2016preVFP")),
     sampleIsFastSim(                                                           iConfig.getUntrackedParameter<bool>("isFastSim")),
     sampleIsSUSY(                                                              iConfig.getUntrackedParameter<bool>("isSUSY")),
     storeLheParticles(                                                         iConfig.getUntrackedParameter<bool>("storeLheParticles")),
@@ -44,10 +47,6 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
     storeJecSources(                                                           iConfig.getUntrackedParameter<bool>("storeJecSources")),
     storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
-    //headerPart1(                                                               iConfig.getUntrackedParameter<std::string>("headerPart1")),
-    //headerPart2(                                                               iConfig.getUntrackedParameter<std::string>("headerPart2"))
-    headerPart1(                                                               iConfig.getParameter<edm::FileInPath>("headerPart1").fullPath()),
-    headerPart2(                                                               iConfig.getParameter<edm::FileInPath>("headerPart2").fullPath())
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -85,6 +84,7 @@ void multilep::beginJob(){
     outputTree->Branch("_nVertex",                      &_nVertex,                      "_nVertex/i");
     outputTree->Branch("_is2017",                       &sampleIs2017,                  "_is2017/O");
     outputTree->Branch("_is2018",                       &sampleIs2018,                  "_is2018/O");
+    outputTree->Branch("_is2016preVFP",                 &sampleIs2016preVFP,            "_is2016preVFP/O");
 
     if( isMC() && !is2018() ){
         outputTree->Branch("_prefireWeight",              &_prefireWeight,                "_prefireWeight/F");
@@ -103,10 +103,6 @@ void multilep::beginJob(){
     jetAnalyzer->beginJob(outputTree);
 
     _runNb = 0;
-
-    //print header
-    Header header( {headerPart1, headerPart2} );
-    header.print();
 }
 
 // ------------ method called for each lumi block ---------

@@ -5,7 +5,9 @@ import FWCore.ParameterSet.Config as cms
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root"
 #inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
 #inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
-inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_TuneCP5_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/70000/F447BDAD-6642-BD46-B8E9-750F7F961BA7.root'
+# inputFile        = '/store/mc/RunIISummer20UL18MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v1/260000/0071F930-6376-7A48-89F1-74E189BD3BFC.root'
+# inputFile        = '/store/mc/RunIISummer20UL17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v1/280000/00085E9D-5FBB-B840-82A6-D5CE33C0F4C4.root'
+inputFile        = '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/01181D3D-D52C-4E45-9A25-2F5B5CC381D1.root'
 #inputFile = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/prompt/ttGamma_Dilept_5f_ckm_LO_1line/heavyNeutrino_429.root'
 #inputFile = '/store/mc/RunIISummer16MiniAODv3/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3-v1/50000/FEB45979-7B72-E911-9CD8-0242AC1C0505.root'
 #inputFile       = '/store/mc/RunIISummer16MiniAODv3/SMS-TChiWZ_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16v3Fast_94X_mcRun2_asymptotic_v3-v1/100000/502F9078-3296-E911-BFB6-0025905B85EC.root'
@@ -14,10 +16,10 @@ inputFile        = '/store/mc/RunIIAutumn18MiniAOD/WZTo3LNu_mllmin01_NNPDF31_Tun
 
 # Other default arguments
 
-#nEvents         = 1000
-nEvents         = 100
-#extraContent    = 'storeAllTauID'
-extraContent    = 'storeJecSources'
+nEvents         = 1000
+extraContent    = 'storeAllTauID'
+# extraContent    = 'storeJecSources'
+# extraContent    = ''
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
@@ -38,6 +40,7 @@ for i in range(1,len(sys.argv)):
 isData = not ('SIM' in inputFile or 'heavyNeutrinoMiniAOD' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in inputFile
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
+is2016preVFP = "preVFP" in inputFile
 isSUSY = "SMS-T" in inputFile
 isFastSim = 'Fast' in inputFile
 
@@ -57,12 +60,10 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 
 # Latest recommended global tags can always be checked here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if is2018 and 'PromptReco' in inputFile: process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v15'
-
-#TO FIX RUN DEPENDENT JEC IN 2018!!! 102X_dataRun2_v12 (ABC)/ 102X_dataRun2_Prompt_v15 (D)
-elif is2018:                             process.GlobalTag.globaltag = '102X_dataRun2_v12' if isData else '102X_upgrade2018_realistic_v20'
-elif is2017:                             process.GlobalTag.globaltag = '94X_dataRun2_v11'  if isData else '94X_mc2017_realistic_v17'
-else:                                    process.GlobalTag.globaltag = '94X_dataRun2_v10'  if isData else '94X_mcRun2_asymptotic_v3'
+if is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_upgrade2018_realistic_v15_L1v1'
+elif is2017:                             process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mc2017_realistic_v8'
+elif is2016preVFP:                       process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mcRun2_asymptotic_preVFP_v9'
+else:                                    process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mcRun2_asymptotic_v15'
 
 #
 # Vertex collection
@@ -76,41 +77,76 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 # Import some objectsequences sequence (details in cff files)
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
-addJetSequence( process, isData, is2017, is2018, isFastSim )
+addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim)
+unc_prefix = ''
 if isFastSim:
-  if is2018:   jecUncertaintyFile = 'Autumn18_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
-  elif is2017: jecUncertaintyFile = 'Fall17_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
-  else:        jecUncertaintyFile = 'Summer16_FastSimV1_MC_Uncertainty_AK4PFchs.txt'
+  if is2018:   unc_prefix = 'Autumn18_FastSimV1_MC'
+  elif is2017: unc_prefix = 'Fall17_FastSimV1_MC'
+  else:        unc_prefix = 'Summer16_FastSimV1_MC'
 else:
   if is2018:
-      jecUncertaintyFile = 'Autumn18_V19_MC_Uncertainty_AK4PFchs.txt'
-      jecUncertaintySourcesFile = 'Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt'
-      jecUncertaintyRegroupedFile = 'RegroupedV2_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt'
-      jecL1FastJetFile = "Autumn18_V19_MC_L1FastJet_AK4PFchs.txt"
-      jecL2RelativeFile = "Autumn18_V19_MC_L2Relative_AK4PFchs.txt"
-      jecL3AbsoluteFile = "Autumn18_V19_MC_L3Absolute_AK4PFchs.txt"
-      jecL2L3ResidualFile = "Autumn18_V19_MC_L2L3Residual_AK4PFchs.txt"
+    if isData:
+      if 'Run2018A' in inputFile: unc_prefix = 'Summer19UL18_RunA_V5_DATA'
+      if 'Run2018B' in inputFile: unc_prefix = 'Summer19UL18_RunB_V5_DATA'
+      if 'Run2018C' in inputFile: unc_prefix = 'Summer19UL18_RunC_V5_DATA'
+      if 'Run2018D' in inputFile: unc_prefix = 'Summer19UL18_RunD_V5_DATA'
+    else:
+      # unc_prefix = 'Summer19UL18_V5_MC'
+      unc_prefix = 'Autumn18_V19_MC'
   elif is2017: 
-      jecUncertaintyFile = 'Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
-      jecUncertaintySourcesFile = 'Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt'
-      jecUncertaintyRegroupedFile = 'RegroupedV2_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt'
-      jecL1FastJetFile = "Fall17_17Nov2017_V32_MC_L1FastJet_AK4PFchs.txt"
-      jecL2RelativeFile = "Fall17_17Nov2017_V32_MC_L2Relative_AK4PFchs.txt"
-      jecL3AbsoluteFile = "Fall17_17Nov2017_V32_MC_L3Absolute_AK4PFchs.txt"
-      jecL2L3ResidualFile = "Fall17_17Nov2017_V32_MC_L2L3Residual_AK4PFchs.txt"
-  else:        
-      jecUncertaintyFile = 'Summer16_07Aug2017_V11_MC_Uncertainty_AK4PFchs.txt'
-      jecUncertaintySourcesFile = 'Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt'
-      jecUncertaintyRegroupedFile = 'RegroupedV2_Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt'
-      jecL1FastJetFile = "Summer16_07Aug2017_V11_MC_L1FastJet_AK4PFchs.txt"
-      jecL2RelativeFile = "Summer16_07Aug2017_V11_MC_L2Relative_AK4PFchs.txt"
-      jecL3AbsoluteFile = "Summer16_07Aug2017_V11_MC_L3Absolute_AK4PFchs.txt"
-      jecL2L3ResidualFile = "Summer16_07Aug2017_V11_MC_L2L3Residual_AK4PFchs.txt"
+    if isData:
+      if 'Run2017B' in inputFile: unc_prefix = 'Summer19UL17_RunB_V5_DATA'
+      if 'Run2017C' in inputFile: unc_prefix = 'Summer19UL17_RunC_V5_DATA'
+      if 'Run2017D' in inputFile: unc_prefix = 'Summer19UL17_RunD_V5_DATA'
+      if 'Run2017E' in inputFile: unc_prefix = 'Summer19UL17_RunE_V5_DATA'
+      if 'Run2017F' in inputFile: unc_prefix = 'Summer19UL17_RunF_V5_DATA'
+    else: 
+      # unc_prefix = 'Summer19UL17_V5_MC'
+      unc_prefix = 'Fall17_17Nov2017_V32_MC'
+  else: 
+    unc_prefix = 'Summer16_07Aug2017_V11_MC'
+
+  jecUncertaintyFile = unc_prefix+'_Uncertainty_AK4PFchs.txt'
+  jecUncertaintySourcesFile = unc_prefix+ '_UncertaintySources_AK4PFchs.txt'
+  jecUncertaintyRegroupedFile = 'RegroupedV2_' + unc_prefix+ '_UncertaintySources_AK4PFchs.txt'
+  jecL1FastJetFile = unc_prefix+ "_L1FastJet_AK4PFchs.txt"
+  jecL2RelativeFile = unc_prefix+ "_L2Relative_AK4PFchs.txt"
+  jecL3AbsoluteFile = unc_prefix+ "_L3Absolute_AK4PFchs.txt"
+  jecL2L3ResidualFile = unc_prefix+ "_L2L3Residual_AK4PFchs.txt"
+
+  # jecUncertaintyFile = 'UL/'+unc_prefix+'_Uncertainty_AK4PFchs.txt'
+  # jecUncertaintySourcesFile = 'UL/'+unc_prefix+ '_UncertaintySources_AK4PFchs.txt'
+  # jecUncertaintyRegroupedFile = 'UL/RegroupedV2_' + unc_prefix+ '_UncertaintySources_AK4PFchs.txt'
+  # jecL1FastJetFile = 'UL/'+unc_prefix+ "_L1FastJet_AK4PFchs.txt"
+  # jecL2RelativeFile = 'UL/'+unc_prefix+ "_L2Relative_AK4PFchs.txt"
+  # jecL3AbsoluteFile = 'UL/'+unc_prefix+ "_L3Absolute_AK4PFchs.txt"
+  # jecL2L3ResidualFile = 'UL/'+unc_prefix+ "_L2L3Residual_AK4PFchs.txt"
+
+  jecUncertaintySourcesFilePuppi = jecUncertaintySourcesFile.replace('PFchs', 'PFPuppi')
+  jecUncertaintyRegroupedFilePuppi = jecUncertaintyRegroupedFile.replace('PFchs', 'PFPuppi')
+  jecL1FastJetFilePuppi = jecL1FastJetFile.replace('PFchs', 'PFPuppi')
+  jecL2RelativeFilePuppi = jecL2RelativeFile.replace('PFchs', 'PFPuppi')
+  jecL3AbsoluteFilePuppi = jecL3AbsoluteFile.replace('PFchs', 'PFPuppi')
+  jecL2L3ResidualFilePuppi = jecL2L3ResidualFile.replace('PFchs', 'PFPuppi')
+
+
+#JEC uncertainty for Puppi:
+jecUncertaintyFilePuppi = jecUncertaintyFile.replace('PFchs', 'PFPuppi')
 
 from EgammaUser.EgammaPostRecoTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
-if is2018:   setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2018-Prompt')      # Updated scale and smearings
-elif is2017: setupEgammaPostRecoSeq(process, runEnergyCorrections=True,  era='2017-Nov17ReReco') # Rerun scale and smearings for shiftscale bug
-else:        setupEgammaPostRecoSeq(process, runEnergyCorrections=False, era='2016-Legacy')      # Default scale and smearings are ok
+
+if is2018: setupEgammaPostRecoSeq(process,
+                       runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)
+                       era='2018-UL')  
+if is2017: setupEgammaPostRecoSeq(process,
+                       runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)
+                       era='2017-UL')  
+if is2016preVFP: setupEgammaPostRecoSeq(process,
+                       runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)
+                       era='2016preVFP-UL')  
+else: setupEgammaPostRecoSeq(process,
+                       runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)
+                       era='2016postVFP-UL')  
 
 #
 # L1 prefiring (only needed for 2016/2017, use empty sequence for 2018)
@@ -155,19 +191,20 @@ updatedTauName = "slimmedTausNewID" #name of pat::Tau collection with new tau-Id
 import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
 tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
                     updatedTauName = updatedTauName,
-                    toKeep = [ "2017v2", "newDM2017v2", #classic MVAIso tau-Ids
+                    toKeep = [ "2017v2", #classic MVAIso tau-Ids
                                 "deepTau2017v2p1" #latest deepTau2017v2p1
                                ])
 tauIdEmbedder.runTauID()
 
-
 #rochester correction file to use
 if is2017:
-    rochesterCorrectionFile = 'RoccoR2017.txt'
+    rochesterCorrectionFile = 'UL/RoccoR2017UL.txt'
 elif is2018:
-    rochesterCorrectionFile = 'RoccoR2018.txt'
+    rochesterCorrectionFile = 'UL/RoccoR2018UL.txt'
+elif is2016preVFP:
+    rochesterCorrectionFile = 'UL/RoccoR2016aUL.txt'
 else:
-    rochesterCorrectionFile = 'RoccoR2016.txt'
+    rochesterCorrectionFile = 'UL/RoccoR2016bUL.txt'
 
 
 # Main Process
@@ -198,16 +235,18 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfChargedHadrons_90percentBased_V2.txt'),
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),
   photonsPhotonsEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_V2.txt'),
-#  taus                          = cms.InputTag("slimmedTaus"),
   taus                          = cms.InputTag("slimmedTausNewID"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
+  metPuppi                      = cms.InputTag("slimmedMETsPuppi"),
   jets                          = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
+  jetsPuppi                     = cms.InputTag("slimmedJetsPuppi"),
   jetsSmeared                   = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
   jetsSmearedUp                 = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedUp"),
   jetsSmearedDown               = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmearedDown"),
   jecUncertaintyFile            = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyFile),
+  jecUncertaintyFilePuppi       = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyFilePuppi),
   jecUncertaintySourcesFile     = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintySourcesFile),
   jecUncertaintyRegroupedFile   = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyRegroupedFile),
   jecL1FastJetFile              = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL1FastJetFile),
@@ -224,6 +263,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   isData                        = cms.untracked.bool(isData),
   is2017                        = cms.untracked.bool(is2017),
   is2018                        = cms.untracked.bool(is2018),
+  is2016preVFP                  = cms.untracked.bool(is2016preVFP),
   isFastSim                     = cms.untracked.bool(isFastSim),
   isSUSY                        = cms.untracked.bool(isSUSY),
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
@@ -236,9 +276,9 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
 )
 
 def getJSON(is2017, is2018):
-    if is2018:   return "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
-    elif is2017: return "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
-    else:        return "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+    if is2018:   return "Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt"
+    elif is2017: return "Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt"
+    else:        return "Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt"
 
 if isData:
   print('Sample is found to be 20%s data, will process using %s' % (yy, getJSON(is2017, is2018)))
@@ -250,9 +290,8 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.egammaPostRecoSeq *
                      process.pileupJetIdUpdated *
                      process.jetSequence *
-                     process.fullPatMetSequence *
                      process.prefiringweight *
-                     process.particleLevelSequence *
+                     process.particleLevelSequence *        
                      process.rerunMvaIsolationSequence *
-                     getattr(process,updatedTauName) *                    
+                     getattr(process,updatedTauName) *           
                      process.blackJackAndHookers)

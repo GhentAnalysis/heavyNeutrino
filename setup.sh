@@ -2,11 +2,13 @@
 BRANCH=master
 
 # Release: take CMSSW_10_6_X as default (works for both UL and older reprocessings), fall back to CMSSW_10_2_X on T2_BE_IIHE
-if [[ $SCRAM_ARCH == *slc6* ]]; then
-  RELEASE=CMSSW_10_2_25
-else
-  RELEASE=CMSSW_10_6_19_patch2
-fi
+# if [[ $SCRAM_ARCH == *slc6* ]]; then
+#   RELEASE=CMSSW_10_2_25
+# else
+#   RELEASE=CMSSW_10_6_20
+# fi
+
+RELEASE=CMSSW_10_6_20
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
 if [[ $CMSSW_BASE == *$RELEASE ]] && [[ -d $CMSSW_BASE ]]; then

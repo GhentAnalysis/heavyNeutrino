@@ -11,6 +11,7 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
     multilepAnalyzer(multilepAnalyzer)
 {
     jecUnc = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFile")).fullPath());
+    jecUncPuppi = new JetCorrectionUncertainty((iConfig.getParameter<edm::FileInPath>("jecUncertaintyFilePuppi")).fullPath());
 
     std::vector< std::string > jecSources = {"AbsoluteStat", "AbsoluteScale", "AbsoluteMPFBias", "Fragmentation", "SinglePionECAL", "SinglePionHCAL", "FlavorQCD", "FlavorZJet", "FlavorPhotonJet", "FlavorPureGluon", "FlavorPureQuark", "FlavorPureCharm", "FlavorPureBottom", "TimePtEta", "RelativeJEREC1", "RelativeJEREC2", "RelativeJERHF", "RelativePtBB", "RelativePtEC1", "RelativePtEC2", "RelativePtHF", "RelativeBal", "RelativeSample", "RelativeFSR", "RelativeStatFSR", "RelativeStatEC", "RelativeStatHF", "PileUpDataMC", "PileUpPtRef", "PileUpPtBB", "PileUpPtEC1", "PileUpPtEC2", "PileUpPtHF", "PileUpMuZero", "PileUpEnvelope", "SubTotalPileUp", "SubTotalRelative", "SubTotalPt", "SubTotalScale", "SubTotalAbsolute", "SubTotalMC", "TotalNoFlavor", "TotalNoTime" ,"TotalNoFlavorNoTime", "Total" };
     for( const auto& source : jecSources ){
@@ -62,6 +63,7 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
 
 JetAnalyzer::~JetAnalyzer(){
     delete jecUnc;
+    delete jecUncPuppi;
 }
 
 
@@ -276,6 +278,14 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetHFHadronFraction",       &_jetHFHadronFraction,      "_jetHFHadronFraction[_nJets]/D");
     outputTree->Branch("_jetHFEmFraction",           &_jetHFEmFraction,          "_jetHFEmFraction[_nJets]/D");
 
+    outputTree->Branch("_nJetsPuppi",                &_nJetsPuppi,               "_nJetsPuppi/i");
+    outputTree->Branch("_jetPuppiPt",                &_jetPuppiPt,               "_jetPuppiPt[_nJetsPuppi]/D");
+    outputTree->Branch("_jetPuppiEta",               &_jetPuppiEta,              "_jetPuppiEta[_nJetsPuppi]/D");
+    outputTree->Branch("_jetPuppiPhi",               &_jetPuppiPhi,              "_jetPuppiPhi[_nJetsPuppi]/D");
+    outputTree->Branch("_jetPuppiPt_JECDown",        &_jetPuppiPt_JECDown,       "_jetPuppiPt_JECDown[_nJetsPuppi]/D");
+    outputTree->Branch("_jetPuppiPt_JECUp",          &_jetPuppiPt_JECUp,         "_jetPuppiPt_JECUp[_nJetsPuppi]/D");
+
+
     outputTree->Branch("_met",                          &_met,                          "_met/D");
     outputTree->Branch("_metRaw",                       &_metRaw,                       "_metRaw/D");
     outputTree->Branch("_met_JECDown",                  &_metJECDown,                   "_met_JECDown/D");
@@ -290,6 +300,24 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_metPhi_UnclDown",              &_metPhiUnclDown,               "_metPhi_UnclDown/D");
     outputTree->Branch("_metPhi_UnclUp",                &_metPhiUnclUp,                 "_metPhi_UnclUp/D");
     outputTree->Branch("_metSignificance",              &_metSignificance,              "_metSignificance/D");
+
+    outputTree->Branch("_metPuppi",                          &_metPuppi,                          "_metPuppi/D");
+    outputTree->Branch("_metPuppiRaw",                       &_metPuppiRaw,                       "_metPuppiRaw/D");
+    outputTree->Branch("_metPuppiJECDown",                   &_metPuppiJECDown,                   "_metPuppiJECDown/D");
+    outputTree->Branch("_metPuppiJECUp",                     &_metPuppiJECUp,                     "_metPuppiJECUp/D");
+    outputTree->Branch("_metPuppiUnclDown",                  &_metPuppiUnclDown,                  "_metPuppiUnclDown/D");
+    outputTree->Branch("_metPuppiUnclUp",                    &_metPuppiUnclUp,                    "_metPuppiUnclUp/D");
+    outputTree->Branch("_metPuppiResDown",                   &_metPuppiResDown,                   "_metPuppiResDown/D");
+    outputTree->Branch("_metPuppiResUp",                     &_metPuppiResUp,                     "_metPuppiResUp/D");
+
+    outputTree->Branch("_metPuppiPhi",                       &_metPuppiPhi,                       "_metPuppiPhi/D");
+    outputTree->Branch("_metPuppiRawPhi",                    &_metPuppiRawPhi,                    "_metPuppiRawPhi/D");
+    outputTree->Branch("_metPuppiPhiJECDown",                &_metPuppiPhiJECDown,                "_metPuppiPhiJECDown/D");
+    outputTree->Branch("_metPuppiPhiJECUp",                  &_metPuppiPhiJECUp,                  "_metPuppiPhiJECUp/D");
+    outputTree->Branch("_metPuppiPhiUnclDown",               &_metPuppiPhiUnclDown,               "_metPuppiPhiUnclDown/D");
+    outputTree->Branch("_metPuppiPhiUnclUp",                 &_metPuppiPhiUnclUp,                 "_metPuppiPhiUnclUp/D");
+    outputTree->Branch("_metPuppiPhiResDown",                &_metPuppiPhiResDown,                "_metPuppiPhiResDown/D");
+    outputTree->Branch("_metPuppiPhiResUp",                  &_metPuppiPhiResUp,                  "_metPuppiPhiResUp/D");
 
     if(!multilepAnalyzer->is2018() ) outputTree->Branch("_jetIsLoose", _jetIsLoose, "_jetIsLoose[_nJets]/O"); // WARNING, not recommended to be used, only exists for 2016
 
@@ -340,7 +368,9 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<pat::Jet>> jetsSmeared     = getHandle(iEvent, multilepAnalyzer->jetSmearedToken);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedUp   = getHandle(iEvent, multilepAnalyzer->jetSmearedUpToken);
     edm::Handle<std::vector<pat::Jet>> jetsSmearedDown = getHandle(iEvent, multilepAnalyzer->jetSmearedDownToken);
+    edm::Handle<std::vector<pat::Jet>> jetsPuppi       = getHandle(iEvent, multilepAnalyzer->jetPuppiToken);
     edm::Handle<std::vector<pat::MET>> mets            = getHandle(iEvent, multilepAnalyzer->metToken);
+    edm::Handle<std::vector<pat::MET>> metsPuppi       = getHandle(iEvent, multilepAnalyzer->metPuppiToken);
 
     edm::Handle<double> rho                            = getHandle(iEvent, multilepAnalyzer->rhoToken);
 
@@ -462,6 +492,25 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         ++_nJets;
     }
 
+    for(const auto& jet : *jetsPuppi){
+        if(_nJetsPuppi == nJets_max) break;
+
+        // Implementation based on global tag
+        jecUncPuppi->setJetEta(jet.eta());
+        jecUncPuppi->setJetPt(jet.pt());
+        double unc = jecUncPuppi->getUncertainty(true);
+
+        _jetPuppiPt[_nJetsPuppi] = jet.pt();
+        _jetPuppiEta[_nJetsPuppi] = jet.eta();
+        _jetPuppiPhi[_nJetsPuppi] = jet.phi();
+
+        ////JEC uncertainties
+        _jetPuppiPt_JECDown[_nJetsPuppi] = _jetPuppiPt[_nJetsPuppi]*(1 - unc);
+        _jetPuppiPt_JECUp[_nJetsPuppi]   = _jetPuppiPt[_nJetsPuppi]*(1 + unc);
+
+        ++_nJetsPuppi;
+    }
+
     //determine the met of the event and its uncertainties
     //nominal MET value
     const pat::MET& met = (*mets).front();
@@ -487,6 +536,30 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
     // propagate JEC to MET
     correctedMETAndPhi(met, *jets, *rho);
+
+    //PUPPI MET
+    const pat::MET& metPuppi = (*metsPuppi).front();
+
+    //Type 1 Corrections based on txt file
+    //std::pair< double, double > metAndPhiPuppi = multilepAnalyzer->jecPuppi->correctedMETAndPhi(metPuppi, *jetsPuppi, *rho);
+
+    _metPuppi             = metPuppi.pt();
+    _metPuppiPhi          = metPuppi.phi();
+
+    _metPuppiRaw          = metPuppi.uncorPt();
+    _metPuppiRawPhi       = metPuppi.uncorPhi();
+    _metPuppiJECDown      = metPuppi.shiftedPt(pat::MET::JetEnDown);
+    _metPuppiJECUp        = metPuppi.shiftedPt(pat::MET::JetEnUp);
+    _metPuppiUnclDown     = metPuppi.shiftedPt(pat::MET::UnclusteredEnDown);
+    _metPuppiUnclUp       = metPuppi.shiftedPt(pat::MET::UnclusteredEnUp);
+    _metPuppiResDown      = metPuppi.shiftedPt(pat::MET::JetResDown);
+    _metPuppiResUp        = metPuppi.shiftedPt(pat::MET::JetResUp);
+    _metPuppiPhiJECDown   = metPuppi.shiftedPhi(pat::MET::JetEnDown);
+    _metPuppiPhiJECUp     = metPuppi.shiftedPhi(pat::MET::JetEnUp);
+    _metPuppiPhiUnclUp    = metPuppi.shiftedPhi(pat::MET::UnclusteredEnUp);
+    _metPuppiPhiUnclDown  = metPuppi.shiftedPhi(pat::MET::UnclusteredEnDown);
+    _metPuppiPhiResDown   = metPuppi.shiftedPhi(pat::MET::JetResDown);
+    _metPuppiPhiResUp     = metPuppi.shiftedPhi(pat::MET::JetResUp);
    
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
     if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;
