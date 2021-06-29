@@ -1,5 +1,5 @@
 # Setup script for branch: master
-BRANCH=master
+BRANCH=UL_master
 
 # Release: take CMSSW_10_6_X as default (works for both UL and older reprocessings), fall back to CMSSW_10_2_X on T2_BE_IIHE
 # if [[ $SCRAM_ARCH == *slc6* ]]; then
