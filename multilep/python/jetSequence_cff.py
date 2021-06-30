@@ -16,26 +16,26 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
   #
   # Load specific JEC through sqlite file
   #
-  if isData:
-    if is2017:
-        if 'Run2017B' in inputFile: JECVersion = 'Summer19UL17_RunB_V5_DATA'
-        if 'Run2017C' in inputFile: JECVersion = 'Summer19UL17_RunC_V5_DATA'
-        if 'Run2017D' in inputFile: JECVersion = 'Summer19UL17_RunD_V5_DATA'
-        if 'Run2017E' in inputFile: JECVersion = 'Summer19UL17_RunE_V5_DATA'
-        if 'Run2017F' in inputFile: JECVersion = 'Summer19UL17_RunF_V5_DATA'
-    elif is2018:
-        if 'Run2018A' in inputFile: JECVersion = 'Summer19UL18_RunA_V5_DATA'
-        if 'Run2018B' in inputFile: JECVersion = 'Summer19UL18_RunB_V5_DATA'
-        if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V5_DATA'
-        if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V5_DATA'
+  # if isData:
+  #   if is2017:
+  #       if 'Run2017B' in inputFile: JECVersion = 'Summer19UL17_RunB_V5_DATA'
+  #       if 'Run2017C' in inputFile: JECVersion = 'Summer19UL17_RunC_V5_DATA'
+  #       if 'Run2017D' in inputFile: JECVersion = 'Summer19UL17_RunD_V5_DATA'
+  #       if 'Run2017E' in inputFile: JECVersion = 'Summer19UL17_RunE_V5_DATA'
+  #       if 'Run2017F' in inputFile: JECVersion = 'Summer19UL17_RunF_V5_DATA'
+  #   elif is2018:
+  #       if 'Run2018A' in inputFile: JECVersion = 'Summer19UL18_RunA_V5_DATA'
+  #       if 'Run2018B' in inputFile: JECVersion = 'Summer19UL18_RunB_V5_DATA'
+  #       if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V5_DATA'
+  #       if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V5_DATA'
 
-    else: JECVersion = 'Summer19UL16_RunBCDEFGH_Combined_V7_DATA'
-  else:
-    if is2017:   JECVersion = 'Summer19UL17_V5_MC'
-    elif is2018: JECVersion = 'Summer19UL18_V5_MC'
-    elif is2016preVFP:        JECVersion = 'Summer19UL16APV_V7_MC'
-    else:        JECVersion = 'Summer19UL16_V7_MC'
-
+  #   else: JECVersion = 'Summer19UL16_RunBCDEFGH_Combined_V7_DATA'
+  # else:
+  #   if is2017:   JECVersion = 'Summer19UL17_V5_MC'
+  #   elif is2018: JECVersion = 'Summer19UL18_V5_MC'
+  #   elif is2016preVFP:        JECVersion = 'Summer19UL16APV_V7_MC'
+  #   else:        JECVersion = 'Summer19UL16_V7_MC'
+  JECVersion = ''
 
   if not JECVersion == '':
     print 'using JEC: {}'.format(JECVersion)

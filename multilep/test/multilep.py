@@ -2,17 +2,8 @@ import sys, os
 import FWCore.ParameterSet.Config as cms
 
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
-#inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-105To160_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v1/00000/2E242480-5C0D-E911-B9A6-90E2BACBAA90.root"
-#inputFile      = "file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017RECOPF_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0A1754A2-256F-E811-AD07-6CC2173CAAE0.root"
-#inputFile       = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrino/testFiles/store/data/Run2018A/SingleMuon/MINIAOD/17Sep2018-v2/100000/42EFAC9D-DC91-DB47-B931-B6B816C60C21.root'
-# inputFile        = '/store/mc/RunIISummer20UL18MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v1/260000/0071F930-6376-7A48-89F1-74E189BD3BFC.root'
-# inputFile        = '/store/mc/RunIISummer20UL17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v1/280000/00085E9D-5FBB-B840-82A6-D5CE33C0F4C4.root'
-inputFile        = '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/01181D3D-D52C-4E45-9A25-2F5B5CC381D1.root'
-#inputFile = 'file:///pnfs/iihe/cms/store/user/tomc/heavyNeutrinoMiniAOD/Moriond17_aug2018_miniAODv3/prompt/ttGamma_Dilept_5f_ckm_LO_1line/heavyNeutrino_429.root'
-#inputFile = '/store/mc/RunIISummer16MiniAODv3/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3-v1/50000/FEB45979-7B72-E911-9CD8-0242AC1C0505.root'
-#inputFile       = '/store/mc/RunIISummer16MiniAODv3/SMS-TChiWZ_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSummer16v3Fast_94X_mcRun2_asymptotic_v3-v1/100000/502F9078-3296-E911-BFB6-0025905B85EC.root'
-#inputFile       = '/store/mc/RunIIFall17MiniAODv2/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall17Fast_94X_mc2017_realistic_v15-v1/10000/00071D11-4C7A-E911-8E48-0CC47A1E0484.root'
-#inputFile       = '/store/mc/RunIIAutumn18MiniAOD/SMS-TChiWZ_ZToLL_TuneCP2_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUFall18Fast_102X_upgrade2018_realistic_v15-v1/50000/FBA243F4-DA64-3A40-8DD8-58A72064AD86.root'
+# inputFile        = '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/01181D3D-D52C-4E45-9A25-2F5B5CC381D1.root'
+inputFile        = '/store/data/Run2016B/DoubleEG/MINIAOD/21Feb2020_ver2_UL2016_HIPM-v1/20000/001E9883-7DBC-AA47-861D-04D120D68CF7.root'
 
 # Other default arguments
 
@@ -79,54 +70,60 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
 addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim)
 unc_prefix = ''
-if isFastSim:
-  if is2018:   unc_prefix = 'Autumn18_FastSimV1_MC'
-  elif is2017: unc_prefix = 'Fall17_FastSimV1_MC'
-  else:        unc_prefix = 'Summer16_FastSimV1_MC'
-else:
-  if is2018:
-    if isData:
-      if 'Run2018A' in inputFile: unc_prefix = 'Summer19UL18_RunA_V5_DATA'
-      if 'Run2018B' in inputFile: unc_prefix = 'Summer19UL18_RunB_V5_DATA'
-      if 'Run2018C' in inputFile: unc_prefix = 'Summer19UL18_RunC_V5_DATA'
-      if 'Run2018D' in inputFile: unc_prefix = 'Summer19UL18_RunD_V5_DATA'
-    else:
-      unc_prefix = 'Summer19UL18_V5_MC'
-  elif is2017: 
-    if isData:
-      if 'Run2017B' in inputFile: unc_prefix = 'Summer19UL17_RunB_V5_DATA'
-      if 'Run2017C' in inputFile: unc_prefix = 'Summer19UL17_RunC_V5_DATA'
-      if 'Run2017D' in inputFile: unc_prefix = 'Summer19UL17_RunD_V5_DATA'
-      if 'Run2017E' in inputFile: unc_prefix = 'Summer19UL17_RunE_V5_DATA'
-      if 'Run2017F' in inputFile: unc_prefix = 'Summer19UL17_RunF_V5_DATA'
-    else: 
-      unc_prefix = 'Summer19UL17_V5_MC'
-  elif is2016preVFP: 
-    if isData:
-      if 'Run2017B' in inputFile or 'Run2017C' in inputFile or 'Run2017D' in inputFile: unc_prefix = 'Summer19UL16APV_RunBCD_V7_DATA'
-      if 'Run2017E' in inputFile or 'Run2017E' in inputFile: unc_prefix = 'Summer19UL16APV_RunEF_V7_DATA'
-    else:
-      unc_prefix = 'Summer19UL16APV_V7_MC'
-  else:
-    if isData:
-      unc_prefix = 'Summer19UL16_RunFGH_V7_DATA'
-    else:
-      unc_prefix = 'Summer19UL16_V7_MC'
+# if isFastSim:
+#   if is2018:   unc_prefix = 'Autumn18_FastSimV1_MC'
+#   elif is2017: unc_prefix = 'Fall17_FastSimV1_MC'
+#   else:        unc_prefix = 'Summer16_FastSimV1_MC'
+# else:
+#   if is2018:
+#     if isData:
+#       if 'Run2018A' in inputFile: unc_prefix = 'Summer19UL18_RunA_V5_DATA'
+#       if 'Run2018B' in inputFile: unc_prefix = 'Summer19UL18_RunB_V5_DATA'
+#       if 'Run2018C' in inputFile: unc_prefix = 'Summer19UL18_RunC_V5_DATA'
+#       if 'Run2018D' in inputFile: unc_prefix = 'Summer19UL18_RunD_V5_DATA'
+#     else:
+#       unc_prefix = 'Summer19UL18_V5_MC'
+#   elif is2017: 
+#     if isData:
+#       if 'Run2017B' in inputFile: unc_prefix = 'Summer19UL17_RunB_V5_DATA'
+#       if 'Run2017C' in inputFile: unc_prefix = 'Summer19UL17_RunC_V5_DATA'
+#       if 'Run2017D' in inputFile: unc_prefix = 'Summer19UL17_RunD_V5_DATA'
+#       if 'Run2017E' in inputFile: unc_prefix = 'Summer19UL17_RunE_V5_DATA'
+#       if 'Run2017F' in inputFile: unc_prefix = 'Summer19UL17_RunF_V5_DATA'
+#     else: 
+#       unc_prefix = 'Summer19UL17_V5_MC'
+#   elif is2016preVFP: 
+#     if isData:
+#       if 'Run2016B' in inputFile or 'Run2016C' in inputFile or 'Run2016D' in inputFile: unc_prefix = 'Summer19UL16APV_RunBCD_V7_DATA'
+#       if 'Run2016E' in inputFile or 'Run2016F' in inputFile: unc_prefix = 'Summer19UL16APV_RunEF_V7_DATA'
+#     else:
+#       unc_prefix = 'Summer19UL16APV_V7_MC'
+#   else:
+#     if isData:
+#       unc_prefix = 'Summer19UL16_RunFGH_V7_DATA'
+#     else:
+#       unc_prefix = 'Summer19UL16_V7_MC'
 
-  jecUncertaintyFile = '{0}/{0}_Uncertainty_AK4PFchs.txt'.format(unc_prefix)
-  jecUncertaintySourcesFile =  '{0}/{0}_UncertaintySources_AK4PFchs.txt'.format(unc_prefix)
-  jecUncertaintyRegroupedFile = '{0}/RegroupedV2_{0}_UncertaintySources_AK4PFchs.txt'.format(unc_prefix)
-  jecL1FastJetFile =  "{0}/{0}_L1FastJet_AK4PFchs.txt".format(unc_prefix)
-  jecL2RelativeFile =  "{0}/{0}_L2Relative_AK4PFchs.txt".format(unc_prefix)
-  jecL3AbsoluteFile =  "{0}/{0}_L3Absolute_AK4PFchs.txt".format(unc_prefix)
-  jecL2L3ResidualFile =  "{0}/{0}_L2L3Residual_AK4PFchs.txt".format(unc_prefix)
+if is2018:      unc_prefix = 'Summer19UL18_V5_MC'
+elif is2017:    unc_prefix = 'Summer19UL17_V5_MC'
+elif is2016preVFP: unc_prefix = 'Summer19UL16APV_V7_MC'
+else:           unc_prefix = 'Summer19UL16_V7_MC'
 
-  jecUncertaintySourcesFilePuppi = jecUncertaintySourcesFile.replace('PFchs', 'PFPuppi')
-  jecUncertaintyRegroupedFilePuppi = jecUncertaintyRegroupedFile.replace('PFchs', 'PFPuppi')
-  jecL1FastJetFilePuppi = jecL1FastJetFile.replace('PFchs', 'PFPuppi')
-  jecL2RelativeFilePuppi = jecL2RelativeFile.replace('PFchs', 'PFPuppi')
-  jecL3AbsoluteFilePuppi = jecL3AbsoluteFile.replace('PFchs', 'PFPuppi')
-  jecL2L3ResidualFilePuppi = jecL2L3ResidualFile.replace('PFchs', 'PFPuppi')
+
+jecUncertaintyFile = '{0}/{0}_Uncertainty_AK4PFchs.txt'.format(unc_prefix)
+jecUncertaintySourcesFile =  '{0}/{0}_UncertaintySources_AK4PFchs.txt'.format(unc_prefix)
+jecUncertaintyRegroupedFile = '{0}/RegroupedV2_{0}_UncertaintySources_AK4PFchs.txt'.format(unc_prefix)
+jecL1FastJetFile =  "{0}/{0}_L1FastJet_AK4PFchs.txt".format(unc_prefix)
+jecL2RelativeFile =  "{0}/{0}_L2Relative_AK4PFchs.txt".format(unc_prefix)
+jecL3AbsoluteFile =  "{0}/{0}_L3Absolute_AK4PFchs.txt".format(unc_prefix)
+jecL2L3ResidualFile =  "{0}/{0}_L2L3Residual_AK4PFchs.txt".format(unc_prefix)
+
+jecUncertaintySourcesFilePuppi = jecUncertaintySourcesFile.replace('PFchs', 'PFPuppi')
+jecUncertaintyRegroupedFilePuppi = jecUncertaintyRegroupedFile.replace('PFchs', 'PFPuppi')
+jecL1FastJetFilePuppi = jecL1FastJetFile.replace('PFchs', 'PFPuppi')
+jecL2RelativeFilePuppi = jecL2RelativeFile.replace('PFchs', 'PFPuppi')
+jecL3AbsoluteFilePuppi = jecL3AbsoluteFile.replace('PFchs', 'PFPuppi')
+jecL2L3ResidualFilePuppi = jecL2L3ResidualFile.replace('PFchs', 'PFPuppi')
 
 
 #JEC uncertainty for Puppi:
