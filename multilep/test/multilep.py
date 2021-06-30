@@ -132,7 +132,7 @@ else:
 #JEC uncertainty for Puppi:
 jecUncertaintyFilePuppi = jecUncertaintyFile.replace('PFchs', 'PFPuppi')
 
-from EgammaUser.EgammaPostRecoTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
+from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 
 if is2018: setupEgammaPostRecoSeq(process,
                        runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)

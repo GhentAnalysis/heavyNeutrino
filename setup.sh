@@ -8,6 +8,7 @@ BRANCH=UL_master
 #   RELEASE=CMSSW_10_6_20
 # fi
 
+export SCRAM_ARCH=slc7_amd64_gcc820
 RELEASE=CMSSW_10_6_20
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
@@ -30,7 +31,13 @@ if [[ "$remoteLs" = *'Repository not found'* ]]; then
 fi
 git cms-init
 git clone https://github.com/$gitUser/heavyNeutrino
-git clone https://github.com/cms-egamma/EgammaPostRecoTools.git EgammaUser/EgammaPostRecoTools
+
+git cms-addpkg RecoEgamma/EgammaTools  ### essentially just checkout the package from CMSSW
+git clone https://github.com/cms-egamma/EgammaPostRecoTools.git
+mv EgammaPostRecoTools/python/EgammaPostRecoTools.py RecoEgamma/EgammaTools/python/.
+git clone -b ULSSfiles_correctScaleSysMC https://github.com/jainshilpi/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data/
+git cms-addpkg EgammaAnalysis/ElectronTools
+
 cd $CMSSW_BASE/src/heavyNeutrino
 git checkout --track origin/$BRANCH
 if [[ "$gitUser" != "GhentAnalysis" ]]; then
