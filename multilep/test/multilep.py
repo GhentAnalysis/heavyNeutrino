@@ -40,7 +40,7 @@ for i in range(1,len(sys.argv)):
 isData = not ('SIM' in inputFile or 'heavyNeutrinoMiniAOD' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in inputFile
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
-is2016preVFP = "preVFP" in inputFile
+is2016preVFP = "preVFP" in inputFile or "_HIPM" in inputFile
 isSUSY = "SMS-T" in inputFile
 isFastSim = 'Fast' in inputFile
 
@@ -77,7 +77,7 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 # Import some objectsequences sequence (details in cff files)
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
-addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim)
+addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim)
 unc_prefix = ''
 if isFastSim:
   if is2018:   unc_prefix = 'Autumn18_FastSimV1_MC'
@@ -91,8 +91,7 @@ else:
       if 'Run2018C' in inputFile: unc_prefix = 'Summer19UL18_RunC_V5_DATA'
       if 'Run2018D' in inputFile: unc_prefix = 'Summer19UL18_RunD_V5_DATA'
     else:
-      # unc_prefix = 'Summer19UL18_V5_MC'
-      unc_prefix = 'Autumn18_V19_MC'
+      unc_prefix = 'Summer19UL18_V5_MC'
   elif is2017: 
     if isData:
       if 'Run2017B' in inputFile: unc_prefix = 'Summer19UL17_RunB_V5_DATA'
@@ -101,26 +100,26 @@ else:
       if 'Run2017E' in inputFile: unc_prefix = 'Summer19UL17_RunE_V5_DATA'
       if 'Run2017F' in inputFile: unc_prefix = 'Summer19UL17_RunF_V5_DATA'
     else: 
-      # unc_prefix = 'Summer19UL17_V5_MC'
-      unc_prefix = 'Fall17_17Nov2017_V32_MC'
-  else: 
-    unc_prefix = 'Summer16_07Aug2017_V11_MC'
+      unc_prefix = 'Summer19UL17_V5_MC'
+  elif is2016preVFP: 
+    if isData:
+      if 'Run2017B' in inputFile or 'Run2017C' in inputFile or 'Run2017D' in inputFile: unc_prefix = 'Summer19UL16APV_RunBCD_V7_DATA'
+      if 'Run2017E' in inputFile or 'Run2017E' in inputFile: unc_prefix = 'Summer19UL16APV_RunEF_V7_DATA'
+    else:
+      unc_prefix = 'Summer19UL16APV_V7_MC'
+  else:
+    if isData:
+      unc_prefix = 'Summer19UL16_RunFGH_V7_DATA'
+    else:
+      unc_prefix = 'Summer19UL16_V7_MC'
 
-  jecUncertaintyFile = unc_prefix+'_Uncertainty_AK4PFchs.txt'
-  jecUncertaintySourcesFile = unc_prefix+ '_UncertaintySources_AK4PFchs.txt'
-  jecUncertaintyRegroupedFile = 'RegroupedV2_' + unc_prefix+ '_UncertaintySources_AK4PFchs.txt'
-  jecL1FastJetFile = unc_prefix+ "_L1FastJet_AK4PFchs.txt"
-  jecL2RelativeFile = unc_prefix+ "_L2Relative_AK4PFchs.txt"
-  jecL3AbsoluteFile = unc_prefix+ "_L3Absolute_AK4PFchs.txt"
-  jecL2L3ResidualFile = unc_prefix+ "_L2L3Residual_AK4PFchs.txt"
-
-  # jecUncertaintyFile = 'UL/'+unc_prefix+'_Uncertainty_AK4PFchs.txt'
-  # jecUncertaintySourcesFile = 'UL/'+unc_prefix+ '_UncertaintySources_AK4PFchs.txt'
-  # jecUncertaintyRegroupedFile = 'UL/RegroupedV2_' + unc_prefix+ '_UncertaintySources_AK4PFchs.txt'
-  # jecL1FastJetFile = 'UL/'+unc_prefix+ "_L1FastJet_AK4PFchs.txt"
-  # jecL2RelativeFile = 'UL/'+unc_prefix+ "_L2Relative_AK4PFchs.txt"
-  # jecL3AbsoluteFile = 'UL/'+unc_prefix+ "_L3Absolute_AK4PFchs.txt"
-  # jecL2L3ResidualFile = 'UL/'+unc_prefix+ "_L2L3Residual_AK4PFchs.txt"
+  jecUncertaintyFile = '{0}/{0}_Uncertainty_AK4PFchs.txt'.format(unc_prefix)
+  jecUncertaintySourcesFile =  '{0}/{0}_UncertaintySources_AK4PFchs.txt'.format(unc_prefix)
+  jecUncertaintyRegroupedFile = '{0}/RegroupedV2_{0}_UncertaintySources_AK4PFchs.txt'.format(unc_prefix)
+  jecL1FastJetFile =  "{0}/{0}_L1FastJet_AK4PFchs.txt".format(unc_prefix)
+  jecL2RelativeFile =  "{0}/{0}_L2Relative_AK4PFchs.txt".format(unc_prefix)
+  jecL3AbsoluteFile =  "{0}/{0}_L3Absolute_AK4PFchs.txt".format(unc_prefix)
+  jecL2L3ResidualFile =  "{0}/{0}_L2L3Residual_AK4PFchs.txt".format(unc_prefix)
 
   jecUncertaintySourcesFilePuppi = jecUncertaintySourcesFile.replace('PFchs', 'PFPuppi')
   jecUncertaintyRegroupedFilePuppi = jecUncertaintyRegroupedFile.replace('PFchs', 'PFPuppi')
@@ -249,10 +248,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   jecUncertaintyFilePuppi       = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyFilePuppi),
   jecUncertaintySourcesFile     = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintySourcesFile),
   jecUncertaintyRegroupedFile   = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecUncertaintyRegroupedFile),
-  jecL1FastJetFile              = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL1FastJetFile),
-  jecL2RelativeFile             = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL2RelativeFile),
-  jecL3AbsoluteFile             = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL3AbsoluteFile),
-  jecL2L3ResidualFile           = cms.FileInPath("heavyNeutrino/multilep/data/JEC/full/" + jecL2L3ResidualFile),
+  jecL1FastJetFile              = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecL1FastJetFile),
+  jecL2RelativeFile             = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecL2RelativeFile),
+  jecL3AbsoluteFile             = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecL3AbsoluteFile),
+  jecL2L3ResidualFile           = cms.FileInPath("heavyNeutrino/multilep/data/JEC/" + jecL2L3ResidualFile),
   rochesterCorrectionFile       = cms.FileInPath("heavyNeutrino/multilep/data/RochesterCorrections/" + rochesterCorrectionFile ),
   prescales                     = cms.InputTag("patTrigger"),
   triggers                      = cms.InputTag("TriggerResults::HLT"),

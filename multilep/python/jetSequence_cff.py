@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim):
+def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim):
   #
   # Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
   #
@@ -29,20 +29,17 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, isFastSim):
         if 'Run2018C' in inputFile: JECVersion = 'Summer19UL18_RunC_V5_DATA'
         if 'Run2018D' in inputFile: JECVersion = 'Summer19UL18_RunD_V5_DATA'
 
-    else: JECVersion = ''
+    else: JECVersion = 'Summer19UL16_RunBCDEFGH_Combined_V7_DATA'
   else:
-    # if is2017:   JECVersion = 'Summer19UL17_V5_MC'
-    # #if is2017:   JECVersion = 'Summer19UL17_V1_ComplexL1_MC'
-    # elif is2018: JECVersion = 'Summer19UL18_V5_MC'
-    # else:        JECVersion = ''
-    if is2017:   JECVersion = 'Autumn18_V19_MC'
-    elif is2018: JECVersion = 'Fall17_17Nov2017_V32_102X_MC'
-    else:        JECVersion = 'Summer20UL16_V1_MC'
+    if is2017:   JECVersion = 'Summer19UL17_V5_MC'
+    elif is2018: JECVersion = 'Summer19UL18_V5_MC'
+    elif is2016preVFP:        JECVersion = 'Summer19UL16APV_V7_MC'
+    else:        JECVersion = 'Summer19UL16_V7_MC'
 
 
   if not JECVersion == '':
     print 'using JEC: {}'.format(JECVersion)
-    CondDBJECFile = CondDB.clone( connect = cms.string('sqlite_fip:heavyNeutrino/multilep/data/JEC/{}.db'.format( JECVersion ) ) )
+    CondDBJECFile = CondDB.clone( connect = cms.string('sqlite_fip:heavyNeutrino/multilep/data/JEC/{0}/{0}.db'.format( JECVersion ) ) )
     process.jec = cms.ESSource('PoolDBESSource',
       CondDBJECFile,
       toGet = cms.VPSet(
