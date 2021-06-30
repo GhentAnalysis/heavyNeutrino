@@ -11,6 +11,7 @@ nEvents         = 1000
 extraContent    = 'storeAllTauID'
 # extraContent    = 'storeJecSources'
 # extraContent    = ''
+
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
                                 # dilep     --> skim two leptons
                                 # singlelep --> skim one lepton
@@ -162,16 +163,33 @@ else:
 # For the particleLevelProducer (useful for rivet implementation and/or unfolding)
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/ParticleLevelProducer
 #
-if 'storeParticleLevel' in extraContent and not isData:
+if ('storeParticleLevel' in extraContent or 'storeBFrag' in extraContent) and not isData:
+    
   process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-  process.load("GeneratorInterface.RivetInterface.mergedGenParticles_cfi")
-  process.load("GeneratorInterface.RivetInterface.genParticles2HepMC_cfi")
-  process.genParticles2HepMC.genParticles = cms.InputTag("mergedGenParticles")
-  process.genParticles2HepMC.signalParticlePdgIds = cms.vint32(6,-6) # for top analyses, though not yet sure what it exactlye does, I think it is only relevant to find the signal vertex which we currently do not save
-  process.load("heavyNeutrino.multilep.particleLevelTTG_cfi")
-  process.particleLevelSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel)
-else:
-  process.particleLevelSequence = cms.Sequence()
+  
+  if 'storeParticleLevel' in extraContent:
+    process.load("GeneratorInterface.RivetInterface.mergedGenParticles_cfi")
+    process.load("GeneratorInterface.RivetInterface.genParticles2HepMC_cfi")
+    process.genParticles2HepMC.genParticles = cms.InputTag("mergedGenParticles")
+    process.genParticles2HepMC.signalParticlePdgIds = cms.vint32(6,-6) # for top analyses, though not yet sure what it exactlye does, I think it is only relevant to find the signal vertex which we currently do not save
+    process.load("heavyNeutrino.multilep.particleLevelTTG_cfi")
+    
+    process.particleLevelSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel)
+
+  if 'storeBFrag' in extraContent:
+    process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
+                                                inputPruned = cms.InputTag("prunedGenParticles"),
+                                                inputPacked = cms.InputTag("packedGenParticles"),
+    )
+    from GeneratorInterface.RivetInterface.genParticles2HepMC_cfi import genParticles2HepMC
+    process.genParticles2HepMC = genParticles2HepMC.clone(genParticles = cms.InputTag("mergedGenParticles"))
+    process.load("GeneratorInterface.RivetInterface.particleLevel_cfi")
+    process.particleLevel.excludeNeutrinosFromJetClustering = False
+    process.load('TopQuarkAnalysis.BFragmentationAnalyzer.bfragWgtProducer_cfi')
+    process.bFragSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel * process.bfragWgtProducer)
+    
+if 'storeParticleLevel' not in extraContent: process.particleLevelSequence = cms.Sequence()
+if 'storeBFrag' not in extraContent: process.bFragSequence = cms.Sequence()
 
 yy = '16'
 if is2017: yy = '17'
@@ -213,6 +231,13 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   particleLevelLeptons          = cms.InputTag("particleLevel:leptons"),
   particleLevelPhotons          = cms.InputTag("particleLevel:photons"),
   particleLevelJets             = cms.InputTag("particleLevel:jets"),
+  genJets                       = cms.InputTag("particleLevel:jets"),
+  bfragWgtProducerFragCP5BL           = cms.InputTag("bfragWgtProducer:fragCP5BLVsPt"),
+  bfragWgtProducerFragCP5BLdown       = cms.InputTag("bfragWgtProducer:fragCP5BLdownVsPt"),
+  bfragWgtProducerFragCP5BLup         = cms.InputTag("bfragWgtProducer:fragCP5BLupVsPt"),
+  bfragWgtProducerFragCP5Peterson     = cms.InputTag("bfragWgtProducer:fragCP5PetersonVsPt"),
+  bfragWgtProducerFragCP5Petersondown = cms.InputTag("bfragWgtProducer:fragCP5PetersondownVsPt"),
+  bfragWgtProducerFragCP5Petersonup   = cms.InputTag("bfragWgtProducer:fragCP5PetersonupVsPt"),
   particleLevelMets             = cms.InputTag("particleLevel:mets"),
   muons                         = cms.InputTag("slimmedMuons"),
   muonsEffAreas                 = cms.FileInPath('heavyNeutrino/multilep/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt'),
@@ -265,6 +290,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   storeLheParticles             = cms.untracked.bool('storeLheParticles' in extraContent),
   storeGenParticles             = cms.untracked.bool('storeGenParticles' in extraContent),
   storeParticleLevel            = cms.untracked.bool('storeParticleLevel' in extraContent),
+  storeBFrag                    = cms.untracked.bool('storeBFrag' in extraContent),
   storeJecSources               = cms.untracked.bool('storeJecSources' in extraContent),
   storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
   headerPart1                   = cms.FileInPath("heavyNeutrino/multilep/data/header/soviet.txt"),
@@ -287,7 +313,8 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.pileupJetIdUpdated *
                      process.jetSequence *
                      process.prefiringweight *
-                     process.particleLevelSequence *        
+                     process.particleLevelSequence *
+                     process.bFragSequence *
                      process.rerunMvaIsolationSequence *
                      getattr(process,updatedTauName) *           
                      process.blackJackAndHookers)
