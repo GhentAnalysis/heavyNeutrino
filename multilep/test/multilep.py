@@ -3,13 +3,18 @@ import FWCore.ParameterSet.Config as cms
 
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
 # inputFile        = '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/01181D3D-D52C-4E45-9A25-2F5B5CC381D1.root'
-inputFile        = '/store/data/Run2016B/DoubleEG/MINIAOD/21Feb2020_ver2_UL2016_HIPM-v1/20000/001E9883-7DBC-AA47-861D-04D120D68CF7.root'
+# inputFile        = '/store/data/Run2016B/DoubleEG/MINIAOD/21Feb2020_ver2_UL2016_HIPM-v1/20000/001E9883-7DBC-AA47-861D-04D120D68CF7.root'
+# inputFile        = 'file:///pnfs/iihe/cms/store/user/lwezenbe/heavyNeutrino/testFiles/store/data/Run2018C/SingleMuon/MINIAOD/12Nov2019_UL2018-v2/100000/08CD0000-EAC8-844F-96C6-A02E7F742007.root'
+# inputFile        = 'file:///pnfs/iihe/cms/store/user/lwezenbe/heavyNeutrino/testFiles/store/data/Run2017D/SingleElectron/MINIAOD/09Aug2019_UL2017-v1/260000/00A5C633-1806-0844-8D65-C31C779A57F6.root'
+inputFile        = 'file:///pnfs/iihe/cms/store/user/lwezenbe/heavyNeutrino/testFiles/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v1/270000/00974EBB-A8B3-4241-80C3-08C750C5838A.root'
 
 # Other default arguments
 
-nEvents         = 1000
-extraContent    = 'storeAllTauID'
+nEvents         = 100
+# extraContent    = 'storeAllTauID'
+# extraContent    = 'storeLheParticles,storeParticleLevel'
 # extraContent    = 'storeJecSources'
+extraContent    = 'storeLheParticles,storeParticleLevel,storeJecSources,storeAllTauID'
 # extraContent    = ''
 
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -188,8 +193,8 @@ if ('storeParticleLevel' in extraContent or 'storeBFrag' in extraContent) and no
     process.load('TopQuarkAnalysis.BFragmentationAnalyzer.bfragWgtProducer_cfi')
     process.bFragSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel * process.bfragWgtProducer)
     
-if 'storeParticleLevel' not in extraContent: process.particleLevelSequence = cms.Sequence()
-if 'storeBFrag' not in extraContent: process.bFragSequence = cms.Sequence()
+if 'storeParticleLevel' not in extraContent or isData: process.particleLevelSequence = cms.Sequence()
+if 'storeBFrag' not in extraContent or isData: process.bFragSequence = cms.Sequence()
 
 yy = '16'
 if is2017: yy = '17'

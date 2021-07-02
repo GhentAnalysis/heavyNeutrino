@@ -157,7 +157,7 @@ class LeptonAnalyzer {
     bool _decayModeFindingOld[nL_max];                                           
     bool _tauVLooseMvaNew[nL_max];                                                              // # WARNING # NO LONGER SUPPORTED BY TAU POG, kept for testing reasons, will remove this soon                 
 
-    bool _tauDeepTauVsJetsRaw[nL_max];    
+    double _tauDeepTauVsJetsRaw[nL_max];    
     bool _tauVVVLooseDeepTauVsJets[nL_max];    
     bool _tauVVLooseDeepTauVsJets[nL_max];    
     bool _tauVLooseDeepTauVsJets[nL_max];    
@@ -167,7 +167,7 @@ class LeptonAnalyzer {
     bool _tauVTightDeepTauVsJets[nL_max];    
     bool _tauVVTightDeepTauVsJets[nL_max];    
     
-    bool _tauDeepTauVsEleRaw[nL_max];    
+    double _tauDeepTauVsEleRaw[nL_max];    
     bool _tauVVVLooseDeepTauVsEle[nL_max];    
     bool _tauVVLooseDeepTauVsEle[nL_max];    
     bool _tauVLooseDeepTauVsEle[nL_max];    
@@ -177,7 +177,7 @@ class LeptonAnalyzer {
     bool _tauVTightDeepTauVsEle[nL_max];    
     bool _tauVVTightDeepTauVsEle[nL_max];    
     
-    bool _tauDeepTauVsMuRaw[nL_max];    
+    double _tauDeepTauVsMuRaw[nL_max];    
     bool _tauVLooseDeepTauVsMu[nL_max];    
     bool _tauLooseDeepTauVsMu[nL_max];    
     bool _tauMediumDeepTauVsMu[nL_max];    
