@@ -204,7 +204,7 @@ yyy = '16'
 if is2017 or is2018: yyy = '17'
 
 #
-#Latest tau ID
+#Latest tau ID (Needed for 2017 MINIAODv1, if no longer used it can be removed)
 #
 updatedTauName = "slimmedTausNewID" #name of pat::Tau collection with new tau-Ids
 import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
