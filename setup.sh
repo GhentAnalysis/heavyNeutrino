@@ -1,12 +1,15 @@
 # Setup script for branch: master
-BRANCH=master
+BRANCH=UL_master
 
 # Release: take CMSSW_10_6_X as default (works for both UL and older reprocessings), fall back to CMSSW_10_2_X on T2_BE_IIHE
-if [[ $SCRAM_ARCH == *slc6* ]]; then
-  RELEASE=CMSSW_10_2_25
-else
-  RELEASE=CMSSW_10_6_19_patch2
-fi
+# if [[ $SCRAM_ARCH == *slc6* ]]; then
+#   RELEASE=CMSSW_10_2_25
+# else
+#   RELEASE=CMSSW_10_6_20
+# fi
+
+export SCRAM_ARCH=slc7_amd64_gcc820
+RELEASE=CMSSW_10_6_20
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
 if [[ $CMSSW_BASE == *$RELEASE ]] && [[ -d $CMSSW_BASE ]]; then
@@ -28,8 +31,13 @@ if [[ "$remoteLs" = *'Repository not found'* ]]; then
 fi
 git cms-init
 git clone https://github.com/$gitUser/heavyNeutrino
-git clone https://github.com/cms-egamma/EgammaPostRecoTools.git EgammaUser/EgammaPostRecoTools
-git clone https://gitlab.cern.ch/CMS-TOPPAG/BFragmentationAnalyzer.git TopQuarkAnalysis/BFragmentationAnalyzer
+
+git cms-addpkg RecoEgamma/EgammaTools  ### essentially just checkout the package from CMSSW
+git clone https://github.com/cms-egamma/EgammaPostRecoTools.git
+mv EgammaPostRecoTools/python/EgammaPostRecoTools.py RecoEgamma/EgammaTools/python/.
+git clone -b ULSSfiles_correctScaleSysMC https://github.com/jainshilpi/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data/
+git cms-addpkg EgammaAnalysis/ElectronTools
+
 cd $CMSSW_BASE/src/heavyNeutrino
 git checkout --track origin/$BRANCH
 if [[ "$gitUser" != "GhentAnalysis" ]]; then

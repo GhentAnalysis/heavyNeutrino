@@ -26,6 +26,7 @@ class JetAnalyzer {
     friend class multilep;
     private:
         JetCorrectionUncertainty* jecUnc;
+        JetCorrectionUncertainty* jecUncPuppi;
 
         static const unsigned nJets_max = 100;
 
@@ -81,6 +82,30 @@ class JetAnalyzer {
         double   _jetGenEta[nJets_max];
         double   _jetGenPhi[nJets_max];
         double   _jetGenE[nJets_max];
+
+        unsigned _nJetsPuppi = 0;
+        double   _jetPuppiPt[nJets_max];
+        double   _jetPuppiPt_JECUp[nJets_max];
+        double   _jetPuppiPt_JECDown[nJets_max];
+        double   _jetPuppiEta[nJets_max];
+        double   _jetPuppiPhi[nJets_max];
+
+        double   _metPuppi;                                                                              //metPuppi kinematics
+        double   _metPuppiPhi;
+        double   _metPuppiRaw;
+        double   _metPuppiRawPhi;
+        double   _metPuppiJECDown;
+        double   _metPuppiPhiJECDown;
+        double   _metPuppiJECUp;
+        double   _metPuppiPhiJECUp;
+        double   _metPuppiUnclDown;
+        double   _metPuppiPhiUnclDown;
+        double   _metPuppiUnclUp;
+        double   _metPuppiPhiUnclUp;
+        double   _metPuppiResDown;
+        double   _metPuppiPhiResDown;
+        double   _metPuppiResUp;
+        double   _metPuppiPhiResUp;
 
         //split JEC in different sources
         std::map< std::string, double[nJets_max] > _jetPt_groupedVariationsDown;

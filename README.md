@@ -4,9 +4,9 @@ In order to have a working copy, following the instructions below which sets up 
 The tuplizer itself is entirely contained in the multilep directory.
 **Please take a moment to read the [wiki](https://github.com/GhentAnalysis/heavyNeutrino/wiki) with useful guidelines**
 
-# Set-up instructions (master branch)
+# Set-up instructions (UL_master branch)
 ```
-wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/master/setup.sh
+wget https://raw.githubusercontent.com/GhentAnalysis/heavyNeutrino/UL_master/setup.sh
 source setup.sh
 ```
 

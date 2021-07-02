@@ -120,7 +120,9 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<std::vector<pat::PackedCandidate>>      packedCandidatesToken;                       //particle collection used to calculate isolation variables
         edm::EDGetTokenT<double>                                 rhoToken;
         edm::EDGetTokenT<std::vector<pat::MET>>                  metToken;
+        edm::EDGetTokenT<std::vector<pat::MET>>                  metPuppiToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetToken;
+        edm::EDGetTokenT<std::vector<pat::Jet>>                  jetPuppiToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedUpToken;
         edm::EDGetTokenT<std::vector<pat::Jet>>                  jetSmearedDownToken;
@@ -137,6 +139,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     sampleIsData;
         bool                                                     sampleIs2017;
         bool                                                     sampleIs2018;
+        bool                                                     sampleIs2016preVFP;
         bool                                                     sampleIsFastSim;
         bool                                                     sampleIsSUSY;
         bool                                                     storeLheParticles;
@@ -145,8 +148,6 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     storeBFrag;
         bool                                                     storeJecSources;
         bool                                                     storeAllTauID;
-        std::string                                              headerPart1;
-        std::string                                              headerPart2;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
