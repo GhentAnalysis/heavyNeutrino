@@ -310,16 +310,31 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
-        _lPtCorr[_nL]                   = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
-        _lPtScaleUp[_nL]                = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
-        _lPtScaleDown[_nL]              = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
-        _lPtResUp[_nL]                  = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
-        _lPtResDown[_nL]                = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
-        _lECorr[_nL]                    = ele->userFloat("ecalTrkEnergyPostCorr");
-        _lEScaleUp[_nL]                 = ele->userFloat("energyScaleUp");
-        _lEScaleDown[_nL]               = ele->userFloat("energyScaleDown");
-        _lEResUp[_nL]                   = ele->userFloat("energySigmaUp");
-        _lEResDown[_nL]                 = ele->userFloat("energySigmaDown");
+        //
+        // Currently these corrections don't work for UL MiniAODv1. Reevaluate this when moving to UL MiniAODv2, they should at least work for Data there
+        if(!(multilepAnalyzer->isUL())){
+            _lPtCorr[_nL]                   = ele->pt()*ele->userFloat("ecalTrkEnergyPostCorr")/ele->energy();
+            _lPtScaleUp[_nL]                = ele->pt()*ele->userFloat("energyScaleUp")/ele->energy();
+            _lPtScaleDown[_nL]              = ele->pt()*ele->userFloat("energyScaleDown")/ele->energy();
+            _lPtResUp[_nL]                  = ele->pt()*ele->userFloat("energySigmaUp")/ele->energy();
+            _lPtResDown[_nL]                = ele->pt()*ele->userFloat("energySigmaDown")/ele->energy();
+            _lECorr[_nL]                    = ele->userFloat("ecalTrkEnergyPostCorr");
+            _lEScaleUp[_nL]                 = ele->userFloat("energyScaleUp");
+            _lEScaleDown[_nL]               = ele->userFloat("energyScaleDown");
+            _lEResUp[_nL]                   = ele->userFloat("energySigmaUp");
+            _lEResDown[_nL]                 = ele->userFloat("energySigmaDown");
+        }else {
+            _lPtCorr[_nL]                   = _lPt[_nL];
+            _lPtScaleUp[_nL]                = _lPt[_nL];
+            _lPtScaleDown[_nL]              = _lPt[_nL];
+            _lPtResUp[_nL]                  = _lPt[_nL];
+            _lPtResDown[_nL]                = _lPt[_nL];
+            _lECorr[_nL]                    = ele->energy();
+            _lEScaleUp[_nL]                 = ele->energy();
+            _lEScaleDown[_nL]               = ele->energy();
+            _lEResUp[_nL]                   = ele->energy();
+            _lEResDown[_nL]                 = ele->energy();
+        }
 
         ++_nEle;
         ++_nL;

@@ -117,16 +117,30 @@ bool PhotonAnalyzer::analyze(const edm::Event& iEvent){
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaMiniAODV2#Energy_Scale_and_Smearing
-        _phPtCorr[_nPh]                     = photon->pt()*photon->userFloat("ecalEnergyPostCorr")/photon->energy();
-        _phPtScaleUp[_nPh]                  = photon->pt()*photon->userFloat("energyScaleUp")/photon->energy();
-        _phPtScaleDown[_nPh]                = photon->pt()*photon->userFloat("energyScaleDown")/photon->energy();
-        _phPtResUp[_nPh]                    = photon->pt()*photon->userFloat("energySigmaUp")/photon->energy();
-        _phPtResDown[_nPh]                  = photon->pt()*photon->userFloat("energySigmaDown")/photon->energy();
-        _phECorr[_nPh]                      = photon->userFloat("ecalEnergyPostCorr");
-        _phEScaleUp[_nPh]                   = photon->userFloat("energyScaleUp");
-        _phEScaleDown[_nPh]                 = photon->userFloat("energyScaleDown");
-        _phEResUp[_nPh]                     = photon->userFloat("energySigmaUp");
-        _phEResDown[_nPh]                   = photon->userFloat("energySigmaDown");
+        // Currently these corrections don't work for UL MiniAODv1. Reevaluate this when moving to UL MiniAODv2, they should at least work for Data there
+        if(!(multilepAnalyzer->isUL())){
+            _phPtCorr[_nPh]                     = photon->pt()*photon->userFloat("ecalEnergyPostCorr")/photon->energy();
+            _phPtScaleUp[_nPh]                  = photon->pt()*photon->userFloat("energyScaleUp")/photon->energy();
+            _phPtScaleDown[_nPh]                = photon->pt()*photon->userFloat("energyScaleDown")/photon->energy();
+            _phPtResUp[_nPh]                    = photon->pt()*photon->userFloat("energySigmaUp")/photon->energy();
+            _phPtResDown[_nPh]                  = photon->pt()*photon->userFloat("energySigmaDown")/photon->energy();
+            _phECorr[_nPh]                      = photon->userFloat("ecalEnergyPostCorr");
+            _phEScaleUp[_nPh]                   = photon->userFloat("energyScaleUp");
+            _phEScaleDown[_nPh]                 = photon->userFloat("energyScaleDown");
+            _phEResUp[_nPh]                     = photon->userFloat("energySigmaUp");
+            _phEResDown[_nPh]                   = photon->userFloat("energySigmaDown");
+        }else {
+            _phPtCorr[_nPh]                   = _phPt[_nPh];
+            _phPtScaleUp[_nPh]                = _phPt[_nPh];
+            _phPtScaleDown[_nPh]              = _phPt[_nPh];
+            _phPtResUp[_nPh]                  = _phPt[_nPh];
+            _phPtResDown[_nPh]                = _phPt[_nPh];
+            _phECorr[_nPh]                    = photon->energy();
+            _phEScaleUp[_nPh]                 = photon->energy();
+            _phEScaleDown[_nPh]               = photon->energy();
+            _phEResUp[_nPh]                   = photon->energy();
+            _phEResDown[_nPh]                 = photon->energy();
+        }
 
         if( multilepAnalyzer->isMC() ){
             fillPhotonGenVars(photon->genParticle());
