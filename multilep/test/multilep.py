@@ -57,10 +57,10 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 
 # Latest recommended global tags can always be checked here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_upgrade2018_realistic_v15_L1v1'
-elif is2017:                             process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mc2017_realistic_v8'
-elif is2016preVFP:                       process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mcRun2_asymptotic_preVFP_v9'
-else:                                    process.GlobalTag.globaltag = '106X_dataRun2_v32' if isData else '106X_mcRun2_asymptotic_v15'
+if is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_upgrade2018_realistic_v15_L1v1'
+elif is2017:                             process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mc2017_realistic_v8'
+elif is2016preVFP:                       process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mcRun2_asymptotic_preVFP_v11'
+else:                                    process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mcRun2_asymptotic_v17'
 
 #
 # Vertex collection
@@ -153,13 +153,14 @@ else: setupEgammaPostRecoSeq(process,
 #
 # L1 prefiring (only needed for 2016/2017, use empty sequence for 2018)
 #
-from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
+from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
 if not is2018:
-  process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
-      DataEra                      = cms.string("2017BtoF" if is2017 else "2016BtoH"),
-      UseJetEMPt                   = cms.bool(False),
-      PrefiringRateSystematicUncty = cms.double(0.2),
-      SkipWarnings                 = False
+  process.prefiringweight = l1PrefiringWeightProducer.clone(
+      DataEraECAL                      = cms.string("2017BtoF" if is2017 else "2016BtoH"),
+      DataEraMuon                      = cms.string("2017BtoF" if is2017 else "2016BtoH"),
+      UseJetEMPt                       = cms.bool(False),
+      PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+      PrefiringRateSystematicUnctyMuon = cms.double(0.2)
   )
 else:
   process.prefiringweight = cms.Sequence()
