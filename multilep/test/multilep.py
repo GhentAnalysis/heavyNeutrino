@@ -157,7 +157,7 @@ from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeigh
 if not is2018:
   process.prefiringweight = l1PrefiringWeightProducer.clone(
       DataEraECAL                      = cms.string("2017BtoF" if is2017 else "2016BtoH"),
-      DataEraMuon                      = cms.string("2017BtoF" if is2017 else "2016BtoH"),
+      DataEraMuon                      = cms.string("20172018" if (is2017 or is2018) else "2016"),
       UseJetEMPt                       = cms.bool(False),
       PrefiringRateSystematicUnctyECAL = cms.double(0.2),
       PrefiringRateSystematicUnctyMuon = cms.double(0.2)
