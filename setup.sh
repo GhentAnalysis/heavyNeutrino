@@ -9,7 +9,7 @@ BRANCH=UL_master
 # fi
 
 export SCRAM_ARCH=slc7_amd64_gcc820
-RELEASE=CMSSW_10_6_27
+RELEASE=CMSSW_10_6_20
 
 # If the release is already available using cmsenv, use it, otherwise set up a new one
 if [[ $CMSSW_BASE == *$RELEASE ]] && [[ -d $CMSSW_BASE ]]; then
