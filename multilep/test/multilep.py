@@ -44,7 +44,7 @@ is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in input
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
 isSUSY = "SMS-T" in inputFile
 isFastSim = 'Fast' in inputFile
-isUL   = ("Summer19UL" in inputFile) or ("Summer20UL16" in inputFile) or (isData and ("21Feb2020_UL2016" in inputFile or "09Aug2019_UL2017" in inputFile or "12Nov2019_UL2018" in inputFile))
+isUL   = ("Summer19UL" in inputFile) or ("Summer20UL16" in inputFile) or (isData and (("21Feb2020" in inputFile and "UL2016" in inputFile) or "09Aug2019_UL2017" in inputFile or "12Nov2019_UL2018" in inputFile))
 isAPV  = isUL and ((isData and "UL2016_HIPM" in inputFile) or "RunIISummer20UL16MiniAODAPV-" in inputFile) #In UL, pre(Run B-F) and post(Run G-H + bit of F) APV issue in 2016 are treated separately
 
 process = cms.Process("BlackJackAndHookers")
