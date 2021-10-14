@@ -469,6 +469,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
     if(multilepAnalyzer->skim == "singletau" &&  _nTau   < 1) return false;
     if(multilepAnalyzer->skim == "FR"        &&  _nLight < 1) return false;
+    if(multilepAnalyzer->skim == "ssdilep"   &&  _nLight < 2) return false;
+    if(multilepAnalyzer->skim == "ssdilep"   &&  _nLight == 2 && _lCharge[0] != _lCharge[1]) return false; // muons and electrons are first so should be fine despite the taus
     
     return true;
 }
