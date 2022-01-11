@@ -1,56 +1,53 @@
-commit a145a6b1ae91a2466e3d32e99abe853a445eee06
-Merge: 351b0d68 6446ac7b
-Author: Liam Wezenbeek <44083357+lwezenbe@users.noreply.github.com>
-Date:   Tue Sep 28 10:53:15 2021 +0200
+commit 82701460d2b1f92e204d942718e98025458d8df2
+Author: Liam <liamwezenbeek@hotmail.com>
+Date:   Tue Jan 11 17:12:31 2022 +0100
 
-    Merge pull request #135 from lwezenbe/UL_master
-    
-    Update CMSSW version and l1 prefiring (part 2)
+    Upload sample lists used for general sample production
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 12Nov2019_UL2018 --> OK
    Changed:
-      _jetPileupIdFullId                                 mean:   2.5129 -->   0.0000     rms:   2.8327 -->   0.0000    
+      _jetPileupIdFullId                                 mean:   0.0000 -->   2.5129     rms:   0.0000 -->   2.8327    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 09Aug2019_UL2017 --> OK
    Changed:
-      _jetPileupIdFullId                                 mean:   2.3824 --> 593504725.0739 rms:   2.7937 --> 601280872.6661
+      _jetPileupIdFullId                                 mean: 593504725.0739 -->   2.3824 rms: 601280872.6661 -->   2.7937
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
    Changed:
-      _jetPileupIdFullId                                 mean:   3.9093 -->   0.0000     rms:   2.8437 -->   0.0000    
+      _jetPileupIdFullId                                 mean:   0.0000 -->   3.9093     rms:   0.0000 -->   2.8437    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
    Changed:
-      _jetPileupIdFullId                                 mean:   3.5450 -->   0.0000     rms:   2.9119 -->   0.0000    
+      _jetPileupIdFullId                                 mean:   0.0000 -->   3.5450     rms:   0.0000 -->   2.9119    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
    Changed:
-      _jetPileupIdFullId                                 mean:   3.0790 -->   0.0000     rms:   2.8298 -->   0.0000    
+      _jetPileupIdFullId                                 mean:   0.0000 -->   3.0790     rms:   0.0000 -->   2.8298    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
    Changed:
-      _jetPileupIdFullId                                 mean:   3.0269 --> 949905221.4943 rms:   2.8915 --> 375216562.5128
+      _jetPileupIdFullId                                 mean: 949905221.4943 -->   3.0269 rms: 375216562.5128 -->   2.8915
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
    Changed:
-      _jetPileupIdFullId                                 mean:   4.3922 -->   0.0000     rms:   2.7005 -->   0.0000    
+      _jetPileupIdFullId                                 mean:   0.0000 -->   4.3922     rms:   0.0000 -->   2.7005    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
    Changed:
-      _jetPileupIdFullId                                 mean:   4.3623 -->   0.0000     rms:   2.6964 -->   0.0000    
+      _jetPileupIdFullId                                 mean:   0.0000 -->   4.3623     rms:   0.0000 -->   2.6964    
