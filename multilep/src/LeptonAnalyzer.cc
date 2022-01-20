@@ -22,6 +22,8 @@ LeptonAnalyzer::LeptonAnalyzer(const edm::ParameterSet& iConfig, multilep* multi
     leptonMvaComputerTTH = new LeptonMvaHelper(iConfig, "TTH", year );
     leptonMvaComputertZq = new LeptonMvaHelper(iConfig, "TZQ", year );
     leptonMvaComputerTOP = new LeptonMvaHelper(iConfig, "TOP", year );
+    leptonMvaComputerTOPUL = new LeptonMvaHelper(iConfig, "TOP-UL", year );
+    leptonMvaComputerTOPv2UL = new LeptonMvaHelper(iConfig, "TOPv2-UL", year );
     rochesterCorrections.init( iConfig.getParameter<edm::FileInPath>("rochesterCorrectionFile").fullPath() );
 };
 
@@ -29,6 +31,8 @@ LeptonAnalyzer::~LeptonAnalyzer(){
     delete leptonMvaComputerTTH;
     delete leptonMvaComputertZq;
     delete leptonMvaComputerTOP;
+    delete leptonMvaComputerTOPUL;
+    delete leptonMvaComputerTOPv2UL;
 }
 
 void LeptonAnalyzer::beginJob(TTree* outputTree){
@@ -68,6 +72,8 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_leptonMvaTTH",                 &_leptonMvaTTH,                 "_leptonMvaTTH[_nLight]/D");
     outputTree->Branch("_leptonMvatZq",                 &_leptonMvatZq,                 "_leptonMvatZq[_nLight]/D");
     outputTree->Branch("_leptonMvaTOP",                 &_leptonMvaTOP,                 "_leptonMvaTOP[_nLight]/D");
+    outputTree->Branch("_leptonMvaTOPUL",               &_leptonMvaTOPUL,               "_leptonMvaTOPUL[_nLight]/D");
+    outputTree->Branch("_leptonMvaTOPv2UL",             &_leptonMvaTOPv2UL,             "_leptonMvaTOPv2UL[_nLight]/D");
     outputTree->Branch("_lPOGVeto",                     &_lPOGVeto,                     "_lPOGVeto[_nL]/O");
     outputTree->Branch("_lPOGLoose",                    &_lPOGLoose,                    "_lPOGLoose[_nL]/O");
     outputTree->Branch("_lPOGMedium",                   &_lPOGMedium,                   "_lPOGMedium[_nL]/O");
@@ -206,8 +212,8 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(!mu.isPFMuon())                             continue;
         if(!(mu.isTrackerMuon() || mu.isGlobalMuon())) continue;
         fillLeptonImpactParameters(mu);
-        if(fabs(_dxy[_nL]) > 0.05)                     continue;
-        if(fabs(_dz[_nL]) > 0.1)                       continue;
+//        if(fabs(_dxy[_nL]) > 0.05)                     continue;
+//        if(fabs(_dz[_nL]) > 0.1)                       continue;
         fillLeptonKinVars(mu);
         if( multilepAnalyzer->isMC() ) fillLeptonGenVars(mu, *genParticles);
 
@@ -237,8 +243,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
         fillLeptonJetVariables(mu, jets, primaryVertex, *rho, false);
-        _leptonMvaTTH[_nL]   = leptonMvaVal(mu, leptonMvaComputerTTH);
-        _leptonMvaTOP[_nL]   = leptonMvaVal(mu, leptonMvaComputerTOP);
+        _leptonMvaTTH[_nL]     = leptonMvaVal(mu, leptonMvaComputerTTH);
+        _leptonMvaTOP[_nL]     = leptonMvaVal(mu, leptonMvaComputerTOP);
+        _leptonMvaTOPUL[_nL]   = leptonMvaVal(mu, leptonMvaComputerTOPUL);
+        _leptonMvaTOPv2UL[_nL] = leptonMvaVal(mu, leptonMvaComputerTOPv2UL);
 
         //apply rochester corrections for muons
         //NOTE : the uncertainties computed are conservative envelopes. For more precision they can be split into several independent components, probably resulting in a smaller total unc. because of correlation effects.
@@ -274,10 +282,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(ele->gsfTrack().isNull())                                                                    continue;
         if(ele->pt() < 7)                                                                               continue;
         if(fabs(ele->eta()) > 2.5)                                                                      continue;
-        if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 2)    continue;
+//        if(ele->gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) > 2)    continue;
         fillLeptonImpactParameters(*ele);
-        if(fabs(_dxy[_nL]) > 0.05)                                                                      continue;
-        if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
+//        if(fabs(_dxy[_nL]) > 0.05)                                                                      continue;
+//        if(fabs(_dz[_nL]) > 0.1)                                                                        continue;
         fillLeptonKinVars(*ele);
         if( multilepAnalyzer->isMC() ) fillLeptonGenVars(*ele, *genParticles);
 
@@ -323,9 +331,10 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
 
         //the TTH MVA uses a newer matching scheme, so we recompute the lepton jet variables, THIS VERSION IS STORED IN THE NTUPLES
         fillLeptonJetVariables(*ele, jets, primaryVertex, *rho, false);
-        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);
-       
+        _leptonMvaTTH[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTTH);       
         _leptonMvaTOP[_nL]              = leptonMvaVal(*ele, leptonMvaComputerTOP);
+        _leptonMvaTOPUL[_nL]            = leptonMvaVal(*ele, leptonMvaComputerTOPUL);
+        _leptonMvaTOPv2UL[_nL]          = leptonMvaVal(*ele, leptonMvaComputerTOPv2UL);
 	 
         // Note: for the scale and smearing systematics we use the overall values, assuming we are not very sensitive to these systematics
         // In case these systematics turn out to be important, need to add their individual source to the tree (and propagate to their own templates):

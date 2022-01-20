@@ -4,12 +4,13 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "TMVA/Reader.h"
+#include <xgboost/c_api.h>
 #include <memory>
 class LeptonMvaHelper{
     public:
         LeptonMvaHelper(const edm::ParameterSet& iConfig, const std::string tagger, const int year);
-        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p3DB, double segComp);
-        double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closesJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double eleMvaSummer16, double eleMvaFall17v1, double eleMvaFall17v2);
+        double leptonMvaMuon(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double miniIsoNeutralVanilla, double ptRel, double ptRatio, double ptRatioVanilla, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p3DB, double relIso0p3Vanilla, double relIso0p3DBVanilla, double segComp);
+        double leptonMvaElectron(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double miniIsoNeutralVanilla, double ptRel, double ptRatio, double ptRatioVanilla, double closestJetDeepCsv, double closesJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p3Vanilla, double eleMvaSummer16, double eleMvaFall17v1, double eleMvaFall17v2, double eleMissingHits);
     private:
         std::string tagger;
         int year;
@@ -19,8 +20,10 @@ class LeptonMvaHelper{
         LepGood_jetNDauChargedMVASel,
         LepGood_miniRelIsoCharged,
         LepGood_miniRelIsoNeutral,
+        LepGood_miniRelIsoNeutralVanilla,
         LepGood_jetPtRelv2,
         LepGood_jetPtRatio,
+        LepGood_jetPtRatioVanilla,
         LepGood_jetBTag,
         LepGood_sip3d,
         LepGood_dxy,
@@ -29,7 +32,10 @@ class LeptonMvaHelper{
         LepGood_mvaIdSummer16GP,
         LepGood_mvaIdFall17v1noIso,
         LepGood_mvaIdFall17v2noIso,
-        LepGood_relIso0p3;
-        void bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double ptRel, double ptRatio, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3);
+        LepGood_relIso0p3,
+        LepGood_relIso0p3Vanilla;
+        void bookCommonVars(double pt, double eta, double selectedTrackMult, double miniIsoCharged, double miniIsoNeutral, double miniIsoNeutralVanilla, double ptRel, double ptRatio, double ptRatioVanilla, double closestJetDeepCsv, double closestJetDeepFlavor, double sip3d, double dxy, double dz, double relIso0p3, double relIso0p3Vanilla);
+        BoosterHandle booster[2];
+        float boosterVars[2][1][15];
 };
 #endif
