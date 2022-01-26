@@ -201,6 +201,11 @@ yy = '16'
 if is2017: yy = '17'
 elif is2018: yy = '18'
 
+yyul = '16'
+if is2016preVFP: yyul = '16APV'
+elif is2017: yyul = '17'
+elif is2018: yyul = '18'
+
 yyy = '16'
 if is2017 or is2018: yyy = '17'
 
@@ -258,10 +263,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV"+yyy+"_BDTG.weights.xml"),
   leptonMvaWeightsEleTOP        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOP"+yy+"_BDTG.weights.xml"),
   leptonMvaWeightsMuTOP         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOP"+yy+"_BDTG.weights.xml"),
-  leptonMvaWeightsEleTOPUL      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOPUL"+yy+"_XGB.weights.bin"),
-  leptonMvaWeightsMuTOPUL       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOPUL"+yy+"_XGB.weights.bin"),
-  leptonMvaWeightsEleTOPv2UL    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOPv2UL"+yy+"_XGB.weights.bin"),
-  leptonMvaWeightsMuTOPv2UL     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOPv2UL"+yy+"_XGB.weights.bin"),
+  leptonMvaWeightsEleTOPUL      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOPUL"+yyul+"_XGB.weights.bin"),
+  leptonMvaWeightsMuTOPUL       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOPUL"+yyul+"_XGB.weights.bin"),
+  leptonMvaWeightsEleTOPv2UL    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOPv2UL"+yyul+"_XGB.weights.bin"),
+  leptonMvaWeightsMuTOPv2UL     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOPv2UL"+yyul+"_XGB.weights.bin"),
   photons                       = cms.InputTag("slimmedPhotons"),
   photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfChargedHadrons_90percentBased_V2.txt'),
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),
