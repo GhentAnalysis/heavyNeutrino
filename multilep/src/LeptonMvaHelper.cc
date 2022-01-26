@@ -179,8 +179,8 @@ double LeptonMvaHelper::leptonMvaElectron(double pt, double eta, double selected
     LepGood_mvaIdSummer16GP = eleMvaSummer16;
     LepGood_mvaIdFall17v1noIso = eleMvaFall17v1;
     LepGood_mvaIdFall17v2noIso = eleMvaFall17v2;
-    boosterVars[0][0][12] = eleMvaFall17v2;
-    boosterVars[0][0][13] = eleMissingHits;
+    boosterVars[1][0][12] = eleMvaFall17v2;
+    boosterVars[1][0][13] = eleMissingHits;
     if( tagger == "TOP-UL" || tagger == "TOPv2-UL" )
      {	
 	DMatrixHandle dtest;
