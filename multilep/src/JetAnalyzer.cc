@@ -278,6 +278,23 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetHFHadronFraction",       &_jetHFHadronFraction,      "_jetHFHadronFraction[_nJets]/D");
     outputTree->Branch("_jetHFEmFraction",           &_jetHFEmFraction,          "_jetHFEmFraction[_nJets]/D");
 
+    outputTree->Branch("_jetNPFCandidates",                &_jetNPFCandidates,                "_jetNPFCandidates[_nJets]/i");
+    outputTree->Branch("_nPFCandidates",                   &_nPFCandidates,                   "_nPFCandidates/i");
+    outputTree->Branch("_pfCandidateJetIndex",             &_pfCandidateJetIndex,             "_pfCandidateJetIndex[_nPFCandidates]/i");
+    outputTree->Branch("_pfCandidatePt",                   &_pfCandidatePt,                   "_pfCandidatePt[_nPFCandidates]/D");
+    outputTree->Branch("_pfCandidateEta",                  &_pfCandidateEta,                  "_pfCandidateEta[_nPFCandidates]/D");
+    outputTree->Branch("_pfCandidatePhi",                  &_pfCandidatePhi,                  "_pfCandidatePhi[_nPFCandidates]/D");
+    outputTree->Branch("_pfCandidateE",                    &_pfCandidateE,                    "_pfCandidateE[_nPFCandidates]/D");
+    outputTree->Branch("_pfCandidateCharge",               &_pfCandidateCharge,               "_pfCandidateCharge[_nPFCandidates]/I");
+    outputTree->Branch("_pfCandidatePdgId",                &_pfCandidatePdgId,                "_pfCandidatePdgId[_nPFCandidates]/I");
+    outputTree->Branch("_pfCandidateLostInnerHits",        &_pfCandidateLostInnerHits,        "_pfCandidateLostInnerHits[_nPFCandidates]/I");
+    outputTree->Branch("_pfCandidateTrackHighPurity",      &_pfCandidateTrackHighPurity,      "_pfCandidateTrackHighPurity[_nPFCandidates]/O");
+    outputTree->Branch("_pfCandidatePvAssociationQuality", &_pfCandidatePvAssociationQuality, "_pfCandidatePvAssociationQuality[_nPFCandidates]/I");
+    outputTree->Branch("_pfCandidateDxy",                  &_pfCandidateDxy,                  "_pfCandidateDxy[_nPFCandidates]/D");
+    outputTree->Branch("_pfCandidateDz",                   &_pfCandidateDz,                   "_pfCandidateDz[_nPFCandidates]/D");
+    outputTree->Branch("_pfCandidateDxyError",             &_pfCandidateDxyError,             "_pfCandidateDxyError[_nPFCandidates]/D");
+    outputTree->Branch("_pfCandidateDzError",              &_pfCandidateDzError,              "_pfCandidateDzError[_nPFCandidates]/D");
+
     outputTree->Branch("_nJetsPuppi",                &_nJetsPuppi,               "_nJetsPuppi/i");
     outputTree->Branch("_jetPuppiPt",                &_jetPuppiPt,               "_jetPuppiPt[_nJetsPuppi]/D");
     outputTree->Branch("_jetPuppiEta",               &_jetPuppiEta,              "_jetPuppiEta[_nJetsPuppi]/D");
@@ -375,6 +392,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<double> rho                            = getHandle(iEvent, multilepAnalyzer->rhoToken);
 
     _nJets = 0;
+    _nPFCandidates = 0;
 
     for(const auto& jet : *jets){
         if(_nJets == nJets_max) break;
@@ -470,6 +488,37 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetChargedEmFraction[_nJets]     = jet.chargedEmEnergyFraction();
         _jetHFHadronFraction[_nJets]      = jet.HFHadronEnergyFraction();
         _jetHFEmFraction[_nJets]          = jet.HFEMEnergyFraction();
+
+        _jetNPFCandidates[_nJets] = 0;
+        for(unsigned i=0; i<jet.numberOfDaughters(); i++) {
+            if(_nPFCandidates>=nPFCandidates_max) {
+                ++_jetNPFCandidates[_nJets];
+                ++_nPFCandidates;
+                continue;
+            }
+
+            const auto daughter = dynamic_cast<const pat::PackedCandidate*>(jet.daughter(i));
+
+            _pfCandidateJetIndex[_nPFCandidates] = _nJets;
+            _pfCandidatePt[_nPFCandidates] = daughter->pt();
+            _pfCandidateEta[_nPFCandidates] = daughter->eta();
+            _pfCandidatePhi[_nPFCandidates] = daughter->phi();
+            _pfCandidateE[_nPFCandidates] = daughter->energy();
+            _pfCandidateCharge[_nPFCandidates] = daughter->charge();
+            _pfCandidatePdgId[_nPFCandidates] = daughter->pdgId();
+            _pfCandidateLostInnerHits[_nPFCandidates] = daughter->lostInnerHits();
+            _pfCandidateTrackHighPurity[_nPFCandidates] = daughter->trackHighPurity();
+            _pfCandidatePvAssociationQuality[_nPFCandidates] = daughter->pvAssociationQuality();
+            _pfCandidateDxy[_nPFCandidates] = daughter->dxy();
+            _pfCandidateDz[_nPFCandidates] = daughter->dz();
+
+            const bool hasTrackDetails = daughter->hasTrackDetails();
+            _pfCandidateDxyError[_nPFCandidates] = hasTrackDetails ? daughter->dxyError() : -1.0;
+            _pfCandidateDzError[_nPFCandidates] = hasTrackDetails ? daughter->dzError() : -1.0;
+
+            ++_jetNPFCandidates[_nJets];
+            ++_nPFCandidates;
+        }
 
         _jetHasGen[_nJets] = 0;
         _jetGenPt[_nJets] = 0;

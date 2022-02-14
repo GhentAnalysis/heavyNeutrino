@@ -29,6 +29,7 @@ class JetAnalyzer {
         JetCorrectionUncertainty* jecUncPuppi;
 
         static const unsigned nJets_max = 100;
+        static const unsigned nPFCandidates_max = 1000;
 
         std::map<std::string, std::shared_ptr< JetCorrectorParameters> > jetSourcesCorParameters;
         std::map<std::string, std::shared_ptr< JetCorrectorParameters> > jetGroupedCorParameters;
@@ -82,6 +83,23 @@ class JetAnalyzer {
         double   _jetGenEta[nJets_max];
         double   _jetGenPhi[nJets_max];
         double   _jetGenE[nJets_max];
+
+        unsigned _jetNPFCandidates[nJets_max];
+        unsigned _nPFCandidates = 0;
+        unsigned _pfCandidateJetIndex[nPFCandidates_max];
+        double   _pfCandidatePt[nPFCandidates_max];
+        double   _pfCandidateEta[nPFCandidates_max];
+        double   _pfCandidatePhi[nPFCandidates_max];
+        double   _pfCandidateE[nPFCandidates_max];
+        int      _pfCandidateCharge[nPFCandidates_max];
+        int      _pfCandidatePdgId[nPFCandidates_max];
+        int      _pfCandidateLostInnerHits[nPFCandidates_max];
+        bool     _pfCandidateTrackHighPurity[nPFCandidates_max];
+        int      _pfCandidatePvAssociationQuality[nPFCandidates_max];
+        double   _pfCandidateDxy[nPFCandidates_max];
+        double   _pfCandidateDz[nPFCandidates_max];
+        double   _pfCandidateDxyError[nPFCandidates_max];
+        double   _pfCandidateDzError[nPFCandidates_max];
 
         unsigned _nJetsPuppi = 0;
         double   _jetPuppiPt[nJets_max];
