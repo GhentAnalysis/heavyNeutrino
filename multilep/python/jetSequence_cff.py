@@ -87,6 +87,28 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
 
   process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
 
+  ## Jet substructure variables for Higgs analysis
+  from RecoJets.JetProducers.nJettinessAdder_cfi import Njettiness
+  process.Njettiness = Njettiness.clone(
+      src = cms.InputTag('slimmedJets'),
+      Njets = cms.vuint32(range(1,4)),
+      measureDefinition = cms.uint32(0),
+      beta = cms.double(1.0),
+      R0 = cms.double(999.0),
+      axesDefinition = cms.uint32(6),
+      nPass = cms.int32(999),
+      akAxesR0 = cms.double(-999.0)
+  )
+  process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['Njettiness:tau1']
+  process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['Njettiness:tau2']
+  process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['Njettiness:tau3']
+  process.jetSequence *= process.Njettiness
+  from RecoJets.JetProducers.QGTagger_cfi import QGTagger
+  process.load('RecoJets.JetProducers.QGTagger_cfi')
+  process.QGTagger.srcJets = cms.InputTag('slimmedJets')
+  process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['QGTagger:qgLikelihood']
+  process.jetSequence *= process.QGTagger
+
   # Propagate JEC to MET (need to add fullPatMetSequence to path)
   # https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_or_10
   from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD

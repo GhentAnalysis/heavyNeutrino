@@ -84,6 +84,11 @@ class JetAnalyzer {
         double   _jetGenPhi[nJets_max];
         double   _jetGenE[nJets_max];
 
+        // substructure variables for Higgs analysis
+        double   _jetNsubTau1[nJets_max];
+        double   _jetNsubTau2[nJets_max];
+        double   _jetNsubTau3[nJets_max];
+        double   _jetQGLikelihood[nJets_max];
         unsigned _jetNPFCandidates[nJets_max];
         unsigned _nPFCandidates = 0;
         unsigned _pfCandidateJetIndex[nPFCandidates_max];

@@ -278,6 +278,10 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetHFHadronFraction",       &_jetHFHadronFraction,      "_jetHFHadronFraction[_nJets]/D");
     outputTree->Branch("_jetHFEmFraction",           &_jetHFEmFraction,          "_jetHFEmFraction[_nJets]/D");
 
+    outputTree->Branch("_jetNsubTau1",                     &_jetNsubTau1,                     "_jetNsubTau1[_nJets]/D");
+    outputTree->Branch("_jetNsubTau2",                     &_jetNsubTau2,                     "_jetNsubTau2[_nJets]/D");
+    outputTree->Branch("_jetNsubTau3",                     &_jetNsubTau3,                     "_jetNsubTau3[_nJets]/D");
+    outputTree->Branch("_jetQGLikelihood",                 &_jetQGLikelihood,                 "_jetQGLikelihood[_nJets]/D");
     outputTree->Branch("_jetNPFCandidates",                &_jetNPFCandidates,                "_jetNPFCandidates[_nJets]/i");
     outputTree->Branch("_nPFCandidates",                   &_nPFCandidates,                   "_nPFCandidates/i");
     outputTree->Branch("_pfCandidateJetIndex",             &_pfCandidateJetIndex,             "_pfCandidateJetIndex[_nPFCandidates]/i");
@@ -488,6 +492,11 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetChargedEmFraction[_nJets]     = jet.chargedEmEnergyFraction();
         _jetHFHadronFraction[_nJets]      = jet.HFHadronEnergyFraction();
         _jetHFEmFraction[_nJets]          = jet.HFEMEnergyFraction();
+
+        _jetNsubTau1[_nJets] = jet.userFloat("Njettiness:tau1");
+        _jetNsubTau2[_nJets] = jet.userFloat("Njettiness:tau2");
+        _jetNsubTau3[_nJets] = jet.userFloat("Njettiness:tau3");
+        _jetQGLikelihood[_nJets] = jet.userFloat("QGTagger:qgLikelihood");
 
         _jetNPFCandidates[_nJets] = 0;
         for(unsigned i=0; i<jet.numberOfDaughters(); i++) {
