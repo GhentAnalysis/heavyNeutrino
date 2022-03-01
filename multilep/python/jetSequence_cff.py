@@ -12,7 +12,7 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
   from CondCore.CondDB.CondDB_cfi import CondDB
- 
+
   #
   # Load specific JEC through sqlite file
   #
@@ -81,7 +81,7 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
       applyJec=True,
       vertexes=cms.InputTag("offlineSlimmedPrimaryVertices")
   )
-  
+
   process.updatedPatJetsUpdatedJEC.userData.userInts.src += ['pileupJetIdUpdated:fullId']
   process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
 
@@ -93,7 +93,7 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
   runMetCorAndUncFromMiniAOD(process,
     isData = isData,
   )
-  
+
   #PUPPI MET
   from PhysicsTools.PatAlgos.slimming.puppiForMET_cff import makePuppiesFromMiniAOD
   makePuppiesFromMiniAOD( process, True );
@@ -105,14 +105,14 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
   #                           )
   process.puppiNoLep.useExistingWeights = False
   process.puppi.useExistingWeights = False
-  
+
   from CommonTools.PileupAlgos.customizePuppiTune_cff import UpdatePuppiTuneV15
   UpdatePuppiTuneV15(process, not isData)
 
   #Add MET sequences to path
   process.jetSequence *= process.puppiMETSequence
   process.jetSequence *= process.fullPatMetSequence
-  
+
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
   # Run three times the SmearedPATJetProducer for nominal, up and down variations
