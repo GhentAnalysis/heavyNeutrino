@@ -195,6 +195,8 @@ class LeptonAnalyzer {
     double _leptonMvaTTH[nL_max];
     double _leptonMvatZq[nL_max];
     double _leptonMvaTOP[nL_max];
+    double _leptonMvaTOPUL[nL_max];
+    double _leptonMvaTOPv2UL[nL_max];
 
     //official POG selection definitions
     bool _lPOGVeto[nL_max];
@@ -249,6 +251,8 @@ class LeptonAnalyzer {
     LeptonMvaHelper* leptonMvaComputerTTH;
     LeptonMvaHelper* leptonMvaComputertZq;
     LeptonMvaHelper* leptonMvaComputerTOP;
+    LeptonMvaHelper* leptonMvaComputerTOPUL;
+    LeptonMvaHelper* leptonMvaComputerTOPv2UL;
 
     //for rochester corrections
     RoccoR rochesterCorrections;

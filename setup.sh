@@ -46,8 +46,15 @@ if [[ "$gitUser" != "GhentAnalysis" ]]; then
   git rebase ghent/$BRANCH
 fi
 
-# Compile and move into package
+# Install additional packages
 cd $CMSSW_BASE
+cp heavyNeutrino/multilep/data/tools/rabit.xml ../config/toolbox/slc7_amd64_gcc820/tools/selected/
+cp heavyNeutrino/multilep/data/tools/xgboost.xml ../config/toolbox/slc7_amd64_gcc820/tools/selected/
+scram setup rabit
+scram setup xgboost
+cmsenv
+
+# Compile and move into package
 scram b -j 10
 cd $CMSSW_BASE/src/heavyNeutrino
 echo "Setup finished"

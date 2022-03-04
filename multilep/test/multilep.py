@@ -37,7 +37,7 @@ for i in range(1,len(sys.argv)):
 isData = not ('SIM' in inputFile or 'heavyNeutrinoMiniAOD' in inputFile)
 is2017 = "Run2017" in inputFile or "17MiniAOD" in inputFile or 'Fall17' in inputFile
 is2018 = "Run2018" in inputFile or "18MiniAOD" in inputFile or 'Autumn18' in inputFile
-is2016preVFP = "preVFP" in inputFile or "_HIPM" in inputFile
+is2016preVFP = "preVFP" in inputFile or "HIPM" in inputFile
 isSUSY = "SMS-T" in inputFile
 isFastSim = 'Fast' in inputFile
 
@@ -57,8 +57,8 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 
 # Latest recommended global tags can always be checked here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_upgrade2018_realistic_v15_L1v1'
-elif is2017:                             process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mc2017_realistic_v8'
+if is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_upgrade2018_realistic_v16_L1v1'
+elif is2017:                             process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mc2017_realistic_v9'
 elif is2016preVFP:                       process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mcRun2_asymptotic_preVFP_v11'
 else:                                    process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mcRun2_asymptotic_v17'
 
@@ -201,6 +201,11 @@ yy = '16'
 if is2017: yy = '17'
 elif is2018: yy = '18'
 
+yyul = '16'
+if is2016preVFP: yyul = '16APV'
+elif is2017: yyul = '17'
+elif is2018: yyul = '18'
+
 yyy = '16'
 if is2017 or is2018: yyy = '17'
 
@@ -258,6 +263,10 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   leptonMvaWeightsMutZqTTV      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_tZqTTV"+yyy+"_BDTG.weights.xml"),
   leptonMvaWeightsEleTOP        = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOP"+yy+"_BDTG.weights.xml"),
   leptonMvaWeightsMuTOP         = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOP"+yy+"_BDTG.weights.xml"),
+  leptonMvaWeightsEleTOPUL      = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOPUL"+yyul+"_XGB.weights.bin"),
+  leptonMvaWeightsMuTOPUL       = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOPUL"+yyul+"_XGB.weights.bin"),
+  leptonMvaWeightsEleTOPv2UL    = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/el_TOPv2UL"+yyul+"_XGB.weights.bin"),
+  leptonMvaWeightsMuTOPv2UL     = cms.FileInPath("heavyNeutrino/multilep/data/mvaWeights/mu_TOPv2UL"+yyul+"_XGB.weights.bin"),
   photons                       = cms.InputTag("slimmedPhotons"),
   photonsChargedEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfChargedHadrons_90percentBased_V2.txt'),
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),

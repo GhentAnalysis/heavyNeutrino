@@ -8,6 +8,7 @@
 <use name="RecoEgamma/EgammaTools"/>
 <use name="CondFormats/JetMETObjects"/>
 <use name="rivet"/>
+<use name="xgboost"/>
 <export>
   <lib   name="1"/>
 </export>
