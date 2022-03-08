@@ -47,6 +47,10 @@ class GenAnalyzer {
     bool     _gen_lIsPrompt[gen_nL_max];
     bool     _gen_lPassParentage[gen_nL_max];
     double   _gen_lMinDeltaR[gen_nL_max];
+    double   _gen_lVisPt[gen_nL_max];
+    double   _gen_lVisEta[gen_nL_max];
+    double   _gen_lVisPhi[gen_nL_max];
+    double   _gen_lVisE[gen_nL_max];
    
     //Generator particles (all)
     unsigned _gen_n = 0;

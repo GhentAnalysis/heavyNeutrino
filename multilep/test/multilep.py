@@ -221,6 +221,15 @@ tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
                                ])
 tauIdEmbedder.runTauID()
 
+if not isData:
+    from PhysicsTools.JetMCAlgos.TauGenJets_cfi import tauGenJets
+    process.tauGenJetCollection = tauGenJets.clone(
+        GenParticles            = cms.InputTag("prunedGenParticles"),
+        includeNeutrinos        = cms.bool(False)
+    )
+else:
+    process.tauGenJetCollection = cms.Sequence()
+
 #rochester correction file to use
 if is2017:
     rochesterCorrectionFile = 'UL/RoccoR2017UL.txt'
@@ -272,6 +281,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),
   photonsPhotonsEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_V2.txt'),
   taus                          = cms.InputTag("slimmedTausNewID"),
+  tauGenJets                    = cms.InputTag("tauGenJetCollection"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
@@ -332,4 +342,5 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.bFragSequence *
                      process.rerunMvaIsolationSequence *
                      getattr(process,updatedTauName) *           
+                     process.tauGenJetCollection *
                      process.blackJackAndHookers)

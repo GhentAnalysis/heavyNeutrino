@@ -116,6 +116,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<std::vector<pat::Muon>>                 muonToken;
         edm::EDGetTokenT<std::vector<pat::Electron>>             eleToken;
         edm::EDGetTokenT<std::vector<pat::Tau>>                  tauToken;
+        edm::EDGetTokenT<std::vector<reco::GenJet>>              tauGenJetsToken;
         edm::EDGetTokenT<std::vector<pat::Photon>>               photonToken;
         edm::EDGetTokenT<std::vector<pat::PackedCandidate>>      packedCandidatesToken;                       //particle collection used to calculate isolation variables
         edm::EDGetTokenT<double>                                 rhoToken;

@@ -24,6 +24,7 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     muonToken(                consumes<std::vector<pat::Muon>>(                iConfig.getParameter<edm::InputTag>("muons"))),
     eleToken(                 consumes<std::vector<pat::Electron>>(            iConfig.getParameter<edm::InputTag>("electrons"))),
     tauToken(                 consumes<std::vector<pat::Tau>>(                 iConfig.getParameter<edm::InputTag>("taus"))),
+    tauGenJetsToken(          consumes<std::vector<reco::GenJet>>(             iConfig.getParameter<edm::InputTag>("tauGenJets"))),
     photonToken(              consumes<std::vector<pat::Photon>>(              iConfig.getParameter<edm::InputTag>("photons"))),
     packedCandidatesToken(    consumes<std::vector<pat::PackedCandidate>>(     iConfig.getParameter<edm::InputTag>("packedCandidates"))),
     rhoToken(                 consumes<double>(                                iConfig.getParameter<edm::InputTag>("rho"))),
