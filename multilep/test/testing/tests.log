@@ -1,8 +1,21 @@
-commit 1fa34cff60fa5fd47eff3b0b14ce7f341d26f1a7
+commit 40bdcefa444f1c4b6724b2891821fd9ed18f1f68
 Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Mar 8 15:40:27 2022 +0100
+Date:   Tue Mar 8 17:38:22 2022 +0100
 
-    Fix setup script
+    New test run: see tests.log
+diff --git a/multilep/test/testing/runTests.py b/multilep/test/testing/runTests.py
+index 0503b847..a3b5a5eb 100755
+--- a/multilep/test/testing/runTests.py
++++ b/multilep/test/testing/runTests.py
+@@ -54,7 +54,7 @@ with open('tests.log', 'w') as logFile:
+ 
+   def runTest(name, testFile):
+     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
+-    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSources'
++    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSources,storePrefireComponents'
+     logFile.write('Running test: ' + name)
+     try:
+       system(command)
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,28 +36,19 @@ Running test: 21Feb2020_UL2016_HIPM --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   New: _prefireWeight,_prefireWeightDown,_prefireWeightUp
+   New: _prefireWeightECAL,_prefireWeightECALDown,_prefireWeightECALUp,_prefireWeightMuon,_prefireWeightMuonDown,_prefireWeightMuonUp
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
-   Changed:
-      _prefireWeight                                     mean:   0.9738 -->   0.9635     rms:   0.0695 -->   0.0997    
-      _prefireWeightDown                                 mean:   0.9801 -->   0.9719     rms:   0.0545 -->   0.0786    
-      _prefireWeightUp                                   mean:   0.9674 -->   0.9552     rms:   0.0844 -->   0.1202    
+   New: _prefireWeightECAL,_prefireWeightECALDown,_prefireWeightECALUp,_prefireWeightMuon,_prefireWeightMuonDown,_prefireWeightMuonUp
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   Changed:
-      _prefireWeight                                     mean:   0.9773 -->   0.9678     rms:   0.0740 -->   0.1036    
-      _prefireWeightDown                                 mean:   0.9827 -->   0.9763     rms:   0.0581 -->   0.0795    
-      _prefireWeightUp                                   mean:   0.9718 -->   0.9594     rms:   0.0898 -->   0.1279    
+   New: _prefireWeightECAL,_prefireWeightECALDown,_prefireWeightECALUp,_prefireWeightMuon,_prefireWeightMuonDown,_prefireWeightMuonUp
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   Changed:
-      _prefireWeight                                     mean:   0.9847 -->   0.9864     rms:   0.0350 -->   0.0241    
-      _prefireWeightDown                                 mean:   0.9886 -->   0.9905     rms:   0.0267 -->   0.0169    
-      _prefireWeightUp                                   mean:   0.9807 -->   0.9823     rms:   0.0432 -->   0.0314    
+   New: _prefireWeightECAL,_prefireWeightECALDown,_prefireWeightECALUp,_prefireWeightMuon,_prefireWeightMuonDown,_prefireWeightMuonUp
