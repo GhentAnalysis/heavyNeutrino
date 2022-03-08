@@ -136,6 +136,12 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         edm::EDGetTokenT<double>                                 prefireWeightToken;
         edm::EDGetTokenT<double>                                 prefireWeightUpToken;
         edm::EDGetTokenT<double>                                 prefireWeightDownToken;
+        edm::EDGetTokenT<double>                                 prefireWeightMuonToken;
+        edm::EDGetTokenT<double>                                 prefireWeightMuonUpToken;
+        edm::EDGetTokenT<double>                                 prefireWeightMuonDownToken;
+        edm::EDGetTokenT<double>                                 prefireWeightECALToken;
+        edm::EDGetTokenT<double>                                 prefireWeightECALUpToken;
+        edm::EDGetTokenT<double>                                 prefireWeightECALDownToken;
         std::string                                              skim;
         bool                                                     sampleIsData;
         bool                                                     sampleIs2017;
@@ -149,6 +155,7 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     storeBFrag;
         bool                                                     storeJecSources;
         bool                                                     storeAllTauID;
+        bool                                                     storePrefireComponents;
 
         virtual void beginJob() override;
         virtual void beginLuminosityBlock(const edm::LuminosityBlock&, const edm::EventSetup&) override;
@@ -180,6 +187,12 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         float _prefireWeight;
         float _prefireWeightUp;
         float _prefireWeightDown;
+        float _prefireWeightMuon;
+        float _prefireWeightMuonUp;
+        float _prefireWeightMuonDown;
+        float _prefireWeightECAL;
+        float _prefireWeightECALUp;
+        float _prefireWeightECALDown;
 
         TH1D* nVertices;                                                                                 //Histogram with number of vertices
 };

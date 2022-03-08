@@ -43,6 +43,12 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     prefireWeightToken(       consumes<double>(                                edm::InputTag("prefiringweight:nonPrefiringProb"))),
     prefireWeightUpToken(     consumes<double>(                                edm::InputTag("prefiringweight:nonPrefiringProbUp"))),
     prefireWeightDownToken(   consumes<double>(                                edm::InputTag("prefiringweight:nonPrefiringProbDown"))),
+    prefireWeightMuonToken(       consumes<double>(                            edm::InputTag("prefiringweight:nonPrefiringProbMuon"))),
+    prefireWeightMuonUpToken(     consumes<double>(                            edm::InputTag("prefiringweight:nonPrefiringProbMuonUp"))),
+    prefireWeightMuonDownToken(   consumes<double>(                            edm::InputTag("prefiringweight:nonPrefiringProbMuonDown"))),
+    prefireWeightECALToken(       consumes<double>(                            edm::InputTag("prefiringweight:nonPrefiringProbECAL"))),
+    prefireWeightECALUpToken(     consumes<double>(                            edm::InputTag("prefiringweight:nonPrefiringProbECALUp"))),
+    prefireWeightECALDownToken(   consumes<double>(                            edm::InputTag("prefiringweight:nonPrefiringProbECALDown"))),
     skim(                                                                      iConfig.getUntrackedParameter<std::string>("skim")),
     sampleIsData(                                                              iConfig.getUntrackedParameter<bool>("isData")),
     sampleIs2017(                                                              iConfig.getUntrackedParameter<bool>("is2017")),
@@ -55,7 +61,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
     storeBFrag(                                                                iConfig.getUntrackedParameter<bool>("storeBFrag")),
     storeJecSources(                                                           iConfig.getUntrackedParameter<bool>("storeJecSources")),
-    storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID"))
+    storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
+    storePrefireComponents(                                                    iConfig.getUntrackedParameter<bool>("storePrefireComponents"))
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -97,10 +104,18 @@ void multilep::beginJob(){
     outputTree->Branch("_is2018",                       &sampleIs2018,                  "_is2018/O");
     outputTree->Branch("_is2016preVFP",                 &sampleIs2016preVFP,            "_is2016preVFP/O");
 
-    if( isMC() && !is2018() ){
+    if( isMC()){
         outputTree->Branch("_prefireWeight",              &_prefireWeight,                "_prefireWeight/F");
         outputTree->Branch("_prefireWeightUp",            &_prefireWeightUp,              "_prefireWeightUp/F");
         outputTree->Branch("_prefireWeightDown",          &_prefireWeightDown,            "_prefireWeightDown/F");
+        if (storePrefireComponents){
+            outputTree->Branch("_prefireWeightMuon",              &_prefireWeightMuon,                "_prefireWeightMuon/F");
+            outputTree->Branch("_prefireWeightMuonUp",            &_prefireWeightMuonUp,              "_prefireWeightMuonUp/F");
+            outputTree->Branch("_prefireWeightMuonDown",          &_prefireWeightMuonDown,            "_prefireWeightMuonDown/F");
+            outputTree->Branch("_prefireWeightECAL",              &_prefireWeightECAL,                "_prefireWeightECAL/F");
+            outputTree->Branch("_prefireWeightECALUp",            &_prefireWeightECALUp,              "_prefireWeightECALUp/F");
+            outputTree->Branch("_prefireWeightECALDown",          &_prefireWeightECALDown,            "_prefireWeightECALDown/F");
+        }
     }
 
     if( isMC() ) lheAnalyzer->beginJob(outputTree, fs);
@@ -155,10 +170,19 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     _eventNb = (unsigned long) iEvent.id().event();
 
-    if(isMC() and !is2018()){
-     _prefireWeight = *(getHandle(iEvent, prefireWeightToken));
-     _prefireWeightUp = *(getHandle(iEvent, prefireWeightUpToken));
-     _prefireWeightDown = *(getHandle(iEvent, prefireWeightDownToken));
+    if(isMC()){
+        _prefireWeight = *(getHandle(iEvent, prefireWeightToken));
+        _prefireWeightUp = *(getHandle(iEvent, prefireWeightUpToken));
+        _prefireWeightDown = *(getHandle(iEvent, prefireWeightDownToken));
+        if (storePrefireComponents){
+            _prefireWeightMuon = *(getHandle(iEvent, prefireWeightMuonToken));
+            _prefireWeightMuonUp = *(getHandle(iEvent, prefireWeightMuonUpToken));
+            _prefireWeightMuonDown = *(getHandle(iEvent, prefireWeightMuonDownToken));
+            _prefireWeightECAL = *(getHandle(iEvent, prefireWeightECALToken));
+            _prefireWeightECALUp = *(getHandle(iEvent, prefireWeightECALUpToken));
+            _prefireWeightECALDown = *(getHandle(iEvent, prefireWeightECALDownToken));
+
+        }
     }
 
     outputTree->Fill();                                                                  //store calculated event info in root tree
