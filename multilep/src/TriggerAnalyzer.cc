@@ -112,8 +112,6 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
     allFlags["passTrigger_FR"]     = {"HLT_Mu3_PFJet40", "HLT_Mu8", "HLT_Mu17", "HLT_Mu20", "HLT_Mu27", "HLT_Ele8_CaloIdM_TrackIdM_PFJet30", "HLT_Ele12_CaloIdM_TrackIdM_PFJet30", "HLT_Ele17_CaloIdM_TrackIdM_PFJet30", "HLT_Ele23_CaloIdM_TrackIdM_PFJet30"};
     allFlags["passTrigger_FR_iso"]     = {"HLT_Mu8_TrkIsoVVL", "HLT_Mu17_TrkIsoVVL", "HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30", "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30", "HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30", "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30"};
 
-    allFlags["passTrigger_mAN094"]      = {"HLT_IsoMu22", "HLT_IsoTkMu22", "HLT_IsoMu22_eta2p1", "HLT_IsoTkMu22_eta2p1"};
-
     allFlags["passTrigger_m"]   = {"HLT_IsoMu24", "HLT_IsoTkMu24", "HLT_Mu50", "HLT_TkMu50", "HLT_Mu45_eta2p1"}; // HLT_TkMu50 off for ~3/fb, HLT_Mu45_eta2p1 off for ~12/fb
     allFlags["passTrigger_e"]   = {"HLT_Ele27_WPTight_Gsf", "HLT_Ele105_CaloIdVT_GsfTrkIdT", "HLT_Ele115_CaloIdVT_GsfTrkIdT", "HLT_Photon175"}; // HLT_Ele105_CaloIdVT_GsfTrkIdT was switched off several times in second half of 2016; HLT_Photon175 recovers inefficiency for > 300 GeV electrons
 
@@ -146,7 +144,8 @@ TriggerAnalyzer::TriggerAnalyzer(const edm::ParameterSet& iConfig, multilep* mul
                                    "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1", "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTauHPS27_eta2p1_CrossL1",
                                    "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg", "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg",
                                    "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg", "HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg",
-                                   "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ"};
+                                   "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ", "HLT_Ele27_eta2p1_WPLoose_Gsf", "HLT_IsoMu22", "HLT_IsoTkMu22", "HLT_IsoMu22_eta2p1", "HLT_IsoTkMu22_eta2p1"};
+
 
   }
 
