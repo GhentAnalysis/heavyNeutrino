@@ -1,21 +1,8 @@
-commit 40bdcefa444f1c4b6724b2891821fd9ed18f1f68
+commit 7dc40a86ae0dd99f411529632fab5310ffd8991e
 Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Mar 8 17:38:22 2022 +0100
+Date:   Tue Mar 8 19:54:26 2022 +0100
 
-    New test run: see tests.log
-diff --git a/multilep/test/testing/runTests.py b/multilep/test/testing/runTests.py
-index 0503b847..a3b5a5eb 100755
---- a/multilep/test/testing/runTests.py
-+++ b/multilep/test/testing/runTests.py
-@@ -54,7 +54,7 @@ with open('tests.log', 'w') as logFile:
- 
-   def runTest(name, testFile):
-     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
--    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSources'
-+    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSources,storePrefireComponents'
-     logFile.write('Running test: ' + name)
-     try:
-       system(command)
+    Update prefiring weight
 
 --------------------------------------------------------------------------------------------------
 
@@ -28,27 +15,39 @@ Running test: 09Aug2019_UL2017 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
+   New: _HLT_Ele27_eta2p1_WPLoose_Gsf,_HLT_Ele27_eta2p1_WPLoose_Gsf_prescale
+   Removed: _passTrigger_mAN094
+   Changed:
+      _passTrigger_add                                   mean:   0.1700 -->   0.2000     rms:   0.3756 -->   0.4000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
+   New: _HLT_Ele27_eta2p1_WPLoose_Gsf,_HLT_Ele27_eta2p1_WPLoose_Gsf_prescale
+   Removed: _passTrigger_mAN094
+   Changed:
+      _passTrigger_add                                   mean:   0.1900 -->   0.2400     rms:   0.3923 -->   0.4271    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   New: _prefireWeightECAL,_prefireWeightECALDown,_prefireWeightECALUp,_prefireWeightMuon,_prefireWeightMuonDown,_prefireWeightMuonUp
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
-   New: _prefireWeightECAL,_prefireWeightECALDown,_prefireWeightECALUp,_prefireWeightMuon,_prefireWeightMuonDown,_prefireWeightMuonUp
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   New: _prefireWeightECAL,_prefireWeightECALDown,_prefireWeightECALUp,_prefireWeightMuon,_prefireWeightMuonDown,_prefireWeightMuonUp
+   New: _HLT_Ele27_eta2p1_WPLoose_Gsf,_HLT_Ele27_eta2p1_WPLoose_Gsf_prescale
+   Removed: _passTrigger_mAN094
+   Changed:
+      _passTrigger_add                                   mean:   0.3300 -->   0.3700     rms:   0.4702 -->   0.4828    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   New: _prefireWeightECAL,_prefireWeightECALDown,_prefireWeightECALUp,_prefireWeightMuon,_prefireWeightMuonDown,_prefireWeightMuonUp
+   New: _HLT_Ele27_eta2p1_WPLoose_Gsf,_HLT_Ele27_eta2p1_WPLoose_Gsf_prescale
+   Removed: _passTrigger_mAN094
+   Changed:
+      _passTrigger_add                                   mean:   0.3900 -->   0.4300     rms:   0.4877 -->   0.4951    
