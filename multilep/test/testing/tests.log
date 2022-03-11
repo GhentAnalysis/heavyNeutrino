@@ -1,8 +1,8 @@
-commit 7dc40a86ae0dd99f411529632fab5310ffd8991e
+commit 00f94dd5696b27bb60286e2bfcaab9f524bdce82
 Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Mar 8 19:54:26 2022 +0100
+Date:   Thu Mar 10 15:44:43 2022 +0100
 
-    Update prefiring weight
+    Add additional 2016 triggers for ttH cross checks
 
 --------------------------------------------------------------------------------------------------
 
@@ -15,39 +15,39 @@ Running test: 09Aug2019_UL2017 --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
-   New: _HLT_Ele27_eta2p1_WPLoose_Gsf,_HLT_Ele27_eta2p1_WPLoose_Gsf_prescale
-   Removed: _passTrigger_mAN094
-   Changed:
-      _passTrigger_add                                   mean:   0.1700 -->   0.2000     rms:   0.3756 -->   0.4000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
-   New: _HLT_Ele27_eta2p1_WPLoose_Gsf,_HLT_Ele27_eta2p1_WPLoose_Gsf_prescale
-   Removed: _passTrigger_mAN094
-   Changed:
-      _passTrigger_add                                   mean:   0.1900 -->   0.2400     rms:   0.3923 -->   0.4271    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
+   Changed:
+      _nPsWeights                                        mean:  14.0000 -->  46.0000     rms:   0.0000 -->   0.0000    
+      _psWeight                                          mean:   0.9866 -->   0.9952     rms:   0.3842 -->   0.2238    
+      psCounter                                          mean:   6.9991 -->  23.0427     rms:   4.0417 -->  13.2662    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
+   Changed:
+      _nPsWeights                                        mean:  14.0000 -->  46.0000     rms:   0.0000 -->   0.0000    
+      _psWeight                                          mean:   0.9887 -->   0.9958     rms:   0.3769 -->   0.2210    
+      psCounter                                          mean:   7.0080 -->  23.0502     rms:   4.0481 -->  13.2631    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   New: _HLT_Ele27_eta2p1_WPLoose_Gsf,_HLT_Ele27_eta2p1_WPLoose_Gsf_prescale
-   Removed: _passTrigger_mAN094
    Changed:
-      _passTrigger_add                                   mean:   0.3300 -->   0.3700     rms:   0.4702 -->   0.4828    
+      _nPsWeights                                        mean:  14.0000 -->  46.0000     rms:   0.0000 -->   0.0000    
+      _psWeight                                          mean:   0.9794 -->   0.9926     rms:   0.3491 -->   0.2013    
+      psCounter                                          mean:   7.0330 -->  23.0524     rms:   4.0437 -->  13.2645    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   New: _HLT_Ele27_eta2p1_WPLoose_Gsf,_HLT_Ele27_eta2p1_WPLoose_Gsf_prescale
-   Removed: _passTrigger_mAN094
    Changed:
-      _passTrigger_add                                   mean:   0.3900 -->   0.4300     rms:   0.4877 -->   0.4951    
+      _nPsWeights                                        mean:  14.0000 -->  46.0000     rms:   0.0000 -->   0.0000    
+      _psWeight                                          mean:   1.0018 -->   0.9997     rms:   0.6435 -->   0.3602    
+      psCounter                                          mean:   7.0029 -->  22.9502     rms:   4.0134 -->  13.2867    
