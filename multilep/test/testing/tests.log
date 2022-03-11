@@ -1,8 +1,8 @@
-commit 00f94dd5696b27bb60286e2bfcaab9f524bdce82
+commit 4c4a821e711bdcd59467cfc1d856956db3ffb1f2
 Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Thu Mar 10 15:44:43 2022 +0100
+Date:   Fri Mar 11 15:23:08 2022 +0100
 
-    Add additional 2016 triggers for ttH cross checks
+    New test run: see tests.log
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,31 +23,15 @@ Running test: 21Feb2020_UL2016_HIPM --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   Changed:
-      _nPsWeights                                        mean:  14.0000 -->  46.0000     rms:   0.0000 -->   0.0000    
-      _psWeight                                          mean:   0.9866 -->   0.9952     rms:   0.3842 -->   0.2238    
-      psCounter                                          mean:   6.9991 -->  23.0427     rms:   4.0417 -->  13.2662    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
-   Changed:
-      _nPsWeights                                        mean:  14.0000 -->  46.0000     rms:   0.0000 -->   0.0000    
-      _psWeight                                          mean:   0.9887 -->   0.9958     rms:   0.3769 -->   0.2210    
-      psCounter                                          mean:   7.0080 -->  23.0502     rms:   4.0481 -->  13.2631    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   Changed:
-      _nPsWeights                                        mean:  14.0000 -->  46.0000     rms:   0.0000 -->   0.0000    
-      _psWeight                                          mean:   0.9794 -->   0.9926     rms:   0.3491 -->   0.2013    
-      psCounter                                          mean:   7.0330 -->  23.0524     rms:   4.0437 -->  13.2645    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   Changed:
-      _nPsWeights                                        mean:  14.0000 -->  46.0000     rms:   0.0000 -->   0.0000    
-      _psWeight                                          mean:   1.0018 -->   0.9997     rms:   0.6435 -->   0.3602    
-      psCounter                                          mean:   7.0029 -->  22.9502     rms:   4.0134 -->  13.2867    
