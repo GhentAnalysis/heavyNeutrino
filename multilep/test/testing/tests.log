@@ -1,53 +1,37 @@
-commit 82701460d2b1f92e204d942718e98025458d8df2
+commit 4c4a821e711bdcd59467cfc1d856956db3ffb1f2
 Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Jan 11 17:12:31 2022 +0100
+Date:   Fri Mar 11 15:23:08 2022 +0100
 
-    Upload sample lists used for general sample production
+    New test run: see tests.log
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 12Nov2019_UL2018 --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   2.5129     rms:   0.0000 -->   2.8327    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 09Aug2019_UL2017 --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean: 593504725.0739 -->   2.3824 rms: 601280872.6661 -->   2.7937
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   3.9093     rms:   0.0000 -->   2.8437    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   3.5450     rms:   0.0000 -->   2.9119    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   3.0790     rms:   0.0000 -->   2.8298    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean: 949905221.4943 -->   3.0269 rms: 375216562.5128 -->   2.8915
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   4.3922     rms:   0.0000 -->   2.7005    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   4.3623     rms:   0.0000 -->   2.6964    

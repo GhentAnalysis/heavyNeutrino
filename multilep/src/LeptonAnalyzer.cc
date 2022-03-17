@@ -171,7 +171,7 @@ void LeptonAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_tauVTightDeepTauVsEle",        &_tauVTightDeepTauVsEle,        "_tauVTightDeepTauVsEle[_nL]/O");
       outputTree->Branch("_tauVVTightDeepTauVsEle",       &_tauVVTightDeepTauVsEle,       "_tauVVTightDeepTauVsEle[_nL]/O");
 
-      outputTree->Branch("_tauDeepTauMuRaw",              &_tauDeepTauVsMuRaw,            "_tauDeepTauVsEleMu[_nL]/D");
+      outputTree->Branch("_tauDeepTauMuRaw",              &_tauDeepTauVsMuRaw,            "_tauDeepTauVsMuRaw[_nL]/D");
       outputTree->Branch("_tauVLooseDeepTauVsMu",         &_tauVLooseDeepTauVsMu,         "_tauVLooseDeepTauVsMu[_nL]/O");
       outputTree->Branch("_tauLooseDeepTauVsMu",          &_tauLooseDeepTauVsMu,          "_tauLooseDeepTauVsMu[_nL]/O");
       outputTree->Branch("_tauMediumDeepTauVsMu",         &_tauMediumDeepTauVsMu,         "_tauMediumDeepTauVsMu[_nL]/O");

@@ -30,7 +30,7 @@ class LheAnalyzer {
     unsigned _nTau;
     double _lheWeight[ maxNumberOfLheWeights ];
 
-    static constexpr unsigned maxNumberOfPsWeights = 14;
+    static constexpr unsigned maxNumberOfPsWeights = 46;
     unsigned _nPsWeights = 0;
     double _psWeight[ maxNumberOfPsWeights ];
 
