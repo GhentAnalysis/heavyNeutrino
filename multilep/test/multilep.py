@@ -75,7 +75,8 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 # Import some objectsequences sequence (details in cff files)
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
-addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim)
+storeJetSubstructure = 'storeJetSubstructure' in extraContent
+addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim, storeJetSubstructure)
 unc_prefix = ''
 # if isFastSim:
 #   if is2018:   unc_prefix = 'Autumn18_FastSimV1_MC'
@@ -99,7 +100,7 @@ unc_prefix = ''
 #       if 'Run2017F' in inputFile: unc_prefix = 'Summer19UL17_RunF_V5_DATA'
 #     else:
 #       unc_prefix = 'Summer19UL17_V5_MC'
-#   elif is2016preVFP: 
+#   elif is2016preVFP:
 #     if isData:
 #       if 'Run2016B' in inputFile or 'Run2016C' in inputFile or 'Run2016D' in inputFile: unc_prefix = 'Summer19UL16APV_RunBCD_V7_DATA'
 #       if 'Run2016E' in inputFile or 'Run2016F' in inputFile: unc_prefix = 'Summer19UL16APV_RunEF_V7_DATA'
@@ -333,6 +334,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   storeJecSources               = cms.untracked.bool('storeJecSources' in extraContent),
   storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
   storePrefireComponents        = cms.untracked.bool('storePrefireComponents' in extraContent),
+  storeJetSubstructure          = cms.untracked.bool('storeJetSubstructure' in extraContent),
   headerPart1                   = cms.FileInPath("heavyNeutrino/multilep/data/header/soviet.txt"),
   headerPart2                   = cms.FileInPath("heavyNeutrino/multilep/data/header/text.txt"),
 )

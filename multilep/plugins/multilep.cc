@@ -62,7 +62,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeBFrag(                                                                iConfig.getUntrackedParameter<bool>("storeBFrag")),
     storeJecSources(                                                           iConfig.getUntrackedParameter<bool>("storeJecSources")),
     storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
-    storePrefireComponents(                                                    iConfig.getUntrackedParameter<bool>("storePrefireComponents"))
+    storePrefireComponents(                                                    iConfig.getUntrackedParameter<bool>("storePrefireComponents")),
+    storeJetSubstructure(                                                      iConfig.getUntrackedParameter<bool>("storeJetSubstructure"))
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
