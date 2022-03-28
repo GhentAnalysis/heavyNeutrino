@@ -123,7 +123,7 @@ void multilep::beginJob(){
     if( isMC() ) genAnalyzer->beginJob(outputTree);
     if( isMC() && storeParticleLevel) particleLevelAnalyzer->beginJob(outputTree);
     if( isMC() && storeBFrag) bFragAnalyzer->beginJob(outputTree);
-    
+
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
@@ -153,12 +153,12 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if( isSUSY() ) susyAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
     _nVertex = vertices->size();
-    nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
+    nVertices->Fill(_nVertex, lheAnalyzer->getWeight());
 
-    bool applySkim; //better not to shadow class variable with name! // Do not skim if event topology is available on particleLevel 
+    bool applySkim; //better not to shadow class variable with name! // Do not skim if event topology is available on particleLevel
     if( isMC() && storeParticleLevel ) applySkim = !particleLevelAnalyzer->analyze(iEvent);
     else applySkim = true;
-   
+
     if( isMC() && storeBFrag ) bFragAnalyzer->analyze(iEvent);
 
     if(_nVertex == 0)                                                        return;          // Don't consider 0 vertex events

@@ -197,4 +197,3 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         TH1D* nVertices;                                                                                 //Histogram with number of vertices
 };
 #endif
-
