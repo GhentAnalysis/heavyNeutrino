@@ -81,7 +81,6 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
       applyJec=True,
       vertexes=cms.InputTag("offlineSlimmedPrimaryVertices")
   )
-
   process.updatedPatJetsUpdatedJEC.userData.userInts.src += ['pileupJetIdUpdated:fullId']
   process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
 

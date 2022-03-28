@@ -407,7 +407,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
 
-        if( jet.hasUserFloat("pileupJetId:fullDiscriminant") ) _jetPileupIdFullDisc[_nJets] = jet.userFloat("pileupJetId:fullDiscriminant");
+        if( jet.hasUserFloat("pileupJetIdUpdated:fullDiscriminant") ) _jetPileupIdFullDisc[_nJets] = jet.userFloat("pileupJetIdUpdated:fullDiscriminant");
         if( jet.hasUserInt("pileupJetIdUpdated:fullId") ) _jetPileupIdFullId[_nJets] = jet.userInt("pileupJetIdUpdated:fullId");
 
         //find smeared equivalents of nominal jet
