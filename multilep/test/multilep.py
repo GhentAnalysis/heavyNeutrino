@@ -14,7 +14,8 @@ nEvents         = 100
 # extraContent    = 'storeAllTauID'
 # extraContent    = 'storeLheParticles,storeParticleLevel'
 # extraContent    = 'storeJecSources'
-extraContent    = 'storeLheParticles,storeParticleLevel,storeJecSources,storeAllTauID'
+# extraContent    = 'storeJecSources'
+extraContent    = 'storeLheParticles,storeParticleLevel,storeJecSources,storeAllTauID,storePrefireComponents'
 # extraContent    = ''
 
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
@@ -151,19 +152,32 @@ else: setupEgammaPostRecoSeq(process,
                        era='2016postVFP-UL')  
 
 #
-# L1 prefiring (only needed for 2016/2017, use empty sequence for 2018)
+# L1 prefiring
+# https://twiki.cern.ch/twiki/bin/view/CMS/L1PrefiringWeightRecipe
 #
 from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
-if not is2018:
-  process.prefiringweight = l1PrefiringWeightProducer.clone(
-      DataEraECAL                      = cms.string("2017BtoF" if is2017 else "2016BtoH"),
-      DataEraMuon                      = cms.string("20172018" if (is2017 or is2018) else "2016"),
-      UseJetEMPt                       = cms.bool(False),
-      PrefiringRateSystematicUnctyECAL = cms.double(0.2),
-      PrefiringRateSystematicUnctyMuon = cms.double(0.2)
-  )
+eraECAL = "None"
+eraMuon = "None"
+if is2018:
+  eraMuon= "20172018"
+elif is2017:
+  eraECAL = "UL2017BtoF"
+  eraMuon = "20172018"
+elif is2016preVFP:
+  eraECAL = "UL2016preVFP"
+  eraMuon = "2016preVFP"
 else:
-  process.prefiringweight = cms.Sequence()
+  eraECAL = "UL2016postVFP"
+  eraMuon = "2016postVFP"
+
+process.prefiringweight = l1PrefiringWeightProducer.clone(
+    TheJets = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC" if isData else "slimmedJetsCorrectedAndSmeared"),
+    DataEraECAL                      = cms.string(eraECAL),
+    DataEraMuon                      = cms.string(eraMuon),
+    UseJetEMPt                       = cms.bool(False),
+    PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+    PrefiringRateSystematicUnctyMuon = cms.double(0.2)
+  )
 
 #
 # For the particleLevelProducer (useful for rivet implementation and/or unfolding)
@@ -221,6 +235,15 @@ tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
                                ])
 tauIdEmbedder.runTauID()
 
+if not isData:
+    from PhysicsTools.JetMCAlgos.TauGenJets_cfi import tauGenJets
+    process.tauGenJetCollection = tauGenJets.clone(
+        GenParticles            = cms.InputTag("prunedGenParticles"),
+        includeNeutrinos        = cms.bool(False)
+    )
+else:
+    process.tauGenJetCollection = cms.Sequence()
+
 #rochester correction file to use
 if is2017:
     rochesterCorrectionFile = 'UL/RoccoR2017UL.txt'
@@ -272,6 +295,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   photonsNeutralEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt'),
   photonsPhotonsEffectiveAreas  = cms.FileInPath('RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_V2.txt'),
   taus                          = cms.InputTag("slimmedTausNewID"),
+  tauGenJets                    = cms.InputTag("tauGenJetCollection"),
   packedCandidates              = cms.InputTag("packedPFCandidates"),
   rho                           = cms.InputTag("fixedGridRhoFastjetAll"),
   met                           = cms.InputTag("slimmedMETs"),
@@ -308,6 +332,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   storeBFrag                    = cms.untracked.bool('storeBFrag' in extraContent),
   storeJecSources               = cms.untracked.bool('storeJecSources' in extraContent),
   storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
+  storePrefireComponents        = cms.untracked.bool('storePrefireComponents' in extraContent),
   headerPart1                   = cms.FileInPath("heavyNeutrino/multilep/data/header/soviet.txt"),
   headerPart2                   = cms.FileInPath("heavyNeutrino/multilep/data/header/text.txt"),
 )
@@ -332,4 +357,5 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.bFragSequence *
                      process.rerunMvaIsolationSequence *
                      getattr(process,updatedTauName) *           
+                     process.tauGenJetCollection *
                      process.blackJackAndHookers)

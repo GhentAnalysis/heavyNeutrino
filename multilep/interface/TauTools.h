@@ -15,6 +15,8 @@ namespace TauTools{
 
     const reco::GenParticle* findMatch(const pat::Tau& reco, const std::vector<reco::GenParticle>& genParticles);
 
+    const reco::GenJet* findMatchedGenJet(const reco::GenParticle& genTau, const std::vector<reco::GenJet>& genJets);
+
     const bool considerForMatching(const pat::Tau&, const reco::GenParticle&, const std::vector<reco::GenParticle>& genParticles);
 
     const unsigned tauGenStatus(const reco::GenParticle*);
