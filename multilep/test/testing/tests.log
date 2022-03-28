@@ -1,51 +1,45 @@
-commit 44fd87aa9c324e430df1d7e615f856e68d3155e1
+commit c9074316bfbcb8e285ef039266122f1eba1c6a96
 Author: Joscha Knolle <joscha.knolle@cern.ch>
-Date:   Mon Mar 28 15:44:18 2022 +0200
+Date:   Mon Mar 28 16:01:53 2022 +0200
 
-    Make pileup ID consistent
+    New test run (updated pileup ID, jet substructure information not yet included): see tests.log
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 12Nov2019_UL2018 --> OK
-   Changed:
-      _jetPileupIdFullDisc                               mean:  -0.3834 -->  -0.3825     rms:   0.6237 -->   0.6240    
+   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 09Aug2019_UL2017 --> OK
-   Changed:
-      _jetPileupIdFullDisc                               mean:  -0.4391 -->  -0.4324     rms:   0.6176 -->   0.6208    
+   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
-   Changed:
-      _jetPileupIdFullDisc                               mean:  -0.1677 -->  -0.1678     rms:   0.7091 -->   0.7090    
+   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
+   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullDisc                               mean:  -0.3328 -->  -0.3278     rms:   0.6210 -->   0.6229    
+   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullDisc                               mean:  -0.3873 -->  -0.3789     rms:   0.6400 -->   0.6424    
+   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullDisc                               mean:  -0.1129 -->  -0.1060     rms:   0.6962 -->   0.6952    
+   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   Changed:
-      _jetPileupIdFullDisc                               mean:  -0.1214 -->  -0.1187     rms:   0.6809 -->   0.6795    
+   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
