@@ -1,45 +1,45 @@
-commit c9074316bfbcb8e285ef039266122f1eba1c6a96
+commit b5ba58054f0e4e4b15e3a969ce7d00fb456164ff
 Author: Joscha Knolle <joscha.knolle@cern.ch>
-Date:   Mon Mar 28 16:01:53 2022 +0200
+Date:   Mon Apr 4 14:25:32 2022 +0200
 
-    New test run (updated pileup ID, jet substructure information not yet included): see tests.log
+    Added corrected jet fractions for higgs substructure tuples
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 12Nov2019_UL2018 --> OK
-   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 09Aug2019_UL2017 --> OK
-   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
-   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
-   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
-   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   New: _jetNPFCandidates,_jetNsubTau1,_jetNsubTau2,_jetNsubTau3,_jetQGLikelihood,_nPFCandidates,_pfCandidateCharge,_pfCandidateDxy,_pfCandidateDxyError,_pfCandidateDz,_pfCandidateDzError,_pfCandidateE,_pfCandidateEta,_pfCandidateJetIndex,_pfCandidateLostInnerHits,_pfCandidatePdgId,_pfCandidatePhi,_pfCandidatePt,_pfCandidatePvAssociationQuality,_pfCandidateTrackHighPurity
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
