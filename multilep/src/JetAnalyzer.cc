@@ -284,6 +284,11 @@ void JetAnalyzer::beginJob(TTree* outputTree){
         outputTree->Branch("_jetNsubTau2",                     &_jetNsubTau2,                     "_jetNsubTau2[_nJets]/D");
         outputTree->Branch("_jetNsubTau3",                     &_jetNsubTau3,                     "_jetNsubTau3[_nJets]/D");
         outputTree->Branch("_jetQGLikelihood",                 &_jetQGLikelihood,                 "_jetQGLikelihood[_nJets]/D");
+        outputTree->Branch("_jetCorrNeutralHadronFraction",    &_jetCorrNeutralHadronFraction,    "_jetCorrNeutralHadronFraction[_nJets]/D");
+        outputTree->Branch("_jetCorrChargedHadronFraction",    &_jetCorrChargedHadronFraction,    "_jetCorrChargedHadronFraction[_nJets]/D");
+        outputTree->Branch("_jetCorrNeutralEmFraction",        &_jetCorrNeutralEmFraction,        "_jetCorrNeutralEmFraction[_nJets]/D");
+        outputTree->Branch("_jetCorrChargedEmFraction",        &_jetCorrChargedEmFraction,        "_jetCorrChargedEmFraction[_nJets]/D");
+        outputTree->Branch("_jetCorrMuonFraction",             &_jetCorrMuonFraction,             "_jetCorrMuonFraction[_nJets]/D");
         outputTree->Branch("_jetNPFCandidates",                &_jetNPFCandidates,                "_jetNPFCandidates[_nJets]/i");
         outputTree->Branch("_nPFCandidates",                   &_nPFCandidates,                   "_nPFCandidates/i");
         outputTree->Branch("_pfCandidateJetIndex",             &_pfCandidateJetIndex,             "_pfCandidateJetIndex[_nPFCandidates]/i");
@@ -502,6 +507,12 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
             _jetNsubTau2[_nJets] = jet.userFloat("Njettiness:tau2");
             _jetNsubTau3[_nJets] = jet.userFloat("Njettiness:tau3");
             _jetQGLikelihood[_nJets] = jet.userFloat("QGTagger:qgLikelihood");
+
+            _jetCorrNeutralHadronFraction[_nJets] = jet.neutralHadronEnergy() / jet.correctedP4(0).E();
+            _jetCorrChargedHadronFraction[_nJets] = jet.chargedHadronEnergy() / jet.correctedP4(0).E();
+            _jetCorrNeutralEmFraction[_nJets]     = jet.neutralEmEnergy() / jet.correctedP4(0).E();
+            _jetCorrChargedEmFraction[_nJets]     = jet.chargedEmEnergy() / jet.correctedP4(0).E();
+            _jetCorrMuonFraction[_nJets]          = jet.muonEnergy() / jet.correctedP4(0).E();
 
             _jetNPFCandidates[_nJets] = 0;
             for(unsigned i=0; i<jet.numberOfDaughters(); i++) {

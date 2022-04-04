@@ -90,6 +90,11 @@ class JetAnalyzer {
         double   _jetNsubTau2[nJets_max];
         double   _jetNsubTau3[nJets_max];
         double   _jetQGLikelihood[nJets_max];
+        double   _jetCorrChargedHadronFraction[nJets_max];
+        double   _jetCorrNeutralHadronFraction[nJets_max];
+        double   _jetCorrNeutralEmFraction[nJets_max];
+        double   _jetCorrChargedEmFraction[nJets_max];
+        double   _jetCorrMuonFraction[nJets_max];
         unsigned _jetNPFCandidates[nJets_max];
         unsigned _nPFCandidates = 0;
         unsigned _pfCandidateJetIndex[nPFCandidates_max];
