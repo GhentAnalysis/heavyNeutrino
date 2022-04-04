@@ -275,6 +275,7 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetChargedHadronFraction",  &_jetChargedHadronFraction, "_jetChargedHadronFraction[_nJets]/D");
     outputTree->Branch("_jetNeutralEmFraction",      &_jetNeutralEmFraction,     "_jetNeutralEmFraction[_nJets]/D");
     outputTree->Branch("_jetChargedEmFraction",      &_jetChargedEmFraction,     "_jetChargedEmFraction[_nJets]/D");
+    outputTree->Branch("_jetMuonFraction",           &_jetMuonFraction,          "_jetMuonFraction[_nJets]/D");
     outputTree->Branch("_jetHFHadronFraction",       &_jetHFHadronFraction,      "_jetHFHadronFraction[_nJets]/D");
     outputTree->Branch("_jetHFEmFraction",           &_jetHFEmFraction,          "_jetHFEmFraction[_nJets]/D");
 
@@ -492,6 +493,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetChargedHadronFraction[_nJets] = jet.chargedHadronEnergyFraction();
         _jetNeutralEmFraction[_nJets]     = jet.neutralEmEnergyFraction();
         _jetChargedEmFraction[_nJets]     = jet.chargedEmEnergyFraction();
+        _jetMuonFraction[_nJets]          = jet.muonEnergyFraction();
         _jetHFHadronFraction[_nJets]      = jet.HFHadronEnergyFraction();
         _jetHFEmFraction[_nJets]          = jet.HFEMEnergyFraction();
 

@@ -74,6 +74,7 @@ class JetAnalyzer {
         double   _jetNeutralHadronFraction[nJets_max];
         double   _jetNeutralEmFraction[nJets_max];
         double   _jetChargedEmFraction[nJets_max];
+        double   _jetMuonFraction[nJets_max];
         double   _jetHFHadronFraction[nJets_max];
         double   _jetHFEmFraction[nJets_max];
         double   _jetPileupIdFullDisc[nJets_max];
