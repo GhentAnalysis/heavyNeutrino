@@ -26,7 +26,7 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
         _corrMETx_allVariationsUp[ source ];
         _corrMETy_allVariationsDown[ source ];
         _corrMETy_allVariationsUp[ source ];
-    }   
+    }
 
     std::vector< std::string > jecSourcesGrouped = { "Absolute", "Absolute_2016", "BBEC1", "BBEC1_2016", "EC2", "EC2_2016", "FlavorQCD", "HF", "HF_2016", "RelativeBal", "RelativeSample_2016", "Total" };
 
@@ -49,7 +49,7 @@ JetAnalyzer::JetAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
         _corrMETx_groupedVariationsDown[ source ];
         _corrMETx_groupedVariationsUp[ source ];
         _corrMETy_groupedVariationsDown[ source ];
-        _corrMETy_groupedVariationsUp[ source ];       
+        _corrMETy_groupedVariationsUp[ source ];
     }
 
     std::vector< JetCorrectorParameters > JECParameters;
@@ -68,11 +68,11 @@ JetAnalyzer::~JetAnalyzer(){
 
 
 std::vector<float> JetAnalyzer::getSubCorrections(double rawPt, double eta, double rho, double area)
-{   
+{
     jetCorrector->setJetEta(eta);
     jetCorrector->setRho(rho);
     jetCorrector->setJetA(area);
-    jetCorrector->setJetPt(rawPt); 
+    jetCorrector->setJetPt(rawPt);
     std::vector< float > corrections = jetCorrector->getSubCorrections();
     return corrections;
 }
@@ -83,7 +83,7 @@ double py(double pt, double phi) { return pt*sin(phi); };
 
 
 std::pair<double, double> JetAnalyzer::getMETCorrectionPxPy(double corrPt, double rawPt, double rawEta, double rawMuonSubtractedPt, double phi, double emf, double rho, double area, const std::string& source, unsigned jetIndex, double jecShift)
-{      
+{
     std::vector< float > corrections = getSubCorrections(rawPt, rawEta, rho, area);
 
     double l1corrptNoMuon = rawMuonSubtractedPt*corrections.front();
@@ -91,38 +91,38 @@ std::pair<double, double> JetAnalyzer::getMETCorrectionPxPy(double corrPt, doubl
     double PT_muon        = rawPt - rawMuonSubtractedPt;
     double PT_L1L2L3      = fullcorrpt + PT_muon;
     double PT_L1          = l1corrptNoMuon + PT_muon;
-   
+
     float f = PT_L1L2L3*(jecShift/corrPt);
-   
+
     if( emf > 0.90 or fullcorrpt < 15. || ( std::abs(rawEta) > 9.9 ) ) return {0., 0.};
 
     float ptdiff = (PT_L1 - f);
-   
+
     std::pair<double, double> corr = {px(ptdiff, phi), py(ptdiff, phi)};
 
-    return corr; 
+    return corr;
 }
 
 void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat::Jet >& jets, const double rho)
 {
     for (auto it=_corrMETx_groupedVariationsDown.begin(); it!=_corrMETx_groupedVariationsDown.end(); ++it)
-    {	
+    {
         std::string source = it->first;
         _corrMETx_groupedVariationsDown[ source ] = met.uncorPx();
         _corrMETx_groupedVariationsUp[ source ] = met.uncorPx();
         _corrMETy_groupedVariationsDown[ source ] = met.uncorPy();
         _corrMETy_groupedVariationsUp[ source ] = met.uncorPy();
-    }   
+    }
 
     for (auto it=_corrMETx_allVariationsDown.begin(); it!=_corrMETx_allVariationsDown.end(); ++it)
-    {	
+    {
         std::string source = it->first;
         _corrMETx_allVariationsDown[ source ] = met.uncorPx();
         _corrMETx_allVariationsUp[ source ] = met.uncorPx();
         _corrMETy_allVariationsDown[ source ] = met.uncorPy();
         _corrMETy_allVariationsUp[ source ] = met.uncorPy();
     }
-   
+
 //   std::cout << "-----" << std::endl;
     //loop over all jets
     int iJet = 0;
@@ -131,13 +131,13 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
         //make lorentzVector of raw jet pt
         TLorentzVector jetV;
         jetV.SetPtEtaPhiE(jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jet.correctedP4("Uncorrected").Phi(), jet.correctedP4("Uncorrected").E());
-       
+
         //clean jet from muons
         const std::vector<reco::CandidatePtr>& daughters = jet.daughterPtrVector();
         for(auto& daughterPtr : daughters)
-        {	     
+        {
             const reco::PFCandidate* daughter = dynamic_cast<const reco::PFCandidate* >( daughterPtr.get() );
-            const reco::Candidate* muon = (daughter != nullptr ?  
+            const reco::Candidate* muon = (daughter != nullptr ?
                     (daughter->muonRef().isNonnull() ? daughter->muonRef().get() : nullptr)
                     : daughterPtr.get() );
             if(muon != nullptr && ( muon->isGlobalMuon() || muon->isStandAloneMuon() ) )
@@ -152,15 +152,15 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
 //	 _jetPt_allVariationsDown["Total"][iJet] << " eta=" << jet.eta() << std::endl;
 
         for (auto it=_corrMETx_groupedVariationsDown.begin(); it!=_corrMETx_groupedVariationsDown.end(); ++it)
-        {	
+        {
             std::string source = it->first;
 
-            //get JEC on px and py 
+            //get JEC on px and py
             std::pair<double, double> corrUp = getMETCorrectionPxPy(jet.pt(), jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
                     jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, _jetPt_groupedVariationsUp[source][iJet]);
             std::pair<double, double> corrDown = getMETCorrectionPxPy(jet.pt(), jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
                     jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, _jetPt_groupedVariationsDown[source][iJet]);
-	   
+
             //apply corrections to current met values
             _corrMETx_groupedVariationsDown[ source ] += corrDown.first;
             _corrMETy_groupedVariationsDown[ source ] += corrDown.second;
@@ -169,7 +169,7 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
         }
 
         for (auto it=_corrMETx_allVariationsDown.begin(); it!=_corrMETx_allVariationsDown.end(); ++it)
-        {	
+        {
             std::string source = it->first;
 
             //get JEC on px and py
@@ -177,17 +177,17 @@ void JetAnalyzer::correctedMETAndPhi(const pat::MET& met, const std::vector< pat
                     jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, _jetPt_allVariationsUp[source][iJet]);
             std::pair<double, double> corrDown = getMETCorrectionPxPy(jet.pt(), jet.correctedP4("Uncorrected").Pt(), jet.correctedP4("Uncorrected").Eta(), jetV.Pt(),
                     jetV.Phi(), jet.neutralEmEnergyFraction() + jet.chargedEmEnergyFraction(), rho, jet.jetArea(), source, iJet, _jetPt_allVariationsDown[source][iJet]);
-	   
+
 //	   if( source == "Total" )
 //	     std::cout << "METx contribution from jet #" << iJet << " Up=" << corrUp.first << " Down=" << corrDown.first << std::endl;
-	   
+
             //apply corrections to current met values
             _corrMETx_allVariationsDown[ source ] += corrDown.first;
             _corrMETy_allVariationsDown[ source ] += corrDown.second;
             _corrMETx_allVariationsUp[ source ] += corrUp.first;
             _corrMETy_allVariationsUp[ source ] += corrUp.second;
         }
-       
+
         iJet ++;
     }
 
@@ -260,23 +260,52 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_jetIsTightLepVeto",         &_jetIsTightLepVeto,        "_jetIsTightLepVeto[_nJets]/O");
     outputTree->Branch("_jetPileupIdFullDisc",       &_jetPileupIdFullDisc,      "_jetPileupIdFullDisc[_nJets]/D");
     outputTree->Branch("_jetPileupIdFullId",         &_jetPileupIdFullId,        "_jetPileupIdFullId[_nJets]/I");
-   
+
     if( ! multilepAnalyzer->isData() ) {
-       
+
        outputTree->Branch("_jetHasGen",                 &_jetHasGen,                "_jetHasGen[_nJets]/O");
        outputTree->Branch("_jetGenPt",                  &_jetGenPt,                 "_jetGenPt[_nJets]/D");
        outputTree->Branch("_jetGenEta",                 &_jetGenEta,                "_jetGenEta[_nJets]/D");
        outputTree->Branch("_jetGenPhi",                 &_jetGenPhi,                "_jetGenPhi[_nJets]/D");
        outputTree->Branch("_jetGenE",                   &_jetGenE,                  "_jetGenE[_nJets]/D");
-       
-    }   
+
+    }
 
     outputTree->Branch("_jetNeutralHadronFraction",  &_jetNeutralHadronFraction, "_jetNeutralHadronFraction[_nJets]/D");
     outputTree->Branch("_jetChargedHadronFraction",  &_jetChargedHadronFraction, "_jetChargedHadronFraction[_nJets]/D");
     outputTree->Branch("_jetNeutralEmFraction",      &_jetNeutralEmFraction,     "_jetNeutralEmFraction[_nJets]/D");
     outputTree->Branch("_jetChargedEmFraction",      &_jetChargedEmFraction,     "_jetChargedEmFraction[_nJets]/D");
+    outputTree->Branch("_jetMuonFraction",           &_jetMuonFraction,          "_jetMuonFraction[_nJets]/D");
     outputTree->Branch("_jetHFHadronFraction",       &_jetHFHadronFraction,      "_jetHFHadronFraction[_nJets]/D");
     outputTree->Branch("_jetHFEmFraction",           &_jetHFEmFraction,          "_jetHFEmFraction[_nJets]/D");
+
+    if(multilepAnalyzer->storeJetSubstructure) {
+        outputTree->Branch("_jetNsubTau1",                     &_jetNsubTau1,                     "_jetNsubTau1[_nJets]/D");
+        outputTree->Branch("_jetNsubTau2",                     &_jetNsubTau2,                     "_jetNsubTau2[_nJets]/D");
+        outputTree->Branch("_jetNsubTau3",                     &_jetNsubTau3,                     "_jetNsubTau3[_nJets]/D");
+        outputTree->Branch("_jetQGLikelihood",                 &_jetQGLikelihood,                 "_jetQGLikelihood[_nJets]/D");
+        outputTree->Branch("_jetCorrNeutralHadronFraction",    &_jetCorrNeutralHadronFraction,    "_jetCorrNeutralHadronFraction[_nJets]/D");
+        outputTree->Branch("_jetCorrChargedHadronFraction",    &_jetCorrChargedHadronFraction,    "_jetCorrChargedHadronFraction[_nJets]/D");
+        outputTree->Branch("_jetCorrNeutralEmFraction",        &_jetCorrNeutralEmFraction,        "_jetCorrNeutralEmFraction[_nJets]/D");
+        outputTree->Branch("_jetCorrChargedEmFraction",        &_jetCorrChargedEmFraction,        "_jetCorrChargedEmFraction[_nJets]/D");
+        outputTree->Branch("_jetCorrMuonFraction",             &_jetCorrMuonFraction,             "_jetCorrMuonFraction[_nJets]/D");
+        outputTree->Branch("_jetNPFCandidates",                &_jetNPFCandidates,                "_jetNPFCandidates[_nJets]/i");
+        outputTree->Branch("_nPFCandidates",                   &_nPFCandidates,                   "_nPFCandidates/i");
+        outputTree->Branch("_pfCandidateJetIndex",             &_pfCandidateJetIndex,             "_pfCandidateJetIndex[_nPFCandidates]/i");
+        outputTree->Branch("_pfCandidatePt",                   &_pfCandidatePt,                   "_pfCandidatePt[_nPFCandidates]/D");
+        outputTree->Branch("_pfCandidateEta",                  &_pfCandidateEta,                  "_pfCandidateEta[_nPFCandidates]/D");
+        outputTree->Branch("_pfCandidatePhi",                  &_pfCandidatePhi,                  "_pfCandidatePhi[_nPFCandidates]/D");
+        outputTree->Branch("_pfCandidateE",                    &_pfCandidateE,                    "_pfCandidateE[_nPFCandidates]/D");
+        outputTree->Branch("_pfCandidateCharge",               &_pfCandidateCharge,               "_pfCandidateCharge[_nPFCandidates]/I");
+        outputTree->Branch("_pfCandidatePdgId",                &_pfCandidatePdgId,                "_pfCandidatePdgId[_nPFCandidates]/I");
+        outputTree->Branch("_pfCandidateLostInnerHits",        &_pfCandidateLostInnerHits,        "_pfCandidateLostInnerHits[_nPFCandidates]/I");
+        outputTree->Branch("_pfCandidateTrackHighPurity",      &_pfCandidateTrackHighPurity,      "_pfCandidateTrackHighPurity[_nPFCandidates]/O");
+        outputTree->Branch("_pfCandidatePvAssociationQuality", &_pfCandidatePvAssociationQuality, "_pfCandidatePvAssociationQuality[_nPFCandidates]/I");
+        outputTree->Branch("_pfCandidateDxy",                  &_pfCandidateDxy,                  "_pfCandidateDxy[_nPFCandidates]/D");
+        outputTree->Branch("_pfCandidateDz",                   &_pfCandidateDz,                   "_pfCandidateDz[_nPFCandidates]/D");
+        outputTree->Branch("_pfCandidateDxyError",             &_pfCandidateDxyError,             "_pfCandidateDxyError[_nPFCandidates]/D");
+        outputTree->Branch("_pfCandidateDzError",              &_pfCandidateDzError,              "_pfCandidateDzError[_nPFCandidates]/D");
+    }
 
     outputTree->Branch("_nJetsPuppi",                &_nJetsPuppi,               "_nJetsPuppi/i");
     outputTree->Branch("_jetPuppiPt",                &_jetPuppiPt,               "_jetPuppiPt[_nJetsPuppi]/D");
@@ -375,6 +404,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<double> rho                            = getHandle(iEvent, multilepAnalyzer->rhoToken);
 
     _nJets = 0;
+    _nPFCandidates = 0;
 
     for(const auto& jet : *jets){
         if(_nJets == nJets_max) break;
@@ -383,7 +413,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
 
-        if( jet.hasUserFloat("pileupJetId:fullDiscriminant") ) _jetPileupIdFullDisc[_nJets] = jet.userFloat("pileupJetId:fullDiscriminant");
+        if( jet.hasUserFloat("pileupJetIdUpdated:fullDiscriminant") ) _jetPileupIdFullDisc[_nJets] = jet.userFloat("pileupJetIdUpdated:fullDiscriminant");
         if( jet.hasUserInt("pileupJetIdUpdated:fullId") ) _jetPileupIdFullId[_nJets] = jet.userInt("pileupJetIdUpdated:fullId");
 
         //find smeared equivalents of nominal jet
@@ -423,13 +453,13 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
         //split of JEC uncertainties into separate sources
         if( multilepAnalyzer->storeJecSources )
-        {	   
+        {
             fillJetUncertaintySources( jetGroupedCorParameters, _jetPt_groupedVariationsDown, _jetPt_groupedVariationsUp, jet, _nJets );
             fillJetUncertaintySources( jetSourcesCorParameters, _jetPt_allVariationsDown, _jetPt_allVariationsUp, jet, _nJets );
 
             fillJetUncertaintySources( jetGroupedCorParameters, _jetSmearedPt_groupedVariationsDown, _jetSmearedPt_groupedVariationsUp, *jetSmearedIt, _nJets );
             fillJetUncertaintySources( jetSourcesCorParameters, _jetSmearedPt_allVariationsDown, _jetSmearedPt_allVariationsUp, *jetSmearedIt, _nJets );
-        }       
+        }
 
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
@@ -451,7 +481,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetDeepCsv[_nJets]               = _jetDeepCsv_b[_nJets] + _jetDeepCsv_bb[_nJets];
         if( std::isnan( _jetDeepCsv[_nJets] ) ) _jetDeepCsv[_nJets] = 0.;
 
-        //DeepFlavor taggeer 
+        //DeepFlavor taggeer
         _jetDeepFlavor_b[_nJets]          = jet.bDiscriminator("pfDeepFlavourJetTags:probb");
         _jetDeepFlavor_bb[_nJets]         = jet.bDiscriminator("pfDeepFlavourJetTags:probbb");
         _jetDeepFlavor_lepb[_nJets]       = jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
@@ -468,27 +498,72 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
         _jetChargedHadronFraction[_nJets] = jet.chargedHadronEnergyFraction();
         _jetNeutralEmFraction[_nJets]     = jet.neutralEmEnergyFraction();
         _jetChargedEmFraction[_nJets]     = jet.chargedEmEnergyFraction();
+        _jetMuonFraction[_nJets]          = jet.muonEnergyFraction();
         _jetHFHadronFraction[_nJets]      = jet.HFHadronEnergyFraction();
         _jetHFEmFraction[_nJets]          = jet.HFEMEnergyFraction();
+
+        if(multilepAnalyzer->storeJetSubstructure) {
+            _jetNsubTau1[_nJets] = jet.userFloat("Njettiness:tau1");
+            _jetNsubTau2[_nJets] = jet.userFloat("Njettiness:tau2");
+            _jetNsubTau3[_nJets] = jet.userFloat("Njettiness:tau3");
+            _jetQGLikelihood[_nJets] = jet.userFloat("QGTagger:qgLikelihood");
+
+            _jetCorrNeutralHadronFraction[_nJets] = jet.neutralHadronEnergy() / jet.correctedP4(0).E();
+            _jetCorrChargedHadronFraction[_nJets] = jet.chargedHadronEnergy() / jet.correctedP4(0).E();
+            _jetCorrNeutralEmFraction[_nJets]     = jet.neutralEmEnergy() / jet.correctedP4(0).E();
+            _jetCorrChargedEmFraction[_nJets]     = jet.chargedEmEnergy() / jet.correctedP4(0).E();
+            _jetCorrMuonFraction[_nJets]          = jet.muonEnergy() / jet.correctedP4(0).E();
+
+            _jetNPFCandidates[_nJets] = 0;
+            for(unsigned i=0; i<jet.numberOfDaughters(); i++) {
+                if(_nPFCandidates>=nPFCandidates_max) {
+                    ++_jetNPFCandidates[_nJets];
+                    ++_nPFCandidates;
+                    continue;
+                }
+
+                const auto daughter = dynamic_cast<const pat::PackedCandidate*>(jet.daughter(i));
+
+                _pfCandidateJetIndex[_nPFCandidates] = _nJets;
+                _pfCandidatePt[_nPFCandidates] = daughter->pt();
+                _pfCandidateEta[_nPFCandidates] = daughter->eta();
+                _pfCandidatePhi[_nPFCandidates] = daughter->phi();
+                _pfCandidateE[_nPFCandidates] = daughter->energy();
+                _pfCandidateCharge[_nPFCandidates] = daughter->charge();
+                _pfCandidatePdgId[_nPFCandidates] = daughter->pdgId();
+                _pfCandidateLostInnerHits[_nPFCandidates] = daughter->lostInnerHits();
+                _pfCandidateTrackHighPurity[_nPFCandidates] = daughter->trackHighPurity();
+                _pfCandidatePvAssociationQuality[_nPFCandidates] = daughter->pvAssociationQuality();
+                _pfCandidateDxy[_nPFCandidates] = daughter->dxy();
+                _pfCandidateDz[_nPFCandidates] = daughter->dz();
+
+                const bool hasTrackDetails = daughter->hasTrackDetails();
+                _pfCandidateDxyError[_nPFCandidates] = hasTrackDetails ? daughter->dxyError() : -1.0;
+                _pfCandidateDzError[_nPFCandidates] = hasTrackDetails ? daughter->dzError() : -1.0;
+
+                ++_jetNPFCandidates[_nJets];
+                ++_nPFCandidates;
+            }
+        }
 
         _jetHasGen[_nJets] = 0;
         _jetGenPt[_nJets] = 0;
         _jetGenEta[_nJets] = 0;
         _jetGenPhi[_nJets] = 0;
         _jetGenE[_nJets] = 0;
-       
-        if( ! multilepAnalyzer->isData() ) {	    
+
+        if( ! multilepAnalyzer->isData() ) {
 	   if( jet.genJet() != NULL ) {
-	      
+
 	      _jetHasGen[_nJets] = 1;
 	      _jetGenPt[_nJets] = jet.genJet()->pt();
 	      _jetGenEta[_nJets] = jet.genJet()->eta();
 	      _jetGenPhi[_nJets] = jet.genJet()->phi();
 	      _jetGenE[_nJets] = jet.genJet()->energy();
-	      
-	   }       
-	}       
-       
+
+	   }
+	}
+
         ++_nJets;
     }
 
@@ -560,7 +635,7 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
     _metPuppiPhiUnclDown  = metPuppi.shiftedPhi(pat::MET::UnclusteredEnDown);
     _metPuppiPhiResDown   = metPuppi.shiftedPhi(pat::MET::JetResDown);
     _metPuppiPhiResUp     = metPuppi.shiftedPhi(pat::MET::JetResUp);
-   
+
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
     if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;
     return true;

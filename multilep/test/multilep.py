@@ -75,7 +75,8 @@ process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 # Import some objectsequences sequence (details in cff files)
 #
 from heavyNeutrino.multilep.jetSequence_cff import addJetSequence
-addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim)
+storeJetSubstructure = 'storeJetSubstructure' in extraContent
+addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim, storeJetSubstructure)
 unc_prefix = ''
 # if isFastSim:
 #   if is2018:   unc_prefix = 'Autumn18_FastSimV1_MC'
@@ -90,16 +91,16 @@ unc_prefix = ''
 #       if 'Run2018D' in inputFile: unc_prefix = 'Summer19UL18_RunD_V5_DATA'
 #     else:
 #       unc_prefix = 'Summer19UL18_V5_MC'
-#   elif is2017: 
+#   elif is2017:
 #     if isData:
 #       if 'Run2017B' in inputFile: unc_prefix = 'Summer19UL17_RunB_V5_DATA'
 #       if 'Run2017C' in inputFile: unc_prefix = 'Summer19UL17_RunC_V5_DATA'
 #       if 'Run2017D' in inputFile: unc_prefix = 'Summer19UL17_RunD_V5_DATA'
 #       if 'Run2017E' in inputFile: unc_prefix = 'Summer19UL17_RunE_V5_DATA'
 #       if 'Run2017F' in inputFile: unc_prefix = 'Summer19UL17_RunF_V5_DATA'
-#     else: 
+#     else:
 #       unc_prefix = 'Summer19UL17_V5_MC'
-#   elif is2016preVFP: 
+#   elif is2016preVFP:
 #     if isData:
 #       if 'Run2016B' in inputFile or 'Run2016C' in inputFile or 'Run2016D' in inputFile: unc_prefix = 'Summer19UL16APV_RunBCD_V7_DATA'
 #       if 'Run2016E' in inputFile or 'Run2016F' in inputFile: unc_prefix = 'Summer19UL16APV_RunEF_V7_DATA'
@@ -140,16 +141,16 @@ from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 
 if is2018: setupEgammaPostRecoSeq(process,
                        runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)
-                       era='2018-UL')  
+                       era='2018-UL')
 if is2017: setupEgammaPostRecoSeq(process,
                        runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)
-                       era='2017-UL')  
+                       era='2017-UL')
 if is2016preVFP: setupEgammaPostRecoSeq(process,
                        runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)
-                       era='2016preVFP-UL')  
+                       era='2016preVFP-UL')
 else: setupEgammaPostRecoSeq(process,
                        runVID=False, #saves CPU time by not needlessly re-running VID, if you want the Fall17V2 IDs, set this to True or remove (default is True)
-                       era='2016postVFP-UL')  
+                       era='2016postVFP-UL')
 
 #
 # L1 prefiring
@@ -184,16 +185,16 @@ process.prefiringweight = l1PrefiringWeightProducer.clone(
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/ParticleLevelProducer
 #
 if ('storeParticleLevel' in extraContent or 'storeBFrag' in extraContent) and not isData:
-    
+
   process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-  
+
   if 'storeParticleLevel' in extraContent:
     process.load("GeneratorInterface.RivetInterface.mergedGenParticles_cfi")
     process.load("GeneratorInterface.RivetInterface.genParticles2HepMC_cfi")
     process.genParticles2HepMC.genParticles = cms.InputTag("mergedGenParticles")
     process.genParticles2HepMC.signalParticlePdgIds = cms.vint32(6,-6) # for top analyses, though not yet sure what it exactlye does, I think it is only relevant to find the signal vertex which we currently do not save
     process.load("heavyNeutrino.multilep.particleLevelTTG_cfi")
-    
+
     process.particleLevelSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel)
 
   if 'storeBFrag' in extraContent:
@@ -207,7 +208,7 @@ if ('storeParticleLevel' in extraContent or 'storeBFrag' in extraContent) and no
     process.particleLevel.excludeNeutrinosFromJetClustering = False
     process.load('TopQuarkAnalysis.BFragmentationAnalyzer.bfragWgtProducer_cfi')
     process.bFragSequence = cms.Sequence(process.mergedGenParticles * process.genParticles2HepMC * process.particleLevel * process.bfragWgtProducer)
-    
+
 if 'storeParticleLevel' not in extraContent or isData: process.particleLevelSequence = cms.Sequence()
 if 'storeBFrag' not in extraContent or isData: process.bFragSequence = cms.Sequence()
 
@@ -333,6 +334,7 @@ process.blackJackAndHookers = cms.EDAnalyzer('multilep',
   storeJecSources               = cms.untracked.bool('storeJecSources' in extraContent),
   storeAllTauID                 = cms.untracked.bool('storeAllTauID' in extraContent),
   storePrefireComponents        = cms.untracked.bool('storePrefireComponents' in extraContent),
+  storeJetSubstructure          = cms.untracked.bool('storeJetSubstructure' in extraContent),
   headerPart1                   = cms.FileInPath("heavyNeutrino/multilep/data/header/soviet.txt"),
   headerPart2                   = cms.FileInPath("heavyNeutrino/multilep/data/header/text.txt"),
 )
@@ -356,6 +358,6 @@ process.p = cms.Path(process.goodOfflinePrimaryVertices *
                      process.particleLevelSequence *
                      process.bFragSequence *
                      process.rerunMvaIsolationSequence *
-                     getattr(process,updatedTauName) *           
+                     getattr(process,updatedTauName) *
                      process.tauGenJetCollection *
                      process.blackJackAndHookers)

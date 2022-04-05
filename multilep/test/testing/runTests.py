@@ -53,8 +53,9 @@ with open('tests.log', 'w') as logFile:
   logFile.write(system("eval `scram runtime -sh`;git log -n 1;git diff -- . ':(exclude)*.log'"))
 
   def runTest(name, testFile):
+    print 'runTest', name
     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
-    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSources,storePrefireComponents'
+    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSources,storePrefireComponents,storeJetSubstructure'
     logFile.write('Running test: ' + name)
     try:
       system(command)

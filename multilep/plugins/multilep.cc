@@ -62,7 +62,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeBFrag(                                                                iConfig.getUntrackedParameter<bool>("storeBFrag")),
     storeJecSources(                                                           iConfig.getUntrackedParameter<bool>("storeJecSources")),
     storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
-    storePrefireComponents(                                                    iConfig.getUntrackedParameter<bool>("storePrefireComponents"))
+    storePrefireComponents(                                                    iConfig.getUntrackedParameter<bool>("storePrefireComponents")),
+    storeJetSubstructure(                                                      iConfig.getUntrackedParameter<bool>("storeJetSubstructure"))
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -123,7 +124,7 @@ void multilep::beginJob(){
     if( isMC() ) genAnalyzer->beginJob(outputTree);
     if( isMC() && storeParticleLevel) particleLevelAnalyzer->beginJob(outputTree);
     if( isMC() && storeBFrag) bFragAnalyzer->beginJob(outputTree);
-    
+
     triggerAnalyzer->beginJob(outputTree);
     leptonAnalyzer->beginJob(outputTree);
     photonAnalyzer->beginJob(outputTree);
@@ -153,12 +154,12 @@ void multilep::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     if( isSUSY() ) susyAnalyzer->analyze(iEvent);                                        // needs to be run after LheAnalyzer, but before all other models
 
     _nVertex = vertices->size();
-    nVertices->Fill(_nVertex, lheAnalyzer->getWeight()); 
+    nVertices->Fill(_nVertex, lheAnalyzer->getWeight());
 
-    bool applySkim; //better not to shadow class variable with name! // Do not skim if event topology is available on particleLevel 
+    bool applySkim; //better not to shadow class variable with name! // Do not skim if event topology is available on particleLevel
     if( isMC() && storeParticleLevel ) applySkim = !particleLevelAnalyzer->analyze(iEvent);
     else applySkim = true;
-   
+
     if( isMC() && storeBFrag ) bFragAnalyzer->analyze(iEvent);
 
     if(_nVertex == 0)                                                        return;          // Don't consider 0 vertex events

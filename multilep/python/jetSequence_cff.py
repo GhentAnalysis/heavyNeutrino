@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim):
+def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, isFastSim, storeJetSubstructure):
   #
   # Latest JEC through globaltag, see https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
   #
@@ -12,7 +12,7 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
 
   from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
   from CondCore.CondDB.CondDB_cfi import CondDB
- 
+
   #
   # Load specific JEC through sqlite file
   #
@@ -81,11 +81,33 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
       applyJec=True,
       vertexes=cms.InputTag("offlineSlimmedPrimaryVertices")
   )
-  
   process.updatedPatJetsUpdatedJEC.userData.userInts.src += ['pileupJetIdUpdated:fullId']
   process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
 
   process.jetSequence = cms.Sequence(process.patAlgosToolsTask)
+
+  ## Jet substructure variables for Higgs analysis
+  if storeJetSubstructure:
+      from RecoJets.JetProducers.nJettinessAdder_cfi import Njettiness
+      process.Njettiness = Njettiness.clone(
+          src = cms.InputTag('slimmedJets'),
+          Njets = cms.vuint32(range(1,4)),
+          measureDefinition = cms.uint32(0),
+          beta = cms.double(1.0),
+          R0 = cms.double(999.0),
+          axesDefinition = cms.uint32(6),
+          nPass = cms.int32(999),
+          akAxesR0 = cms.double(-999.0)
+      )
+      process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['Njettiness:tau1']
+      process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['Njettiness:tau2']
+      process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['Njettiness:tau3']
+      process.jetSequence *= process.Njettiness
+      from RecoJets.JetProducers.QGTagger_cfi import QGTagger
+      process.load('RecoJets.JetProducers.QGTagger_cfi')
+      process.QGTagger.srcJets = cms.InputTag('slimmedJets')
+      process.updatedPatJetsUpdatedJEC.userData.userFloats.src += ['QGTagger:qgLikelihood']
+      process.jetSequence *= process.QGTagger
 
   # Propagate JEC to MET (need to add fullPatMetSequence to path)
   # https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_or_10
@@ -93,7 +115,7 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
   runMetCorAndUncFromMiniAOD(process,
     isData = isData,
   )
-  
+
   #PUPPI MET
   from PhysicsTools.PatAlgos.slimming.puppiForMET_cff import makePuppiesFromMiniAOD
   makePuppiesFromMiniAOD( process, True );
@@ -105,14 +127,14 @@ def addJetSequence( process, inputFile, isData, is2017, is2018, is2016preVFP, is
   #                           )
   process.puppiNoLep.useExistingWeights = False
   process.puppi.useExistingWeights = False
-  
+
   from CommonTools.PileupAlgos.customizePuppiTune_cff import UpdatePuppiTuneV15
   UpdatePuppiTuneV15(process, not isData)
 
   #Add MET sequences to path
   process.jetSequence *= process.puppiMETSequence
   process.jetSequence *= process.fullPatMetSequence
-  
+
   #
   # Jet energy resolution, see https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Smearing_procedures
   # Run three times the SmearedPATJetProducer for nominal, up and down variations
