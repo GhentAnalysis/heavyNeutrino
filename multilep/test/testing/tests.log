@@ -1,53 +1,45 @@
-commit 82701460d2b1f92e204d942718e98025458d8df2
-Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Jan 11 17:12:31 2022 +0100
+commit b5ba58054f0e4e4b15e3a969ce7d00fb456164ff
+Author: Joscha Knolle <joscha.knolle@cern.ch>
+Date:   Mon Apr 4 14:25:32 2022 +0200
 
-    Upload sample lists used for general sample production
+    Added corrected jet fractions for higgs substructure tuples
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 12Nov2019_UL2018 --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   2.5129     rms:   0.0000 -->   2.8327    
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 09Aug2019_UL2017 --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean: 593504725.0739 -->   2.3824 rms: 601280872.6661 -->   2.7937
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   3.9093     rms:   0.0000 -->   2.8437    
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   3.5450     rms:   0.0000 -->   2.9119    
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   3.0790     rms:   0.0000 -->   2.8298    
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean: 949905221.4943 -->   3.0269 rms: 375216562.5128 -->   2.8915
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   4.3922     rms:   0.0000 -->   2.7005    
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   Changed:
-      _jetPileupIdFullId                                 mean:   0.0000 -->   4.3623     rms:   0.0000 -->   2.6964    
+   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction

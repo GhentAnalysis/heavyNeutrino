@@ -37,6 +37,10 @@ void GenAnalyzer::beginJob(TTree* outputTree){
     outputTree->Branch("_gen_lEta",                  &_gen_lEta,                  "_gen_lEta[_gen_nL]/D");
     outputTree->Branch("_gen_lPhi",                  &_gen_lPhi,                  "_gen_lPhi[_gen_nL]/D");
     outputTree->Branch("_gen_lE",                    &_gen_lE,                    "_gen_lE[_gen_nL]/D");
+    outputTree->Branch("_gen_lVisPt",                &_gen_lVisPt,                "_gen_lVisPt[_gen_nL]/D");
+    outputTree->Branch("_gen_lVisEta",               &_gen_lVisEta,               "_gen_lVisEta[_gen_nL]/D");
+    outputTree->Branch("_gen_lVisPhi",               &_gen_lVisPhi,               "_gen_lVisPhi[_gen_nL]/D");
+    outputTree->Branch("_gen_lVisE",                 &_gen_lVisE,                 "_gen_lVisE[_gen_nL]/D");
     outputTree->Branch("_gen_lFlavor",               &_gen_lFlavor,               "_gen_lFlavor[_gen_nL]/i");
     outputTree->Branch("_gen_lCharge",               &_gen_lCharge,               "_gen_lCharge[_gen_nL]/I");
     outputTree->Branch("_gen_lMomPdg",               &_gen_lMomPdg,               "_gen_lMomPdg[_gen_nL]/I");
@@ -66,6 +70,7 @@ void GenAnalyzer::beginJob(TTree* outputTree){
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> genParticles = getHandle(iEvent, multilepAnalyzer->genParticleToken);
+    edm::Handle<std::vector<reco::GenJet>> tauGenJets = getHandle(iEvent, multilepAnalyzer->tauGenJetsToken);
 
     if(!genParticles.isValid()) return;
 
@@ -102,6 +107,27 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lDecayedHadr[_gen_nL]      = TauTools::decayedHadronically(p, *genParticles);
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
+
+                if(absId == 11 or absId == 13){
+                    _gen_lVisPt[_gen_nL]               = p.pt();
+                    _gen_lVisEta[_gen_nL]              = p.eta();
+                    _gen_lVisPhi[_gen_nL]              = p.phi();
+                    _gen_lVisE[_gen_nL]                = p.energy();
+                } else {
+                    const reco::GenJet* matchedGenJet = TauTools::findMatchedGenJet(p, *tauGenJets);
+                    if(matchedGenJet != nullptr){
+                        _gen_lVisPt[_gen_nL]               = matchedGenJet->pt();
+                        _gen_lVisEta[_gen_nL]              = matchedGenJet->eta();
+                        _gen_lVisPhi[_gen_nL]              = matchedGenJet->phi();
+                        _gen_lVisE[_gen_nL]                = matchedGenJet->energy();
+                    } else {
+                        _gen_lVisPt[_gen_nL]               = p.pt();
+                        _gen_lVisEta[_gen_nL]              = p.eta();
+                        _gen_lVisPhi[_gen_nL]              = p.phi();
+                        _gen_lVisE[_gen_nL]                = p.energy();
+                    }
+                }
+
 
                 if(absId == 11)      _gen_lFlavor[_gen_nL] = 0;
                 else if(absId == 13) _gen_lFlavor[_gen_nL] = 1;

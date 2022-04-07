@@ -47,7 +47,7 @@ if [[ "$gitUser" != "GhentAnalysis" ]]; then
 fi
 
 # Install additional packages
-cd $CMSSW_BASE
+cd $CMSSW_BASE/src
 cp heavyNeutrino/multilep/data/tools/rabit.xml ../config/toolbox/slc7_amd64_gcc820/tools/selected/
 cp heavyNeutrino/multilep/data/tools/xgboost.xml ../config/toolbox/slc7_amd64_gcc820/tools/selected/
 scram setup rabit

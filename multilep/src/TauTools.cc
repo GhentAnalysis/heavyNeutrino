@@ -39,7 +39,7 @@ const bool TauTools::considerForMatching(const pat::Tau& tau, const reco::GenPar
 }
 
 const reco::GenParticle* TauTools::findMatch(const pat::Tau& tau, const std::vector<reco::GenParticle>& genParticles){
-    reco::GenParticle const*match = nullptr;
+    reco::GenParticle const*match{nullptr};
     TLorentzVector recoV(tau.px(), tau.py(), tau.pz(), tau.energy());
     
     double minDeltaR = 0.2;
@@ -56,6 +56,24 @@ const reco::GenParticle* TauTools::findMatch(const pat::Tau& tau, const std::vec
     }
     return match;
 }
+
+const reco::GenJet* TauTools::findMatchedGenJet(const reco::GenParticle& genTau, const std::vector<reco::GenJet>& genJets){
+    reco::GenJet const*match{nullptr};
+    TLorentzVector recoV(genTau.px(), genTau.py(), genTau.pz(), genTau.energy());
+    
+    double minDeltaR = 0.2;
+    for(auto genIt = genJets.cbegin(); genIt != genJets.cend(); ++genIt){    
+        TLorentzVector genV(genIt->px(), genIt->py(), genIt->pz(), genIt->energy());
+        
+        double deltaR = recoV.DeltaR(genV);
+        if(deltaR < minDeltaR){
+            minDeltaR = deltaR;
+            match = &*genIt;
+        }
+    }
+    return match;
+}
+
 
 //As in https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorking2017#MC_Matching
 const unsigned int TauTools::tauGenStatus(const reco::GenParticle* match){
