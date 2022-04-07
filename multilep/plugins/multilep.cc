@@ -60,7 +60,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeGenParticles(                                                         iConfig.getUntrackedParameter<bool>("storeGenParticles")),
     storeParticleLevel(                                                        iConfig.getUntrackedParameter<bool>("storeParticleLevel")),
     storeBFrag(                                                                iConfig.getUntrackedParameter<bool>("storeBFrag")),
-    storeJecSources(                                                           iConfig.getUntrackedParameter<bool>("storeJecSources")),
+    storeJecSourcesAll(                                                        iConfig.getUntrackedParameter<bool>("storeJecSourcesAll")),
+    storeJecSourcesGrouped(                                                    iConfig.getUntrackedParameter<bool>("storeJecSourcesGrouped")),
     storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
     storePrefireComponents(                                                    iConfig.getUntrackedParameter<bool>("storePrefireComponents")),
     storeJetSubstructure(                                                      iConfig.getUntrackedParameter<bool>("storeJetSubstructure"))

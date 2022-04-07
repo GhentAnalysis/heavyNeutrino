@@ -153,7 +153,8 @@ class multilep : public edm::one::EDAnalyzer<edm::one::WatchLuminosityBlocks, ed
         bool                                                     storeGenParticles;
         bool                                                     storeParticleLevel;
         bool                                                     storeBFrag;
-        bool                                                     storeJecSources;
+        bool                                                     storeJecSourcesAll;
+        bool                                                     storeJecSourcesGrouped;
         bool                                                     storeAllTauID;
         bool                                                     storePrefireComponents;
         bool                                                     storeJetSubstructure;
