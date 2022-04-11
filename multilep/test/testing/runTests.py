@@ -55,7 +55,7 @@ with open('tests.log', 'w') as logFile:
   def runTest(name, testFile):
     print 'runTest', name
     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
-    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSources,storePrefireComponents,storeJetSubstructure'
+    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSourcesGrouped,storeJecSourcesAll,storePrefireComponents,storeJetSubstructure'
     logFile.write('Running test: ' + name)
     try:
       system(command)
