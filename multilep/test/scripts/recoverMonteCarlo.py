@@ -58,7 +58,7 @@ def recover_sample(dirname):
                     config.write('config.Data.lumiMask="{}"\n'.format(missing_lumis_file))
                 elif line.count("config.section_('Site')"):
                     config.write("config.section_('Site')\n")
-                    config.write("config.Site.whitelist = ['T2_BE_IIHE']\n")
+                    config.write("config.Site.blacklist = ['T2_IN_TIFR', 'T2_US_Florida']\n")
                 elif 'DEBUG' in line:
                     break
                 else:
