@@ -1,45 +1,50 @@
-commit b5ba58054f0e4e4b15e3a969ce7d00fb456164ff
-Author: Joscha Knolle <joscha.knolle@cern.ch>
-Date:   Mon Apr 4 14:25:32 2022 +0200
+commit 5ffc0bcbcc4109eb82621aec00fe2eddb2b44577
+Author: Liam <liamwezenbeek@hotmail.com>
+Date:   Mon Apr 11 14:48:36 2022 +0200
 
-    Added corrected jet fractions for higgs substructure tuples
+    Add additional flag to MC sample lists
+diff --git a/multilep/test/testing/runTests.py b/multilep/test/testing/runTests.py
+index ba2a6dbf..7a99f142 100755
+--- a/multilep/test/testing/runTests.py
++++ b/multilep/test/testing/runTests.py
+@@ -55,7 +55,7 @@ with open('tests.log', 'w') as logFile:
+   def runTest(name, testFile):
+     print 'runTest', name
+     logFile.write('\n--------------------------------------------------------------------------------------------------\n\n')
+-    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSources,storePrefireComponents,storeJetSubstructure'
++    command = 'eval `scram runtime -sh`;cmsRun ../multilep.py inputFile=' + testFile + ' outputFile=noskim.root events=100 extraContent=storeLheParticles,storeParticleLevel,storeAllTauID,storeJecSourcesGrouped,storeJecSourcesAll,storePrefireComponents,storeJetSubstructure'
+     logFile.write('Running test: ' + name)
+     try:
+       system(command)
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 12Nov2019_UL2018 --> OK
-   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 09Aug2019_UL2017 --> OK
-   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
-   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
-   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
-   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
-   New: _jetCorrChargedEmFraction,_jetCorrChargedHadronFraction,_jetCorrMuonFraction,_jetCorrNeutralEmFraction,_jetCorrNeutralHadronFraction,_jetMuonFraction

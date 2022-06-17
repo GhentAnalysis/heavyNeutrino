@@ -351,24 +351,30 @@ void JetAnalyzer::beginJob(TTree* outputTree){
     if(!multilepAnalyzer->is2018() ) outputTree->Branch("_jetIsLoose", _jetIsLoose, "_jetIsLoose[_nJets]/O"); // WARNING, not recommended to be used, only exists for 2016
 
     // Store splitting of JEC unc into sources
-    if( multilepAnalyzer->storeJecSources ){
+    if( multilepAnalyzer->storeJecSourcesAll ){
         setSourceBranches( outputTree, _jetPt_allVariationsDown, "_jetPt_", "_JECSourcesDown" );
         setSourceBranches( outputTree, _jetPt_allVariationsUp, "_jetPt_", "_JECSourcesUp" );
-        setSourceBranches( outputTree, _jetPt_groupedVariationsDown, "_jetPt_", "_JECGroupedDown" );
-        setSourceBranches( outputTree, _jetPt_groupedVariationsUp, "_jetPt_", "_JECGroupedUp" );
 
         setSourceBranches( outputTree, _jetSmearedPt_allVariationsDown, "_jetSmearedPt_", "_JECSourcesDown" );
         setSourceBranches( outputTree, _jetSmearedPt_allVariationsUp, "_jetSmearedPt_", "_JECSourcesUp" );
-        setSourceBranches( outputTree, _jetSmearedPt_groupedVariationsDown, "_jetSmearedPt_", "_JECGroupedDown" );
-        setSourceBranches( outputTree, _jetSmearedPt_groupedVariationsUp, "_jetSmearedPt_", "_JECGroupedUp" );
 
         setMETSourceBranches( outputTree, _corrMETx_allVariationsDown, "_corrMETx_", "_JECSourcesDown" );
         setMETSourceBranches( outputTree, _corrMETx_allVariationsUp, "_corrMETx_", "_JECSourcesUp" );
-        setMETSourceBranches( outputTree, _corrMETx_groupedVariationsDown, "_corrMETx_", "_JECGroupedDown" );
-        setMETSourceBranches( outputTree, _corrMETx_groupedVariationsUp, "_corrMETx_", "_JECGroupedUp" );
 
         setMETSourceBranches( outputTree, _corrMETy_allVariationsDown, "_corrMETy_", "_JECSourcesDown" );
         setMETSourceBranches( outputTree, _corrMETy_allVariationsUp, "_corrMETy_", "_JECSourcesUp" );
+    }
+   
+    if( multilepAnalyzer->storeJecSourcesGrouped ){
+        setSourceBranches( outputTree, _jetPt_groupedVariationsDown, "_jetPt_", "_JECGroupedDown" );
+        setSourceBranches( outputTree, _jetPt_groupedVariationsUp, "_jetPt_", "_JECGroupedUp" );
+
+        setSourceBranches( outputTree, _jetSmearedPt_groupedVariationsDown, "_jetSmearedPt_", "_JECGroupedDown" );
+        setSourceBranches( outputTree, _jetSmearedPt_groupedVariationsUp, "_jetSmearedPt_", "_JECGroupedUp" );
+
+        setMETSourceBranches( outputTree, _corrMETx_groupedVariationsDown, "_corrMETx_", "_JECGroupedDown" );
+        setMETSourceBranches( outputTree, _corrMETx_groupedVariationsUp, "_corrMETx_", "_JECGroupedUp" );
+
         setMETSourceBranches( outputTree, _corrMETy_groupedVariationsDown, "_corrMETy_", "_JECGroupedDown" );
         setMETSourceBranches( outputTree, _corrMETy_groupedVariationsUp, "_corrMETy_", "_JECGroupedUp" );
     }
@@ -452,15 +458,20 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
 
         //split of JEC uncertainties into separate sources
-        if( multilepAnalyzer->storeJecSources )
+        if( multilepAnalyzer->storeJecSourcesAll )
         {
-            fillJetUncertaintySources( jetGroupedCorParameters, _jetPt_groupedVariationsDown, _jetPt_groupedVariationsUp, jet, _nJets );
             fillJetUncertaintySources( jetSourcesCorParameters, _jetPt_allVariationsDown, _jetPt_allVariationsUp, jet, _nJets );
 
-            fillJetUncertaintySources( jetGroupedCorParameters, _jetSmearedPt_groupedVariationsDown, _jetSmearedPt_groupedVariationsUp, *jetSmearedIt, _nJets );
             fillJetUncertaintySources( jetSourcesCorParameters, _jetSmearedPt_allVariationsDown, _jetSmearedPt_allVariationsUp, *jetSmearedIt, _nJets );
         }
 
+        if( multilepAnalyzer->storeJecSourcesGrouped )
+        {
+            fillJetUncertaintySources( jetGroupedCorParameters, _jetPt_groupedVariationsDown, _jetPt_groupedVariationsUp, jet, _nJets );
+
+            fillJetUncertaintySources( jetGroupedCorParameters, _jetSmearedPt_groupedVariationsDown, _jetSmearedPt_groupedVariationsUp, *jetSmearedIt, _nJets );
+        }
+       
         _jetPt_Uncorrected[_nJets]        = jet.correctedP4("Uncorrected").Pt();
         _jetPt_L1[_nJets]                 = jet.correctedP4("L1FastJet").Pt();
         _jetPt_L2[_nJets]                 = jet.correctedP4("L2Relative").Pt();
