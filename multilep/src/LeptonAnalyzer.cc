@@ -498,6 +498,7 @@ template <typename Lepton> void LeptonAnalyzer::fillLeptonGenVars(const Lepton& 
     _lIsPrompt[_nL]             = match && (abs(lepton.pdgId()) == abs(match->pdgId()) || match->pdgId() == 22) && GenTools::isPrompt(*match, genParticles); // only when matched to its own flavor or a photon
     _lMatchPdgId[_nL]           = match != nullptr ? match->pdgId() : 0;
     _lMatchCharge[_nL]          = match != nullptr ? match->charge() : 0;
+    _lMatchPt[_nL]              = match ? match->pt() : 0.;
     _lHasMatch[_nL]             = ( match != nullptr );
     _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
@@ -512,7 +513,6 @@ void LeptonAnalyzer::fillTauGenVars(const pat::Tau& tau, const std::vector<reco:
     _tauGenStatus[_nL]          = TauTools::tauGenStatus(match);        
     _lIsPrompt[_nL]             = match && _tauGenStatus[_nL] != 6; 
     _lMatchPdgId[_nL]           = match ? match->pdgId() : 0;
-    _lMatchPt[_nL]              = match ? match->pt() : 0.;
     _lProvenance[_nL]           = GenTools::provenance(match, genParticles);
     _lProvenanceCompressed[_nL] = GenTools::provenanceCompressed(match, genParticles, _lIsPrompt[_nL]);
     _lProvenanceConversion[_nL] = GenTools::provenanceConversion(match, genParticles);

@@ -411,10 +411,11 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
     _nJets = 0;
     _nPFCandidates = 0;
+    _nJetsPuppi = 0;
 
     for(const auto& jet : *jets){
         if(_nJets == nJets_max) break;
-
+        
         _jetIsLoose[_nJets]        = jetIsLoose(jet, multilepAnalyzer->is2017() || multilepAnalyzer->is2018() );
         _jetIsTight[_nJets]        = jetIsTight(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
         _jetIsTightLepVeto[_nJets] = jetIsTightLepVeto(jet, multilepAnalyzer->is2017(), multilepAnalyzer->is2018() );
