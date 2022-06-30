@@ -19,6 +19,25 @@ def recover_sample(dirname):
         'MINIAODSIM',                           # datatier name
     ])
     print 'Identified sample name:', samplename
+
+    if any(SUFFIX in prt for prt in parts):
+        print("ERROR: this is a recovery task -> temporarily disabled")
+        return
+
+    recoveryExistsName = dirname + '_' + SUFFIX
+    
+    if os.path.exists(recoveryExistsName):
+        print("ERROR: this is already recovered -> temporarily disabled")
+        return
+
+    if (len(recoveryExistsName.split('/')[-1]) > 100):
+        shortened = recoveryExistsName.split('/')[-1][:100]
+        dirnameTempToCheck = '/'.join(parts[:-1]) + shortened
+            
+        if os.path.exists(dirnameTempToCheck):
+            print("ERROR: this is already recovered -> temporarily disabled")
+            return
+
     # get DAS information about all lumisections in sample
     lines = subprocess.check_output(
         'dasgoclient -query="lumi dataset={}"'.format(samplename),
@@ -27,6 +46,11 @@ def recover_sample(dirname):
     all_lumis = sorted(map(int, lines.split()))
     # run crab to get list of processed lumisections
     subprocess.call('crab report -d {}'.format(dirname), shell=True)
+
+    if (not os.path.exists(os.path.join(dirname, 'results/processedLumis.json'))):
+        print("Error: file {} does not exist. Crab report likely executed > 30 days after initial submission. Skipping dataset {}".format(os.path.join(dirname, 'results/processedLumis.json'), dirname))
+        return
+
     with open(os.path.join(dirname, 'results/processedLumis.json')) as f:
         processed_lumis = sum(map(lambda (a,b): range(a,b+1), json.load(f)["1"]), [])
     # evaluate missing lumisections
@@ -58,7 +82,7 @@ def recover_sample(dirname):
                     config.write('config.Data.lumiMask="{}"\n'.format(missing_lumis_file))
                 elif line.count("config.section_('Site')"):
                     config.write("config.section_('Site')\n")
-                    config.write("config.Site.blacklist = ['T2_IN_TIFR', 'T2_US_Florida']\n")
+                    config.write("config.Site.blacklist = ['T2_IN_TIFR', 'T2_US_Florida', 'T2_US_UCSD', 'T2_IT_Pisa']\n")
                 elif 'DEBUG' in line:
                     break
                 else:
