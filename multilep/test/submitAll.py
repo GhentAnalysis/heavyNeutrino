@@ -67,7 +67,7 @@ for dataset in datasets:
       else:                   outputDir = os.path.join(outputDir, 'localSubmission_' + productionLabel)
 
       extra  = ('extraContent=' + ','.join(extraContent)) if len(extraContent) else ''
-      os.system('bash runLocal.sh ' + dataset + ' ' + outputDir + ' ' + skim + ' ' + str(filesPerJob) + ' ' + extra)
+      os.system('bash runLocalHTCondor.sh ' + dataset + ' ' + outputDir + ' ' + skim + ' ' + str(filesPerJob) + ' ' + extra)
 
     else:
       print 'Submitting ' + dataset + ' using crab:'
