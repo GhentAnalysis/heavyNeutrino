@@ -52,7 +52,7 @@ process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 process.source       = cms.Source("PoolSource", fileNames = cms.untracked.vstring(inputFile.split(",")))
-process.options      = cms.untracked.PSet(wantSummary = cms.untracked.bool(True)) #, numberOfThreads = cms.untracked.uint32(4))
+process.options      = cms.untracked.PSet(wantSummary = cms.untracked.bool(True), numberOfThreads = cms.untracked.uint32(4))
 process.maxEvents    = cms.untracked.PSet(input = cms.untracked.int32(nEvents))
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
