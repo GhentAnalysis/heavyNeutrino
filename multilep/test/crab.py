@@ -28,6 +28,8 @@ config.JobType.pluginName              = 'analysis'
 config.JobType.outputFiles             = [outputFile]
 config.JobType.sendExternalFolder      = True
 config.JobType.allowUndistributedCMSSW = True
+config.JobType.numCores                = 4
+
 
 config.section_('Data')
 config.Data.inputDataset               = dataset
