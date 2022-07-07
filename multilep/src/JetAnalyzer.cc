@@ -650,6 +650,22 @@ bool JetAnalyzer::analyze(const edm::Event& iEvent){
 
     if(multilepAnalyzer->skim == "singlejet" and _nJets < 1) return false;
     if(multilepAnalyzer->skim == "FR" and _nJets < 1)        return false;
+    if(multilepAnalyzer->skim == "fourTopBase")  {
+        int nGoodJets = 0;
+        int nBJets = 0;
+        for (unsigned jet = 0; jet<_nJets; jet++) {
+            if (_jetPt[jet] < 25) continue;
+            if (fabs(_jetEta[jet]) > 2.4) continue;
+            if (! _jetIsTight[jet]) continue;
+            nGoodJets++;
+            
+            if (_jetDeepFlavor[jet] < 0.045) continue;
+            nBJets++;
+        }
+        if (nGoodJets < 2) return false;
+        if (nBJets < 1) return false;
+    }
+    
     return true;
 }
 

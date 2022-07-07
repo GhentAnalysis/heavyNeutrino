@@ -478,9 +478,30 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
     if(multilepAnalyzer->skim == "singlelep" &&  _nL     < 1) return false;
     if(multilepAnalyzer->skim == "singletau" &&  _nTau   < 1) return false;
     if(multilepAnalyzer->skim == "FR"        &&  _nLight < 1) return false;
-    if(multilepAnalyzer->skim == "ssdilep"   &&  _nLight < 2) return false;
-    if(multilepAnalyzer->skim == "ssdilep"   &&  _nLight == 2 && _lCharge[0] != _lCharge[1]) return false; // muons and electrons are first so should be fine despite the taus
-    
+    if(multilepAnalyzer->skim == "lightdilep"   &&  _nLight < 2) return false;
+    if(multilepAnalyzer->skim == "fourTopBase")  {
+        // check for 2 tight leptons:
+        if(_nLight < 2) return false;
+        //if (_nLight == 2 && _lCharge[0] != _lCharge[1]) return false;
+        int nMinimalLeptons = 0;
+        int sumCharge = 0;
+
+        for (unsigned lep=0; lep < _nL; lep++) {
+            if (_lFlavor[lep] == 2) continue;
+            if (_lPt[lep] < 10 && _lPtCorr[lep] < 10) continue;
+            if (fabs(_lEta[lep]) > 2.6 ) continue;
+            //if (_leptonMvaTOPv2UL[lep] < 0.59 && _leptonMvaTOPUL[lep] < 0.20) continue;
+            if (_3dIPSig[lep] < 15) continue;
+            if (_lFlavor[lep] == 0) {
+                if (! _lElectronPassConvVeto[lep]) continue;
+                if (! _lElectronChargeConst[lep]) continue;
+            }
+            nMinimalLeptons++;
+            sumCharge += _lCharge[lep];
+        }
+        if (nMinimalLeptons < 2) return false;
+        if (nMinimalLeptons == 2 && sumCharge == 0) return false;
+    }
     return true;
 }
 

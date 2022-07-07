@@ -62,7 +62,7 @@ submitJob(){
     touch localSubmission.sub
 
     echo "universe    =   vanilla" >> localSubmission.sub
-    echo "executable  =   localSubmission\$(Process).sh" >> localSubmission.sub
+    echo "executable  =   HTCondorSubmission/localSubmission\$(Process).sh" >> localSubmission.sub
 
     echo "log         =   /user/nivanden/condor/logs/localSubmission_\$(ClusterId)_\$(Process).log" >> localSubmission.sub
     echo "error       =   /user/nivanden/condor/error/localSubmission_\$(ClusterId)_\$(Process).err" >> localSubmission.sub
@@ -81,6 +81,8 @@ submitJob(){
 #make list of all files in input sample
 fileList $input
 
+mkdir "HTCondorSubmission"
+
 #loop over new list of files and submit jobs
 fileCount=0
 submitCount=-1
@@ -95,12 +97,10 @@ while read f; do
             jobCount=$((jobCount + 1))
             fileList=""
             submitCount=$((submitCount + 1))
-            submitJob $submitCount
-            exit
         fi
         #initialize temporary submission script
         submitCount=$((submitCount + 1))
-        submit="localSubmission$submitCount.sh"
+        submit="HTCondorSubmission/localSubmission$submitCount.sh"
         
         if [ -e $submit ]; then rm $submit; fi
         
@@ -120,18 +120,10 @@ while read f; do
     mkdir -p ${pnfsDir}/errs
     mkdir -p ${pnfsDir}/logs
     echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=$pnfsDir/$outputFile events=-1 ${extraContent} > $pnfsDir/$logFile 2> $pnfsDir/$errFile" >> $submit
-    #exportProxy $submit
-    # transfer $userDir $pnfsDir $outputFile $submit
-    # transfer $userDir $pnfsDir $logFile $submit
-    # transfer $userDir $pnfsDir $errFile $submit
+
 done < fileList.txt
-# if (( $fileCount % $filesPerJob != 0 )); then
-#     submitJob $submit
-# fi
+
 submitCount=$((submitCount + 1))
 submitJob $submitCount
 
-
-#remove temporary files
-#rm $submit
 rm fileList.txt

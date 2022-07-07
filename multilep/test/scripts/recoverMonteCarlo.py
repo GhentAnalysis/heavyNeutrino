@@ -21,13 +21,13 @@ def recover_sample(dirname):
     print 'Identified sample name:', samplename
 
     if any(SUFFIX in prt for prt in parts):
-        print("ERROR: this is a recovery task -> temporarily disabled")
-        return
-
+        print("Note: you are tryinh to recover a recovery task. Are you sure?")
+        answ = input("y/n? ")
+        if (answ == "n") return
     recoveryExistsName = dirname + '_' + SUFFIX
     
     if os.path.exists(recoveryExistsName):
-        print("ERROR: this is already recovered -> temporarily disabled")
+        print("Error: {} is already recovered. Kill previous recovery and move/delete the crab folder before retrying.".format(dirname))
         return
 
     if (len(recoveryExistsName.split('/')[-1]) > 100):
@@ -35,7 +35,7 @@ def recover_sample(dirname):
         dirnameTempToCheck = '/'.join(parts[:-1]) + shortened
             
         if os.path.exists(dirnameTempToCheck):
-            print("ERROR: this is already recovered -> temporarily disabled")
+            print("Error: {} is already recovered. Kill previous recovery and move/delete the crab folder before retrying.".format(dirname))
             return
 
     # get DAS information about all lumisections in sample
