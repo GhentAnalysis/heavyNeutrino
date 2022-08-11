@@ -484,6 +484,7 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
         if(_nLight < 2) return false;
         //if (_nLight == 2 && _lCharge[0] != _lCharge[1]) return false;
         int nMinimalLeptons = 0;
+        int nTightLeptons = 0;
         int sumCharge = 0;
 
         for (unsigned lep=0; lep < _nL; lep++) {
@@ -491,14 +492,26 @@ bool LeptonAnalyzer::analyze(const edm::Event& iEvent, const reco::Vertex& prima
             if (_lPt[lep] < 10 && _lPtCorr[lep] < 10) continue;
             if (fabs(_lEta[lep]) > 2.6 ) continue;
             //if (_leptonMvaTOPv2UL[lep] < 0.59 && _leptonMvaTOPUL[lep] < 0.20) continue;
-            if (_3dIPSig[lep] < 15) continue;
+            if (_3dIPSig[lep] >= 8) continue;
+            if (_miniIso[lep] >= 0.4) continue;
+            if (_dxy[lep] >= 0.05) continue;
+            if (_dz[lep] >= 0.1) continue;
             if (_lFlavor[lep] == 0) {
                 if (! _lElectronPassConvVeto[lep]) continue;
-                if (! _lElectronChargeConst[lep]) continue;
+                if( _lElectronMissingHits[lep] >= 2 ) continue;
+                if ( fabs(_lEtaSC[lep]) > 1.4442 && fabs(_lEtaSC[lep]) < 1.566) continue;
+
+                // if (! _lElectronChargeConst[lep]) continue;
+            } else if (_lFlavor[lep] == 1) {
+                if( _lPOGMedium[lep]) continue;
             }
             nMinimalLeptons++;
             sumCharge += _lCharge[lep];
+
+            if (_leptonMvaTOPUL[lep] < 0.64) continue;
+            nTightLeptons++;
         }
+        if (nMinimalLeptons-nTightLeptons > 1) return false;
         if (nMinimalLeptons < 2) return false;
         if (nMinimalLeptons == 2 && sumCharge == 0) return false;
     }
