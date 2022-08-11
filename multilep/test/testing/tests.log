@@ -1,124 +1,41 @@
-commit c74e21b6560ca4ee71a4495d36edfeb7deb37870
-Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Thu Jun 30 13:41:30 2022 +0200
+commit d78af015960051bdb7dec6296ab163c494346102
+Author: NielsVdBossche <niels.vandenbossche@ugent.be>
+Date:   Thu Aug 11 08:23:10 2022 +0200
 
-    Reset nPuppiJets for each new event and fill _lMatchPt in the correct place
+    updated leptonAnalyzer to include fourTopBase skim
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 12Nov2019_UL2018 --> OK
-   Changed:
-      _jetPuppiEta                                       mean:   0.0306 -->   0.0222     rms:   1.8272 -->   1.7979    
-      _jetPuppiPhi                                       mean:   0.2013 -->  -0.0508     rms:   1.7523 -->   1.8014    
-      _jetPuppiPt                                        mean:  28.8235 -->  28.8675     rms:  33.5793 -->  37.8376    
-      _jetPuppiPt_JECDown                                mean:  27.8627 -->  27.9450     rms:  33.1282 -->  37.4415    
-      _jetPuppiPt_JECUp                                  mean:  29.7844 -->  29.7900     rms:  34.0357 -->  38.2395    
-      _nJetsPuppi                                        mean:  91.8200 -->   6.3200     rms:  22.1578 -->   3.5606    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 09Aug2019_UL2017 --> OK
-   Changed:
-      _jetPuppiEta                                       mean:   0.3039 -->   0.0358     rms:   2.0597 -->   1.9130    
-      _jetPuppiPhi                                       mean:   0.0598 -->   0.0317     rms:   1.9864 -->   1.8320    
-      _jetPuppiPt                                        mean:  21.8470 -->  26.8575     rms:  21.1959 -->  35.0908    
-      _jetPuppiPt_JECDown                                mean:  20.8359 -->  25.9212     rms:  20.9417 -->  34.8928    
-      _jetPuppiPt_JECUp                                  mean:  22.8581 -->  27.7937     rms:  21.4866 -->  35.3060    
-      _nJetsPuppi                                        mean:  93.1400 -->   6.7300     rms:  20.7036 -->   3.2399    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016 --> OK
-   Changed:
-      _jetPuppiEta                                       mean:  -0.1149 -->  -0.1923     rms:   1.5490 -->   1.7500    
-      _jetPuppiPhi                                       mean:   0.1140 -->  -0.1162     rms:   1.8376 -->   1.8337    
-      _jetPuppiPt                                        mean:  25.8341 -->  27.0597     rms:  31.4412 -->  29.1288    
-      _jetPuppiPt_JECDown                                mean:  25.2472 -->  26.4091     rms:  31.1899 -->  28.8655    
-      _jetPuppiPt_JECUp                                  mean:  26.4210 -->  27.7104     rms:  31.6944 -->  29.3952    
-      _nJetsPuppi                                        mean:  93.4200 -->   6.9900     rms:  19.1923 -->   3.0838    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: 21Feb2020_UL2016_HIPM --> OK
-   Changed:
-      _jetPuppiEta                                       mean:  -0.0519 -->   0.0454     rms:   1.8493 -->   1.8416    
-      _jetPuppiPhi                                       mean:  -0.0730 -->   0.0659     rms:   1.7809 -->   1.8077    
-      _jetPuppiPt                                        mean:  26.5885 -->  28.8915     rms:  33.5988 -->  36.0603    
-      _jetPuppiPt_JECDown                                mean:  25.8940 -->  28.1957     rms:  33.2376 -->  35.7756    
-      _jetPuppiPt_JECUp                                  mean:  27.2830 -->  29.5873     rms:  33.9684 -->  36.3495    
-      _nJetsPuppi                                        mean:  93.1400 -->   6.3600     rms:  19.9419 -->   3.1065    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
-   Changed:
-      _jetPuppiEta                                       mean:  -0.1535 -->  -0.1169     rms:   1.8318 -->   2.1061    
-      _jetPuppiPhi                                       mean:   0.0868 -->   0.0842     rms:   1.7645 -->   1.8345    
-      _jetPuppiPt                                        mean:  25.5930 -->  25.2827     rms:  22.7968 -->  22.2658    
-      _jetPuppiPt_JECDown                                mean:  24.7078 -->  24.3108     rms:  22.5614 -->  21.9833    
-      _jetPuppiPt_JECUp                                  mean:  26.4782 -->  26.2547     rms:  23.0398 -->  22.5569    
-      _lECorr                                            mean:  69.0017 -->  68.9264     rms:  55.0886 -->  54.5203    
-      _lEScaleDown                                       mean:  68.9555 -->  68.8881     rms:  55.0512 -->  54.4837    
-      _lEScaleUp                                         mean:  69.0489 -->  68.9657     rms:  55.1257 -->  54.5566    
-      _lMatchPt                                          mean:  24.4984 -->  29.7619     rms:  17.4821 -->  15.9980    
-      _lPtCorr                                           mean:  31.0380 -->  31.0261     rms:  16.9919 -->  16.8476    
-      _lPtScaleDown                                      mean:  31.0198 -->  31.0121     rms:  16.9866 -->  16.8416    
-      _lPtScaleUp                                        mean:  31.0568 -->  31.0407     rms:  16.9977 -->  16.8540    
-      _nJetsPuppi                                        mean:  92.2300 -->   6.2900     rms:  20.9556 -->   3.0043    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
    Changed:
-      _eventNb                                           mean: 222970355.6000 --> 222970355.6000 rms:  62.4179 -->  62.5460    
-      _jetPuppiEta                                       mean:  -0.0719 -->  -0.0528     rms:   2.1520 -->   2.1128    
-      _jetPuppiPhi                                       mean:  -0.0666 -->   0.0134     rms:   1.8458 -->   1.8264    
-      _jetPuppiPt                                        mean:  21.2973 -->  21.0295     rms:  21.1648 -->  18.8030    
-      _jetPuppiPt_JECDown                                mean:  20.0713 -->  19.9952     rms:  20.8390 -->  18.6098    
-      _jetPuppiPt_JECUp                                  mean:  22.5234 -->  22.0638     rms:  21.5407 -->  19.0343    
-      _lECorr                                            mean:  75.5788 -->  75.5897     rms:  54.9134 -->  54.8271    
-      _lEScaleDown                                       mean:  75.5052 -->  75.5228     rms:  54.8394 -->  54.7523    
-      _lEScaleUp                                         mean:  75.6348 -->  75.6390     rms:  54.9838 -->  54.8982    
-      _lMatchPt                                          mean:  19.1041 -->  31.5138     rms:  20.1171 -->  14.2014    
-      _lPtCorr                                           mean:  32.6287 -->  32.6151     rms:  14.4287 -->  14.3156    
-      _lPtScaleDown                                      mean:  32.6048 -->  32.5949     rms:  14.4212 -->  14.3096    
-      _lPtScaleUp                                        mean:  32.6480 -->  32.6308     rms:  14.4398 -->  14.3253    
-      _nJetsPuppi                                        mean:  91.8600 -->   6.7300     rms:  22.3853 -->   3.5266    
+      _eventNb                                           mean: 222970355.6000 --> 222970355.6000 rms:  62.5460 -->  62.4820    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
-   Changed:
-      _eventNb                                           mean: 145272637.0100 --> 145272637.0100 rms:  77.2010 -->  77.2528    
-      _jetPuppiEta                                       mean:  -0.0279 -->  -0.0152     rms:   1.8717 -->   1.9646    
-      _jetPuppiPhi                                       mean:  -0.0393 -->  -0.0280     rms:   1.8935 -->   1.8141    
-      _jetPuppiPt                                        mean:  23.5198 -->  23.8569     rms:  19.4457 -->  22.3962    
-      _jetPuppiPt_JECDown                                mean:  22.8366 -->  23.1675     rms:  19.1756 -->  22.0645    
-      _jetPuppiPt_JECUp                                  mean:  24.2030 -->  24.5462     rms:  19.7227 -->  22.7340    
-      _lECorr                                            mean:  66.7267 -->  66.4021     rms:  57.5275 -->  56.6870    
-      _lEScaleDown                                       mean:  66.7178 -->  66.3998     rms:  57.5068 -->  56.6735    
-      _lEScaleUp                                         mean:  66.7649 -->  66.4339     rms:  57.5711 -->  56.7240    
-      _lMatchPt                                          mean:  12.4479 -->  31.2687     rms:  15.7447 -->  24.1376    
-      _lPtCorr                                           mean:  33.0798 -->  32.9384     rms:  22.7825 -->  22.4620    
-      _lPtScaleDown                                      mean:  33.0692 -->  32.9311     rms:  22.7666 -->  22.4485    
-      _lPtScaleUp                                        mean:  33.0967 -->  32.9518     rms:  22.7958 -->  22.4730    
-      _nJetsPuppi                                        mean:  92.3000 -->   5.9100     rms:  20.4321 -->   3.0136    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
    Changed:
-      _eventNb                                           mean: 234787628.0300 --> 234787628.0300 rms:  74.6726 -->  74.5654    
-      _jetPuppiEta                                       mean:   0.3573 -->  -0.0904     rms:   1.9006 -->   1.9510    
-      _jetPuppiPhi                                       mean:  -0.0785 -->  -0.1261     rms:   1.7756 -->   1.8612    
-      _jetPuppiPt                                        mean:  21.9694 -->  22.6964     rms:  18.5967 -->  21.9063    
-      _jetPuppiPt_JECDown                                mean:  21.3281 -->  22.0380     rms:  18.3354 -->  21.5900    
-      _jetPuppiPt_JECUp                                  mean:  22.6108 -->  23.3547     rms:  18.8652 -->  22.2337    
-      _lECorr                                            mean:  74.3225 -->  74.4089     rms:  59.7397 -->  59.9977    
-      _lEScaleDown                                       mean:  74.2816 -->  74.3713     rms:  59.6979 -->  59.9608    
-      _lEScaleUp                                         mean:  74.3709 -->  74.4541     rms:  59.7829 -->  60.0360    
-      _lMatchPt                                          mean:  30.0286 -->  31.1574     rms:  23.9123 -->  21.5682    
-      _lPtCorr                                           mean:  33.4170 -->  33.4275     rms:  19.6192 -->  19.6002    
-      _lPtScaleDown                                      mean:  33.4017 -->  33.4145     rms:  19.6118 -->  19.5945    
-      _lPtScaleUp                                        mean:  33.4343 -->  33.4423     rms:  19.6252 -->  19.6046    
-      _nJetsPuppi                                        mean:  90.3300 -->   6.6900     rms:  24.5549 -->   3.8799    
+      _eventNb                                           mean: 234787628.0300 --> 234787628.0300 rms:  74.5654 -->  74.6726    
