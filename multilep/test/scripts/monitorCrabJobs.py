@@ -111,10 +111,10 @@ def web( data, webpath ):
     #         the sample names are assumed to be production/sample/version,
     #         and the status dicts are assumed to be str->str with status to fraction matching.
     #         example: data = {'samples': {
-    #		'singlelepton_MC_2017_ULv5/
-    #		 WWG_TuneCP5_13TeV-amcatnlo-pythia8/
-    #		 crab_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_singlelepton_MC_2017_ULv5': 
-    #		 {'running': '13.3%', 'finished': '73.3%', 'idle': '13.3%'}}}
+    #    'singlelepton_MC_2017_ULv5/
+    #     WWG_TuneCP5_13TeV-amcatnlo-pythia8/
+    #     crab_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_singlelepton_MC_2017_ULv5': 
+    #     {'running': '13.3%', 'finished': '73.3%', 'idle': '13.3%'}}}
     # - webpath: directory where the resulting index.html file should be stored.
     #            if it does not exist yet, it will be created;
     #            if it already exists and contains an index.html file, that file will be overwritten.
@@ -136,15 +136,15 @@ def web( data, webpath ):
     # print some meta information
     page += '<div id="meta-info"><h1>Meta-info</h1></div>\n'
     if 'meta' in data.keys():
-	meta = data['meta']
-	print(meta)
-	for key,val in meta.items():
-	    page += '<table class="divide" cellpadding="5px" cellspacing="0">\n'
-	    page += '<tr>\n'
-	    page += '<td style="width:30%">'+key+'</td>'
-	    page += '<td style="widht:70%">'+val+'</td>\n'
-	    page += '</tr>\n'
-	page += '</table>\n'
+        meta = data['meta']
+        print(meta)
+        for key,val in meta.items():
+            page += '<table class="divide" cellpadding="5px" cellspacing="0">\n'
+            page += '<tr>\n'
+            page += '<td style="width:30%">'+key+'</td>'
+            page += '<td style="widht:70%">'+val+'</td>\n'
+            page += '</tr>\n'
+        page += '</table>\n'
     else:
         page += '<table class="divide" cellpadding="5px" cellspacing="0">\n'
         page += '<tr>\n'
@@ -162,27 +162,27 @@ def web( data, webpath ):
     page += '<div id="samples"><h1>Samples</h1></div>\n'
     for sample in samples:
     
-	# format sample name
-	production = sample.split('/')[0]
+        # format sample name
+        production = sample.split('/')[0]
         samplename = sample.split('/')[1]
-	versionname = sample.split('/')[2]
+        versionname = sample.split('/')[2]
 
-	# get the data for this sample
-	sample_status = sampledata[sample]
-	status_str = ', '.join('{}: {}'.format(key,val) for key,val in sample_status.items())
-	finished_fraction = '0%'
-	if 'finished' in sample_status.keys(): finished_fraction = sample_status['finished']
+        # get the data for this sample
+        sample_status = sampledata[sample]
+        status_str = ', '.join('{}: {}'.format(key,val) for key,val in sample_status.items())
+        finished_fraction = '0%'
+        if 'finished' in sample_status.keys(): finished_fraction = sample_status['finished']
 
-	# format the webpage entry
+        # format the webpage entry
         page += '<table class="divide" cellpadding="5px" cellspacing="0">\n'
-	page += '<tr>\n'
+        page += '<tr>\n'
         #page += '<td style="width:20%">'+production+'</td>'
-	page += '<td>'+samplename+'</td>'
-	page += '<td title='+versionname+'>version</td>'
+        page += '<td>'+samplename+'</td>'
+        page += '<td title='+versionname+'>version</td>'
         page += '<td> <div id="progress">'
-	page += '<div id="percent" style="width=100%">'+status_str+'</div>'
-	page += '<div id="bar" style="width:'+finished_fraction+'"></div>'
-	page += '</div></td>\n'
+        page += '<div id="percent" style="width=100%">'+status_str+'</div>'
+        page += '<div id="bar" style="width:'+finished_fraction+'"></div>'
+        page += '</div></td>\n'
         page += '</tr>\n'
 
     page += '</table>\n'    
@@ -200,32 +200,32 @@ if __name__ == '__main__':
     usage = "Usage: %prog [options]\n Monitoring script"
     parser = OptionParser(usage)
     parser.add_option('--crabdir', dest='crabdir',
-			help='main crab folder containing log files for all samples')
+      help='main crab folder containing log files for all samples')
     parser.add_option('--resubmit', dest='resubmit', default=False,
-			help='do resubmission of failed jobs (default: False, only monitor)')
+      help='do resubmission of failed jobs (default: False, only monitor)')
     parser.add_option('--proxy', dest='proxy', default=None,
-			help='path to your proxy (default: do not export proxy explicitly)')
+      help='path to your proxy (default: do not export proxy explicitly)')
     parser.add_option('--webpage', dest='webpage', default='crab_status',
-			help='name of the webpage where the results will be displayed')
+      help='name of the webpage where the results will be displayed')
     parser.add_option('--istest', dest='istest', default=False,
-			help='run in test mode, process only a few samples (default: False)')
+      help='run in test mode, process only a few samples (default: False)')
     (options, args) = parser.parse_args(sys.argv[1:])
 
     # print command line arguments
     print('Running monitorCrabJobs.py with following command line arguments:')
     for opt in vars(options):
-	print('  - {}: {}'.format(opt, getattr(options,opt)))
+        print('  - {}: {}'.format(opt, getattr(options,opt)))
 
     # check command line arguments
     if not os.path.isdir(options.crabdir):
-	raise Exception('ERROR: crab directory {} does not exist'.format(options.crabdir))
+        raise Exception('ERROR: crab directory {} does not exist'.format(options.crabdir))
     if options.proxy is not None:
-	if not os.path.exists(options.proxy):
-	    raise Exception('ERROR: provided proxy {} does not exist'.format(options.proxy))
+        if not os.path.exists(options.proxy):
+            raise Exception('ERROR: provided proxy {} does not exist'.format(options.proxy))
 
     # export the proxy if requested
     if options.proxy is not None:
-	os.system('export X509_USER_PROXY={}'.format(options.proxy))
+        os.system('export X509_USER_PROXY={}'.format(options.proxy))
 
     # parse the web path
     home = os.path.expanduser("~")
@@ -233,8 +233,8 @@ if __name__ == '__main__':
 
     # initializations
     data = {'meta': {'generating script': os.path.abspath(__file__),
-		     'command-line arguments': str(options)},
-	    'samples': {}}
+            'command-line arguments': str(options)},
+            'samples': {}}
     wdir = os.getcwd()
     passp = ['Enter GRID pass phrase for this identity:', pexpect.EOF]
     # note: once a proxy is created the password should not be needed anymore.
@@ -248,10 +248,10 @@ if __name__ == '__main__':
 
     # only for testing: subselect samples
     if options.istest:
-	ntest = min(3, nfproc)
-	print('WARNING: running in test mode, will only process'
-		+' {} out of {} samples'.format(ntest, nfproc))
-	fproc = fproc[:ntest]
+        ntest = min(3, nfproc)
+        print('WARNING: running in test mode, will only process'
+             +' {} out of {} samples'.format(ntest, nfproc))
+        fproc = fproc[:ntest]
 
     # initialize all samples to 0% finished
     for fidx, f in enumerate(fproc):
@@ -260,64 +260,64 @@ if __name__ == '__main__':
     # loop over samples
     for fidx, f in enumerate(fproc):
         print('Now processing sample {} of {}'.format(fidx+1,len(fproc)))
-	print('({})'.format(f))
-	
-	# run crab status command and write the output to a log file
-	success = False
-	attempt = 0
-	while (attempt<5 and not success):
-	    ch = pexpect.spawn('crab status -d '+f)
-	    ch.timeout = 180 # in seconds, put large enough so the process finishes before limit
-	    ch.logfile = open('monitor_tmp_log', 'w')
-	    passpindex = ch.expect(passp)
-	    if passpindex==0: ch.sendline('\n')
-	    ch.read()
-	    ch.close()
-	    # check the output
-	    with open('monitor_tmp_log', 'r') as fin:
-		outlines = fin.read().splitlines()
-	    if len(outlines)==0:
-		print('Crab status seems to have failed, retrying...')
-		attempt += 1
-	    else: success = True
-	if not success:
-	    print('Crab status seems to have failed, skipping this sample.')
-	    data['samples'][f] = {'crab status': 'failed'}
-	    continue
+        print('({})'.format(f))
+  
+        # run crab status command and write the output to a log file
+        success = False
+        attempt = 0
+        while (attempt<5 and not success):
+            ch = pexpect.spawn('crab status -d '+f)
+            ch.timeout = 180 # in seconds, put large enough so the process finishes before limit
+            ch.logfile = open('monitor_tmp_log', 'w')
+            passpindex = ch.expect(passp)
+            if passpindex==0: ch.sendline('\n')
+            ch.read()
+            ch.close()
+            # check the output
+            with open('monitor_tmp_log', 'r') as fin:
+                outlines = fin.read().splitlines()
+            if len(outlines)==0:
+                print('Crab status seems to have failed, retrying...')
+                attempt += 1
+            else: success = True
+        if not success:
+            print('Crab status seems to have failed, skipping this sample.')
+            data['samples'][f] = {'crab status': 'failed'}
+            continue
 
-	# read the log file
-	jobsfailed = False
-	statuscompleted = False
+        # read the log file
+        jobsfailed = False
+        statuscompleted = False
         with open('monitor_tmp_log', 'r') as fin:
             outlines = fin.read().splitlines()
         for line in outlines:
-	    line = line.replace('Jobs status:','')
-	    words = line.split()
-	    if len(words)==0: continue
-	    # check for known job statuses
-	    for status in (['finished', 'running', 'transferring',
-			    'failed', 'killed', 'idle']):
-		if status in words[0]:
-		    try: frac = words[2]
-		    except: frac = '<none>'
-		    # save to dict
-		    data['samples'][f][status] = frac
-		    # check if jobs failed for  this sample
-		    if( status=='failed' ): jobsfailed = True
-		    print('Percentage '+status+': '+frac)
-	    
-	    # check if job is complete
-	    if 'Status on the scheduler' in line:
-                if 'COMPLETED' in line:
-                    if not os.path.isfile(f+'/results/processedLumis.json'):
-                        statuscompleted = True		    
+            line = line.replace('Jobs status:','')
+            words = line.split()
+            if len(words)==0: continue
+            # check for known job statuses
+            for status in (['finished', 'running', 'transferring',
+                            'failed', 'killed', 'idle','unsubmitted']):
+                if status in words[0]:
+                    try: frac = words[2]
+                    except: frac = '<none>'
+                    # save to dict
+                    data['samples'][f][status] = frac
+                    # check if jobs failed for  this sample
+                    if( status=='failed' ): jobsfailed = True
+                    print('Percentage '+status+': '+frac)
+      
+        # check if job is complete
+        if 'Status on the scheduler' in line:
+            if 'COMPLETED' in line:
+                if not os.path.isfile(f+'/results/processedLumis.json'):
+                    statuscompleted = True        
 
-	# handle case where failed jobs were found
+        # handle case where failed jobs were found
         if jobsfailed:
-	    if options.resubmit:
-		print('Found failed jobs, now resubmitting...')
+            if options.resubmit:
+                print('Found failed jobs, now resubmitting...')
                 ch = pexpect.spawn('crab resubmit -d '+f)
-		ch.timeout = 10000
+                ch.timeout = 10000
                 ch.expect(passp)
                 ch.sendline('\n')
                 ch.expect(passp)
@@ -326,11 +326,11 @@ if __name__ == '__main__':
                 ch.close()
                 print('Done')
         
-	# handle case where job is complete
-	if statuscompleted:
+        # handle case where job is complete
+        if statuscompleted:
             print('This task is completed...')
-	    # below is commented: no report, and no purging.
-	    '''print 'Get the report...'
+            # below is commented: no report, and no purging.
+            '''print 'Get the report...'
             ch = pexpect.spawn('crab report -d '+f)
             ch.expect(passp)
             ch.sendline('\n')
@@ -341,8 +341,8 @@ if __name__ == '__main__':
             ch.close()
             print 'Report obtained, run purge ..'
             ch = pexpect.spawn('crab purge -d '+f)
-	    ch.expect(passp)
-	    ch.sendline('\n')
+            ch.expect(passp)
+            ch.sendline('\n')
             ch.timeout = 10000
             ch.read()
             ch.close()

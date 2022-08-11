@@ -59,8 +59,8 @@ if __name__=='__main__':
     # loop
     idx = 0
     while idx < niterations:
-	os.system(cmd)
-	sys.stdout.flush()
-	sys.stderr.flush()
-	time.sleep(tsleep)
-	idx += 1
+        os.system(cmd)
+        sys.stdout.flush()
+        sys.stderr.flush()
+        time.sleep(tsleep)
+        idx += 1
