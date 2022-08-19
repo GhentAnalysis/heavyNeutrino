@@ -15,7 +15,7 @@ fileList(){
     if [[ $input == *"/user/"* ]]; then    #private sample
         #add all files to list 
         for file in $input/*
-            do echo "dcap://maite.iihe.ac.be${file}" >> fileList.txt
+            do echo "${file}" >> fileList.txt
         done
     else                                #official sample
 
