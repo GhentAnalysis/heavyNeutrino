@@ -256,9 +256,7 @@ bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::Ge
 bool GenTools::isDiracType(const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* l1 = returnL1MatchForHNL(genParticles);
     const reco::GenParticle* nu = returnNeutrinoMatchForHNL(genParticles);
-    if(l1->pdgId() > 0 && nu->pdgId() > 0) return false;
-    if(l1->pdgId() < 0 && nu->pdgId() < 0) return false;
-    return true;
+    return l1->pdgId() * nu->pdgId() < 0;
 }
 
 /*

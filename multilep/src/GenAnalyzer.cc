@@ -70,7 +70,7 @@ void GenAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     if(multilepAnalyzer->storeHNLgenInfo){
       hCounterDirac       = fs->make<TH1D>("hCounterDirac", "Dirac type events counter", 1, 0, 1);
       outputTree->Branch("_gen_isDiracType",                                        &_gen_isDiracType,                                        "_gen_isDiracType/O");
-      outputTree->Branch("_gen_lProvenanceHNL",                                     &_gen_lProvenanceHNL,                                     "_gen_lProvenanceHNL[_gen_nL]/I");
+      outputTree->Branch("_gen_lProvenanceHNL",                                     &_gen_lProvenanceHNL,                                     "_gen_lProvenanceHNL[_gen_nL]/i");
     }  
 }
 

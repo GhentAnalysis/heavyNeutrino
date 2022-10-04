@@ -74,7 +74,7 @@ class GenAnalyzer {
 
     TH1D*    hCounterDirac;
     bool     _gen_isDiracType;
-    int      _gen_lProvenanceHNL[gen_nL_max];
+    unsigned _gen_lProvenanceHNL[gen_nL_max];
 
     multilep* multilepAnalyzer;
 
