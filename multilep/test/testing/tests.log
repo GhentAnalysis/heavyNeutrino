@@ -1,8 +1,8 @@
-commit d78af015960051bdb7dec6296ab163c494346102
-Author: NielsVdBossche <niels.vandenbossche@ugent.be>
-Date:   Thu Aug 11 08:23:10 2022 +0200
+commit 1502fb3740ff8e30752bf0c24dc326492feecbbc
+Author: Liam <liamwezenbeek@hotmail.com>
+Date:   Tue Oct 4 11:56:41 2022 +0200
 
-    updated leptonAnalyzer to include fourTopBase skim
+    Implement LNV tagging for HNL samples
 
 --------------------------------------------------------------------------------------------------
 
@@ -28,11 +28,13 @@ Running test: RunIISummer20UL18MiniAOD --> OK
 
 Running test: RunIISummer20UL17MiniAOD --> OK
    Changed:
-      _eventNb                                           mean: 222970355.6000 --> 222970355.6000 rms:  62.5460 -->  62.4820    
+      _eventNb                                           mean: 222970355.6000 --> 222970355.6000 rms:  62.4820 -->  62.4179    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
+   Changed:
+      _eventNb                                           mean: 145272637.0100 --> 145272637.0100 rms:  77.2010 -->  77.2269    
 
 --------------------------------------------------------------------------------------------------
 

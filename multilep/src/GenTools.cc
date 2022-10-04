@@ -99,6 +99,10 @@ bool GenTools::tauInChain(const std::set<int>& chain){
     return chain.count(15) or chain.count(-15);
 }
 
+bool GenTools::heavyNeutrinoInChain(const std::set<int>& chain){
+    return chain.count(9900012);
+}
+
 bool GenTools::udsInChain(const std::set<int>& chain){
     if(sBaryonInChain(chain))       return true;
     if(lightMesonInChain(chain))    return true;
@@ -213,10 +217,46 @@ unsigned GenTools::provenanceConversion(const reco::GenParticle* photon, const s
     return 0;
 }
 
+
+/*
+ * Identify the leptons in the HNL samples. Matching l2 and l3 (2 and 3) does not work for MN < MW as the off-shell W
+ * not stored in the decay chain. Is used as a tool to mainly tag l1 in isDiracType
+ */
+unsigned GenTools::provenanceHeavyNeutrino(const reco::GenParticle& genParticle, const std::vector<reco::GenParticle>& genParticles){
+    //0: nonprompt 
+    //1: no HNL in chain
+    //2: HNL is mother
+    //3: HNL in chain but not mother
+    if(!isPrompt(genParticle, genParticles)) return 0; // This was how it was also defined in the old GenMatching code
+//    if(!gen) return 4;
+
+    std::set<int> decayChain;
+    setDecayChain(genParticle, genParticles, decayChain);
+    if(!heavyNeutrinoInChain(decayChain)){
+        return 1;
+    } else {
+        if(getMotherPdgId(genParticle, genParticles) == 9900012){
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+    return 4;
+}
+
 bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* mom = getMother(gen, genParticles);
     if(abs(mom->pdgId()) == 15 && mom->isPromptDecayed()) return true;
     return (gen.isPromptFinalState() || gen.isPromptDecayed());
+}
+
+/*
+ * Check if the HNL sample is a Dirac type event or a LNV event
+ */
+bool GenTools::isDiracType(const std::vector<reco::GenParticle>& genParticles){
+    const reco::GenParticle* l1 = returnL1MatchForHNL(genParticles);
+    const reco::GenParticle* nu = returnNeutrinoMatchForHNL(genParticles);
+    return l1->pdgId() * nu->pdgId() < 0;
 }
 
 /*
@@ -321,3 +361,26 @@ const reco::GenParticle* GenTools::geometricMatch(const reco::Candidate& reco, c
     return match;
 }
 
+// Matching for HNL
+const reco::GenParticle* GenTools::returnL1MatchForHNL(const std::vector<reco::GenParticle>& genParticles){
+    for(auto genIt = genParticles.cbegin(); genIt != genParticles.cend(); ++genIt){
+        int absId = abs(genIt->pdgId());
+        if((genIt->status() == 1 and (absId == 11 or absId == 13)) || (genIt->status() == 2 and genIt->isLastCopy() and absId == 15)){
+            if(provenanceHeavyNeutrino(*genIt, genParticles) == 1) return &*genIt;
+        }
+    }
+    return nullptr;
+}
+
+const reco::GenParticle* GenTools::returnNeutrinoMatchForHNL(const std::vector<reco::GenParticle>& genParticles){
+    for(auto genIt = genParticles.cbegin(); genIt != genParticles.cend(); ++genIt){
+        int absId = abs(genIt->pdgId());
+        if(genIt->status() == 1 and (absId == 12 or absId == 14 or absId == 16)){
+            std::set<int> decayChain;
+            setDecayChain(*genIt, genParticles, decayChain);
+            if(heavyNeutrinoInChain(decayChain) and (getMotherPdgId(*genIt, genParticles) == 9900012 or abs(getMotherPdgId(*genIt, genParticles)) == 24))
+                return &*genIt;    
+        }
+    }
+    return nullptr;
+}

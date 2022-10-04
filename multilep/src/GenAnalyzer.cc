@@ -17,7 +17,7 @@
 GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAnalyzer):
     multilepAnalyzer(multilepAnalyzer){};
 
-void GenAnalyzer::beginJob(TTree* outputTree){
+void GenAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
     outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/i");
     outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/i");
     outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
@@ -65,12 +65,24 @@ void GenAnalyzer::beginJob(TTree* outputTree){
       outputTree->Branch("_gen_motherIndex",                              &_gen_motherIndex,                              "_gen_motherIndex[_gen_n]/I");
       outputTree->Branch("_gen_daughter_n",                               &_gen_daughter_n,                               "_gen_daughter_n[_gen_n]/I");
       outputTree->Branch("_gen_daughterIndex",                            &_gen_daughterIndex,                            "_gen_daughterIndex[_gen_n][10]/I");
-    }   
+    } 
+    
+    if(multilepAnalyzer->storeHNLgenInfo){
+      hCounterDirac       = fs->make<TH1D>("hCounterDirac", "Dirac type events counter", 1, 0, 1);
+      outputTree->Branch("_gen_isDiracType",                                        &_gen_isDiracType,                                        "_gen_isDiracType/O");
+      outputTree->Branch("_gen_lProvenanceHNL",                                     &_gen_lProvenanceHNL,                                     "_gen_lProvenanceHNL[_gen_nL]/i");
+    }  
 }
 
 void GenAnalyzer::analyze(const edm::Event& iEvent){
     edm::Handle<std::vector<reco::GenParticle>> genParticles = getHandle(iEvent, multilepAnalyzer->genParticleToken);
     edm::Handle<std::vector<reco::GenJet>> tauGenJets = getHandle(iEvent, multilepAnalyzer->tauGenJetsToken);
+
+    if(multilepAnalyzer->storeHNLgenInfo){
+        edm::Handle<GenEventInfoProduct> genEventInfo          = getHandle(iEvent, multilepAnalyzer->genEventInfoToken);
+        _gen_isDiracType = GenTools::isDiracType(*genParticles);
+        if(_gen_isDiracType) hCounterDirac->Fill(0.5, genEventInfo->weight());
+    }
 
     if(!genParticles.isValid()) return;
 
@@ -107,6 +119,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent){
                 _gen_lDecayedHadr[_gen_nL]      = TauTools::decayedHadronically(p, *genParticles);
                 _gen_lMinDeltaR[_gen_nL]     = GenTools::getMinDeltaR(p, *genParticles);
                 _gen_lPassParentage[_gen_nL] = GenTools::passParentage(p, *genParticles);
+                if(multilepAnalyzer->storeHNLgenInfo) _gen_lProvenanceHNL[_gen_nL] = GenTools::provenanceHeavyNeutrino(p, *genParticles);
 
                 if(absId == 11 or absId == 13){
                     _gen_lVisPt[_gen_nL]               = p.pt();
