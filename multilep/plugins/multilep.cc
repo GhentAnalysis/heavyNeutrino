@@ -64,7 +64,8 @@ multilep::multilep(const edm::ParameterSet& iConfig):
     storeJecSourcesGrouped(                                                    iConfig.getUntrackedParameter<bool>("storeJecSourcesGrouped")),
     storeAllTauID(                                                             iConfig.getUntrackedParameter<bool>("storeAllTauID")),
     storePrefireComponents(                                                    iConfig.getUntrackedParameter<bool>("storePrefireComponents")),
-    storeJetSubstructure(                                                      iConfig.getUntrackedParameter<bool>("storeJetSubstructure"))
+    storeJetSubstructure(                                                      iConfig.getUntrackedParameter<bool>("storeJetSubstructure")),
+    storeHNLgenInfo(                                                           iConfig.getUntrackedParameter<bool>("storeHNLgenInfo"))
 {
     if( is2017() || is2018() ) ecalBadCalibFilterToken = consumes<bool>(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
     triggerAnalyzer       = new TriggerAnalyzer(iConfig, this);
@@ -122,7 +123,7 @@ void multilep::beginJob(){
 
     if( isMC() ) lheAnalyzer->beginJob(outputTree, fs);
     if( isSUSY() )  susyAnalyzer->beginJob(outputTree, fs);
-    if( isMC() ) genAnalyzer->beginJob(outputTree);
+    if( isMC() ) genAnalyzer->beginJob(outputTree, fs);
     if( isMC() && storeParticleLevel) particleLevelAnalyzer->beginJob(outputTree);
     if( isMC() && storeBFrag) bFragAnalyzer->beginJob(outputTree);
 

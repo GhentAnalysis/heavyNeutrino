@@ -31,14 +31,17 @@ namespace GenTools{
     bool photonInChain(const std::set<int>&);
     bool udsInChain(const std::set<int>&);
     bool tauInChain(const std::set<int>&);
+    bool heavyNeutrinoInChain(const std::set<int>&);
     //find the provenance of a particle using the contents of its decayChain
     unsigned provenance(const reco::GenParticle*, const std::vector<reco::GenParticle>&);
     unsigned provenanceCompressed(const reco::GenParticle*, const std::vector<reco::GenParticle>&, bool isPrompt);
 
     //check whether photon comes from ME in conversion
     unsigned provenanceConversion(const reco::GenParticle*, const std::vector<reco::GenParticle>&);
+    unsigned provenanceHeavyNeutrino(const reco::GenParticle&, const std::vector<reco::GenParticle>&);
 
     bool isPrompt(const reco::GenParticle&, const std::vector<reco::GenParticle>&); //function to check if particle is prompt TO BE USED INSTEAD OF CMSSW BUILTIN
+    bool isDiracType(const std::vector<reco::GenParticle>&);
     bool passParentage(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
     bool noMesonsInChain(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles);
     bool phoAndPiNear(const pat::Photon& photon, const std::vector<reco::GenParticle>& genParticles);
@@ -47,7 +50,8 @@ namespace GenTools{
 
     const reco::GenParticle* geometricMatch(const reco::Candidate& reco, const std::vector<reco::GenParticle>& genParticles, const bool differentId=false);
     bool considerForMatching(const reco::Candidate& reco, const reco::GenParticle& gen, const bool differentId);
-
+    const reco::GenParticle* returnL1MatchForHNL(const std::vector<reco::GenParticle>&);
+    const reco::GenParticle* returnNeutrinoMatchForHNL(const std::vector<reco::GenParticle>&);
 
 }
 #endif

@@ -72,13 +72,17 @@ class GenAnalyzer {
     unsigned overlapEventType(const std::vector<reco::GenParticle>& genParticles, double ptCut, double etaCut, double genCone) const;
     double   getMinDeltaR(const reco::GenParticle& p, const std::vector<reco::GenParticle>& genParticles) const;
 
+    TH1D*    hCounterDirac;
+    bool     _gen_isDiracType;
+    int      _gen_lProvenanceHNL[gen_nL_max];
+
     multilep* multilepAnalyzer;
 
   public:
     GenAnalyzer(const edm::ParameterSet& iConfig, multilep* vars);
     ~GenAnalyzer(){};
 
-    void beginJob(TTree* outputTree);
+    void beginJob(TTree* outputTree, edm::Service<TFileService>& fs);
     void analyze(const edm::Event&);
 };
 #endif
