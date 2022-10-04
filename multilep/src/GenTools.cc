@@ -244,15 +244,11 @@ unsigned GenTools::provenanceHeavyNeutrino(const reco::GenParticle& genParticle,
     return 4;
 }
 
-
-
 bool GenTools::isPrompt(const reco::GenParticle& gen, const std::vector<reco::GenParticle>& genParticles){
     const reco::GenParticle* mom = getMother(gen, genParticles);
     if(abs(mom->pdgId()) == 15 && mom->isPromptDecayed()) return true;
     return (gen.isPromptFinalState() || gen.isPromptDecayed());
 }
-
-
 
 /*
  * Check if the HNL sample is a Dirac type event or a LNV event

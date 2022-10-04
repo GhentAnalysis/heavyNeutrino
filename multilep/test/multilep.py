@@ -4,6 +4,7 @@ import FWCore.ParameterSet.Config as cms
 # Default input file (could be overwritten by parameters given on the command line and by crab), some examples:
 # inputFile        = '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/01181D3D-D52C-4E45-9A25-2F5B5CC381D1.root'
 #inputFile        = '/store/mc/RunIISummer20UL16MiniAOD/HeavyNeutrino_trilepton_M-20_V-0p01_mu_LO_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v13-v1/280000/0571F3E1-20C2-984A-B799-603AF16D0EE2.root'
+# inputFile        = '/store/data/Run2016B/DoubleEG/MINIAOD/21Feb2020_ver2_UL2016_HIPM-v1/20000/001E9883-7DBC-AA47-861D-04D120D68CF7.root'
 #inputFile        = '/store/mc/RunIISummer20UL16MiniAOD/HeavyNeutrino_trilepton_M-200_V-0p01_mu_NLO_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v13-v1/270000/0FBF419A-63DD-FD4D-BC54-EA704B164217.root'
 # inputFile        = 'file:///pnfs/iihe/cms/store/user/lwezenbe/heavyNeutrino/testFiles/store/data/Run2018C/SingleMuon/MINIAOD/12Nov2019_UL2018-v2/100000/08CD0000-EAC8-844F-96C6-A02E7F742007.root'
 # inputFile        = 'file:///pnfs/iihe/cms/store/user/lwezenbe/heavyNeutrino/testFiles/store/data/Run2017D/SingleElectron/MINIAOD/09Aug2019_UL2017-v1/260000/00A5C633-1806-0844-8D65-C31C779A57F6.root'

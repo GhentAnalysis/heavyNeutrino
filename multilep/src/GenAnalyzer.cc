@@ -18,8 +18,6 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig, multilep* multilepAna
     multilepAnalyzer(multilepAnalyzer){};
 
 void GenAnalyzer::beginJob(TTree* outputTree, edm::Service<TFileService>& fs){
-    
-
     outputTree->Branch("_ttgEventType",              &_ttgEventType,              "_ttgEventType/i");
     outputTree->Branch("_zgEventType",               &_zgEventType,               "_zgEventType/i");
     outputTree->Branch("_gen_met",                   &_gen_met,                   "_gen_met/D");
