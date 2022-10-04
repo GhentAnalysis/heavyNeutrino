@@ -1,11 +1,8 @@
-commit ff593b84890508b98b71fd7befd69c498cab4ece
-Merge: 92650f14 b450af01
-Author: Liam Wezenbeek <44083357+lwezenbe@users.noreply.github.com>
-Date:   Fri Aug 12 08:56:00 2022 +0200
+commit 1502fb3740ff8e30752bf0c24dc326492feecbbc
+Author: Liam <liamwezenbeek@hotmail.com>
+Date:   Tue Oct 4 11:56:41 2022 +0200
 
-    Merge pull request #148 from NielsVdBossche/UL_master
-    
-    Additional extra tight skim for additional ttbar samples dedicated for four top MVA training
+    Implement LNV tagging for HNL samples
 
 --------------------------------------------------------------------------------------------------
 
@@ -30,15 +27,17 @@ Running test: RunIISummer20UL18MiniAOD --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
+   Changed:
+      _eventNb                                           mean: 222970355.6000 --> 222970355.6000 rms:  62.4820 -->  62.4179    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
    Changed:
-      _eventNb                                           mean: 145272637.0100 --> 145272637.0100 rms:  77.2528 -->  77.2010    
+      _eventNb                                           mean: 145272637.0100 --> 145272637.0100 rms:  77.2010 -->  77.2269    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
    Changed:
-      _eventNb                                           mean: 234787628.0300 --> 234787628.0300 rms:  74.6726 -->  74.5654    
+      _eventNb                                           mean: 234787628.0300 --> 234787628.0300 rms:  74.5654 -->  74.6726    
