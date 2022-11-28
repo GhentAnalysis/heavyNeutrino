@@ -116,7 +116,8 @@ while read f; do
     mkdir -p ${pnfsDir}
     mkdir -p ${pnfsDir}/errs
     mkdir -p ${pnfsDir}/logs
-    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=file://$f outputFile=$pnfsDir/$outputFile events=-1 ${extraContent} > $pnfsDir/$logFile 2> $pnfsDir/$errFile" >> $submit
+    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=file://$f outputFile=$pnfsDir/$outputFile events=-1 ${extraContent}" >> $submit
+
 
 done < fileList.txt
 

@@ -58,7 +58,7 @@ for dataset in datasets:
 
     if submitLocal or 'user' in dataset:
       print 'Submitting ' + dataset + ' on the local resources:'
-      if 'user' in dataset:   outputDir = dataset.split('/')[-1]
+      if 'user' in dataset:   outputDir = '_'.join(dataset.split('/')[-2:])
       else:                   outputDir = dataset.split('/')[1]
 
       if 'Run201' in dataset: outputDir = os.path.join(outputDir, dataset.split('-')[0].split('/')[-1])
