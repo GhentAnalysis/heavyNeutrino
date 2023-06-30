@@ -1,8 +1,20 @@
-commit 1502fb3740ff8e30752bf0c24dc326492feecbbc
-Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Oct 4 11:56:41 2022 +0200
+commit c0c68c54f23f31f009371bf57f7bd9c48c8f226a
+Author: NielsVdBossche <niels.vandenbossche@ugent.be>
+Date:   Fri Jun 30 15:33:06 2023 +0200
 
-    Implement LNV tagging for HNL samples
+    updated GT to miniv2
+diff --git a/multilep/test/testing/09Aug2019_UL2017-ref.root b/multilep/test/testing/09Aug2019_UL2017-ref.root
+index a2e06d5d..ee289c80 100644
+Binary files a/multilep/test/testing/09Aug2019_UL2017-ref.root and b/multilep/test/testing/09Aug2019_UL2017-ref.root differ
+diff --git a/multilep/test/testing/12Nov2019_UL2018-ref.root b/multilep/test/testing/12Nov2019_UL2018-ref.root
+index cda59848..98553055 100644
+Binary files a/multilep/test/testing/12Nov2019_UL2018-ref.root and b/multilep/test/testing/12Nov2019_UL2018-ref.root differ
+diff --git a/multilep/test/testing/21Feb2020_UL2016-ref.root b/multilep/test/testing/21Feb2020_UL2016-ref.root
+index ef4f4e9a..a9bed308 100644
+Binary files a/multilep/test/testing/21Feb2020_UL2016-ref.root and b/multilep/test/testing/21Feb2020_UL2016-ref.root differ
+diff --git a/multilep/test/testing/21Feb2020_UL2016_HIPM-ref.root b/multilep/test/testing/21Feb2020_UL2016_HIPM-ref.root
+index b53c15a4..e0879b0e 100644
+Binary files a/multilep/test/testing/21Feb2020_UL2016_HIPM-ref.root and b/multilep/test/testing/21Feb2020_UL2016_HIPM-ref.root differ
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,21 +35,176 @@ Running test: 21Feb2020_UL2016_HIPM --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
+   Changed:
+      _pl_jetE                                           mean:  83.9019 -->   0.0000     rms:  55.6031 -->   0.0000    
+      _pl_jetEta                                         mean:  -0.1213 -->   0.0000     rms:   1.1988 -->   0.0000    
+      _pl_jetHadronFlavor                                mean:   0.4457 -->   0.0000     rms:   1.3623 -->   0.0000    
+      _pl_jetPhi                                         mean:   0.1950 -->   0.0000     rms:   1.7236 -->   0.0000    
+      _pl_jetPt                                          mean:  44.6225 -->   0.0000     rms:  22.5646 -->   0.0000    
+      _pl_nJets                                          mean:   0.9200 -->   0.0000     rms:   0.9130 -->   0.0000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
    Changed:
-      _eventNb                                           mean: 222970355.6000 --> 222970355.6000 rms:  62.4820 -->  62.4179    
+      _eventNb                                           mean: 222970355.6000 --> 222970355.6000 rms:  62.4179 -->  62.4820    
+      _jetSmearedPt                                      mean:  17.6107 -->  17.1156     rms:  16.2234 -->  15.1584    
+      _jetSmearedPt_AbsoluteMPFBias_JECSourcesDown       mean:  17.5614 -->  17.0677     rms:  16.1780 -->  15.1159    
+      _jetSmearedPt_AbsoluteMPFBias_JECSourcesUp         mean:  17.6600 -->  17.1635     rms:  16.2688 -->  15.2008    
+      _jetSmearedPt_AbsoluteScale_JECSourcesDown         mean:  17.5931 -->  17.0985     rms:  16.2072 -->  15.1432    
+      _jetSmearedPt_AbsoluteScale_JECSourcesUp           mean:  17.6283 -->  17.1327     rms:  16.2396 -->  15.1735    
+      _jetSmearedPt_AbsoluteStat_JECSourcesDown          mean:  17.6107 -->  17.1156     rms:  16.2234 -->  15.1584    
+      _jetSmearedPt_AbsoluteStat_JECSourcesUp            mean:  17.6107 -->  17.1156     rms:  16.2234 -->  15.1584    
+      _jetSmearedPt_Absolute_2017_JECGroupedDown         mean:  17.4054 -->  16.9356     rms:  16.0470 -->  15.0493    
+      _jetSmearedPt_Absolute_2017_JECGroupedUp           mean:  17.8159 -->  17.2956     rms:  16.4086 -->  15.2735    
+      _jetSmearedPt_Absolute_JECGroupedDown              mean:  17.1326 -->  16.6117     rms:  16.1759 -->  15.1489    
+      _jetSmearedPt_Absolute_JECGroupedUp                mean:  18.0888 -->  17.6196     rms:  16.2754 -->  15.1720    
+      _jetSmearedPt_BBEC1_2017_JECGroupedDown            mean:  17.5555 -->  17.0626     rms:  16.1853 -->  15.1285    
+      _jetSmearedPt_BBEC1_2017_JECGroupedUp              mean:  17.6658 -->  17.1687     rms:  16.2618 -->  15.1885    
+      _jetSmearedPt_BBEC1_JECGroupedDown                 mean:  17.5011 -->  17.0058     rms:  16.1761 -->  15.1066    
+      _jetSmearedPt_BBEC1_JECGroupedUp                   mean:  17.7203 -->  17.2254     rms:  16.2723 -->  15.2118    
+      _jetSmearedPt_EC2_2017_JECGroupedDown              mean:  17.3100 -->  16.8375     rms:  16.0893 -->  15.1215    
+      _jetSmearedPt_EC2_2017_JECGroupedUp                mean:  17.9113 -->  17.3937     rms:  16.3834 -->  15.2151    
+      _jetSmearedPt_EC2_JECGroupedDown                   mean:  17.2948 -->  16.7342     rms:  16.2890 -->  15.2976    
+      _jetSmearedPt_EC2_JECGroupedUp                     mean:  17.9266 -->  17.4970     rms:  16.1739 -->  15.0377    
+      _jetSmearedPt_FlavorPhotonJet_JECSourcesDown       mean:  17.5155 -->  17.0235     rms:  16.1884 -->  15.1392    
+      _jetSmearedPt_FlavorPhotonJet_JECSourcesUp         mean:  17.7058 -->  17.2077     rms:  16.2594 -->  15.1784    
+      _jetSmearedPt_FlavorPureBottom_JECSourcesDown      mean:  17.6196 -->  17.1237     rms:  16.2704 -->  15.2087    
+      _jetSmearedPt_FlavorPureBottom_JECSourcesUp        mean:  17.6017 -->  17.1076     rms:  16.1768 -->  15.1084    
+      _jetSmearedPt_FlavorPureCharm_JECSourcesDown       mean:  17.5830 -->  17.0888     rms:  16.2344 -->  15.1784    
+      _jetSmearedPt_FlavorPureCharm_JECSourcesUp         mean:  17.6383 -->  17.1424     rms:  16.2127 -->  15.1386    
+      _jetSmearedPt_FlavorPureGluon_JECSourcesDown       mean:  17.1926 -->  16.7064     rms:  15.9454 -->  14.9046    
+      _jetSmearedPt_FlavorPureGluon_JECSourcesUp         mean:  18.0287 -->  17.5248     rms:  16.5019 -->  15.4126    
+      _jetSmearedPt_FlavorPureQuark_JECSourcesDown       mean:  17.5910 -->  17.0966     rms:  16.2427 -->  15.1862    
+      _jetSmearedPt_FlavorPureQuark_JECSourcesUp         mean:  17.6303 -->  17.1346     rms:  16.2045 -->  15.1309    
+      _jetSmearedPt_FlavorQCD_JECGroupedDown             mean:  17.3623 -->  16.8719     rms:  16.0673 -->  15.0155    
+      _jetSmearedPt_FlavorQCD_JECGroupedUp               mean:  17.8590 -->  17.3593     rms:  16.3796 -->  15.3014    
+      _jetSmearedPt_FlavorQCD_JECSourcesDown             mean:  17.3623 -->  16.8719     rms:  16.0673 -->  15.0155    
+      _jetSmearedPt_FlavorQCD_JECSourcesUp               mean:  17.8590 -->  17.3593     rms:  16.3796 -->  15.3014    
+      _jetSmearedPt_FlavorZJet_JECSourcesDown            mean:  17.4165 -->  16.9249     rms:  16.1513 -->  15.1031    
+      _jetSmearedPt_FlavorZJet_JECSourcesUp              mean:  17.8049 -->  17.3063     rms:  16.2962 -->  15.2143    
+      _jetSmearedPt_Fragmentation_JECSourcesDown         mean:  17.5687 -->  17.0742     rms:  16.2045 -->  15.1415    
+      _jetSmearedPt_Fragmentation_JECSourcesUp           mean:  17.6527 -->  17.1571     rms:  16.2423 -->  15.1752    
+      _jetSmearedPt_HF_2017_JECGroupedDown               mean:  17.5965 -->  17.1015     rms:  16.2193 -->  15.1542    
+      _jetSmearedPt_HF_2017_JECGroupedUp                 mean:  17.6248 -->  17.1297     rms:  16.2276 -->  15.1626    
+      _jetSmearedPt_HF_JECGroupedDown                    mean:  17.4912 -->  16.9959     rms:  16.2181 -->  15.1527    
+      _jetSmearedPt_HF_JECGroupedUp                      mean:  17.7301 -->  17.2354     rms:  16.2334 -->  15.1690    
+      _jetSmearedPt_JECDown                              mean:  16.4339 -->  15.9351     rms:  15.8439 -->  14.9857    
+      _jetSmearedPt_JECUp                                mean:  18.7874 -->  18.2962     rms:  16.6604 -->  15.3768    
+      _jetSmearedPt_JERDown                              mean:  17.1265 -->  16.9177     rms:  15.2895 -->  14.9102    
+      _jetSmearedPt_JERUp                                mean:  18.1232 -->  17.2231     rms:  17.1654 -->  15.4927    
+      _jetSmearedPt_PileUpDataMC_JECSourcesDown          mean:  17.2081 -->  16.6886     rms:  16.2144 -->  15.1851    
+      _jetSmearedPt_PileUpDataMC_JECSourcesUp            mean:  18.0132 -->  17.5426     rms:  16.2375 -->  15.1365    
+      _jetSmearedPt_PileUpEnvelope_JECSourcesDown        mean:  16.1960 -->  15.6433     rms:  15.5286 -->  14.5452    
+      _jetSmearedPt_PileUpEnvelope_JECSourcesUp          mean:  19.0254 -->  18.5880     rms:  16.9520 -->  15.8046    
+      _jetSmearedPt_PileUpMuZero_JECSourcesDown          mean:  16.6707 -->  16.1869     rms:  15.4902 -->  14.4400    
+      _jetSmearedPt_PileUpMuZero_JECSourcesUp            mean:  18.5506 -->  18.0443     rms:  16.9783 -->  15.8984    
+      _jetSmearedPt_PileUpPtBB_JECSourcesDown            mean:  17.5770 -->  17.0818     rms:  16.2290 -->  15.1633    
+      _jetSmearedPt_PileUpPtBB_JECSourcesUp              mean:  17.6443 -->  17.1494     rms:  16.2181 -->  15.1538    
+      _jetSmearedPt_PileUpPtEC1_JECSourcesDown           mean:  17.5424 -->  17.0472     rms:  16.1847 -->  15.1172    
+      _jetSmearedPt_PileUpPtEC1_JECSourcesUp             mean:  17.6789 -->  17.1840     rms:  16.2636 -->  15.2012    
+      _jetSmearedPt_PileUpPtEC2_JECSourcesDown           mean:  17.2948 -->  16.7342     rms:  16.2890 -->  15.2976    
+      _jetSmearedPt_PileUpPtEC2_JECSourcesUp             mean:  17.9266 -->  17.4970     rms:  16.1739 -->  15.0377    
+      _jetSmearedPt_PileUpPtHF_JECSourcesDown            mean:  17.5537 -->  17.0556     rms:  16.2332 -->  15.1661    
+      _jetSmearedPt_PileUpPtHF_JECSourcesUp              mean:  17.6676 -->  17.1757     rms:  16.2158 -->  15.1530    
+      _jetSmearedPt_PileUpPtRef_JECSourcesDown           mean:  17.4496 -->  16.9404     rms:  16.2479 -->  15.1917    
+      _jetSmearedPt_PileUpPtRef_JECSourcesUp             mean:  17.7717 -->  17.2908     rms:  16.1992 -->  15.1252    
+      _jetSmearedPt_RelativeBal_JECGroupedDown           mean:  17.6147 -->  17.1257     rms:  16.2320 -->  15.1903    
+      _jetSmearedPt_RelativeBal_JECGroupedUp             mean:  17.6066 -->  17.1056     rms:  16.2328 -->  15.1410    
+      _jetSmearedPt_RelativeBal_JECSourcesDown           mean:  17.6147 -->  17.1257     rms:  16.2320 -->  15.1903    
+      _jetSmearedPt_RelativeBal_JECSourcesUp             mean:  17.6066 -->  17.1056     rms:  16.2328 -->  15.1410    
+      _jetSmearedPt_RelativeFSR_JECSourcesDown           mean:  17.6592 -->  17.1628     rms:  16.2687 -->  15.2009    
+      _jetSmearedPt_RelativeFSR_JECSourcesUp             mean:  17.5621 -->  17.0684     rms:  16.1786 -->  15.1162    
+      _jetSmearedPt_RelativeJEREC1_JECSourcesDown        mean:  17.5984 -->  17.1033     rms:  16.2121 -->  15.1463    
+      _jetSmearedPt_RelativeJEREC1_JECSourcesUp          mean:  17.6230 -->  17.1279     rms:  16.2348 -->  15.1705    
+      _jetSmearedPt_RelativeJEREC2_JECSourcesDown        mean:  17.5313 -->  17.0434     rms:  16.1730 -->  15.1379    
+      _jetSmearedPt_RelativeJEREC2_JECSourcesUp          mean:  17.6901 -->  17.1879     rms:  16.2754 -->  15.1801    
+      _jetSmearedPt_RelativeJERHF_JECSourcesDown         mean:  17.5732 -->  17.0782     rms:  16.2106 -->  15.1452    
+      _jetSmearedPt_RelativeJERHF_JECSourcesUp           mean:  17.6482 -->  17.1530     rms:  16.2371 -->  15.1725    
+      _jetSmearedPt_RelativePtBB_JECSourcesDown          mean:  17.6114 -->  17.1164     rms:  16.2268 -->  15.1619    
+      _jetSmearedPt_RelativePtBB_JECSourcesUp            mean:  17.6099 -->  17.1149     rms:  16.2201 -->  15.1549    
+      _jetSmearedPt_RelativePtEC1_JECSourcesDown         mean:  17.5910 -->  17.0960     rms:  16.2061 -->  15.1402    
+      _jetSmearedPt_RelativePtEC1_JECSourcesUp           mean:  17.6303 -->  17.1352     rms:  16.2407 -->  15.1767    
+      _jetSmearedPt_RelativePtEC2_JECSourcesDown         mean:  17.3250 -->  16.8508     rms:  16.1013 -->  15.1270    
+      _jetSmearedPt_RelativePtEC2_JECSourcesUp           mean:  17.8963 -->  17.3804     rms:  16.3700 -->  15.2084    
+      _jetSmearedPt_RelativePtHF_JECSourcesDown          mean:  17.5390 -->  17.0440     rms:  16.2172 -->  15.1532    
+      _jetSmearedPt_RelativePtHF_JECSourcesUp            mean:  17.6824 -->  17.1872     rms:  16.2315 -->  15.1655    
+      _jetSmearedPt_RelativeSample_2017_JECGroupedDown   mean:  17.9243 -->  17.4037     rms:  16.3899 -->  15.2356    
+      _jetSmearedPt_RelativeSample_2017_JECGroupedUp     mean:  17.2970 -->  16.8276     rms:  16.0823 -->  15.1017    
+      _jetSmearedPt_RelativeSample_JECSourcesDown        mean:  17.9243 -->  17.4037     rms:  16.3899 -->  15.2356    
+      _jetSmearedPt_RelativeSample_JECSourcesUp          mean:  17.2970 -->  16.8276     rms:  16.0823 -->  15.1017    
+      _jetSmearedPt_RelativeStatEC_JECSourcesDown        mean:  17.5713 -->  17.0784     rms:  16.1970 -->  15.1410    
+      _jetSmearedPt_RelativeStatEC_JECSourcesUp          mean:  17.6500 -->  17.1528     rms:  16.2500 -->  15.1760    
+      _jetSmearedPt_RelativeStatFSR_JECSourcesDown       mean:  17.5962 -->  17.1017     rms:  16.2150 -->  15.1519    
+      _jetSmearedPt_RelativeStatFSR_JECSourcesUp         mean:  17.6251 -->  17.1295     rms:  16.2318 -->  15.1649    
+      _jetSmearedPt_RelativeStatHF_JECSourcesDown        mean:  17.5965 -->  17.1015     rms:  16.2193 -->  15.1542    
+      _jetSmearedPt_RelativeStatHF_JECSourcesUp          mean:  17.6248 -->  17.1297     rms:  16.2276 -->  15.1626    
+      _jetSmearedPt_SinglePionECAL_JECSourcesDown        mean:  17.6854 -->  17.1935     rms:  16.2366 -->  15.1673    
+      _jetSmearedPt_SinglePionECAL_JECSourcesUp          mean:  17.5359 -->  17.0377     rms:  16.2102 -->  15.1495    
+      _jetSmearedPt_SinglePionHCAL_JECSourcesDown        mean:  17.6541 -->  17.1597     rms:  16.2395 -->  15.1722    
+      _jetSmearedPt_SinglePionHCAL_JECSourcesUp          mean:  17.5672 -->  17.0715     rms:  16.2073 -->  15.1445    
+      _jetSmearedPt_SubTotalAbsolute_JECSourcesDown      mean:  17.4974 -->  17.0009     rms:  16.1698 -->  15.1115    
+      _jetSmearedPt_SubTotalAbsolute_JECSourcesUp        mean:  17.7240 -->  17.2304     rms:  16.2770 -->  15.2052    
+      _jetSmearedPt_SubTotalMC_JECSourcesDown            mean:  16.6160 -->  16.1565     rms:  15.8039 -->  14.9189    
+      _jetSmearedPt_SubTotalMC_JECSourcesUp              mean:  18.6053 -->  18.0747     rms:  16.6935 -->  15.4361    
+      _jetSmearedPt_SubTotalPileUp_JECSourcesDown        mean:  16.8959 -->  16.3283     rms:  16.2360 -->  15.2511    
+      _jetSmearedPt_SubTotalPileUp_JECSourcesUp          mean:  18.3255 -->  17.9030     rms:  16.2237 -->  15.0778    
+      _jetSmearedPt_SubTotalPt_JECSourcesDown            mean:  17.5135 -->  17.0158     rms:  16.1970 -->  15.1373    
+      _jetSmearedPt_SubTotalPt_JECSourcesUp              mean:  17.7079 -->  17.2154     rms:  16.2499 -->  15.1795    
+      _jetSmearedPt_SubTotalRelative_JECSourcesDown      mean:  16.8945 -->  16.4378     rms:  15.9082 -->  15.0088    
+      _jetSmearedPt_SubTotalRelative_JECSourcesUp        mean:  18.3269 -->  17.7934     rms:  16.5885 -->  15.3466    
+      _jetSmearedPt_SubTotalScale_JECSourcesDown         mean:  17.5578 -->  17.0643     rms:  16.1747 -->  15.1129    
+      _jetSmearedPt_SubTotalScale_JECSourcesUp           mean:  17.6635 -->  17.1670     rms:  16.2721 -->  15.2038    
+      _jetSmearedPt_TimePtEta_JECSourcesDown             mean:  17.7262 -->  17.2060     rms:  16.3578 -->  15.2202    
+      _jetSmearedPt_TimePtEta_JECSourcesUp               mean:  17.4952 -->  17.0253     rms:  16.1006 -->  15.1049    
+      _jetSmearedPt_TotalNoFlavorNoTime_JECSourcesDown   mean:  16.5161 -->  16.0092     rms:  15.9455 -->  15.0764    
+      _jetSmearedPt_TotalNoFlavorNoTime_JECSourcesUp     mean:  18.7052 -->  18.2220     rms:  16.5559 -->  15.2846    
+      _jetSmearedPt_TotalNoFlavor_JECSourcesDown         mean:  16.4865 -->  15.9869     rms:  15.9044 -->  15.0491    
+      _jetSmearedPt_TotalNoFlavor_JECSourcesUp           mean:  18.7349 -->  18.2443     rms:  16.6046 -->  15.3173    
+      _jetSmearedPt_TotalNoTime_JECSourcesDown           mean:  16.4624 -->  15.9563     rms:  15.8827 -->  15.0107    
+      _jetSmearedPt_TotalNoTime_JECSourcesUp             mean:  18.7589 -->  18.2749     rms:  16.6142 -->  15.3467    
+      _jetSmearedPt_Total_JECGroupedDown                 mean:  16.4339 -->  15.9351     rms:  15.8439 -->  14.9857    
+      _jetSmearedPt_Total_JECGroupedUp                   mean:  18.7874 -->  18.2962     rms:  16.6604 -->  15.3768    
+      _jetSmearedPt_Total_JECSourcesDown                 mean:  16.4339 -->  15.9351     rms:  15.8439 -->  14.9857    
+      _jetSmearedPt_Total_JECSourcesUp                   mean:  18.7874 -->  18.2962     rms:  16.6604 -->  15.3768    
+      _metPuppiPhiResDown                                mean:  -0.1451 -->  -0.2503     rms:   2.0053 -->   2.0134    
+      _metPuppiPhiResUp                                  mean:  -0.1929 -->  -0.1830     rms:   1.9878 -->   1.9954    
+      _metPuppiResDown                                   mean:  28.6251 -->  28.3586     rms:  19.4763 -->  19.2107    
+      _metPuppiResUp                                     mean:  31.2636 -->  30.0157     rms:  22.6103 -->  21.3092    
+      _metSignificance                                   mean:   2.5139 -->   2.5342     rms:   2.6411 -->   2.6419    
+      _pl_jetE                                           mean: 106.9979 -->   0.0000     rms:  81.6421 -->   0.0000    
+      _pl_jetEta                                         mean:  -0.3299 -->   0.0000     rms:   1.2958 -->   0.0000    
+      _pl_jetHadronFlavor                                mean:   0.7273 -->   0.0000     rms:   1.7281 -->   0.0000    
+      _pl_jetPhi                                         mean:   0.2121 -->   0.0000     rms:   1.7128 -->   0.0000    
+      _pl_jetPt                                          mean:  51.0534 -->   0.0000     rms:  27.2263 -->   0.0000    
+      _pl_nJets                                          mean:   0.3300 -->   0.0000     rms:   0.6489 -->   0.0000    
+      _prefireWeight                                     mean:   0.9635 -->   0.9650     rms:   0.0997 -->   0.1000    
+      _prefireWeightDown                                 mean:   0.9719 -->   0.9730     rms:   0.0786 -->   0.0788    
+      _prefireWeightECAL                                 mean:   0.9649 -->   0.9664     rms:   0.1001 -->   0.1004    
+      _prefireWeightECALDown                             mean:   0.9729 -->   0.9741     rms:   0.0789 -->   0.0792    
+      _prefireWeightECALUp                               mean:   0.9570 -->   0.9588     rms:   0.1207 -->   0.1211    
+      _prefireWeightUp                                   mean:   0.9552 -->   0.9571     rms:   0.1202 -->   0.1206    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
    Changed:
-      _eventNb                                           mean: 145272637.0100 --> 145272637.0100 rms:  77.2010 -->  77.2269    
+      _eventNb                                           mean: 145272637.0100 --> 145272637.0100 rms:  77.2269 -->  77.2528    
+      _pl_jetE                                           mean: 108.9045 -->   0.0000     rms: 105.6007 -->   0.0000    
+      _pl_jetEta                                         mean:  -0.0042 -->   0.0000     rms:   1.3613 -->   0.0000    
+      _pl_jetHadronFlavor                                mean:   0.1538 -->   0.0000     rms:   0.7692 -->   0.0000    
+      _pl_jetPhi                                         mean:  -0.1486 -->   0.0000     rms:   1.8393 -->   0.0000    
+      _pl_jetPt                                          mean:  44.4887 -->   0.0000     rms:  17.3455 -->   0.0000    
+      _pl_nJets                                          mean:   0.5200 -->   0.0000     rms:   0.7277 -->   0.0000    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
    Changed:
-      _eventNb                                           mean: 234787628.0300 --> 234787628.0300 rms:  74.5654 -->  74.6726    
+      _eventNb                                           mean: 234787628.0300 --> 234787628.0300 rms:  74.6726 -->  74.5654    
+      _pl_jetE                                           mean: 109.0976 -->   0.0000     rms:  91.7862 -->   0.0000    
+      _pl_jetEta                                         mean:  -0.1406 -->   0.0000     rms:   1.2906 -->   0.0000    
+      _pl_jetHadronFlavor                                mean:   0.2667 -->   0.0000     rms:   0.9978 -->   0.0000    
+      _pl_jetPhi                                         mean:   0.0225 -->   0.0000     rms:   1.8042 -->   0.0000    
+      _pl_jetPt                                          mean:  50.8121 -->   0.0000     rms:  28.1359 -->   0.0000    
+      _pl_nJets                                          mean:   0.6000 -->   0.0000     rms:   0.9695 -->   0.0000    
