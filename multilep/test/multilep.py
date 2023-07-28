@@ -17,7 +17,7 @@ nEvents         = 100
 # extraContent    = 'storeLheParticles,storeParticleLevel'
 # extraContent    = 'storeJecSources'
 # extraContent    = 'storeJecSources'
-extraContent    = 'storeLheParticles,storeJecSourcesGrouped,storeAllTauID,storePrefireComponents'
+extraContent    = 'storeLheParticles,storeParticleLevel,storeJecSourcesGrouped,storeAllTauID,storePrefireComponents'
 # extraContent    = ''
 
 outputFile      = 'noskim.root' # trilep    --> skim three leptons (basic pt/eta criteria)
