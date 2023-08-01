@@ -29,6 +29,7 @@ DATE=`date '+%Y%m%d_%H%M%S'`
 #
 input=$1
 output="$2/$DATE/0000" # similar structure as crab
+datasetName=$(echo "$2" | sed 's/\/.*//')
 skim=$3
 filesPerJob=$4
 extraContent=$5
@@ -47,60 +48,57 @@ setCMSSW(){
     echo "export PYTHONHOME=/cvmfs/cms.cern.ch/slc7_amd64_gcc820/external/python/2.7.15-pafccj" >> $1
 }
 
-#transfer(){
-#    #echo "gfal-mkdir -p srm://maite.iihe.ac.be:8443/$2/$(dirname $3)" >> $4
-#    #echo "cp -f file://$1/$3 srm://maite.iihe.ac.be:8443/$2/$3" >> $4
-#    #if [[ $proxy == *.sh ]]; then # Only clean-up the local files when a script is used for the proxy, then we are sure the proxy is valid and files should be copied correctly
-#    #  echo "rm $1/$3" >> $4
-#    #fi
-#}
+
 
 #function to submit a job and catch invalid credentials
 submitJob(){
-    if [ -e localSubmission.sub ]; then rm localSubmission.sub; fi
+    if [ -e HTCondorSubmission/${datasetName}_localSubmission.sub ]; then rm HTCondorSubmission/${datasetName}_localSubmission.sub; fi
 
-    touch localSubmission.sub
+    touch HTCondorSubmission/${datasetName}_localSubmission.sub
+    if [[ ! -d "HTCondorSubmission/logs" ]]; then
+      mkdir "HTCondorSubmission/logs"
+      mkdir "HTCondorSubmission/err"
+      mkdir "HTCondorSubmission/out"
+    fi   
 
-    echo "universe    =   vanilla" >> localSubmission.sub
-    echo "executable  =   HTCondorSubmission/localSubmission\$(Process).sh" >> localSubmission.sub
+    echo "universe    =   vanilla" >> HTCondorSubmission/${datasetName}_localSubmission.sub
+    echo "executable  =   HTCondorSubmission/${datasetName}_localSubmission\$(Process).sh" >> HTCondorSubmission/${datasetName}_localSubmission.sub
 
-    echo "log         =   /user/nivanden/condor/logs/localSubmission_\$(ClusterId)_\$(Process).log" >> localSubmission.sub
-    echo "error       =   /user/nivanden/condor/error/localSubmission_\$(ClusterId)_\$(Process).err" >> localSubmission.sub
-    echo "output      =   /user/nivanden/condor/output/localSubmission_\$(ClusterId)_\$(Process).out" >> localSubmission.sub
+    dir=$(pwd)
+    echo "log         =   $dir/HTCondorSubmission/logs/${datasetName}_localSubmission_\$(ClusterId)_\$(Process).log" >> HTCondorSubmission/${datasetName}_localSubmission.sub
+    echo "error       =   $dir/HTCondorSubmission/err/${datasetName}_localSubmission_\$(ClusterId)_\$(Process).err" >> HTCondorSubmission/${datasetName}_localSubmission.sub
+    echo "output      =   $dir/HTCondorSubmission/out/${datasetName}_localSubmission_\$(ClusterId)_\$(Process).out" >> HTCondorSubmission/${datasetName}_localSubmission.sub
 
-    # echo "x509userproxy = /user/nivanden/x509up_u23145" >> localSubmission.sub
-    # echo "use_x509userproxy = True" >> localSubmission.sub
-
-    echo "queue $1" >> localSubmission.sub
+    echo "queue $1" >> HTCondorSubmission/${datasetName}_localSubmission.sub
 
 
-    condor_submit localSubmission.sub
-    # quick change to make it run. Right now no real error checking
+    condor_submit HTCondorSubmission/${datasetName}_localSubmission.sub
 }
 
 #make list of all files in input sample
 fileList $input
 
-mkdir "HTCondorSubmission"
+if [[ ! -d "HTCondorSubmission" ]]; then
+    mkdir "HTCondorSubmission"
+fi        
 
 #loop over new list of files and submit jobs
 fileCount=0
 submitCount=-1
-submit=localSubmission0.sh
-fileList=""
+jobCount=0
+submit=""
+
 while read f; do
     fileCount=$((fileCount + 1))
     #submit a job for every few files, as specified in the input
     if (( $fileCount % $filesPerJob == 0 )) || (( $fileCount == 1 ))
         then if (( $fileCount % $filesPerJob == 0 )); then
-            #submitJob $submit
             jobCount=$((jobCount + 1))
-            fileList=""
-            submitCount=$((submitCount + 1))
         fi
         #initialize temporary submission script
         submitCount=$((submitCount + 1))
-        submit="HTCondorSubmission/localSubmission$submitCount.sh"
+
+        submit="HTCondorSubmission/${datasetName}_localSubmission${submitCount}.sh"
         
         if [ -e $submit ]; then rm $submit; fi
         
@@ -110,7 +108,6 @@ while read f; do
         setCMSSW $submit
         exportProxy $submit
     fi
-    userDir="/user/$USER/public/heavyNeutrino/$output"
     pnfsDir="/pnfs/iihe/cms/store/user/$USER/heavyNeutrino/$output"
     outputFile="${skim}_${fileCount}.root"
     logFile="logs/${skim}_${fileCount}.txt"
@@ -119,7 +116,8 @@ while read f; do
     mkdir -p ${pnfsDir}
     mkdir -p ${pnfsDir}/errs
     mkdir -p ${pnfsDir}/logs
-    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=$f outputFile=$pnfsDir/$outputFile events=-1 ${extraContent} > $pnfsDir/$logFile 2> $pnfsDir/$errFile" >> $submit
+    echo "cmsRun ${CMSSW_BASE}/src/heavyNeutrino/multilep/test/multilep.py inputFile=file://$f outputFile=$pnfsDir/$outputFile events=-1 ${extraContent}" >> $submit
+
 
 done < fileList.txt
 
