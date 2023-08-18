@@ -4,7 +4,7 @@ import os, glob, sys, subprocess
 #
 # Check if we have already done cmsenv
 #
-if os.environ['CMSSW_BASE'].replace('/storage_mnt/storage','') not in os.getcwd():
+if os.environ['CMSSW_BASE'].replace('/ada_mnt/ada','') not in os.getcwd():
   print '\033[1m\033[91mPlease do cmsenv first!'
   exit(0)
 
