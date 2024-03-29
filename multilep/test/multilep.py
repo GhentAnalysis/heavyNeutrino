@@ -60,10 +60,10 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(outputF
 
 # Latest recommended global tags can always be checked here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-if is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_upgrade2018_realistic_v16_L1v1'
-elif is2017:                             process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mc2017_realistic_v9'
-elif is2016preVFP:                       process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mcRun2_asymptotic_preVFP_v11'
-else:                                    process.GlobalTag.globaltag = '106X_dataRun2_v35' if isData else '106X_mcRun2_asymptotic_v17'
+if is2018:                             process.GlobalTag.globaltag = '106X_dataRun2_v37' if isData else '106X_upgrade2018_realistic_v16_L1v1'
+elif is2017:                             process.GlobalTag.globaltag = '106X_dataRun2_v37' if isData else '106X_mc2017_realistic_v10'
+elif is2016preVFP:                       process.GlobalTag.globaltag = '106X_dataRun2_v37' if isData else '106X_mcRun2_asymptotic_preVFP_v11'
+else:                                    process.GlobalTag.globaltag = '106X_dataRun2_v37' if isData else '106X_mcRun2_asymptotic_v17'
 
 #
 # Vertex collection

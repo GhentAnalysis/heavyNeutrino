@@ -29,6 +29,7 @@ config.JobType.outputFiles             = [outputFile]
 config.JobType.sendExternalFolder      = True
 config.JobType.allowUndistributedCMSSW = True
 config.JobType.numCores                = 4
+config.JobType.maxMemoryMB             = 6000
 
 
 config.section_('Data')

@@ -1,8 +1,23 @@
-commit 1502fb3740ff8e30752bf0c24dc326492feecbbc
-Author: Liam <liamwezenbeek@hotmail.com>
-Date:   Tue Oct 4 11:56:41 2022 +0200
+commit 0c8f24aaf75fa9ecbe87e702aaf43b7d86b987cc
+Author: NielsVdBossche <niels.vandenbossche@ugent.be>
+Date:   Fri Jul 28 09:37:43 2023 +0200
 
-    Implement LNV tagging for HNL samples
+    testing changes from t2b
+diff --git a/multilep/test/testing/09Aug2019_UL2017-ref.root b/multilep/test/testing/09Aug2019_UL2017-ref.root
+index 8b08adea..f20377d6 100644
+Binary files a/multilep/test/testing/09Aug2019_UL2017-ref.root and b/multilep/test/testing/09Aug2019_UL2017-ref.root differ
+diff --git a/multilep/test/testing/12Nov2019_UL2018-ref.root b/multilep/test/testing/12Nov2019_UL2018-ref.root
+index c1c8c0db..5773b279 100644
+Binary files a/multilep/test/testing/12Nov2019_UL2018-ref.root and b/multilep/test/testing/12Nov2019_UL2018-ref.root differ
+diff --git a/multilep/test/testing/21Feb2020_UL2016-ref.root b/multilep/test/testing/21Feb2020_UL2016-ref.root
+index 00fef7fa..863a9e9a 100644
+Binary files a/multilep/test/testing/21Feb2020_UL2016-ref.root and b/multilep/test/testing/21Feb2020_UL2016-ref.root differ
+diff --git a/multilep/test/testing/21Feb2020_UL2016_HIPM-ref.root b/multilep/test/testing/21Feb2020_UL2016_HIPM-ref.root
+index 81119b19..c0d19889 100644
+Binary files a/multilep/test/testing/21Feb2020_UL2016_HIPM-ref.root and b/multilep/test/testing/21Feb2020_UL2016_HIPM-ref.root differ
+diff --git a/multilep/test/testing/RunIISummer20UL18MiniAOD-ref.root b/multilep/test/testing/RunIISummer20UL18MiniAOD-ref.root
+index 7bfd2523..98cf1b6e 100644
+Binary files a/multilep/test/testing/RunIISummer20UL18MiniAOD-ref.root and b/multilep/test/testing/RunIISummer20UL18MiniAOD-ref.root differ
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,21 +38,45 @@ Running test: 21Feb2020_UL2016_HIPM --> OK
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL18MiniAOD --> OK
+   Changed:
+      _pl_jetE                                           mean:   0.0000 -->  83.9019     rms:   0.0000 -->  55.6031    
+      _pl_jetEta                                         mean:   0.0000 -->  -0.1213     rms:   0.0000 -->   1.1988    
+      _pl_jetHadronFlavor                                mean:   0.0000 -->   0.4457     rms:   0.0000 -->   1.3623    
+      _pl_jetPhi                                         mean:   0.0000 -->   0.1950     rms:   0.0000 -->   1.7236    
+      _pl_jetPt                                          mean:   0.0000 -->  44.6225     rms:   0.0000 -->  22.5646    
+      _pl_nJets                                          mean:   0.0000 -->   0.9200     rms:   0.0000 -->   0.9130    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL17MiniAOD --> OK
    Changed:
       _eventNb                                           mean: 222970355.6000 --> 222970355.6000 rms:  62.4820 -->  62.4179    
+      _pl_jetE                                           mean:   0.0000 --> 106.9979     rms:   0.0000 -->  81.6421    
+      _pl_jetEta                                         mean:   0.0000 -->  -0.3299     rms:   0.0000 -->   1.2958    
+      _pl_jetHadronFlavor                                mean:   0.0000 -->   0.7273     rms:   0.0000 -->   1.7281    
+      _pl_jetPhi                                         mean:   0.0000 -->   0.2121     rms:   0.0000 -->   1.7128    
+      _pl_jetPt                                          mean:   0.0000 -->  51.0534     rms:   0.0000 -->  27.2263    
+      _pl_nJets                                          mean:   0.0000 -->   0.3300     rms:   0.0000 -->   0.6489    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAOD --> OK
    Changed:
-      _eventNb                                           mean: 145272637.0100 --> 145272637.0100 rms:  77.2010 -->  77.2269    
+      _eventNb                                           mean: 145272637.0100 --> 145272637.0100 rms:  77.2528 -->  77.2269    
+      _pl_jetE                                           mean:   0.0000 --> 108.9045     rms:   0.0000 --> 105.6007    
+      _pl_jetEta                                         mean:   0.0000 -->  -0.0042     rms:   0.0000 -->   1.3613    
+      _pl_jetHadronFlavor                                mean:   0.0000 -->   0.1538     rms:   0.0000 -->   0.7692    
+      _pl_jetPhi                                         mean:   0.0000 -->  -0.1486     rms:   0.0000 -->   1.8393    
+      _pl_jetPt                                          mean:   0.0000 -->  44.4887     rms:   0.0000 -->  17.3455    
+      _pl_nJets                                          mean:   0.0000 -->   0.5200     rms:   0.0000 -->   0.7277    
 
 --------------------------------------------------------------------------------------------------
 
 Running test: RunIISummer20UL16MiniAODAPV --> OK
    Changed:
-      _eventNb                                           mean: 234787628.0300 --> 234787628.0300 rms:  74.5654 -->  74.6726    
+      _pl_jetE                                           mean:   0.0000 --> 109.0976     rms:   0.0000 -->  91.7862    
+      _pl_jetEta                                         mean:   0.0000 -->  -0.1406     rms:   0.0000 -->   1.2906    
+      _pl_jetHadronFlavor                                mean:   0.0000 -->   0.2667     rms:   0.0000 -->   0.9978    
+      _pl_jetPhi                                         mean:   0.0000 -->   0.0225     rms:   0.0000 -->   1.8042    
+      _pl_jetPt                                          mean:   0.0000 -->  50.8121     rms:   0.0000 -->  28.1359    
+      _pl_nJets                                          mean:   0.0000 -->   0.6000     rms:   0.0000 -->   0.9695    
